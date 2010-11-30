@@ -9,6 +9,8 @@ gem 'mysql'
 
 # Use unicorn as the web server
 # gem 'unicorn'
+# Use passenger as the web server
+gem 'passenger'
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -26,6 +28,6 @@ gem 'mysql'
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
-# group :development, :test do
-#   gem 'webrat'
-# end
+group :development, :test do
+  gem 'rspec-rails', "2.2.0"
+end
