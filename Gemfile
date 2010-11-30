@@ -10,7 +10,9 @@ gem 'mysql'
 # Use unicorn as the web server
 # gem 'unicorn'
 # Use passenger as the web server
-gem 'passenger'
+#gem 'passenger'
+# Use mongrel as the web server
+gem 'mongrel'
 
 # Deploy with Capistrano
 # gem 'capistrano'
