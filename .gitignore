@@ -1,4 +1,10 @@
 .bundle
-db/*.sqlite3
-log/*.log
-tmp/**/*
+*.sqlite3
+log/*
+tmp/*
+*~
+*.lock
+*.DS_Store
+*.swp
+*.out
+.idea/*
