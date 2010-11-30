@@ -8,3 +8,4 @@ tmp/*
 *.swp
 *.out
 .idea/*
+config/database.yml
