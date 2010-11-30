@@ -1,4 +1,6 @@
 LinguisticExplorer::Application.routes.draw do
+  resources :lings
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
