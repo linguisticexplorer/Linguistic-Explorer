@@ -1,0 +1,23 @@
+<h1>Listing lings</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @lings.each do |ling| %>
+  <tr>
+    <td><%= ling.name %></td>
+    <td><%= link_to 'Show', ling %></td>
+    <td><%= link_to 'Edit', edit_ling_path(ling) %></td>
+    <td><%= link_to 'Destroy', ling, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Ling', new_ling_path %>
