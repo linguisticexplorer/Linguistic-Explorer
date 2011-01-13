@@ -10,10 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20101130213139) do
+ActiveRecord::Schema.define(:version => 20110113115826) do
 
   create_table "lings", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "properties", :force => true do |t|
+    t.string   "name"
+    t.string   "type"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
