@@ -52,7 +52,6 @@ describe LingsController do
 
       it "redirects to the created ling" do
         post :create, :ling => {'name' => 'Javanese'}
-        response.should be_success
         response.should redirect_to(ling_url(assigns(:ling)))
       end
     end
@@ -61,13 +60,13 @@ describe LingsController do
       it "does not save a new ling" do
         lambda {
           post :create, :ling => {'name' => ''}
-          response.should be_success
           assigns(:ling).should_not be_valid
         }.should change(Ling, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
         post :create, :ling => {}
+        response.should be_success
         response.should render_template("new")
       end
     end
@@ -75,9 +74,12 @@ describe LingsController do
 
   describe "update" do
     describe "with valid params" do
-      it "updates the requested ling" do
-        ling(:english).should_receive(:update_attributes).with({'name' => 'eengleesh'})
-        put :update, :id => lings(:english).id, :ling => {'name' => 'eengleesh'}
+      it "calls update with the passed params on the requested ling" do
+        ling = lings(:english)
+        ling.should_receive(:update_attributes).with({'name' => 'eengleesh'}).and_return(true)
+        Ling.should_receive(:find).with(ling.id).and_return(ling)
+
+        put :update, :id => ling.id, :ling => {'name' => 'eengleesh'}
       end
 
       it "assigns the requested ling as @ling" do
@@ -92,13 +94,15 @@ describe LingsController do
     end
 
     describe "with invalid params" do
+      before do
+        put :update, :id => lings(:english).id, :ling => {'name' => ''}
+      end
+
       it "assigns the ling as @ling" do
-        put :update, :id => lings(:english).id
         assigns(:ling).should == lings(:english)
       end
 
       it "re-renders the 'edit' template" do
-        put :update, :id => lings(:english).id
         response.should render_template("edit")
       end
     end
@@ -106,9 +110,12 @@ describe LingsController do
   end
 
   describe "destroy" do
-    it "destroys the requested ling" do
-      lings(:english).should_receive(:destroy)
-      delete :destroy, :id => lings(:english).id
+    it "calls destroy on the requested ling" do
+      ling = mock(:id => 1337)
+      ling.should_receive(:destroy).and_return(true)
+      Ling.should_receive(:find).with(ling.id).and_return(ling)
+
+      delete :destroy, :id => ling.id
     end
 
     it "redirects to the lings list" do
