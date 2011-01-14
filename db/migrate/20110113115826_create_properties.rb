@@ -2,7 +2,7 @@ class CreateProperties < ActiveRecord::Migration
   def self.up
     create_table  :properties do |t|
       t.string    :name
-      t.string    :type
+      t.string    :category
       t.timestamps
     end
   end
