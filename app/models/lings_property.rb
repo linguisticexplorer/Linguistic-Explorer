@@ -5,7 +5,7 @@ class LingsProperty < ActiveRecord::Base
 
 #  validates_associated :ling
 #  validates_associated :property
-#
-#  belongs_to :ling
-#  belongs_to :property
+
+  belongs_to :ling
+  belongs_to :property
 end

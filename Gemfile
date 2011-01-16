@@ -32,4 +32,6 @@ gem 'mongrel'
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'rspec-rails', "2.4.0"
+  gem 'validation_reflection', "1.0.0"
+  gem 'rspec_rails3_validation_expectations', '0.0.1', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 end
