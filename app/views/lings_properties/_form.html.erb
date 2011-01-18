@@ -1,0 +1,25 @@
+<%= form_for(@lings_property) do |f| %>
+  <% if @lings_property.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@lings_property.errors.count, "error") %> prohibited this lings_property from being saved:</h2>
+
+      <ul>
+      <% @lings_property.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :value %><br />
+    <%= f.text_field :value %>
+    <%= f.label :ling_id %><br />
+    <%= f.text_field :ling_id %>
+    <%= f.label :property_id %><br />
+    <%= f.text_field :property_id %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

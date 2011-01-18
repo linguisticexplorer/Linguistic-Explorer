@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Lings_Property:</b>
+  <%= link_to @lings_property.ling.name, ling_path(@lings_property.ling) %>
+  <b>Property:</b>
+  <%= link_to @lings_property.property.name, property_path(@lings_property.property) %>
+  <b>Value:</b>
+  <%= @lings_property.value %>
+</p>
+
+
+<%= link_to 'Edit', edit_lings_property_path(@lings_property) %> |
+<%= link_to 'Back', lings_property_path %>

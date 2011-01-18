@@ -1,0 +1,27 @@
+<h1>Listing Lings_Properties</h1>
+
+<table>
+  <tr>
+    <th>Ling</th>
+    <th>Property</th>
+    <th>Value</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @lings_properties.each do |lings_property| %>
+  <tr>
+    <%= link_to lings_property.ling.name, ling_path(lings_property.ling) %>
+    <%= link_to lings_property.property.name, property_path(lings_property.property) %>
+    <td><%= lings_property.value %></td>
+    <td><%= link_to 'Show', lings_property %></td>
+    <td><%= link_to 'Edit', edit_lings_property_path(lings_property) %></td>
+    <td><%= link_to 'Destroy', lings_property, :confirm => 'Are you sure?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Lings_Property', new_lings_property_path %>

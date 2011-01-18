@@ -1,4 +1,5 @@
 class PropertiesController < ApplicationController
+
   # GET /properties
   # GET /properties.xml
   def index

@@ -1,4 +1,5 @@
 class LingsController < ApplicationController
+
   # GET /lings
   # GET /lings.xml
   def index

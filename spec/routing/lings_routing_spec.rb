@@ -2,7 +2,6 @@ require "spec_helper"
 
 describe LingsController do
   describe "routing" do
-
     it "recognizes and generates #index" do
       { :get => "/lings" }.should route_to(:controller => "lings", :action => "index")
     end
@@ -30,6 +29,5 @@ describe LingsController do
     it "recognizes and generates #destroy" do
       { :delete => "/lings/1" }.should route_to(:controller => "lings", :action => "destroy", :id => "1")
     end
-
   end
 end

@@ -2,7 +2,6 @@ require "spec_helper"
 
 describe PropertiesController do
   describe "routing" do
-
     it "recognizes and generates #index" do
       { :get => "/properties" }.should route_to(:controller => "properties", :action => "index")
     end
@@ -30,6 +29,5 @@ describe PropertiesController do
     it "recognizes and generates #destroy" do
       { :delete => "/properties/1" }.should route_to(:controller => "properties", :action => "destroy", :id => "1")
     end
-
   end
 end
