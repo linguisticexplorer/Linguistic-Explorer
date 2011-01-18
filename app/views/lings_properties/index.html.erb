@@ -12,8 +12,8 @@
 
 <% @lings_properties.each do |lings_property| %>
   <tr>
-    <%= link_to lings_property.ling.name, ling_path(lings_property.ling) %>
-    <%= link_to lings_property.property.name, property_path(lings_property.property) %>
+    <td><%= link_to lings_property.ling.name, ling_path(lings_property.ling) %></td>
+    <td><%= link_to lings_property.property.name, property_path(lings_property.property) %><td>
     <td><%= lings_property.value %></td>
     <td><%= link_to 'Show', lings_property %></td>
     <td><%= link_to 'Edit', edit_lings_property_path(lings_property) %></td>
