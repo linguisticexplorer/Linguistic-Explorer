@@ -15,7 +15,7 @@ describe LingsController do
   describe "show" do
     describe "assigns" do
       it "@ling should match the passed id" do
-        get :show, :id => lings(:english).id
+        get :show, :id => lings(:english)
         assigns(:ling).should == lings(:english)
       end
     end
@@ -83,19 +83,19 @@ describe LingsController do
       end
 
       it "assigns the requested ling as @ling" do
-        put :update, :id => lings(:english).id
+        put :update, :id => lings(:english)
         assigns(:ling).should == lings(:english)
       end
 
       it "redirects to the ling" do
-        put :update, :id => lings(:english).id
+        put :update, :id => lings(:english)
         response.should redirect_to(ling_url(lings(:english)))
       end
     end
 
     describe "with invalid params" do
       before do
-        put :update, :id => lings(:english).id, :ling => {'name' => ''}
+        put :update, :id => lings(:english), :ling => {'name' => ''}
       end
 
       it "assigns the ling as @ling" do
@@ -111,7 +111,7 @@ describe LingsController do
 
   describe "destroy" do
     it "calls destroy on the requested ling" do
-      ling = mock(:id => 1337)
+      ling = lings(:english)
       ling.should_receive(:destroy).and_return(true)
       Ling.should_receive(:find).with(ling.id).and_return(ling)
 
@@ -119,7 +119,7 @@ describe LingsController do
     end
 
     it "redirects to the lings list" do
-      delete :destroy, :id => lings(:english).id
+      delete :destroy, :id => lings(:english)
       response.should redirect_to(lings_url)
     end
   end

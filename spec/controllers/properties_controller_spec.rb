@@ -15,7 +15,7 @@ describe PropertiesController do
   describe "show" do
     describe "assigns" do
       it "@property should match the passed id" do
-        get :show, :id => properties(:valid).id
+        get :show, :id => properties(:valid)
         assigns(:property).should == properties(:valid)
       end
     end
@@ -85,19 +85,19 @@ describe PropertiesController do
       end
 
       it "assigns the requested property as @property" do
-        put :update, :id => properties(:valid).id
+        put :update, :id => properties(:valid)
         assigns(:property).should == properties(:valid)
       end
 
       it "redirects to the property" do
-        put :update, :id => properties(:valid).id
+        put :update, :id => properties(:valid)
         response.should redirect_to(property_url(properties(:valid)))
       end
     end
 
     describe "with invalid params" do
       before do
-        put :update, :id => properties(:valid).id, :property => {'name' => ''}
+        put :update, :id => properties(:valid), :property => {'name' => ''}
       end
 
       it "assigns the property as @property" do
@@ -113,7 +113,7 @@ describe PropertiesController do
 
   describe "destroy" do
     it "calls destroy on the requested property" do
-      property = mock(:id => 31337)
+      property = properties(:valid)
       property.should_receive(:destroy).and_return(true)
       Property.should_receive(:find).with(property.id).and_return(property)
 
@@ -121,7 +121,7 @@ describe PropertiesController do
     end
 
     it "redirects to the properties list" do
-      delete :destroy, :id => properties(:valid).id
+      delete :destroy, :id => properties(:valid)
       response.should redirect_to(properties_url)
     end
   end

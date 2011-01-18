@@ -15,7 +15,7 @@ describe LingsPropertiesController do
   describe "show" do
     describe "assigns" do
       it "@lings_property should match the passed id" do
-        get :show, :id => lings_properties(:smelly).id
+        get :show, :id => lings_properties(:smelly)
         assigns(:lings_property).should == lings_properties(:smelly)
       end
     end
@@ -58,7 +58,7 @@ describe LingsPropertiesController do
       it "redirects to the created property" do
         ling = Ling.first
         property = Property.first
-        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}
+        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling, 'property_id' => property}
         response.should redirect_to(lings_property_url(assigns(:lings_property)))
       end
     end
@@ -90,19 +90,19 @@ describe LingsPropertiesController do
       end
 
       it "assigns the requested lings_property as @lings_property" do
-        put :update, :id => lings_properties(:smelly).id
+        put :update, :id => lings_properties(:smelly)
         assigns(:lings_property).should == lings_properties(:smelly)
       end
 
       it "redirects to the property" do
-        put :update, :id => lings_properties(:smelly).id
+        put :update, :id => lings_properties(:smelly)
         response.should redirect_to(lings_property_url(lings_properties(:smelly)))
       end
     end
 
     describe "with invalid params" do
       before do
-        put :update, :id => lings_properties(:smelly).id, :lings_property => {'value' => ''}
+        put :update, :id => lings_properties(:smelly), :lings_property => {'value' => ''}
       end
 
       it "assigns the lings_property as @lings_property" do
@@ -118,7 +118,7 @@ describe LingsPropertiesController do
 
   describe "destroy" do
     it "calls destroy on the requested lings_property" do
-      lings_property = mock(:id => 31337)
+      lings_property = lings_properties(:smelly)
       lings_property.should_receive(:destroy).and_return(true)
       LingsProperty.should_receive(:find).with(lings_property.id).and_return(lings_property)
 
@@ -126,7 +126,7 @@ describe LingsPropertiesController do
     end
 
     it "redirects to the lings_properties list" do
-      delete :destroy, :id => lings_properties(:smelly).id
+      delete :destroy, :id => lings_properties(:smelly)
       response.should redirect_to(lings_properties_url)
     end
   end
