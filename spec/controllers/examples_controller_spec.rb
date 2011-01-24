@@ -56,7 +56,7 @@ describe ExamplesController do
       end
     end
 
-    xdescribe "NO POSSIBLE INVALIDS with invalid params" do
+    # xdescribe "NO POSSIBLE INVALIDS with invalid params" do
 #      it "does not save a new example" do
 #        lambda {
 #          post :create, :example => {'name' => ''}
@@ -69,7 +69,7 @@ describe ExamplesController do
 #        response.should be_success
 #        response.should render_template("new")
 #      end
-    end
+    # end
   end
 
   describe "update" do
@@ -93,7 +93,7 @@ describe ExamplesController do
       end
     end
 
-    xdescribe "NO POSSIBLE INVALIDS with invalid params" do
+    # xdescribe "NO POSSIBLE INVALIDS with invalid params" do
 #      before do
 #        put :update, :id => examples(:onceuponatime), :example => {'name' => ''}
 #      end
@@ -105,7 +105,7 @@ describe ExamplesController do
 #      it "re-renders the 'edit' template" do
 #        response.should render_template("edit")
 #      end
-    end
+    # end
 
   end
 
