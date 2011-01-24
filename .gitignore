@@ -9,3 +9,4 @@ tmp/*
 *.out
 .idea/*
 config/database.yml
+.rvmrc
