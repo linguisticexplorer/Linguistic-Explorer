@@ -6,6 +6,5 @@ Feature: Creating a Ling
     Then I should see "New ling"
     When I fill in "English" for "Name"
     And I press "Create Ling"
-    Then show me the page
     Then I should see "Ling was successfully created"
     And I should see "English"
