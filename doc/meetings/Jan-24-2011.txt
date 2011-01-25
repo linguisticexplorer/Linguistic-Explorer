@@ -1,0 +1,9 @@
+1/24/2011
+
+Authentication
+  - access rights at the system/controller level (Devise)
+  - access rights at the data level (CanCan, or related option)
+
+Javascript
+ - options for testing
+ 

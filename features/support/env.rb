@@ -45,7 +45,7 @@ Cucumber::Rails::World.use_transactional_fixtures = true
 
 # How to clean your database when transactions are turned off. See
 # http://github.com/bmabey/database_cleaner for more info.
-# DatabaseCleaner.strategy = :truncation
+DatabaseCleaner.strategy = :truncation
 
 # Temporary workaround
 Test::Unit.run = true
