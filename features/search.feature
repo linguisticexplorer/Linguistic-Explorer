@@ -11,13 +11,17 @@ Feature: Search with Any
     # choosing all
     
   Scenario: Visitor searches any language
-    And this scenario is pending
     And the following lings:
-    | Ling        | 
+    | name        | 
     | English     | 
     | Spanish     | 
-    When I go to the search page
-    And I select "English" from the first language in the list
+    When I go to the new search page
+    And I check "Language"
+    And I select "English" from "Language"
+    And I press "Search"
+    Then I should see "Results"
+    And I should see "English"
+    And I should not see "Spanish"
   
   Scenario: Visitor searches any language
   
