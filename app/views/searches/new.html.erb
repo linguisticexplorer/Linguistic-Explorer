@@ -1,0 +1,10 @@
+<h2>Search</h2>
+<% form_for :search, :url => searches_path do |f| %>
+  <%= label_tag     "search[include][ling]", "Include language" %>
+  <%= check_box_tag "search[include][ling]" %>
+
+  <%= f.label :lings, "Languages" %>
+  <%= f.select :lings, @search.ling_options, {}, :multiple => true %>
+  
+  <%= f.submit "Search" %>
+<% end %>

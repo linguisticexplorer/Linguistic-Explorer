@@ -15,9 +15,10 @@ Feature: Search with Any
     | name        | 
     | English     | 
     | Spanish     | 
+    | German      | 
     When I go to the new search page
-    And I check "Language"
-    And I select "English" from "Language"
+    And I check "Include language"
+    And I select "English" from "Languages"
     And I press "Search"
     Then I should see "Results"
     And I should see "English"
