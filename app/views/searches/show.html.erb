@@ -1,8 +1,28 @@
 <h2>Results</h2>
-<div class="table">
-  <%- @search.lings.each do |ling|-%>
-    <div>
-      <%= ling.name %>
-    </div>
+<div class="table spacing">
+  <div class="row">
+    <div class="cell">Languages</div>
+    <%- if @search.include_properties? -%>
+      <div class="cell">Properties</div>
+    <%- end -%>
+  </div>
+
+  <%- if @search.include_properties? -%>
+    <%- @search.lings_properties.each do |lings_property|-%>
+      <%- ling = lings_property.ling -%>
+      <%- prop = lings_property.property -%>
+      <div class="row <%= ling.name.underscore %>_property">
+        <div class="cell"><%= ling.name %></div>
+        <div class="cell"><%= prop.name %></div>
+      </div>
+    <%- end -%>
+
+  <%- else -%>
+    <%- @search.lings.each do |ling|-%>
+      <div class="row">
+        <div class="cell"><%= ling.name %></div>
+      </div>
+    <%- end -%>
+
   <%- end -%>
 </div>

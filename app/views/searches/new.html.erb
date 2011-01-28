@@ -1,10 +1,16 @@
 <h2>Search</h2>
-<% form_for :search, :url => searches_path do |f| %>
+<%= form_for :search, :url => searches_path do |f| %>
   <%= label_tag     "search[include][ling]", "Include language" %>
   <%= check_box_tag "search[include][ling]" %>
 
+  <%= label_tag     "search[include][property]", "Include property" %>
+  <%= check_box_tag "search[include][property]" %>
+
   <%= f.label :lings, "Languages" %>
   <%= f.select :lings, @search.ling_options, {}, :multiple => true %>
-  
+
+  <%= f.label :properties, "Properties" %>
+  <%= f.select :properties, @search.property_options, {}, :multiple => true %>
+
   <%= f.submit "Search" %>
 <% end %>
