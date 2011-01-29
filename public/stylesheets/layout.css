@@ -1,0 +1,5 @@
+.table  { display: table;}
+.row    { display:table-row;}
+.cell   { display:table-cell;}
+
+.spacing { border-spacing:5px;}
