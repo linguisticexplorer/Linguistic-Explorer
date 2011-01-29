@@ -1,4 +1,7 @@
 LinguisticExplorer::Application.routes.draw do
+  match '/' => 'home#index', :as => :home
+
+
   resources :lings
   resources :properties
   resources :lings_properties
