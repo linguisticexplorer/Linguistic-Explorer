@@ -1,0 +1,50 @@
+Adjective Degree
+Adjective Demonstrative Noun
+Adjective Noun
+Adjective Noun Demonstrative
+Adposition Noun_Phrase
+Adverbial_Subordinator Clause
+Attributive Adjective Agreement
+Auxiliary Selection
+Clause Adverbial_Subordinator
+Clause Complementizer
+Complementizer Clause
+Degree Adjective
+Demonstrative Adjective Noun
+Demonstrative Noun
+Demonstrative Noun Adjective
+Distinct Negation of  Class/Property
+Distinct Negation of Existence
+Distinct Negation of Identity
+Distinct Negation of Location
+Extra Examples
+Noun Adjective
+Noun Adjective Demonstrative
+Noun Demonstrative
+Noun Demonstrative Adjective
+Noun Numeral
+Noun Possessor
+Noun_Phrase Adposition
+Numeral Noun
+Object Subject Verb
+Object Verb
+Object Verb Subject
+Possessor Noun
+Predicate Adjective Agreement
+Standard Negation is Higher Verb
+Standard Negation is Infix
+Standard Negation is Negative Auxiliary Verb
+Standard Negation is Particle that Follows the Verb
+Standard Negation is Particle that Precedes the Verb
+Standard Negation Is Prefix
+Standard Negation is Reduplication
+Standard Negation Is Suffix
+Standard Negation is Tone
+Standard Negation is Tone plus Other Modification
+Subject Object Verb
+Subject Verb
+Subject Verb Object
+Verb Object
+Verb Object Subject
+Verb Subject
+Verb Subject Object

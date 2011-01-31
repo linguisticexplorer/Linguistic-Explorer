@@ -1,0 +1,107 @@
+Afrikaans
+American Sign Language
+Ancient Greek
+Aymara
+Bajau, West Coast
+Bardi
+Basque
+Bellinzonese
+Beng
+Bengali
+Brazilian Portuguese
+Breton
+Bulgarian
+Burgenland-Romani
+Catalan
+Chalcatongo Mixtec
+Chickasaw
+Chol
+Dagaare
+Djambarrpuynu
+Dutch
+English
+European Portuguese
+Ewe
+Faroese
+French
+Ga
+Garifuna
+German
+Greek
+Greenlandic, West (Kalaallisut)
+Gurene
+Haitian 
+Hanga
+Hebrew
+Hill Maria
+Hindi
+Hungarian
+Icelandic
+Ilokano
+Indonesian
+Irish
+Italian
+Jamaican Creole English
+Japanese
+Jarawara
+Jingulu
+Karachay
+Khasi
+Kiswahili
+Konni
+Korean
+Kuot
+Lani
+Lenca
+Lubukusu
+Maasai (Kisongo)
+Malagasy
+Mandarin
+Mankanya
+Maori
+Marshallese
+Masarak
+Mbuko
+Moskona
+N|u
+Naki
+Ndut
+Nupe
+Occitan
+Odia (Oriya)
+Oevdalian
+Old English
+One
+Palue
+Pashto
+Romanian
+Russian
+Salasaca Quichua
+Sandawe
+Saramaccan
+Saweru
+Scottish Gaelic
+Serbian
+Shupamem
+Skou
+Spanish
+Swiss German
+Tagalog
+Taiwanese Southern Min
+Tarascan
+Titan
+Tlingit
+Tommo-So
+Tongan
+Tukang Besi
+Turkish
+Tuvan
+Twi
+Vata
+Vlaški-Žejanski-Istro-Romanian
+West Flemish
+Wolof
+Yan-nhanu
+Yawa
+Yiddish
+Zulu
