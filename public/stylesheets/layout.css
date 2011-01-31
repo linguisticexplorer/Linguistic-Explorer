@@ -3,3 +3,5 @@
 .cell   { display:table-cell;}
 
 .spacing { border-spacing:5px;}
+
+.center { margin: 0 auto;}
