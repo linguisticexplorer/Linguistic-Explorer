@@ -7,20 +7,29 @@
     <%- end -%>
   </div>
 
-  <%- if @search.include_properties? -%>
-    <%- @search.lings_properties.each do |lings_property|-%>
-      <%- ling = lings_property.ling -%>
-      <%- prop = lings_property.property -%>
-      <div class="row <%= ling.name.underscore %>_property">
-        <div class="cell"><%= ling.name %></div>
-        <div class="cell"><%= prop.name %></div>
-      </div>
-    <%- end -%>
+  <%- if @search.include_lings? -%>
+    <%- if @search.include_properties? -%>
+      <%- @search.lings_properties.each do |lings_property|-%>
+        <%- ling = lings_property.ling -%>
+        <%- prop = lings_property.property -%>
+        <div class="row <%= ling.name.underscore %>_property">
+          <div class="cell"><%= ling.name %></div>
+          <div class="cell"><%= prop.name %></div>
+        </div>
+      <%- end -%>
 
-  <%- else -%>
-    <%- @search.lings.each do |ling|-%>
+    <%- else -%>
+      <%- @search.lings.each do |ling|-%>
+        <div class="row">
+          <div class="cell"><%= ling.name %></div>
+        </div>
+      <%- end -%>
+
+    <%- end -%>
+  <%- elsif @search.include_properties? -%>
+    <%- @search.properties.each do |prop| -%>
       <div class="row">
-        <div class="cell"><%= ling.name %></div>
+        <div class="cell"><%= prop.name %></div>
       </div>
     <%- end -%>
 

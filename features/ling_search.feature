@@ -66,4 +66,3 @@ Feature: Search with Any
     And I should see "Adjective Noun" within ".spanish_property"
     And I should not see "German"
     And I should not see "Adjective Degree"
-

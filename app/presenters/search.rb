@@ -19,16 +19,26 @@ class Search
     @lings ||= Ling.find(params[:lings]||[])
   end
 
+  def properties
+    @properties ||= Property.find(params[:properties]||[])
+  end
+
   def lings_properties
-    LingsProperty.all(:conditions => { :property_id => params[:properties], :ling_id => params[:lings] }, :include => [:property, :ling])
+    LingsProperty.all(:conditions => {
+      :property_id => params[:properties], :ling_id => params[:lings] },
+      :include => [:property, :ling])
   end
 
   def include_properties?
-    include? && @params[:include][:property].present?
+    include? :property
   end
 
-  def include?
-    @params[:include].present?
+  def include_lings?
+    include? :ling
+  end
+
+  def include?(search_type)
+    include_param[search_type].present?
   end
 
   protected
@@ -39,6 +49,10 @@ class Search
 
   def all_properties
     Property.all
+  end
+
+  def include_param
+    @include_param ||= @params[:include] || {}
   end
 
 end
