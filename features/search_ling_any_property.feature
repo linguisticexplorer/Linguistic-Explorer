@@ -81,7 +81,6 @@ Feature: Search Lings for Any Property
     And I allow all languages
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
-    And show me the page
     Then I should see "Results"
     And I should see "English"
     And I should see "Spanish"
@@ -90,3 +89,25 @@ Feature: Search Lings for Any Property
     And I should not see "German"
     And I should not see "Adjective Degree"
     And I should not see "Degree Adjective"
+
+  Scenario: Visitor allows all languages, multiple properties
+    And the following lings and properties:
+    | name        | property_name     | property_value |
+    | English     | Adjective Noun    | yes  |
+    | English     | Adjective Degree  | yes  |
+    | Spanish     | Adjective Noun    | yes  |
+    | German      | Degree Adjective  | yes  |
+    When I go to the new search page
+    And I check "Include language"
+    And I check "Include property"
+    And I allow all languages
+    And I select "Adjective Degree" from "Properties"
+    And I select "Degree Adjective" from "Properties"
+    And I press "Search"
+    Then I should see "Results"
+    And I should see "English"
+    And I should see "German"
+    And I should see "Adjective Degree" within ".english_property"
+    And I should see "Degree Adjective" within ".german_property"
+    And I should not see "Spanish"
+    And I should not see "Adjective Noun"
