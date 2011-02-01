@@ -5,4 +5,12 @@ class LingsProperty < ActiveRecord::Base
 
   belongs_to :ling
   belongs_to :property
+  
+  def ling_name
+    ling.name
+  end
+  
+  def prop_name
+    property.name
+  end
 end

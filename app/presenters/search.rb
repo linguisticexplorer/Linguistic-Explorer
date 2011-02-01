@@ -24,9 +24,9 @@ class Search
   end
 
   def lings_properties
-    LingsProperty.all(:conditions => {
-      :property_id => params[:properties], :ling_id => params[:lings] },
-      :include => [:property, :ling])
+    conditions            = {:property_id => params[:properties]}
+    conditions[:ling_id]  = params[:lings] if params[:lings]
+    LingsProperty.where(conditions).includes(:property, :ling)
   end
 
   def include_properties?

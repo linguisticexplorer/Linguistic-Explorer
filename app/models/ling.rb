@@ -6,4 +6,5 @@ class Ling < ActiveRecord::Base
   def add_property(value, property)
     LingsProperty.create!(:ling => self, :property => property, :value => value)
   end
+
 end

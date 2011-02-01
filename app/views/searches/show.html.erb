@@ -8,13 +8,12 @@
   </div>
 
   <%- if @search.include_lings? -%>
+
     <%- if @search.include_properties? -%>
-      <%- @search.lings_properties.each do |lings_property|-%>
-        <%- ling = lings_property.ling -%>
-        <%- prop = lings_property.property -%>
-        <div class="row <%= ling.name.underscore %>_property">
-          <div class="cell"><%= ling.name %></div>
-          <div class="cell"><%= prop.name %></div>
+      <%- @search.lings_properties.each do |lp|-%>
+        <div class="row">
+          <div class="cell"><%= lp.ling_name %></div>
+          <div class="cell <%= lp.ling_name.underscore %>_property"><%= lp.prop_name %></div>
         </div>
       <%- end -%>
 
