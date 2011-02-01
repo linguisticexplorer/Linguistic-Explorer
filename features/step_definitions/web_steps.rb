@@ -201,7 +201,7 @@ Then /^(?:|I )should be on (.+)$/ do |page_name|
   end
 end
 
-Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
+  Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   query = URI.parse(current_url).query
   actual_params = query ? CGI.parse(query) : {}
   expected_params = {}

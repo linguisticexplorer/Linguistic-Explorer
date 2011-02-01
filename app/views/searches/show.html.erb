@@ -11,7 +11,7 @@
 
     <%- if @search.include_properties? -%>
       <%- @search.lings_properties.each do |lp|-%>
-        <div class="row">
+        <div class="row <%= dom_id(lp) %>_result">
           <div class="cell"><%= lp.ling_name %></div>
           <div class="cell <%= lp.ling_name.underscore %>_property"><%= lp.prop_name %></div>
         </div>

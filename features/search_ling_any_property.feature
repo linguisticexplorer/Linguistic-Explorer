@@ -38,8 +38,9 @@ Feature: Search Lings for Any Property
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
     Then I should see "Results"
-    And I should see "English"
-    And I should see "Adjective Noun" within ".english_property"
+    Then I should see the following search results:
+    | Languages     | Properties        |
+    | English       | Adjective Noun    |
     And I should not see "Spanish"
     And I should not see "German"
     And I should not see "Adjective Degree"
@@ -60,10 +61,10 @@ Feature: Search Lings for Any Property
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
     Then I should see "Results"
-    And I should see "English"
-    And I should see "Spanish"
-    And I should see "Adjective Noun" within ".english_property"
-    And I should see "Adjective Noun" within ".spanish_property"
+    Then I should see the following search results:
+    | Languages     | Properties        |
+    | English       | Adjective Noun    |
+    | Spanish       | Adjective Noun    |
     And I should not see "German"
     And I should not see "Adjective Degree"
 
@@ -82,10 +83,10 @@ Feature: Search Lings for Any Property
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
     Then I should see "Results"
-    And I should see "English"
-    And I should see "Spanish"
-    And I should see "Adjective Noun" within ".english_property"
-    And I should see "Adjective Noun" within ".spanish_property"
+    Then I should see the following search results:
+    | Languages     | Properties        |
+    | English       | Adjective Noun    |
+    | Spanish       | Adjective Noun    |
     And I should not see "German"
     And I should not see "Adjective Degree"
     And I should not see "Degree Adjective"
@@ -105,9 +106,9 @@ Feature: Search Lings for Any Property
     And I select "Degree Adjective" from "Properties"
     And I press "Search"
     Then I should see "Results"
-    And I should see "English"
-    And I should see "German"
-    And I should see "Adjective Degree" within ".english_property"
-    And I should see "Degree Adjective" within ".german_property"
+    Then I should see the following search results:
+    | Languages     | Properties        |
+    | English       | Adjective Degree  |
+    | German        | Degree Adjective  |
     And I should not see "Spanish"
     And I should not see "Adjective Noun"

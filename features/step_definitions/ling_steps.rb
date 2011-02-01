@@ -17,7 +17,3 @@ Given /^the following lings and properties:$/ do |table|
     ling.add_property(attrs['property_value'], prop)
   end
 end
-
-When /^I allow all languages$/ do
-  # no op
-end
