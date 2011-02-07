@@ -27,6 +27,16 @@ describe LingsPropertiesController do
         get :new
         assigns(:lings_property).should be_new_record
       end
+
+      it "available lings to @lings" do
+        get :new
+        assigns(:lings).should_not be_nil
+      end
+
+      it "available properties to @properties" do
+        get :new
+        assigns(:properties).should_not be_nil
+      end
     end
   end
 
@@ -35,6 +45,16 @@ describe LingsPropertiesController do
       it "the requested lings_property to @lings_property" do
         get :edit, :id => lings_properties(:smelly)
         assigns(:lings_property).should == lings_properties(:smelly)
+      end
+
+      it "available lings to @lings" do
+        get :new
+        assigns(:lings).should_not be_nil
+      end
+
+      it "available properties to @properties" do
+        get :new
+        assigns(:properties).should_not be_nil
       end
     end
   end

@@ -26,6 +26,8 @@ class LingsPropertiesController < ApplicationController
   # GET /lings_properties/new.xml
   def new
     @lings_property = LingsProperty.new
+    @lings = Ling.all
+    @properties = Property.all
 
     respond_to do |format|
       format.html # new.html.erb
@@ -36,6 +38,8 @@ class LingsPropertiesController < ApplicationController
   # GET /lings_properties/1/edit
   def edit
     @lings_property = LingsProperty.find(params[:id])
+    @lings = Ling.all
+    @properties = Property.all
   end
 
   # POST /lings_properties
