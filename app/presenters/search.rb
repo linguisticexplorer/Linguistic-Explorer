@@ -1,7 +1,23 @@
 class Search
 
-  attr_accessor :ling_included, :lings, :params
+  attr_accessor :lings, :params
   attr_reader :lings, :properties
+
+  def self.factory(params = {})
+    show_param = params[:show] || {}
+    show_ling = show_param[:ling]
+    show_prop = show_param[:property]
+
+    if show_param[:lings_property]
+      LingsPropertySearch.new(params)
+    elsif show_param[:ling]
+      LingSearch.new(params)
+    elsif show_param[:property]
+      PropertySearch.new(params)
+    else
+      Search.new(params)
+    end
+  end
 
   def initialize(params = {})
     @params = params
@@ -15,30 +31,12 @@ class Search
     all_properties.map { |p| [p.name, p.id] }
   end
 
-  def lings
-    @lings ||= Ling.find(params[:lings]||[])
+  def results
+    []
   end
 
-  def properties
-    @properties ||= Property.find(params[:properties]||[])
-  end
-
-  def lings_properties
-    conditions            = {:property_id => params[:properties]}
-    conditions[:ling_id]  = params[:lings] if params[:lings]
-    LingsProperty.where(conditions).includes(:property, :ling)
-  end
-
-  def include_properties?
-    include? :property
-  end
-
-  def include_lings?
-    include? :ling
-  end
-
-  def include?(search_type)
-    include_param[search_type].present?
+  def show?(search_type)
+    show_param[search_type].present?
   end
 
   protected
@@ -51,8 +49,8 @@ class Search
     Property.all
   end
 
-  def include_param
-    @include_param ||= @params[:include] || {}
+  def show_param
+    @show_param ||= @params[:show] || {}
   end
 
 end

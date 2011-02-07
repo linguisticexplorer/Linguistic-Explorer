@@ -6,11 +6,13 @@ Then /^I should see the following search results:$/ do |table|
   table.hashes.each do |row|
     ling  = Ling.find_by_name(row["Languages"])
     prop  = Property.find_by_name(row["Properties"])
-    lp    = LingsProperty.find_by_ling_id_and_property_id(ling.id, prop.id)
-    
-    ling_property_search_row = ".#{dom_id(lp)}_result"
-    
-    with_scope(ling_property_search_row) do
+
+    scope = "".tap do |s|
+      s << %Q|[data-ling*="#{ling.id}"]| if ling
+      s << %Q|[data-prop*="#{prop.id}"]| if prop
+    end
+
+    with_scope(scope) do
       page.should have_content(ling.name)
       page.should have_content(prop.name)
     end

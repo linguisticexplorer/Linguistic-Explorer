@@ -24,6 +24,21 @@ Feature: Search Lings for Any Property
     And I should see "English"
     And I should not see "Spanish"
 
+  Scenario: Visitor selects all languages
+    And the following lings:
+    | name        |
+    | English     |
+    | Spanish     |
+    | German      |
+    When I go to the new search page
+    And I check "Include language"
+    And I allow all languages
+    And I press "Search"
+    Then I should see "Results"
+    And I should see "English"
+    And I should see "Spanish"
+    And I should see "German"
+
   Scenario: Visitor selects one language, one property
     And the following lings and properties:
     | name        | property_name     | property_value |
@@ -46,7 +61,7 @@ Feature: Search Lings for Any Property
     And I should not see "Adjective Degree"
 
   Scenario: Visitor selects multiple languages, one property
-    And the following lings and properties:
+    Given the following lings and properties:
     | name        | property_name     | property_value |
     | English     | Adjective Noun    | yes  |
     | English     | Adjective Degree  | yes  |

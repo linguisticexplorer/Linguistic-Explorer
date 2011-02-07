@@ -2,35 +2,12 @@
 <div class="table spacing">
   <div class="row">
     <div class="cell">Languages</div>
-    <%- if @search.include_properties? -%>
+    <%- if @search.show? :property -%>
       <div class="cell">Properties</div>
     <%- end -%>
   </div>
 
-  <%- if @search.include_lings? -%>
-
-    <%- if @search.include_properties? -%>
-      <%- @search.lings_properties.each do |lp|-%>
-        <div class="row <%= dom_id(lp) %>_result">
-          <div class="cell"><%= lp.ling_name %></div>
-          <div class="cell <%= lp.ling_name.underscore %>_property"><%= lp.prop_name %></div>
-        </div>
-      <%- end -%>
-
-    <%- else -%>
-      <%- @search.lings.each do |ling|-%>
-        <div class="row">
-          <div class="cell"><%= ling.name %></div>
-        </div>
-      <%- end -%>
-
-    <%- end -%>
-  <%- elsif @search.include_properties? -%>
-    <%- @search.properties.each do |prop| -%>
-      <div class="row">
-        <div class="cell"><%= prop.name %></div>
-      </div>
-    <%- end -%>
-
+  <%- @search.results.each do |result| -%>
+    <%= render :partial => "searches/results/#{@search.class.name.underscore}", :locals => {:result => result} %>
   <%- end -%>
 </div>
