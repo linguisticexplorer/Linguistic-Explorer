@@ -52,3 +52,27 @@ Stories
   Enhancements
 
     Render browse and search-result tables as javascript-enhanced data tables (http://www.datatables.net)
+
+====
+
+  Next steps
+
+    Alex:
+      For next week
+        Finish WIP for examples and ling/prop CRUD
+        Group CRUD
+        Group selection/navigation
+        Scope data to groups
+        - session vs. routes to scope actions to group
+
+      Multi-depth lings
+      Adding categories to ling depths
+      User authentication (log in/log out)
+      Validate group viewing rights
+      Validate groups admin/edit rights
+      User registration
+    
+    Ross:
+      Lings and Props with Any
+      Add Ling Props Vals with Any
+      
