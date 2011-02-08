@@ -76,3 +76,7 @@ Stories
       Lings and Props with Any
       Add Ling Props Vals with Any
       
+    
+  Process
+  
+    Moving forward, Alex and Ross will use most of our time together to pair on current work. Dennis will be on hand for brief check-in before/during/after. Alex and Ross will come to next week's meeting with high level estimates (guesses) about when we can have each project completed.
