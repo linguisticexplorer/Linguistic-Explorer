@@ -1,0 +1,34 @@
+Ling(id, name, parentid, depth, groupid, creatorid, timestamps)
+ -- parentid relates different level objects, e.g. the parent of
+ -- sentence may be the speaker who speaks it.
+ -- A ling that has no parent is at depth 0, a ling whose parent
+ -- has no parent is at depth 1 etc. Ross doesn't think we need this, but
+ -- it's convenient for query processing.
+
+Property(id, name, depth, category, groupid, creatorid, timestamps)
+ -- Type is something like linguistic/demographic/phone.
+ -- Will be drop-down for known types of a group. Only admin can add new types.
+ -- Renamed type to category
+
+LingPropVal(lingid, propid, value, creatorid, timestamps)
+ -- Value is just a string
+ -- User will put in names for lingid/propid, not ids
+ -- One constraint is that a propid can be associated only to lingids
+  -- of a single depth (e.g. demographic properties can't be associated
+ -- to a sentence of depth 1 and a speaker of depth 0)
+
+Example(id, lingid, groupid, creatorid, timestamps)
+
+ExampleLingPropVal(id, exampleid, LingPropValID, groupid, creatorid, timestamps)
+ -- User chooses property-values from the LingPropVal table
+ -- that pertain to this example. That will go into ExampleLingPropVal
+ -- So a given lang, prop, val can be associated with many examples.
+ -- Many examples can pertain to a lang-prop-val.
+
+Attributes(foreignid,foreign_table, name, value, groupid, creatorid, timestamps)
+ -- User fills in attributes of examples of a given
+ -- ling or fills in attributes of a ling.
+ -- Ross thinks the two should be separate. Alex is thinking about this.
+ -- I'm going to separate these into LingAttributes and ExampleAttributes
+ LingAttributes(foreignid, name, value, groupid, creatorid, timestamps)
+ ExampAttributes(foreignid, name, value, groupid, creatorid, timestamps)
