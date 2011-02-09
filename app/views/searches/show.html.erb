@@ -6,7 +6,7 @@
       <div class="cell">Properties</div>
     <%- end -%>
   </div>
-
+  
   <%- @search.results.each do |result| -%>
     <%= render :partial => "searches/results/#{@search.class.name.underscore}", :locals => {:result => result} %>
   <%- end -%>
