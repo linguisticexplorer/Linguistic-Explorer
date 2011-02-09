@@ -65,8 +65,7 @@ describe LingsPropertiesController do
         lambda {
           ling = Ling.first
           property = Property.first
-          post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}
-
+          post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id.to_i, 'property_id' => property.id.to_i}
           assigns(:lings_property).should_not be_new_record
           assigns(:lings_property).should be_valid
           assigns(:lings_property).value.should == 'FROMSPACE'
@@ -78,7 +77,7 @@ describe LingsPropertiesController do
       it "redirects to the created property" do
         ling = Ling.first
         property = Property.first
-        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling, 'property_id' => property}
+        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}
         response.should redirect_to(lings_property_url(assigns(:lings_property)))
       end
     end

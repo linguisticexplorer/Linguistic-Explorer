@@ -2,4 +2,14 @@
 # See http://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    errors:
+      models:
+        lings_property:
+          attributes:
+            property_id:
+              existence: "must point to a valid Property"
+            ling_id:
+              existence: "must point to a valid Ling"
+      messages:
+        existence: "must point to a valid %{association}"

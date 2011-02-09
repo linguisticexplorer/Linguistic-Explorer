@@ -30,12 +30,14 @@ gem 'mongrel'
 # for Examples, arbitrary fields (key value pairs) and data
 gem 'preferences', '0.4.2', :git => 'git://github.com/bosh/preferences.git'
 
+gem 'validation_reflection', "1.0.0"
+gem 'validates_existence', "0.5.5", :git => 'git://github.com/bosh/validates_existence.git'
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'rspec-rails', "2.4.0"
-  gem 'validation_reflection', "1.0.0"
   gem 'rspec_rails3_validation_expectations', '0.0.1', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'ruby-debug'
