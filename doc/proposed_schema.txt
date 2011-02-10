@@ -32,3 +32,12 @@ Attributes(foreignid,foreign_table, name, value, groupid, creatorid, timestamps)
  -- I'm going to separate these into LingAttributes and ExampleAttributes
  LingAttributes(foreignid, name, value, groupid, creatorid, timestamps)
  ExampAttributes(foreignid, name, value, groupid, creatorid, timestamps)
+
+Group(id, name, privacy_level, ling0title, ling1title, timestamps)
+ -- Privacy_level is public or private (or it can be a boolean called private that is true or false)
+
+User(id, username, name, type, email, timestamps)
+ -- Type is Admin or User
+
+User_Group(user_id, group_id, access_level)
+ -- Access_level is Admin or Editor
