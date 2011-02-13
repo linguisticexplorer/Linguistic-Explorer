@@ -3,6 +3,10 @@
 <p>
   <b>ID:</b> <br />
   <%= @example.id %> <br />
+  <% if @example.ling %>
+    <b>Ling:</b> <br />
+    <%= link_to @example.ling.name, ling_path(@example.ling) %> <br />
+  <% end %>
 </p>
 
 

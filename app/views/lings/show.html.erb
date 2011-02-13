@@ -3,15 +3,31 @@
 <p>
   <b>Name:</b> <br />
   <%= @ling.name %> <br />
+
   <b>Depth:</b> <br />
   <%= @ling.depth %> <br />
+
   <% if @ling.depth == 1 && @ling.parent %>
     <b>Parent:</b> <br />
-    <%= link_to @ling.parent.name, ling_path(@ling.parent) %>
+    <%= link_to @ling.parent.name, ling_path(@ling.parent) %> <br />
   <% elsif @ling.depth == 0 && !@ling.children.empty?%>
     <b>Children:</b> <br />
     <% @ling.children.each do |child| %>
       <%= link_to child.name, ling_path(child) %> <br />
+    <% end %>
+  <% end %>
+
+  <% if !@ling.examples.empty? %>
+    <b>Examples:</b> <br />
+    <% @ling.examples.each do |example| %>
+      <%= link_to example.id, example_path(example) %> <br />
+    <% end %>
+  <% end %>
+
+  <% if !@ling.lings_properties.empty? %>
+    <b>Values:</b> <br />
+    <% @ling.lings_properties.each do |lp| %>
+      <%= link_to "#{lp.property.name}: #{lp.value}", lings_property_path(lp) %> <br />
     <% end %>
   <% end %>
 </p>

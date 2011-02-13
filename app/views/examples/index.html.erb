@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>ID</th>
+    <th>Ling</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +12,7 @@
 <% @examples.each do |example| %>
   <tr>
     <td><%= example.id %></td>
+    <td><%= (link_to example.ling.name, ling_path(example.ling)) if example.ling %></td>
     <td><%= link_to 'Show', example %></td>
     <td><%= link_to 'Edit', edit_example_path(example) %></td>
     <td><%= link_to 'Destroy', example, :confirm => 'Are you sure?', :method => :delete %></td>
