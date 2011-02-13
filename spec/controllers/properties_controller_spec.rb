@@ -43,7 +43,7 @@ describe PropertiesController do
     describe "with valid params" do
       it "assigns a newly created property to @property" do
         lambda {
-          post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS'}
+          post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS', :depth => 0}
 
           assigns(:property).should_not be_new_record
           assigns(:property).should be_valid
@@ -53,7 +53,7 @@ describe PropertiesController do
       end
 
       it "redirects to the created property" do
-        post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS'}
+        post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS', :depth => 0}
         response.should redirect_to(property_url(assigns(:property)))
       end
     end
@@ -61,7 +61,7 @@ describe PropertiesController do
     describe "with invalid params" do
       it "does not save a new property" do
         lambda {
-          post :create, :property => {'name' => ''}
+          post :create, :property => {'name' => '', :depth => nil}
           assigns(:property).should_not be_valid
         }.should change(Property, :count).by(0)
       end

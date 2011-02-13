@@ -21,6 +21,11 @@
     <%= f.text_field :category %>
   </div>
 
+  <div class="field">
+    <%= f.label :depth %><br />
+    <%= f.number_field :depth, :in => 0..1 %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

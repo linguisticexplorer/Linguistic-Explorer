@@ -43,7 +43,7 @@ describe LingsController do
     describe "with valid params" do
       it "assigns a newly created ling to @ling" do
         lambda {
-          post :create, :ling => {'name' => 'Javanese'}
+          post :create, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
           assigns(:ling).should_not be_new_record
           assigns(:ling).should be_valid
           assigns(:ling).name.should == 'Javanese'
@@ -51,7 +51,7 @@ describe LingsController do
       end
 
       it "redirects to the created ling" do
-        post :create, :ling => {'name' => 'Javanese'}
+        post :create, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
         response.should redirect_to(ling_url(assigns(:ling)))
       end
     end
@@ -59,7 +59,7 @@ describe LingsController do
     describe "with invalid params" do
       it "does not save a new ling" do
         lambda {
-          post :create, :ling => {'name' => ''}
+          post :create, :ling => {'name' => '', 'depth' => nil}
           assigns(:ling).should_not be_valid
         }.should change(Ling, :count).by(0)
       end

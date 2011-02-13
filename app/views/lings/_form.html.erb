@@ -15,6 +15,12 @@
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
+
+  <div class="field">
+    <%= f.label :depth %><br />
+    <%= f.number_field :depth, :in => 0..1 %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

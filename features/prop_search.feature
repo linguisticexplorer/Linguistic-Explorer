@@ -5,10 +5,10 @@ Feature: Search with Any
 
   Scenario: Visitor searches any property
     And the following properties:
-    | name            |
-    | Object Subject  |
-    | Subject Verb    |
-    | Verb Object     |
+    | name            | depth |
+    | Object Subject  | 0     |
+    | Subject Verb    | 0     |
+    | Verb Object     | 0     |
     When I go to the new search page
     And I check "Include property"
     And I uncheck "Include language"
@@ -21,10 +21,10 @@ Feature: Search with Any
 
   Scenario: Visitor allows all properties
     And the following properties:
-    | name            |
-    | Object Subject  |
-    | Subject Verb    |
-    | Verb Object     |
+    | name            | depth |
+    | Object Subject  | 0     |
+    | Subject Verb    | 0     |
+    | Verb Object     | 0     |
     When I go to the new search page
     And I check "Include property"
     And I uncheck "Include language"

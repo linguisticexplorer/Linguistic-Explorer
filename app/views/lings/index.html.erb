@@ -3,6 +3,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Depth</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,6 +12,7 @@
 <% @lings.each do |ling| %>
   <tr>
     <td><%= ling.name %></td>
+    <td><%= ling.depth %></td>
     <td><%= link_to 'Show', ling %></td>
     <td><%= link_to 'Edit', edit_ling_path(ling) %></td>
     <td><%= link_to 'Destroy', ling, :confirm => 'Are you sure?', :method => :delete %></td>

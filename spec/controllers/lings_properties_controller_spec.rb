@@ -63,8 +63,8 @@ describe LingsPropertiesController do
     describe "with valid params" do
       it "assigns a newly created lings_property to @lings_property" do
         lambda {
-          ling = Ling.first
-          property = Property.first
+          ling = lings(:level0)
+          property = properties(:level0)
           post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id.to_i, 'property_id' => property.id.to_i}
           assigns(:lings_property).should_not be_new_record
           assigns(:lings_property).should be_valid

@@ -4,6 +4,7 @@
   <tr>
     <th>Name</th>
     <th>Category</th>
+    <th>Depth</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,6 +14,7 @@
   <tr>
     <td><%= property.name %></td>
     <td><%= property.category %></td>
+    <td><%= property.depth %></td>
     <td><%= link_to 'Show', property %></td>
     <td><%= link_to 'Edit', edit_property_path(property) %></td>
     <td><%= link_to 'Destroy', property, :confirm => 'Are you sure?', :method => :delete %></td>

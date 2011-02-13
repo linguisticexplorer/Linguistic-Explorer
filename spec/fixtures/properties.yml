@@ -1,3 +1,12 @@
 valid:
   name: odor
   category: scents
+  depth: 0
+level0:
+  name: mememe
+  category: terran
+  depth: 0
+level1:
+  name: tester
+  category: terran
+  depth: 1

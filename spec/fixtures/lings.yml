@@ -1,2 +1,18 @@
 english:
   name: English
+  depth: 0
+level0:
+  name: LLLLEVELUP
+  depth: 0
+level1:
+  name: standardissue
+  depth: 1
+  parent_id: nil
+level1orphan:
+  name: ding!
+  depth: 1
+  parent_id: nil
+level1child:
+  name: BAMF
+  depth: 1
+  parent_id: level0

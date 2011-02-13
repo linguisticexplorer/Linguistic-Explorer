@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110123065013) do
+ActiveRecord::Schema.define(:version => 20110210090429) do
 
   create_table "examples", :force => true do |t|
     t.integer  "ling_id"
@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(:version => 20110123065013) do
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "depth"
+    t.integer  "parent_id"
   end
 
   create_table "lings_properties", :force => true do |t|
@@ -51,6 +53,7 @@ ActiveRecord::Schema.define(:version => 20110123065013) do
     t.string   "category"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "depth"
   end
 
 end

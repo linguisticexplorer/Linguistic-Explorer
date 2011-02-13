@@ -1,13 +1,22 @@
 class Ling < ActiveRecord::Base
-  validates_presence_of :name
-  validates_uniqueness_of :name
-  has_many :examples
+  belongs_to :parent, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :children
+  has_many :children, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :parent
 
-  has_many :lings_properties, :dependent => :destroy
+  has_many :examples
+  has_many :lings_properties
   has_many :properties, :through => :lings_properties
+
+  validates_presence_of :name, :depth
+  validates_numericality_of :depth
+  validates_uniqueness_of :name
+  validates_existence_of :parent, :allow_nil => true
+  validate :parent_depth_check
 
   def add_property(value, property)
     LingsProperty.create!(:ling => self, :property => property, :value => value)
   end
 
+  def parent_depth_check
+    errors.add(:parent, "Depth of the parent must be one less than the child object") if (depth == 1 && parent && parent.depth != 0)
+  end
 end
