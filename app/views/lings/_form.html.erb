@@ -21,6 +21,11 @@
     <%= f.number_field :depth, :in => 0..1 %>
   </div>
 
+  <div class="field">
+    <%= f.label :parent %><br />
+    <%= f.text_field :parent_id %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>

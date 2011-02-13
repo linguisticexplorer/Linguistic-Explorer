@@ -1,10 +1,19 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <b>Name:</b>
-  <%= @ling.name %>
-  <b>Depth:</b>
-  <%= @ling.depth %>
+  <b>Name:</b> <br />
+  <%= @ling.name %> <br />
+  <b>Depth:</b> <br />
+  <%= @ling.depth %> <br />
+  <% if @ling.depth == 1 && @ling.parent %>
+    <b>Parent:</b> <br />
+    <%= link_to @ling.parent.name, ling_path(@ling.parent) %>
+  <% elsif @ling.depth == 0 && !@ling.children.empty?%>
+    <b>Children:</b> <br />
+    <% @ling.children.each do |child| %>
+      <%= link_to child.name, ling_path(child) %> <br />
+    <% end %>
+  <% end %>
 </p>
 
 
