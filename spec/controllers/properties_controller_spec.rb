@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe PropertiesController do
-  fixtures :all
-
   describe "index" do
     describe "assigns" do
       it "@properties should contain every property" do
@@ -27,6 +25,14 @@ describe PropertiesController do
         get :new
         assigns(:property).should be_new_record
       end
+
+      it "@categories should be a hash with two level members" do
+        get :new
+        cats = assigns(:categories)
+        cats.should be_a Hash
+        cats[:depth_0].should include properties(:level0).category
+        cats[:depth_1].should include properties(:level1).category
+      end
     end
   end
 
@@ -35,6 +41,14 @@ describe PropertiesController do
       it "the requested property to @property" do
         get :edit, :id => properties(:valid)
         assigns(:property).should == properties(:valid)
+      end
+
+      it "@categories should be a hash with two level members" do
+        get :new
+        cats = assigns(:categories)
+        cats.should be_a Hash
+        cats[:depth_0].should include properties(:level0).category
+        cats[:depth_1].should include properties(:level1).category
       end
     end
   end

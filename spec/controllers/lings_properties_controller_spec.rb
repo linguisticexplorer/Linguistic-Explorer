@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe LingsPropertiesController do
-  fixtures :all
-
   describe "index" do
     describe "assigns" do
       it "@lings_properties should contain every lings_property" do
@@ -30,12 +28,12 @@ describe LingsPropertiesController do
 
       it "available lings to @lings" do
         get :new
-        assigns(:lings).should_not be_nil
+        assigns(:lings).size.should == Ling.all.size
       end
 
       it "available properties to @properties" do
         get :new
-        assigns(:properties).should_not be_nil
+        assigns(:properties).size.should == Property.all.size
       end
     end
   end
@@ -49,12 +47,12 @@ describe LingsPropertiesController do
 
       it "available lings to @lings" do
         get :new
-        assigns(:lings).should_not be_nil
+        assigns(:lings).size.should == Ling.all.size
       end
 
       it "available properties to @properties" do
         get :new
-        assigns(:properties).should_not be_nil
+        assigns(:properties).size.should == Property.all.size
       end
     end
   end

@@ -26,16 +26,18 @@ class LingsController < ApplicationController
   # GET /lings/new.xml
   def new
     @ling = Ling.new
+    @lings = Ling.find_all_by_depth(0)
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @ling }
+      format.xml  { render :xml => [@ling, @lings] }
     end
   end
 
   # GET /lings/1/edit
   def edit
     @ling = Ling.find(params[:id])
+    @lings = Ling.find_all_by_depth(0)
   end
 
   # POST /lings

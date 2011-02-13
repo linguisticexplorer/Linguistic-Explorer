@@ -31,7 +31,7 @@ class LingsPropertiesController < ApplicationController
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @lings_property }
+      format.xml  { render :xml => [@lings_property, @lings, @properties] }
     end
   end
 

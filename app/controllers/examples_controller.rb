@@ -26,16 +26,24 @@ class ExamplesController < ApplicationController
   # GET /examples/new.xml
   def new
     @example = Example.new
+    @lings = {
+          :depth_0 => Ling.find_all_by_depth(0),
+          :depth_1 => Ling.find_all_by_depth(1)
+    }
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @example }
+      format.xml  { render :xml => [@example, @lings] }
     end
   end
 
   # GET /examples/1/edit
   def edit
     @example = Example.find(params[:id])
+    @lings = {
+          :depth_0 => Ling.find_all_by_depth(0),
+          :depth_1 => Ling.find_all_by_depth(1)
+    }
   end
 
   # POST /examples

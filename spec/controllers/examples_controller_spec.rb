@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe ExamplesController do
-  fixtures :all
-
   describe "index" do
     describe "assigns" do
       it "@examples should contain every example" do
@@ -27,6 +25,14 @@ describe ExamplesController do
         get :new
         assigns(:example).should be_new_record
       end
+
+      it "@lings should be a hash with two depth members" do
+        get :new
+        lings = assigns(:lings)
+        lings.should be_a Hash
+        lings[:depth_0].should include lings(:level0)
+        lings[:depth_1].should include lings(:level1)
+      end
     end
   end
 
@@ -35,6 +41,14 @@ describe ExamplesController do
       it "the requested example to @example" do
         get :edit, :id => examples(:onceuponatime)
         assigns(:example).should == examples(:onceuponatime)
+      end
+
+      it "@lings should be a hash with two depth members" do
+        get :new
+        lings = assigns(:lings)
+        lings.should be_a Hash
+        lings[:depth_0].should include lings(:level0)
+        lings[:depth_1].should include lings(:level1)
       end
     end
   end

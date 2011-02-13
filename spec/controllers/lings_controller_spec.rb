@@ -1,8 +1,6 @@
 require 'spec_helper'
 
 describe LingsController do
-  fixtures :all
-
   describe "index" do
     describe "assigns" do
       it "@lings should contain every ling" do
@@ -27,6 +25,11 @@ describe LingsController do
         get :new
         assigns(:ling).should be_new_record
       end
+
+      it "available depth 0 lings to @lings" do
+        get :new
+        assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
+      end
     end
   end
 
@@ -35,6 +38,11 @@ describe LingsController do
       it "the requested ling to @ling" do
         get :edit, :id => lings(:english)
         assigns(:ling).should == lings(:english)
+      end
+
+      it "available depth 0 lings to @lings" do
+        get :new
+        assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
       end
     end
   end

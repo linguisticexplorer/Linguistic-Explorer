@@ -26,16 +26,24 @@ class PropertiesController < ApplicationController
   # GET /properties/new.xml
   def new
     @property = Property.new
+    @categories = {
+          :depth_0 => Property.find_all_by_depth(0).map(&:category).uniq.sort,
+          :depth_1 => Property.find_all_by_depth(1).map(&:category).uniq.sort
+    }
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @property }
+      format.xml  { render :xml => [@property, @categories] }
     end
   end
 
   # GET /properties/1/edit
   def edit
     @property = Property.find(params[:id])
+    @categories = {
+          :depth_0 => Property.find_all_by_depth(0).map(&:category).uniq.sort,
+          :depth_1 => Property.find_all_by_depth(1).map(&:category).uniq.sort
+    }
   end
 
   # POST /properties
