@@ -10,10 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110210090429) do
+ActiveRecord::Schema.define(:version => 20110214030829) do
 
   create_table "examples", :force => true do |t|
     t.integer  "ling_id"
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "group_id"
+  end
+
+  create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -25,6 +32,7 @@ ActiveRecord::Schema.define(:version => 20110210090429) do
     t.datetime "updated_at"
     t.integer  "depth"
     t.integer  "parent_id"
+    t.integer  "group_id"
   end
 
   create_table "lings_properties", :force => true do |t|
@@ -33,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20110210090429) do
     t.string   "value"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "group_id"
   end
 
   create_table "preferences", :force => true do |t|
@@ -54,6 +63,7 @@ ActiveRecord::Schema.define(:version => 20110210090429) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "depth"
+    t.integer  "group_id"
   end
 
 end
