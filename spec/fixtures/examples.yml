@@ -1,2 +1,6 @@
 onceuponatime:
   ling: english
+  group: inclusive
+exclusive:
+  ling: foobarbaz
+  group: exclusive

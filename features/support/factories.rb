@@ -8,3 +8,9 @@ Factory.define :property do |f|
   f.category "Grammar"
   f.depth 0
 end
+
+Factory.define :group do |f|
+  f.name "The Best Group"
+  f.category "Grammar"
+  f.depth 0
+end

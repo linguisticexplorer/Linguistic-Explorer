@@ -1,18 +1,23 @@
 english:
   name: English
+  group: inclusive
   depth: 0
 level0:
   name: LLLLEVELUP
+  group: inclusive
   depth: 0
 level1:
   name: standardissue
+  group: inclusive
   depth: 1
   parent_id: nil
 level1orphan:
   name: ding!
+  group: inclusive
   depth: 1
   parent_id: nil
 level1child:
   name: BAMF
+  group: inclusive
   depth: 1
   parent_id: level0

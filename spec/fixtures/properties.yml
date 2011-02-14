@@ -1,12 +1,20 @@
 valid:
   name: odor
+  group: inclusive
   category: scents
   depth: 0
 level0:
   name: mememe
+  group: inclusive
   category: terran
   depth: 0
 level1:
   name: tester
+  group: inclusive
   category: terran
   depth: 1
+exclusive0:
+  name: exclusivity
+  group: exclusive
+  category: coolness
+  depth: 0
