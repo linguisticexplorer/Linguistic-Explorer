@@ -1,4 +1,6 @@
 class LingsController < ApplicationController
+  
+  helper :groups
 
   # GET /lings
   # GET /lings.xml

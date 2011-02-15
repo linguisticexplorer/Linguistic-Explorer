@@ -2,6 +2,7 @@ Feature: Search Lings for Any Property
 
   Background:
     Given I am a visitor
+    And the group "Syntactic Structures"
 
     # Ling[] Prop[] Val[]
     # selector for ling
@@ -12,10 +13,10 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor selects one language
     And the following lings:
-    | name        | depth |
-    | English     | 0     |
-    | Spanish     | 0     |
-    | German      | 0     |
+    | name        | depth | group                 |
+    | English     | 0     | Syntactic Structures  |
+    | Spanish     | 0     | Syntactic Structures  |
+    | German      | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I select "English" from "Languages"
@@ -26,10 +27,10 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor selects all languages
     And the following lings:
-    | name        | depth |
-    | English     | 0     |
-    | Spanish     | 0     |
-    | German      | 0     |
+    | name        | depth | group                 |
+    | English     | 0     | Syntactic Structures  |
+    | Spanish     | 0     | Syntactic Structures  |
+    | German      | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I allow all languages
@@ -41,11 +42,11 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor selects one language, one property
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth |
-    | English     | Adjective Noun    | yes             | 0     |
-    | English     | Adjective Degree  | yes             | 0     |
-    | Spanish     | Adjective Noun    | yes             | 0     |
-    | German      | Adjective Degree  | yes             | 0     |
+    | name        | property_name     | property_value  | depth | group                 |
+    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I check "Include property"
@@ -62,11 +63,11 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor selects multiple languages, one property
     Given the following lings and properties:
-    | name        | property_name     | property_value  | depth |
-    | English     | Adjective Noun    | yes             | 0     |
-    | English     | Adjective Degree  | yes             | 0     |
-    | Spanish     | Adjective Noun    | yes             | 0     |
-    | German      | Adjective Degree  | yes             | 0     |
+    | name        | property_name     | property_value  | depth | group                 |
+    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I check "Include property"
@@ -85,12 +86,12 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor allows all languages, one property
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth |
-    | English     | Adjective Noun    | yes             | 0     |
-    | English     | Adjective Degree  | yes             | 0     |
-    | Spanish     | Adjective Noun    | yes             | 0     |
-    | German      | Adjective Degree  | yes             | 0     |
-    | German      | Degree Adjective  | yes             | 0     |
+    | name        | property_name     | property_value  | depth | group                 |
+    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I check "Include property"
@@ -108,11 +109,11 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor allows all languages, multiple properties
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth |
-    | English     | Adjective Noun    | yes             | 0     |
-    | English     | Adjective Degree  | yes             | 0     |
-    | Spanish     | Adjective Noun    | yes             | 0     |
-    | German      | Degree Adjective  | yes             | 0     |
+    | name        | property_name     | property_value  | depth | group                 |
+    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include language"
     And I check "Include property"

@@ -17,6 +17,11 @@
   </div>
 
   <div class="field">
+    <%= f.label :group_id, "Group" %>
+    <%= f.select :group_id, groups_options %>
+  </div>
+
+  <div class="field">
     <%= f.label :depth %><br />
     <%= f.number_field :depth, :in => 0..1 %>
   </div>

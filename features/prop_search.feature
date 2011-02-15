@@ -2,13 +2,14 @@ Feature: Search with Any
 
   Background:
     Given I am a visitor
+    And the group "Syntactic Structures"
 
   Scenario: Visitor searches any property
     And the following properties:
-    | name            | depth |
-    | Object Subject  | 0     |
-    | Subject Verb    | 0     |
-    | Verb Object     | 0     |
+    | name            | depth | group                 |
+    | Object Subject  | 0     | Syntactic Structures  |
+    | Subject Verb    | 0     | Syntactic Structures  |
+    | Verb Object     | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include property"
     And I uncheck "Include language"
@@ -21,10 +22,10 @@ Feature: Search with Any
 
   Scenario: Visitor allows all properties
     And the following properties:
-    | name            | depth |
-    | Object Subject  | 0     |
-    | Subject Verb    | 0     |
-    | Verb Object     | 0     |
+    | name            | depth | group                 |
+    | Object Subject  | 0     | Syntactic Structures  |
+    | Subject Verb    | 0     | Syntactic Structures  |
+    | Verb Object     | 0     | Syntactic Structures  |
     When I go to the new search page
     And I check "Include property"
     And I uncheck "Include language"
