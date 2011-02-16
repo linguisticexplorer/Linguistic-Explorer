@@ -1,7 +1,7 @@
 class Ling < ActiveRecord::Base
   validates_presence_of :name, :depth, :group_id
   validates_numericality_of :depth
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :scope => :group_id
   validates_existence_of :parent, :allow_nil => true
   validates_existence_of :group
   validate :parent_depth_check
