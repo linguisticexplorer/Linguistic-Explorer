@@ -19,7 +19,9 @@ class SearchResultSet
       where("lings_properties.property_id" => selected_prop_ids)
     
     if @params[:lings_properties].present?
-      all_results = all_results.where("lings_properties.id" => selected_lings_prop_ids)
+      all_results = all_results.
+        select("lings_properties.value AS value").
+        where("lings_properties.id" => selected_lings_prop_ids)
     end
     
     all_results
@@ -35,8 +37,11 @@ class SearchResultSet
 
   def selected_lings_prop_ids
     pairs = @params[:lings_properties].map { |str| str.split(":") }
-    props_ids = pairs.map(&:first)
-    values    = pairs.map(&:last)
-    LingsProperty.select("id").where(:property_id => props_ids, :value => values)
+    conditions = pairs.map { |p| { :property_id => p.first, :value => p.last }}
+    results = LingsProperty.select("id")
+    pairs.each do |pair|
+      results = results.where("")
+    end
+    results
   end
 end
