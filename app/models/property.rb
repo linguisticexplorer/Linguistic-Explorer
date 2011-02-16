@@ -5,4 +5,5 @@ class Property < ActiveRecord::Base
   validates_existence_of :group
 
   belongs_to :group
+  has_many :lings_properties
 end

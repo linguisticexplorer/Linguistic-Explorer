@@ -17,7 +17,11 @@ class SearchResultSet
       select("properties.name AS prop_name, properties.id AS prop_id").
       joins(:properties).
       where("lings_properties.property_id" => selected_prop_ids)
-
+    
+    if @params[:lings_properties].present?
+      all_results = all_results.where("lings_properties.id" => selected_lings_prop_ids)
+    end
+    
     all_results
   end
 
@@ -30,6 +34,9 @@ class SearchResultSet
   end
 
   def selected_lings_prop_ids
-    @params[:lings_properties] || LingsProperty.select("id")
+    pairs = @params[:lings_properties].map { |str| str.split(":") }
+    props_ids = pairs.map(&:first)
+    values    = pairs.map(&:last)
+    LingsProperty.select("id").where(:property_id => props_ids, :value => values)
   end
 end

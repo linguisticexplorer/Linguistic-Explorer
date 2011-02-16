@@ -1,7 +1,6 @@
 class Search
 
-  attr_accessor :lings
-  attr_reader :lings, :properties
+  attr_accessor :lings, :properties, :lings_properties
 
   def initialize(params)
     @params = params
@@ -13,6 +12,10 @@ class Search
 
   def property_options
     all_properties.map { |p| [p.name, p.id] }
+  end
+
+  def lings_property_options
+    all_lings_properties.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
   def results
@@ -28,11 +31,17 @@ class Search
   protected
 
   def all_lings
-    Ling.all
+    Ling.select("id, name")
   end
 
   def all_properties
-    Property.all
+    Property.select("id, name")
+  end
+
+  def all_lings_properties
+    LingsProperty.select("properties.name, lings_properties.value, properties.id AS property_id").
+      joins(:property).
+      group("properties.id, lings_properties.value")
   end
 
   def show_param

@@ -4,7 +4,7 @@ Feature: Search with Any
     Given I am a visitor
     And the group "Syntactic Structures"
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth | group                 |
+    | name        | property_name     | ling_prop_val  | depth | group                 |
     | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |

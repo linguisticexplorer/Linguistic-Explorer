@@ -22,6 +22,6 @@ Given /^the following lings and properties:$/ do |table|
     end
 
     prop = group.properties.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
-    ling.add_property(attrs['property_value'], prop)
+    ling.add_property(attrs['ling_prop_val'], prop)
   end
 end

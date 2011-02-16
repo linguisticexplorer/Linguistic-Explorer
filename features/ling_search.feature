@@ -4,7 +4,7 @@ Feature: Search Lings for Any Property
     Given I am a visitor
     And the group "Syntactic Structures"
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth | group                 |
+    | name        | property_name     | ling_prop_val  | depth | group                 |
     | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
@@ -50,7 +50,7 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor selects multiple languages, one property
     Given the following lings and properties:
-    | name        | property_name     | property_value  | depth | group                 |
+    | name        | property_name     | ling_prop_val  | depth | group                 |
     | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
@@ -71,7 +71,7 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor allows all languages, one property
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth | group                 |
+    | name        | property_name     | ling_prop_val  | depth | group                 |
     | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
@@ -92,7 +92,7 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor allows all languages, multiple properties
     And the following lings and properties:
-    | name        | property_name     | property_value  | depth | group                 |
+    | name        | property_name     | ling_prop_val  | depth | group                 |
     | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |

@@ -10,6 +10,10 @@
       <%= f.label :properties, "Properties" %>
       <%= f.select :properties, @search.property_options, {}, :multiple => true %>
     </fieldset>
+    <fieldset>
+      <%= f.label :lings_properties, "Property Values" %>
+      <%= f.select :lings_properties, @search.lings_property_options, {}, :multiple => true %>
+    </fieldset>
 
     <%= f.submit "Search" %>
   <% end %>
