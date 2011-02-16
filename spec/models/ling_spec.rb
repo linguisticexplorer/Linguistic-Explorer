@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Ling do
   describe "one-liners" do
-    it_should_validate_presence_of :name, :depth, :group_id
+    it_should_validate_presence_of :name, :depth, :group
     it_should_validate_uniqueness_of :name, :scope => :group_id
     it_should_validate_numericality_of :depth
 

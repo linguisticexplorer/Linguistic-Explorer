@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Example do
   describe "one-liners" do
-    it_should_validate_presence_of :group_id
+    it_should_validate_presence_of :group
     it_should_belong_to :ling, :group
 #    should_validate_existence_of :group
 #    should_validate_existence_of :ling, :allow_nil => true
