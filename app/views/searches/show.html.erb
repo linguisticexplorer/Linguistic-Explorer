@@ -2,12 +2,13 @@
 <div class="table spacing">
   <div class="row">
     <div class="cell">Languages</div>
-    <%- if @search.show? :property -%>
-      <div class="cell">Properties</div>
-    <%- end -%>
+    <div class="cell">Properties</div>
   </div>
   
   <%- @search.results.each do |result| -%>
-    <%= render :partial => "searches/results/#{@search.class.name.underscore}", :locals => {:result => result} %>
+    <%= content_tag :div, search_result_attributes(result) do %>
+      <div class="cell"><%= result.ling_name %></div>
+      <div class="cell"><%= result.prop_name %></div>
+    <% end %>
   <%- end -%>
 </div>

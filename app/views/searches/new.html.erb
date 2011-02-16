@@ -1,14 +1,7 @@
 <div class="center" style="width:800px">
   <h2>Start a new search</h2>
   <%= form_for :search, :url => searches_path do |f| %>
-    <fieldset>
-
-      <%= label_tag     "search[show][ling]", "Include language" %>
-      <%= check_box_tag "search[show][ling]" %>
-
-      <%= label_tag     "search[show][property]", "Include property" %>
-      <%= check_box_tag "search[show][property]" %>
-    </fieldset>
+    <%= render :partial => 'fields_to_show' %>
     <fieldset>
       <%= f.label :lings, "Languages" %>
       <%= f.select :lings, @search.ling_options, {}, :multiple => true %>

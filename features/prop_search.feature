@@ -3,35 +3,27 @@ Feature: Search with Any
   Background:
     Given I am a visitor
     And the group "Syntactic Structures"
-
-  Scenario: Visitor searches any property
-    And the following properties:
-    | name            | depth | group                 |
-    | Object Subject  | 0     | Syntactic Structures  |
-    | Subject Verb    | 0     | Syntactic Structures  |
-    | Verb Object     | 0     | Syntactic Structures  |
-    When I go to the new search page
-    And I check "Include property"
-    And I uncheck "Include language"
-    And I select "Object Subject" from "Properties"
-    And I press "Search"
-    Then I should see "Results"
-    And I should see "Object Subject"
-    And I should not see "Subject Verb"
-    And I should not see "Verb Object"
+    And the following lings and properties:
+    | name        | property_name     | property_value  | depth | group                 |
+    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
+    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
+    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
 
   Scenario: Visitor allows all properties
-    And the following properties:
-    | name            | depth | group                 |
-    | Object Subject  | 0     | Syntactic Structures  |
-    | Subject Verb    | 0     | Syntactic Structures  |
-    | Verb Object     | 0     | Syntactic Structures  |
     When I go to the new search page
-    And I check "Include property"
-    And I uncheck "Include language"
     And I press "Search"
     Then I should see "Results"
-    And I should see "Object Subject"
-    And I should see "Subject Verb"
-    And I should see "Verb Object"
+    And I should see "Adjective Noun"
+    And I should see "Adjective Degree"
+    And I should see "Degree Adjective"
+
+  Scenario: Visitor searches any property
+    When I go to the new search page
+    And I select "Adjective Noun" from "Properties"
+    And I press "Search"
+    Then I should see "Results"
+    And I should see "Adjective Noun"
+    And I should not see "Adjective Degree"
+    And I should not see "Degree Adjective"
 

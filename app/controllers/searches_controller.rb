@@ -1,14 +1,14 @@
 class SearchesController < ApplicationController
-  
+
   def new
-    @search = Search.factory
+    @search = Search.new(params[:search])
   end
-  
+
   def create
-    @search = Search.factory(params[:search])
+    @search = Search.new(params[:search])
     render :show
   end
-  
+
   def show
   end
 end

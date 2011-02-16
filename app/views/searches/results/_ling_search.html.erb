@@ -1,8 +1,0 @@
-<%= content_tag :div, ling_search_attributes(result) do %>
-  <%- if @search.show? :ling -%>
-  <div class="cell"><%= result.ling_name %></div>
-  <%- end -%>
-  <%- if @search.show? :property -%>
-    <div class="cell"><%= result.prop_name %></div>
-  <%- end -%>
-<% end %>

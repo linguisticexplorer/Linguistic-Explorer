@@ -1,2 +1,0 @@
-class Result
-end
