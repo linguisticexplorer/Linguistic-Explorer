@@ -60,7 +60,7 @@ describe LingsController do
 
       it "redirects to the created ling" do
         post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
-        response.should redirect_to(ling_url(assigns(:ling)))
+        response.should redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
       end
     end
 

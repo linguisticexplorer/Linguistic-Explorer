@@ -30,4 +30,30 @@ describe Ling do
       Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:group)
     end
   end
+  
+  describe "add_property" do
+    before(:each) do
+      @ling = Ling.first
+      @property = mock_model(Property)
+    end
+    it "should create a new lings property if it does not exist" do
+      lings_property = mock_model(LingsProperty)
+      @ling.lings_properties.stub!(:exists?).and_return(false)
+      @ling.lings_properties.should_receive(:create).with({
+        :property_id => @property.id,
+        :group_id => @ling.group.id,
+        :value => "new_value"
+      }).and_return(lings_property)
+      @ling.add_property("new_value", @property)
+    end
+    it "should return lings property if it exists" do
+      @ling.lings_properties.should_receive(:exists?).with({
+        :property_id => @property.id,
+        :group_id => @ling.group.id,
+        :value => "existing_value"
+      }).and_return(true)
+      @ling.lings_properties.should_not_receive(:create)
+      @ling.add_property("existing_value", @property)
+    end
+  end
 end

@@ -36,7 +36,7 @@ class LingsController < ApplicationController
   # GET /lings/new
   # GET /lings/new.xml
   def new
-    @ling = Ling.new
+    @ling = Ling.new(:group_id => @group)
     @lings = Ling.find_all_by_depth(0)
 
     respond_to do |format|
@@ -54,11 +54,13 @@ class LingsController < ApplicationController
   # POST /lings
   # POST /lings.xml
   def create
-    @ling = Ling.new(params[:ling].merge({:group_id => @group.id}))
+    @ling = Ling.new(params[:ling]) do |ling|
+      ling.group = @group
+    end
 
     respond_to do |format|
       if @ling.save
-        format.html { redirect_to(@ling, :notice => 'Ling was successfully created.') }
+        format.html { redirect_to([@group, @ling], :notice => 'Ling was successfully created.') }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
         format.html { render :action => "new" }

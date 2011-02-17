@@ -16,7 +16,8 @@ class Ling < ActiveRecord::Base
   has_many :properties, :through => :lings_properties
 
   def add_property(value, property)
-    LingsProperty.create!(:ling => self, :property => property, :value => value, :group => self.group)
+    params = {:property_id => property.id, :value => value, :group_id => group.id}
+    lings_properties.create(params) unless lings_properties.exists?(params)
   end
 
   def parent_depth_check
