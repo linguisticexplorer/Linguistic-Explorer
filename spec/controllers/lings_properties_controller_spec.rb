@@ -4,7 +4,7 @@ describe LingsPropertiesController do
   describe "index" do
     describe "assigns" do
       it "@lings_properties should contain every lings_property" do
-        get :index
+        get :index, :group_id => groups(:inclusive).id
         assigns(:lings_properties).should include lings_properties(:smelly)
       end
     end
@@ -13,7 +13,7 @@ describe LingsPropertiesController do
   describe "show" do
     describe "assigns" do
       it "@lings_property should match the passed id" do
-        get :show, :id => lings_properties(:smelly)
+        get :show, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         assigns(:lings_property).should == lings_properties(:smelly)
       end
     end
@@ -22,17 +22,17 @@ describe LingsPropertiesController do
   describe "new" do
     describe "assigns" do
       it "a new lings_property to @lings_property" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:lings_property).should be_new_record
       end
 
       it "available lings to @lings" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:lings).size.should == Ling.all.size
       end
 
       it "available properties to @properties" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:properties).size.should == Property.all.size
       end
     end
@@ -41,17 +41,17 @@ describe LingsPropertiesController do
   describe "edit" do
     describe "assigns" do
       it "the requested lings_property to @lings_property" do
-        get :edit, :id => lings_properties(:smelly)
+        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         assigns(:lings_property).should == lings_properties(:smelly)
       end
 
       it "available lings to @lings" do
-        get :new
+        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         assigns(:lings).size.should == Ling.all.size
       end
 
       it "available properties to @properties" do
-        get :new
+        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         assigns(:properties).size.should == Property.all.size
       end
     end
@@ -63,7 +63,7 @@ describe LingsPropertiesController do
         lambda {
           ling = lings(:level0)
           property = properties(:level0)
-          post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id.to_i, 'property_id' => property.id.to_i}
+          post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id.to_i, 'property_id' => property.id.to_i}, :group_id => groups(:inclusive).id
           assigns(:lings_property).should_not be_new_record
           assigns(:lings_property).should be_valid
           assigns(:lings_property).value.should == 'FROMSPACE'
@@ -73,9 +73,9 @@ describe LingsPropertiesController do
       end
 
       it "redirects to the created property" do
-        ling = Ling.first
-        property = Property.first
-        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}
+        ling = lings(:level0)
+        property = properties(:level0)
+        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
         response.should redirect_to(lings_property_url(assigns(:lings_property)))
       end
     end
@@ -83,13 +83,13 @@ describe LingsPropertiesController do
     describe "with invalid params" do
       it "does not save a new property" do
         lambda {
-          post :create, :lings_property => {'value' => ''}
+          post :create, :lings_property => {'value' => ''}, :group_id => groups(:inclusive).id
           assigns(:lings_property).should_not be_valid
         }.should change(LingsProperty, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :lings_property => {}
+        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
         response.should be_success
         response.should render_template("new")
       end
@@ -103,23 +103,23 @@ describe LingsPropertiesController do
         lings_property.should_receive(:update_attributes).with({'value' => 'no'}).and_return(true)
         LingsProperty.should_receive(:find).with(lings_property.id).and_return(lings_property)
 
-        put :update, :id => lings_property.id, :lings_property => {'value' => 'no'}
+        put :update, :id => lings_property.id, :lings_property => {'value' => 'no'}, :group_id => groups(:inclusive).id
       end
 
       it "assigns the requested lings_property as @lings_property" do
-        put :update, :id => lings_properties(:smelly)
+        put :update, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         assigns(:lings_property).should == lings_properties(:smelly)
       end
 
       it "redirects to the property" do
-        put :update, :id => lings_properties(:smelly)
+        put :update, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
         response.should redirect_to(lings_property_url(lings_properties(:smelly)))
       end
     end
 
     describe "with invalid params" do
       before do
-        put :update, :id => lings_properties(:smelly), :lings_property => {'value' => ''}
+        put :update, :id => lings_properties(:smelly), :lings_property => {'value' => ''}, :group_id => groups(:inclusive).id
       end
 
       it "assigns the lings_property as @lings_property" do
@@ -139,11 +139,11 @@ describe LingsPropertiesController do
       lings_property.should_receive(:destroy).and_return(true)
       LingsProperty.should_receive(:find).with(lings_property.id).and_return(lings_property)
 
-      delete :destroy, :id => lings_property.id
+      delete :destroy, :id => lings_property.id, :group_id => groups(:inclusive).id
     end
 
     it "redirects to the lings_properties list" do
-      delete :destroy, :id => lings_properties(:smelly)
+      delete :destroy, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
       response.should redirect_to(lings_properties_url)
     end
   end

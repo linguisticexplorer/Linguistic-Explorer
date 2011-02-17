@@ -1,15 +1,15 @@
 class LingsController < ApplicationController
   helper :groups
 
-#  before_filter :load_group_from_params
+  before_filter :load_group_from_params
 # TODO fixme WIP etc
-#  def load_group_from_params
+  def load_group_from_params
 #    unless Group.find(params[:group_id])
 #      flash[:alert] = "That group doesn't exist"
 #      redirect_to home_path
 #    end
-#    @group = Group.find(params[:group_id])
-#  end
+    @group = Group.find(params[:group_id])
+  end
 
   # GET /lings
   # GET /lings.xml
@@ -54,7 +54,7 @@ class LingsController < ApplicationController
   # POST /lings
   # POST /lings.xml
   def create
-    @ling = Ling.new(params[:ling])
+    @ling = Ling.new(params[:ling].merge({:group_id => @group.id}))
 
     respond_to do |format|
       if @ling.save

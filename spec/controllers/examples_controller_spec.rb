@@ -4,7 +4,7 @@ describe ExamplesController do
   describe "index" do
     describe "assigns" do
       it "@examples should contain every example" do
-        get :index
+        get :index, :group_id => groups(:inclusive).id
         assigns(:examples).should include examples(:onceuponatime)
       end
     end
@@ -13,7 +13,7 @@ describe ExamplesController do
   describe "show" do
     describe "assigns" do
       it "@example should match the passed id" do
-        get :show, :id => examples(:onceuponatime)
+        get :show, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         assigns(:example).should == examples(:onceuponatime)
       end
     end
@@ -22,12 +22,12 @@ describe ExamplesController do
   describe "new" do
     describe "assigns" do
       it "a new example to @example" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:example).should be_new_record
       end
 
       it "@lings should be a hash with two depth members" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         lings = assigns(:lings)
         lings.should be_a Hash
         lings[:depth_0].should include lings(:level0)
@@ -39,12 +39,12 @@ describe ExamplesController do
   describe "edit" do
     describe "assigns" do
       it "the requested example to @example" do
-        get :edit, :id => examples(:onceuponatime)
+        get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         assigns(:example).should == examples(:onceuponatime)
       end
 
       it "@lings should be a hash with two depth members" do
-        get :new
+        get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         lings = assigns(:lings)
         lings.should be_a Hash
         lings[:depth_0].should include lings(:level0)
@@ -57,7 +57,7 @@ describe ExamplesController do
     describe "with valid params" do
       it "assigns a newly created example to @example" do
         lambda {
-          post :create, :example => {'name' => 'Javanese'}
+          post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
           assigns(:example).should_not be_new_record
           assigns(:example).should be_valid
           assigns(:example).name.should == 'Javanese'
@@ -65,7 +65,7 @@ describe ExamplesController do
       end
 
       it "redirects to the created example" do
-        post :create, :example => {'name' => 'Javanese'}
+        post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
         response.should redirect_to(example_url(assigns(:example)))
       end
     end
@@ -93,16 +93,16 @@ describe ExamplesController do
         example.should_receive(:update_attributes).with({'name' => 'eengleesh'}).and_return(true)
         Example.should_receive(:find).with(example.id).and_return(example)
 
-        put :update, :id => example.id, :example => {'name' => 'eengleesh'}
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => groups(:inclusive).id
       end
 
       it "assigns the requested example as @example" do
-        put :update, :id => examples(:onceuponatime)
+        put :update, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         assigns(:example).should == examples(:onceuponatime)
       end
 
       it "redirects to the example" do
-        put :update, :id => examples(:onceuponatime)
+        put :update, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         response.should redirect_to(example_url(examples(:onceuponatime)))
       end
     end
@@ -129,11 +129,11 @@ describe ExamplesController do
       example.should_receive(:destroy).and_return(true)
       Example.should_receive(:find).with(example.id).and_return(example)
 
-      delete :destroy, :id => example.id
+      delete :destroy, :id => example.id, :group_id => groups(:inclusive).id
     end
 
     it "redirects to the examples list" do
-      delete :destroy, :id => examples(:onceuponatime)
+      delete :destroy, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
       response.should redirect_to(examples_url)
     end
   end
