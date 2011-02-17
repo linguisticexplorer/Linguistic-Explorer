@@ -1,6 +1,15 @@
 class LingsController < ApplicationController
-  
   helper :groups
+
+#  before_filter :load_group_from_params
+# TODO fixme WIP etc
+#  def load_group_from_params
+#    unless Group.find(params[:group_id])
+#      flash[:alert] = "That group doesn't exist"
+#      redirect_to home_path
+#    end
+#    @group = Group.find(params[:group_id])
+#  end
 
   # GET /lings
   # GET /lings.xml

@@ -2,8 +2,7 @@
 
 <table>
   <tr>
-    <th>ID</th>
-    <th>Ling</th>
+    <th>Name</th>
     <th></th>
     <th></th>
     <th></th>
@@ -11,8 +10,7 @@
 
 <% @groups.each do |group| %>
   <tr>
-    <td><%= group.id %></td>
-    <td><%= (link_to group.ling.name, ling_path(group.ling)) if group.ling %></td>
+    <td><%= group.name %></td>
     <td><%= link_to 'Show', group %></td>
     <td><%= link_to 'Edit', edit_group_path(group) %></td>
     <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
