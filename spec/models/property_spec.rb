@@ -3,9 +3,10 @@ require 'spec_helper'
 describe Property do
   describe "one-liners" do
     it_should_validate_presence_of :name, :category, :depth, :group
-    it_should_validate_uniqueness_of :name
+    it_should_validate_uniqueness_of :name, :scope => :group_id
     it_should_validate_numericality_of :depth
     it_should_belong_to :group
+    it_should_have_many :lings_properties
 #    should_validate_existence_of :group
   end
 

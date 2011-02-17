@@ -1,4 +1,5 @@
 <%= form_for(@ling) do |f| %>
+  <%= hidden_field_tag :group_id, @group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this ling from being saved:</h2>
@@ -14,11 +15,6 @@
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= f.label :group_id, "Group" %>
-    <%= f.select :group_id, groups_options %>
   </div>
 
   <div class="field">

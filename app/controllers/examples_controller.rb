@@ -1,4 +1,9 @@
 class ExamplesController < ApplicationController
+  before_filter :load_group_from_params
+
+  def load_group_from_params
+    @group = Group.find(params[:group_id])
+  end
 
   # GET /examples
   # GET /examples.xml
@@ -49,7 +54,7 @@ class ExamplesController < ApplicationController
   # POST /examples
   # POST /examples.xml
   def create
-    @example = Example.new(params[:example])
+    @example = Example.new(params[:example].merge({:group_id => @group.id}))
 
     respond_to do |format|
       if @example.save

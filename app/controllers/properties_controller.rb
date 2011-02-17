@@ -1,4 +1,9 @@
 class PropertiesController < ApplicationController
+  before_filter :load_group_from_params
+
+  def load_group_from_params
+    @group = Group.find(params[:group_id])
+  end
 
   # GET /properties
   # GET /properties.xml
@@ -49,7 +54,7 @@ class PropertiesController < ApplicationController
   # POST /properties
   # POST /properties.xml
   def create
-    @property = Property.new(params[:property])
+    @property = Property.new(params[:property].merge({:group_id => @group.id}))
 
     respond_to do |format|
       if @property.save

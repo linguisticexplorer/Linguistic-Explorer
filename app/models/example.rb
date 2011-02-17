@@ -1,7 +1,7 @@
 class Example < ActiveRecord::Base
   validates_existence_of :ling, :allow_nil => true
   validates_existence_of :group
-  validates_presence_of :group_id
+  validates_presence_of :group
   validate :group_association_match
 
   belongs_to :ling

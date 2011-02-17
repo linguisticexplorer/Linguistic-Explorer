@@ -11,5 +11,7 @@ en:
               existence: "must point to a valid Property"
             ling_id:
               existence: "must point to a valid Ling"
+            group_id:
+              existence: "must point to a valid Group"
       messages:
-        existence: "must point to a valid %{association}"
+        existence: "must point to a valid object"

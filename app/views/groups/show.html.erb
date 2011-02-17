@@ -1,0 +1,23 @@
+<p id="notice"><%= notice %></p>
+
+<div>
+  <%= link_to "Lings", group_lings_path(@group) %>
+</div>
+<div>
+  <%= link_to "Properties", group_properties_path(@group) %>
+</div>
+<div>
+  <%= link_to "Lings Properties", group_lings_properties_path(@group) %>
+</div>
+<div>
+  <%= link_to "Examples", group_examples_path(@group) %>
+</div>
+
+<p>
+<b>Name:</b> <br />
+<%= @group.name %> <br />
+</p>
+
+
+<%= link_to 'Edit', edit_group_path(@group) %> |
+<%= link_to 'Back', groups_path %>

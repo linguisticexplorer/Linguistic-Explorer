@@ -1,4 +1,9 @@
 class LingsPropertiesController < ApplicationController
+  before_filter :load_group_from_params
+
+  def load_group_from_params
+    @group = Group.find(params[:group_id])
+  end
 
   # GET /lings_properties
   # GET /lings_properties.xml
@@ -45,7 +50,7 @@ class LingsPropertiesController < ApplicationController
   # POST /lings_properties
   # POST /lings_properties.xml
   def create
-    @lings_property = LingsProperty.new(params[:lings_property])
+    @lings_property = LingsProperty.new(params[:lings_property].merge({:group_id => @group.id}))
 
     respond_to do |format|
       if @lings_property.save

@@ -1,7 +1,7 @@
 class Ling < ActiveRecord::Base
-  validates_presence_of :name, :depth, :group_id
+  validates_presence_of :name, :depth, :group
   validates_numericality_of :depth
-  validates_uniqueness_of :name
+  validates_uniqueness_of :name, :scope => :group_id
   validates_existence_of :parent, :allow_nil => true
   validates_existence_of :group
   validate :parent_depth_check
@@ -16,7 +16,8 @@ class Ling < ActiveRecord::Base
   has_many :properties, :through => :lings_properties
 
   def add_property(value, property)
-    LingsProperty.create!(:ling => self, :property => property, :value => value, :group => self.group)
+    params = {:property_id => property.id, :value => value, :group_id => group.id}
+    lings_properties.create(params) unless lings_properties.exists?(params)
   end
 
   def parent_depth_check

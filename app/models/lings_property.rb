@@ -1,6 +1,7 @@
 class LingsProperty < ActiveRecord::Base
-  validates_presence_of :value, :property_id, :ling_id, :group_id
+  validates_presence_of :value, :property, :ling, :group
   validates_existence_of :ling, :property, :group
+  validates_uniqueness_of :value, :scope => [:ling_id, :property_id]
   validate :association_depth_match
   validate :group_association_match
 

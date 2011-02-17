@@ -4,7 +4,7 @@ describe LingsController do
   describe "index" do
     describe "assigns" do
       it "@lings should contain every ling" do
-        get :index
+        get :index, :group_id => groups(:inclusive).id
         assigns(:lings).should include lings(:english)
       end
     end
@@ -13,7 +13,7 @@ describe LingsController do
   describe "show" do
     describe "assigns" do
       it "@ling should match the passed id" do
-        get :show, :id => lings(:english)
+        get :show, :group_id => groups(:inclusive).id, :id => lings(:english)
         assigns(:ling).should == lings(:english)
       end
     end
@@ -22,12 +22,12 @@ describe LingsController do
   describe "new" do
     describe "assigns" do
       it "a new ling to @ling" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:ling).should be_new_record
       end
 
       it "available depth 0 lings to @lings" do
-        get :new
+        get :new, :group_id => groups(:inclusive).id
         assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
       end
     end
@@ -36,12 +36,12 @@ describe LingsController do
   describe "edit" do
     describe "assigns" do
       it "the requested ling to @ling" do
-        get :edit, :id => lings(:english)
+        get :edit, :group_id => groups(:inclusive).id, :id => lings(:english)
         assigns(:ling).should == lings(:english)
       end
 
       it "available depth 0 lings to @lings" do
-        get :new
+        get :edit, :group_id => groups(:inclusive).id, :id => lings(:english)
         assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
       end
     end
@@ -51,7 +51,7 @@ describe LingsController do
     describe "with valid params" do
       it "assigns a newly created ling to @ling" do
         lambda {
-          post :create, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
           assigns(:ling).should_not be_new_record
           assigns(:ling).should be_valid
           assigns(:ling).name.should == 'Javanese'
@@ -59,21 +59,21 @@ describe LingsController do
       end
 
       it "redirects to the created ling" do
-        post :create, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
-        response.should redirect_to(ling_url(assigns(:ling)))
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+        response.should redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
       end
     end
 
     describe "with invalid params" do
       it "does not save a new ling" do
         lambda {
-          post :create, :ling => {'name' => '', 'depth' => nil}
+          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => nil}
           assigns(:ling).should_not be_valid
         }.should change(Ling, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :ling => {}
+        post :create, :group_id => groups(:inclusive).id, :ling => {}
         response.should be_success
         response.should render_template("new")
       end
@@ -87,23 +87,23 @@ describe LingsController do
         ling.should_receive(:update_attributes).with({'name' => 'eengleesh'}).and_return(true)
         Ling.should_receive(:find).with(ling.id).and_return(ling)
 
-        put :update, :id => ling.id, :ling => {'name' => 'eengleesh'}
+        put :update, :group_id => groups(:inclusive).id, :id => ling.id, :ling => {'name' => 'eengleesh'}
       end
 
       it "assigns the requested ling as @ling" do
-        put :update, :id => lings(:english)
+        put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
         assigns(:ling).should == lings(:english)
       end
 
       it "redirects to the ling" do
-        put :update, :id => lings(:english)
+        put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
         response.should redirect_to(ling_url(lings(:english)))
       end
     end
 
     describe "with invalid params" do
       before do
-        put :update, :id => lings(:english), :ling => {'name' => ''}
+        put :update, :group_id => groups(:inclusive).id, :id => lings(:english), :ling => {'name' => ''}
       end
 
       it "assigns the ling as @ling" do
@@ -123,11 +123,11 @@ describe LingsController do
       ling.should_receive(:destroy).and_return(true)
       Ling.should_receive(:find).with(ling.id).and_return(ling)
 
-      delete :destroy, :id => ling.id
+      delete :destroy, :group_id => groups(:inclusive).id, :id => ling.id
     end
 
     it "redirects to the lings list" do
-      delete :destroy, :id => lings(:english)
+      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:english)
       response.should redirect_to(lings_url)
     end
   end

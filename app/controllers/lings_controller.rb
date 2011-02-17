@@ -1,6 +1,15 @@
 class LingsController < ApplicationController
-  
   helper :groups
+
+  before_filter :load_group_from_params
+# TODO fixme WIP etc
+  def load_group_from_params
+#    unless Group.find(params[:group_id])
+#      flash[:alert] = "That group doesn't exist"
+#      redirect_to home_path
+#    end
+    @group = Group.find(params[:group_id])
+  end
 
   # GET /lings
   # GET /lings.xml
@@ -27,7 +36,7 @@ class LingsController < ApplicationController
   # GET /lings/new
   # GET /lings/new.xml
   def new
-    @ling = Ling.new
+    @ling = Ling.new(:group_id => @group)
     @lings = Ling.find_all_by_depth(0)
 
     respond_to do |format|
@@ -45,11 +54,13 @@ class LingsController < ApplicationController
   # POST /lings
   # POST /lings.xml
   def create
-    @ling = Ling.new(params[:ling])
+    @ling = Ling.new(params[:ling]) do |ling|
+      ling.group = @group
+    end
 
     respond_to do |format|
       if @ling.save
-        format.html { redirect_to(@ling, :notice => 'Ling was successfully created.') }
+        format.html { redirect_to([@group, @ling], :notice => 'Ling was successfully created.') }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
         format.html { render :action => "new" }
