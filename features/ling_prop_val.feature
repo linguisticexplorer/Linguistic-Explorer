@@ -39,7 +39,6 @@ Feature: Search Ling Prop Value Pair
     And I select "Degree Adjective: no" from "Property Value"
     And I press "Search"
     Then I should see "Results"
-    And show me the page
     And I should see "English"
     And I should see "Spanish"
     And I should see "Adjective Noun"
@@ -47,5 +46,5 @@ Feature: Search Ling Prop Value Pair
     And I should see "yes"
     And I should see "no"
     And I should not see "German"
-    And I should not see "Adjective Noun"
+    And I should not see "Adjective Degree"
     
