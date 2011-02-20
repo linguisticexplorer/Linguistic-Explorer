@@ -11,6 +11,7 @@
 <% @groups.each do |group| %>
   <tr>
     <td><%= group.name %></td>
+    <td><%= link_to 'Search', new_group_search_path(group) %></td>
     <td><%= link_to 'Show', group %></td>
     <td><%= link_to 'Edit', edit_group_path(group) %></td>
     <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>

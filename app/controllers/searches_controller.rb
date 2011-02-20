@@ -1,4 +1,5 @@
 class SearchesController < ApplicationController
+  before_filter :load_group_from_params
 
   def new
     @search = Search.new(params[:search])

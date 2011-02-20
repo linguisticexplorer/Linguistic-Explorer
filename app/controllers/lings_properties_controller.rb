@@ -1,10 +1,6 @@
 class LingsPropertiesController < ApplicationController
   before_filter :load_group_from_params
 
-  def load_group_from_params
-    @group = Group.find(params[:group_id])
-  end
-
   # GET /lings_properties
   # GET /lings_properties.xml
   def index

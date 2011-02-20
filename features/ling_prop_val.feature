@@ -20,7 +20,7 @@ Feature: Search Ling Prop Value Pair
     # choosing all
 
   Scenario: Visitor selects one value pair
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "Adjective Noun: yes" from "Property Value"
     And I press "Search"
     Then I should see "Results"
@@ -34,7 +34,7 @@ Feature: Search Ling Prop Value Pair
     And I should not see "no"
   
   Scenario: Visitor selects two value pairs
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "Adjective Noun: yes" from "Property Value"
     And I select "Degree Adjective: no" from "Property Value"
     And I press "Search"

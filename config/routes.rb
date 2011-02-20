@@ -2,12 +2,11 @@ LinguisticExplorer::Application.routes.draw do
   root :to => 'home#index', :as => :home
 
   resources :groups do
-    resources :lings, :properties, :lings_properties, :examples
+    resources :lings, :properties, :lings_properties, :examples, :searches
   end
 
   resources :lings, :properties, :lings_properties, :examples
 
-  resources :searches
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

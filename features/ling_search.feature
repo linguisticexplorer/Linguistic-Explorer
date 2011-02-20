@@ -18,7 +18,7 @@ Feature: Search Lings for Any Property
     # choosing all
 
   Scenario: Visitor selects one language
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
     And I press "Search"
     Then I should see "Results"
@@ -27,7 +27,7 @@ Feature: Search Lings for Any Property
     And I should not see "German"
 
   Scenario: Visitor selects all languages
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I allow all languages
     And I press "Search"
     Then I should see "Results"
@@ -36,7 +36,7 @@ Feature: Search Lings for Any Property
     And I should see "German"
 
   Scenario: Visitor selects one language, one property
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
@@ -55,7 +55,7 @@ Feature: Search Lings for Any Property
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
     And I select "Spanish" from "Languages"
     And I select "German" from "Languages"
@@ -77,7 +77,7 @@ Feature: Search Lings for Any Property
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I allow all languages
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
@@ -97,7 +97,7 @@ Feature: Search Lings for Any Property
     | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
     | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I allow all languages
     And I select "Adjective Degree" from "Properties"
     And I select "Degree Adjective" from "Properties"

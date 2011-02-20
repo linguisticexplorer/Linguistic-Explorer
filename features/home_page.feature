@@ -7,6 +7,8 @@ Feature: Linguistic Explorer Home Page
 
   Scenario: User start new search
     Given I am a visitor
+    And the group "Syntactic Structures"
     When I go to the home page
+    And I follow "Groups"
     And I follow "Search"
-    Then I should see "Start a new search"
+    Then I should see "Search Syntactic Structures"

@@ -1,6 +1,6 @@
 <div class="center" style="width:800px">
-  <h2>Start a new search</h2>
-  <%= form_for :search, :url => searches_path do |f| %>
+  <h2>Search <%= @group.name %></h2>
+  <%= form_for :search, :url => group_searches_path(@group) do |f| %>
     <%= render :partial => 'fields_to_show' %>
     <fieldset>
       <%= f.label :lings, "Languages" %>

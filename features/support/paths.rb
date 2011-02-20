@@ -12,6 +12,8 @@ module NavigationHelpers
       '/'
     when /the new search page/
       new_search_path
+    when /the (.+) search page/
+      new_group_search_path(Group.find_by_name($1))
     when /the group (.*)/
       group_path(Group.find_by_name($1))
 

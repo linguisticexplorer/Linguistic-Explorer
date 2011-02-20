@@ -11,7 +11,7 @@ Feature: Search with Any
     | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
 
   Scenario: Visitor allows all properties
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I press "Search"
     Then I should see "Results"
     And I should see "Adjective Noun"
@@ -19,7 +19,7 @@ Feature: Search with Any
     And I should see "Degree Adjective"
 
   Scenario: Visitor searches any property
-    When I go to the new search page
+    When I go to the Syntactic Structures search page
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
     Then I should see "Results"

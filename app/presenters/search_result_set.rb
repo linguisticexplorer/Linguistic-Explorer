@@ -39,14 +39,9 @@ class SearchResultSet
     relation = LingsProperty.select("id")
     if @params[:lings_properties].present?
       pairs = @params[:lings_properties].map { |str| str.split(":") }
-      table       = LingsProperty.arel_table
-      conditions  = pairs.inject(table[:property_id]) do |t, pair|
-        if t.respond_to?(:or)
-          t.or(table[:property_id].eq(pair.first).and(table[:value].eq(pair.last)))
-        else
-          t.eq(pair.first).and(table[:value].eq(pair.last))
-        end
-      end
+      conditions = pairs.inject({:id => nil}) do |conds, pair|
+        conds | { :property_id => pair.first, :value => pair.last }
+      end 
       relation = relation.where(conditions)
     end
     relation
