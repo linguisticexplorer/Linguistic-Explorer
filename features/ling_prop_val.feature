@@ -3,14 +3,19 @@ Feature: Search Ling Prop Value Pair
   Background:
     Given I am a visitor
     And the group "Syntactic Structures"
-    And the following lings and properties:
-    | name        | property_name     | ling_prop_val   | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | no              | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | German      | Adjective Degree  | no              | 0     | Syntactic Structures  |
-    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Degree Adjective  | no              | 0     | Syntactic Structures  |
+    And the following "Syntactic Structures" lings:
+    | name        | depth |
+    | English     | 0     |
+    | Spanish     | 0     |
+    | German      | 0     |
+    And the following "Syntactic Structures" properties:
+    | property name     | ling name   | prop val    | category | depth |
+    | Adjective Noun    | English     | yes         | Grammar  | 0     |
+    | Adjective Noun    | Spanish     | no          | Grammar  | 0     |
+    | Adjective Degree  | English     | yes         | Grammar  | 0     |
+    | Adjective Degree  | German      | no          | Grammar  | 0     |
+    | Degree Adjective  | German      | yes         | Grammar  | 0     |
+    | Degree Adjective  | Spanish     | no          | Grammar  | 0     |
 
     # Ling[] Prop[] Val[]
     # selector for ling
@@ -21,7 +26,7 @@ Feature: Search Ling Prop Value Pair
 
   Scenario: Visitor selects one value pair
     When I go to the Syntactic Structures search page
-    And I select "Adjective Noun: yes" from "Property Value"
+    And I select "Adjective Noun: yes" from "Grammar Value Pairs"
     And I press "Search"
     Then I should see "Results"
     And I should see "English"
@@ -35,8 +40,8 @@ Feature: Search Ling Prop Value Pair
   
   Scenario: Visitor selects two value pairs
     When I go to the Syntactic Structures search page
-    And I select "Adjective Noun: yes" from "Property Value"
-    And I select "Degree Adjective: no" from "Property Value"
+    And I select "Adjective Noun: yes" from "Grammar Value Pairs"
+    And I select "Degree Adjective: no" from "Grammar Value Pairs"
     And I press "Search"
     Then I should see "Results"
     And I should see "English"

@@ -37,8 +37,9 @@ class SearchResultSet
 
   def selected_lings_prop_ids
     relation = LingsProperty.select("id")
-    if @params[:lings_properties].present?
-      pairs = @params[:lings_properties].map { |str| str.split(":") }
+    if @params[:prop_vals].present?
+      # Reduce prop val params to one set of value pairs (ignoring category for now)
+      pairs = @params[:prop_vals].map(&:values).flatten.map { |str| str.split(":") }
       conditions = pairs.inject({:id => nil}) do |conds, pair|
         conds | { :property_id => pair.first, :value => pair.last }
       end 

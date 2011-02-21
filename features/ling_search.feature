@@ -3,19 +3,17 @@ Feature: Search Lings for Any Property
   Background:
     Given I am a visitor
     And the group "Syntactic Structures"
-    And the following lings and properties:
-    | name        | property_name     | ling_prop_val  | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
-
-    # Ling[] Prop[] Val[]
-    # selector for ling
-    # selector for prop
-    # selector for val
-    # choosing any
-    # choosing all
+    And the following "Syntactic Structures" lings:
+    | name        | depth |
+    | English     | 0     |
+    | German      | 0     |
+    | Spanish     | 0     |
+    And the following "Syntactic Structures" properties:
+    | property name     | ling name   | prop val    | depth |
+    | Adjective Noun    | English     | yes         | 0     |
+    | Adjective Degree  | English     | yes         | 0     |
+    | Adjective Noun    | Spanish     | yes         | 0     |
+    | Degree Adjective  | German      | yes         | 0     |
 
   Scenario: Visitor selects one language
     When I go to the Syntactic Structures search page
@@ -49,12 +47,6 @@ Feature: Search Lings for Any Property
     And I should not see "Adjective Degree"
 
   Scenario: Visitor selects multiple languages, one property
-    Given the following lings and properties:
-    | name        | property_name     | ling_prop_val  | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
     When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
     And I select "Spanish" from "Languages"
@@ -70,13 +62,6 @@ Feature: Search Lings for Any Property
     And I should not see "Adjective Degree"
 
   Scenario: Visitor allows all languages, one property
-    And the following lings and properties:
-    | name        | property_name     | ling_prop_val  | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | German      | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
     When I go to the Syntactic Structures search page
     And I allow all languages
     And I select "Adjective Noun" from "Properties"
@@ -91,12 +76,6 @@ Feature: Search Lings for Any Property
     And I should not see "Degree Adjective"
 
   Scenario: Visitor allows all languages, multiple properties
-    And the following lings and properties:
-    | name        | property_name     | ling_prop_val  | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
     When I go to the Syntactic Structures search page
     And I allow all languages
     And I select "Adjective Degree" from "Properties"
@@ -109,3 +88,13 @@ Feature: Search Lings for Any Property
     | German        | Degree Adjective  |
     And I should not see "Spanish"
     And I should not see "Adjective Noun"
+
+  Scenario: Scope search to group
+    Given the group "Phones"
+    And the following lings and properties:
+    | name        | property_name | prop val  | depth | group   |
+    | Sentence 1  | Homonym       | yes       | 0     | Phones  |
+    When I go to the Syntactic Structures search page
+    Then I should not see "Phones"
+    And I should not see "Sentence 1"
+    And I should not see "Homonym"

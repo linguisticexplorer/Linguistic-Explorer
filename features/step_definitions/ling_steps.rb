@@ -6,22 +6,20 @@ Given /^the following lings:$/ do |table|
   end
 end
 
-Given /^the following lings and properties:$/ do |table|
-  table.hashes.each do |attrs|
-    group_name = attrs.delete('group')
-    group = Group.find_by_name(group_name) || Factory(:group, :name => group_name)
-    
-    ling_attrs = {:name => attrs['name'], :depth => attrs['depth'].to_i}
-    ling = group.lings.find_by_name(attrs['name']) || Factory(:ling, ling_attrs.merge(:group => group))
+Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
+  group = Group.find_by_name(group_name)
+  raise "Group #{group_name} does not exist? Did you remember to create it first?" if group.nil?
 
-    prop_attrs = {}.tap do |opts|
-      opts[:name]      = attrs['property_name']      unless attrs['property_name'].blank?
-      opts[:category]  = attrs['property_category']  unless attrs['property_category'].blank?
-      opts[:depth]     = attrs['depth'].to_i || 0
-      opts[:group]     = group
+  table.hashes.each do |hash|
+    attrs = hash.dup
+    parent = nil
+
+    unless attrs["parent"].blank?
+      parent = group.lings.find_by_name(attrs['parent']) ||
+        Factory(:ling, :name => attrs['parent'], :depth => 0, :group => group)
     end
 
-    prop = group.properties.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
-    ling.add_property(attrs['ling_prop_val'], prop)
+    group.lings.find_by_name(attrs['name']) ||
+      Factory(:ling, attrs.merge(:parent => parent, :depth => attrs['depth'], :group => group))
   end
 end

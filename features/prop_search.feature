@@ -3,12 +3,17 @@ Feature: Search with Any
   Background:
     Given I am a visitor
     And the group "Syntactic Structures"
-    And the following lings and properties:
-    | name        | property_name     | ling_prop_val  | depth | group                 |
-    | English     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | English     | Adjective Degree  | yes             | 0     | Syntactic Structures  |
-    | Spanish     | Adjective Noun    | yes             | 0     | Syntactic Structures  |
-    | German      | Degree Adjective  | yes             | 0     | Syntactic Structures  |
+    And the following "Syntactic Structures" lings:
+    | name        | depth |
+    | English     | 0     |
+    | German      | 0     |
+    | Spanish     | 0     |
+    And the following "Syntactic Structures" properties:
+    | property name     | ling name   | prop val    | depth |
+    | Adjective Noun    | English     | yes         | 0     |
+    | Adjective Degree  | English     | yes         | 0     |
+    | Adjective Noun    | Spanish     | yes         | 0     |
+    | Degree Adjective  | German      | yes         | 0     |
 
   Scenario: Visitor allows all properties
     When I go to the Syntactic Structures search page

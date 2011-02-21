@@ -10,10 +10,21 @@
       <%= f.label :properties, "Properties" %>
       <%= f.select :properties, @search.property_options, {}, :multiple => true %>
     </fieldset>
-    <fieldset>
-      <%= f.label :lings_properties, "Property Values" %>
-      <%= f.select :lings_properties, @search.lings_property_options, {}, :multiple => true %>
-    </fieldset>
+
+    <%- if @search.prop_categories.any? -%>
+      <%- @search.prop_categories.each do |category| -%>
+        <%- prop_val_label  = "#{category} Value Pairs" -%>
+        <fieldset id="<%= prop_val_label.underscorize %>">
+          <%= f.label :prop_vals, prop_val_label, :for => "#{prop_val_label.underscorize}_options" %>
+          <%= f.select :prop_vals, @search.lings_property_options(category), {}, :multiple => true, :name =>  "search[prop_vals][][#{category.downcase}][]", :id => "#{prop_val_label.underscorize}_options" %>
+        </fieldset>
+      <%- end -%>
+    <%- else -%>
+      <fieldset>
+        <%= f.label :prop_vals, "Property Values" %>
+        <%= f.select :prop_vals, @search.lings_property_options, {}, :multiple => true %>
+      </fieldset>
+    <%- end -%>
 
     <%= f.submit "Search" %>
   <% end %>
