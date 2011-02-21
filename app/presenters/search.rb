@@ -15,18 +15,14 @@ class Search
     group_properties.map { |p| [p.name, p.id] }
   end
 
-  def lings_property_options(category = nil)
+  def prop_val_options(category = nil)
     prop_vals = group_prop_vals
     prop_vals = prop_vals.select { |pv| pv.category == category } unless category.nil?
     prop_vals.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
   def prop_categories
-    @prop_categories ||= begin
-      group_prop_categories.each do |category|
-        self.class.send(:attr_accessor, "#{category.underscorize}_prop_vals")
-      end
-    end
+    @prop_categories ||= group_properties.map(&:category).uniq
   end
 
   def show?(search_type)
@@ -46,7 +42,7 @@ class Search
   end
 
   def group_properties
-    Property.select("id, name, category").where(:group => @group)
+    @group_properties ||= Property.where(:group => @group)
   end
 
   def group_prop_vals(category = nil)
@@ -54,10 +50,6 @@ class Search
       where(:group => @group).
       joins(:property).
       group("properties.id, lings_properties.value")
-  end
-
-  def group_prop_categories
-    @group_prop_categories ||= Property.select("category").where(:group => @group).group("category").map(&:category)
   end
 
   def show_param
