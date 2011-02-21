@@ -1,0 +1,65 @@
+2/21/2011
+
+        Search Stories
+
+2/21
+      Search by Property Value
+      - db:seed task
+
+2/28
+      Search by Property Value within Category
+      Search by Property within Category
+
+3/7
+      Property Search by ALL
+
+3/14  (Spring Break)
+      Property Value Search by ALL
+      Keyword Search on Ling
+
+3/21
+      Keyword Search on Property
+      Keyword Search on Property Value
+
+3/28
+      Display Examples in Results
+      Keyword Search on Examples
+
+4/4
+      Filter Results by "Show" Criteria
+      Search Form Error Handling
+
+4/11
+      Display Lings on Map
+      Display Info Windows on Map
+
+4/18
+      Property Search by Cross
+
+4/25
+      Compare Lings
+
+5/2   
+      Search Help
+      Documentation
+
+5/9 (Spring Classes End)
+
+5/16 (Final Exams End: 5/17)
+
+
+Engineering Tasks/Processes
+      Deployment
+      Server setup
+      Server maintenance
+      Server monitoring
+      Data migration
+      Data restoration
+
+Other stories:
+      Similarity Tree
+      Prioritize Examples
+      Universal Implications: Antecedent
+      Universal Implications: Consequent
+      Universal Implications: Both
+      Save Queries for AND/OR/DIFF Comparisons
