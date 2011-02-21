@@ -68,7 +68,7 @@ describe PropertiesController do
 
       it "redirects to the created property" do
         post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS', :depth => 0}, :group_id => groups(:inclusive).id
-        response.should redirect_to(property_url(assigns(:property)))
+        response.should redirect_to(group_property_url(assigns(:group), assigns(:property)))
       end
     end
 
@@ -105,7 +105,7 @@ describe PropertiesController do
 
       it "redirects to the property" do
         put :update, :id => properties(:valid), :group_id => groups(:inclusive).id
-        response.should redirect_to(property_url(properties(:valid)))
+        response.should redirect_to(group_property_url(assigns(:group), properties(:valid)))
       end
     end
 
@@ -136,7 +136,7 @@ describe PropertiesController do
 
     it "redirects to the properties list" do
       delete :destroy, :id => properties(:valid), :group_id => groups(:inclusive).id
-      response.should redirect_to(properties_url)
+      response.should redirect_to(group_properties_url(assigns(:group)))
     end
   end
 end

@@ -68,7 +68,7 @@ class LingsController < ApplicationController
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
-        format.html { redirect_to(@ling, :notice => 'Ling was successfully updated.') }
+        format.html { redirect_to(group_ling_url(@group, @ling), :notice => 'Ling was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,7 +84,7 @@ class LingsController < ApplicationController
     @ling.destroy
 
     respond_to do |format|
-      format.html { redirect_to(lings_url) }
+      format.html { redirect_to(group_lings_url(@group)) }
       format.xml  { head :ok }
     end
   end

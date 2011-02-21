@@ -54,7 +54,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.save
-        format.html { redirect_to(@property, :notice => 'Property was successfully created.') }
+        format.html { redirect_to(group_property_url(@group, @property), :notice => 'Property was successfully created.') }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
         format.html { render :action => "new" }
@@ -70,7 +70,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.update_attributes(params[:property])
-        format.html { redirect_to(@property, :notice => 'Property was successfully updated.') }
+        format.html { redirect_to(group_property_url(@group, @property), :notice => 'Property was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -86,7 +86,7 @@ class PropertiesController < ApplicationController
     @property.destroy
 
     respond_to do |format|
-      format.html { redirect_to(properties_url) }
+      format.html { redirect_to(group_properties_url(@group)) }
       format.xml  { head :ok }
     end
   end

@@ -50,7 +50,7 @@ class LingsPropertiesController < ApplicationController
 
     respond_to do |format|
       if @lings_property.save
-        format.html { redirect_to(@lings_property, :notice => 'Lings_property was successfully created.') }
+        format.html { redirect_to(group_lings_properties_url(@group, @lings_property), :notice => 'Lings_property was successfully created.') }
         format.xml  { render :xml => @lings_property, :status => :created, :location => @lings_property }
       else
         format.html { render :action => "new" }
@@ -66,7 +66,7 @@ class LingsPropertiesController < ApplicationController
 
     respond_to do |format|
       if @lings_property.update_attributes(params[:lings_property])
-        format.html { redirect_to(@lings_property, :notice => 'Lings_property was successfully updated.') }
+        format.html { redirect_to(group_lings_property_url(@group, @lings_property), :notice => 'Lings_property was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -82,7 +82,7 @@ class LingsPropertiesController < ApplicationController
     @lings_property.destroy
 
     respond_to do |format|
-      format.html { redirect_to(lings_properties_url) }
+      format.html { redirect_to(group_lings_properties_url(@group)) }
       format.xml  { head :ok }
     end
   end

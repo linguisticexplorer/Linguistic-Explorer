@@ -5,9 +5,6 @@ LinguisticExplorer::Application.routes.draw do
     resources :lings, :properties, :lings_properties, :examples, :searches
   end
 
-  resources :lings, :properties, :lings_properties, :examples
-
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
