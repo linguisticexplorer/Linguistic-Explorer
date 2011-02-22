@@ -1,4 +1,4 @@
-Feature: Search Ling Prop Value Pair by Depth
+Feature: Search Ling Prop Value Pair by Categories
 
   Background:
     Given I am a visitor
@@ -17,18 +17,32 @@ Feature: Search Ling Prop Value Pair by Depth
     | Property 4    | Sentence 2  | no        | Phrasing    | 1     |
     When I go to the Syntactic Structures search page
 
-  Scenario: Search form with depth
-    Then I should see "Demographic Value Pairs"
-    And I should see "Phrasing Value Pairs"
+  Scenario: Search form with category
+    Then the select menu for "Languages 0" should contain the following:
+    | option        |
+    | Speaker 1     |
+    | Speaker 2     |
+    And the select menu for "Languages 1" should contain the following:
+    | option        |
+    | Sentence 1    |
+    | Sentence 2    |
+    # And the select menu for "Demographic Properties" should contain the following:
+    # | option        |
+    # | Property 1    |
+    # | Property 2    |
+    # And the select menu for "Phrasing Properties" should contain the following:
+    # | option        |
+    # | Property 3    |
+    # | Property 4    |
     And the select menu for "Demographic Value Pairs" should contain the following:
-    | option              |
-    | Property 1: yes     |
-    | Property 2: no      |
+    | option            |
+    | Property 1: yes   |
+    | Property 2: no    |
     And the select menu for "Demographic Value Pairs" should not contain the following:
-    | option              |
-    | Property 3: yes     |
-    | Property 4: no      |
+    | option            |
+    | Property 3: yes   |
+    | Property 4: no    |
     And the select menu for "Phrasing Value Pairs" should contain the following:
-    | option              |
-    | Property 3: yes     |
-    | Property 4: no      |
+    | option            |
+    | Property 3: yes   |
+    | Property 4: no    |

@@ -7,8 +7,10 @@ class Search
     @params = params
   end
 
-  def ling_options
-    group_lings.map { |l| [l.name, l.id] }
+  def ling_options(depth = nil)
+    collection = group_lings
+    collection = collection.where(:depth => depth) unless depth.nil?
+    collection.map { |l| [l.name, l.id] }
   end
 
   def property_options
@@ -21,14 +23,22 @@ class Search
     prop_vals.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
+  def ling_depths
+    @ling_depths ||= group_lings.group(:depth).map(&:depth)
+  end
+
   def prop_categories
     @prop_categories ||= group_properties.map(&:category).uniq
   end
 
   def show?(search_type)
-    # TODO Not checking "Incude" option to show yet
+    # TODO Not checking "Include" option to show yet
     # show_param[search_type].present?
     true
+  end
+
+  def has_ling_depth?
+    group_lings.where(:depth => 1).any?
   end
 
   def results
@@ -38,7 +48,7 @@ class Search
   protected
 
   def group_lings
-    Ling.select("id, name").where(:group => @group)
+    @group_lings ||= Ling.where(:group => @group)
   end
 
   def group_properties

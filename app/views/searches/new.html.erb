@@ -2,10 +2,24 @@
   <h2>Search <%= @group.name %></h2>
   <%= form_for :search, :url => group_searches_path(@group) do |f| %>
     <%= render :partial => 'fields_to_show' %>
-    <fieldset>
-      <%= f.label :lings, "Languages" %>
-      <%= f.select :lings, @search.ling_options, {}, :multiple => true %>
-    </fieldset>
+    <%- if @search.has_ling_depth? -%>
+      <%- @search.ling_depths.each do |depth| -%>
+        <%- ling_label  = "Languages #{depth}" -%>
+        <%= content_tag :field_set, :id => ling_label.underscorize do %>
+          <%= f.label :lings, ling_label, :for => search_options_label(ling_label) %>
+          <%= f.select :lings, @search.ling_options(depth), {},
+            :name => search_field_name(:lings, depth),
+            :multiple => true,
+            :id => search_options_label(ling_label)
+          %>
+        <% end %>
+      <%- end -%>
+    <%- else -%>
+      <fieldset>
+        <%= f.label :lings, "Languages" %>
+        <%= f.select :lings, @search.ling_options, {}, :multiple => true %>
+      </fieldset>
+    <%- end -%>
     <fieldset>
       <%= f.label :properties, "Properties" %>
       <%= f.select :properties, @search.property_options, {}, :multiple => true %>
@@ -14,14 +28,13 @@
     <%- if @search.prop_categories.any? -%>
       <%- @search.prop_categories.each do |category| -%>
         <%- prop_val_label  = "#{category} Value Pairs" -%>
-        <fieldset id="<%= prop_val_label.underscorize %>">
-          <%= f.label :prop_vals, prop_val_label, 
-            :for => "#{prop_val_label.underscorize}_options" %>
-          <%= f.select :prop_vals, @search.prop_val_options(category), {}, 
-            :multiple => true, 
-            :name =>  "search[prop_vals][][#{category.downcase}][]", 
-            :id => "#{prop_val_label.underscorize}_options" %>
-        </fieldset>
+        <%= content_tag :fieldset, :id => prop_val_label.underscorize do %>
+          <%= f.label :prop_vals, prop_val_label, :for => search_options_label(prop_val_label) %>
+          <%= f.select :prop_vals, @search.prop_val_options(category), {},
+            :name => search_field_name(:prop_vals, category),
+            :multiple => true,
+            :id => search_options_label(prop_val_label) %>
+        <% end %>
       <%- end -%>
     <%- else -%>
       <fieldset>
