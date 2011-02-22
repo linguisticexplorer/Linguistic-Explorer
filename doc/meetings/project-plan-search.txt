@@ -1,6 +1,4 @@
-2/21/2011
-
-        Search Stories
+Project Plan for Search
 
 2/21
       Search by Property Value
@@ -19,14 +17,13 @@
 
 3/21
       Keyword Search on Property
-      Keyword Search on Property Value
+      Display Examples in Results
 
 3/28
-      Display Examples in Results
       Keyword Search on Examples
+      Filter Results by "Show" Criteria
 
 4/4
-      Filter Results by "Show" Criteria
       Search Form Error Handling
 
 4/11
@@ -34,12 +31,13 @@
       Display Info Windows on Map
 
 4/18
-      Property Search by Cross
+      Save Queries for Additional Comparisons
+      (TODO: Break out into smaller stories)
 
 4/25
-      Compare Lings
+      Save Queries for Additional Comparisons
 
-5/2   
+5/2
       Search Help
       Documentation
 
@@ -47,19 +45,19 @@
 
 5/16 (Final Exams End: 5/17)
 
+Backlog (Time Permitting):
+      Similarity Tree
+      Prioritize Examples
+      Universal Implications: Antecedent
+      Universal Implications: Consequent
+      Universal Implications: Both
+      Cross Search on Property
 
 Engineering Tasks/Processes
+      QA
       Deployment
       Server setup
       Server maintenance
       Server monitoring
       Data migration
       Data restoration
-
-Other stories:
-      Similarity Tree
-      Prioritize Examples
-      Universal Implications: Antecedent
-      Universal Implications: Consequent
-      Universal Implications: Both
-      Save Queries for AND/OR/DIFF Comparisons
