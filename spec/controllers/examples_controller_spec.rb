@@ -66,7 +66,7 @@ describe ExamplesController do
 
       it "redirects to the created example" do
         post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
-        response.should redirect_to(example_url(assigns(:example)))
+        response.should redirect_to(group_example_url(assigns(:group), assigns(:example)))
       end
     end
 
@@ -103,7 +103,7 @@ describe ExamplesController do
 
       it "redirects to the example" do
         put :update, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-        response.should redirect_to(example_url(examples(:onceuponatime)))
+        response.should redirect_to(group_example_url(assigns(:group), examples(:onceuponatime)))
       end
     end
 
@@ -134,7 +134,7 @@ describe ExamplesController do
 
     it "redirects to the examples list" do
       delete :destroy, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-      response.should redirect_to(examples_url)
+      response.should redirect_to(group_examples_url(assigns(:group)))
     end
   end
 end

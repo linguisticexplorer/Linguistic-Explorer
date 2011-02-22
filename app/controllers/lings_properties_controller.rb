@@ -50,7 +50,7 @@ class LingsPropertiesController < ApplicationController
 
     respond_to do |format|
       if @lings_property.save
-        format.html { redirect_to(group_lings_properties_url(@group, @lings_property), :notice => 'Lings_property was successfully created.') }
+        format.html { redirect_to(group_lings_property_url(@group, @lings_property), :notice => 'Lings_property was successfully created.') }
         format.xml  { render :xml => @lings_property, :status => :created, :location => @lings_property }
       else
         format.html { render :action => "new" }

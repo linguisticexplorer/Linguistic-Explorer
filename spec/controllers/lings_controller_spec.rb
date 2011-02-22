@@ -97,7 +97,7 @@ describe LingsController do
 
       it "redirects to the ling" do
         put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
-        response.should redirect_to(ling_url(lings(:english)))
+        response.should redirect_to(group_ling_url(assigns(:group), lings(:english)))
       end
     end
 
@@ -128,7 +128,7 @@ describe LingsController do
 
     it "redirects to the lings list" do
       delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:english)
-      response.should redirect_to(lings_url)
+      response.should redirect_to(group_lings_url(assigns(:group)))
     end
   end
 end
