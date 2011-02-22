@@ -18,6 +18,10 @@ def group_name(name)
   name.titleize
 end
 
+def category_name(name)
+  "category #{name}".titleize
+end
+
 # Create Groups
 FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
   group = Group.find_or_create_by_name(group_name(row["group"]))
@@ -48,11 +52,10 @@ end
 # Create Properties
 FasterCSV.foreach(Rails.root.join("doc", "data", "Property.csv"), :headers => true) do |row|
   name     = prop_name(row["name"])
-  property = Property.find_or_initialize_by_name(name) do |p|
-    p.depth     = row["depth"]
-    p.category  = row["category"]
-    p.group     = Group.find_by_name(group_name(row["group"]))
-  end
+  property = Property.find_or_initialize_by_name(name)
+  property.depth     = row["depth"]
+  property.category  = category_name(row["category"])
+  property.group     = Group.find_by_name(group_name(row["group"]))
   prop_list[row["id"]] = name
 
   property.save!
@@ -67,7 +70,6 @@ MEANINGFUL_VALUES = {
 }
 
 # Create LingsProperties
-
 FasterCSV.foreach(Rails.root.join("doc", "data", "LingsProperty.csv"), :headers => true) do |row|
   prop  = Property.find_by_name(prop_list[row["propid"]])
   ling  = Ling.find_by_name(ling_list[row["lingid"]])
