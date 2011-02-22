@@ -2,5 +2,5 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @example %> |
-<%= link_to 'Back', examples_path %>
+<%= link_to 'Show', [@group, @example] %> |
+<%= link_to 'Back', group_examples_path(@group) %>

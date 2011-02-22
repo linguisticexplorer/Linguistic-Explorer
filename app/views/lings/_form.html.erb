@@ -1,4 +1,4 @@
-<%= form_for(@ling) do |f| %>
+<%= form_for([@group, @ling]) do |f| %>
   <%= hidden_field_tag :group_id, @group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">

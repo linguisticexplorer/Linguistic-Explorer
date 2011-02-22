@@ -15,13 +15,13 @@
     <td><%= property.name %></td>
     <td><%= property.category %></td>
     <td><%= property.depth %></td>
-    <td><%= link_to 'Show', property %></td>
-    <td><%= link_to 'Edit', edit_property_path(property) %></td>
-    <td><%= link_to 'Destroy', property, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', [@group, property] %></td>
+    <td><%= link_to 'Edit', edit_group_property_path(@group, property) %></td>
+    <td><%= link_to 'Destroy', [@group, property], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Property', new_property_path %>
+<%= link_to 'New Property', new_group_property_path(@group) %>

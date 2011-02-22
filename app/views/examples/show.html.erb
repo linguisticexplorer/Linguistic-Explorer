@@ -5,10 +5,10 @@
   <%= @example.id %> <br />
   <% if @example.ling %>
     <b>Ling:</b> <br />
-    <%= link_to @example.ling.name, ling_path(@example.ling) %> <br />
+    <%= link_to @example.ling.name, group_ling_path(@group, @example.ling) %> <br />
   <% end %>
 </p>
 
 
-<%= link_to 'Edit', edit_example_path(@example) %> |
-<%= link_to 'Back', examples_path %>
+<%= link_to 'Edit', edit_group_example_path(@group, @example) %> |
+<%= link_to 'Back', group_examples_path(@group) %>

@@ -12,14 +12,14 @@
 <% @examples.each do |example| %>
   <tr>
     <td><%= example.id %></td>
-    <td><%= (link_to example.ling.name, ling_path(example.ling)) if example.ling %></td>
-    <td><%= link_to 'Show', example %></td>
-    <td><%= link_to 'Edit', edit_example_path(example) %></td>
-    <td><%= link_to 'Destroy', example, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= (link_to example.ling.name, group_ling_path(@group, example.ling)) if example.ling %></td>
+    <td><%= link_to 'Show', [@group, example] %></td>
+    <td><%= link_to 'Edit', edit_group_example_path(@group, example) %></td>
+    <td><%= link_to 'Destroy', [@group, example], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Example', new_example_path %>
+<%= link_to 'New Example', new_group_example_path(@group) %>
