@@ -17,7 +17,7 @@ Feature: Search Ling Prop Value Pair by Categories
     | Property 4    | Sentence 2  | no        | Phrasing    | 1     |
     When I go to the Syntactic Structures search page
 
-  Scenario: Search form with category
+  Scenario: View search form with depth and categories
     Then the select menu for "Languages 0" should contain the following:
     | option        |
     | Speaker 1     |
@@ -46,3 +46,31 @@ Feature: Search Ling Prop Value Pair by Categories
     | option            |
     | Property 3: yes   |
     | Property 4: no    |
+
+  Scenario: Basic depth search
+    When I select "Sentence 1" from "Languages 1"
+    And I press "Search"
+    Then I should see "Sentence 1"
+    And I should see "Property 3"
+    And I should see "yes"
+    And I should not see "Speaker 1"
+    And I should not see "Speaker 2"
+    And I should not see "Sentence 2"
+
+  Scenario: Basic categorized property search
+    When I select "Property 3" from "Phrasing Properties"
+    And I press "Search"
+    Then I should see "Sentence 1"
+    And I should see "Property 3"
+    And I should see "yes"
+    And I should not see "Property 1"
+    And I should not see "Property 2"
+    And I should not see "Property 4"
+
+  Scenario: Basic categorized property search
+    When I select "Property 3: yes" from "Phrasing Value Pairs"
+    And I press "Search"
+    Then I should see "Sentence 1"
+    And I should see "Property 3"
+    And I should see "yes"
+    And I should not see "no"

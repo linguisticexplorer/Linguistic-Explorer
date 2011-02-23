@@ -1,16 +1,12 @@
-class SearchResultSet
+module Searching
   include Enumerable
-
-  def initialize(params)
-    @params = params
-  end
 
   def each
     results.each { |r| yield r }
   end
 
   def results
-    select_lings.joins(:properties) & select_properties & select_lings_properties
+    select_lings & select_properties & select_lings_properties
   end
 
   private
@@ -28,15 +24,11 @@ class SearchResultSet
   end
 
   def selected_ling_ids
-    @params[:lings] || Ling.select("id")
+    @params[:lings] && @params[:lings].map(&:values).flatten || Ling.select("id").where(:group => @group)
   end
 
   def selected_prop_ids
-    if @params[:properties].present?
-      @params[:properties].map(&:values).flatten
-    else
-      Property.select("id")
-    end
+    @params[:properties] && @params[:properties].map(&:values).flatten || Property.select("id").where(:group => @group)
   end
 
   def selected_lings_prop_ids

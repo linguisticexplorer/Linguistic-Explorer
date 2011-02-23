@@ -1,4 +1,5 @@
 class Search
+  include Searching
 
   attr_accessor :lings, :properties, :prop_vals
 
@@ -41,10 +42,6 @@ class Search
 
   def has_ling_depth?
     group_lings.where(:depth => 1).any?
-  end
-
-  def results
-    @results ||= SearchResultSet.new(@params)
   end
 
   protected
