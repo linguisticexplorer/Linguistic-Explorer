@@ -7,9 +7,11 @@ class SearchesController < ApplicationController
 
   def create
     @search = Search.new(@group, params[:search])
-    render :show
+    # Check if search if valid
+    render :results
+  end
+  
+  def results
   end
 
-  def show
-  end
 end
