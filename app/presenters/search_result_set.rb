@@ -32,7 +32,11 @@ class SearchResultSet
   end
 
   def selected_prop_ids
-    @params[:properties] || Property.select("id")
+    if @params[:properties].present?
+      @params[:properties].map(&:values).flatten
+    else
+      Property.select("id")
+    end
   end
 
   def selected_lings_prop_ids
@@ -42,7 +46,7 @@ class SearchResultSet
       pairs = @params[:prop_vals].map(&:values).flatten.map { |str| str.split(":") }
       conditions = pairs.inject({:id => nil}) do |conds, pair|
         conds | { :property_id => pair.first, :value => pair.last }
-      end 
+      end
       relation = relation.where(conditions)
     end
     relation

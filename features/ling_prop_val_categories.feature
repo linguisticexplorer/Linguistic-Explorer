@@ -26,14 +26,14 @@ Feature: Search Ling Prop Value Pair by Categories
     | option        |
     | Sentence 1    |
     | Sentence 2    |
-    # And the select menu for "Demographic Properties" should contain the following:
-    # | option        |
-    # | Property 1    |
-    # | Property 2    |
-    # And the select menu for "Phrasing Properties" should contain the following:
-    # | option        |
-    # | Property 3    |
-    # | Property 4    |
+    And the select menu for "Demographic Properties" should contain the following:
+    | option        |
+    | Property 1    |
+    | Property 2    |
+    And the select menu for "Phrasing Properties" should contain the following:
+    | option        |
+    | Property 3    |
+    | Property 4    |
     And the select menu for "Demographic Value Pairs" should contain the following:
     | option            |
     | Property 1: yes   |

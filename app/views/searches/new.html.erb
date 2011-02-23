@@ -5,7 +5,7 @@
     <%- if @search.has_ling_depth? -%>
       <%- @search.ling_depths.each do |depth| -%>
         <%- ling_label  = "Languages #{depth}" -%>
-        <%= content_tag :field_set, :id => ling_label.underscorize do %>
+        <%= content_tag :fieldset, :id => ling_label.underscorize do %>
           <%= f.label :lings, ling_label, :for => search_options_label(ling_label) %>
           <%= f.select :lings, @search.ling_options(depth), {},
             :name => search_field_name(:lings, depth),
@@ -20,10 +20,25 @@
         <%= f.select :lings, @search.ling_options, {}, :multiple => true %>
       </fieldset>
     <%- end -%>
-    <fieldset>
-      <%= f.label :properties, "Properties" %>
-      <%= f.select :properties, @search.property_options, {}, :multiple => true %>
-    </fieldset>
+    
+    <%- if @search.prop_categories.any? -%>
+      <%- @search.prop_categories.each do |category| -%>
+        <%- prop_label = "#{category} Properties" -%>
+        <%= content_tag :fieldset, :id => prop_label.underscorize do %>
+          <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
+          <%= f.select :properties, @search.property_options(category), {}, 
+            :name => search_field_name(:properties, category),
+            :multiple => true,
+            :id => search_options_label(prop_label)
+          %>
+        <% end %>
+      <%- end -%>
+    <%- else -%>
+      <fieldset>
+        <%= f.label :properties, "Properties" %>
+        <%= f.select :properties, @search.property_options, {}, :multiple => true %>
+      </fieldset>
+    <%- end -%>
 
     <%- if @search.prop_categories.any? -%>
       <%- @search.prop_categories.each do |category| -%>

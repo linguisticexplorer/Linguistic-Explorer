@@ -13,14 +13,16 @@ class Search
     collection.map { |l| [l.name, l.id] }
   end
 
-  def property_options
-    group_properties.map { |p| [p.name, p.id] }
+  def property_options(category = nil)
+    collection = group_properties
+    collection = collection.select { |c| c.category == category } unless category.nil?
+    collection.map { |p| [p.name, p.id] }
   end
 
   def prop_val_options(category = nil)
-    prop_vals = group_prop_vals
-    prop_vals = prop_vals.select { |pv| pv.category == category } unless category.nil?
-    prop_vals.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
+    collection = group_prop_vals
+    collection = collection.select { |pv| pv.category == category } unless category.nil?
+    collection.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
   def ling_depths
