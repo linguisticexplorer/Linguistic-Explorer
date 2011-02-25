@@ -26,7 +26,10 @@ gem 'mongrel'
 # gem 'nokogiri'
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
-gem "meta_where"
+gem "meta_where", '1.0.1'
+
+# for Users and authentication
+gem 'devise', '1.1.7'
 
 # for Examples, arbitrary fields (key value pairs) and data
 gem 'preferences', '0.4.2', :git => 'git://github.com/bosh/preferences.git'
