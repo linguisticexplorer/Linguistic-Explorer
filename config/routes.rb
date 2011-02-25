@@ -1,5 +1,7 @@
 LinguisticExplorer::Application.routes.draw do
-  root :to => 'home#index', :as => :home
+  devise_for :users
+
+  root :to => 'home#index'
 
   resources :groups do
     resources :lings, :properties, :lings_properties, :examples
