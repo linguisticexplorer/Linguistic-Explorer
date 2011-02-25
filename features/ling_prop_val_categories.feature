@@ -11,10 +11,10 @@ Feature: Search Ling Prop Value Pair by Categories
     | Sentence 2  | Speaker 2   | 1     |
     And the following "Syntactic Structures" properties:
     | property name | ling name   | prop val  | category    | depth |
-    | Property 1    | Speaker 1   | yes       | Demographic | 0     |
-    | Property 2    | Speaker 2   | no        | Demographic | 0     |
-    | Property 3    | Sentence 1  | yes       | Phrasing    | 1     |
-    | Property 4    | Sentence 2  | no        | Phrasing    | 1     |
+    | Property 1    | Speaker 1   | Eastern   | Demographic | 0     |
+    | Property 2    | Speaker 2   | Western   | Demographic | 0     |
+    | Property 3    | Sentence 1  | verb      | Linguistic  | 1     |
+    | Property 4    | Sentence 2  | noun      | Linguistic  | 1     |
     When I go to the Syntactic Structures search page
 
   Scenario: View search form with depth and categories
@@ -30,47 +30,47 @@ Feature: Search Ling Prop Value Pair by Categories
     | option        |
     | Property 1    |
     | Property 2    |
-    And the select menu for "Phrasing Properties" should contain the following:
+    And the select menu for "Linguistic Properties" should contain the following:
     | option        |
     | Property 3    |
     | Property 4    |
     And the select menu for "Demographic Value Pairs" should contain the following:
-    | option            |
-    | Property 1: yes   |
-    | Property 2: no    |
+    | option                |
+    | Property 1: Eastern   |
+    | Property 2: Western   |
     And the select menu for "Demographic Value Pairs" should not contain the following:
     | option            |
-    | Property 3: yes   |
-    | Property 4: no    |
-    And the select menu for "Phrasing Value Pairs" should contain the following:
+    | Property 3: verb  |
+    | Property 4: noun  |
+    And the select menu for "Linguistic Value Pairs" should contain the following:
     | option            |
-    | Property 3: yes   |
-    | Property 4: no    |
+    | Property 3: verb  |
+    | Property 4: noun  |
 
   Scenario: Basic depth search
     When I select "Sentence 1" from "Languages 1"
     And I press "Search"
     Then I should see "Sentence 1"
     And I should see "Property 3"
-    And I should see "yes"
+    And I should see "verb"
     And I should not see "Speaker 1"
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
   Scenario: Basic categorized property search
-    When I select "Property 3" from "Phrasing Properties"
+    When I select "Property 3" from "Linguistic Properties"
     And I press "Search"
     Then I should see "Sentence 1"
     And I should see "Property 3"
-    And I should see "yes"
+    And I should see "verb"
     And I should not see "Property 1"
     And I should not see "Property 2"
     And I should not see "Property 4"
 
   Scenario: Basic categorized property search
-    When I select "Property 3: yes" from "Phrasing Value Pairs"
+    When I select "Property 3: verb" from "Linguistic Value Pairs"
     And I press "Search"
     Then I should see "Sentence 1"
     And I should see "Property 3"
-    And I should see "yes"
-    And I should not see "no"
+    And I should see "verb"  
+    And I should not see "noun"
