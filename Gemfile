@@ -45,7 +45,7 @@ group :development, :test do
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'ruby-debug'
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem "cucumber"
   gem "database_cleaner"
   gem "cucumber-rails",   '0.4.0.beta.1'
