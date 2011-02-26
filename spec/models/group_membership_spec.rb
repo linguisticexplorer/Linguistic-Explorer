@@ -17,7 +17,7 @@ describe GroupMembership do
     it "should allow a new user and group to associate" do
       group = Factory(:group)
       user = Factory(:user)
-      GroupMembership.create( :group_id => group.id, :user_id => user.id, :level => "editor" )
+      GroupMembership.create( :group_id => group.id, :user_id => user.id, :level => "editor" ).should have(0).errors
       GroupMembership.create( :group_id => group.id, :user_id => user.id, :level => "admin" ).should have(1).errors_on(:user_id)
     end
   end

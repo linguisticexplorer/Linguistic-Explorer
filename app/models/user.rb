@@ -10,5 +10,5 @@ class User < ActiveRecord::Base
   has_many :groups, :through => :group_memberships
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me
+#  attr_accessible :name, :password, :password_confirmation, :remember_me
 end

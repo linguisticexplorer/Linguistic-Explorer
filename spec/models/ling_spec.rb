@@ -36,6 +36,7 @@ describe Ling do
       @ling = Ling.first
       @property = mock_model(Property)
     end
+
     it "should create a new lings property if it does not exist" do
       lings_property = mock_model(LingsProperty)
       @ling.lings_properties.stub!(:exists?).and_return(false)

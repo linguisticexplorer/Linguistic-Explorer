@@ -10,7 +10,7 @@ describe User do
 
   describe "createable with combinations" do
     it "should allow sane looking names and emails and access_level" do
-      should_be_createable :with => { :name => "FIXME", :email => "FIXME@FiX.com", :access_level => "user" }
+      should_be_createable :with => { :name => "FIXME", :email => "FIXME@FiX.com", :password => "password", :access_level => "user" }
     end
   end
 end
