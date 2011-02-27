@@ -15,6 +15,9 @@ class Ling < ActiveRecord::Base
   has_many :lings_properties
   has_many :properties, :through => :lings_properties
 
+  scope :in_group, lambda { |group| where(:group => group) }
+  scope :at_depth, lambda { |depth| where(:depth => depth) }
+  
   def add_property(value, property)
     params = {:property_id => property.id, :value => value, :group_id => group.id}
     lings_properties.create(params) unless lings_properties.exists?(params)

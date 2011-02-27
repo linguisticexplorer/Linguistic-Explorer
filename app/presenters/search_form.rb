@@ -22,8 +22,8 @@ module SearchForm
     @ling_depths ||= group_lings.group(:depth).map(&:depth)
   end
 
-  def prop_categories
-    @prop_categories ||= group_properties.map(&:category).uniq
+  def property_categories
+    @property_categories ||= group_properties.map(&:category).uniq
   end
 
   def has_ling_depth?

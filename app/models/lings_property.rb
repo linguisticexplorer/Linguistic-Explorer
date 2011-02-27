@@ -16,6 +16,10 @@ class LingsProperty < ActiveRecord::Base
   def prop_name
     property.name
   end
+  
+  def prop_id
+    property.id
+  end
 
   def association_depth_match
     errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.depth

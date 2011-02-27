@@ -14,7 +14,7 @@
       <% end %>
     <%- end -%>
     
-    <%- @search.prop_categories.each do |category| -%>
+    <%- @search.property_categories.each do |category| -%>
       <%- prop_label = "#{category} Properties" -%>
       <%= content_tag :fieldset, :id => prop_label.underscorize do %>
         <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
@@ -26,7 +26,7 @@
       <% end %>
     <%- end -%>
 
-    <%- @search.prop_categories.each do |category| -%>
+    <%- @search.property_categories.each do |category, depth| -%>
       <%- prop_val_label  = "#{category} Value Pairs" -%>
       <%= content_tag :fieldset, :id => prop_val_label.underscorize do %>
         <%= f.label :prop_vals, prop_val_label, :for => search_options_label(prop_val_label) %>

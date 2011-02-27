@@ -6,4 +6,7 @@ class Property < ActiveRecord::Base
 
   belongs_to :group
   has_many :lings_properties
+  
+  scope :in_group, lambda { |group| where(:group => group) }
+  scope :at_depth, lambda { |depth| where(:depth => depth) }
 end

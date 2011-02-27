@@ -60,6 +60,7 @@ Feature: Search Ling Prop Value Pair by Categories
   Scenario: Basic categorized property search
     When I select "Property 3" from "Linguistic Properties"
     And I press "Search"
+    And the follow scenario is pending
     Then I should see "Sentence 1"
     And I should see "Property 3"
     And I should see "verb"
@@ -72,5 +73,5 @@ Feature: Search Ling Prop Value Pair by Categories
     And I press "Search"
     Then I should see "Sentence 1"
     And I should see "Property 3"
-    And I should see "verb"  
+    And I should see "verb"
     And I should not see "noun"
