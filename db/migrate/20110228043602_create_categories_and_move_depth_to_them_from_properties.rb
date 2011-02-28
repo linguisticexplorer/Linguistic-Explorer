@@ -9,16 +9,18 @@ class CreateCategoriesAndMoveDepthToThemFromProperties < ActiveRecord::Migration
       t.timestamps
     end
 
-    change_table  :properties do |t|
-      t.remove    :depth
-      t.integer   :category
+    change_table    :properties do |t|
+      t.remove      :depth
+      t.remove      :category
+      t.references  :category
     end
   end
 
   def self.down
     change_table  :properties do |t|
+      t.remove    :category_id
       t.integer   :depth
-      t.remove    :category
+      t.string    :category
     end
 
     drop_table :categories

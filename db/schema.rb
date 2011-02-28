@@ -79,7 +79,6 @@ ActiveRecord::Schema.define(:version => 20110228043602) do
     t.datetime "updated_at"
     t.integer  "group_id"
     t.integer  "category_id"
-    t.integer  "category"
   end
 
   create_table "users", :force => true do |t|
