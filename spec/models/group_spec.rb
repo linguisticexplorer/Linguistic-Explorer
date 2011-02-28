@@ -4,7 +4,7 @@ describe Group do
   describe "one-liners" do
     it_should_validate_presence_of :name
     it_should_validate_uniqueness_of :name
-    it_should_have_many :lings, :properties, :lings_properties, :examples
+    it_should_have_many :lings, :properties, :lings_properties, :examples, :categories
   end
 
   describe "should be createable" do

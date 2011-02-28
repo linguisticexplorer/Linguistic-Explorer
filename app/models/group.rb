@@ -5,4 +5,5 @@ class Group < ActiveRecord::Base
   has_many :properties
   has_many :lings_properties
   has_many :examples
+  has_many :categories
 end

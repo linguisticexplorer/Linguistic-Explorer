@@ -1,0 +1,10 @@
+id,name,depth,group,creator,timestamp
+0,zero,0,group_0,user_0_3,123
+1,one,1,group_0,user_0_2,456
+2,two,1,group_0,user_0_1,789
+3,three,0,group_1,user_1_3,101
+4,four,1,group_1,user_1_2,121
+5,five,1,group_1,user_1_1,314
+6,six,0,group_2,user_2_3,151
+7,seven,1,group_2,user_2_2,617
+8,eight,1,group_2,user_2_1,181

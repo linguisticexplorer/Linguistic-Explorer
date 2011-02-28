@@ -4,7 +4,7 @@ LinguisticExplorer::Application.routes.draw do
   root :to => 'home#index'
 
   resources :groups do
-    resources :lings, :properties, :lings_properties, :examples
+    resources :lings, :properties, :lings_properties, :examples, :categories
     
     resources :searches, :path => "search", 
       :path_names => { :new => "/" }, :only => [:new, :create] do

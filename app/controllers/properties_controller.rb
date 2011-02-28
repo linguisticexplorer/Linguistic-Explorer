@@ -28,8 +28,8 @@ class PropertiesController < ApplicationController
   def new
     @property = Property.new
     @categories = {
-          :depth_0 => Property.find_all_by_depth(0).map(&:category).uniq.sort,
-          :depth_1 => Property.find_all_by_depth(1).map(&:category).uniq.sort
+          :depth_0 => Category.find_all_by_depth(0),
+          :depth_1 => Category.find_all_by_depth(1)
     }
 
     respond_to do |format|
@@ -42,8 +42,8 @@ class PropertiesController < ApplicationController
   def edit
     @property = Property.find(params[:id])
     @categories = {
-          :depth_0 => Property.find_all_by_depth(0).map(&:category).uniq.sort,
-          :depth_1 => Property.find_all_by_depth(1).map(&:category).uniq.sort
+          :depth_0 => Category.find_all_by_depth(0),
+          :depth_1 => Category.find_all_by_depth(1)
     }
   end
 

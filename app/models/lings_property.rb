@@ -22,7 +22,7 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def association_depth_match
-    errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.depth
+    errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.category.depth
   end
 
   def group_association_match

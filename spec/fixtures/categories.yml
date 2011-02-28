@@ -1,0 +1,12 @@
+inclusive0:
+  name: demographix
+  group: inclusive
+  depth: 0
+inclusive1:
+  name: leenguistic
+  group: inclusive
+  depth: 1
+exclusive0:
+  name: coolness
+  group: exclusive
+  depth: 0

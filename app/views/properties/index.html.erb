@@ -4,7 +4,6 @@
   <tr>
     <th>Name</th>
     <th>Category</th>
-    <th>Depth</th>
     <th></th>
     <th></th>
     <th></th>
@@ -13,8 +12,7 @@
 <% @properties.each do |property| %>
   <tr>
     <td><%= property.name %></td>
-    <td><%= property.category %></td>
-    <td><%= property.depth %></td>
+    <td><%= link_to property.category.name, group_category_path(@group, property.category) %></td>
     <td><%= link_to 'Show', [@group, property] %></td>
     <td><%= link_to 'Edit', edit_group_property_path(@group, property) %></td>
     <td><%= link_to 'Destroy', [@group, property], :confirm => 'Are you sure?', :method => :delete %></td>

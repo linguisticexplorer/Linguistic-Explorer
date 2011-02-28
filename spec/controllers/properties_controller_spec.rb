@@ -30,8 +30,8 @@ describe PropertiesController do
         get :new, :group_id => groups(:inclusive).id
         cats = assigns(:categories)
         cats.should be_a Hash
-        cats[:depth_0].should include properties(:level0).category
-        cats[:depth_1].should include properties(:level1).category
+        cats[:depth_0].should include categories(:inclusive0)
+        cats[:depth_1].should include categories(:inclusive1)
       end
     end
   end
@@ -47,8 +47,8 @@ describe PropertiesController do
         get :edit, :id => properties(:valid), :group_id => groups(:inclusive).id
         cats = assigns(:categories)
         cats.should be_a Hash
-        cats[:depth_0].should include properties(:level0).category
-        cats[:depth_1].should include properties(:level1).category
+        cats[:depth_0].should include categories(:inclusive0)
+        cats[:depth_1].should include categories(:inclusive1)
       end
     end
   end
@@ -57,17 +57,17 @@ describe PropertiesController do
     describe "with valid params" do
       it "assigns a newly created property to @property" do
         lambda {
-          post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS', :depth => 0}, :group_id => groups(:inclusive).id
 
+          post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
           assigns(:property).should_not be_new_record
           assigns(:property).should be_valid
           assigns(:property).name.should == 'FROMSPACE'
-          assigns(:property).category.should == 'ROBOTS'
+          assigns(:property).category.should == categories(:inclusive0)
         }.should change(Property, :count).by(1)
       end
 
       it "redirects to the created property" do
-        post :create, :property => {'name' => 'FROMSPACE', 'category' => 'ROBOTS', :depth => 0}, :group_id => groups(:inclusive).id
+        post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_property_url(assigns(:group), assigns(:property)))
       end
     end
@@ -75,7 +75,7 @@ describe PropertiesController do
     describe "with invalid params" do
       it "does not save a new property" do
         lambda {
-          post :create, :property => {'name' => '', :depth => nil}, :group_id => groups(:inclusive).id
+          post :create, :property => {'name' => ''}, :group_id => groups(:inclusive).id
           assigns(:property).should_not be_valid
         }.should change(Property, :count).by(0)
       end
@@ -92,10 +92,10 @@ describe PropertiesController do
     describe "with valid params" do
       it "calls update with the passed params on the requested property" do
         property = properties(:valid)
-        property.should_receive(:update_attributes).with({'name' => 'ayb', 'category' => 'wutwut'}).and_return(true)
+        property.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
         Property.should_receive(:find).with(property.id).and_return(property)
 
-        put :update, :id => property.id, :property => {'name' => 'ayb', :category => 'wutwut'}, :group_id => groups(:inclusive).id
+        put :update, :id => property.id, :property => {'name' => 'ayb'}, :group_id => groups(:inclusive).id
       end
 
       it "assigns the requested property as @property" do

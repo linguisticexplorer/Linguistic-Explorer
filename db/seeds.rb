@@ -4,6 +4,7 @@
 require 'fastercsv'
 
 ling_list = {}
+cat_list = {}
 prop_list = {}
 
 def ling_name(name)
@@ -49,12 +50,22 @@ FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) 
   child.save!
 end
 
+# Create Categories
+FasterCSV.foreach(Rails.root.join("doc", "data", "Category.csv"), :headers => true) do |row|
+  name     = category_name(row["name"])
+  category = Category.find_or_initialize_by_name(name)
+  category.depth     = row["depth"]
+  category.group     = Group.find_by_name(group_name(row["group"]))
+  cat_list[row["name"]] = name
+
+  category.save!
+end
+
 # Create Properties
 FasterCSV.foreach(Rails.root.join("doc", "data", "Property.csv"), :headers => true) do |row|
   name     = prop_name(row["name"])
   property = Property.find_or_initialize_by_name(name)
-  property.depth     = row["depth"]
-  property.category  = category_name(row["category"])
+  property.category  = Category.find_by_name(cat_list[row["category"]])
   property.group     = Group.find_by_name(group_name(row["group"]))
   prop_list[row["id"]] = name
 
