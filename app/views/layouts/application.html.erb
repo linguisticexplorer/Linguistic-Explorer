@@ -16,6 +16,7 @@
     <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
   <% end %>
   <% if @group %>
+    <%= link_to @group.name, group_path(@group) %>
     <%= link_to "Lings", group_lings_path(@group) %>
     <%= link_to "Properties", group_properties_path(@group) %>
     <%= link_to "Categories", group_categories_path(@group) %>
