@@ -13,10 +13,14 @@ end
 
 Factory.define :property do |f|
   f.name "Adjective"
-  f.category "Grammar"
-  f.depth 0
+  f.association :category, :factory => :category
+  f.association :group, :factory => :group
+end
 
-  f.group
+Factory.define :category do |f|
+  f.name "Grammar"
+  f.depth 0
+  f.association :group, :factory => :group
 end
 
 Factory.define :group do |f|

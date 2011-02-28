@@ -4,9 +4,9 @@ Given /^the following "([^\"]*)" properties:$/ do |group_name, table|
 
   table.hashes.each do |attrs|
     prop_attrs = {}.tap do |opts|
+      cat_name = attrs.delete('category')
       opts[:name]      = attrs['property name']
-      opts[:category]  = attrs['category'] || "Default"
-      opts[:depth]     = attrs['depth'].to_i
+      opts[:category]  = Category.find_by_name(cat_name) || Factory(:category, :group => group)
       opts[:group]     = group
     end
     property = Property.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
