@@ -33,7 +33,6 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Retrieve sentence of speaker by linguistic property
   # a speaker is retrieved only if a sentence survives the linguistic query.
-  And the following scenario is pending
     When I select "Speaker 1" from "Languages 0"
     And I select "Speaker 2" from "Languages 0"
     And I select "Sentence 1" from "Languages 1"

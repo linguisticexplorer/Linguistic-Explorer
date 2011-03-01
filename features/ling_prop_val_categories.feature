@@ -50,23 +50,20 @@ Feature: Search Ling Prop Value Pair by Categories
   Scenario: Basic depth search
     When I select "Sentence 1" from "Languages 1"
     And I press "Search"
-    Then I should see "Sentence 1"
-    And I should see "Property 3"
-    And I should see "verb"
-    And I should not see "Speaker 1"
+    Then I should see the following search results:
+    | Languages     | Properties  | Value     |
+    | Speaker 1     | Property 1  | Eastern   |
+    | Sentence 1    | Property 3  | verb      |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
   Scenario: Basic categorized property search
     When I select "Property 3" from "Linguistic Properties"
     And I press "Search"
-    Then I should see "Sentence 1"
-    And I should see "Property 3"
-    And I should see "verb"
-    # Showing all related parent lings
-    But I should see "Speaker 1"
-    And I should see "Property 1"
-    And the following scenario is pending
+    Then I should see the following search results:
+    | Languages     | Properties  | Value     |
+    | Speaker 1     | Property 1  | Eastern   |
+    | Sentence 1    | Property 3  | verb      |
     And I should not see "Property 2"
     And I should not see "Property 4"
 
