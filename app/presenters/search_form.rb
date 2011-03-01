@@ -14,7 +14,7 @@ module SearchForm
 
   def prop_val_options(category = nil)
     collection = group_prop_vals
-    collection = collection.select { |pv| pv.category == category } unless category.nil?
+    collection = collection.select { |pv| pv.category_id.to_i == category.id } unless category.nil?
     collection.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
@@ -23,7 +23,7 @@ module SearchForm
   end
 
   def property_categories
-    @property_categories ||= group_properties.map(&:category).uniq
+    @property_categories ||= Category.in_group(@group)
   end
 
   def has_ling_depth?
@@ -40,11 +40,9 @@ module SearchForm
     @group_properties ||= Property.where(:group => @group)
   end
 
-  def group_prop_vals(category = nil)
-    @group_prop_vals ||= LingsProperty.select("properties.name, properties.category, lings_properties.value, properties.id AS property_id").
-      where(:group => @group).
-      joins(:property).
-      group("properties.id, lings_properties.value")
+  def group_prop_vals
+    @group_prop_vals ||= LingsProperty.select("properties.name, properties.category_id, lings_properties.value, properties.id AS property_id").
+      in_group(@group).joins(:property).group("properties.id, lings_properties.value")
   end
 
   def show_param

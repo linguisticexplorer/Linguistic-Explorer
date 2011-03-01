@@ -92,7 +92,7 @@ Feature: Search Lings for Any Property
   Scenario: Scope search to group
     Given the group "Phones"
     And the following lings and properties:
-    | name        | property_name | prop val  | depth | group   |
+    | name        | property_name | prop val  | depth | group   | 
     | Sentence 1  | Homonym       | yes       | 0     | Phones  |
     When I go to the Syntactic Structures search page
     Then I should not see "Phones"

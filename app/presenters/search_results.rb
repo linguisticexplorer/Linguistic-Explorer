@@ -27,18 +27,18 @@ module SearchResults
   end
 
   def selected_ling_ids(depth = nil)
-    ling_params_to_id(depth) || Ling.select("id").in_group(@group).at_depth(depth || [1, 2])
+    ling_params_to_id(depth) || Ling.select("lings.id").in_group(@group).at_depth(depth || [1, 2])
   end
 
   def selected_prop_ids(depth = nil)
-    prop_params_to_id(depth) || Property.select("id").in_group(@group).at_depth(depth || [1, 2])
+    prop_params_to_id(depth) || Property.select("properties.id").in_group(@group).at_depth(depth || [1, 2])
   end
 
   def selected_lings_prop_ids
     relation = LingsProperty.select("lings_properties.id")
 
-    depth_0_prop_ids  = selected_prop_ids("0").any? ? selected_prop_ids("0") : Property.select("id").in_group(@group).at_depth(0)
-    depth_1_prop_ids  = selected_prop_ids("1").any? ? selected_prop_ids("1") : Property.select("id").in_group(@group).at_depth(1)
+    depth_0_prop_ids  = selected_prop_ids("0").any? ? selected_prop_ids("0") : Property.select("properties.id").in_group(@group).at_depth(0)
+    depth_1_prop_ids  = selected_prop_ids("1").any? ? selected_prop_ids("1") : Property.select("properties.id").in_group(@group).at_depth(1)
 
     # collect ling prop vals for depth 0
       # where in selected ling ids for depth 0
@@ -106,6 +106,6 @@ module SearchResults
   end
 
   def group_prop_categories(depth)
-    Property.select("DISTINCT category").where(:group => @group, :depth => depth).map { |p| p.category.downcase }
+    Category.scoped.in_group(@group).at_depth(depth).map { |c| c.name.downcase }
   end
 end

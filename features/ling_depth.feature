@@ -45,4 +45,3 @@ Feature: Search Ling Prop Value Pair by Categories
     | Speaker 1     | Property 1  | Eastern   |
     | Sentence 1    | Property 3  | verb      |
     And I should not see "Speaker 2"
-  

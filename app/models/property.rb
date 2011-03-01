@@ -6,6 +6,11 @@ class Property < ActiveRecord::Base
   belongs_to :group
   belongs_to :category
   has_many :lings_properties
-  
+
   scope :in_group, lambda { |group| where(:group => group) }
+  scope :at_depth, lambda { |depth| joins(:category).where("categories.depth" => depth) }
+
+  def depth
+    category.depth
+  end
 end

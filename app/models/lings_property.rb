@@ -9,6 +9,8 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :property
   belongs_to :group
 
+  scope :in_group, lambda { |group| where(:group => group) }
+
   def ling_name
     ling.name
   end
@@ -22,7 +24,7 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def association_depth_match
-    errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.category.depth
+    errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.depth
   end
 
   def group_association_match

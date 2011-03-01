@@ -15,11 +15,11 @@
     <%- end -%>
     
     <%- @search.property_categories.each do |category| -%>
-      <%- prop_label = "#{category} Properties" -%>
+      <%- prop_label = "#{category.name} Properties" -%>
       <%= content_tag :fieldset, :id => prop_label.underscorize do %>
         <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
         <%= f.select :properties, @search.property_options(category), {}, 
-          :name => search_field_name(:properties, category),
+          :name => search_field_name(:properties, category.name),
           :multiple => true,
           :id => search_options_label(prop_label)
         %>
@@ -27,11 +27,11 @@
     <%- end -%>
 
     <%- @search.property_categories.each do |category, depth| -%>
-      <%- prop_val_label  = "#{category} Value Pairs" -%>
+      <%- prop_val_label  = "#{category.name} Value Pairs" -%>
       <%= content_tag :fieldset, :id => prop_val_label.underscorize do %>
         <%= f.label :prop_vals, prop_val_label, :for => search_options_label(prop_val_label) %>
         <%= f.select :prop_vals, @search.prop_val_options(category), {},
-          :name => search_field_name(:prop_vals, category),
+          :name => search_field_name(:prop_vals, category.name),
           :multiple => true,
           :id => search_options_label(prop_val_label) %>
       <% end %>

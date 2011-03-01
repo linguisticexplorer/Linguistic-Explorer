@@ -4,9 +4,10 @@ Given /^the following "([^\"]*)" properties:$/ do |group_name, table|
 
   table.hashes.each do |attrs|
     prop_attrs = {}.tap do |opts|
-      cat_name = attrs.delete('category')
+      cat_name = attrs.delete('category') || "Grammar"
       opts[:name]      = attrs['property name']
-      opts[:category]  = Category.find_by_name(cat_name) || Factory(:category, :group => group)
+      opts[:category]  = Category.find_by_name(cat_name) ||
+        Factory(:category, :name => cat_name, :group => group, :depth => attrs['depth'])
       opts[:group]     = group
     end
     property = Property.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
@@ -27,9 +28,9 @@ Given /^the following lings and properties:$/ do |table|
     ling = group.lings.find_by_name(attrs['name']) || Factory(:ling, ling_attrs.merge(:group => group))
 
     prop_attrs = {}.tap do |opts|
+      cat_name = attrs.delete('category') || "Grammar"
       opts[:name]      = attrs['property_name']      unless attrs['property_name'].blank?
-      opts[:category]  = attrs['category']  unless attrs['category'].blank?
-      opts[:depth]     = attrs['depth'].to_i || 0
+      opts[:category]  = Category.find_by_name(cat_name) || Factory(:category, :name => cat_name, :group => group, :depth => "0")
       opts[:group]     = group
     end
 

@@ -60,11 +60,13 @@ Feature: Search Ling Prop Value Pair by Categories
   Scenario: Basic categorized property search
     When I select "Property 3" from "Linguistic Properties"
     And I press "Search"
-    And the follow scenario is pending
     Then I should see "Sentence 1"
     And I should see "Property 3"
     And I should see "verb"
-    And I should not see "Property 1"
+    # Showing all related parent lings
+    But I should see "Speaker 1"
+    And I should see "Property 1"
+    And the following scenario is pending
     And I should not see "Property 2"
     And I should not see "Property 4"
 
