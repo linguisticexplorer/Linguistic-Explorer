@@ -10,6 +10,8 @@ module NavigationHelpers
 
     when /the home\s?page/
       '/'
+    when /the registration page/
+      new_user_registration_path
     when /the new search page/
       new_search_path
     when /the (.+) search page/
