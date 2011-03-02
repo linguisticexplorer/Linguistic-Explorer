@@ -6,7 +6,7 @@ class CreateGroupsAndAddGroupIdFieldToTheWorld < ActiveRecord::Migration
       t.timestamps
     end
 
-    [:lings, :properties, :lings_properties, :examples].each do |table_name|
+    @@modified_tables.each do |table_name|
       change_table table_name do |t|
         t.integer :group_id
       end
