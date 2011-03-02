@@ -1,5 +1,4 @@
-class ExamplesController < ApplicationController
-  before_filter :load_group_from_params
+class ExamplesController < GroupDataController
 
   # GET /examples
   # GET /examples.xml
@@ -50,11 +49,11 @@ class ExamplesController < ApplicationController
   # POST /examples
   # POST /examples.xml
   def create
-    @example = Example.new(params[:example].merge({:group_id => @group.id}))
+    @example = Example.new(params[:example].merge({:group_id => current_group.id}))
 
     respond_to do |format|
       if @example.save
-        format.html { redirect_to([@group, @example], :notice => 'Example was successfully created.') }
+        format.html { redirect_to([current_group, @example], :notice => 'Example was successfully created.') }
         format.xml  { render :xml => @example, :status => :created, :location => @example }
       else
         format.html { render :action => "new" }
@@ -70,7 +69,7 @@ class ExamplesController < ApplicationController
 
     respond_to do |format|
       if @example.update_attributes(params[:example])
-        format.html { redirect_to([@group, @example], :notice => 'Example was successfully updated.') }
+        format.html { redirect_to([current_group, @example], :notice => 'Example was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -86,7 +85,7 @@ class ExamplesController < ApplicationController
     @example.destroy
 
     respond_to do |format|
-      format.html { redirect_to(group_examples_url(@group)) }
+      format.html { redirect_to(group_examples_url(current_group)) }
       format.xml  { head :ok }
     end
   end

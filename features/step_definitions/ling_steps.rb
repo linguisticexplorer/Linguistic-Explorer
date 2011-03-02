@@ -1,3 +1,12 @@
+When /^(?:|I )follow the "([^"]*)" model link for (?:|the group )"([^"]*)" (?:with depth "([^"]*)")(?: within "([^"]*)")?$/ do |model,group_name,depth,selector|
+    with_scope(selector) do
+      group = Group.find_by_name(group_name)
+      model_field = "#{model}#{depth ? depth : ""}_name"
+      link = group.send(model_field.downcase).to_s
+      click_link(link)
+    end
+end
+
 Given /^the following lings:$/ do |table|
   table.hashes.each do |attrs|
     group_name = attrs.delete('group')

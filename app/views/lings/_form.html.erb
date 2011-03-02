@@ -1,5 +1,5 @@
-<%= form_for([@group, @ling]) do |f| %>
-  <%= hidden_field_tag :group_id, @group.id %>
+<%= form_for([current_group, @ling]) do |f| %>
+  <%= hidden_field_tag :group_id, current_group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this ling from being saved:</h2>

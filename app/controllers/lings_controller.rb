@@ -1,7 +1,5 @@
-class LingsController < ApplicationController
+class LingsController < GroupDataController
   helper :groups
-
-  before_filter :load_group_from_params
 
   # GET /lings
   # GET /lings.xml
@@ -28,7 +26,7 @@ class LingsController < ApplicationController
   # GET /lings/new
   # GET /lings/new.xml
   def new
-    @ling = Ling.new(:group_id => @group)
+    @ling = Ling.new(:group_id => current_group)
     @lings = Ling.find_all_by_depth(0)
 
     respond_to do |format|
@@ -47,12 +45,12 @@ class LingsController < ApplicationController
   # POST /lings.xml
   def create
     @ling = Ling.new(params[:ling]) do |ling|
-      ling.group = @group
+      ling.group = current_group
     end
 
     respond_to do |format|
       if @ling.save
-        format.html { redirect_to([@group, @ling], :notice => 'Ling was successfully created.') }
+        format.html { redirect_to([current_group, @ling], :notice => 'Ling was successfully created.') }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
         format.html { render :action => "new" }
@@ -68,7 +66,7 @@ class LingsController < ApplicationController
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
-        format.html { redirect_to(group_ling_url(@group, @ling), :notice => 'Ling was successfully updated.') }
+        format.html { redirect_to(group_ling_url(current_group, @ling), :notice => 'Ling was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -84,7 +82,7 @@ class LingsController < ApplicationController
     @ling.destroy
 
     respond_to do |format|
-      format.html { redirect_to(group_lings_url(@group)) }
+      format.html { redirect_to(group_lings_url(current_group)) }
       format.xml  { head :ok }
     end
   end

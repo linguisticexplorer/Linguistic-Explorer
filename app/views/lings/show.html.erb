@@ -9,29 +9,29 @@
 
   <% if @ling.depth == 1 && @ling.parent %>
     <b>Parent:</b> <br />
-    <%= link_to @ling.parent.name, group_ling_path(@group, @ling.parent) %> <br />
+    <%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> <br />
   <% elsif @ling.depth == 0 && !@ling.children.empty?%>
     <b>Children:</b> <br />
     <% @ling.children.each do |child| %>
-      <%= link_to child.name, group_ling_path(@group, child) %> <br />
+      <%= link_to child.name, group_ling_path(current_group, child) %> <br />
     <% end %>
   <% end %>
 
   <% if !@ling.examples.empty? %>
     <b>Examples:</b> <br />
     <% @ling.examples.each do |example| %>
-      <%= link_to example.id, group_example_path(@group, example) %> <br />
+      <%= link_to example.id, group_example_path(current_group, example) %> <br />
     <% end %>
   <% end %>
 
   <% if !@ling.lings_properties.empty? %>
     <b>Values:</b> <br />
     <% @ling.lings_properties.each do |lp| %>
-      <%= link_to "#{lp.property.name}: #{lp.value}", group_lings_property_path(@group, lp) %> <br />
+      <%= link_to "#{lp.property.name}: #{lp.value}", group_lings_property_path(current_group, lp) %> <br />
     <% end %>
   <% end %>
 </p>
 
 
-<%= link_to 'Edit', edit_group_ling_path(@group, @ling) %> |
-<%= link_to 'Back', group_lings_path(@group) %>
+<%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+<%= link_to 'Back', group_lings_path(current_group) %>

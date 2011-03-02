@@ -60,7 +60,7 @@ describe LingsController do
 
       it "redirects to the created ling" do
         post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
-        response.should redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
+        response.should redirect_to(group_ling_url(session[:group], assigns(:ling)))
       end
     end
 
@@ -97,7 +97,7 @@ describe LingsController do
 
       it "redirects to the ling" do
         put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
-        response.should redirect_to(group_ling_url(assigns(:group), lings(:english)))
+        response.should redirect_to(group_ling_url(session[:group], lings(:english)))
       end
     end
 
@@ -128,7 +128,7 @@ describe LingsController do
 
     it "redirects to the lings list" do
       delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:english)
-      response.should redirect_to(group_lings_url(assigns(:group)))
+      response.should redirect_to(group_lings_url(session[:group]))
     end
   end
 end

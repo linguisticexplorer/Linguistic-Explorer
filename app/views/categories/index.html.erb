@@ -13,13 +13,13 @@
   <tr>
     <td><%= category.name %></td>
     <td><%= category.depth %></td>
-    <td><%= link_to 'Show', [@group, category] %></td>
-    <td><%= link_to 'Edit', edit_group_category_path(@group, category) %></td>
-    <td><%= link_to 'Destroy', [@group, category], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', [current_group, category] %></td>
+    <td><%= link_to 'Edit', edit_group_category_path(current_group, category) %></td>
+    <td><%= link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Category', new_group_category_path(@group) %>
+<%= link_to 'New Category', new_group_category_path(current_group) %>

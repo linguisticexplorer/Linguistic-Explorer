@@ -4,11 +4,11 @@
   <b>ID:</b> <br />
   <%= @example.id %> <br />
   <% if @example.ling %>
-    <b>Ling:</b> <br />
-    <%= link_to @example.ling.name, group_ling_path(@group, @example.ling) %> <br />
+    <b><%= current_group.ling0_name %>:</b> <br />
+    <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
   <% end %>
 </p>
 
 
-<%= link_to 'Edit', edit_group_example_path(@group, @example) %> |
-<%= link_to 'Back', group_examples_path(@group) %>
+<%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |
+<%= link_to 'Back', group_examples_path(current_group) %>

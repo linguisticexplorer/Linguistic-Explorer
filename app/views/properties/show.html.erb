@@ -4,9 +4,9 @@
   <b>Name:</b> <br />
   <%= @property.name %> <br />
   <b>Category:</b> <br />
-  <%= link_to @property.category.name, group_category_path(@group, @property.category) %> <br />
+  <%= link_to @property.category.name, group_category_path(current_group, @property.category) %> <br />
 </p>
 
 
-<%= link_to 'Edit', edit_group_property_path(@group, @property) %> |
-<%= link_to 'Back', group_properties_path(@group) %>
+<%= link_to 'Edit', edit_group_property_path(current_group, @property) %> |
+<%= link_to 'Back', group_properties_path(current_group) %>

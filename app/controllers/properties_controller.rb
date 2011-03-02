@@ -1,5 +1,4 @@
-class PropertiesController < ApplicationController
-  before_filter :load_group_from_params
+class PropertiesController < GroupDataController
 
   # GET /properties
   # GET /properties.xml
@@ -50,11 +49,11 @@ class PropertiesController < ApplicationController
   # POST /properties
   # POST /properties.xml
   def create
-    @property = Property.new(params[:property].merge({:group_id => @group.id}))
+    @property = Property.new(params[:property].merge({:group_id => current_group.id}))
 
     respond_to do |format|
       if @property.save
-        format.html { redirect_to(group_property_url(@group, @property), :notice => 'Property was successfully created.') }
+        format.html { redirect_to(group_property_url(current_group, @property), :notice => 'Property was successfully created.') }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
         format.html { render :action => "new" }
@@ -70,7 +69,7 @@ class PropertiesController < ApplicationController
 
     respond_to do |format|
       if @property.update_attributes(params[:property])
-        format.html { redirect_to(group_property_url(@group, @property), :notice => 'Property was successfully updated.') }
+        format.html { redirect_to(group_property_url(current_group, @property), :notice => 'Property was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -86,7 +85,7 @@ class PropertiesController < ApplicationController
     @property.destroy
 
     respond_to do |format|
-      format.html { redirect_to(group_properties_url(@group)) }
+      format.html { redirect_to(group_properties_url(current_group)) }
       format.xml  { head :ok }
     end
   end

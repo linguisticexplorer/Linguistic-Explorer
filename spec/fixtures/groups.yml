@@ -1,4 +1,22 @@
 inclusive:
   name: Friend Computer
+  ling0_name:          Ling0
+  ling1_name:          Ling1
+  property_name:       Property
+  category_name:       Category
+  lings_property_name: Value
+  example_name:        Example
+  example_lp_name:     EVal
+  depth_maximum:       1
+  privacy:             privacy
 exclusive:
   name: Forever Alone
+  ling0_name:          Ling0
+  ling1_name:          Ling1
+  property_name:       Property
+  category_name:       Category
+  lings_property_name: Value
+  example_name:        Example
+  example_lp_name:     EVal
+  depth_maximum:       1
+  privacy:             privacy

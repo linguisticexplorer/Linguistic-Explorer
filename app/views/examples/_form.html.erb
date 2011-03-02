@@ -1,7 +1,7 @@
-<%= form_for([@group, @example]) do |f| %>
+<%= form_for([current_group, @example]) do |f| %>
   <% if @example.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@example.errors.count, "error") %> prohibited this example from being saved:</h2>
+      <h2><%= pluralize(@example.errors.count, "error") %> prohibited this #{current_group.example_name} from being saved:</h2>
 
       <ul>
       <% @example.errors.full_messages.each do |msg| %>
@@ -12,7 +12,7 @@
   <% end %>
 
   <div class="field">
-    <%= f.label :ling %><br />
+    <%= f.label current_group.ling0_name %><br />
     <%= f.text_field :ling_id %>
   </div>
 

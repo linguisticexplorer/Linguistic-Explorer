@@ -2,17 +2,34 @@
 
 <table>
   <tr>
-    <th>Name</th>
     <th></th>
+    <th>Search</th>
+    <th>Ling0</th>
+    <th>Ling1</th>
+    <th>Properties</th>
+    <th>Categories</th>
+    <th>Values</th>
+    <th>ExampleValues</th>
+    <th>Examples</th>
+    <th>MaxDepth</th>
+    <th>Privacy</th>
     <th></th>
     <th></th>
   </tr>
 
 <% @groups.each do |group| %>
   <tr>
-    <td><%= group.name %></td>
+    <td><%= link_to group.name, group %></td>
     <td><%= link_to 'Search', new_group_search_path(group) %></td>
-    <td><%= link_to 'Show', group %></td>
+    <td><%= link_to group.ling0_name, group_lings_path(group) %></td>
+    <td><%= link_to group.ling1_name, group_lings_path(group) %></td>
+    <td><%= link_to group.property_name, group_properties_path(group) %></td>
+    <td><%= link_to group.category_name, group_categories_path(group) %></td>
+    <td><%= link_to group.lings_property_name, group_lings_properties_path(group) %></td>
+    <td><%= link_to (group.example_lp_name.to_s << " TODO"), group %></td>
+    <td><%= link_to group.example_name, group_examples_path(group) %></td>
+    <td><%= group.depth_maximum %></td>
+    <td><%= group.privacy %></td>
     <td><%= link_to 'Edit', edit_group_path(group) %></td>
     <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

@@ -1,6 +1,6 @@
-<h1>Editing example</h1>
+<h1>Editing <%= current_group.example_name %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Show', [@group, @example] %> |
-<%= link_to 'Back', group_examples_path(@group) %>
+<%= link_to 'Show', [current_group, @example] %> |
+<%= link_to 'Back', group_examples_path(current_group) %>

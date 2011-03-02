@@ -52,7 +52,7 @@ describe CategoriesController do
 
       it "redirects to the created category" do
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
-        response.should redirect_to(group_category_url(assigns(:group), assigns(:category)))
+        response.should redirect_to(group_category_url(session[:group], assigns(:category)))
       end
     end
 
@@ -88,7 +88,7 @@ describe CategoriesController do
 
       it "redirects to the category" do
         put :update, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-        response.should redirect_to(group_category_url(assigns(:group), categories(:inclusive0)))
+        response.should redirect_to(group_category_url(session[:group], categories(:inclusive0)))
       end
     end
 
@@ -119,7 +119,7 @@ describe CategoriesController do
 
     it "redirects to the categories list" do
       delete :destroy, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-      response.should redirect_to(group_categories_url(assigns(:group)))
+      response.should redirect_to(group_categories_url(session[:group]))
     end
   end
 end

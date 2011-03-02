@@ -15,15 +15,18 @@
   <% else %>
     <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
   <% end %>
-  <% if @group %>
-    <%= link_to @group.name, group_path(@group) %>
-    <%= link_to "Lings", group_lings_path(@group) %>
-    <%= link_to "Properties", group_properties_path(@group) %>
-    <%= link_to "Categories", group_categories_path(@group) %>
-    <%= link_to "Values", group_lings_properties_path(@group) %>
-    <%= link_to "Examples", group_examples_path(@group) %>
+  <% if current_group %>
+    <%= link_to current_group.name, current_group %>
+    <%= link_to 'Search', new_group_search_path(current_group) %>
+    <%= link_to current_group.ling0_name, group_lings_path(current_group) %>
+    <%= link_to current_group.ling1_name, group_lings_path(current_group) %>
+    <%= link_to current_group.property_name, group_properties_path(current_group) %>
+    <%= link_to current_group.category_name, group_categories_path(current_group) %>
+    <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
+    <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
+    <%= link_to current_group.example_name, group_examples_path(current_group) %>
   <% else %>
-    Go select a group!
+    <%= link_to "Select a group", groups_path %>
   <% end %>
 
 </div>

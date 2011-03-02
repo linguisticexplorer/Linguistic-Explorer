@@ -1,4 +1,4 @@
-<%= form_for([@group, @lings_property]) do |f| %>
+<%= form_for([current_group, @lings_property]) do |f| %>
   <% if @lings_property.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@lings_property.errors.count, "error") %> prohibited this lings_property from being saved:</h2>

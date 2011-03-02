@@ -1,5 +1,4 @@
-class CategoriesController < ApplicationController
-  before_filter :load_group_from_params
+class CategoriesController < GroupDataController
 
   # GET /categories
   # GET /categories.xml
@@ -42,11 +41,11 @@ class CategoriesController < ApplicationController
   # POST /categories
   # POST /categories.xml
   def create
-    @category = Category.new(params[:category].merge({:group_id => @group.id}))
+    @category = Category.new(params[:category].merge({:group_id => current_group.id}))
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to(group_category_url(@group, @category), :notice => 'Category was successfully created.') }
+        format.html { redirect_to(group_category_url(current_group, @category), :notice => 'Category was successfully created.') }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
       else
         format.html { render :action => "new" }
@@ -62,7 +61,7 @@ class CategoriesController < ApplicationController
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
-        format.html { redirect_to(group_category_url(@group, @category), :notice => 'Category was successfully updated.') }
+        format.html { redirect_to(group_category_url(current_group, @category), :notice => 'Category was successfully updated.') }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
@@ -78,7 +77,7 @@ class CategoriesController < ApplicationController
     @category.destroy
 
     respond_to do |format|
-      format.html { redirect_to(group_categories_url(@group)) }
+      format.html { redirect_to(group_categories_url(current_group)) }
       format.xml  { head :ok }
     end
   end

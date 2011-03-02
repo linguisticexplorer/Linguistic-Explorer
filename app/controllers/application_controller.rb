@@ -1,9 +1,8 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery
+  helper_method :current_group
 
-#  before_filter :authenticate_user!
-
-  def load_group_from_params
-    @group = Group.find(params[:group_id])
+  def current_group
+    nil # A stub so that the nav bar always gets a nil if current_group isn't defined/available
   end
 end

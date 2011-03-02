@@ -2,15 +2,15 @@
 
 <p>
   <b>Lings_Property:</b> <br />
-  <%= link_to @lings_property.ling.name, group_ling_path(@group, @lings_property.ling) %> <br />
+  <%= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling) %> <br />
 
   <b>Property:</b> <br />
-  <%= link_to @lings_property.property.name, group_property_path(@group, @lings_property.property) %> <br />
+  <%= link_to @lings_property.property.name, group_property_path(current_group, @lings_property.property) %> <br />
 
   <b>Value:</b> <br />
   <%= @lings_property.value %> <br />
 </p>
 
 
-<%= link_to 'Edit', edit_group_lings_property_path(@group, @lings_property) %> |
-<%= link_to 'Back', group_lings_properties_path(@group) %>
+<%= link_to 'Edit', edit_group_lings_property_path(current_group, @lings_property) %> |
+<%= link_to 'Back', group_lings_properties_path(current_group) %>

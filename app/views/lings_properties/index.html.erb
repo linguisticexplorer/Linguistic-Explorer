@@ -12,16 +12,16 @@
 
 <% @lings_properties.each do |lings_property| %>
   <tr>
-    <td><%= link_to lings_property.ling.name, group_ling_path(@group, lings_property.ling) %></td>
-    <td><%= link_to lings_property.property.name, group_property_path(@group, lings_property.property) %><td>
+    <td><%= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling) %></td>
+    <td><%= link_to lings_property.property.name, group_property_path(current_group, lings_property.property) %><td>
     <td><%= lings_property.value %></td>
-    <td><%= link_to 'Show', [@group, lings_property] %></td>
-    <td><%= link_to 'Edit', edit_group_lings_property_path(@group, lings_property) %></td>
-    <td><%= link_to 'Destroy', [@group, lings_property], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= link_to 'Show', [current_group, lings_property] %></td>
+    <td><%= link_to 'Edit', edit_group_lings_property_path(current_group, lings_property) %></td>
+    <td><%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Lings_Property', new_group_lings_property_path(@group) %>
+<%= link_to 'New Lings_Property', new_group_lings_property_path(current_group) %>

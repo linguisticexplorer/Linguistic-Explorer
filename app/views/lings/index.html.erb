@@ -14,14 +14,14 @@
   <tr>
     <td><%= ling.name %></td>
     <td><%= ling.depth %></td>
-    <td><%= (link_to ling.parent.name, group_ling_path(@group, ling.parent)) if ling.parent %></td>
-    <td><%= link_to 'Show', [@group, ling] %></td>
-    <td><%= link_to 'Edit', edit_group_ling_path(@group, ling) %></td>
-    <td><%= link_to 'Destroy', [@group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><%= (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent %></td>
+    <td><%= link_to 'Show', [current_group, ling] %></td>
+    <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>
+    <td><%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Ling', new_group_ling_path(@group) %>
+<%= link_to 'New Ling', new_group_ling_path(current_group) %>

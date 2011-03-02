@@ -1,22 +1,67 @@
 <%= form_for(@group) do |f| %>
-  <% if @group.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
+    <% if @group.errors.any? %>
+        <div id="error_explanation">
+            <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
 
-      <ul>
-      <% @group.errors.full_messages.each do |msg| %>
-        <li><%= msg %></li>
-      <% end %>
-      </ul>
+            <ul>
+                <% @group.errors.full_messages.each do |msg| %>
+                    <li><%= msg %></li>
+                <% end %>
+            </ul>
+        </div>
+    <% end %>
+
+    <div class="field">
+        <%= f.label :name %><br />
+        <%= f.text_field :name %>
     </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
-  </div>
+    <div class="field">
+        <%= f.label "Depth 0 Ling name" %><br />
+        <%= f.text_field :ling0_name %>
+    </div>
 
-  <div class="actions">
-    <%= f.submit %>
-  </div>
+    <div class="field">
+        <%= f.label "Depth 1 Ling name" %><br />
+        <%= f.text_field :ling1_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Property name" %><br />
+        <%= f.text_field :property_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Category name" %><br />
+        <%= f.text_field :category_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Lings Property name" %><br />
+        <%= f.text_field :lings_property_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Example name" %><br />
+        <%= f.text_field :example_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Example Lings Property name" %><br />
+        <%= f.text_field :example_lp_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Depth Maximum" %><br />
+        <%= f.text_field :depth_maximum %>
+    </div>
+
+    <div class="field">
+        <%= f.label "Privacy level" %><br />
+        <%= f.text_field :privacy %>
+    </div>
+
+    <div class="actions">
+        <%= f.submit %>
+    </div>
 <% end %>

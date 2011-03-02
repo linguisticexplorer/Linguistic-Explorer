@@ -1,12 +1,11 @@
-class SearchesController < ApplicationController
-  before_filter :load_group_from_params
+class SearchesController < GroupDataController
 
   def new
-    @search = Search.new(@group, params[:search])
+    @search = Search.new(current_group, params[:search])
   end
 
   def create
-    @search = Search.new(@group, params[:search])
+    @search = Search.new(current_group, params[:search])
     # Check if search if valid
     render :results
   end
