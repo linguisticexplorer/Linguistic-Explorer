@@ -6,28 +6,32 @@ module SearchResults
   end
 
   def results
-    LingsProperty.where("lings_properties.id" => selected_lings_prop_ids).joins([:ling, :property])
+    LingsProperty.where("lings_properties.id" => selected_lings_prop_ids).includes([:ling, :property])
   end
 
   private
 
-  def selected_lings_prop_ids
-    relation = LingsProperty.select("lings_properties.id")
+  def parent
+    Ling::PARENT
+  end
 
-    depth_0_vals  = relation.select("lings_properties.ling_id").
-                      where(:ling_id => selected_ling_ids(0), :property_id => selected_prop_ids(0))
+  def child
+    Ling::CHILD
+  end
+
+  def selected_lings_prop_ids
+    relation      = LingsProperty.ids
+
+    depth_0_vals  = relation.ling_ids.where(:ling_id => selected_ling_ids(parent), :property_id => selected_prop_ids(parent))
 
     depth_1_vals  = []
 
-    if selected_ling_ids(1).any?
-      depth_1_vals  = relation.select("lings_properties.ling_id").
-                        where(:ling_id => selected_ling_ids(1), :property_id => selected_prop_ids(1))
+    if selected_ling_ids(child).any?
+      depth_1_vals  = relation.ling_ids.where(:ling_id => selected_ling_ids(child), :property_id => selected_prop_ids(child))
 
       # intersection
-      depth_1_vals  = relation.select("lings_properties.ling_id, lings.parent_id").
-                        joins(:ling).
-                        where("lings_properties.id" => depth_1_vals.map(&:id),
-                          "lings.parent_id" => depth_0_vals.map(&:ling_id))
+      depth_1_vals  = relation.ling_ids.where("lings_properties.id" => depth_1_vals.map(&:id),
+                          "lings.parent_id" => depth_0_vals.map(&:ling_id)) & Ling.parent_ids
 
       depth_0_vals  = relation.where("lings_properties.id" => depth_0_vals.map(&:id),
                         "lings_properties.ling_id" => depth_1_vals.map(&:parent_id))

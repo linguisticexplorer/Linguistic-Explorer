@@ -1,21 +1,15 @@
 module SearchForm
 
-  def ling_options(depth = nil)
-    collection = group_lings
-    collection = collection.where(:depth => depth) unless depth.nil?
-    collection.map { |l| [l.name, l.id] }
+  def ling_options(depth)
+    group_lings_at_depth(depth).map { |l| [l.name, l.id] }
   end
 
-  def property_options(category = nil)
-    collection = group_properties
-    collection = collection.select { |c| c.category == category } unless category.nil?
-    collection.map { |p| [p.name, p.id] }
+  def property_options(category)
+    group_properties_in_category(category).map { |p| [p.name, p.id] }
   end
 
-  def prop_val_options(category = nil)
-    collection = group_prop_vals
-    collection = collection.select { |pv| pv.category_id.to_i == category.id } unless category.nil?
-    collection.map { |p| ["#{p.name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
+  def prop_val_options(category)
+    group_prop_vals_in_category(category).map { |p| ["#{p.prop_name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
   def ling_depths
@@ -26,23 +20,34 @@ module SearchForm
     @property_categories ||= Category.in_group(@group)
   end
 
-  def has_ling_depth?
-    group_lings.where(:depth => 1).any?
+  def has_ling_children?
+    group_lings_at_depth(Ling::CHILD).any?
   end
 
   protected
 
+  def group_lings_at_depth(depth)
+    group_lings.select { |l| l.depth.to_i == depth.to_i }
+  end
+
+  def group_properties_in_category(category)
+    group_properties.select { |c| c.category_id.to_i == category.id }
+  end
+
+  def group_prop_vals_in_category(category)
+    group_prop_vals.select { |pv| pv.category_id.to_i == category.id }
+  end
+
   def group_lings
-    @group_lings ||= Ling.where(:group => @group)
+    @group_lings ||= Ling.in_group(@group)
   end
 
   def group_properties
-    @group_properties ||= Property.where(:group => @group)
+    @group_properties ||= Property.in_group(@group)
   end
 
   def group_prop_vals
-    @group_prop_vals ||= LingsProperty.select("properties.name, properties.category_id, lings_properties.value, properties.id AS property_id").
-      in_group(@group).joins(:property).group("properties.id, lings_properties.value")
+    @group_prop_vals ||= LingsProperty.in_group(@group).joins(:property).group("properties.id, lings_properties.value").includes(:property)
   end
 
   def show_param

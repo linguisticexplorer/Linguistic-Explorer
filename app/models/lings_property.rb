@@ -10,17 +10,23 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :group
 
   scope :in_group, lambda { |group| where(:group => group) }
+  scope :ids, select("#{self.table_name}.id")
+  scope :ling_ids, select("#{self.table_name}.ling_id")
 
   def ling_name
     ling.name
   end
-  
+
   def prop_name
     property.name
   end
-  
+
   def prop_id
     property.id
+  end
+
+  def category_id
+    property.category_id
   end
 
   def association_depth_match

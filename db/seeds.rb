@@ -22,7 +22,7 @@ def group_name(name)
 end
 
 def category_name(name)
-  "category #{name}".titleize
+  name.titleize
 end
 
 puts "Loading data"
