@@ -19,7 +19,7 @@ module SearchForm
   end
 
   def ling_depths
-    @ling_depths ||= group_lings.group(:depth).map(&:depth)
+    @ling_depths ||= Ling.select("DISTINCT depth").map(&:depth)
   end
 
   def property_categories
