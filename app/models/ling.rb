@@ -18,7 +18,9 @@ class Ling < ActiveRecord::Base
   scope :in_group, lambda { |group| where(:group => group) }
   scope :at_depth, lambda { |depth| where(:depth => depth) }
 
+  scope :ids, select("#{self.table_name}.id")
   scope :parent_ids, select("#{self.table_name}.parent_id")
+  scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
 
   DEPTHS = [
     PARENT = 0,

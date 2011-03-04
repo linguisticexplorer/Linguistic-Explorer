@@ -6,7 +6,7 @@ module SearchResults
   end
 
   def results
-    LingsProperty.where("lings_properties.id" => selected_lings_prop_ids).includes([:ling, :property])
+    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property])
   end
 
   private
@@ -20,32 +20,39 @@ module SearchResults
   end
 
   def selected_lings_prop_ids
-    relation      = LingsProperty.ids
+    depth_0_vals  = filter_depth_0_lings_prop_ids
+    depth_1_vals  = filter_depth_1_lings_prop_ids
 
-    depth_0_vals  = relation.ling_ids.where(:ling_id => selected_ling_ids(parent), :property_id => selected_prop_ids(parent))
+    filtered_vals = intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
 
-    depth_1_vals  = []
-
-    if selected_ling_ids(child).any?
-      depth_1_vals  = relation.ling_ids.where(:ling_id => selected_ling_ids(child), :property_id => selected_prop_ids(child))
-
-      # intersection
-      depth_1_vals  = relation.ling_ids.where("lings_properties.id" => depth_1_vals.map(&:id),
-                          "lings.parent_id" => depth_0_vals.map(&:ling_id)) & Ling.parent_ids
-
-      depth_0_vals  = relation.where("lings_properties.id" => depth_0_vals.map(&:id),
-                        "lings_properties.ling_id" => depth_1_vals.map(&:parent_id))
-    end
-
-    filtered = depth_0_vals + depth_1_vals
-
-    relation = if prop_val_params.any?
-                  relation.where(prop_val_params_conditions & {:id => filtered})
-                else
-                  filtered
-                end
+    relation      = filter_by_lings_prop_params(filtered_vals)
 
     relation.map(&:id)
+  end
+
+  def filter_depth_0_lings_prop_ids
+    LingsProperty.ids.ling_ids.where(:ling_id => queryable_ling_ids(parent), :property_id => queryable_prop_ids(parent))
+  end
+
+  def filter_depth_1_lings_prop_ids
+    queryable_ling_ids(child).any? ? LingsProperty.ids.ling_ids.where(:ling_id => queryable_ling_ids(child), :property_id => queryable_prop_ids(child)) : []
+  end
+
+  def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
+    if depth_1_vals.any?
+      depth_1_vals  = ( LingsProperty.ids.with_id(depth_1_vals.map(&:id)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id)))
+      depth_0_vals  =   LingsProperty.ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id))
+    end
+
+    depth_0_vals + depth_1_vals
+  end
+
+  def all_lings_prop_ids
+    @all_lings_prop_ids ||= LingsProperty.ids
+  end
+
+  def filter_by_lings_prop_params(filtered)
+    lings_prop_params.any? ? LingsProperty.ids.where(lings_prop_param_conditions & {:id => filtered}) : filtered
   end
 
   def ling_params
@@ -56,8 +63,8 @@ module SearchResults
     @params[:properties] || []
   end
 
-  def prop_val_params
-    @params[:prop_vals] || []
+  def lings_prop_params
+    @params[:lings_props] || []
   end
 
   def ling_params_to_hash
@@ -68,21 +75,34 @@ module SearchResults
     prop_params.inject({}) { |memo, h| memo.merge(h) }
   end
 
-  def selected_ling_ids(depth)
-    param_ids = ling_params_to_hash[depth.to_s]
-    param_ids || Ling.select("lings.id").in_group(@group).at_depth(depth.to_i)
+  def queryable_ling_ids(depth)
+    ling_params_to_hash[depth.to_s] || all_group_ling_ids(depth)
   end
 
-  def selected_prop_ids(depth)
-    param_ids = prop_params_to_hash.reject { |k,v| !group_prop_categories(depth).include?(k) }.values.flatten
-    param_ids && param_ids.any? ? param_ids : Property.select("properties.id").in_group(@group).at_depth(depth.to_i)
+  def all_group_ling_ids(depth)
+    Ling.select("lings.id").in_group(@group).at_depth(depth)
   end
 
-  def prop_val_params_conditions
-    pairs = prop_val_params.map(&:values).flatten.map { |str| str.split(":") }
-    conditions = pairs.inject({:id => nil}) do |conds, pair|
+  def queryable_prop_ids(depth)
+    prop_param_ids_at_depth(depth).any? ? prop_param_ids_at_depth(depth) : all_group_prop_ids(depth)
+  end
+
+  def prop_param_ids_at_depth(depth)
+    prop_params_to_hash.reject { |k,v| !group_prop_categories(depth).include?(k) }.values.flatten || []
+  end
+
+  def all_group_prop_ids(depth)
+    Property.ids.in_group(@group).at_depth(depth)
+  end
+
+  def lings_prop_param_conditions
+    conditions = lings_prop_param_pairs.inject({:id => nil}) do |conds, pair|
       conds | { :property_id => pair.first, :value => pair.last }
     end
+  end
+
+  def lings_prop_param_pairs
+    lings_prop_params.map(&:values).flatten.map { |str| str.split(":") }
   end
 
   def group_prop_categories(depth)
@@ -90,6 +110,6 @@ module SearchResults
   end
 
   def group_categories
-    @group_categories ||= Category.scoped.in_group(@group)
+    @group_categories ||= Category.in_group(@group)
   end
 end

@@ -8,8 +8,8 @@ module SearchForm
     group_properties_in_category(category).map { |p| [p.name, p.id] }
   end
 
-  def prop_val_options(category)
-    group_prop_vals_in_category(category).map { |p| ["#{p.prop_name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
+  def lings_prop_options(category)
+    group_lings_props_in_category(category).map { |p| ["#{p.prop_name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
   end
 
   def ling_depths
@@ -34,8 +34,8 @@ module SearchForm
     group_properties.select { |c| c.category_id.to_i == category.id }
   end
 
-  def group_prop_vals_in_category(category)
-    group_prop_vals.select { |pv| pv.category_id.to_i == category.id }
+  def group_lings_props_in_category(category)
+    group_lings_props.select { |pv| pv.category_id.to_i == category.id }
   end
 
   def group_lings
@@ -46,8 +46,8 @@ module SearchForm
     @group_properties ||= Property.in_group(@group)
   end
 
-  def group_prop_vals
-    @group_prop_vals ||= LingsProperty.in_group(@group).joins(:property).group("properties.id, lings_properties.value").includes(:property)
+  def group_lings_props
+    @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group("properties.id, lings_properties.value").includes(:property)
   end
 
   def show_param

@@ -27,13 +27,13 @@
     <%- end -%>
 
     <%- @search.property_categories.each do |category, depth| -%>
-      <%- prop_val_label  = "#{category.name} Value Pairs" -%>
-      <%= content_tag :fieldset, :id => prop_val_label.underscorize do %>
-        <%= f.label :prop_vals, prop_val_label, :for => search_options_label(prop_val_label) %>
-        <%= f.select :prop_vals, @search.prop_val_options(category), {},
-          :name => search_field_name(:prop_vals, category.name),
+      <%- lings_prop_label  = "#{category.name} Value Pairs" -%>
+      <%= content_tag :fieldset, :id => lings_prop_label.underscorize do %>
+        <%= f.label :lings_props, lings_prop_label, :for => search_options_label(lings_prop_label) %>
+        <%= f.select :lings_props, @search.lings_prop_options(category), {},
+          :name => search_field_name(:lings_props, category.name),
           :multiple => true,
-          :id => search_options_label(prop_val_label) %>
+          :id => search_options_label(lings_prop_label) %>
       <% end %>
     <%- end -%>
 
