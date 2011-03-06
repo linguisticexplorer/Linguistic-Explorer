@@ -49,7 +49,7 @@ class LingsPropertiesController < GroupDataController
 
     respond_to do |format|
       if @lings_property.save
-        format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => 'Lings_property was successfully created.') }
+        format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => (current_group.lings_property_name + ' was successfully created.')) }
         format.xml  { render :xml => @lings_property, :status => :created, :location => @lings_property }
       else
         format.html { render :action => "new" }
@@ -65,7 +65,7 @@ class LingsPropertiesController < GroupDataController
 
     respond_to do |format|
       if @lings_property.update_attributes(params[:lings_property])
-        format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => 'Lings_property was successfully updated.') }
+        format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => (current_group.lings_property_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

@@ -50,7 +50,7 @@ class LingsController < GroupDataController
 
     respond_to do |format|
       if @ling.save
-        format.html { redirect_to([current_group, @ling], :notice => 'Ling was successfully created.') }
+        format.html { redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully created.')) }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
         format.html { render :action => "new" }
@@ -66,7 +66,7 @@ class LingsController < GroupDataController
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
-        format.html { redirect_to(group_ling_url(current_group, @ling), :notice => 'Ling was successfully updated.') }
+        format.html { redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully updated.') ) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

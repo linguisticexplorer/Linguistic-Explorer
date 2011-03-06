@@ -45,7 +45,7 @@ class CategoriesController < GroupDataController
 
     respond_to do |format|
       if @category.save
-        format.html { redirect_to(group_category_url(current_group, @category), :notice => 'Category was successfully created.') }
+        format.html { redirect_to(group_category_url(current_group, @category), :notice => (current_group.category_name + ' was successfully created.')) }
         format.xml  { render :xml => @category, :status => :created, :location => @category }
       else
         format.html { render :action => "new" }
@@ -61,7 +61,7 @@ class CategoriesController < GroupDataController
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
-        format.html { redirect_to(group_category_url(current_group, @category), :notice => 'Category was successfully updated.') }
+        format.html { redirect_to(group_category_url(current_group, @category), :notice => (current_group.category_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }

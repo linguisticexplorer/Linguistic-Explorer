@@ -16,7 +16,7 @@ Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
   end
 end
 
-When /^(?:|I )follow the "([^"]*)" model link for (?:|the group )"([^"]*)" (?:with depth "([^"]*)")(?: within "([^"]*)")?$/ do |model,group_name,depth,selector|
+When /^(?:|I )follow the "([^"]*)" (?:with depth "([^"]*)" )model link for (?:|the group )"([^"]*)"(?: within "([^"]*)")?$/ do |model,depth,group_name,selector|
     with_scope(selector) do
       group = Group.find_by_name(group_name)
       model_field = "#{model}#{depth ? depth : ""}_name"
