@@ -1,7 +1,8 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   def create
+    email = params[:user].delete(:email)
     build_resource
-    resource.email = params[:user][:email]
+    resource.email = email
     resource.access_level = "user"
 
     if resource.save
