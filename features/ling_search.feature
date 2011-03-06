@@ -2,7 +2,9 @@ Feature: Search Lings for Any Property
 
   Background:
     Given I am a visitor
-    And the group "Syntactic Structures"
+    And the group "Syntactic Structures" with the following ling names:
+    | ling0_name  |
+    | Languages   |
     And the following "Syntactic Structures" lings:
     | name        | depth |
     | English     | 0     |
@@ -40,7 +42,7 @@ Feature: Search Lings for Any Property
     And I press "Search"
     Then I should see "Results"
     Then I should see the following search results:
-    | Languages     | Properties        |
+    | Lings         | Properties        |
     | English       | Adjective Noun    |
     And I should not see "Spanish"
     And I should not see "German"
@@ -55,7 +57,7 @@ Feature: Search Lings for Any Property
     And I press "Search"
     Then I should see "Results"
     Then I should see the following search results:
-    | Languages     | Properties        |
+    | Lings         | Properties        |
     | English       | Adjective Noun    |
     | Spanish       | Adjective Noun    |
     And I should not see "German"
@@ -68,7 +70,7 @@ Feature: Search Lings for Any Property
     And I press "Search"
     Then I should see "Results"
     Then I should see the following search results:
-    | Languages     | Properties        |
+    | Lings         | Properties        |
     | English       | Adjective Noun    |
     | Spanish       | Adjective Noun    |
     And I should not see "German"
@@ -83,7 +85,7 @@ Feature: Search Lings for Any Property
     And I press "Search"
     Then I should see "Results"
     Then I should see the following search results:
-    | Languages     | Properties        |
+    | Lings         | Properties        |
     | English       | Adjective Degree  |
     | German        | Degree Adjective  |
     And I should not see "Spanish"
@@ -92,7 +94,7 @@ Feature: Search Lings for Any Property
   Scenario: Scope search to group
     Given the group "Phones"
     And the following lings and properties:
-    | name        | property_name | prop val  | depth | group   | 
+    | name        | property_name | prop val  | depth | group   |
     | Sentence 1  | Homonym       | yes       | 0     | Phones  |
     When I go to the Syntactic Structures search page
     Then I should not see "Phones"

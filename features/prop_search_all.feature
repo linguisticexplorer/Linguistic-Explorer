@@ -29,7 +29,7 @@ Feature: Search with All
     And I choose "All" within "#demographic_properties"
     And I press "Search"
     Then I should see the following search results:
-    | Languages     | Properties        | Value     |
+    | Lings         | Properties        | Value     |
     | Speaker 1     | Property 1        | Eastern   |
     | Speaker 1     | Property 2        | Western   |
     And I should not see "Speaker 2"

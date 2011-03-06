@@ -1,20 +1,3 @@
-When /^(?:|I )follow the "([^"]*)" model link for (?:|the group )"([^"]*)" (?:with depth "([^"]*)")(?: within "([^"]*)")?$/ do |model,group_name,depth,selector|
-    with_scope(selector) do
-      group = Group.find_by_name(group_name)
-      model_field = "#{model}#{depth ? depth : ""}_name"
-      link = group.send(model_field.downcase).to_s
-      click_link(link)
-    end
-end
-
-Given /^the following lings:$/ do |table|
-  table.hashes.each do |attrs|
-    group_name = attrs.delete('group')
-    group = Group.find_by_name(group_name) || Factory(:group, :name => group_name)
-    group.lings.find_by_name(attrs['name']) || Factory(:ling, attrs.merge(:group => group))
-  end
-end
-
 Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
   group = Group.find_by_name(group_name)
   raise "Group #{group_name} does not exist? Did you remember to create it first?" if group.nil?
@@ -31,4 +14,13 @@ Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
     group.lings.find_by_name(attrs['name']) ||
       Factory(:ling, attrs.merge(:parent => parent, :depth => attrs['depth'], :group => group))
   end
+end
+
+When /^(?:|I )follow the "([^"]*)" model link for (?:|the group )"([^"]*)" (?:with depth "([^"]*)")(?: within "([^"]*)")?$/ do |model,group_name,depth,selector|
+    with_scope(selector) do
+      group = Group.find_by_name(group_name)
+      model_field = "#{model}#{depth ? depth : ""}_name"
+      link = group.send(model_field.downcase).to_s
+      click_link(link)
+    end
 end

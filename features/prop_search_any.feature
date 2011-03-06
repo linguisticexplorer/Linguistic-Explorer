@@ -19,7 +19,7 @@ Feature: Search with Any
     When I go to the Syntactic Structures search page
     And I press "Search"
     Then I should see the following search results:
-    | Languages     | Properties        | Value     |
+    | Lings         | Properties        | Value     |
     | English       | Adjective Noun    | yes       |
     | English       | Adjective Degree  | yes       |
     | Spanish       | Adjective Noun    | yes       |
@@ -31,7 +31,7 @@ Feature: Search with Any
     And I press "Search"
     Then I should see "Results"
     Then I should see the following search results:
-    | Languages     | Properties        | Value     |
+    | Lings         | Properties        | Value     |
     | English       | Adjective Noun    | yes       |
     | Spanish       | Adjective Noun    | yes       |
     And I should not see "Adjective Degree"

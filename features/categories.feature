@@ -2,7 +2,9 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Background:
     Given I am a visitor
-    And the group "Syntactic Structures"
+    And the group "Syntactic Structures" with the following ling names:
+    | ling0_name  | ling1_name  |
+    | Speaker     | Sentence    |
     And the following "Syntactic Structures" lings:
     | name        | parent      | depth |
     | Speaker 1   |             | 0     |
@@ -18,11 +20,11 @@ Feature: Search Ling Prop Value Pair by Categories
     When I go to the Syntactic Structures search page
 
   Scenario: View search form with depth and categories
-    Then the select menu for "Languages 0" should contain the following:
+    Then the select menu for "Speakers" should contain the following:
     | option        |
     | Speaker 1     |
     | Speaker 2     |
-    And the select menu for "Languages 1" should contain the following:
+    And the select menu for "Sentences" should contain the following:
     | option        |
     | Sentence 1    |
     | Sentence 2    |
@@ -48,10 +50,10 @@ Feature: Search Ling Prop Value Pair by Categories
     | Property 4: noun  |
 
   Scenario: Basic depth search
-    When I select "Sentence 1" from "Languages 1"
+    When I select "Sentence 1" from "Sentences"
     And I press "Search"
     Then I should see the following search results:
-    | Languages     | Properties  | Value     |
+    | Lings         | Properties  | Value     |
     | Speaker 1     | Property 1  | Eastern   |
     | Sentence 1    | Property 3  | verb      |
     And I should not see "Speaker 2"
@@ -61,7 +63,7 @@ Feature: Search Ling Prop Value Pair by Categories
     When I select "Property 3" from "Linguistic Properties"
     And I press "Search"
     Then I should see the following search results:
-    | Languages     | Properties  | Value     |
+    | Lings         | Properties  | Value     |
     | Speaker 1     | Property 1  | Eastern   |
     | Sentence 1    | Property 3  | verb      |
     And I should not see "Property 2"

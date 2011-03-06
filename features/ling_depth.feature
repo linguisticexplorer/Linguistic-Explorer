@@ -2,7 +2,9 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Background:
     Given I am a visitor
-    And the group "Syntactic Structures"
+    And the group "Syntactic Structures" with the following ling names:
+    | ling0_name  | ling1_name  |
+    | Speaker     | Sentence    |
     And the following "Syntactic Structures" lings:
     | name        | parent      | depth |
     | Speaker 1   |             | 0     |
@@ -19,11 +21,11 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Retrieve speaker with demographic property
   # a sentence is retrieved only if the speaker of that sentence survives the demographic query
-    When I select "Speaker 1" from the "Ling" model with depth "0"'s selector for "Syntactic Structures"
-    And  I select "Speaker 2" from the "Ling" model with depth "0"'s selector for "Syntactic Structures"
-    And  I select "Sentence 1" from the "Ling" model with depth "1"'s selector for "Syntactic Structures"
-    And  I select "Sentence 2" from the "Ling" model with depth "1"'s selector for "Syntactic Structures"
-    And  I select "Property 1" from the property model with category "Demographic"'s selector for "Syntactic Structures"
+    When I select "Speaker 1" from "Speakers"
+    And  I select "Speaker 2" from "Speakers"
+    And  I select "Sentence 1" from "Sentences"
+    And  I select "Sentence 2" from "Sentences"
+    And  I select "Property 1" from "Demographic Properties"
     And  I press "Search"
     Then I should see the following search results:
     | Lings         | Properties  | Value     |
@@ -33,11 +35,11 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Retrieve sentence of speaker by linguistic property
   # a speaker is retrieved only if a sentence survives the linguistic query.
-    When I select "Speaker 1" from the "Ling" model with depth "0"'s selector for "Syntactic Structures"
-    And I select "Speaker 2" from the "Ling" model with depth "0"'s selector for "Syntactic Structures"
-    And I select "Sentence 1" from the "Ling" model with depth "1"'s selector for "Syntactic Structures"
-    And I select "Sentence 2" from the "Ling" model with depth "1"'s selector for "Syntactic Structures"
-    And I select "Property 3" from the property model with category "Linguistic"'s selector for "Syntactic Structures"
+    When I select "Speaker 1" from "Speakers"
+    And I select "Speaker 2" from "Speakers"
+    And I select "Sentence 1" from "Sentences"
+    And I select "Sentence 2" from "Sentences"
+    And I select "Property 3" from "Linguistic Properties"
     And I press "Search"
     Then I should see the following search results:
     | Lings         | Properties  | Value     |
