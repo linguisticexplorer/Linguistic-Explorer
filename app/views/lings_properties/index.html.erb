@@ -1,11 +1,10 @@
-<h1>Listing Lings_Properties</h1>
+<h1>Listing <% current_group.lings_property_name.pluralize %></h1>
 
 <table>
   <tr>
     <th>Ling</th>
-    <th>Property</th>
-    <th>Value</th>
-    <th></th>
+    <th><% current_group.property_name %></th>
+    <th><% current_group.lings_property_name %></th>
     <th></th>
     <th></th>
   </tr>
@@ -14,8 +13,7 @@
   <tr>
     <td><%= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling) %></td>
     <td><%= link_to lings_property.property.name, group_property_path(current_group, lings_property.property) %><td>
-    <td><%= lings_property.value %></td>
-    <td><%= link_to 'Show', [current_group, lings_property] %></td>
+    <td><%= link_to lings_property.value, [current_group, lings_property] %></td>
     <td><%= link_to 'Edit', edit_group_lings_property_path(current_group, lings_property) %></td>
     <td><%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
@@ -24,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New Lings_Property', new_group_lings_property_path(current_group) %>
+<%= link_to "New #{current_group.lings_property_name}", new_group_lings_property_path(current_group) %>

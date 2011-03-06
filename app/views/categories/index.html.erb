@@ -1,4 +1,4 @@
-<h1>Listing categories</h1>
+<h1>Listing <%= current_group.category_name.pluralize %></h1>
 
 <table>
   <tr>
@@ -22,4 +22,4 @@
 
 <br />
 
-<%= link_to 'New Category', new_group_category_path(current_group) %>
+<%= link_to "New #{current_group.category_name}", new_group_category_path(current_group) %>

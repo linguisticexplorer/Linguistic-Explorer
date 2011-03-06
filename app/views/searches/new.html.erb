@@ -3,7 +3,7 @@
   <%= form_for :search, :url => group_searches_path(current_group) do |f| %>
     <%= render :partial => 'fields_to_show' %>
     <%- @search.ling_depths.each do |depth| -%>
-      <%- ling_label  = @search.has_ling_children? ? "Languages #{depth}" : "Languages" -%>
+      <%- ling_label  = @search.has_ling_children? ? "#{current_group.ling_name_for_depth(depth).pluralize }".titleize : current_group.ling0_name -%>
       <%= content_tag :fieldset, :id => ling_label.underscorize do %>
         <%= f.label :lings, ling_label, :for => search_options_label(ling_label) %>
         <%= f.select :lings, @search.ling_options(depth), {},
@@ -15,7 +15,7 @@
     <%- end -%>
     
     <%- @search.property_categories.each do |category| -%>
-      <%- prop_label = "#{category.name} Properties" -%>
+      <%- prop_label = "#{category.name} #{current_group.property_name.pluralize }".titleize -%>
       <%= content_tag :fieldset, :id => prop_label.underscorize do %>
         <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
         <%= f.select :properties, @search.property_options(category), {}, 

@@ -1,7 +1,7 @@
 <%= form_for([current_group, @property]) do |f| %>
   <% if @property.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@property.errors.count, "error") %> prohibited this property from being saved:</h2>
+      <h2><%= pluralize(@property.errors.count, "error") %> prohibited this <% current_group.property_name %> from being saved:</h2>
 
       <ul>
       <% @property.errors.full_messages.each do |msg| %>
@@ -17,7 +17,7 @@
   </div>
 
   <div class="field">
-    <%= f.label :category %><br />
+    <%= f.label current_group.category_name %><br />
     <%= f.text_field :category_id %>
   </div>
 

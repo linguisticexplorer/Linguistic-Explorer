@@ -73,6 +73,23 @@ When /^(?:|I )fill in the following(?: within "([^"]*)")?:$/ do |selector, field
   end
 end
 
+When /^(?:|I )select "([^"]*)" from the "([^"]*)" model with depth "([^"]*)"'s selector for (?:|the group )"([^"]*)"(?: within "([^"]*)")?$/ do |value,model,depth,group_name,selector|
+    with_scope(selector) do
+      group = Group.find_by_name(group_name)
+      model_field = "#{model}#{depth ? depth : ""}_name"
+      field = group.send(model_field.downcase).to_s.pluralize.titleize
+      select(value, :from => field)
+    end
+end
+
+When /^(?:|I )select "([^"]*)" from the property model with category "([^"]*)"'s selector for (?:|the group )"([^"]*)"(?: within "([^"]*)")?$/ do |value,category,group_name,selector|
+    with_scope(selector) do
+      group = Group.find_by_name(group_name)
+      field = (category + " " + group.property_name).pluralize.titleize
+      select(value, :from => field)
+    end
+end
+
 When /^(?:|I )select "([^"]*)" from "([^"]*)"(?: within "([^"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
     select(value, :from => field)

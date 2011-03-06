@@ -1,7 +1,12 @@
 <fieldset>
-  <%= label_tag     "search[show][ling]", "Include language" %>
-  <%= check_box_tag "search[show][ling]", "1", true %>
+  <%= label_tag     "search[show][ling][0]", "Include #{current_group.ling0_name}" %>
+  <%= check_box_tag "search[show][ling][0]", "1", true %>
 
-  <%= label_tag     "search[show][property]", "Include property" %>
+  <% if current_group.depth_maximum >= 1 %>
+    <%= label_tag     "search[show][ling][1]", "Include #{current_group.ling1_name}" %>
+    <%= check_box_tag "search[show][ling][1]", "1", true %>
+  <% end %>
+
+  <%= label_tag     "search[show][property]", "Include #{current_group.property_name}" %>
   <%= check_box_tag "search[show][property]", "1", true %>
 </fieldset>

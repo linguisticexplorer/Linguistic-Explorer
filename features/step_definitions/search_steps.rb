@@ -4,7 +4,7 @@ end
 
 Then /^I should see the following search results:$/ do |table|
   table.hashes.each do |row|
-    ling  = Ling.find_by_name(row["Languages"])
+    ling  = Ling.find_by_name(row["Lings"])
     prop  = Property.find_by_name(row["Properties"])
 
     scope = "".tap do |s|

@@ -1,31 +1,32 @@
 <p id="notice"><%= notice %></p>
 
 <p>
+
+  <b>Type:</b> <br />
+  <%= current_group.ling_name_for_depth(@ling.depth) %> <br />
+
   <b>Name:</b> <br />
   <%= @ling.name %> <br />
 
-  <b>Depth:</b> <br />
-  <%= @ling.depth %> <br />
-
   <% if @ling.depth == 1 && @ling.parent %>
-    <b>Parent:</b> <br />
+    <b><% current_group.ling0_name %>:</b> <br />
     <%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> <br />
   <% elsif @ling.depth == 0 && !@ling.children.empty?%>
-    <b>Children:</b> <br />
+    <b><% current_group.ling1_name.pluralize %>:</b> <br />
     <% @ling.children.each do |child| %>
       <%= link_to child.name, group_ling_path(current_group, child) %> <br />
     <% end %>
   <% end %>
 
   <% if !@ling.examples.empty? %>
-    <b>Examples:</b> <br />
+    <b><% current_group.example_name.pluralize %>:</b> <br />
     <% @ling.examples.each do |example| %>
       <%= link_to example.id, group_example_path(current_group, example) %> <br />
     <% end %>
   <% end %>
 
   <% if !@ling.lings_properties.empty? %>
-    <b>Values:</b> <br />
+    <b><% current_group.lings_property_name %>:</b> <br />
     <% @ling.lings_properties.each do |lp| %>
       <%= link_to "#{lp.property.name}: #{lp.value}", group_lings_property_path(current_group, lp) %> <br />
     <% end %>

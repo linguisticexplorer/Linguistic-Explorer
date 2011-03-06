@@ -1,4 +1,8 @@
-<h1>Editing ling</h1>
+<% if current_group.depth_maximum == 0 %>
+    <h1>Editing <%= current_group.ling0_name %></h1>
+<% elsif current_group.depth_maximum >= 0 %>
+    <h1>Editing <%= current_group.ling0_name %> or <%= current_group.ling1_name %></h1>
+<% end %>
 
 <%= render 'form' %>
 

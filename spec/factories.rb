@@ -25,4 +25,5 @@ end
 
 Factory.define :group do |f|
   f.name "The Best Group"
+  f.depth_maximum 1
 end

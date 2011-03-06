@@ -6,14 +6,12 @@
     <th><%= current_group.ling0_name %></th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @examples.each do |example| %>
   <tr>
-    <td><%= example.id %></td>
+    <td><%= link_to example.id, [current_group, example] %></td>
     <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling %></td>
-    <td><%= link_to 'Show', [current_group, example] %></td>
     <td><%= link_to 'Edit', edit_group_example_path(current_group, example) %></td>
     <td><%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

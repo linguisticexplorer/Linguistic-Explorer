@@ -1,14 +1,16 @@
 <h2>Results</h2>
 <div class="table spacing">
   <div class="row">
-    <div class="cell">Languages</div>
-    <div class="cell">Properties</div>
-    <div class="cell">Values</div>
+    <div class="cell">Ling</div>
+    <div class="cell">Ling Type</div>
+    <div class="cell"><% current_group.property_name.pluralize.titleize %></div>
+    <div class="cell"><% current_group.lings_property_name.pluralize.titleize %></div>
   </div>
   
   <%- @search.results.each do |result| -%>
     <%= content_tag :div, search_result_attributes(result) do %>
       <div class="cell"><%= result.ling_name %></div>
+      <div class="cell"><%= current_group.ling_name_for_depth(result.ling.depth) %></div>
       <div class="cell"><%= result.prop_name %></div>
       <div class="cell"><%= result.value %></div>
     <% end %>
