@@ -13,16 +13,29 @@
         %>
       <% end %>
     <%- end -%>
-    
+
     <%- @search.property_categories.each do |category| -%>
       <%- prop_label = "#{category.name} #{current_group.property_name.pluralize }".titleize -%>
       <%= content_tag :fieldset, :id => prop_label.underscorize do %>
-        <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
-        <%= f.select :properties, @search.property_options(category), {}, 
-          :name => search_field_name(:properties, category.name),
-          :multiple => true,
-          :id => search_options_label(prop_label)
-        %>
+        <div>
+          <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
+          <%= f.select :properties, @search.property_options(category), {},
+            :name => search_field_name(:properties, category.name),
+            :multiple => true,
+            :id => search_options_label(prop_label)
+          %>
+        </div>
+        <div>
+          <%= f.label "group", "Any", :for => grouping_label(category.name, "any") %>
+          <%= f.radio_button "group", "any", :checked => true,
+            :id => grouping_label(category.name, "any"),
+            :name => grouping_field_name(category.id) %>
+          <%= f.label "group", "All", :for => grouping_label(category.name, "all") %>
+          <%= f.radio_button "group", "all",
+            :id => grouping_label(category.name, "all"),
+            :name => grouping_field_name(category.id) %>
+        </div>
+
       <% end %>
     <%- end -%>
 

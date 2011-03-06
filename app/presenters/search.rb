@@ -2,8 +2,6 @@ class Search
   include SearchForm
   include SearchResults
 
-  attr_accessor :lings, :properties, :lings_props
-
   def initialize(group, params)
     @group  = group
     @params = params

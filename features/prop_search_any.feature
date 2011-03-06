@@ -18,17 +18,22 @@ Feature: Search with Any
   Scenario: Visitor allows all properties
     When I go to the Syntactic Structures search page
     And I press "Search"
-    Then I should see "Results"
-    And I should see "Adjective Noun"
-    And I should see "Adjective Degree"
-    And I should see "Degree Adjective"
+    Then I should see the following search results:
+    | Languages     | Properties        | Value     |
+    | English       | Adjective Noun    | yes       |
+    | English       | Adjective Degree  | yes       |
+    | Spanish       | Adjective Noun    | yes       |
+    | German        | Degree Adjective  | yes       |
 
   Scenario: Visitor searches any property
     When I go to the Syntactic Structures search page
     And I select "Adjective Noun" from "Properties"
     And I press "Search"
     Then I should see "Results"
-    And I should see "Adjective Noun"
+    Then I should see the following search results:
+    | Languages     | Properties        | Value     |
+    | English       | Adjective Noun    | yes       |
+    | Spanish       | Adjective Noun    | yes       |
     And I should not see "Adjective Degree"
     And I should not see "Degree Adjective"
 

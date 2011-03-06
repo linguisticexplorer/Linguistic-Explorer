@@ -8,13 +8,17 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :ling
   belongs_to :property
   belongs_to :group
+  has_one :category, :through => :property
 
   scope :in_group, lambda { |group| where(:group => group) }
   scope :ids, select("#{self.table_name}.id")
   scope :ling_ids, select("#{self.table_name}.ling_id")
+  scope :prop_ids, select("#{self.table_name}.property_id")
 
   scope :with_id, lambda { |id_or_ids| where("#{self.table_name}.id" => id_or_ids) }
   scope :with_ling_id, lambda { |id_or_ids| where("#{self.table_name}.ling_id" => id_or_ids) }
+
+  scope :property_relatives, lambda { |prop_id| join(:lings).where("#{self.table_name}.property_id") }
 
   def ling_name
     ling.name
@@ -25,7 +29,7 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def prop_id
-    property.id
+    property_id
   end
 
   def category_id
