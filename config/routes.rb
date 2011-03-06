@@ -1,9 +1,7 @@
 LinguisticExplorer::Application.routes.draw do
-  devise_for :users, :controllers => { :registrations => "users/registrations" }
-
-  root            :to => 'home#index'
-
-  resources :groups do
+  devise_for  :users, :controllers => { :registrations => "users/registrations" }
+  root        :to => 'home#index'
+  resources   :groups do
     resources :lings, :properties, :lings_properties, :examples, :categories
     
     resources :searches, :path => "search", 
