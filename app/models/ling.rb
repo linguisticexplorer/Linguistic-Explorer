@@ -1,8 +1,5 @@
 class Ling < ActiveRecord::Base
-  DEPTHS = [
-    PARENT = 0,
-    CHILD  = 1
-  ]
+  DEPTHS = [ PARENT = 0, CHILD  = 1 ]
 
   validates_presence_of :name, :depth, :group
   validates_numericality_of :depth
@@ -39,10 +36,10 @@ class Ling < ActiveRecord::Base
   end
 
   def parent_depth_check
-    errors.add(:parent, "Depth of the parent must be one less than the child object") if (depth == 1 && parent && parent.depth != 0)
+    errors.add(:parent, "must be a #{group.ling0_name.humanize} object") if (depth == 1 && parent && parent.depth != 0)
   end
 
   def group_association_match
-    errors.add(:group, "Parent must belong to the same group as this ling") if parent && parent.group != group
+    errors.add(:parent, "#{group.ling0_name.humanize} must belong to the same group as this #{self.type_name}") if parent && parent.group != group
   end
 end

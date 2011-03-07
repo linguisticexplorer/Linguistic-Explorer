@@ -44,10 +44,10 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def association_depth_match
-    errors.add(:depth, "Must choose lings and properties with matching depth") if ling && property && ling.depth != property.depth
+    errors[:base] << "Must choose #{group.ling_name_for_depth(ling.depth)} and #{group.property_name} with matching depth" if ling && property && ling.depth != property.depth
   end
 
   def group_association_match
-    errors.add(:group, "#{ling.type_name} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}") if (ling && property) && (ling.group != property.group || ling.group != group)
+    errors[:base] << "#{group.ling_name_for_depth(ling.depth).humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group)
   end
 end

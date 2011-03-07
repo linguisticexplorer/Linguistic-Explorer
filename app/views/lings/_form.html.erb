@@ -2,7 +2,7 @@
   <%= hidden_field_tag :group_id, current_group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this <%= current_group.ling_for_depth(@ling.depth || 0) %> from being saved:</h2>
+      <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this <%= current_group.ling_name_for_depth(@ling.depth || 0) %> from being saved:</h2>
 
       <ul>
       <% @ling.errors.full_messages.each do |msg| %>

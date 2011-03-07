@@ -10,6 +10,6 @@ class Example < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
 
   def group_association_match
-    errors.add(:group, "Ling must belong to the same group as this Example") if ling && (ling.group != group)
+    errors.add(:ling, "#{group.ling_name_for_depth(ling.depth)} must belong to the same group as this #{group.example_name}") if ling && (ling.group != group)
   end
 end
