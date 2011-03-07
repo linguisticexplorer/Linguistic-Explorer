@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= f.label current_group.ling0_name %><br />
-    <%= f.collection_select :ling_id, @lings[:depth_0] + @lings[:depth_1], :id, :name %>
+    <%= f.collection_select :ling_id, @lings[:depth_0] + @lings[:depth_1], :id, :name, :prompt => 'Select one or this for "None"' %>
   </div>
 
   <div class="actions">

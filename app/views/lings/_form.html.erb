@@ -24,7 +24,7 @@
 
   <div class="field">
     <%= f.label current_group.ling0_name %><br />
-    <%= f.text_field :parent_id %>
+    <%= f.collection_select :parent_id, @lings, :id, :name, :prompt => 'Select one or this for "None"' %>
   </div>
 
   <div class="actions">

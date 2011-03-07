@@ -118,6 +118,10 @@ describe LingsController do
         assigns(:ling).should == lings(:english)
       end
 
+      it "assigns depth 0 lings as @lings" do
+        assigns(:lings).should include(lings(:level0))
+      end
+
       it "re-renders the 'edit' template" do
         response.should render_template("edit")
       end

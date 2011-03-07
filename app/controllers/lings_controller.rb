@@ -26,7 +26,7 @@ class LingsController < GroupDataController
   # GET /lings/new
   # GET /lings/new.xml
   def new
-    @ling = Ling.new(:group_id => current_group)
+    @ling = Ling.new()
     @lings = Ling.find_all_by_depth(0)
 
     respond_to do |format|
@@ -54,6 +54,7 @@ class LingsController < GroupDataController
         format.html { redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully created.')) }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
+        @lings = Ling.find_all_by_depth(0)
         format.html { render :action => "new" }
         format.xml  { render :xml => @ling.errors, :status => :unprocessable_entity }
       end
