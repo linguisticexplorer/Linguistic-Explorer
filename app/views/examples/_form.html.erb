@@ -12,8 +12,13 @@
   <% end %>
 
   <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </div>
+
+  <div class="field">
     <%= f.label current_group.ling0_name %><br />
-    <%= f.text_field :ling_id %>
+    <%= f.collection_select :ling_id, @lings[:depth_0] + @lings[:depth_1], :id, :name %>
   </div>
 
   <div class="actions">
