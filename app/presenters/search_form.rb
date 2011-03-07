@@ -49,7 +49,8 @@ module SearchForm
   end
 
   def group_lings_props
-    @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group("properties.id, lings_properties.value").includes(:property)
+    # @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group("lings_properties.id, properties.id, lings_properties.value").includes(:property)
+    @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group(LingsProperty.group_by_statement).includes(:property)
   end
 
   def show_param

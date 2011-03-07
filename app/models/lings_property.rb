@@ -20,6 +20,11 @@ class LingsProperty < ActiveRecord::Base
 
   scope :property_relatives, lambda { |prop_id| join(:lings).where("#{self.table_name}.property_id") }
 
+
+  def self.group_by_statement
+    LingsProperty.column_names.map { |c| "lings_properties.#{c}"}.join(", ")
+  end
+
   def ling_name
     ling.name
   end
