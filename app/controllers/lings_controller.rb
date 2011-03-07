@@ -71,6 +71,7 @@ class LingsController < GroupDataController
         format.html { redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully updated.') ) }
         format.xml  { head :ok }
       else
+        @lings = Ling.find_all_by_depth(0)
         format.html { render :action => "edit" }
         format.xml  { render :xml => @ling.errors, :status => :unprocessable_entity }
       end

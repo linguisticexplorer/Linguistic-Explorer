@@ -59,6 +59,10 @@ class ExamplesController < GroupDataController
         format.html { redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully created.')) }
         format.xml  { render :xml => @example, :status => :created, :location => @example }
       else
+        @lings = {
+              :depth_0 => Ling.find_all_by_depth(0),
+              :depth_1 => Ling.find_all_by_depth(1)
+        }
         format.html { render :action => "new" }
         format.xml  { render :xml => @example.errors, :status => :unprocessable_entity }
       end
@@ -75,6 +79,10 @@ class ExamplesController < GroupDataController
         format.html { redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else
+        @lings = {
+              :depth_0 => Ling.find_all_by_depth(0),
+              :depth_1 => Ling.find_all_by_depth(1)
+        }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @example.errors, :status => :unprocessable_entity }
       end

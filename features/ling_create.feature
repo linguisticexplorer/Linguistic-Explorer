@@ -12,7 +12,7 @@ Feature: Creating a Ling
     When I follow "New Speaker"
     Then I should see "New Speaker"
     When I fill in "English" for "Name"
-    And I fill in "0" for "Depth"
+    And I select "0" from "Depth"
     And I press "Create Ling"
     Then I should see "Speaker was successfully created"
     And I should see "English"

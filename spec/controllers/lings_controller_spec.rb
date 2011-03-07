@@ -80,6 +80,12 @@ describe LingsController do
         }.should change(Ling, :count).by(0)
       end
 
+
+      it "assigns depth 0 lings as @lings" do
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => nil}
+        assigns(:lings).should include(lings(:level0))
+      end
+
       it "re-renders the 'new' template" do
         post :create, :group_id => groups(:inclusive).id, :ling => {}
         response.should be_success
