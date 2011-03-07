@@ -1,15 +1,15 @@
-<p id="notice"><%= notice %></p>
-
 <% if @group %>
     <%= link_to @group.name, @group %>
     <%= link_to 'Search', new_group_search_path(@group) %>
     <%= link_to @group.ling0_name, group_lings_path(@group) %>
-    <%= link_to @group.ling1_name, group_lings_path(@group) %>
+    <% if @group.depth_maximum > 0 %>
+        <%= link_to @group.ling1_name, group_lings_path(@group) %>
+    <% end %>
     <%= link_to @group.property_name, group_properties_path(@group) %>
     <%= link_to @group.category_name, group_categories_path(@group) %>
     <%= link_to @group.lings_property_name, group_lings_properties_path(@group) %>
-    <%= link_to (@group.example_lp_name.to_s << " TODO"), @group %>
     <%= link_to @group.example_name, group_examples_path(@group) %>
+    <%= link_to (@group.example_lp_name.to_s << " TODO"), @group %>
 <% else %>
     <%= link_to "Select a group", groups_path %>
 <% end %>

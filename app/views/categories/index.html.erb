@@ -6,14 +6,12 @@
     <th>Depth</th>
     <th></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @categories.each do |category| %>
   <tr>
-    <td><%= category.name %></td>
+    <td><%= link_to category.name, [current_group, category] %></td>
     <td><%= category.depth %></td>
-    <td><%= link_to 'Show', [current_group, category] %></td>
     <td><%= link_to 'Edit', edit_group_category_path(current_group, category) %></td>
     <td><%= link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

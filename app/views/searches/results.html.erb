@@ -3,8 +3,8 @@
   <div class="row">
     <div class="cell">Ling</div>
     <div class="cell">Ling Type</div>
-    <div class="cell"><% current_group.property_name.pluralize.titleize %></div>
-    <div class="cell"><% current_group.lings_property_name.pluralize.titleize %></div>
+    <div class="cell"><%= current_group.property_name.pluralize.titleize %></div>
+    <div class="cell"><%= current_group.lings_property_name.pluralize.titleize %></div>
   </div>
   
   <%- @search.results.each do |result| -%>

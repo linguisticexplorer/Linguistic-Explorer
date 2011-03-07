@@ -1,7 +1,7 @@
 <%= form_for([current_group, @lings_property]) do |f| %>
   <% if @lings_property.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@lings_property.errors.count, "error") %> prohibited this <% current_group.lings_property_name %> from being saved:</h2>
+      <h2><%= pluralize(@lings_property.errors.count, "error") %> prohibited this <%= current_group.lings_property_name %> from being saved:</h2>
 
       <ul>
       <% @lings_property.errors.full_messages.each do |msg| %>

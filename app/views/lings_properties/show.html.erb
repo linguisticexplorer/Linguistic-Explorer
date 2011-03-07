@@ -1,13 +1,11 @@
-<p id="notice"><%= notice %></p>
-
 <p>
-  <b><% current_group.ling_name_for_depth( @lings_property.ling.depth ) %>:</b> <br />
+  <b><%= current_group.ling_name_for_depth( @lings_property.ling.depth ) %>:</b> <br />
   <%= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling) %> <br />
 
-  <b><% current_group.property_name %>:</b> <br />
+  <b><%= current_group.property_name %>:</b> <br />
   <%= link_to @lings_property.property.name, group_property_path(current_group, @lings_property.property) %> <br />
 
-  <b><% current_group.lings_property_name %>:</b> <br />
+  <b><%= current_group.lings_property_name %>:</b> <br />
   <%= @lings_property.value %> <br />
 </p>
 

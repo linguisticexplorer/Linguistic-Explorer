@@ -23,8 +23,8 @@
     <%= link_to current_group.property_name, group_properties_path(current_group) %>
     <%= link_to current_group.category_name, group_categories_path(current_group) %>
     <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
-    <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
     <%= link_to current_group.example_name, group_examples_path(current_group) %>
+    <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
   <% else %>
     <%= link_to "Select a group", groups_path %>
   <% end %>
