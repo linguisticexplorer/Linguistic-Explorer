@@ -14,6 +14,5 @@ Feature: Creating a Ling
     When I fill in "English" for "Name"
     And I fill in "0" for "Depth"
     And I press "Create Ling"
-    And show me the page
     Then I should see "Speaker was successfully created"
     And I should see "English"
