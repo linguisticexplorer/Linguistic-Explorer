@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(:version => 20110307133622) do
     t.integer  "creator_id"
   end
 
+  add_index "categories", ["group_id"], :name => "index_categories_on_group_id"
+
   create_table "examples", :force => true do |t|
     t.integer  "ling_id"
     t.string   "name"
@@ -74,6 +76,9 @@ ActiveRecord::Schema.define(:version => 20110307133622) do
     t.integer  "group_id"
     t.integer  "creator_id"
   end
+
+  add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"
+  add_index "lings_properties", ["ling_id", "property_id"], :name => "index_lings_properties_on_ling_id_and_property_id"
 
   create_table "preferences", :force => true do |t|
     t.string   "name",       :null => false

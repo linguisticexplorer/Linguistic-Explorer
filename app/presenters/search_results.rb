@@ -34,7 +34,7 @@ module SearchResults
       child_cats = group_prop_category_ids(child).select { |c| cats.include?(c) }
       if parent_cats.any?
         parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => queryable_prop_ids(parent))
-        depth_0_vals = depth_0_vals.group(:property_id).having(:property_id => parent_prop_ids)
+        depth_0_vals = depth_0_vals.group("lings_properties.property_id, lings_properties.id").having(:property_id => parent_prop_ids)
       end
       if child_cats.any?
         child_prop_ids = Property.ids.where(:category_id => child_cats, :id => queryable_prop_ids(child))
