@@ -41,7 +41,10 @@ class CategoriesController < GroupDataController
   # POST /categories
   # POST /categories.xml
   def create
-    @category = Category.new(params[:category].merge({:group_id => current_group.id}))
+    @category = Category.new(params[:category]) do |category|
+      category.group = current_group
+      category.creator = current_user
+    end
 
     respond_to do |format|
       if @category.save

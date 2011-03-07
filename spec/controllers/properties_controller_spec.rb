@@ -57,7 +57,6 @@ describe PropertiesController do
     describe "with valid params" do
       it "assigns a newly created property to @property" do
         lambda {
-
           post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
           assigns(:property).should_not be_new_record
           assigns(:property).should be_valid
@@ -69,6 +68,14 @@ describe PropertiesController do
       it "redirects to the created property" do
         post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_property_url(session[:group], assigns(:property)))
+      end
+
+      it "should set creator to be the currently logged in user" do
+        user = Factory(:user)
+        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        sign_in user
+        post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+        assigns(:property).creator.should == user
       end
     end
 

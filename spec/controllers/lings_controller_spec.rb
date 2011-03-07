@@ -62,6 +62,14 @@ describe LingsController do
         post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
         response.should redirect_to(group_ling_url(session[:group], assigns(:ling)))
       end
+
+      it "should set creator to be the currently logged in user" do
+        user = Factory(:user)
+        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        sign_in user
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+        assigns(:ling).creator.should == user
+      end
     end
 
     describe "with invalid params" do

@@ -78,6 +78,16 @@ describe LingsPropertiesController do
         post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_lings_property_url(session[:group], assigns(:lings_property)))
       end
+
+      it "should set creator to be the currently logged in user" do
+        user = Factory(:user)
+        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        sign_in user
+        ling = lings(:level0)
+        property = properties(:level0)
+        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
+        assigns(:lings_property).creator.should == user
+      end
     end
 
     describe "with invalid params" do

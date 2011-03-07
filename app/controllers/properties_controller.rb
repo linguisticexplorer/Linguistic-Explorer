@@ -49,7 +49,10 @@ class PropertiesController < GroupDataController
   # POST /properties
   # POST /properties.xml
   def create
-    @property = Property.new(params[:property].merge({:group_id => current_group.id}))
+    @property = Property.new(params[:property]) do |property|
+      property.group = current_group
+      property.creator = current_user
+    end
 
     respond_to do |format|
       if @property.save

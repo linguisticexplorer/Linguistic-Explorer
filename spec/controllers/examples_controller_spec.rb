@@ -68,6 +68,14 @@ describe ExamplesController do
         post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_example_url(session[:group], assigns(:example)))
       end
+
+      it "should set creator to be the currently logged in user" do
+        user = Factory(:user)
+        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        sign_in user
+        post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
+        assigns(:example).creator.should == user
+      end
     end
 
     # xdescribe "NO POSSIBLE INVALIDS with invalid params" do

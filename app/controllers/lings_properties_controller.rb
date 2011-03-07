@@ -45,7 +45,10 @@ class LingsPropertiesController < GroupDataController
   # POST /lings_properties
   # POST /lings_properties.xml
   def create
-    @lings_property = LingsProperty.new(params[:lings_property].merge({:group_id => current_group.id}))
+    @lings_property = LingsProperty.new(params[:lings_property]) do |lings_property|
+      lings_property.group = current_group
+      lings_property.creator = current_user
+    end
 
     respond_to do |format|
       if @lings_property.save

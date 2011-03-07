@@ -49,7 +49,10 @@ class ExamplesController < GroupDataController
   # POST /examples
   # POST /examples.xml
   def create
-    @example = Example.new(params[:example].merge({:group_id => current_group.id}))
+    @example = Example.new(params[:example]) do |example|
+      example.group = current_group
+      example.creator = current_user
+    end
 
     respond_to do |format|
       if @example.save

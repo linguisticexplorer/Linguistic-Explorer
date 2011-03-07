@@ -54,6 +54,14 @@ describe CategoriesController do
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_category_url(session[:group], assigns(:category)))
       end
+
+      it "should set creator to be the currently logged in user" do
+        user = Factory(:user)
+        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        sign_in user
+        post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
+        assigns(:category).creator.should == user
+      end
     end
 
     describe "with invalid params" do
