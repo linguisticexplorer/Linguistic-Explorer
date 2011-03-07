@@ -18,7 +18,7 @@ describe Example do
     it "unless the ling and group_id don't match" do
       ling = groups(:inclusive).lings.first
       group = groups(:exclusive)
-      Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'example-with-mismatched-object-refs').should have(1).error_on(:group)
+      Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'example-with-mismatched-object-refs').should have(1).error_on(:ling)
     end
 
     it "without a ling" do

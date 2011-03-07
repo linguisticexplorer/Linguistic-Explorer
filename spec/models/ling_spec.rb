@@ -28,7 +28,7 @@ describe Ling do
     it "should not allow ling to belong to a different group" do
       ling = groups(:inclusive).lings.select{|l| l.depth == 0}.first
       group = groups(:exclusive)
-      Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:group)
+      Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:parent)
     end
   end
 
