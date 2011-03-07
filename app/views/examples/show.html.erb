@@ -5,6 +5,9 @@
     <b><%= current_group.ling0_name %>:</b> <br />
     <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
   <% end %>
+
+  <b>Created by:</b> <br />
+  <%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
 </p>
 
 

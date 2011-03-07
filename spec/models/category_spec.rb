@@ -6,9 +6,9 @@ describe Category do
     it_should_validate_uniqueness_of :name, :scope => :group_id
     it_should_validate_numericality_of :depth
     it_should_have_many :properties
-    it_should_belong_to :group
+    it_should_belong_to :group, :creator
 
-#    should_validate_existence_of :group
+#    should_validate_existence_of :group, :creator
   end
 
   describe "createable with combinations" do

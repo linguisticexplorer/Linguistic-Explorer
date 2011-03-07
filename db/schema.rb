@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110302024618) do
+ActiveRecord::Schema.define(:version => 20110307053549) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20110302024618) do
     t.integer  "depth"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "creator_id"
   end
 
   create_table "examples", :force => true do |t|
@@ -26,6 +27,7 @@ ActiveRecord::Schema.define(:version => 20110302024618) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "group_id"
+    t.integer  "creator_id"
   end
 
   create_table "group_memberships", :force => true do |t|
@@ -58,6 +60,7 @@ ActiveRecord::Schema.define(:version => 20110302024618) do
     t.integer  "depth"
     t.integer  "parent_id"
     t.integer  "group_id"
+    t.integer  "creator_id"
   end
 
   create_table "lings_properties", :force => true do |t|
@@ -67,6 +70,7 @@ ActiveRecord::Schema.define(:version => 20110302024618) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "group_id"
+    t.integer  "creator_id"
   end
 
   create_table "preferences", :force => true do |t|
@@ -88,6 +92,7 @@ ActiveRecord::Schema.define(:version => 20110302024618) do
     t.datetime "updated_at"
     t.integer  "group_id"
     t.integer  "category_id"
+    t.integer  "creator_id"
   end
 
   create_table "users", :force => true do |t|

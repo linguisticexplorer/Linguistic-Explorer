@@ -1,4 +1,9 @@
 class Ling < ActiveRecord::Base
+  DEPTHS = [
+    PARENT = 0,
+    CHILD  = 1
+  ]
+
   validates_presence_of :name, :depth, :group
   validates_numericality_of :depth
   validates_uniqueness_of :name, :scope => :group_id
@@ -6,11 +11,13 @@ class Ling < ActiveRecord::Base
   validates_existence_of :group
   validate :parent_depth_check
   validate :group_association_match
+  validates_existence_of :creator, :allow_nil => true
 
   belongs_to :parent, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :children
   has_many :children, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :parent
 
   belongs_to :group
+  belongs_to :creator, :class_name => "User"
   has_many :examples
   has_many :lings_properties
   has_many :properties, :through => :lings_properties
@@ -22,10 +29,9 @@ class Ling < ActiveRecord::Base
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
 
-  DEPTHS = [
-    PARENT = 0,
-    CHILD  = 1
-  ]
+  def type_name
+    group.ling_name_for_depth(self.depth || 0)
+  end
 
   def add_property(value, property)
     params = {:property_id => property.id, :value => value, :group_id => group.id}

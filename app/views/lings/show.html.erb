@@ -28,6 +28,9 @@
       <%= link_to "#{lp.property.name}: #{lp.value}", group_lings_property_path(current_group, lp) %> <br />
     <% end %>
   <% end %>
+
+  <b>Created by:</b> <br />
+  <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
 </p>
 
 

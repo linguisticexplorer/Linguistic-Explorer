@@ -7,6 +7,9 @@
 
   <b><%= current_group.lings_property_name %>:</b> <br />
   <%= @lings_property.value %> <br />
+
+  <b>Created by:</b> <br />
+  <%= @lings_property.creator ? @lings_property.creator.name : "Unknown user" %> <br />
 </p>
 
 

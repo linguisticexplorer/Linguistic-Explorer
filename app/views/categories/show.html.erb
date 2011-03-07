@@ -3,6 +3,8 @@
   <%= @category.name %> <br />
   <b>Depth:</b> <br />
   <%= @category.depth %> <br />
+  <b>Created by:</b> <br />
+  <%= @category.creator ? @category.creator.name : "Unknown user" %> <br />
 </p>
 
 

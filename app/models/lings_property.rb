@@ -4,10 +4,12 @@ class LingsProperty < ActiveRecord::Base
   validates_uniqueness_of :value, :scope => [:ling_id, :property_id]
   validate :association_depth_match
   validate :group_association_match
+  validates_existence_of :creator, :allow_nil => true
 
   belongs_to :ling
   belongs_to :property
   belongs_to :group
+  belongs_to :creator, :class_name => "User"
   has_one :category, :through => :property
 
   scope :in_group, lambda { |group| where(:group => group) }
@@ -46,6 +48,6 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def group_association_match
-    errors.add(:group, "Ling and Property must belong to the same group as this Value") if (ling && property) && (ling.group != property.group || ling.group != group)
+    errors.add(:group, "#{ling.type_name} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}") if (ling && property) && (ling.group != property.group || ling.group != group)
   end
 end

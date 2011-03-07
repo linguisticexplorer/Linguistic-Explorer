@@ -7,9 +7,10 @@ describe Ling do
     it_should_validate_numericality_of :depth
 
     it_should_have_many :examples, :children, :lings_properties, :children
-    it_should_belong_to :parent, :group
+    it_should_belong_to :parent, :group, :creator
 
 #    should_validate_existence_of :group
+#    should_validate_existence_of :creator
 #    should_validate_existence_of :parent, :allow_nil => true
   end
 
@@ -30,7 +31,20 @@ describe Ling do
       Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:group)
     end
   end
-  
+
+  describe "type_name" do
+    it "should use the appropriate depth type name from its parent group if it has a depth" do
+      group = groups(:inclusive)
+      Ling.create(:name => "foo", :depth => 0, :group_id => group.id).type_name.should == group.ling0_name
+      Ling.create(:name => "bar", :depth => 1, :group_id => group.id).type_name.should == group.ling1_name
+    end
+
+    it "should use the depth 0 type name from its parent group if it is missing depth" do
+      group = Factory(:group, :ling1_name => "", :depth_maximum => 0)
+      Ling.create(:name => "foo", :depth => nil, :group_id => group.id).type_name.should == group.ling0_name
+    end
+  end
+
   describe "add_property" do
     before(:each) do
       @ling = Ling.first

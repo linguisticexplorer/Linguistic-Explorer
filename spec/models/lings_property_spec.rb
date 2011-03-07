@@ -4,8 +4,8 @@ describe LingsProperty do
   describe "one-liners" do
     it_should_validate_presence_of :ling, :property, :value, :group
     it_should_validate_uniqueness_of :value, :scope => [:ling_id, :property_id]
-    it_should_belong_to :ling, :property, :group
-#    should_validate_existence_of :ling, :property, :group
+    it_should_belong_to :ling, :property, :group, :creator
+#    should_validate_existence_of :ling, :property, :group, :creator
   end
 
   describe "should be createable" do

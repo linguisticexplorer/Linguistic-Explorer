@@ -3,8 +3,9 @@ require 'spec_helper'
 describe Example do
   describe "one-liners" do
     it_should_validate_presence_of :group
-    it_should_belong_to :ling, :group
+    it_should_belong_to :ling, :group, :creator
 #    should_validate_existence_of :group
+#    should_validate_existence_of :creator
 #    should_validate_existence_of :ling, :allow_nil => true
   end
 

@@ -4,11 +4,10 @@ describe Property do
   describe "one-liners" do
     it_should_validate_presence_of :name, :category, :group
     it_should_validate_uniqueness_of :name, :scope => :group_id
-    it_should_belong_to :group
-    it_should_belong_to :category
 
+    it_should_belong_to :group, :creator, :category
     it_should_have_many :lings_properties
-#    should_validate_existence_of :group, :category
+#    should_validate_existence_of :group, :category, :creator
   end
 
   describe "should be createable" do
