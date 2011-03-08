@@ -15,6 +15,7 @@
   <% else %>
     <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
   <% end %>
+
   <% if current_group %>
     <%= link_to current_group.name, current_group %>
     <%= link_to 'Search', new_group_search_path(current_group) %>
@@ -25,6 +26,11 @@
     <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
     <%= link_to current_group.example_name, group_examples_path(current_group) %>
     <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
+  <% elsif @groups && false %>
+     <%= form_tag({}, :method => "get") do %>
+      <%= collection_select(:group, :id, @groups, :id, :name, {:prompt => "Select a Group"}) %>
+      <%= submit_tag("Go") %>
+     <% end %>
   <% else %>
     <%= link_to "Select a group", groups_path %>
   <% end %>
