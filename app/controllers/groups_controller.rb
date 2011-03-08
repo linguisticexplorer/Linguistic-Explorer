@@ -3,8 +3,16 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.xml
   def index
-    @groups = Group.all
+    if params[:group_id]
+      begin
+        @group = Group.find(params[:group_id])
+        redirect_to @group
+        return
+      rescue ActiveRecord::RecordNotFound
+      end
+    end
 
+    @groups = Group.all
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @groups }

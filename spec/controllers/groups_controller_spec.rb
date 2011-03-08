@@ -8,6 +8,22 @@ describe GroupsController do
         assigns(:groups).should include groups(:inclusive)
       end
     end
+
+    describe "with a valid group_id parameter" do
+      it "should redirect to show for that group" do
+        get :index, :group_id => groups(:inclusive).id
+        response.should redirect_to(group_path(groups(:inclusive)))
+        assigns[:group].should == groups(:inclusive)
+      end
+    end
+
+    describe "with a group_id parameter that doesn't actually point to a group" do
+      it "should render index as normal" do
+        get :index, :group_id => "invalid-id"
+        response.should_not redirect_to(groups_path + "/invalid-id")
+        assigns[:group].should be_nil
+      end
+    end
   end
 
   describe "show" do
