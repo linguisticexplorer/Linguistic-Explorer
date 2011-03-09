@@ -45,8 +45,8 @@ class LingsController < GroupDataController
   # POST /lings.xml
   def create
     @ling = Ling.new(params[:ling]) do |ling|
-      ling.group = current_group
-      ling.creator = current_user
+      ling.group    = current_group
+      ling.creator  = current_user
     end
 
     respond_to do |format|

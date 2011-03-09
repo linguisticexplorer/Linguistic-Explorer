@@ -34,13 +34,17 @@ module SearchResults
       child_cats = group_prop_category_ids(child).select { |c| cats.include?(c) }
       if parent_cats.any?
         parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => queryable_prop_ids(parent))
-        depth_0_vals = depth_0_vals.group("lings_properties.property_id, lings_properties.id").having(:property_id => parent_prop_ids)
+        depth_0_vals    = depth_0_vals.ling_ids.group("lings_properties.property_id").having(:property_id => parent_prop_ids)
       end
       if child_cats.any?
-        child_prop_ids = Property.ids.where(:category_id => child_cats, :id => queryable_prop_ids(child))
-        depth_1_vals = depth_1_vals.group(:property_id).having(:property_id => child_prop_ids)
+        child_prop_ids  = Property.ids.where(:category_id => child_cats, :id => queryable_prop_ids(child))
+        depth_1_vals    = depth_1_vals.ling_ids.group(:property_id).having(:property_id => child_prop_ids)
       end
+
+      depth_0_vals, depth_1_vals = intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
     end
+
+
     (depth_0_vals + depth_1_vals).map(&:id)
   end
 
@@ -54,8 +58,8 @@ module SearchResults
 
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
     if depth_1_vals.any?
-      depth_1_vals  = ( LingsProperty.ids.prop_ids.with_id(depth_1_vals.map(&:id)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id)))
-      depth_0_vals  =   LingsProperty.ids.prop_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id))
+      depth_1_vals  = ( LingsProperty.ids.ling_ids.prop_ids.with_id(depth_1_vals.map(&:id)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id)))
+      depth_0_vals  =   LingsProperty.ids.ling_ids.prop_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id))
     end
 
     [depth_0_vals, depth_1_vals]

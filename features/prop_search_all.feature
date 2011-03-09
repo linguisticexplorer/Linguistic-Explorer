@@ -32,5 +32,9 @@ Feature: Search with All
     | Lings         | Properties        | Value     |
     | Speaker 1     | Property 1        | Eastern   |
     | Speaker 1     | Property 2        | Western   |
+    | Sentence 1    | Property 3        | verb      |
+    | Sentence 1    | Property 4        | noun      |
     And I should not see "Speaker 2"
     And I should not see "Speaker 3"
+    And I should not see "Sentence 2"
+    And I should not see "Sentence 3"
