@@ -29,6 +29,9 @@ puts "Loading data"
 puts "Starting Users..."
 # Create Users(id,name,email,accesslevel)
 FasterCSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
+  user = User.find_by_name(row["name"])
+  
+  next if user.present?
   user = User.new(
       :name     => row["name"],
       :password => "hunter2",
@@ -116,8 +119,11 @@ MEANINGFUL_VALUES = {
 puts "Done with Properties, starting LingsProperties"
 # Create LingsProperties(id,lingid,propid,value,group,creator,timestamp)
 FasterCSV.foreach(Rails.root.join("doc", "data", "LingsProperty.csv"), :headers => true) do |row|
-  ling  = Ling.find_by_name(ling_list[row["lingid"]])
-  prop  = Property.find_by_name(prop_list[row["propid"]])
+  require "ruby-debug"; debugger
+  
+  group = Group.find_by_name(group_name(row["group"]))
+  ling  = Ling.in_group(group).find_by_name(ling_list[row["lingid"]])
+  prop  = Property.in_group(group).find_by_name(prop_list[row["propid"]])
 
   attributes = {
     :ling_id      => ling.id,
@@ -128,8 +134,6 @@ FasterCSV.foreach(Rails.root.join("doc", "data", "LingsProperty.csv"), :headers 
   next if LingsProperty.where(attributes).first.present?
   lp          = LingsProperty.new(attributes)
   
-  prop.group  = ling.group
-  prop.save!
   lp.group    = ling.group
   lp.save!
 end
