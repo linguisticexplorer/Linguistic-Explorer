@@ -14,5 +14,9 @@ describe Property do
     it "with a category" do
       should_be_createable :with => { :name => "depth 0", :category_id => groups(:inclusive).categories.first.id, :group_id => groups(:inclusive).id }
     end
+
+    it "unless category does not belong to the same group" do
+      Property.create( :name => "misgrouped", :category_id => groups(:inclusive).categories.first.id, :group_id => groups(:exclusive).id ).should have(1).errors_on(:category)
+    end
   end
 end

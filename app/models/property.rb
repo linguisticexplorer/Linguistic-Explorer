@@ -3,6 +3,7 @@ class Property < ActiveRecord::Base
   validates_uniqueness_of :name, :scope => :group_id
   validates_existence_of :group, :category
   validates_existence_of :creator, :allow_nil => true
+  validate :group_association_match
 
   belongs_to :group
   belongs_to :category
@@ -16,5 +17,9 @@ class Property < ActiveRecord::Base
 
   def depth
     category.depth
+  end
+
+  def group_association_match
+    errors.add(:category, "#{group.category_name.humanize} must belong to the same group as this #{group.property_name}") if group && category && category.group != group
   end
 end
