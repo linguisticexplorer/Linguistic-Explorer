@@ -3,6 +3,8 @@
 #
 require 'fastercsv'
 
+logger = Logger.new(STDOUT)
+
 group_list  = {}
 user_list   = {}
 ling_list   = {}
@@ -80,8 +82,15 @@ FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) 
   child   = Ling.find_by_name(ling_name(row["name"]))
   parent  = Ling.find_by_name(ling_name(row["parentid"]))
   child.parent = parent
-  child.group  = parent.group # Fix data to ensure child is in same group as parent
-  child.save!
+  
+  begin
+    child.save!
+  rescue
+    logger.warn child.errors.full_messages.join(". ")
+    logger.warn parent.inspect
+    logger.warn child.inspect
+    logger.warn ""
+  end
 end
 
 puts "Done with Ling parents, starting Categories"
@@ -118,9 +127,7 @@ MEANINGFUL_VALUES = {
 
 puts "Done with Properties, starting LingsProperties"
 # Create LingsProperties(id,lingid,propid,value,group,creator,timestamp)
-FasterCSV.foreach(Rails.root.join("doc", "data", "LingsProperty.csv"), :headers => true) do |row|
-  require "ruby-debug"; debugger
-  
+FasterCSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true) do |row|
   group = Group.find_by_name(group_name(row["group"]))
   ling  = Ling.in_group(group).find_by_name(ling_list[row["lingid"]])
   prop  = Property.in_group(group).find_by_name(prop_list[row["propid"]])
