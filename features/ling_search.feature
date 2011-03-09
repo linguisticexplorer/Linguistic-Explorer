@@ -94,8 +94,8 @@ Feature: Search Lings for Any Property
   Scenario: Scope search to group
     Given the group "Phones"
     And the following lings and properties:
-    | name        | property_name | prop val  | depth | group   |
-    | Sentence 1  | Homonym       | yes       | 0     | Phones  |
+    | name        | property_name | prop val  | depth | group   | category  |
+    | Sentence 1  | Homonym       | yes       | 0     | Phones  | Sound     |
     When I go to the Syntactic Structures search page
     Then I should not see "Phones"
     And I should not see "Sentence 1"
