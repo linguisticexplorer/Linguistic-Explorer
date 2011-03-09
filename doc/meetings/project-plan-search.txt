@@ -9,13 +9,16 @@ Project Plan for Search
       Search by Property within Category
 
 3/7
+      Research for Deployment and Hosting
       Property Search by ALL
 
 3/14  (Spring Break)
+      Identify hosting provider
       Property Value Search by ALL
-      Keyword Search on Ling
 
 3/21
+      Deploy plan set
+      Keyword Search on Ling
       Keyword Search on Property
       Display Examples in Results
 
