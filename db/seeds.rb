@@ -31,9 +31,10 @@ puts "Loading data"
 puts "Starting Users..."
 # Create Users(id,name,email,accesslevel)
 FasterCSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
-  user = User.find_by_name(row["name"])
-  
+  user = User.find_by_email(row["email"])
+
   next if user.present?
+
   user = User.new(
       :name     => row["name"],
       :password => "hunter2",
