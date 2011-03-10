@@ -80,31 +80,19 @@ module SearchResults
   end
 
   def ling_params
-    @params[:lings] || []
+    @params[:lings] || {}
   end
 
   def prop_params
-    @params[:properties] || []
+    @params[:properties] || {}
   end
 
   def lings_prop_params
-    @params[:lings_props] || []
-  end
-
-  def ling_params_to_hash
-    ling_params.inject({}) { |memo, h| memo.merge(h) }
-  end
-
-  def prop_params_to_hash
-    prop_params.inject({}) { |memo, h| memo.merge(h) }
-  end
-
-  def lings_prop_params_to_hash
-    lings_prop_params.inject({}) { |memo, h| memo.merge(h) }
+    @params[:lings_props] || {}
   end
 
   def queryable_ling_ids(depth)
-    ling_params_to_hash[depth.to_s] || all_group_ling_ids(depth)
+    ling_params[depth.to_s] || all_group_ling_ids(depth)
   end
 
   def all_group_ling_ids(depth)
@@ -116,7 +104,7 @@ module SearchResults
   end
 
   def prop_param_ids_at_depth(depth)
-    prop_params_to_hash.reject { |k,v| !category_present?(k, depth) }.values.flatten || []
+    prop_params.reject { |k,v| !category_present?(k, depth) }.values.flatten || []
   end
 
   def all_group_prop_ids(depth)
@@ -130,7 +118,7 @@ module SearchResults
   end
 
   def lings_prop_param_pairs(depth)
-    vals = lings_prop_params_to_hash.reject { |k,v| !category_present?(k, depth) }.values
+    vals = lings_prop_params.reject { |k,v| !category_present?(k, depth) }.values
     vals.flatten.map { |str| str.split(":") }
   end
 
