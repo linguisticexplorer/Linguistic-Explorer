@@ -31,6 +31,10 @@ class LingsProperty < ActiveRecord::Base
     ling.name
   end
 
+  def parent_name
+    ling.parent.try(:name)
+  end
+
   def prop_name
     property.name
   end

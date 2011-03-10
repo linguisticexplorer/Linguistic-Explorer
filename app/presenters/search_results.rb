@@ -6,7 +6,7 @@ module SearchResults
   end
 
   def results
-    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property])
+    LingsProperty.with_id(selected_lings_prop_ids).includes([{:ling => :parent}, :property])
   end
 
   private

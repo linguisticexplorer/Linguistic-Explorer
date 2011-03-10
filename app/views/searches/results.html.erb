@@ -1,10 +1,11 @@
 <h2>Results</h2>
 <div class="table spacing">
   <div class="row">
-    <div class="cell">Ling</div>
+    <div class="cell"><%= current_group.ling0_name %>/<%= current_group.ling1_name %></div>
     <div class="cell">Ling Type</div>
     <div class="cell"><%= current_group.property_name.pluralize.titleize %></div>
     <div class="cell"><%= current_group.lings_property_name.pluralize.titleize %></div>
+    <div class="cell">Parent</div>
   </div>
   
   <%- @search.results.each do |result| -%>
@@ -13,6 +14,7 @@
       <div class="cell"><%= current_group.ling_name_for_depth(result.ling.depth) %></div>
       <div class="cell"><%= result.prop_name %></div>
       <div class="cell"><%= result.value %></div>
+      <div class="cell"><%= result.parent_name %></div>
     <% end %>
   <%- end -%>
 </div>
