@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name, :email, :access_level
 
-  has_many :group_memberships
+  has_many :group_memberships, :dependent => :destroy
   has_many :groups, :through => :group_memberships
 
   # Setup accessible (or protected) attributes for your model

@@ -8,7 +8,7 @@ class Property < ActiveRecord::Base
   belongs_to :group
   belongs_to :category
   belongs_to :creator, :class_name => "User"
-  has_many :lings_properties
+  has_many :lings_properties, :dependent => :destroy
 
   scope :in_group, lambda { |group| where(:group => group) }
   scope :at_depth, lambda { |depth| joins(:category).where("categories.depth" => depth) }

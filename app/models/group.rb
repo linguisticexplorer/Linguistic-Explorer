@@ -3,11 +3,11 @@ class Group < ActiveRecord::Base
 
   validates_presence_of :name
   validates_uniqueness_of :name
-  has_many :lings
-  has_many :properties
-  has_many :lings_properties
-  has_many :examples
-  has_many :categories
+  has_many :lings, :dependent => :destroy
+  has_many :properties, :dependent => :destroy
+  has_many :lings_properties, :dependent => :destroy
+  has_many :examples, :dependent => :destroy
+  has_many :categories, :dependent => :destroy
 
   def ling_name_for_depth(depth)
     if depth > depth_maximum

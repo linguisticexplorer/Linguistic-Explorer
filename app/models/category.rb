@@ -7,7 +7,7 @@ class Category < ActiveRecord::Base
 
   belongs_to :group
   belongs_to :creator, :class_name => "User"
-  has_many :properties
+  has_many :properties, :dependent => :destroy
 
   scope :in_group, lambda { |group| where(:group => group) }
   scope :at_depth, lambda { |depth| where(:depth => depth) }
