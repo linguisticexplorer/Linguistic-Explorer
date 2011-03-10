@@ -6,7 +6,7 @@ module SearchResults
   end
 
   def results
-    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property])
+    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property]).order("lings.parent_id ASC")
   end
 
   private
@@ -116,7 +116,7 @@ module SearchResults
   end
 
   def prop_param_ids_at_depth(depth)
-    prop_params_to_hash.reject { |k,v| !group_prop_category_names(depth).map(&:downcase).include?(k) }.values.flatten || []
+    prop_params_to_hash.reject { |k,v| !group_prop_category_names(depth).map {|n| n.underscorize }.include?(k) }.values.flatten || []
   end
 
   def all_group_prop_ids(depth)
