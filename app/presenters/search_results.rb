@@ -33,11 +33,11 @@ module SearchResults
       parent_cats = group_prop_category_ids(parent).select { |c| cats.include?(c) }
       child_cats = group_prop_category_ids(child).select { |c| cats.include?(c) }
       if parent_cats.any?
-        parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => queryable_prop_ids(parent))
+        parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => prop_filter.ids(parent))
         depth_0_vals    = depth_0_vals.ling_ids.group("lings_properties.property_id").having(:property_id => parent_prop_ids)
       end
       if child_cats.any?
-        child_prop_ids  = Property.ids.where(:category_id => child_cats, :id => queryable_prop_ids(child))
+        child_prop_ids  = Property.ids.where(:category_id => child_cats, :id => prop_filter.ids(child))
         depth_1_vals    = depth_1_vals.ling_ids.group(:property_id).having(:property_id => child_prop_ids)
       end
 
@@ -48,12 +48,55 @@ module SearchResults
     (depth_0_vals + depth_1_vals).map(&:id)
   end
 
+  class QueryFilter
+    def initialize(group, params = {})
+      @group, @params = group, params
+    end
+
+    def ids(depth)
+      selected(depth) || all.at_depth(depth)
+    end
+
+    def selected(depth)
+      params[depth.to_s]
+    end
+
+    def all
+      @all ||= klass.ids.in_group(@group)
+    end
+
+    def params
+      @params || {}
+    end
+
+    def klass
+      self.class.name
+    end
+  end
+
+  class LingFilter < QueryFilter
+    def klass; Ling; end
+  end
+
+  class PropertyFilter < QueryFilter
+    def klass; Property; end
+  end
+
+  def ling_filter
+    @ling_filter ||= LingFilter.new(@group, @params[:lings])
+  end
+
+  def prop_filter
+    @prop_filter ||= PropertyFilter.new(@group, categorized_to_depth(@params[:properties]))
+  end
+
   def filter_depth_0_lings_prop_ids
-    LingsProperty.ids.ling_ids.prop_ids.where(:ling_id => queryable_ling_ids(parent), :property_id => queryable_prop_ids(parent))
+    LingsProperty.ids.ling_ids.prop_ids.where(:ling_id => ling_filter.ids(parent), :property_id => prop_filter.ids(parent))
   end
 
   def filter_depth_1_lings_prop_ids
-    queryable_ling_ids(child).any? ? LingsProperty.ids.ling_ids.prop_ids.where(:ling_id => queryable_ling_ids(child), :property_id => queryable_prop_ids(child)) : []
+    return [] unless ling_filter.ids(child).any?
+    LingsProperty.ids.ling_ids.prop_ids.where(:ling_id => ling_filter.ids(child), :property_id => prop_filter.ids(child))
   end
 
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
@@ -79,32 +122,8 @@ module SearchResults
     @all_lings_prop_ids ||= LingsProperty.ids
   end
 
-  def ling_params
-    @params[:lings] || {}
-  end
-
-  def prop_params
-    @params[:properties] || {}
-  end
-
   def lings_prop_params
     @params[:lings_props] || {}
-  end
-
-  def queryable_ling_ids(depth)
-    ling_params[depth.to_s] || all_group_ling_ids(depth)
-  end
-
-  def all_group_ling_ids(depth)
-    Ling.select("lings.id").in_group(@group).at_depth(depth)
-  end
-
-  def queryable_prop_ids(depth)
-    prop_param_ids_at_depth(depth).any? ? prop_param_ids_at_depth(depth) : all_group_prop_ids(depth)
-  end
-
-  def prop_param_ids_at_depth(depth)
-    prop_params.reject { |k,v| !category_present?(k, depth) }.values.flatten || []
   end
 
   def all_group_prop_ids(depth)
@@ -122,19 +141,31 @@ module SearchResults
     vals.flatten.map { |str| str.split(":") }
   end
 
-  def group_prop_category_names(depth)
-    group_categories.select { |c| c.depth == depth }.map { |c| c.name }
+  def categorized_to_depth(cat_params = nil)
+    return {} if cat_params.nil?
+    result = {}.tap do |hash|
+      [parent, child].each do |depth|
+        hash[depth.to_s] = group_prop_category_ids(depth).inject([]) do |memo, id|
+          memo << cat_params[id.to_s]
+        end.flatten.compact
+      end
+    end.delete_if {|k,v| v.empty? }
   end
 
   def group_prop_category_ids(depth)
-    group_categories.select { |c| c.depth == depth }.map { |c| c.id }
+    group_categories.ids.at_depth(depth).map(&:id)
   end
 
   def group_categories
     @group_categories ||= Category.in_group(@group)
   end
 
-  def category_present?(key, depth)
-    group_prop_category_names(depth).map {|n| n.underscorize }.include?(key)
+  def group_prop_category_names(depth)
+    group_categories.select { |c| c.depth == depth }.map { |c| c.name }
   end
+
+  def category_present?(key, depth)
+    group_prop_category_ids(depth).map(&:to_s).include?(key)
+  end
+
 end

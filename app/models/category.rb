@@ -11,4 +11,5 @@ class Category < ActiveRecord::Base
 
   scope :in_group, lambda { |group| where(:group => group) }
   scope :at_depth, lambda { |depth| where(:depth => depth) }
+  scope :ids, select("#{self.table_name}.id")
 end

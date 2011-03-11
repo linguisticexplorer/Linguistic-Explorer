@@ -20,7 +20,7 @@
         <div>
           <%= f.label :properties, prop_label, :for => search_options_label(prop_label) %>
           <%= f.select :properties, @search.property_options(category), {},
-            :name => search_field_name(:properties, category.name),
+            :name => search_field_name(:properties, category.id),
             :multiple => true,
             :id => search_options_label(prop_label)
           %>
@@ -44,7 +44,7 @@
       <%= content_tag :fieldset, :id => lings_prop_label.underscorize do %>
         <%= f.label :lings_props, lings_prop_label, :for => search_options_label(lings_prop_label) %>
         <%= f.select :lings_props, @search.lings_prop_options(category), {},
-          :name => search_field_name(:lings_props, category.name),
+          :name => search_field_name(:lings_props, category.id),
           :multiple => true,
           :id => search_options_label(lings_prop_label) %>
       <% end %>
