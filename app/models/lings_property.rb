@@ -27,6 +27,10 @@ class LingsProperty < ActiveRecord::Base
     LingsProperty.column_names.map { |c| "lings_properties.#{c}"}.join(", ")
   end
 
+  def self.select_ids
+    ids.ling_ids.prop_ids
+  end
+
   def ling_name
     ling.name
   end
