@@ -19,7 +19,7 @@ describe UnmodifiedGroupDataController do
   it "should preload group on every action by default" do
     get :index, :group_id => groups(:inclusive).id
     response.should be_success
-    session[:group].should == groups(:inclusive)
+    assigns(:group).should == groups(:inclusive)
   end
 
   after do
@@ -47,7 +47,7 @@ describe ModifiedGroupDataController do
   it "should allow skip_before_filter to skip group preloading" do
     get :index
     response.should be_success
-    session[:group].should be_nil
+    assigns(:group).should be_nil
   end
 
   after do

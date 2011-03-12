@@ -76,7 +76,7 @@ describe LingsPropertiesController do
         ling = lings(:level0)
         property = properties(:level0)
         post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
-        response.should redirect_to(group_lings_property_url(session[:group], assigns(:lings_property)))
+        response.should redirect_to(group_lings_property_url(assigns(:group), assigns(:lings_property)))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -123,7 +123,7 @@ describe LingsPropertiesController do
 
       it "redirects to the property" do
         put :update, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        response.should redirect_to(group_lings_property_url(session[:group], lings_properties(:smelly)))
+        response.should redirect_to(group_lings_property_url(assigns(:group), lings_properties(:smelly)))
       end
     end
 
@@ -154,7 +154,7 @@ describe LingsPropertiesController do
 
     it "redirects to the lings_properties list" do
       delete :destroy, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-      response.should redirect_to(group_lings_properties_url(session[:group]))
+      response.should redirect_to(group_lings_properties_url(assigns(:group)))
     end
   end
 end

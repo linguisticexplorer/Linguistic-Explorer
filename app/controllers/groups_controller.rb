@@ -89,4 +89,10 @@ class GroupsController < ApplicationController
       format.xml  { head :ok }
     end
   end
+
+  private
+
+  def current_group
+    @group
+  end
 end

@@ -16,7 +16,7 @@
     <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
   <% end %>
 
-  <% if current_group %>
+  <% if @group && !@group.new_record? %>
     <%= link_to current_group.name, current_group %>
     <%= link_to 'Search', new_group_search_path(current_group) %>
     <%= link_to current_group.ling0_name, group_lings_path(current_group) %>

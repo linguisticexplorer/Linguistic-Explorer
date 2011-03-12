@@ -27,8 +27,12 @@ describe GroupsController do
   end
 
   describe "show" do
+    it "should set session[:current_group] " do
+      get :show, :id => groups(:inclusive).id
+    end
+
     describe "assigns" do
-      it "@group should match the passed id" do
+      it "@group should match the requested group id" do
         get :show, :id => groups(:inclusive).id
         assigns(:group).should == groups(:inclusive)
       end
