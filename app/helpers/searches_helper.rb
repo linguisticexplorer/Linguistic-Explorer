@@ -8,8 +8,8 @@ module SearchesHelper
     "#{text.underscorize}_options"
   end
 
-  def grouping_field_name(scope)
-    "search[group][#{scope}]"
+  def grouping_field_name(scope, type)
+    "search[#{type}_group][#{scope}]"
   end
 
   def grouping_label(name, type)

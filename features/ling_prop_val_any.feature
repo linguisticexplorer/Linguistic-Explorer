@@ -1,4 +1,4 @@
-Feature: Search Ling Prop Value Pair
+Feature: Search Any Ling Prop Value Pair
   
   Background:
     Given I am a visitor

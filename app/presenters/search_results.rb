@@ -21,13 +21,16 @@ module SearchResults
 
   def selected_lings_prop_ids
     depth_0_vals  = filter_depth_0_lings_prop_ids
-    depth_1_vals  = filter_depth_1_lings_prop_ids
 
-    depth_0_vals, depth_1_vals = intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
+    depth_1_vals  = filter_depth_1_lings_prop_ids
 
     depth_0_vals, depth_1_vals = filter_by_lings_prop_params(depth_0_vals, depth_1_vals)
 
-    depth_0_vals, depth_1_vals = filter_by_all_conditions(depth_0_vals, depth_1_vals)
+    depth_0_vals, depth_1_vals = intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
+
+    depth_0_vals, depth_1_vals = filter_by_all_conditions(depth_0_vals, depth_1_vals, :property_group)
+
+    depth_0_vals, depth_1_vals = filter_by_all_conditions(depth_0_vals, depth_1_vals, :lings_property_group)
 
     (depth_0_vals + depth_1_vals).map(&:id)
   end
@@ -50,9 +53,13 @@ module SearchResults
   end
 
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
+
     if depth_1_vals.any?
-      depth_1_vals  = ( LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id)))
-      depth_0_vals  =   LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id))
+
+      depth_1_vals  = ( LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => prop_filter.ids(child)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq))
+
+      depth_0_vals  =   LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => prop_filter.ids(parent))
+
     end
 
     [depth_0_vals, depth_1_vals]
@@ -106,8 +113,8 @@ module SearchResults
     group_prop_category_ids(depth).map(&:to_s).include?(key)
   end
 
-  def filter_by_all_conditions(depth_0_vals,depth_1_vals)
-    all_selection = @params[:group].group_by { |k,v| v }["all"]
+  def filter_by_all_conditions(depth_0_vals, depth_1_vals, grouping)
+    all_selection = @params[grouping].group_by { |k,v| v }["all"]
     if all_selection
       cats = all_selection.map { |c| c.first }.map(&:to_i) # get category ids to group by all
       parent_cats = group_prop_category_ids(parent).select { |c| cats.include?(c) }

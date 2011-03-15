@@ -1,6 +1,6 @@
 module SearchForm
 
-  attr_accessor :lings, :properties, :lings_props, :group
+  attr_accessor :lings, :properties, :lings_props, :property_group, :lings_property_group
 
   def ling_options(depth)
     group_lings_at_depth(depth).map { |l| [l.name, l.id] }
