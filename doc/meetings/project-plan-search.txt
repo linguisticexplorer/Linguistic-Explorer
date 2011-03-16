@@ -17,12 +17,15 @@ Project Plan for Search
       Property Value Search by ALL
 
 3/21
+      Dennis out
       Deploy plan set
+      Clean All query
       Keyword Search on Ling
       Keyword Search on Property
-      Display Examples in Results
 
 3/28
+      Dennis back Wednesday 3/30, possibly meet in evening
+      Display Examples in Results
       Keyword Search on Examples
       Filter Results by "Show" Criteria
 
