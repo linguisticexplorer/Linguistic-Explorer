@@ -55,8 +55,8 @@ module SearchResults
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
     # Calling "to_a" because of bug in rails when calling empty?/any? on relation not yet loaded
     # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
-    if depth_1_vals.to_a.any?
 
+    if depth_1_vals.to_a.any?
       depth_1_vals  = ( LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => prop_filter.ids(child)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq))
 
       depth_0_vals  =   LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => prop_filter.ids(parent))

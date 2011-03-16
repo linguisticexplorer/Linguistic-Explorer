@@ -22,6 +22,7 @@ class Ling < ActiveRecord::Base
   
   include Extensions::Wheres
   include Extensions::Selects
+  include Extensions::Orders
 
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
