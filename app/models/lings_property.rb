@@ -12,8 +12,9 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
   has_one :category, :through => :property
 
-  scope :in_group, lambda { |group| where(:group => group) }
-  scope :ids, select("#{self.table_name}.id")
+  include Extensions::Selects
+  include Extensions::Wheres
+
   scope :ling_ids, select("#{self.table_name}.ling_id")
   scope :prop_ids, select("#{self.table_name}.property_id")
 

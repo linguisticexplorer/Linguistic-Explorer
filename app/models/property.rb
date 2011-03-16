@@ -10,10 +10,11 @@ class Property < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
   has_many :lings_properties, :dependent => :destroy
 
-  scope :in_group, lambda { |group| where(:group => group) }
-  scope :at_depth, lambda { |depth| joins(:category).where("categories.depth" => depth) }
-
-  scope :ids, select("#{self.table_name}.id")
+  include Extensions::Selects
+  include Extensions::Wheres
+  include Extensions::Orders
+  # override
+  scope :at_depth, lambda { |depth| scoped & Category.at_depth(depth) }
 
   def depth
     category.depth

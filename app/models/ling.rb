@@ -19,11 +19,10 @@ class Ling < ActiveRecord::Base
   has_many :examples, :dependent => :destroy
   has_many :lings_properties, :dependent => :destroy
   has_many :properties, :through => :lings_properties
+  
+  include Extensions::Wheres
+  include Extensions::Selects
 
-  scope :in_group, lambda { |group| where(:group => group) }
-  scope :at_depth, lambda { |depth| where(:depth => depth) }
-
-  scope :ids, select("#{self.table_name}.id")
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
 

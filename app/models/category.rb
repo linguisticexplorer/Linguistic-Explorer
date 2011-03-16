@@ -9,7 +9,6 @@ class Category < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
   has_many :properties, :dependent => :destroy
 
-  scope :in_group, lambda { |group| where(:group => group) }
-  scope :at_depth, lambda { |depth| where(:depth => depth) }
-  scope :ids, select("#{self.table_name}.id")
+  include Extensions::Wheres
+  include Extensions::Selects
 end

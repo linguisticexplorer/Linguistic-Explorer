@@ -19,7 +19,7 @@ module SearchForm
   end
 
   def property_categories
-    @property_categories ||= Category.in_group(@group)
+    @property_categories ||= Category.in_group(@group).order(:name)
   end
 
   def has_ling_children?
@@ -41,16 +41,15 @@ module SearchForm
   end
 
   def group_lings
-    @group_lings ||= Ling.in_group(@group)
+    @group_lings ||= Ling.in_group(@group).order(:name)
   end
 
   def group_properties
-    @group_properties ||= Property.in_group(@group)
+    @group_properties ||= Property.in_group(@group).order_by_name
   end
 
   def group_lings_props
-    # @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group("lings_properties.id, properties.id, lings_properties.value").includes(:property)
-    @group_lings_props ||= LingsProperty.in_group(@group).joins(:property).group(LingsProperty.group_by_statement).includes(:property)
+    @group_lings_props ||= LingsProperty.in_group(@group).group(LingsProperty.group_by_statement).includes(:property) & Property.order_by_name
   end
 
   def show_param
