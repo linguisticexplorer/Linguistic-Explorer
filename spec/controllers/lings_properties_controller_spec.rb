@@ -103,6 +103,16 @@ describe LingsPropertiesController do
         response.should be_success
         response.should render_template("new")
       end
+
+      it "assigns available lings to @lings" do
+        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
+        assigns(:lings).size.should == Ling.all.size
+      end
+
+      it "available properties to @properties" do
+        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
+        assigns(:properties).size.should == Property.all.size
+      end
     end
   end
 
@@ -132,8 +142,18 @@ describe LingsPropertiesController do
         put :update, :id => lings_properties(:smelly), :lings_property => {'value' => ''}, :group_id => groups(:inclusive).id
       end
 
-      it "assigns the lings_property as @lings_property" do
-        assigns(:lings_property).should == lings_properties(:smelly)
+      describe "assigns" do
+        it "the lings_property as @lings_property" do
+          assigns(:lings_property).should == lings_properties(:smelly)
+        end
+
+        it "available lings to @lings" do
+          assigns(:lings).size.should == Ling.all.size
+        end
+
+        it "available properties to @properties" do
+          assigns(:properties).size.should == Property.all.size
+        end
       end
 
       it "re-renders the 'edit' template" do

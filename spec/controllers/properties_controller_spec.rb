@@ -87,6 +87,14 @@ describe PropertiesController do
         }.should change(Property, :count).by(0)
       end
 
+      it "@categories should be a hash with two level members" do
+        post :create, :property => {}, :group_id => groups(:inclusive).id
+        cats = assigns(:categories)
+        cats.should be_a Hash
+        cats[:depth_0].should include categories(:inclusive0)
+        cats[:depth_1].should include categories(:inclusive1)
+      end
+
       it "re-renders the 'new' template" do
         post :create, :property => {}, :group_id => groups(:inclusive).id
         response.should be_success
@@ -123,6 +131,13 @@ describe PropertiesController do
 
       it "assigns the property as @property" do
         assigns(:property).should == properties(:valid)
+      end
+
+      it "@categories should be a hash with two level members" do
+        cats = assigns(:categories)
+        cats.should be_a Hash
+        cats[:depth_0].should include categories(:inclusive0)
+        cats[:depth_1].should include categories(:inclusive1)
       end
 
       it "re-renders the 'edit' template" do

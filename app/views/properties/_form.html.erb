@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= f.label current_group.category_name %><br />
-    <%= f.text_field :category_id %>
+    <%= f.collection_select :category_id, @categories[:depth_0] + @categories[:depth_1], :id, :name, :prompt => 'Select a ' + current_group.category_name %>
   </div>
 
   <div class="actions">

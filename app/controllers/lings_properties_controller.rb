@@ -55,6 +55,8 @@ class LingsPropertiesController < GroupDataController
         format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => (current_group.lings_property_name + ' was successfully created.')) }
         format.xml  { render :xml => @lings_property, :status => :created, :location => @lings_property }
       else
+        @lings = Ling.all
+        @properties = Property.all
         format.html { render :action => "new" }
         format.xml  { render :xml => @lings_property.errors, :status => :unprocessable_entity }
       end
@@ -71,6 +73,8 @@ class LingsPropertiesController < GroupDataController
         format.html { redirect_to(group_lings_property_url(current_group, @lings_property), :notice => (current_group.lings_property_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else
+        @lings = Ling.all
+        @properties = Property.all
         format.html { render :action => "edit" }
         format.xml  { render :xml => @lings_property.errors, :status => :unprocessable_entity }
       end
