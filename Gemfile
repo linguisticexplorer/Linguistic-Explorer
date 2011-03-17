@@ -11,11 +11,9 @@ gem 'mysql'
 # gem 'unicorn'
 # Use passenger as the web server
 gem 'passenger'
-# Use mongrel as the web server
-# gem 'mongrel'
 
 # Deploy with Capistrano
-# gem 'capistrano'
+gem 'capistrano'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
@@ -43,6 +41,10 @@ gem 'fastercsv'
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test, :pg_test do
+
+  # Use mongrel as the web server
+  gem 'mongrel', "1.2.0.pre2"
+
   gem 'rspec-rails', "2.4.0"
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
