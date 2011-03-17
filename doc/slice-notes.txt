@@ -12,3 +12,7 @@ Serving in the background as a daemon.
 
 GC tune 1.9.2 notes
 http://dev.metaskills.net/2011/03/09/gc-tune-ruby-1.9.2-with-rvm/
+
+
+Dynamic database.yml and capistrano
+http://www.simonecarletti.com/blog/2009/06/capistrano-and-database-yml/

@@ -34,9 +34,9 @@ production:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: #{application}_production
-  username: #{user}
-  password: #{Capistrano::CLI.ui.ask("Enter MySQL database password: ")}
+  database: <%= application %>_production
+  username: <%= user %>
+  password: <%= Capistrano::CLI.ui.ask("Enter MySQL database password: ") %>
   pool: 5
   host: localhost
 

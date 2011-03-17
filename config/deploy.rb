@@ -1,3 +1,4 @@
+$: << File.join(File.dirname(__FILE__), "..", "lib")
 require "capistrano_database_yml"
 
 # require profile scripts
