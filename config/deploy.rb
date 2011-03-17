@@ -1,3 +1,5 @@
+require "capistrano_database_yml"
+
 # require profile scripts
 default_run_options[:pty] = true
 
@@ -34,20 +36,20 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
-  
-  desc "Symlink shared configs and folders on each release"
-  task :symlink_shared do
-    run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-    run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
-    # run "ln -nfs #{shared_path}/log/newrelic_agent.passenger_turfcasts.log #{release_path}/log/newrelic_agent.passenger_turfcasts.log"
-    # run "ln -nfs #{shared_path}/log/production.log #{release_path}/log/production.log"
-  end
-  
-  desc "Sync the public assets directory"
-  task :assets do
-    system "rsync -vr --exclude='.DS_STORE' public/assets #{user}@#{application}:#{shared_path}/"
-  end
-  
+
+  # desc "Symlink shared configs and folders on each release"
+  # task :symlink_shared do
+  #   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
+  #   run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
+  #   run "ln -nfs #{shared_path}/log/newrelic_agent.passenger_turfcasts.log #{release_path}/log/newrelic_agent.passenger_turfcasts.log"
+  #   run "ln -nfs #{shared_path}/log/production.log #{release_path}/log/production.log"
+  # end
+
+  # desc "Sync the public assets directory"
+  # task :assets do
+  #   system "rsync -vr --exclude='.DS_STORE' public/assets #{user}@#{application}:#{shared_path}/"
+  # end
+
 end
 
 # Bundler
