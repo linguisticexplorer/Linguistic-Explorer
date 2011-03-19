@@ -2,6 +2,14 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
+    <<-Notes
+      Users cannot do anything unless specified
+      Admin can R/W anything
+      Non-group member can R public groups and their data
+      Group member can R their groups and their data
+      Group member can W their groups LP, E, and ELP data
+      Group admin can R/W their groups and their data
+    Notes
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)

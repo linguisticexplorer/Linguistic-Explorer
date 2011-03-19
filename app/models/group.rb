@@ -9,6 +9,9 @@ class Group < ActiveRecord::Base
   has_many :examples, :dependent => :destroy
   has_many :categories, :dependent => :destroy
 
+  has_many :group_memberships, :dependent => :destroy
+  has_many :users, :through => :group_memberships
+
   def ling_name_for_depth(depth)
     if depth > depth_maximum
       "Error: No objects for depth #{depth} exist in this group."
