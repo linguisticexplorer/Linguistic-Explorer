@@ -50,11 +50,12 @@ GEM
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
     builder (2.1.2)
+    cancan (1.6.0)
     capistrano (2.5.20)
       highline
       highline
-      net-scp
       net-scp (>= 1.0.0)
+      net-scp
       net-sftp
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
@@ -81,12 +82,12 @@ GEM
       gherkin (~> 2.3.2)
       json (~> 1.4.6)
       term-ansicolor (~> 1.0.5)
-    cucumber-rails (0.4.0.beta.1)
-      cucumber (~> 0.10.0)
+    cucumber-rails (0.3.2)
+      cucumber (>= 0.8.0)
     culerity (0.2.15)
     daemon_controller (0.2.6)
     daemons (1.0.10)
-    database_cleaner (0.6.4)
+    database_cleaner (0.6.6)
     devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -104,8 +105,8 @@ GEM
     file-tail (1.0.5)
       spruz (>= 0.1.0)
     gem_plugin (0.2.3)
-    gherkin (2.3.3)
-      json (~> 1.4.6)
+    gherkin (2.3.5)
+      json (>= 1.4.6)
     highline (1.6.1)
     i18n (0.5.0)
     json (1.4.6)
@@ -145,7 +146,7 @@ GEM
       rake (>= 0.8.1)
     pg (0.10.1)
     polyglot (0.3.1)
-    rack (1.2.1)
+    rack (1.2.2)
     rack-mount (0.6.13)
       rack (>= 1.0.0)
     rack-test (0.5.7)
@@ -198,7 +199,7 @@ GEM
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.24)
+    tzinfo (0.3.25)
     validation_reflection (1.0.0)
     warden (1.0.3)
       rack (>= 1.0.0)
@@ -209,9 +210,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  cancan (= 1.6.0)
   capistrano
   capybara
-  cucumber
+  cucumber (= 0.10.0)
   cucumber-rails
   database_cleaner
   devise (= 1.1.7)

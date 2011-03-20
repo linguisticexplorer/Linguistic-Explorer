@@ -52,7 +52,7 @@ group :development, :test, :pg_test do
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'factory_girl_rails'
-  gem "cucumber"
+  gem "cucumber", "0.10.0"
   gem "database_cleaner"
   gem "cucumber-rails" #,   '0.4.0.beta.1'
   gem 'capybara'
