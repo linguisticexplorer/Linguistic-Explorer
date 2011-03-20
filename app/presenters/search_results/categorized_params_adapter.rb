@@ -9,6 +9,11 @@ module SearchResults
       Category.ids_by_group_and_depth(@group, depth)
     end
 
+    def val_params_to_pairs(depth, params)
+      vals = params.reject { |k,v| !category_present?(k, depth) }.values
+      vals.flatten.map { |str| str.split(":") }
+    end
+
     def category_present?(key, depth)
       group_prop_category_ids(depth).map(&:to_s).include?(key)
     end

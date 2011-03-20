@@ -22,7 +22,7 @@ module SearchResults
   def selected_lings_prop_ids
     depth_0_vals, depth_1_vals = filter_by_ling_and_prop_params
 
-    depth_0_vals, depth_1_vals = filter_by_lings_prop_params(depth_0_vals, depth_1_vals)
+    depth_0_vals, depth_1_vals = filter_by_lings_prop_params
 
     depth_0_vals, depth_1_vals = intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
 
@@ -35,6 +35,10 @@ module SearchResults
 
   def filter_by_ling_and_prop_params
     [params_filter.depth_0_vals, params_filter.depth_1_vals]
+  end
+
+  def filter_by_lings_prop_params
+    [value_pair_params_filter.depth_0_vals, value_pair_params_filter.depth_1_vals]
   end
 
   def params_filter
@@ -53,6 +57,10 @@ module SearchResults
             :category_present?,
             :convert_to_depth_params,   :to => :category_adapter
 
+  def value_pair_params_filter
+    @value_pair_params_filter ||= ValuePairParamsFilter.new(params_filter, category_adapter, @params[:lings_props] || {})
+  end
+
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
     # Calling "to_a" because of bug in rails when calling empty?/any? on relation not yet loaded
     # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
@@ -65,31 +73,6 @@ module SearchResults
     end
 
     [depth_0_vals, depth_1_vals]
-  end
-
-  def filter_by_lings_prop_params(depth_0_vals, depth_1_vals)
-     if lings_prop_param_pairs(parent).any?
-       depth_0_vals = LingsProperty.ids.where(lings_prop_param_conditions(parent) & {:id => depth_0_vals})
-     end
-     if lings_prop_param_pairs(child).any?
-       depth_1_vals = LingsProperty.ids.where(lings_prop_param_conditions(child) & {:id => depth_1_vals})
-     end
-     [depth_0_vals, depth_1_vals]
-  end
-
-  def lings_prop_params
-    @params[:lings_props] || {}
-  end
-
-  def lings_prop_param_conditions(depth)
-    conditions = lings_prop_param_pairs(depth).inject({:id => nil}) do |conds, pair|
-      conds | { :property_id => pair.first, :value => pair.last }
-    end
-  end
-
-  def lings_prop_param_pairs(depth)
-    vals = lings_prop_params.reject { |k,v| !category_present?(k, depth) }.values
-    vals.flatten.map { |str| str.split(":") }
   end
 
   def filter_by_all_conditions(depth_0_vals, depth_1_vals, grouping)
@@ -111,46 +94,6 @@ module SearchResults
     else
       [depth_0_vals, depth_1_vals]
     end
-  end
-
-  class ParamExtractor
-    def initialize(group, params = {})
-      @group, @params = group, params
-    end
-
-    def ids(depth)
-      selected(depth) || all.at_depth(depth)
-    end
-
-    def selected(depth)
-      params[depth.to_s]
-    end
-
-    def all
-      @all ||= klass.ids.in_group(@group)
-    end
-
-    def params
-      @params || {}
-    end
-
-    def depth_0_ids
-      ids(Depth::PARENT)
-    end
-
-    def depth_1_ids
-      ids(Depth::CHILD)
-    end
-
-    def klass
-      /Ling|Property/.match(self.class.name)[0].constantize
-    end
-  end
-
-  class LingExtractor < ParamExtractor
-  end
-
-  class PropertyExtractor < ParamExtractor
   end
 
 end
