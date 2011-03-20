@@ -5,7 +5,6 @@ require 'fastercsv'
 
 logger = Logger.new(STDOUT)
 
-group_list  = {}
 user_list   = {}
 ling_list   = {}
 cat_list    = {}
@@ -32,6 +31,7 @@ puts "Starting Users..."
 # Create Users(id,name,email,accesslevel)
 FasterCSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
   user = User.find_by_email(row["email"])
+  user_list[row["id"]] = row["email"]
 
   next if user.present?
 
@@ -51,7 +51,6 @@ puts "Done with Users, starting Groups"
 FasterCSV.foreach(Rails.root.join("doc", "data", "Group.csv"), :headers => true) do |row|
   group = Group.find_or_create_by_name(group_name(row["name"]))
   group.privacy = row["privacy"].downcase
-  group_list[row["id"]] = row["name"]
   group.save!
 end
 
@@ -59,11 +58,11 @@ puts "Done with Group, starting Memberships"
 # Create GroupMemberships(id,user_id,group_id,level)
 FasterCSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])
-  group = Group.find_by_name(group_list[row["group_id"]])
+  group = Group.find_by_name(group_name(row["group_id"]))
   GroupMembership.create(:user => user, :group => group, :level => row["level"])
 end
-
 puts "Done with Memberships, starting Lings"
+
 # Create Lings(id,name,parentid,depth,group,creator,timestamp)
 FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
   name = ling_name(row["name"])

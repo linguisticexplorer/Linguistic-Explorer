@@ -1,3 +1,4 @@
+
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
@@ -36,6 +37,8 @@ gem 'validation_reflection', "1.0.0"
 gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
 
 gem 'fastercsv'
+
+gem 'cancan', "1.6.0"
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators

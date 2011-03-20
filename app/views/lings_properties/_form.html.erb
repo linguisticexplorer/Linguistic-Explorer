@@ -18,12 +18,12 @@
 
   <div class="field">
     <%= f.label current_group.ling0_name %><br />
-    <%= f.text_field :ling_id %>
+    <%= f.collection_select :ling_id, @lings, :id, :name, :prompt => 'Select a ' + current_group.ling0_name %>
   </div>
 
   <div class="field">
     <%= f.label current_group.property_name %><br />
-    <%= f.text_field :property_id %>
+    <%= f.collection_select :property_id, @properties, :id, :name, :prompt => 'Select a ' + current_group.property_name %>
   </div>
 
   <div class="actions">

@@ -56,9 +56,13 @@ class PropertiesController < GroupDataController
 
     respond_to do |format|
       if @property.save
-        format.html { redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + 'Property was successfully created.')) }
+        format.html { redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + ' was successfully created.')) }
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
+        @categories = {
+              :depth_0 => Category.find_all_by_depth(0),
+              :depth_1 => Category.find_all_by_depth(1)
+        }
         format.html { render :action => "new" }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
       end
@@ -72,9 +76,13 @@ class PropertiesController < GroupDataController
 
     respond_to do |format|
       if @property.update_attributes(params[:property])
-        format.html { redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + 'Property was successfully updated.')) }
+        format.html { redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else
+        @categories = {
+              :depth_0 => Category.find_all_by_depth(0),
+              :depth_1 => Category.find_all_by_depth(1)
+        }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
       end

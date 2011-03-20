@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= f.label :depth %><br />
-    <%= f.number_field :depth, :in => 0..1 %>
+    <%= f.collection_select :depth, (0..current_group.depth_maximum).to_a, :to_s, :to_s %>
   </div>
 
   <div class="actions">
