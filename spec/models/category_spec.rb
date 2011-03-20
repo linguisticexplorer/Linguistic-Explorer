@@ -20,4 +20,17 @@ describe Category do
       should_be_createable :with => { :depth => 0, :name => 'linguistic', :group_id => Group.first.id }
     end
   end
+  
+  describe "ids_by_group_and_depth" do
+    it "should return ids for given group and depth" do
+      group = groups(:exclusive)
+      depth = 0
+      Category.ids_by_group_and_depth(group, depth).should == [categories(:exclusive0).id]
+    end
+    it "should return empty array if no ids" do
+      group = groups(:exclusive)
+      depth = 1
+      Category.ids_by_group_and_depth(group, depth).should be_empty
+    end
+  end
 end
