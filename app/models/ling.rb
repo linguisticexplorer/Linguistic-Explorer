@@ -1,6 +1,4 @@
 class Ling < ActiveRecord::Base
-  DEPTHS = [ PARENT = 0, CHILD  = 1 ]
-
   validates_presence_of :name, :depth, :group
   validates_numericality_of :depth
   validates_uniqueness_of :name, :scope => :group_id

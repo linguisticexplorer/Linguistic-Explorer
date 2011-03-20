@@ -12,17 +12,15 @@ module SearchResults
   private
 
   def parent
-    Ling::PARENT
+    Depth::PARENT
   end
 
   def child
-    Ling::CHILD
+    Depth::CHILD
   end
 
   def selected_lings_prop_ids
-    depth_0_vals  = filter_depth_0_lings_prop_ids
-
-    depth_1_vals  = filter_depth_1_lings_prop_ids
+    depth_0_vals, depth_1_vals = filter_by_ling_and_prop_params
 
     depth_0_vals, depth_1_vals = filter_by_lings_prop_params(depth_0_vals, depth_1_vals)
 
@@ -35,21 +33,67 @@ module SearchResults
     (depth_0_vals + depth_1_vals).map(&:id)
   end
 
-  def ling_filter
-    @ling_filter ||= LingFilter.new(@group, @params[:lings])
+  def param_filter
+    @param_filter ||= ParamFilter.new(@group,
+      :lings => @params[:lings],
+      :properties => categorized_to_depth(@params[:properties]))
   end
 
-  def prop_filter
-    @prop_filter ||= PropertyFilter.new(@group, categorized_to_depth(@params[:properties]))
+  def filter_by_ling_and_prop_params
+    [param_filter.depth_0_vals, param_filter.depth_1_vals]
   end
 
-  def filter_depth_0_lings_prop_ids
-    LingsProperty.select_ids.where(:ling_id => ling_filter.ids(parent), :property_id => prop_filter.ids(parent))
+  class ParamFilter
+    def initialize(group, params)
+      @group, @params = group, params
+    end
+
+    def depth_0_vals
+      LingsProperty.select_ids.where(:ling_id => depth_0_ling_ids, :property_id => depth_0_prop_ids)
+    end
+
+    def depth_1_vals
+      return [] unless depth_1_ling_ids.any?
+      LingsProperty.select_ids.where(:ling_id => depth_1_ling_ids, :property_id => depth_1_prop_ids)
+    end
+
+    def depth_0_ling_ids
+      ling_extractor.depth_0_ids
+    end
+
+    def depth_1_ling_ids
+      ling_extractor.depth_1_ids
+    end
+
+    def depth_0_prop_ids
+      prop_extractor.depth_0_ids
+    end
+
+    def depth_1_prop_ids
+      prop_extractor.depth_1_ids
+    end
+
+    private
+
+    def ling_extractor
+      @ling_extractor ||= LingExtractor.new(@group, @params[:lings])
+    end
+
+    def prop_extractor
+      @prop_extractor ||= PropertyExtractor.new(@group, @params[:properties])
+    end
+
   end
 
-  def filter_depth_1_lings_prop_ids
-    return [] unless ling_filter.ids(child).any?
-    LingsProperty.select_ids.where(:ling_id => ling_filter.ids(child), :property_id => prop_filter.ids(child))
+  def categorized_to_depth(cat_params = nil)
+    return {} if cat_params.nil?
+    result = {}.tap do |hash|
+      Depth::DEPTHS.each do |depth|
+        hash[depth.to_s] = group_prop_category_ids(depth).inject([]) do |memo, id|
+          memo << cat_params[id.to_s]
+        end.flatten.compact
+      end
+    end.delete_if {|k,v| v.empty? }
   end
 
   def intersect_lings_prop_ids(depth_0_vals, depth_1_vals)
@@ -57,9 +101,9 @@ module SearchResults
     # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
 
     if depth_1_vals.to_a.any?
-      depth_1_vals  = ( LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => prop_filter.ids(child)) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq))
+      depth_1_vals  = ( LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => param_filter.depth_1_prop_ids) & Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq))
 
-      depth_0_vals  =   LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => prop_filter.ids(parent))
+      depth_0_vals  =   LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => param_filter.depth_0_prop_ids)
 
     end
 
@@ -91,17 +135,6 @@ module SearchResults
     vals.flatten.map { |str| str.split(":") }
   end
 
-  def categorized_to_depth(cat_params = nil)
-    return {} if cat_params.nil?
-    result = {}.tap do |hash|
-      [parent, child].each do |depth|
-        hash[depth.to_s] = group_prop_category_ids(depth).inject([]) do |memo, id|
-          memo << cat_params[id.to_s]
-        end.flatten.compact
-      end
-    end.delete_if {|k,v| v.empty? }
-  end
-
   def group_prop_category_ids(depth)
     group_categories.ids.at_depth(depth).map(&:id)
   end
@@ -121,11 +154,11 @@ module SearchResults
       parent_cats = group_prop_category_ids(parent).select { |c| cats.include?(c) }
       child_cats = group_prop_category_ids(child).select { |c| cats.include?(c) }
       if parent_cats.any?
-        parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => prop_filter.ids(parent))
+        parent_prop_ids = Property.ids.where(:category_id => parent_cats, :id => param_filter.depth_0_prop_ids)
         depth_0_vals    = depth_0_vals.ling_ids.group("lings_properties.property_id").having(:property_id => parent_prop_ids)
       end
       if child_cats.any?
-        child_prop_ids  = Property.ids.where(:category_id => child_cats, :id => prop_filter.ids(child))
+        child_prop_ids  = Property.ids.where(:category_id => child_cats, :id => param_filter.depth_1_prop_ids)
         depth_1_vals    = depth_1_vals.ling_ids.group(:property_id).having(:property_id => child_prop_ids)
       end
 
@@ -135,7 +168,7 @@ module SearchResults
     end
   end
 
-  class QueryFilter
+  class ParamExtractor
     def initialize(group, params = {})
       @group, @params = group, params
     end
@@ -156,15 +189,23 @@ module SearchResults
       @params || {}
     end
 
+    def depth_0_ids
+      ids(Depth::PARENT)
+    end
+
+    def depth_1_ids
+      ids(Depth::CHILD)
+    end
+
     def klass
       /Ling|Property/.match(self.class.name)[0].constantize
     end
   end
 
-  class LingFilter < QueryFilter
+  class LingExtractor < ParamExtractor
   end
 
-  class PropertyFilter < QueryFilter
+  class PropertyExtractor < ParamExtractor
   end
 
 end

@@ -23,7 +23,7 @@ describe SearchResults do
       }
   end
 
-  describe "LingFilter" do
+  describe "LingExtractor" do
     describe "parent_ids" do
       it "should return filtered lings_properties if parents selected" do
       end

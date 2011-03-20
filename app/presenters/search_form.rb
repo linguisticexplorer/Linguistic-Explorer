@@ -23,7 +23,7 @@ module SearchForm
   end
 
   def has_ling_children?
-    group_lings_at_depth(Ling::CHILD).any?
+    group_lings_at_depth(Depth::CHILD).any?
   end
 
   protected
