@@ -30,6 +30,9 @@ require "rvm/capistrano"                  # Load RVM's capistrano plugin.
 set :rvm_ruby_string, "1.9.2-head@ling"        # Or whatever env you want it to run in.
 set :rvm_type, :user
 
+# Bundler
+require 'bundler/capistrano'
+
 # Passenger mod_rails:
 namespace :deploy do
   task :start do ; end
@@ -37,44 +40,35 @@ namespace :deploy do
   task :restart, :roles => :app, :except => { :no_release => true } do
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
-
-  # desc "Symlink shared configs and folders on each release"
-  # task :symlink_shared do
-  #   run "ln -nfs #{shared_path}/config/database.yml #{release_path}/config/database.yml"
-  #   run "ln -nfs #{shared_path}/assets #{release_path}/public/assets"
-  #   run "ln -nfs #{shared_path}/log/newrelic_agent.passenger_turfcasts.log #{release_path}/log/newrelic_agent.passenger_turfcasts.log"
-  #   run "ln -nfs #{shared_path}/log/production.log #{release_path}/log/production.log"
-  # end
-
-  # desc "Sync the public assets directory"
-  # task :assets do
-  #   system "rsync -vr --exclude='.DS_STORE' public/assets #{user}@#{application}:#{shared_path}/"
-  # end
-
 end
 
-# Bundler
-namespace :bundler do
-  task :create_symlink, :roles => :app do
-    shared_dir = File.join(shared_path, 'bundle')
-    release_dir = File.join(release_path, '.bundle')
-    run("mkdir -p #{shared_dir} && ln -s #{shared_dir} #{release_dir}")
-  end
-
-  task :install, :roles => :app do
-    run "cd #{release_path} && bundle install --local --without test pg_test development"
-
-    on_rollback do
-      if previous_release
-        run "cd #{previous_release} && bundle install --local --without test pg_test development"
-      else
-        logger.important "no previous release to rollback to, rollback of bundler:install skipped"
-      end
-    end
-  end
-
-  task :bundle_new_release, :roles => :db do
-    bundler.create_symlink
-    bundler.install
-  end
-end
+# # Bundler
+# namespace :bundler do
+#   task :create_symlink, :roles => :app do
+#     shared_dir = File.join(shared_path, 'bundle')
+#     release_dir = File.join(release_path, '.bundle')
+#     run("mkdir -p #{shared_dir} && ln -s #{shared_dir} #{release_dir}")
+#   end
+# 
+#   task :install, :roles => :app do
+#     run "cd #{release_path} && bundle install --local --without test pg_test development"
+# 
+#     on_rollback do
+#       if previous_release
+#         run "cd #{previous_release} && bundle install --local --without test pg_test development"
+#       else
+#         logger.important "no previous release to rollback to, rollback of bundler:install skipped"
+#       end
+#     end
+#   end
+# 
+#   task :bundle_new_release, :roles => :db do
+#     bundler.create_symlink
+#     bundler.install
+#   end
+# 
+#   after "deploy:rollback:revision", "bundler:install"
+#   after "deploy:update_code", "bundler:bundle_new_release"
+# 
+#   #"deploy:symlink_shared", "newrelic:notice_deployment"
+# end

@@ -3,7 +3,6 @@
 log/*
 tmp/*
 *~
-*.lock
 *.DS_Store
 *.swp
 *.out
