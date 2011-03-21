@@ -26,14 +26,14 @@
           %>
         </div>
         <div>
-          <%= f.label "group", "Any", :for => grouping_label(category.name, "any") %>
-          <%= f.radio_button "property_group", "any", :checked => true,
-            :id => grouping_label(category.name, "any"),
-            :name => grouping_field_name(category.id, :property) %>
-          <%= f.label "property_group", "All", :for => grouping_label(category.name, "all") %>
-          <%= f.radio_button "property_group", "all",
-            :id => grouping_label(category.name, "all"),
-            :name => grouping_field_name(category.id, :property) %>
+          <%= f.label "group", "Any", :for => categorized_set_label(category.name, "any") %>
+          <%= f.radio_button "property_set", "any", :checked => true,
+            :id => categorized_set_label(category.name, "any"),
+            :name => categorized_field_name(category.id, :property) %>
+          <%= f.label "property_set", "All", :for => categorized_set_label(category.name, "all") %>
+          <%= f.radio_button "property_set", "all",
+            :id => categorized_set_label(category.name, "all"),
+            :name => categorized_field_name(category.id, :property) %>
         </div>
 
       <% end %>
@@ -50,14 +50,14 @@
             :id => search_options_label(lings_prop_label) %>
         </div>
         <div>
-          <%= f.label "lings_property_group", "Any", :for => grouping_label(lings_prop_label, "any") %>
-          <%= f.radio_button "lings_property_group", "any", :checked => true,
-            :id => grouping_label(lings_prop_label, "any"),
-            :name => grouping_field_name(category.id, :lings_property) %>
-          <%= f.label "lings_property_group", "All", :for => grouping_label(lings_prop_label, "all") %>
-          <%= f.radio_button "lings_property_group", "all",
-            :id => grouping_label(lings_prop_label, "all"),
-            :name => grouping_field_name(category.id, :lings_property) %>
+          <%= f.label "lings_property_set", "Any", :for => categorized_set_label(lings_prop_label, "any") %>
+          <%= f.radio_button "lings_property_set", "any", :checked => true,
+            :id => categorized_set_label(lings_prop_label, "any"),
+            :name => categorized_field_name(category.id, :lings_property) %>
+          <%= f.label "lings_property_set", "All", :for => categorized_set_label(lings_prop_label, "all") %>
+          <%= f.radio_button "lings_property_set", "all",
+            :id => categorized_set_label(lings_prop_label, "all"),
+            :name => categorized_field_name(category.id, :lings_property) %>
         </div>
       <% end %>
     <%- end -%>

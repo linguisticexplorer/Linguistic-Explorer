@@ -13,7 +13,7 @@ module SearchResults
       return [] unless depth_1_ling_ids.any?
       LingsProperty.select_ids.where(:ling_id => depth_1_ling_ids, :property_id => depth_1_prop_ids)
     end
-    
+
     def ling_extractor
       @ling_extractor ||= LingExtractor.new(@group, @params[:lings])
     end
@@ -36,6 +36,10 @@ module SearchResults
 
     def depth_1_prop_ids
       prop_extractor.depth_1_ids
+    end
+
+    def prop_params
+      { Depth::PARENT => depth_0_prop_ids, Depth::CHILD => depth_1_prop_ids }
     end
 
   end

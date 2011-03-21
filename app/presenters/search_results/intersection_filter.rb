@@ -2,9 +2,10 @@ module SearchResults
   class IntersectionFilter
     attr_accessor :depth_0_vals, :depth_1_vals
 
-    def initialize(filter, depth_0_prop_ids, depth_1_prop_ids)
-      @depth_0_prop_ids = depth_0_prop_ids
-      @depth_1_prop_ids = depth_1_prop_ids
+    def initialize(filter, prop_params)
+      @prop_params = prop_params
+      @depth_0_prop_ids = @prop_params[Depth::PARENT]
+      @depth_1_prop_ids = @prop_params[Depth::CHILD]
       @depth_0_vals, @depth_1_vals = intersect(filter.depth_0_vals, filter.depth_1_vals)
     end
 
