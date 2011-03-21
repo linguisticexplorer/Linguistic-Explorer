@@ -15,24 +15,28 @@ module SearchResults
       filter_vals(@filter.depth_1_vals, Depth::CHILD)
     end
 
+    private
+
     def filter_vals(vals, depth)
-      if value_pairs_at_depth(depth).any?
-        LingsProperty.ids.where(val_conditions(depth) & {:id => vals})
+      pairs = val_params_to_pairs(depth)
+      if pairs.any?
+        LingsProperty.ids.where(val_conditions(pairs) & {:id => vals})
       else
         vals
       end
     end
 
-    def val_conditions(depth)
-      conditions = value_pairs_at_depth(depth).inject({:id => nil}) do |conds, pair|
+    def val_conditions(pairs)
+      conditions = pairs.inject({:id => nil}) do |conds, pair|
         conds | { :property_id => pair.first, :value => pair.last }
       end
     end
 
-    def value_pairs_at_depth(depth)
-      @adapter.val_params_to_pairs(depth, @params)
+    def val_params_to_pairs(depth)
+      # {"8"=>["15:verb"]} --> [["15", "verb"]]
+      vals = @params.reject { |k,v| !@adapter.category_present?(k, depth) }.values
+      vals.flatten.map { |str| str.split(":") }
     end
-
   end
 
 end
