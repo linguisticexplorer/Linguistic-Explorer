@@ -30,7 +30,9 @@ module SearchResults
 
     filter = filter_by_all_conditions(filter, :property_set)
 
-    filter = filter_by_all_conditions(filter, :lings_property_set)
+    # filter = filter_by_all_conditions(filter, :lings_property_set)
+
+    filter = intersect_lings_prop_ids filter
 
     (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
   end

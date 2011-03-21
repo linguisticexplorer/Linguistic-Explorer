@@ -42,6 +42,10 @@ module SearchResults
       { Depth::PARENT => depth_0_prop_ids, Depth::CHILD => depth_1_prop_ids }
     end
 
+    def val_params
+      @params[:lings_props] || {}
+    end
+
   end
 
 end

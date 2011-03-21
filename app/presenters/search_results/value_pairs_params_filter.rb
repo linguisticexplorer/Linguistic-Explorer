@@ -20,7 +20,7 @@ module SearchResults
     def filter_vals(vals, depth)
       pairs = val_params_to_pairs(depth)
       if pairs.any?
-        LingsProperty.ids.where(val_conditions(pairs) & {:id => vals})
+        LingsProperty.select_ids.where(val_conditions(pairs) & {:id => vals})
       else
         vals
       end
