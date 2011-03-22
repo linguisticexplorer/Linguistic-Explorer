@@ -1,6 +1,6 @@
 module SearchResults
 
-  class LingsPropsParamsFilter < Filter
+  class SelectAnyFilter < Filter
 
     attr_reader :adapter
 

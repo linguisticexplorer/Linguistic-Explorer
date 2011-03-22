@@ -1,11 +1,12 @@
 module SearchResults
 
-  class ValuePairParamsFilter < Filter
+  class SelectValuePairsFilter < Filter
     def initialize(filter, params)
       @filter   = filter
       @params   = params
     end
-    delegate :group_prop_category_ids, :to => :filter
+    delegate  :prop_params,
+              :group_prop_category_ids, :to => :filter
 
     def depth_0_vals
       filter_vals(@filter.depth_0_vals, Depth::PARENT)

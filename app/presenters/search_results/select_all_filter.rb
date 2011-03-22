@@ -2,13 +2,13 @@ module SearchResults
 
   class SelectAllFilter < Filter
 
-    def initialize(filter, prop_params, params)
+    def initialize(filter, params)
       @filter   = filter
-      @prop_params = prop_params
       @params   = params
 
-      @depth_0_vals, @depth_1_vals = perform_all_and_intersect
+      @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
+    delegate :prop_params, :to => :filter
 
     def self.collect_all_from_vals(vals, associated_ids)
       # [vals] --> {1 => [val,val], 2 ==> [val, val] etc.}
@@ -20,7 +20,7 @@ module SearchResults
       end
     end
 
-    def perform_all_and_intersect
+    def filter_by_all_selection_within_category
       category_ids = params_for_all_to_category_ids
 
       if category_ids
@@ -35,7 +35,7 @@ module SearchResults
       vals = @filter.send("depth_#{depth}_vals")
 
       if category_ids_at_depth.any?
-        required = Property.ids.where(:category_id => category_ids_at_depth, :id => @prop_params[depth])
+        required = Property.ids.where(:category_id => category_ids_at_depth, :id => prop_params[depth])
 
         self.class.collect_all_from_vals(vals, required.map(&:id))
       else
