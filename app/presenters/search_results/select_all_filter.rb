@@ -1,10 +1,9 @@
 module SearchResults
-  class SelectAllFilter
-    attr_reader :depth_0_vals, :depth_1_vals
 
-    def initialize(filter, adapter, prop_params, params)
+  class SelectAllFilter < Filter
+
+    def initialize(filter, prop_params, params)
       @filter   = filter
-      @adapter  = adapter
       @prop_params = prop_params
       @params   = params
 
@@ -45,7 +44,8 @@ module SearchResults
     end
 
     def category_ids_at(depth)
-      @adapter.group_prop_category_ids(depth).select { |c| params_for_all_to_category_ids.include?(c) }
+      # group_prop_category_ids defined in CategorizedParamsAdapter
+      @filter.group_prop_category_ids(depth).select { |c| params_for_all_to_category_ids.include?(c) }
     end
 
     def params_for_all_to_category_ids

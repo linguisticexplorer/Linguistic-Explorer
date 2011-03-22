@@ -24,7 +24,7 @@ module SearchResults
 
     filter = filter_by_ling_and_prop_params
 
-    filter = filter_by_lings_prop_params filter
+    filter = filter_by_val_params filter
 
     filter = intersect_lings_prop_ids filter
 
@@ -42,23 +42,12 @@ module SearchResults
   end
 
   def params_filter
-    @params_filter ||= LingsPropsParamsFilter.new(@group,
-      :lings => @params[:lings],
-      :properties => convert_to_depth_params(@params[:properties]))
+    @params_filter ||= LingsPropsParamsFilter.new(@params.merge(:group => @group))
   end
-  delegate  :prop_params,
-            :to => :params_filter
+  delegate  :prop_params,   :to => :params_filter
 
-  def category_adapter
-    @category_adapter ||= CategorizedParamsAdapter.new(@group)
-  end
-  delegate  :group_prop_category_ids,
-            :category_present?,
-            :convert_to_depth_params,   :to => :category_adapter
-
-
-  def filter_by_lings_prop_params(filter)
-    ValuePairParamsFilter.new(filter, category_adapter, @params[:lings_props] || {})
+  def filter_by_val_params(filter)
+    ValuePairParamsFilter.new(filter, @params[:lings_props] || {})
   end
 
   def intersect_lings_prop_ids(filter)
@@ -66,7 +55,7 @@ module SearchResults
   end
 
   def filter_by_all_conditions(filter, grouping)
-    SelectAllFilter.new(filter, category_adapter, prop_params, @params[grouping])
+    SelectAllFilter.new(filter, prop_params, @params[grouping])
   end
 
 end

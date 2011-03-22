@@ -1,11 +1,11 @@
 module SearchResults
 
-  class ValuePairParamsFilter
-    def initialize(filter, adapter, params)
+  class ValuePairParamsFilter < Filter
+    def initialize(filter, params)
       @filter   = filter
-      @adapter  = adapter
       @params   = params
     end
+    delegate :group_prop_category_ids, :to => :filter
 
     def depth_0_vals
       filter_vals(@filter.depth_0_vals, Depth::PARENT)
@@ -34,7 +34,7 @@ module SearchResults
 
     def val_params_to_pairs(depth)
       # {"8"=>["15:verb"]} --> [["15", "verb"]]
-      vals = @params.reject { |k,v| !@adapter.category_present?(k, depth) }.values
+      vals = @params.reject { |k,v| !@filter.category_present?(k, depth) }.values
       vals.flatten.map { |str| str.split(":") }
     end
   end
