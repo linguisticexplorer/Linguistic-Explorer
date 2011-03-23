@@ -5,15 +5,15 @@ require "capistrano_database_yml"
 default_run_options[:pty]   = true
 ssh_options[:forward_agent] = true
 
-set :application, "terraling"
-set :deploy_to, "/var/www/apps/#{application}"
-set :deploy_via, :remote_cache
-set :user, "admin"
+set :application  , "terraling"
+set :deploy_to    , "/var/www/apps/#{application}"
+set :deploy_via   , :remote_cache
+set :user         , "admin"
 
 # source control
-set :scm, :git
-set :repository, "git://github.com/linguisticexplorer/Linguistic-Explorer.git"
-set :branch, "ruby-1.9.2"
+set :scm          , :git
+set :repository   , "git://github.com/linguisticexplorer/Linguistic-Explorer.git"
+set :branch       , "master"
 
 # role :web, HTTP server (Apache)/etc
 # role :app, app server
