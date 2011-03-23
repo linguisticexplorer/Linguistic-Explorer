@@ -13,7 +13,7 @@ gem 'mysql'
 # Use passenger as the web server
 #gem 'passenger'
 # Use mongrel as the web server
-gem 'mongrel'
+gem 'mongrel', '1.2.0.pre2'
 
 # Deploy with Capistrano
 # gem 'capistrano'
@@ -38,8 +38,6 @@ gem 'preferences', '0.4.2', :git => 'git://github.com/bosh/preferences.git'
 gem 'validation_reflection', "1.0.0"
 gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
 
-gem 'fastercsv'
-
 gem 'cancan', "1.6.0"
 
 # Bundle gems for the local environment. Make sure to
@@ -49,7 +47,7 @@ group :development, :test, :pg_test do
   gem 'rspec-rails', "2.4.0"
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
-  gem 'ruby-debug'
+  gem 'ruby-debug19'
   gem 'factory_girl_rails'
   gem "cucumber"
   gem "database_cleaner"

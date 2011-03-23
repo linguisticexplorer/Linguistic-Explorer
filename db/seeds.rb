@@ -1,7 +1,7 @@
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 #
-require 'fastercsv'
+require 'csv'
 
 logger = Logger.new(STDOUT)
 
@@ -29,7 +29,7 @@ end
 puts "Loading data"
 puts "Starting Users..."
 # Create Users(id,name,email,accesslevel)
-FasterCSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
   user = User.find_by_email(row["email"])
   user_list[row["id"]] = row["email"]
 
@@ -48,7 +48,7 @@ end
 
 puts "Done with Users, starting Groups"
 # Create Groups(id,name,privacy)
-FasterCSV.foreach(Rails.root.join("doc", "data", "Group.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "Group.csv"), :headers => true) do |row|
   group = Group.find_or_create_by_name(group_name(row["name"]))
   group.privacy = row["privacy"].downcase
   group.save!
@@ -56,7 +56,7 @@ end
 
 puts "Done with Group, starting Memberships"
 # Create GroupMemberships(id,user_id,group_id,level)
-FasterCSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])
   group = Group.find_by_name(group_name(row["group_id"]))
   GroupMembership.create(:user => user, :group => group, :level => row["level"])
@@ -64,7 +64,7 @@ end
 puts "Done with Memberships, starting Lings"
 
 # Create Lings(id,name,parentid,depth,group,creator,timestamp)
-FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
   name = ling_name(row["name"])
   ling = Ling.find_or_initialize_by_name(name) do |l|
     l.depth   = row["depth"]
@@ -76,7 +76,7 @@ end
 
 puts "Done with Lings, starting ling parent associations"
 # Associate Lings with parents
-FasterCSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |row|
   next if row["parentid"].blank?
 
   child   = Ling.find_by_name(ling_name(row["name"]))
@@ -95,7 +95,7 @@ end
 
 puts "Done with Ling parents, starting Categories"
 # Create Categories(id,name,depth,group,creator,timestamp)
-FasterCSV.foreach(Rails.root.join("doc", "data", "Category.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "Category.csv"), :headers => true) do |row|
   name     = category_name(row["name"])
   category = Category.find_or_initialize_by_name(name)
   category.depth     = row["depth"]
@@ -107,7 +107,7 @@ end
 
 puts "Done with Categories, starting Properties"
 # Create Properties(id,name,category,group,creator,timestamp)
-FasterCSV.foreach(Rails.root.join("doc", "data", "Property.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "Property.csv"), :headers => true) do |row|
   name     = prop_name(row["name"])
   property = Property.find_or_initialize_by_name(name)
   property.category  = Category.find_by_name(cat_list[row["category"]])
@@ -127,7 +127,7 @@ MEANINGFUL_VALUES = {
 
 puts "Done with Properties, starting LingsProperties"
 # Create LingsProperties(id,lingid,propid,value,group,creator,timestamp)
-FasterCSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true) do |row|
+CSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true) do |row|
   group = Group.find_by_name(group_name(row["group"]))
   ling  = Ling.in_group(group).find_by_name(ling_list[row["lingid"]])
   prop  = Property.in_group(group).find_by_name(prop_list[row["propid"]])
