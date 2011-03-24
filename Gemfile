@@ -30,6 +30,8 @@ gem "meta_where", '1.0.1'
 # for Users and authentication
 gem 'devise', '1.1.7'
 
+gem 'json', '1.5.1'
+
 # for Examples, arbitrary fields (key value pairs) and data
 gem 'preferences', '0.4.2', :git => 'git://github.com/bosh/preferences.git'
 
@@ -51,7 +53,7 @@ group :development, :test, :pg_test do
 
   gem 'ruby-debug19'
   gem 'factory_girl_rails'
-  gem "cucumber", "0.10.0"
+  gem "cucumber", "0.10.2"
   gem "database_cleaner"
   gem "cucumber-rails" #,   '0.4.0.beta.1'
   gem 'capybara'
