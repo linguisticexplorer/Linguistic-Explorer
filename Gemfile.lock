@@ -148,7 +148,7 @@ GEM
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
     nokogiri (1.4.4)
-    nokogiri (1.4.4-x86-mingw32)
+    nokogiri (1.4.4.1-x86-mingw32)
     passenger (3.0.5)
       daemon_controller (>= 0.2.5)
       fastthread (>= 1.0.1)
