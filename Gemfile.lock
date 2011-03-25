@@ -48,6 +48,7 @@ GEM
     activesupport (3.0.5)
     archive-tar-minitar (0.5.2)
     arel (2.0.9)
+    bcrypt-ruby (2.1.4)
     bcrypt-ruby (2.1.4-x86-mingw32)
     builder (2.1.2)
     cancan (1.6.0)
@@ -88,6 +89,7 @@ GEM
       rack-test (>= 0.5.7)
     culerity (0.2.15)
     daemon_controller (0.2.6)
+    daemons (1.0.10)
     database_cleaner (0.6.6)
     devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
@@ -100,15 +102,20 @@ GEM
       factory_girl (~> 1.3)
       railties (>= 3.0.0)
     fastthread (1.0.7)
+    ffi (1.0.7)
+      rake (>= 0.8.7)
     ffi (1.0.7-x86-mingw32)
       rake (>= 0.8.7)
     file-tail (1.0.5)
       spruz (>= 0.1.0)
     gem_plugin (0.2.3)
+    gherkin (2.3.5)
+      json (>= 1.4.6)
     gherkin (2.3.5-x86-mingw32)
       json (>= 1.4.6)
     highline (1.6.1)
     i18n (0.5.0)
+    json (1.5.1)
     json (1.5.1-x86-mingw32)
     json_pure (1.5.1)
     launchy (0.4.0)
@@ -126,8 +133,12 @@ GEM
       activesupport (~> 3.0.2)
       arel (~> 2.0.2)
     mime-types (1.16)
+    mongrel (1.2.0.pre2)
+      daemons (~> 1.0.10)
+      gem_plugin (~> 0.2.3)
     mongrel (1.2.0.pre2-x86-mingw32)
       gem_plugin (~> 0.2.3)
+    mysql (2.8.1)
     mysql (2.8.1-x86-mingw32)
     net-scp (1.0.4)
       net-ssh (>= 1.99.1)
@@ -136,7 +147,8 @@ GEM
     net-ssh (2.1.3)
     net-ssh-gateway (1.0.1)
       net-ssh (>= 1.99.1)
-    nokogiri (1.4.4.1-x86-mingw32)
+    nokogiri (1.4.4)
+    nokogiri (1.4.4-x86-mingw32)
     passenger (3.0.5)
       daemon_controller (>= 0.2.5)
       fastthread (>= 1.0.1)
@@ -206,6 +218,7 @@ GEM
       nokogiri (~> 1.3)
 
 PLATFORMS
+  ruby
   x86-mingw32
 
 DEPENDENCIES
@@ -213,7 +226,7 @@ DEPENDENCIES
   capistrano
   capybara
   cucumber (= 0.10.2)
-  cucumber-rails
+  cucumber-rails (= 0.4.0)
   database_cleaner
   devise (= 1.1.7)
   factory_girl_rails

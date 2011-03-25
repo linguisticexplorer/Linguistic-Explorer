@@ -55,7 +55,7 @@ group :development, :test, :pg_test do
   gem 'factory_girl_rails'
   gem "cucumber", "0.10.2"
   gem "database_cleaner"
-  gem "cucumber-rails" #,   '0.4.0.beta.1'
+  gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
   gem 'capybara'
   gem 'launchy'
 end
