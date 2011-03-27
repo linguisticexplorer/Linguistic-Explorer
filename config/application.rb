@@ -39,6 +39,11 @@ module LinguisticExplorer
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
-    
+
+    require "settings"
+
+    Settings.configure do |s|
+      s.in_preview = false
+    end
   end
 end

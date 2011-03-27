@@ -1,7 +1,15 @@
+<%- unless Settings.in_preview -%>
 <h2>
   <%= link_to "Linguistic Explorer", root_path %>
 </h2>
 
 <div>
-  <%= link_to "Groups", groups_path() %>
+  <%= link_to "Groups", groups_path %>
 </div>
+<%- else -%>
+  <h2>Terraling</h2>
+  <br/>
+  <div>Coming soon, an advanced linguistics search engine from the New York University Computer Science department.</div>
+  <br/>
+  <div>Send us an email at <%= link_to support_email, "mailto:#{support_email}" %> for more information.</div>
+<%- end -%>

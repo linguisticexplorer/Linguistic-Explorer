@@ -8,36 +8,7 @@
 </head>
 <body>
 
-<div id="user_nav">
-  <% if user_signed_in? %>
-    Signed in as <%= current_user.email %>
-    <%= link_to "(Sign out)", destroy_user_session_path %>
-  <% else %>
-    <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
-  <% end %>
-
-  <% if @group && !@group.new_record? %>
-    <%= link_to current_group.name, current_group %>
-    <%= link_to 'Search', new_group_search_path(current_group) %>
-    <%= link_to current_group.ling0_name, group_lings_path(current_group) %>
-    <% if @group.depth_maximum > 0 %>
-      <%= link_to current_group.ling1_name, group_lings_path(current_group) %>
-    <% end %>
-    <%= link_to current_group.property_name, group_properties_path(current_group) %>
-    <%= link_to current_group.category_name, group_categories_path(current_group) %>
-    <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
-    <%= link_to current_group.example_name, group_examples_path(current_group) %>
-    <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
-  <% elsif @groups %>
-     <%= form_tag({:controller => "groups", :action => "index"}, :method => "get") do %>
-      <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>
-      <%= submit_tag("Go") %>
-     <% end %>
-  <% else %>
-    <%= link_to "Select a group", groups_path %>
-  <% end %>
-
-</div>
+<%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
 
 <p class="notice"><%= notice %></p>
 <p class="notice"><%= alert %></p>

@@ -12,3 +12,12 @@ Feature: Linguistic Explorer Home Page
     And I follow "Groups"
     And I follow "Search"
     Then I should see "Search Syntactic Structures"
+
+  Scenario: In previews
+    Given I am a visitor
+    And the settings "in preview" is true
+    And the group "Syntactic Structures"
+    When I go to the home page
+    Then I should not see "Groups"
+    And I should not see "Search"
+    Then I should see "Coming soon"

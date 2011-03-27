@@ -1,3 +1,7 @@
+Given /^the settings "([^\"]*)" is true$/ do |setting|
+  Settings.stub!(setting.underscorize.to_sym => true)
+end
+
 When /^(?:|I )clear "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
     fill_in(field, :with => "")
@@ -12,3 +16,4 @@ Then /^(?:|I )should not be on (.+)$/ do |page_name|
     assert_not_equal path_to(page_name), current_path
   end
 end
+
