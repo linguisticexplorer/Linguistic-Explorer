@@ -6,6 +6,7 @@ module SearchResults
       @params   = params
     end
     delegate  :group_prop_category_ids,
+              :selected_property_ids,
               :selected_property_ids_by_depth, :to => :filter
 
     def depth_0_vals

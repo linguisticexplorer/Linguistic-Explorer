@@ -11,6 +11,7 @@ module SearchResults
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
     delegate  :group_prop_category_ids,
+              :selected_property_ids,
               :selected_value_pairs,
               :selected_property_ids_by_depth, :to => :filter
 
@@ -64,7 +65,7 @@ module SearchResults
     def select_all(vals, depth)
       category_ids_at_depth = @filter.category_ids_at(depth)
       if category_ids_at_depth.any?
-        select_all_by_category_ids_at_depth(vals, depth, category_ids_at_depth)
+        select_all_by_category_ids_at_depth(vals, category_ids_at_depth)
       else
         vals
       end
@@ -74,10 +75,14 @@ module SearchResults
 
   class SelectAllPropertyStrategy < SelectAllStrategy
 
-    def select_all_by_category_ids_at_depth(vals, depth, category_ids)
-      required = Property.ids.where(:category_id => category_ids,
-        :id => @filter.selected_property_ids_by_depth(depth))
-      collect_all_from_vals(vals, required.map(&:id))
+    def select_all_by_category_ids_at_depth(vals, category_ids)
+      category_ids.collect do |category_id|
+        # required = Property.ids.where(:category_id => category_ids,
+        #   :id => @filter.selected_property_ids_by_depth(depth))
+        required = @filter.selected_property_ids(category_id)
+        next if required.empty?
+        collect_all_from_vals(vals, required.map(&:to_i))
+      end.flatten
     end
 
     def collect_all_from_vals(vals, associated_ids)
@@ -94,7 +99,7 @@ module SearchResults
 
   class SelectAllLingsPropertyStrategy < SelectAllStrategy
 
-    def select_all_by_category_ids_at_depth(vals, depth, category_ids)
+    def select_all_by_category_ids_at_depth(vals, category_ids)
       category_ids.collect do |category_id|
         pairs = @filter.selected_value_pairs(category_id)
         next if pairs.empty?

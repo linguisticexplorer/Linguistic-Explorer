@@ -29,6 +29,10 @@ module SearchResults
       @prop_extractor ||= PropertyExtractor.new(@group, convert_to_depth_params(@params[:properties]))
     end
 
+    def selected_property_ids(category_id)
+      @params[:properties][category_id.to_s]
+    end
+
     def depth_0_ling_ids
       ling_extractor.depth_0_ids
     end

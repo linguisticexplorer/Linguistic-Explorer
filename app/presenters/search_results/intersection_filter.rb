@@ -8,6 +8,7 @@ module SearchResults
     end
     delegate  :group_prop_category_ids,
               :selected_value_pairs,
+              :selected_property_ids,
               :selected_property_ids_by_depth, :to => :filter
 
     def depth_0_prop_ids
