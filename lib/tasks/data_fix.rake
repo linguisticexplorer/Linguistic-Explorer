@@ -30,5 +30,11 @@ namespace :db do
       w << line
     end
   end
+  
+  task :set_property_values_on_lings_properties => :environment do
+    LingsProperty.find_in_batches do |lps|
+      lps.each { |lp| lp.set_property_value; lp.save! }
+    end
+  end
 
 end
