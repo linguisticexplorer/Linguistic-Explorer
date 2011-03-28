@@ -43,7 +43,6 @@ gem 'cancan', "1.6.0"
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test, :pg_test do
-  gem 'ruby-debug19'
 
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
