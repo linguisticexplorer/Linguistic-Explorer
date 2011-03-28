@@ -18,7 +18,6 @@ gem 'capistrano'
 
 # To use debugger (ruby-debug for Ruby 1.8.7+, ruby-debug19 for Ruby 1.9.2+)
 # gem 'ruby-debug'
-gem 'ruby-debug19'
 
 # Bundle the extra gems:
 # gem 'bj'
@@ -44,6 +43,7 @@ gem 'cancan', "1.6.0"
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test, :pg_test do
+  gem 'ruby-debug19'
 
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
