@@ -42,27 +42,22 @@ gem 'cancan', "1.6.0"
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
+group :development, :test, :pg_test do
+  gem 'ruby-debug19'
 
-$heroku = ENV['USER'] ? !! ENV['USER'].match(/^repo\d+/) : ENV.any?{|key, _| key.match(/^HEROKU_/)} 
+  # Use mongrel as the web server
+  gem 'mongrel', "1.2.0.pre2"
 
-unless $heroku
-  group :development, :test, :pg_test do
-    gem 'ruby-debug19'
+  gem 'rspec-rails', "2.4.0"
+  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
-    # Use mongrel as the web server
-    gem 'mongrel', "1.2.0.pre2"
-
-    gem 'rspec-rails', "2.4.0"
-    gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
-
-    gem 'ruby-debug19'
-    gem 'factory_girl_rails'
-    gem "cucumber", "0.10.2"
-    gem "database_cleaner"
-    gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
-    gem 'capybara'
-    gem 'launchy'
-  end
+  gem 'ruby-debug19'
+  gem 'factory_girl_rails'
+  gem "cucumber", "0.10.2"
+  gem "database_cleaner"
+  gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
+  gem 'capybara'
+  gem 'launchy'
 end
 
 group :pg_test do
