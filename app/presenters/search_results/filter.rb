@@ -8,6 +8,10 @@ module SearchResults
       @params   = params
     end
 
+    def vals_at(depth)
+      send("depth_#{depth}_vals")
+    end
+
     def method_missing(method_sym, *arguments, &block)
       if @filter.respond_to?(method_sym)
         @filter.send(method_sym, *arguments, &block)
