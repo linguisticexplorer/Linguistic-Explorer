@@ -1,6 +1,6 @@
 module SearchResults
 
-  class SelectAllFilter < Filter
+  class SelectAllLingsPropertyFilter < Filter
 
     def initialize(filter, params)
       @filter   = filter
@@ -22,7 +22,7 @@ module SearchResults
 
       # select depth vals whose ling_ids have all properties in category for all section
       vals.select do |v|
-        associated_ids.all? { |id| ling_id_groups[v.ling_id].map(&:property_id).include?(id) }
+        associated_ids.all? { |id| ling_id_groups[v.ling_id].map(&:lings_property_id).include?(id) }
       end
     end
 
@@ -41,7 +41,7 @@ module SearchResults
       vals = @filter.send("depth_#{depth}_vals")
 
       if category_ids_at_depth.any?
-        required = Property.ids.where(:category_id => category_ids_at_depth, :id => selected_property_ids_by_depth(depth))
+        required = LingsProperty.ids.where(:category_id => category_ids_at_depth, :id => selected_lings_property_ids_by_depth(depth))
         self.class.collect_all_from_vals(vals, required.map(&:id))
       else
         vals

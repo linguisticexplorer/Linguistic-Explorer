@@ -22,7 +22,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :property
 
-    # filter = filter_by_all_conditions     filter, :lings_property
+    filter = filter_by_all_conditions     filter, :lings_property
 
     filter = filter_by_depth_intersection filter
 
@@ -42,8 +42,9 @@ module SearchResults
   end
 
   def filter_by_all_conditions(filter, strategy)
-    klass = "SearchResults::SelectAll#{strategy.to_s.capitalize}Filter".constantize
-    klass.new(filter, @params)
+    SelectAllFilter.new(filter, @params) do |s|
+      s.strategy = strategy
+    end
   end
 
 end

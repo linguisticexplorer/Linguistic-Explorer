@@ -26,22 +26,16 @@ module SearchResults
     def filter_vals(vals, depth)
       pairs = val_params_to_pairs(depth)
       if pairs.any?
-        LingsProperty.select_ids.where(val_conditions(pairs) & {:id => vals})
+        LingsProperty.select_ids.where({ :property_value => pairs } & {:id => vals})
       else
         vals
-      end
-    end
-
-    def val_conditions(pairs)
-      conditions = pairs.inject({:id => nil}) do |conds, pair|
-        conds | { :property_id => pair.first, :value => pair.last }
       end
     end
 
     def val_params_to_pairs(depth)
       # {"8"=>["15:verb"]} --> [["15", "verb"]]
       vals = @params.reject { |k,v| !@filter.category_present?(k, depth) }.values
-      vals.flatten.map { |str| str.split(":") }
+      vals.flatten
     end
   end
 
