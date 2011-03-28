@@ -5,15 +5,20 @@ module SearchResults
       @filter   = filter
       @params   = params
     end
-    delegate  :prop_params,
-              :group_prop_category_ids, :to => :filter
+    delegate  :group_prop_category_ids,
+              :selected_property_ids_by_depth, :to => :filter
 
     def depth_0_vals
-      filter_vals(@filter.depth_0_vals, Depth::PARENT)
+      @depth_0_vals ||= filter_vals(@filter.depth_0_vals, Depth::PARENT)
     end
 
     def depth_1_vals
-      filter_vals(@filter.depth_1_vals, Depth::CHILD)
+      @depth_1_vals ||= filter_vals(@filter.depth_1_vals, Depth::CHILD)
+    end
+
+    def selected_lings_properties_by_depth(depth)
+      @selected_lings_properties_by_depth ||= { Depth::PARENT => depth_0_vals.map(&:id), Depth::CHILD => depth_1_vals.map(&:id) }
+      @selected_lings_properties_by_depth[depth]
     end
 
     private

@@ -1,6 +1,6 @@
 module SearchResults
 
-  class SelectAllFilter < Filter
+  class SelectAllPropertyFilter < Filter
 
     def initialize(filter, params)
       @filter   = filter
@@ -8,7 +8,13 @@ module SearchResults
 
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
-    delegate :prop_params, :to => :filter
+    delegate  :group_prop_category_ids,
+              :selected_lings_properties_by_depth,
+              :selected_property_ids_by_depth, :to => :filter
+
+    def grouping
+      :property_set
+    end
 
     def self.collect_all_from_vals(vals, associated_ids)
       # [vals] --> {1 => [val,val], 2 ==> [val, val] etc.}
@@ -35,8 +41,7 @@ module SearchResults
       vals = @filter.send("depth_#{depth}_vals")
 
       if category_ids_at_depth.any?
-        required = Property.ids.where(:category_id => category_ids_at_depth, :id => prop_params[depth])
-
+        required = Property.ids.where(:category_id => category_ids_at_depth, :id => selected_property_ids_by_depth(depth))
         self.class.collect_all_from_vals(vals, required.map(&:id))
       else
         vals
@@ -45,13 +50,13 @@ module SearchResults
 
     def category_ids_at(depth)
       # group_prop_category_ids defined in CategorizedParamsAdapter
-      @filter.group_prop_category_ids(depth).select { |c| params_for_all_to_category_ids.include?(c) }
+      group_prop_category_ids(depth).select { |c| params_for_all_to_category_ids.include?(c) }
     end
 
     def params_for_all_to_category_ids
       # {"1"=>"all", "2"=>"any"} --> [1]
       @params_for_all_to_category_ids ||= begin
-        category_all_pairs = @params.group_by { |k,v| v }["all"] || []
+        category_all_pairs = @params[grouping].group_by { |k,v| v }["all"] || []
         category_all_pairs.map { |c| c.first }.map(&:to_i)
       end
     end

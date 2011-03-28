@@ -20,9 +20,9 @@ module SearchResults
 
     filter = filter_by_depth_intersection filter
 
-    filter = filter_by_all_conditions     filter, :property_set
+    filter = filter_by_all_conditions     filter, :property
 
-    # filter = filter_by_all_conditions(filter, :lings_property_set)
+    # filter = filter_by_all_conditions     filter, :lings_property
 
     filter = filter_by_depth_intersection filter
 
@@ -41,8 +41,9 @@ module SearchResults
     IntersectionFilter.new(filter)
   end
 
-  def filter_by_all_conditions(filter, grouping)
-    SelectAllFilter.new(filter, @params[grouping])
+  def filter_by_all_conditions(filter, strategy)
+    klass = "SearchResults::SelectAll#{strategy.to_s.capitalize}Filter".constantize
+    klass.new(filter, @params)
   end
 
 end

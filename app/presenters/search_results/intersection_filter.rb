@@ -6,14 +6,16 @@ module SearchResults
       super
       @depth_0_vals, @depth_1_vals = intersect @filter
     end
-    delegate :prop_params, :to => :filter
+    delegate  :group_prop_category_ids,
+              :selected_lings_properties_by_depth,
+              :selected_property_ids_by_depth, :to => :filter
 
     def depth_0_prop_ids
-      prop_params[Depth::PARENT]
+      selected_property_ids_by_depth(Depth::PARENT)
     end
 
     def depth_1_prop_ids
-      prop_params[Depth::CHILD]
+      selected_property_ids_by_depth(Depth::CHILD)
     end
 
     private
