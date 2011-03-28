@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110307133622) do
+ActiveRecord::Schema.define(:version => 20110328021739) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -75,10 +75,12 @@ ActiveRecord::Schema.define(:version => 20110307133622) do
     t.datetime "updated_at"
     t.integer  "group_id"
     t.integer  "creator_id"
+    t.string   "property_value"
   end
 
   add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"
   add_index "lings_properties", ["ling_id", "property_id"], :name => "index_lings_properties_on_ling_id_and_property_id"
+  add_index "lings_properties", ["property_value"], :name => "index_lings_properties_on_property_value"
 
   create_table "preferences", :force => true do |t|
     t.string   "name",       :null => false

@@ -30,4 +30,28 @@ describe LingsProperty do
       LingsProperty.create(:ling_id => ling.id, :property_id => propINC.id, :value => 'group mismatch', :group_id => groups(:exclusive).id).should have(1).errors
     end
   end
+
+  describe "callbacks" do
+    before(:each) do
+      @ling  = lings(:level0)
+      @prop  = properties(:level0)
+      @group = groups(:inclusive)
+      @lings_property = LingsProperty.create!(:ling => @ling, :property => @prop, :value => "foo", :group => @group)
+    end
+    describe "after_save" do
+      it "should set property value column" do
+        @lings_property.property_value.should == "#{@prop.id}:foo"
+      end
+      it "should update property value column if value changes" do
+        @lings_property.update_attribute(:value, "bar")
+        @lings_property.property_value.should == "#{@prop.id}:bar"
+      end
+      it "should update property value column if property changes" do
+        new_property = properties(:valid)
+        @lings_property.property = new_property
+        @lings_property.save!
+        @lings_property.property_value.should == "#{new_property.id}:foo"
+      end
+    end
+  end
 end

@@ -10,7 +10,9 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :property
   belongs_to :group
   belongs_to :creator, :class_name => "User"
-  has_one :category, :through => :property
+  has_one     :category, :through => :property
+
+  before_save  :set_property_value
 
   include Extensions::Selects
   include Extensions::Wheres
@@ -22,7 +24,6 @@ class LingsProperty < ActiveRecord::Base
   scope :with_ling_id, lambda { |id_or_ids| where("#{self.table_name}.ling_id" => id_or_ids) }
 
   scope :property_relatives, lambda { |prop_id| join(:lings).where("#{self.table_name}.property_id") }
-
 
   def self.group_by_statement
     LingsProperty.column_names.map { |c| "lings_properties.#{c}"}.join(", ")
@@ -58,5 +59,10 @@ class LingsProperty < ActiveRecord::Base
 
   def group_association_match
     errors[:base] << "#{group.ling_name_for_depth(ling.depth).humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group)
+  end
+
+  def set_property_value
+    self.property_value = "#{property_id}:#{value}"
+    true
   end
 end
