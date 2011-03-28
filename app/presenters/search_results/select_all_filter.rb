@@ -10,10 +10,7 @@ module SearchResults
 
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
-    delegate  :group_prop_category_ids,
-              :selected_property_ids,
-              :selected_value_pairs,
-              :selected_property_ids_by_depth, :to => :filter
+    delegate  :selected_property_ids_by_depth, :to => :filter
 
     def grouping
       "#{@strategy}_set".to_sym
@@ -28,37 +25,18 @@ module SearchResults
     end
 
     def filter_by_all_selection_within_category
-      category_ids = params_for_all_to_category_ids
-
-      if category_ids
-        [filter_by_all_selection(Depth::PARENT), filter_by_all_selection(Depth::CHILD)]
-      else
-        [@filter.depth_0_vals, @filter.depth_1_vals]
-      end
+      [filter_by_all_selection(Depth::PARENT), filter_by_all_selection(Depth::CHILD)]
     end
 
     def filter_by_all_selection(depth)
-      category_ids_at_depth = category_ids_at(depth)
+      category_ids_at_depth = @params.category_ids_by_all_grouping_and_depth(grouping, depth)
       vals_at_depth         = @filter.vals_at(depth)
 
       if category_ids_at_depth.any?
-        @filter_strategy_instance ||= strategy_class.new(self)
+        @filter_strategy_instance ||= strategy_class.new(@params)
         @filter_strategy_instance.select_vals_by_all(vals_at_depth, category_ids_at_depth)
       else
         vals_at_depth
-      end
-    end
-
-    def category_ids_at(depth)
-      # group_prop_category_ids defined in CategorizedParamsAdapter
-      group_prop_category_ids(depth).select { |c| params_for_all_to_category_ids.include?(c) }
-    end
-
-    def params_for_all_to_category_ids
-      # {"1"=>"all", "2"=>"any"} --> [1]
-      @params_for_all_to_category_ids ||= begin
-        category_all_pairs = @params[grouping].group_by { |k,v| v }["all"] || []
-        category_all_pairs.map { |c| c.first }.map(&:to_i)
       end
     end
 
@@ -66,8 +44,8 @@ module SearchResults
 
   class SelectAllStrategy
     attr_accessor :filter
-    def initialize(filter)
-      @filter = filter
+    def initialize(params)
+      @params = params
     end
 
     def select_vals_by_all(vals, category_ids)
@@ -105,7 +83,7 @@ module SearchResults
     end
 
     def selection_by_category_id(category_id)
-      @filter.selected_property_ids(category_id)
+      @params.selected_property_ids(category_id)
     end
 
   end
@@ -117,7 +95,7 @@ module SearchResults
     end
 
     def selection_by_category_id(category_id)
-      @filter.selected_value_pairs(category_id)
+      @params.selected_value_pairs(category_id)
     end
 
   end
