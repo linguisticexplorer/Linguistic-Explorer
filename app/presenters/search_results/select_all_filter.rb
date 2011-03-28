@@ -11,7 +11,7 @@ module SearchResults
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
     delegate  :group_prop_category_ids,
-              :selected_lings_properties_by_depth,
+              :selected_value_pairs,
               :selected_property_ids_by_depth, :to => :filter
 
     def grouping
@@ -95,7 +95,14 @@ module SearchResults
   class SelectAllLingsPropertyStrategy < SelectAllStrategy
 
     def select_all_by_category_ids_at_depth(vals, depth, category_ids)
-      vals
+      category_ids.collect do |category_id|
+        pairs = @filter.selected_value_pairs(category_id)
+        next if pairs.empty?
+        ling_id_groups = vals.group_by { |v| v.ling_id }
+        vals.select do |v|
+          pairs.all? { |pr| ling_id_groups[v.ling_id].map(&:property_value).include?(pr) }
+        end
+      end.flatten
     end
   end
 

@@ -16,9 +16,8 @@ module SearchResults
       @depth_1_vals ||= filter_vals(@filter.depth_1_vals, Depth::CHILD)
     end
 
-    def selected_lings_properties_by_depth(depth)
-      @selected_lings_properties_by_depth ||= { Depth::PARENT => depth_0_vals.map(&:id), Depth::CHILD => depth_1_vals.map(&:id) }
-      @selected_lings_properties_by_depth[depth]
+    def selected_value_pairs(category_id)
+      @params[category_id.to_s]
     end
 
     private
@@ -34,8 +33,7 @@ module SearchResults
 
     def val_params_to_pairs(depth)
       # {"8"=>["15:verb"]} --> [["15", "verb"]]
-      vals = @params.reject { |k,v| !@filter.category_present?(k, depth) }.values
-      vals.flatten
+      @params.select { |k,v| @filter.category_present?(k, depth) }.values.flatten
     end
   end
 

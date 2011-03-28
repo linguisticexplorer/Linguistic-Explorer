@@ -24,7 +24,7 @@ Feature: Search All Ling Prop Value Pair
     And I choose "All" within "#grammar_value_pairs"
     And I press "Search"
     Then I should see "Results"
-    And the following scenario is pending
+    # And the following scenario is pending
     Then I should see the following search results:
     | Lings         | Properties        | Value     |
     | English       | Adjective Noun    | yes       |

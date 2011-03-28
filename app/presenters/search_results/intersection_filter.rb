@@ -7,7 +7,7 @@ module SearchResults
       @depth_0_vals, @depth_1_vals = intersect @filter
     end
     delegate  :group_prop_category_ids,
-              :selected_lings_properties_by_depth,
+              :selected_value_pairs,
               :selected_property_ids_by_depth, :to => :filter
 
     def depth_0_prop_ids

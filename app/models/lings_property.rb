@@ -19,6 +19,7 @@ class LingsProperty < ActiveRecord::Base
 
   scope :ling_ids, select("#{self.table_name}.ling_id")
   scope :prop_ids, select("#{self.table_name}.property_id")
+  scope :property_value, select("#{self.table_name}.property_value")
 
   scope :with_id, lambda { |id_or_ids| where("#{self.table_name}.id" => id_or_ids) }
   scope :with_ling_id, lambda { |id_or_ids| where("#{self.table_name}.ling_id" => id_or_ids) }
@@ -30,7 +31,7 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def self.select_ids
-    ids.ling_ids.prop_ids
+    ids.ling_ids.prop_ids.property_value
   end
 
   def ling_name

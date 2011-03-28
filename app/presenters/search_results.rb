@@ -22,7 +22,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :property
 
-    filter = filter_by_all_conditions     filter, :lings_property
+     filter = filter_by_all_conditions     filter, :lings_property
 
     filter = filter_by_depth_intersection filter
 
