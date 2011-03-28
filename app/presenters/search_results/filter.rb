@@ -12,6 +12,15 @@ module SearchResults
       send("depth_#{depth}_vals")
     end
 
+    def depth_0_prop_ids
+      vals_at(Depth::PARENT).map(&:property_id)
+    end
+
+    def depth_1_prop_ids
+      vals_at(Depth::CHILD).map(&:property_id)
+    end
+
+
     def method_missing(method_sym, *arguments, &block)
       if @filter.respond_to?(method_sym)
         @filter.send(method_sym, *arguments, &block)

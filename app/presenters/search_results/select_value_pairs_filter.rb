@@ -2,8 +2,6 @@ module SearchResults
 
   class SelectValuePairsFilter < Filter
 
-    delegate  :selected_property_ids_by_depth, :to => :filter
-
     def depth_0_vals
       @depth_0_vals ||= filter_vals(Depth::PARENT)
     end

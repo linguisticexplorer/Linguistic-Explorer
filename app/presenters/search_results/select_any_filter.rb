@@ -45,11 +45,6 @@ module SearchResults
       prop_extractor.depth_1_ids
     end
 
-    def selected_property_ids_by_depth(depth)
-      @selected_property_ids_by_depth ||= { Depth::PARENT => depth_0_prop_ids, Depth::CHILD => depth_1_prop_ids }
-      @selected_property_ids_by_depth[depth]
-    end
-
     def val_params
       @params[:lings_props] || {}
     end

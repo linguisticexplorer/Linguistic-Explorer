@@ -6,15 +6,6 @@ module SearchResults
       super
       @depth_0_vals, @depth_1_vals = intersect @filter
     end
-    delegate  :selected_property_ids_by_depth, :to => :filter
-
-    def depth_0_prop_ids
-      selected_property_ids_by_depth(Depth::PARENT)
-    end
-
-    def depth_1_prop_ids
-      selected_property_ids_by_depth(Depth::CHILD)
-    end
 
     private
 
@@ -31,13 +22,13 @@ module SearchResults
     end
 
     def filter_depth_1_vals_by_selected_ling_parents(depth_0_vals, depth_1_vals)
-      LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => depth_1_prop_ids) &
+      LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => @filter.depth_1_prop_ids) &
         Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq)
     end
 
     def filter_depth_0_vals_by_filtered_depth_1_vals(depth_0_vals, depth_1_vals)
       LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).
-        with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => depth_0_prop_ids)
+        with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => @filter.depth_0_prop_ids)
     end
   end
 

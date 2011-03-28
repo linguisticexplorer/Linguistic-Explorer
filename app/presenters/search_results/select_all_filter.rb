@@ -10,7 +10,6 @@ module SearchResults
 
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
-    delegate  :selected_property_ids_by_depth, :to => :filter
 
     def grouping
       "#{@strategy}_set".to_sym
