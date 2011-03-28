@@ -2,10 +2,7 @@ module SearchResults
 
   class SelectAnyFilter < Filter
 
-    attr_reader :adapter
-
-    def initialize(filter, params)
-      @filter = filter
+    def initialize(params)
       @params = params
       @group  = @params.group
     end
@@ -22,11 +19,11 @@ module SearchResults
     end
 
     def ling_extractor
-      @ling_extractor ||= LingExtractor.new(@group, @params[:lings])
+      @ling_extractor ||= LingExtractor.new(@group, @params.lings)
     end
 
     def prop_extractor
-      @prop_extractor ||= PropertyExtractor.new(@group, @params.convert_to_depth_params(:properties))
+      @prop_extractor ||= PropertyExtractor.new(@group, @params.properties_by_depth)
     end
 
     def depth_0_ling_ids

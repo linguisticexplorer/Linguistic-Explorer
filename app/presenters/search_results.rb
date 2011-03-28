@@ -22,7 +22,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :property
 
-     filter = filter_by_all_conditions    filter, :lings_property
+    filter = filter_by_all_conditions     filter, :lings_property
 
     filter = filter_by_depth_intersection filter
 
@@ -34,7 +34,7 @@ module SearchResults
   end
 
   def filter_by_any_selected_lings_and_props
-    SelectAnyFilter.new(@params_adapter, params)
+    SelectAnyFilter.new(params)
   end
 
   def filter_by_val_params(filter)

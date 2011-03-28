@@ -12,6 +12,10 @@ module SearchResults
       @params[key]
     end
 
+    def lings
+      self[:lings] || {}
+    end
+
     def lings_props
       self[:lings_props] || {}
     end
@@ -37,13 +41,12 @@ module SearchResults
       lings_props.select { |k,v| category_present?(k, depth) }.values.flatten
     end
 
-    def convert_to_depth_params(key)
-      categorized_params = @params[key]
-      return {} if categorized_params.nil?
+    def properties_by_depth
+      return properties if properties.empty?
       result = {}.tap do |hash|
         Depth::DEPTHS.each do |depth|
           hash[depth.to_s] = group_prop_category_ids(depth).inject([]) do |memo, id|
-            memo << categorized_params[id.to_s]
+            memo << properties[id.to_s]
           end.flatten.compact
         end
       end.delete_if {|k,v| v.empty? }
