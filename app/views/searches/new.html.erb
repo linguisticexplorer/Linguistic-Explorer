@@ -13,10 +13,10 @@
         %>
         <br />
         <%- keyword_label = "#{ling_label.singularize} Keywords" -%>
-        <%= f.label :lings_keywords, keyword_label, :for => search_text_id(keyword_label) %>
-        <%= f.text_field :lings_keywords,
+        <%= f.label :ling_keywords, keyword_label, :for => search_text_id(keyword_label) %>
+        <%= f.text_field :ling_keywords,
           :id => search_text_id(keyword_label),
-          :name => search_text_field_name(:lings_keywords, depth) %>
+          :name => search_text_field_name(:ling_keywords, depth) %>
       <% end %>
     <%- end -%>
 
@@ -35,13 +35,19 @@
           <%= f.label "group", "Any", :for => categorized_set_id(category.name, "any") %>
           <%= f.radio_button "property_set", "any", :checked => true,
             :id => categorized_set_id(category.name, "any"),
-            :name => categorized_field_name(category.id, :property) %>
+            :name => categorized_field_name(:property, category.id) %>
           <%= f.label "property_set", "All", :for => categorized_set_id(category.name, "all") %>
           <%= f.radio_button "property_set", "all",
             :id => categorized_set_id(category.name, "all"),
-            :name => categorized_field_name(category.id, :property) %>
+            :name => categorized_field_name(:property, category.id) %>
         </div>
-
+        <div>
+          <%- keyword_label = "#{category.name} Keywords" -%>
+          <%= f.label :ling_keywords, keyword_label, :for => search_text_id(keyword_label) %>
+          <%= f.text_field :ling_keywords,
+            :id => search_text_id(keyword_label),
+            :name => search_text_field_name(:property_keywords, category.id) %>
+        </div>
       <% end %>
     <%- end -%>
 
@@ -59,11 +65,11 @@
           <%= f.label "lings_property_set", "Any", :for => categorized_set_id(lings_prop_label, "any") %>
           <%= f.radio_button "lings_property_set", "any", :checked => true,
             :id => categorized_set_id(lings_prop_label, "any"),
-            :name => categorized_field_name(category.id, :lings_property) %>
+            :name => categorized_field_name(:lings_property, category.id) %>
           <%= f.label "lings_property_set", "All", :for => categorized_set_id(lings_prop_label, "all") %>
           <%= f.radio_button "lings_property_set", "all",
             :id => categorized_set_id(lings_prop_label, "all"),
-            :name => categorized_field_name(category.id, :lings_property) %>
+            :name => categorized_field_name(:lings_property, category.id) %>
         </div>
       <% end %>
     <%- end -%>

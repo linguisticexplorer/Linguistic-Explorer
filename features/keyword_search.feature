@@ -42,3 +42,16 @@ Feature: Keyword Search on Ling
     And I should not see "Western"
     And I should not see "Answer"
     And I should not see "noun"
+
+  Scenario: Keyword search on property
+    When I fill in "Demographic Keywords" with "Property 1"
+    And I press "Search"
+    Then I should see the following search results:
+    | Lings         | Properties    | Value     |
+    | English       | Property 1    | Eastern   |
+    | Question      | Property 3    | verb      |
+    And I should not see "Spanish"
+    And I should not see "Western"
+    And I should not see "Answer"
+    And I should not see "noun"
+

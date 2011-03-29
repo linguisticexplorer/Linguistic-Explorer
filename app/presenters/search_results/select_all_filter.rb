@@ -1,6 +1,7 @@
 module SearchResults
 
   class SelectAllFilter < Filter
+    attr_accessor :strategy
 
     def initialize(filter, params)
       @filter   = filter
@@ -11,16 +12,14 @@ module SearchResults
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
     end
 
+    def strategy
+      @strategy ||= :property
+    end
+
+    private
+
     def grouping
       "#{@strategy}_set".to_sym
-    end
-
-    def strategy_class
-      "SearchResults::SelectAll#{@strategy.to_s.camelize}Strategy".constantize
-    end
-
-    def strategy=(strategy)
-      @strategy = strategy
     end
 
     def filter_by_all_selection_within_category
@@ -37,6 +36,10 @@ module SearchResults
       else
         vals_at_depth
       end
+    end
+
+    def strategy_class
+      "SearchResults::SelectAll#{@strategy.to_s.camelize}Strategy".constantize
     end
 
   end

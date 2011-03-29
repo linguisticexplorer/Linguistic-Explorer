@@ -32,8 +32,8 @@ module SearchesHelper
     "#{text.underscorize}_options"
   end
 
-  def categorized_field_name(scope, type)
-    "search[#{type}_set][#{scope}]"
+  def categorized_field_name(method, scope)
+    "search[#{method}_set][#{scope}]"
   end
 
   def categorized_set_id(name, type)

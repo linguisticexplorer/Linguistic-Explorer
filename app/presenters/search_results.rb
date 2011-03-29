@@ -16,7 +16,9 @@ module SearchResults
 
     filter = filter_by_any_selected_lings_and_props
 
-    filter = filter_by_ling_keywords      filter
+    filter = filter_by_keywords           filter, :ling
+
+    filter = filter_by_keywords           filter, :property
 
     filter = filter_by_val_params         filter
 
@@ -39,8 +41,10 @@ module SearchResults
     SelectAnyFilter.new(params)
   end
 
-  def filter_by_ling_keywords(filter)
-    LingsKeywordFilter.new(filter, params)
+  def filter_by_keywords(filter, strategy)
+    KeywordFilter.new(filter, params) do |f|
+      f.strategy = strategy
+    end
   end
 
   def filter_by_val_params(filter)
@@ -52,8 +56,8 @@ module SearchResults
   end
 
   def filter_by_all_conditions(filter, strategy)
-    SelectAllFilter.new(filter, params) do |s|
-      s.strategy = strategy
+    SelectAllFilter.new(filter, params) do |f|
+      f.strategy = strategy
     end
   end
 
