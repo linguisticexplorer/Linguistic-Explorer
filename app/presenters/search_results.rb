@@ -16,6 +16,8 @@ module SearchResults
 
     filter = filter_by_any_selected_lings_and_props
 
+    filter = filter_by_ling_keywords      filter
+
     filter = filter_by_val_params         filter
 
     filter = filter_by_depth_intersection filter
@@ -35,6 +37,10 @@ module SearchResults
 
   def filter_by_any_selected_lings_and_props
     SelectAnyFilter.new(params)
+  end
+
+  def filter_by_ling_keywords(filter)
+    LingsKeywordFilter.new(filter, params)
   end
 
   def filter_by_val_params(filter)
