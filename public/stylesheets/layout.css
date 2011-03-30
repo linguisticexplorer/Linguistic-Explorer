@@ -1,7 +1,14 @@
 .table  { display: table;}
 .row    { display:table-row;}
-.cell   { display:table-cell;}
+.cell   { display:table-cell; vertical-align:top;}
 
 .spacing { border-spacing:5px;}
 
 .center { margin: 0 auto;}
+
+/*form*/
+.table h3 { margin: 0 2em 0 0;}
+fieldset { margin-bottom: 10px; clear:left; border:1px solid #ccc; padding:10px;}
+fieldset .label { width:150px;}
+
+fieldset select, fieldset input[type="text"] { width:250px;}

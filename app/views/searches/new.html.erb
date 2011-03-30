@@ -1,6 +1,6 @@
 <div class="center" style="width:800px">
   <h2>Search <%= current_group.name %></h2>
-  <%= form_for :search, :url => group_searches_path(current_group) do |f| %>
+  <%= table_form_for :search, @search, :url => group_searches_path(current_group) do |f| %>
     <div class="table">
       <div class="row">
         <div class="cell">

@@ -49,4 +49,12 @@ module SearchesHelper
       attrs["data-prop"] = result.prop_id
     end
   end
+  
+  def result_headers
+    SearchResults::Layout::HEADERS
+  end
+  
+  def result_rows
+    SearchResults::Layout::ROWS
+  end
 end

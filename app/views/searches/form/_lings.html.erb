@@ -1,16 +1,15 @@
 <%- @search.ling_depths.each do |depth| -%>
   <%- ling_label  = search_ling_label(@search, depth) -%>
-  <%= content_tag :fieldset, :id => ling_label.underscorize do %>
-    <%= f.label :lings, ling_label, :for => search_options_id(ling_label) %>
+  <%- keyword_label = "#{ling_label.singularize} Keywords" -%>
+  <%= content_tag :fieldset, :id => ling_label.underscorize, :class => "table" do %>
     <%= f.select :lings, @search.ling_options(depth), {},
       :name => search_field_name(:lings, depth),
       :multiple => true,
+      :label => ling_label,
       :id => search_options_id(ling_label)
     %>
-    <br />
-    <%- keyword_label = "#{ling_label.singularize} Keywords" -%>
-    <%= f.label :ling_keywords, keyword_label, :for => search_text_id(keyword_label) %>
     <%= f.text_field :ling_keywords,
+      :label => keyword_label,
       :id => search_text_id(keyword_label),
       :name => search_text_field_name(:ling_keywords, depth) %>
   <% end %>

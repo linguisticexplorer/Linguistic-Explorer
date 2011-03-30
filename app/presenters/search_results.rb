@@ -1,5 +1,6 @@
 module SearchResults
   include Enumerable
+  include Layout
 
   def each
     results.each { |r| yield r }

@@ -1,6 +1,12 @@
 class Search
+  def self.model_name
+    "Search"
+  end
+
   include SearchForm
   include SearchResults
+
+  attr_reader :group
 
   def initialize(group, params)
     @group  = group
@@ -12,5 +18,6 @@ class Search
     # show_param[search_type].present?
     true
   end
+
 
 end
