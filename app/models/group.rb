@@ -21,6 +21,10 @@ class Group < ActiveRecord::Base
       ling1_name
     end
   end
+  
+  def has_depth?
+    depth_maximum >= 1
+  end
 
   private
 
