@@ -23,12 +23,11 @@ class Ability
       cannot  :manage,  group_data, :group => { :privacy => "private" }
 
       # turn on group reading for members and management for member admins
-      can :read,    Group, :memberships => { :user_id => user.id, :level => 'member' }
-      can :manage,  Group, :memberships => { :user_id => user.id, :level => 'admin' }
+#      can :read,    Group, :memberships => { :user_id => user.id, :level => 'member' }
+#      can :manage,  Group, :memberships => { :user_id => user.id, :level => 'admin' }
 
-      # turn on group member data management for group members
+      # turn on group member data management and admin data reading for group members
       can :manage,  group_member_data,  :group => { :id => user.group_ids }
-      # turn on group admin data reading for group members
       can :read,    group_admin_data,   :group => { :id => user.group_ids }
 
       # turn on group data for group admins
