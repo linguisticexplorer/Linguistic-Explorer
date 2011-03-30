@@ -23,6 +23,22 @@ module SearchResults
     def properties
       self[:properties] || {}
     end
+    
+    def depth_0_ling_ids
+      ling_extractor.depth_0_ids
+    end
+
+    def depth_1_ling_ids
+      ling_extractor.depth_1_ids
+    end
+
+    def depth_0_prop_ids
+      prop_extractor.depth_0_ids
+    end
+
+    def depth_1_prop_ids
+      prop_extractor.depth_1_ids
+    end
 
     def selected_value_pairs(category_id)
       lings_props[category_id.to_s]
@@ -59,6 +75,14 @@ module SearchResults
     end
 
     private
+    
+    def ling_extractor
+      @ling_extractor ||= LingExtractor.new(@group, lings)
+    end
+
+    def prop_extractor
+      @prop_extractor ||= PropertyExtractor.new(@group, properties_by_depth)
+    end
 
     def category_ids_by_all_grouping(grouping)
       # {"1"=>"all", "2"=>"any"} --> [1]
@@ -72,5 +96,45 @@ module SearchResults
 
   end
 
+  class ParamExtractor
+    def initialize(group, params = {})
+      @group, @params = group, params
+    end
 
+    def ids(depth)
+      selected(depth) || all.at_depth(depth)
+    end
+
+    def selected(depth)
+      params[depth.to_s]
+    end
+
+    def all
+      @all ||= klass.ids.in_group(@group)
+    end
+
+    def params
+      @params || {}
+    end
+
+    def depth_0_ids
+      ids(Depth::PARENT)
+    end
+
+    def depth_1_ids
+      ids(Depth::CHILD)
+    end
+
+    def klass
+      /Ling|Property/.match(self.class.name)[0].constantize
+    end
+  end
+
+  class LingExtractor < ParamExtractor
+  end
+
+  class PropertyExtractor < ParamExtractor
+  end
+
+  
 end

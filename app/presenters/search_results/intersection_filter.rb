@@ -22,14 +22,28 @@ module SearchResults
     end
 
     def filter_depth_1_vals_by_selected_ling_parents(depth_0_vals, depth_1_vals)
-      LingsProperty.select_ids.with_id(depth_1_vals.map(&:id)).where(:property_id => @filter.depth_1_prop_ids) &
-        Ling.parent_ids.with_parent_id(depth_0_vals.map(&:ling_id).uniq)
+      val_ids         = depth_1_vals.map(&:id)
+      parent_ling_ids = depth_0_vals.map(&:ling_id).uniq
+
+      LingsProperty.select_ids.
+        with_id(val_ids).
+        where(:property_id => prop_ids(Depth::CHILD)) &
+        Ling.parent_ids.with_parent_id(parent_ling_ids)
     end
 
     def filter_depth_0_vals_by_filtered_depth_1_vals(depth_0_vals, depth_1_vals)
-      LingsProperty.select_ids.with_id(depth_0_vals.map(&:id)).
-        with_ling_id(depth_1_vals.map(&:parent_id).uniq).where(:property_id => @filter.depth_0_prop_ids)
+      val_ids         = depth_0_vals.map(&:id)
+      parent_ling_ids = depth_1_vals.map(&:parent_id).uniq
+      LingsProperty.select_ids.
+        with_id(val_ids).
+        with_ling_id(parent_ling_ids).
+        where(:property_id => prop_ids(Depth::PARENT))
     end
+
+    def prop_ids(depth)
+      @filter.vals_at(depth).map(&:property_id)
+    end
+
   end
 
 end
