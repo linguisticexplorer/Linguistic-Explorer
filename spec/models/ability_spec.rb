@@ -99,4 +99,38 @@ describe Ability do
       @member.should_not be_able_to(:update, @membership)
     end
   end
+
+  describe "nongroup members" do
+    before { @nonmember = Ability.new(Factory(:user)) }
+
+    it "should only be able to read public group data" do
+      public_data = [
+        lings(:level0),
+        properties(:level0),
+        categories(:inclusive0),
+        examples(:inclusive),
+        lings_properties(:inclusive)
+      ]
+      public_data.each do |data|
+        @nonmember.should be_able_to(:read, data)
+        @nonmember.should_not be_able_to(:update, data)
+        @nonmember.should_not be_able_to(:delete, data)
+      end
+    end
+
+    it "should not be able to do anything to private group data" do
+      private_data = [
+        lings(:exclusive0),
+        properties(:exclusive0),
+        categories(:exclusive0),
+        examples(:exclusive),
+        lings_properties(:exclusive)
+      ]
+      private_data.each do |data|
+        @nonmember.should_not be_able_to(:read, data)
+        @nonmember.should_not be_able_to(:update, data)
+        @nonmember.should_not be_able_to(:delete, data)
+      end
+    end
+  end
 end

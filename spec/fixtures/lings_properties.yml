@@ -3,3 +3,13 @@ smelly:
   property: valid
   value: smelly
   group: inclusive
+inclusive:
+  ling: english
+  property: inclusive0
+  value: awesome
+  group: inclusive
+exclusive:
+  ling: exclusive0
+  property: exclusive0
+  value: lame
+  group: exclusive

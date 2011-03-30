@@ -6,6 +6,10 @@ level0:
   name: LLLLEVELUP
   group: inclusive
   depth: 0
+exclusive0:
+  name: BOOP
+  group: exclusivew
+  depth: 0
 level1:
   name: standardissue
   group: inclusive

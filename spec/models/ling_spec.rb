@@ -47,7 +47,7 @@ describe Ling do
 
   describe "add_property" do
     before(:each) do
-      @ling = Ling.first
+      @ling = lings(:level0)
       @property = mock_model(Property)
     end
 

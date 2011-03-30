@@ -6,7 +6,8 @@ class Ability
     group_admin_data = [Ling, Property, Category]
     group_data = group_admin_data + group_member_data
 
-    user ||= User.new # guest user (not logged in)
+    # ensure there is a user object in the not logged in case
+    user ||= User.new
 
     if user.admin?
       can :manage, :all
@@ -16,23 +17,23 @@ class Ability
 
       # any user can see all public groups and data
       can :read, Group, :privacy => "public"
-      group_data.each{|gd| can :read, gd, :group => { :privacy => "public" } }
+      can :read, group_data, :group => { :privacy => "public" }
       # blanket coverage to hide private groups from users
       cannot :manage, Group, :privacy => "private"
-      group_data.each{|gd| cannot :manage, gd, :group => { :privacy => "private" } }
+      cannot :manage, group_data, :group => { :privacy => "private" }
 
       # turn on group reading for members and management for member admins
       can :read, Group, :memberships => { :user_id => user.id, :level => 'member' }
       can :manage, Group, :memberships => { :user_id => user.id, :level => 'admin' }
 
       # turn on group member data management for group members
-      group_member_data.each{|gd| can :manage, gd, :group => { :id => user.group_ids } }
+      can :manage, group_member_data, :group => { :id => user.group_ids }
       # turn on group admin data reading for group members
-      group_admin_data.each{|gd| can :read, gd, :group => { :id => user.group_ids } }
+      can :read, group_admin_data, :group => { :id => user.group_ids }
 
       # turn on group data for group admins
       can :manage, Group, :memberships => { :user_id => user.id, :level => "admin"}
-      group_data.each{|gd| can :manage, gd, :group => { :id => user.administrated_groups.map(&:id) } }
+      can :manage, group_data, :group => { :id => user.administrated_groups.map(&:id) }
 
       # explicity turn on membership permissions
       cannot [:create, :update], Membership # cannot create or update any
