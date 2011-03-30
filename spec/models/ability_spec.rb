@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'cancan/matchers'
 
 describe Ability do
-  describe ":: Site Admins" do
+  describe "::Site Admins" do
     it "should be able to manage every object" do
       ability = Ability.new(Factory(:user, :access_level => "admin"))
       [ User, Ling, Property, Category, LingsProperty, Example, Group, Membership ].each do |klass|
@@ -11,7 +11,7 @@ describe Ability do
     end
   end
 
-  describe ":: Visitors" do
+  describe "::Visitors" do
     before { @visitor = Ability.new(nil) }
 
     it "should be able to register as a new user" do
@@ -24,6 +24,7 @@ describe Ability do
 
     it "should not be able to see private groups and their data" do
       @group = Factory(:group, :name => "privy", :privacy => "private")
+      @visitor.should_not be_able_to(:read, @group)
       [ :ling, :category ].each do |model|
         @visitor.should_not be_able_to(:read, Factory(model, :group => @group))
       end
@@ -31,12 +32,13 @@ describe Ability do
 
     it "should be able to view public groups and their data" do
       @group = Factory(:group, :name => "pubs", :privacy => "public")
+      @visitor.should be_able_to(:read, @group)
       @visitor.should be_able_to(:read, Factory(:ling, :group => @group))
       @visitor.should be_able_to(:read, Factory(:category, :group => @group))
     end
   end
 
-  describe ":: Logged in Users" do
+  describe "::Logged in Users" do
     before do
       @user = Factory(:user, :name => "bob", :access_level => "user")
       @logged = Ability.new(@user)
@@ -51,7 +53,7 @@ describe Ability do
     end
   end
 
-  describe ":: Group Admins" do
+  describe "::Group Admins" do
     it "should be able to manage their group and all data within it" do
       @group = Factory(:group)
       user   = Factory(:user)
@@ -63,9 +65,31 @@ describe Ability do
         @admin.should be_able_to(:manage, klass)
       end
     end
+
+    describe "should not be able to" do
+      before do
+        group  = Factory(:group)
+        user   = Factory(:user)
+        @admin = Ability.new(user)
+        Membership.create(:group => group, :user => user, :level => "admin")
+        @other_group = Factory(:group, :name => "haters", :privacy => "private")
+      end
+
+      [ :read, :update, :create, :destroy ].each do |action|
+        it ":{action} other groups" do
+          @admin.should_not be_able_to(action, @other_group)
+        end
+
+        [ Ling, Property, Category, LingsProperty, Example, Membership ].each do |klass|
+          it "perform :#{action} on #{klass.to_s.capitalize}" do
+            @admin.should be_able_to(action, klass)
+          end
+        end
+      end
+    end
   end
 
-  describe ":: Group Members" do
+  describe "::Group Members" do
     before do
       @group  = Factory(:group)
       user    = Factory(:user)
@@ -86,7 +110,7 @@ describe Ability do
       end
     end
 
-    it "should only be able to read delete their own memberships" do
+    it "should only be able to read and delete their own memberships" do
       @member.should      be_able_to(:delete, @membership)
       @member.should      be_able_to(:read,   @membership)
       @member.should_not  be_able_to(:create,  Membership)
@@ -94,7 +118,7 @@ describe Ability do
     end
   end
 
-  describe ":: Non-Groupmembers" do
+  describe "::Non-Groupmembers" do
     before { @nonmember = Ability.new(Factory(:user)) }
 
     it "should only be able to read public group data" do
@@ -117,7 +141,7 @@ describe Ability do
           categories(       :exclusive0),
           examples(         :exclusive ),
           lings_properties( :exclusive )
-        ].each { |data| @nonmember.should_not be_able_to(action, data) }
+        ].each { |data| @nonmember.can?(action, data).should be_false }
       end
     end
   end
