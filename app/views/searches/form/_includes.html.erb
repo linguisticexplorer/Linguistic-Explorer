@@ -1,0 +1,16 @@
+<%= content_tag :fieldset do %>
+  <%= label_tag     "search[include][ling][0]", current_group.ling0_name %>
+  <%= check_box_tag "search[include][ling][0]", "1", true %>
+
+  <% if current_group.has_depth? %>
+    <%= label_tag     "search[include][ling][1]", current_group.ling1_name %>
+    <%= check_box_tag "search[include][ling][1]", "1", true %>
+  <% end %>
+
+  <%= label_tag     "search[include][property]", current_group.property_name %>
+  <%= check_box_tag "search[include][property]", "1", true %>
+
+
+  <%= label_tag     "search[include][lings_property]", current_group.lings_property_name %>
+  <%= check_box_tag "search[include][lings_property]", "1", true %>
+<% end %>

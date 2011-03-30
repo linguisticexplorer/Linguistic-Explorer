@@ -1,0 +1,24 @@
+<%- @search.property_categories.each do |category, depth| -%>
+  <%- lings_prop_label  = "#{category.name} Value Pairs" -%>
+  <%= content_tag :fieldset, :id => lings_prop_label.underscorize, :class => "table" do %>
+    <%= f.select :lings_props, @search.lings_prop_options(category), {},
+      :name => search_field_name(:lings_props, category.id),
+      :multiple => true,
+      :label => lings_prop_label,
+      :id => search_options_id(lings_prop_label) %>
+
+    <div class="row">
+      <div class="cell label">Selection</div>
+      <div class="cell field">
+        <%= f.label "lings_property_set", "Any", :for => categorized_set_id(lings_prop_label, "any") %>
+        <%= f.radio_button "lings_property_set", "any", :checked => true,
+          :id => categorized_set_id(lings_prop_label, "any"),
+          :name => categorized_field_name(:lings_property, category.id) %>
+        <%= f.label "lings_property_set", "All", :for => categorized_set_id(lings_prop_label, "all") %>
+        <%= f.radio_button "lings_property_set", "all",
+          :id => categorized_set_id(lings_prop_label, "all"),
+          :name => categorized_field_name(:lings_property, category.id) %>
+      </div>
+    </div>
+  <% end %>
+<%- end -%>
