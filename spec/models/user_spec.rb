@@ -15,4 +15,11 @@ describe User do
       u.should_not be_new_record
     end
   end
+
+  describe "#admin?" do
+    it "should be truthy only if the user has access_level of admin" do
+      Factory(:user, :email => "one@example.com", :access_level => "admin").admin?.should be_true
+      Factory(:user, :email => "two@example.com", :access_level => "not").admin?.should_not be_true
+    end
+  end
 end

@@ -1,4 +1,3 @@
-
 source 'http://rubygems.org'
 
 gem 'rails', '3.0.5'
@@ -21,7 +20,7 @@ gem 'capistrano'
 
 # Bundle the extra gems:
 # gem 'bj'
-# gem 'nokogiri'
+gem 'nokogiri', 
 # gem 'sqlite3-ruby', :require => 'sqlite3'
 # gem 'aws-s3', :require => 'aws/s3'
 gem "meta_where", '1.0.1'
@@ -48,7 +47,8 @@ group :development, :test, :pg_test do
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
 
-  gem 'rspec-rails', "2.4.0"
+  gem 'rspec', "2.5.0"
+  gem 'rspec-rails', "2.5.0"
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'ruby-debug19'

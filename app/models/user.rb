@@ -11,4 +11,8 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :password, :password_confirmation, :remember_me
+
+  def admin?
+    "admin" == self.access_level
+  end
 end
