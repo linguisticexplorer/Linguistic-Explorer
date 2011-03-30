@@ -51,7 +51,7 @@ GEM
     bcrypt-ruby (2.1.4)
     bcrypt-ruby (2.1.4-x86-mingw32)
     builder (2.1.2)
-    cancan (1.6.0)
+    cancan (1.6.4)
     capistrano (2.5.20)
       highline
       highline
@@ -222,7 +222,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
-  cancan (= 1.6.0)
+  cancan (= 1.6.4)
   capistrano
   capybara
   cucumber (= 0.10.2)
