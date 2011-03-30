@@ -1,19 +1,17 @@
 class Ling < ActiveRecord::Base
-  validates_presence_of :name, :depth, :group
+  include Groupable
+
+  validates_presence_of :name, :depth
   validates_numericality_of :depth
   validates_uniqueness_of :name, :scope => :group_id
   validates_existence_of :parent, :allow_nil => true
-  validates_existence_of :group
   validate :parent_depth_check
   validate :group_association_match
-  validates_existence_of :creator, :allow_nil => true
 
   # TODO dependent nullify parent_id on child if parent destroyed
   belongs_to :parent, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :children
   has_many :children, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :parent
 
-  belongs_to :group
-  belongs_to :creator, :class_name => "User"
   has_many :examples, :dependent => :destroy
   has_many :lings_properties, :dependent => :destroy
   has_many :properties, :through => :lings_properties

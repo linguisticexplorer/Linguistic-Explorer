@@ -81,7 +81,7 @@ describe LingsPropertiesController do
 
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
-        GroupMembership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        Membership.create(:user => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         ling = lings(:level0)
         property = properties(:level0)

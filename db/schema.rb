@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110328021739) do
+ActiveRecord::Schema.define(:version => 20110330035405) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -30,14 +30,6 @@ ActiveRecord::Schema.define(:version => 20110328021739) do
     t.datetime "updated_at"
     t.integer  "group_id"
     t.integer  "creator_id"
-  end
-
-  create_table "group_memberships", :force => true do |t|
-    t.integer  "user_id"
-    t.integer  "group_id"
-    t.string   "level"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "groups", :force => true do |t|
@@ -81,6 +73,15 @@ ActiveRecord::Schema.define(:version => 20110328021739) do
   add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"
   add_index "lings_properties", ["ling_id", "property_id"], :name => "index_lings_properties_on_ling_id_and_property_id"
   add_index "lings_properties", ["property_value"], :name => "index_lings_properties_on_property_value"
+
+  create_table "memberships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.string   "level"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "creator_id"
+  end
 
   create_table "preferences", :force => true do |t|
     t.string   "name",       :null => false

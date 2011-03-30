@@ -1,5 +1,5 @@
 Factory.define :user do |f|
-  f.name "Bob"
+  f.name "TestWriterShouldChangeMe"
   f.email "TestWriterShouldChangeMe@ohmy.com"
   f.access_level "user"
   f.password "password"
@@ -13,8 +13,9 @@ end
 
 Factory.define :property do |f|
   f.name "Adjective"
-  f.association :category, :factory => :category
-  f.association :group, :factory => :group
+# NOTE: You must pass the following two yourself because the category must belong to the same group as the created property
+#  f.association :category, :factory => :category
+#  f.association :group, :factory => :group
 end
 
 Factory.define :category do |f|

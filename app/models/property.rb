@@ -1,11 +1,11 @@
 class Property < ActiveRecord::Base
-  validates_presence_of :name, :category, :group
+  include Groupable
+
+  validates_presence_of :name, :category
   validates_uniqueness_of :name, :scope => :group_id
-  validates_existence_of :group, :category
-  validates_existence_of :creator, :allow_nil => true
+  validates_existence_of :category
   validate :group_association_match
 
-  belongs_to :group
   belongs_to :category
   belongs_to :creator, :class_name => "User"
   has_many :lings_properties, :dependent => :destroy

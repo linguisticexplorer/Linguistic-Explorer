@@ -1,16 +1,15 @@
 class LingsProperty < ActiveRecord::Base
-  validates_presence_of :value, :property, :ling, :group
-  validates_existence_of :ling, :property, :group
+  include Groupable
+
+  validates_presence_of :value, :property, :ling
+  validates_existence_of :ling, :property
   validates_uniqueness_of :value, :scope => [:ling_id, :property_id]
   validate :association_depth_match
   validate :group_association_match
-  validates_existence_of :creator, :allow_nil => true
 
   belongs_to :ling
   belongs_to :property
-  belongs_to :group
-  belongs_to :creator, :class_name => "User"
-  has_one     :category, :through => :property
+  has_one    :category, :through => :property
 
   before_save  :set_property_value
 

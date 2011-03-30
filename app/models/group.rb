@@ -1,16 +1,16 @@
 class Group < ActiveRecord::Base
   before_create :ensure_default_values
 
-  validates_presence_of :name
-  validates_uniqueness_of :name
-  has_many :lings, :dependent => :destroy
-  has_many :properties, :dependent => :destroy
-  has_many :lings_properties, :dependent => :destroy
-  has_many :examples, :dependent => :destroy
-  has_many :categories, :dependent => :destroy
+  validates_presence_of       :name
+  validates_uniqueness_of     :name
 
-  has_many :group_memberships, :dependent => :destroy
-  has_many :users, :through => :group_memberships
+  has_many :lings,            :dependent => :destroy
+  has_many :properties,       :dependent => :destroy
+  has_many :lings_properties, :dependent => :destroy
+  has_many :examples,         :dependent => :destroy
+  has_many :categories,       :dependent => :destroy
+  has_many :memberships,      :dependent => :destroy
+  has_many :users,            :through => :memberships
 
   def ling_name_for_depth(depth)
     if depth > depth_maximum

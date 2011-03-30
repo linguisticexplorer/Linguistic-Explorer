@@ -2,35 +2,42 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    <<-Notes
-      Users cannot do anything unless specified
-      Admin can R/W anything
-      Non-group member can R public groups and their data
-      Group member can R their groups and their data
-      Group member can W their groups LP, E, and ELP data
-      Group admin can R/W their groups and their data
-    Notes
-    # Define abilities for the passed in user here. For example:
-    #
-   user ||= User.new # guest user (not logged in)
-   if user.admin?
-     can :manage, :all
-   else
-#     can :read, :all
-   end
-    #
-    # The first argument to `can` is the action you are giving the user permission to do.
-    # If you pass :manage it will apply to every action. Other common actions here are
-    # :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on. If you pass
-    # :all it will apply to every resource. Otherwise pass a Ruby class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, :published => true
-    #
-    # See the wiki for details: https://github.com/ryanb/cancan/wiki/Defining-Abilities
+    group_member_data = [Example, LingsProperty]
+    group_admin_data = [Ling, Property, Category]
+    group_data = group_admin_data + group_member_data
+
+    user ||= User.new # guest user (not logged in)
+
+    if user.admin?
+      can :manage, :all
+    else
+      # New users should be able to sign up, logged in users should be able to manage themselves
+      user.new_record? ? can(:create, User) : can(:manage, user)
+
+      # any user can see all public groups and data
+      can :read, Group, :privacy => "public"
+      group_data.each{|gd| can :read, gd, :group => { :privacy => "public" } }
+      # blanket coverage to hide private groups from users
+      cannot :manage, Group, :privacy => "private"
+      group_data.each{|gd| cannot :manage, gd, :group => { :privacy => "private" } }
+
+      # turn on group reading for members and management for member admins
+      can :read, Group, :memberships => { :user_id => user.id, :level => 'member' }
+      can :manage, Group, :memberships => { :user_id => user.id, :level => 'admin' }
+
+      # turn on group member data management for group members
+      group_member_data.each{|gd| can :manage, gd, :group => { :id => user.group_ids } }
+      # turn on group admin data reading for group members
+      group_admin_data.each{|gd| can :read, gd, :group => { :id => user.group_ids } }
+
+      # turn on group data for group admins
+      can :manage, Group, :memberships => { :user_id => user.id, :level => "admin"}
+      group_data.each{|gd| can :manage, gd, :group => { :id => user.administrated_groups.map(&:id) } }
+
+      # explicity turn on membership permissions
+      cannot [:create, :update], Membership # cannot create or update any
+      can [:read, :delete], Membership, :user_id => user.id # can read and delete their own
+      can :manage, Membership, :group => { :id => user.administrated_groups.map(&:id) } # can manage any in groups they admin
+    end
   end
 end

@@ -59,7 +59,7 @@ puts "Done with Group, starting Memberships"
 CSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])
   group = Group.find_by_name(group_name(row["group_id"]))
-  GroupMembership.create(:user => user, :group => group, :level => row["level"])
+  Membership.create(:user => user, :group => group, :level => row["level"])
 end
 puts "Done with Memberships, starting Lings"
 
@@ -82,7 +82,7 @@ CSV.foreach(Rails.root.join("doc", "data", "Ling.csv"), :headers => true) do |ro
   child   = Ling.find_by_name(ling_name(row["name"]))
   parent  = Ling.find_by_name(ling_name(row["parentid"]))
   child.parent = parent
-  
+
   begin
     child.save!
   rescue
@@ -137,10 +137,10 @@ CSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true)
     :property_id  => prop.id,
     :value        => MEANINGFUL_VALUES[row["value"]]
   }
-  
+
   next if LingsProperty.where(attributes).first.present?
   lp          = LingsProperty.new(attributes)
-  
+
   lp.group    = ling.group
   lp.save!
 end

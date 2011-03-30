@@ -6,13 +6,17 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name, :email, :access_level
 
-  has_many :group_memberships, :dependent => :destroy
-  has_many :groups, :through => :group_memberships
+  has_many :memberships, :dependent => :destroy
+  has_many :groups, :through => :memberships
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :password, :password_confirmation, :remember_me
 
   def admin?
     "admin" == self.access_level
+  end
+
+  def administrated_groups
+    self.memberships.select{ |m| m.group_admin? }.map(&:group)
   end
 end
