@@ -54,7 +54,6 @@ Stories
     ELPV should exist
     Examples should have a Text preference
     Group admins can set arbitrary non-searchable Example attributes
-    Group admins can set arbitrary non-searchable Ling attributes
   4/4
     Bulk upload
     LPV mass setting page for Lings
@@ -66,8 +65,7 @@ Stories
     Users should have preference to include or exclude public groups they arent members of from their dropdown
     ### end of story cards
   4/18
-    set up nightly sql dumping and backing up
-    set up reload from sql dump ability
+    styling #lol one story at the end of the project, ofc...
   4/25
-
+    map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
   5/2
