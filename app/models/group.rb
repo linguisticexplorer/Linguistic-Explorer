@@ -12,6 +12,9 @@ class Group < ActiveRecord::Base
   has_many :memberships,      :dependent => :destroy
   has_many :users,            :through => :memberships
 
+  scope :public,  where( :privacy => 'public' )
+  scope :private, where( :privacy => 'private' )
+
   def ling_name_for_depth(depth)
     if depth > depth_maximum
       "Error: No objects for depth #{depth} exist in this group."
@@ -21,7 +24,7 @@ class Group < ActiveRecord::Base
       ling1_name
     end
   end
-  
+
   def has_depth?
     depth_maximum >= 1
   end
