@@ -177,6 +177,7 @@ describe Ability do
           examples(         :inclusive ),
           lings_properties( :inclusive )
         ].each do |data|
+          data.group = groups(:inclusive)
           @nonmember.should     be_able_to(:read,   data)
           @nonmember.should_not be_able_to(:update, data)
           @nonmember.should_not be_able_to(:delete, data)
@@ -190,7 +191,10 @@ describe Ability do
             categories(       :exclusive0),
             examples(         :exclusive ),
             lings_properties( :exclusive )
-          ].each { |data| @nonmember.can?(action, data).should be_false }
+          ].each { |data| 
+            data.group = groups(:exclusive)
+            @nonmember.can?(action, data).should be_false 
+          }
         end
       end
     end
