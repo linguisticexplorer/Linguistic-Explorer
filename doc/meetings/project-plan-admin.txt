@@ -1,0 +1,56 @@
+Stories
+  User Access
+
+    Visitor can sign up from home page
+    User can log in from home page
+    User can access publicly viewable groups (databases) from home page
+    User can access private group if editor or admin
+    User can administer group with group admin privileges
+    User can edit group with group editor privileges
+    User can browse languages
+    User can see percentage of ling prop values set
+    User can browse properties
+
+  Group Administration
+
+    Group Admin can set privacy status of group
+    Group Admin can give editor privileges
+    Group Admin can give admin privileges
+    Group Admin can create lings and properties
+    Group Admin can choose whether or not to add ling depth
+    Group Admin can set ling and property labels
+    Group Admin can add categories to lings
+    Group Admin can add categories to properties
+    Group Admin can set labels for 1st and 2nd level lings
+    Group Admin can choose attributes for examples
+    Group Admin can specify depth of ling for examples
+    Group Admin can import ling/prop/example data from file (e.g. CSV)
+      - CSV import provides explicit feedback on success/failure of individual items
+
+  Group Editing
+
+    Group Editor can access search interface for private group
+    Group Editor can edit content ling prop values
+    Group Editor can edit examples
+    Group Editor can edit example ling props
+
+  System Administration
+
+    Sys Admin can restore database from a nightly sql dump
+
+  Enhancements
+
+    Render browse and search-result tables as javascript-enhanced data tables (http://www.datatables.net)
+
+
+  3/28
+
+  4/4
+
+  4/11
+
+  4/18
+
+  4/25
+
+  5/2
