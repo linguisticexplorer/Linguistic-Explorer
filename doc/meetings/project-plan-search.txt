@@ -33,15 +33,14 @@ Project Plan for Search
       Search Form Error Handling
 
 4/11
-      Display Lings on Map
-      Display Info Windows on Map
-
-4/18
       Save Queries for Additional Comparisons
       (TODO: Break out into smaller stories)
 
-4/25
+4/18
       Save Queries for Additional Comparisons
+
+4/25
+      Database back up procedure
 
 5/2
       Search Help
