@@ -8,7 +8,7 @@ inclusive:
   example_name:        Example
   example_lp_name:     EVal
   depth_maximum:       1
-  privacy:             privacy
+  privacy:             public
 exclusive:
   name: Forever Alone
   ling0_name:          Ling0
@@ -19,4 +19,4 @@ exclusive:
   example_name:        Example
   example_lp_name:     EVal
   depth_maximum:       1
-  privacy:             privacy
+  privacy:             private
