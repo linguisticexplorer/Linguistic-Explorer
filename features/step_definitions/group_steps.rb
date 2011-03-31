@@ -1,3 +1,9 @@
+Given /^the ([^ ]*?) group "([^\"]*)"$/ do |privacy, name|
+  @group = Group.find_by_name(name) || Factory(:group, :name => name)
+  @group.privacy = privacy
+  @group.save
+end
+
 Given /^the group "([^\"]*)"$/ do |name|
   @group = Group.find_by_name(name) || Factory(:group, :name => name)
 end
