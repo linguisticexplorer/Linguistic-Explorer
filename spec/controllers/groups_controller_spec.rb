@@ -92,12 +92,12 @@ describe GroupsController do
 
   describe "update" do
     describe "with valid params" do
-      it "calls update with the passed params on the requested group" do
+      it "updates the requested group" do
         group = groups(:inclusive)
-        group.should_receive(:update_attributes).with({'name' => 'number1group'}).and_return(true)
-        Group.should_receive(:find).with(group.id).and_return(group)
-
+        group.name.should_not == 'number1group'
         put :update, :id => group.id, :group => {'name' => 'number1group'}
+        group.reload
+        group.name.should == 'number1group'
       end
 
       it "assigns the requested group as @group" do
@@ -129,11 +129,10 @@ describe GroupsController do
 
   describe "destroy" do
     it "calls destroy on the requested group" do
-      group = groups(:inclusive)
-      group.should_receive(:destroy).and_return(true)
-      Group.should_receive(:find).with(group.id).and_return(group)
-
-      delete :destroy, :id => group.id
+      group_id = groups(:inclusive).id
+      Group.find(group_id).should_not be_nil
+      delete :destroy, :id => group_id
+      Group.find_by_id(group_id).should be_nil
     end
 
     it "redirects to the groups list" do
