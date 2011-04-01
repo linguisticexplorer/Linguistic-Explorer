@@ -2,7 +2,7 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    group_member_data = [Example, LingsProperty]
+    group_member_data = [Example, LingsProperty, ExamplesLingsProperty]
     group_admin_data = [Ling, Property, Category, Membership]
     group_data = group_admin_data + group_member_data
 

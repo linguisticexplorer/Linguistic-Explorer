@@ -41,12 +41,12 @@ Stories
   Enhancements
 
     Render browse and search-result tables as javascript-enhanced data tables (http://www.datatables.net)
-  
+
   3/21
     CanCan Permission setup,
     Links should all check permissions before adding themselves to the page,
     Crud controllers should all check permissions,
-    Permissions violations shoul spit out to the homepage with an error flash
+    Permissions violations should spit out to the homepage with an error flash
     Lings should be entirely split between depths and hidden if the group is single-depth-only
     Group memberships should act like normal admin group data
   3/28

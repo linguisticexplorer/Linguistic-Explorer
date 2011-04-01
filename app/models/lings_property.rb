@@ -11,6 +11,9 @@ class LingsProperty < ActiveRecord::Base
   belongs_to :property
   has_one    :category, :through => :property
 
+  has_many :examples_lings_properties, :dependent => :destroy
+  has_many :examples, :through => :examples_lings_properties
+
   before_save  :set_property_value
 
   include Extensions::Selects

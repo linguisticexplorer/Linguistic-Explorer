@@ -17,7 +17,7 @@
     <%= link_to current_group.category_name, group_categories_path(current_group) %>
     <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
     <%= link_to current_group.example_name, group_examples_path(current_group) %>
-    <%= link_to (current_group.example_lp_name.to_s << " TODO"), current_group %>
+    <%= link_to (current_group.examples_lings_property_name.to_s << " TODO"), current_group %>
   <% elsif @groups %>
      <%= form_tag({:controller => "groups", :action => "index"}, :method => "get") do %>
       <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>

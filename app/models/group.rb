@@ -4,13 +4,14 @@ class Group < ActiveRecord::Base
   validates_presence_of       :name
   validates_uniqueness_of     :name
 
-  has_many :lings,            :dependent => :destroy
-  has_many :properties,       :dependent => :destroy
-  has_many :lings_properties, :dependent => :destroy
-  has_many :examples,         :dependent => :destroy
-  has_many :categories,       :dependent => :destroy
-  has_many :memberships,      :dependent => :destroy
-  has_many :users,            :through => :memberships
+  has_many :examples_lings_properties, :dependent => :destroy
+  has_many :lings,                     :dependent => :destroy
+  has_many :properties,                :dependent => :destroy
+  has_many :lings_properties,          :dependent => :destroy
+  has_many :examples,                  :dependent => :destroy
+  has_many :categories,                :dependent => :destroy
+  has_many :memberships,               :dependent => :destroy
+  has_many :users,                     :through => :memberships
 
   scope :public,  where( :privacy => 'public' )
   scope :private, where( :privacy => 'private' )
@@ -25,6 +26,10 @@ class Group < ActiveRecord::Base
     end
   end
 
+  def ling_names
+    has_depth? ? [ling0_name, ling1_name] : [ling0_name]
+  end
+
   def has_depth?
     depth_maximum >= 1
   end
@@ -32,15 +37,15 @@ class Group < ActiveRecord::Base
   private
 
   def ensure_default_values
-    self.depth_maximum          ||= 0
-    self.ling0_name =           "Ling"           if self.ling0_name.blank?
-    self.ling1_name =           "Linglet"        if self.ling1_name.blank? && self.depth_maximum > 0
-    self.ling1_name =           nil              if self.ling1_name.blank? && self.depth_maximum <= 0
-    self.property_name =        "Property"       if self.property_name.blank?
-    self.category_name =        "Category"       if self.category_name.blank?
-    self.lings_property_name =  "Value"          if self.lings_property_name.blank?
-    self.example_name =         "Example"        if self.example_name.blank?
-    self.example_lp_name =      "Example Value"  if self.example_lp_name.blank?
-    self.privacy =              "public"         if self.privacy.blank?
+    self.depth_maximum                  ||= 0
+    self.ling0_name =                   "Ling"           if self.ling0_name.blank?
+    self.ling1_name =                   "Linglet"        if self.ling1_name.blank? && self.depth_maximum > 0
+    self.ling1_name =                   nil              if self.ling1_name.blank? && self.depth_maximum <= 0
+    self.property_name =                "Property"       if self.property_name.blank?
+    self.category_name =                "Category"       if self.category_name.blank?
+    self.lings_property_name =          "Value"          if self.lings_property_name.blank?
+    self.example_name =                 "Example"        if self.example_name.blank?
+    self.examples_lings_property_name = "Example Value"  if self.examples_lings_property_name.blank?
+    self.privacy =                      "public"         if self.privacy.blank?
   end
 end

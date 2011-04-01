@@ -6,7 +6,7 @@ describe Ability do
     describe "Site Admins" do
       it "should be able to manage every object" do
         ability = Ability.new(Factory(:user, :access_level => "admin"))
-        [ User, Ling, Property, Category, LingsProperty, Example, Group, Membership ].each do |klass|
+        [ User, Ling, Property, Category, LingsProperty, Example, ExamplesLingsProperty, Group, Membership ].each do |klass|
           ability.should be_able_to(:manage, klass )
         end
       end
@@ -68,7 +68,7 @@ describe Ability do
           @admin.should be_able_to(:manage, @group)
         end
 
-        [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty removed due to more commplex creation requirements
+        [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to more commplex creation requirements
           it "should be able to manage the group's #{klass.to_s.pluralize}" do
             instance = klass.create(:group => @group)
             @admin.should be_able_to(:manage, instance)
@@ -90,7 +90,7 @@ describe Ability do
           @admin.should be_able_to(:read, @other_group)
         end
 
-        [ Ling, Category, Example, Membership ].each do |klass| # LingsProperty, Property removed due to creation difficulty
+        [ Ling, Category, Example, Membership ].each do |klass| # LingsProperty, ExamplesLingsProperty, Property removed due to creation difficulty
           it "should be able to read the group's #{klass.to_s.capitalize.pluralize}" do
             instance = klass.create(:group => @other_group)
             @admin.should be_able_to(:read, instance)
@@ -102,7 +102,7 @@ describe Ability do
             @admin.should_not be_able_to(action, @other_group)
           end
 
-          [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty removed due to creation difficulty
+          [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to creation difficulty
             it "should not be able to perform :#{action} on #{klass.to_s.capitalize}" do
               instance = klass.create(:group => @other_group)
               @admin.should_not be_able_to(action, instance)
@@ -126,7 +126,7 @@ describe Ability do
             @admin.should_not be_able_to(action, @other_group)
           end
 
-          [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty removed due to creation difficulty
+          [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to creation difficulty
             it "should not be able to perform :#{action} on #{klass.to_s.capitalize}" do
               instance = klass.create(:group => @other_group)
               @admin.should_not be_able_to(action, instance)
@@ -138,15 +138,15 @@ describe Ability do
 
     describe "Group Members" do
       before do
-        @group  = Factory(:group)
-        @user    = Factory(:user)
+        @group = Factory(:group)
+        @user = Factory(:user)
         @membership = Membership.create(:group => @group, :user => @user, :level => "member")
         @user.reload
         @member = Ability.new(@user)
       end
 
       it "should be able to manage examples, LPVs, ELPVs in their groups" do
-        [ LingsProperty, Example ].each { |klass| @member.should be_able_to(:manage, klass) }
+        [ ExamplesLingsProperty, LingsProperty, Example ].each { |klass| @member.should be_able_to(:manage, klass) }
       end
 
       [ Ling, Property, Category ].each do |klass|
@@ -175,6 +175,7 @@ describe Ability do
           properties(       :level0    ),
           categories(       :inclusive0),
           examples(         :inclusive ),
+#          examples_lings_properties(:#TODO),
           lings_properties( :inclusive )
         ].each do |data|
           data.group = groups(:inclusive)
@@ -190,10 +191,11 @@ describe Ability do
             properties(       :exclusive0),
             categories(       :exclusive0),
             examples(         :exclusive ),
+#            examples_lings_properties(:#TODO),
             lings_properties( :exclusive )
-          ].each { |data| 
+          ].each { |data|
             data.group = groups(:exclusive)
-            @nonmember.can?(action, data).should be_false 
+            @nonmember.can?(action, data).should be_false
           }
         end
       end

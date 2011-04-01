@@ -6,9 +6,10 @@ inclusive:
   category_name:       Category
   lings_property_name: Value
   example_name:        Example
-  example_lp_name:     EVal
   depth_maximum:       1
   privacy:             public
+  examples_lings_property_name:     EVal
+
 exclusive:
   name: Forever Alone
   ling0_name:          Ling0
@@ -17,6 +18,6 @@ exclusive:
   category_name:       Category
   lings_property_name: Value
   example_name:        Example
-  example_lp_name:     EVal
   depth_maximum:       1
   privacy:             private
+  examples_lings_property_name:     EVal

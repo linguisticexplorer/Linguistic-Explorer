@@ -1,6 +1,9 @@
 onceuponatime:
   ling: english
   group: inclusive
+english:
+  ling: english
+  group: inclusive
 inclusive:
   ling: english
   group: inclusive

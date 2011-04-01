@@ -5,6 +5,7 @@ describe LingsProperty do
     it_should_validate_presence_of :ling, :property, :value, :group
     it_should_validate_uniqueness_of :value, :scope => [:ling_id, :property_id]
     it_should_belong_to :ling, :property, :group, :creator
+    it_should_have_many :examples_lings_properties, :examples
 #    should_validate_existence_of :ling, :property, :group, :creator
   end
 

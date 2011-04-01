@@ -45,7 +45,7 @@ Feature: Permissions testing for non-logged-in users
 
   Scenario: Visitors should not able to see any private groups listed
     Then "Select a Group" should not contain "Secret Club"
-    When I attempt to force a visit to the group Secret Club
+    When I go to the group Secret Club
     Then I should be on the access denied page
 
   Scenario: The standard user should not be able to view pages for any group data in a private group

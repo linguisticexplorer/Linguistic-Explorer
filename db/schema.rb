@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110330035405) do
+ActiveRecord::Schema.define(:version => 20110401065952) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -32,6 +32,15 @@ ActiveRecord::Schema.define(:version => 20110330035405) do
     t.integer  "creator_id"
   end
 
+  create_table "examples_lings_properties", :force => true do |t|
+    t.integer  "example_id"
+    t.integer  "lings_property_id"
+    t.integer  "creator_id"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -42,7 +51,7 @@ ActiveRecord::Schema.define(:version => 20110330035405) do
     t.string   "category_name"
     t.string   "lings_property_name"
     t.string   "example_name"
-    t.string   "example_lp_name"
+    t.string   "examples_lings_property_name"
     t.integer  "depth_maximum"
     t.string   "privacy"
   end

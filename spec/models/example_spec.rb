@@ -4,6 +4,7 @@ describe Example do
   describe "one-liners" do
     it_should_validate_presence_of :group
     it_should_belong_to :ling, :group, :creator
+    it_should_have_many :examples_lings_properties, :lings_properties
 #    should_validate_existence_of :group
 #    should_validate_existence_of :creator
 #    should_validate_existence_of :ling, :allow_nil => true

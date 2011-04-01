@@ -1,10 +1,11 @@
 LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
+
   resources   :groups do
-    resources :lings, :properties, :lings_properties, :examples, :categories
-    
-    resources :searches, :path => "search", 
+    resources :lings, :properties, :lings_properties, :examples, :categories, :memberships, :examples_lings_properties
+
+    resources :searches, :path => "search",
       :path_names => { :new => "/" }, :only => [:new, :create] do
       collection do
         get 'results'

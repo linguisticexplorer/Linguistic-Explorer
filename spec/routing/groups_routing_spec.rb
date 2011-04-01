@@ -32,7 +32,7 @@ describe GroupsController do
   end
 
   describe 'nested routes for' do
-    nested_resources = ["lings", "properties", "lings_properties", "examples", "categories"]
+    nested_resources = ["lings", "properties", "lings_properties", "examples", "categories", "memberships", "examples_lings_properties"]
     nested_resources.each do |resource|
       describe resource do
         it "recognizes and generates #index" do

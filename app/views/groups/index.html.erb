@@ -26,7 +26,7 @@
     <td><%= link_to group.property_name, group_properties_path(group) %></td>
     <td><%= link_to group.category_name, group_categories_path(group) %></td>
     <td><%= link_to group.lings_property_name, group_lings_properties_path(group) %></td>
-    <td><%= link_to (group.example_lp_name.to_s << " TODO"), group %></td>
+    <td><%= link_to (group.examples_lings_property_name.to_s << " TODO"), group %></td>
     <td><%= link_to group.example_name, group_examples_path(group) %></td>
     <td><%= group.depth_maximum %></td>
     <td><%= group.privacy %></td>
