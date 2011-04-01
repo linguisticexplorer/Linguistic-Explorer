@@ -11,6 +11,12 @@ Factory.define :ling do |f|
   f.association :group, :factory => :group
 end
 
+Factory.define :membership do |f|
+  f.level "member"
+  f.association :group, :factory => :group
+  f.association :user,  :factory => :user
+end
+
 Factory.define :property do |f|
   f.name "Adjective"
 # NOTE: You must pass the following two yourself because the category must belong to the same group as the created property

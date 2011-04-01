@@ -1,0 +1,14 @@
+<p>
+  <b>User:</b> <br />
+  <%= @membership.user.name %> <br />
+
+  <b>Level:</b> <br />
+  <%= @membership.level %> <br />
+
+  <b>Created by:</b> <br />
+  <%= @membership.creator ? @membership.creator.name : "Unknown user" %> <br />
+</p>
+
+
+<%= link_to 'Edit', edit_group_membership_path(current_group, @membership) %> |
+<%= link_to 'Back', group_memberships_path(current_group) %>
