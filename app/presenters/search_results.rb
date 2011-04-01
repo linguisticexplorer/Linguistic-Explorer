@@ -9,7 +9,7 @@ module SearchResults
   def results
     LingsProperty.with_id(selected_lings_prop_ids).includes([{:ling => :parent}, :property])
   end
-
+  
   private
 
   def selected_lings_prop_ids

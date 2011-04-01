@@ -23,19 +23,51 @@ Feature: Show search columns
 
   Scenario: Choose lings only
     When I check "Speakers" within "#show_columns"
-    And I check "Senteances" within "#show_columns"
+    And I check "Sentences" within "#show_columns"
     And I uncheck "Properties" within "#show_columns"
     And I uncheck "Value" within "#show_columns"
     Then I press "Search"
-    Then I should see "Speaker 1"
-    And I should see "Speaker 2"
-    And I should see "Sentence 1"
-    And I should see "Sentence 2"
-    And I should not see "Property"
-    And I should not see "Properties"
-    And I should not see "Value"
-    And I should not see "pval"
-    And I should not see "Eastern"
+    Then I should see the following search results:
+    | Lings         |
+    | Speaker 1     |
+    | Speaker 2     |
+    | Sentence 1    |
+    | Sentence 2    |
+    And I should not see "Property" within "#search_results"
+    And I should not see "Properties" within "#search_results"
+    And I should not see "Value" within "#search_results"
+    And I should not see "PropVal" within "#search_results"
 
-  Scenario: Choose property only
+  Scenario: Choose ling depth 0 only
+    When I check "Speakers" within "#show_columns"
+    And I uncheck "Sentences" within "#show_columns"
+    And I uncheck "Properties" within "#show_columns"
+    And I uncheck "Value" within "#show_columns"
+    Then I press "Search"
+    Then I should see the following search results:
+    | Lings         |
+    | Speaker 1     |
+    | Speaker 2     |
+    And I should not see "Sentence 1" within "#search_results"
+    And I should not see "Sentence 2" within "#search_results"
+    And I should not see "Property" within "#search_results"
+    And I should not see "Properties" within "#search_results"
+    And I should not see "Value" within "#search_results"
+    And I should not see "PropVal" within "#search_results"
+
+  Scenario: Choose property
+    When I check "Speakers" within "#show_columns"
+    And I check "Sentences" within "#show_columns"
+    And I check "Properties" within "#show_columns"
+    And I uncheck "Value" within "#show_columns"
+    Then I press "Search"
+    Then I should see the following search results:
+    | Lings         | Property    |
+    | Speaker 1     | Property 1  |
+    | Speaker 2     | Property 2  |
+    | Sentence 1     | Property 3  |
+    | Sentence 2     | Property 4  |
+    And I should not see "Value" within "#search_results"
+    And I should not see "PropVal" within "#search_results"
+
   Scenario: Choose value pair only
