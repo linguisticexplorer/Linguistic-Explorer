@@ -1,4 +1,4 @@
-<%= content_tag :fieldset do %>
+<%= content_tag :fieldset, :id => "show_columns" do %>
   <%= label_tag     "search[include][ling][0]", current_group.ling0_name %>
   <%= check_box_tag "search[include][ling][0]", "1", true %>
 
