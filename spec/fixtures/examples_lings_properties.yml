@@ -1,0 +1,8 @@
+inclusive:
+  example: english
+  lings_property: inclusive
+  group: inclusive
+exclusive:
+  example: exclusive
+  lings_property: exclusive
+  group: exclusive

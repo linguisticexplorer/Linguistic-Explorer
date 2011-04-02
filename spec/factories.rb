@@ -30,6 +30,13 @@ Factory.define :category do |f|
   f.association :group, :factory => :group
 end
 
+Factory.define :example do |f|
+  f.name "SampleExample"
+# NOTE: You must pass the following two yourself becayse the ling must belong to the same group as the created example
+#  f.association :group, :factory => :group
+#  f.association :ling, :factory => :ling
+end
+
 Factory.define :group do |f|
   f.name "The Best Group"
   f.depth_maximum 1

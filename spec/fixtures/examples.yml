@@ -8,5 +8,5 @@ inclusive:
   ling: english
   group: inclusive
 exclusive:
-  ling: foobarbaz
+  ling: exclusive0
   group: exclusive
