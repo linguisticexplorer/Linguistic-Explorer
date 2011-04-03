@@ -23,7 +23,7 @@ module SearchResults
     def properties
       self[:properties] || {}
     end
-    
+
     def depth_0_ling_ids
       ling_extractor.depth_0_ids
     end
@@ -74,8 +74,12 @@ module SearchResults
       }
     end
 
+    def has_depth?
+      depth_1_ling_ids.any?
+    end
+
     private
-    
+
     def ling_extractor
       @ling_extractor ||= LingExtractor.new(@group, lings)
     end
@@ -136,5 +140,5 @@ module SearchResults
   class PropertyExtractor < ParamExtractor
   end
 
-  
+
 end

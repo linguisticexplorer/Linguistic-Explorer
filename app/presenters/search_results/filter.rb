@@ -1,7 +1,7 @@
 module SearchResults
 
   class Filter
-    attr_reader :filter, :depth_0_vals, :depth_1_vals
+    attr_reader :filter, :params, :depth_0_vals, :depth_1_vals
 
     def initialize(filter, params)
       @filter   = filter
