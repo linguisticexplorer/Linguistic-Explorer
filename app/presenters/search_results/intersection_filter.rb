@@ -22,7 +22,7 @@ module SearchResults
     end
 
     def filter_depth_1_vals_by_selected_ling_parents(depth_0_vals, depth_1_vals)
-      val_ids         = depth_1_vals.map(&:id)
+      val_ids         = depth_1_vals.map(&:id).uniq
       parent_ling_ids = depth_0_vals.map(&:ling_id).uniq
 
       LingsProperty.select_ids.
@@ -32,7 +32,7 @@ module SearchResults
     end
 
     def filter_depth_0_vals_by_filtered_depth_1_vals(depth_0_vals, depth_1_vals)
-      val_ids         = depth_0_vals.map(&:id)
+      val_ids         = depth_0_vals.map(&:id).uniq
       parent_ling_ids = depth_1_vals.map(&:parent_id).uniq
       LingsProperty.select_ids.
         with_id(val_ids).
@@ -41,7 +41,7 @@ module SearchResults
     end
 
     def prop_ids(depth)
-      @filter.vals_at(depth).map(&:property_id)
+      @filter.vals_at(depth).map(&:property_id).uniq
     end
 
   end

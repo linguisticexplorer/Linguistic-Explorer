@@ -10,6 +10,8 @@ module SearchResults
       yield self if block_given?
 
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category
+
+      @depth_0_vals, @depth_1_vals = perform_intersection_of_results if intersection_required?
     end
 
     def strategy
@@ -31,6 +33,7 @@ module SearchResults
       vals_at_depth         = @filter.vals_at(depth)
 
       if category_ids_at_depth.any?
+        @intersection_required = true
         @filter_strategy_instance ||= strategy_class.new(@params)
         @filter_strategy_instance.select_vals_by_all(vals_at_depth, category_ids_at_depth)
       else
@@ -42,6 +45,16 @@ module SearchResults
       "SearchResults::SelectAll#{@strategy.to_s.camelize}Strategy".constantize
     end
 
+    private
+
+    def perform_intersection_of_results
+      intersection_filter = IntersectionFilter.new(self, @params)
+      [intersection_filter.depth_0_vals, intersection_filter.depth_1_vals]
+    end
+
+    def intersection_required?
+      @intersection_required
+    end
   end
 
   class SelectAllStrategy

@@ -18,7 +18,7 @@ module SearchResults
     filter = filter_by_any_selected_lings_and_props
 
     filter = filter_by_keywords           filter, :ling
-
+    
     filter = filter_by_keywords           filter, :property
 
     filter = filter_by_val_params         filter
@@ -26,10 +26,8 @@ module SearchResults
     filter = filter_by_depth_intersection filter
 
     filter = filter_by_all_conditions     filter, :property
-
+    
     filter = filter_by_all_conditions     filter, :lings_property
-
-    filter = filter_by_depth_intersection filter
 
     (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
   end

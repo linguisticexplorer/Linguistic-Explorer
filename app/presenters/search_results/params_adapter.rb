@@ -23,6 +23,10 @@ module SearchResults
     def properties
       self[:properties] || {}
     end
+    
+    def group_id
+      @group_id ||= @group.id
+    end
 
     def depth_0_ling_ids
       ling_extractor.depth_0_ids
@@ -75,7 +79,7 @@ module SearchResults
     end
 
     def has_depth?
-      depth_1_ling_ids.any?
+      @group.has_depth?
     end
 
     private
@@ -106,15 +110,11 @@ module SearchResults
     end
 
     def ids(depth)
-      selected(depth) || all.at_depth(depth)
+      selected(depth) || []
     end
 
     def selected(depth)
       params[depth.to_s]
-    end
-
-    def all
-      @all ||= klass.ids.in_group(@group)
     end
 
     def params

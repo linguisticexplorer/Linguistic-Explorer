@@ -31,6 +31,7 @@ module SearchResults
         prop_ids        = prop_ids(depth)
         c[:ling_id]     = ling_ids if ling_ids.any?
         c[:property_id] = prop_ids if prop_ids.any?
+        c[:group_id]    = @params.group_id
       end
     end
 

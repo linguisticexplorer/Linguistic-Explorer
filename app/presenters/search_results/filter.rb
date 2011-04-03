@@ -6,6 +6,8 @@ module SearchResults
     def initialize(filter, params)
       @filter   = filter
       @params   = params
+      
+      Rails.logger.info "_______#{self.class.name}_________"
     end
 
     def vals_at(depth)
