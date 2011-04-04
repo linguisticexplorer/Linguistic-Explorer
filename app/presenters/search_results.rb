@@ -7,9 +7,9 @@ module SearchResults
   end
 
   def results
-    LingsProperty.with_id(selected_lings_prop_ids).includes([{:ling => :parent}, :property])
+    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property]).joins(:ling).order("lings.parent_id, lings.name")
   end
-  
+
   private
 
   def selected_lings_prop_ids
@@ -18,7 +18,7 @@ module SearchResults
     filter = filter_by_any_selected_lings_and_props
 
     filter = filter_by_keywords           filter, :ling
-    
+
     filter = filter_by_keywords           filter, :property
 
     filter = filter_by_val_params         filter
@@ -26,7 +26,7 @@ module SearchResults
     filter = filter_by_depth_intersection filter
 
     filter = filter_by_all_conditions     filter, :property
-    
+
     filter = filter_by_all_conditions     filter, :lings_property
 
     (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
