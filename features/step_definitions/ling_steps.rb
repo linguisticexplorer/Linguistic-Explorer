@@ -1,4 +1,4 @@
-Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
+Given /^the following "([^"]*)" lings:$/ do |group_name, table|
   group = Group.find_by_name(group_name)
   raise "Group #{group_name} does not exist? Did you remember to create it first?" if group.nil?
 

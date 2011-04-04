@@ -1,10 +1,22 @@
 class LingsController < GroupDataController
   helper :groups
 
+  # GET /lings/depth/0-1
+  # GET /lings/depth/0-1.xml
+  def depth
+    @depth = params[:depth].to_i
+    @lings = Ling.find_all_by_depth(@depth)
+
+    respond_to do |format|
+      format.html # depth.html.erb
+      format.xml  { render :xml => [@lings, @depth] }
+    end
+  end
+
   # GET /lings
   # GET /lings.xml
   def index
-    @lings = Ling.all
+    @lings = (0..current_group.depth_maximum).to_a.map{|depth| Ling.find_all_by_depth(depth)}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -24,10 +36,12 @@ class LingsController < GroupDataController
   end
 
   # GET /lings/new
+  # GET /lings/new?depth=0-1
   # GET /lings/new.xml
   def new
-    @ling = Ling.new()
-    @lings = Ling.find_all_by_depth(0)
+    @depth = params[:depth].to_i
+    @ling = Ling.new(:depth => @depth)
+    @lings = Ling.find_all_by_depth(@depth - 1) if current_group.has_depth?
 
     respond_to do |format|
       format.html # new.html.erb

@@ -1,47 +1,6 @@
-<h1>Listing <%= current_group.ling0_name.pluralize %></h1>
+<h1>Listing all linguistic objects</h1>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @lings.each do |ling| %>
-  <tr>
-    <td><%= link_to ling.name, [current_group, ling] %></td>
-    <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>
-    <td><%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
-  </tr>
-<% end %>
-</table>
-<br />
-<%= link_to "New #{current_group.ling0_name}", new_group_ling_path(current_group) %>
-
-<% if current_group.depth_maximum >= 1 %>
-    <br />
-
-    <h1>Listing <%= current_group.ling1_name.pluralize %></h1>
-
-    <table>
-      <tr>
-        <th>Name</th>
-        <th><%= current_group.ling0_name %></th>
-        <th></th>
-        <th></th>
-      </tr>
-
-    <% @lings.each do |ling| %>
-      <tr>
-        <td><%= link_to ling.name, [current_group, ling] %></td>
-        <td><%= (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent %></td>
-        <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>
-        <td><%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
-      </tr>
-    <% end %>
-    </table>
-
-    <br />
-
-    <%= link_to "New #{current_group.ling1_name}", new_group_ling_path(current_group) %>
+<% @lings.each_with_index do |lings_at_depth, depth| %>
+  <%= render :partial => "depth_table", :locals => {:lings => lings_at_depth, :depth => depth} %>
+  <br />
 <% end %>
