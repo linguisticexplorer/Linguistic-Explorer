@@ -1,5 +1,5 @@
-<h1>New <%= current_group.ling0_name %> or <%= current_group.ling1_name %></h1>
+<h1>New <%= current_group.ling_name_for_depth(@depth) %></h1>
 
 <%= render 'form' %>
 
-<%= link_to 'Back', group_lings_path(current_group) %>
+<%= link_to 'Back', group_lings_depth_path(current_group, @depth) %>

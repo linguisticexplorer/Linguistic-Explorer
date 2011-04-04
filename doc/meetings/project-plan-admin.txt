@@ -43,15 +43,15 @@ Stories
     Render browse and search-result tables as javascript-enhanced data tables (http://www.datatables.net)
 
   3/21
-x    CanCan Permission setup,
+x   CanCan Permission setup,
     Links should all check permissions before adding themselves to the page,
     Crud controllers should all check permissions,
     Permissions violations should spit out to the homepage with an error flash
-    Lings should be entirely split between depths and hidden if the group is single-depth-only
-x    Group memberships should act like normal admin group data
+x   Lings should be entirely split between depths and hidden if the group is single-depth-only
+x   Group memberships should act like normal admin group data
   3/28
-    Split nav into partial
-x    ELPV should exist
+x   Split nav into partial
+x   ELPV should exist
     Examples should have a Text preference
     Group admins can set arbitrary non-searchable Example attributes
   4/4

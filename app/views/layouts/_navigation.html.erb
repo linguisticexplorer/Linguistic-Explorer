@@ -9,9 +9,9 @@
   <% if @group && !@group.new_record? %>
     <%= link_to current_group.name, current_group %>
     <%= link_to 'Search', new_group_search_path(current_group) %>
-    <%= link_to current_group.ling0_name, group_lings_path(current_group) %>
-    <% if @group.depth_maximum > 0 %>
-      <%= link_to current_group.ling1_name, group_lings_path(current_group) %>
+    <%= link_to current_group.ling0_name, group_lings_depth_path(current_group, 0) %>
+    <% if @group.has_depth? %>
+      <%= link_to current_group.ling1_name, group_lings_depth_path(current_group, 1) %>
     <% end %>
     <%= link_to current_group.property_name, group_properties_path(current_group) %>
     <%= link_to current_group.category_name, group_categories_path(current_group) %>

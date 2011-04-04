@@ -2,7 +2,7 @@
   <%= hidden_field_tag :group_id, current_group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this <%= current_group.ling_name_for_depth(@ling.depth || 0) %> from being saved:</h2>
+      <h2><%= pluralize(@ling.errors.count, "error") %> prohibited this <%= current_group.ling_name_for_depth(@depth) %> from being saved:</h2>
 
       <ul>
       <% @ling.errors.full_messages.each do |msg| %>
@@ -12,22 +12,21 @@
     </div>
   <% end %>
 
+  <%= f.hidden_field :depth %>
+
   <div class="field">
     <%= f.label :name %><br />
     <%= f.text_field :name %>
   </div>
 
-  <div class="field">
-    <%= f.label :depth %><br />
-    <%= f.collection_select :depth, (0..current_group.depth_maximum).to_a, :to_s, :to_s %>
-  </div>
-
-  <div class="field">
-    <%= f.label current_group.ling0_name %><br />
-    <%= f.collection_select :parent_id, @lings, :id, :name, :prompt => 'Select one or this for "None"' %>
-  </div>
+  <% if @parents %>
+    <div class="field">
+      <%= f.label current_group.ling_name_for_depth(@depth) %><br />
+      <%= f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"' %>
+    </div>
+  <% end %>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit("Create " + current_group.ling_name_for_depth(@depth)) %>
   </div>
 <% end %>

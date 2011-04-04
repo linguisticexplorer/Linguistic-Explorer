@@ -1,10 +1,7 @@
-<% if current_group.depth_maximum == 0 %>
-    <h1>Editing <%= current_group.ling0_name %></h1>
-<% elsif current_group.depth_maximum >= 0 %>
-    <h1>Editing <%= current_group.ling0_name %> or <%= current_group.ling1_name %></h1>
+<h1>Editing <%= current_group.ling_name_for_depth(@depth) %></h1>
 <% end %>
 
 <%= render 'form' %>
 
 <%= link_to 'Show', [current_group, @ling] %> |
-<%= link_to 'Back', group_lings_path(current_group) %>
+<%= link_to 'Back', group_lings_depth_path(current_group, @depth) %>

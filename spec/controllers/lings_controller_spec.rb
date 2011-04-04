@@ -58,9 +58,9 @@ describe LingsController do
         assigns(:depth).should == 1
       end
 
-      it "should assign lings of @depth-1 depth to @lings" do
+      it "should assign lings of @depth-1 depth to @parents" do
         get :new, :group_id => groups(:inclusive).id, :depth => 1
-        assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
+        assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
       end
     end
 
@@ -92,9 +92,19 @@ describe LingsController do
         assigns(:ling).should == lings(:english)
       end
 
-      it "available depth 0 lings to @lings" do
-        get :edit, :group_id => groups(:inclusive).id, :id => lings(:english)
-        assigns(:lings).map{|ling| ling.depth}.uniq.should == [0]
+      it "the requested ling's depth to @depth" do
+        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        assigns(:depth).should == lings(:level1).depth
+      end
+
+      it "available @depth-1 depth lings to @parents" do
+        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
+      end
+
+      it "an empty array to @parents if depth is < 0" do
+        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        assigns(:parents).should == []
       end
     end
   end
@@ -132,16 +142,24 @@ describe LingsController do
         }.should change(Ling, :count).by(0)
       end
 
-
-      it "assigns depth 0 lings as @lings" do
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => nil}
-        assigns(:lings).should include(lings(:level0))
-      end
-
       it "re-renders the 'new' template" do
-        post :create, :group_id => groups(:inclusive).id, :ling => {}
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => ''}
         response.should be_success
         response.should render_template("new")
+      end
+
+      describe "assigns" do
+        before do
+          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', :depth => 1}
+        end
+
+        it "the requested ling's depth to @depth" do
+          assigns(:depth).should == 1
+        end
+
+        it "available @depth-1 depth lings to @parents" do
+          assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
+        end
       end
     end
   end
@@ -169,15 +187,19 @@ describe LingsController do
 
     describe "with invalid params" do
       before do
-        put :update, :group_id => groups(:inclusive).id, :id => lings(:english), :ling => {'name' => ''}
+        put :update, :group_id => groups(:inclusive).id, :id => lings(:level1), :ling => {'name' => ''}
       end
 
       it "assigns the ling as @ling" do
-        assigns(:ling).should == lings(:english)
+        assigns(:ling).should == lings(:level1)
       end
 
-      it "assigns depth 0 lings as @lings" do
-        assigns(:lings).should include(lings(:level0))
+      it "assigns the requested ling's depth to @depth" do
+        assigns(:depth).should == 1
+      end
+
+      it "assigns available @depth-1 depth lings to @parents" do
+        assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
       end
 
       it "re-renders the 'edit' template" do
@@ -196,9 +218,14 @@ describe LingsController do
       delete :destroy, :group_id => groups(:inclusive).id, :id => ling.id
     end
 
-    it "redirects to the lings list" do
-      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:english)
-      response.should redirect_to(group_lings_url(assigns(:group)))
+    it "assigns the deleted ling's depth to @depth" do
+      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:level1)
+      assigns(:depth).should == 1
+    end
+
+    it "redirects to the lings list for the appropriate depth" do
+      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:level1)
+      response.should redirect_to(group_lings_depth_url(assigns(:group), assigns(:depth)))
     end
   end
 end

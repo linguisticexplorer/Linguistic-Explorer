@@ -2,10 +2,10 @@
 <table>
   <tr>
     <th>Name</th>
-    <th></th>
     <% if current_group.has_depth? %>
       <th><%= current_group.ling_name_for_depth(depth - 1) %></th>
     <% end %>
+    <th></th>
     <th></th>
   </tr>
   <% lings.each do |ling| %>

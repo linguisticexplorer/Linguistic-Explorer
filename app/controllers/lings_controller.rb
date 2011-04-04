@@ -41,7 +41,7 @@ class LingsController < GroupDataController
   def new
     @depth = params[:depth].to_i
     @ling = Ling.new(:depth => @depth)
-    @lings = Ling.find_all_by_depth(@depth - 1) if current_group.has_depth?
+    @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
 
     respond_to do |format|
       format.html # new.html.erb
@@ -52,7 +52,8 @@ class LingsController < GroupDataController
   # GET /lings/1/edit
   def edit
     @ling = Ling.find(params[:id])
-    @lings = Ling.find_all_by_depth(0)
+    @depth = @ling.depth
+    @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
   end
 
   # POST /lings
@@ -62,13 +63,14 @@ class LingsController < GroupDataController
       ling.group    = current_group
       ling.creator  = current_user
     end
+    @depth = @ling.depth
 
     respond_to do |format|
       if @ling.save
-        format.html { redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully created.')) }
+        format.html { redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully created.')) }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
-        @lings = Ling.find_all_by_depth(0)
+        @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
         format.html { render :action => "new" }
         format.xml  { render :xml => @ling.errors, :status => :unprocessable_entity }
       end
@@ -79,13 +81,14 @@ class LingsController < GroupDataController
   # PUT /lings/1.xml
   def update
     @ling = Ling.find(params[:id])
+    @depth = @ling.depth
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
-        format.html { redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@ling.depth) + ' was successfully updated.') ) }
+        format.html { redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully updated.') ) }
         format.xml  { head :ok }
       else
-        @lings = Ling.find_all_by_depth(0)
+        @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
         format.html { render :action => "edit" }
         format.xml  { render :xml => @ling.errors, :status => :unprocessable_entity }
       end
@@ -96,10 +99,11 @@ class LingsController < GroupDataController
   # DELETE /lings/1.xml
   def destroy
     @ling = Ling.find(params[:id])
+    @depth = @ling.depth
     @ling.destroy
 
     respond_to do |format|
-      format.html { redirect_to(group_lings_url(current_group)) }
+      format.html { redirect_to(group_lings_depth_url(current_group, @depth)) }
       format.xml  { head :ok }
     end
   end
