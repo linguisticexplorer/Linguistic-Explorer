@@ -1,16 +1,27 @@
 <%= content_tag :fieldset, :id => "show_columns" do %>
-  <%= label_tag     "search[include][ling_0]", current_group.ling0_name.pluralize %>
-  <%= check_box_tag "search[include][ling_0]", "1", true %>
+  <div id="show_parent">
+    <%= label_tag     "search[include][ling_0]", current_group.ling0_name.pluralize %>
+    <%= check_box_tag "search[include][ling_0]", "1", true %>
 
+    <%= label_tag     "search[include][prop_0]", current_group.property_name.pluralize %>
+    <%= check_box_tag "search[include][prop_0]", "1", true %>
+
+    <%= label_tag     "search[include][val_0]", current_group.lings_property_name.pluralize %>
+    <%= check_box_tag "search[include][val_0]", "1", true %>
+  </div>
+  
   <% if current_group.has_depth? %>
-    <%= label_tag     "search[include][ling_1]", current_group.ling1_name.pluralize %>
-    <%= check_box_tag "search[include][ling_1]", "1", true %>
+    <br />
+    <div id="show_child">
+      <%= label_tag     "search[include][ling_1]", current_group.ling1_name.pluralize %>
+      <%= check_box_tag "search[include][ling_1]", "1", true %>
+
+      <%= label_tag     "search[include][prop_1]", current_group.property_name.pluralize %>
+      <%= check_box_tag "search[include][prop_1]", "1", true %>
+
+      <%= label_tag     "search[include][val_1]", current_group.lings_property_name.pluralize %>
+      <%= check_box_tag "search[include][val_1]", "1", true %>
+    </div>
   <% end %>
-
-  <%= label_tag     "search[include][prop]", current_group.property_name.pluralize %>
-  <%= check_box_tag "search[include][prop]", "1", true %>
-
-
-  <%= label_tag     "search[include][value]", current_group.lings_property_name.pluralize %>
-  <%= check_box_tag "search[include][value]", "1", true %>
+    
 <% end %>

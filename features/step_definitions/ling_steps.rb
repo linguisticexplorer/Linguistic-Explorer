@@ -1,4 +1,4 @@
-Given /^the following "([^"]*)" lings:$/ do |group_name, table|
+Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
   group = Group.find_by_name(group_name)
   raise "Group #{group_name} does not exist? Did you remember to create it first?" if group.nil?
 
@@ -14,6 +14,10 @@ Given /^the following "([^"]*)" lings:$/ do |group_name, table|
     group.lings.find_by_name(attrs['name']) ||
       Factory(:ling, attrs.merge(:parent => parent, :depth => attrs['depth'], :group => group))
   end
+end
+
+Given /^the group has a maximum depth of (\d+)$/ do |depth|
+  Group.last.update_attribute(:depth_maximum, depth.to_i)
 end
 
 When /^(?:|I )follow the "([^"]*)" (?:with depth "([^"]*)" )model link for (?:|the group )"([^"]*)"(?: within "([^"]*)")?$/ do |model,depth,group_name,selector|

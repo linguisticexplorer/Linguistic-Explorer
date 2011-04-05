@@ -7,12 +7,49 @@ module SearchResults
   end
 
   def results
-    LingsProperty.with_id(selected_lings_prop_ids).includes([:ling, :property]).joins(:ling).order("lings.parent_id, lings.name")
+    filter = filter_vals
+
+    selected_lings_prop_ids = (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
+    depth_0_ids = filter.depth_0_vals.map(&:id)
+    depth_1_ids = filter.depth_1_vals.map(&:id)
+
+    parents = LingsProperty.with_id(depth_0_ids).includes([:ling, :property]).
+      joins(:ling).
+      order("lings.parent_id, lings.name")
+
+    if @group.has_depth?
+      children = LingsProperty.with_id(depth_1_ids).includes([:ling, :property]).
+        joins(:ling).
+        order("lings.parent_id, lings.name")
+
+      parents.map { |parent|
+        children.select { |child| child.ling.parent_id == parent.ling_id }.map { |child|
+          ResultSet.new(parent, child)
+        }
+      }.flatten
+    else
+      parents.map { |parent| ResultSet.new(parent) }
+    end
+  end
+
+  class ResultSet
+    def initialize(parent, child = nil)
+      @parent, @child = parent, child
+    end
+
+    def parent(method)
+      @parent.send(method)
+    end
+
+    def child(method)
+      @child.send(method) if @child
+    end
+
   end
 
   private
 
-  def selected_lings_prop_ids
+  def filter_vals
     # Filters return depth_0_vals and depth_1_vals
 
     filter = filter_by_any_selected_lings_and_props
@@ -29,7 +66,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :lings_property
 
-    (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
+    filter
   end
 
   def params

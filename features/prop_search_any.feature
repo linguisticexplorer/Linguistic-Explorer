@@ -3,6 +3,7 @@ Feature: Search with Any
   Background:
     Given I am a visitor
     And the group "Syntactic Structures"
+    And the group has a maximum depth of 0
     And the following "Syntactic Structures" lings:
     | name        | depth |
     | English     | 0     |

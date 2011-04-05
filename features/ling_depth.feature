@@ -28,9 +28,9 @@ Feature: Search Ling Prop Value Pair by Categories
     And  I select "Property 1" from "Demographic Properties"
     And  I press "Search"
     Then I should see the following search results:
-    | Lings         | Properties  | Value     |
-    | Speaker 1     | Property 1  | Eastern   |
-    | Sentence 1    | Property 3  | verb      |
+    | Lings         | Properties  | Value     | depth   |
+    | Speaker 1     | Property 1  | Eastern   | parent  |
+    | Sentence 1    | Property 3  | verb      | child   |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
@@ -41,9 +41,9 @@ Feature: Search Ling Prop Value Pair by Categories
     And  I select "Property 1" from "Demographic Properties"
     And  I press "Search"
     Then I should see the following search results:
-    | Lings         | Properties  | Value     |
-    | Speaker 1     | Property 1  | Eastern   |
-    | Sentence 1    | Property 3  | verb      |
+    | Lings         | Properties  | Value     | depth   |
+    | Speaker 1     | Property 1  | Eastern   | parent  |
+    | Sentence 1    | Property 3  | verb      | child   |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
@@ -56,9 +56,9 @@ Feature: Search Ling Prop Value Pair by Categories
     And I select "Property 3" from "Linguistic Properties"
     And I press "Search"
     Then I should see the following search results:
-    | Lings         | Properties  | Value     |
-    | Speaker 1     | Property 1  | Eastern   |
-    | Sentence 1    | Property 3  | verb      |
+    | Lings         | Properties  | Value     | depth   |
+    | Speaker 1     | Property 1  | Eastern   | parent  |
+    | Sentence 1    | Property 3  | verb      | child   |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
@@ -69,8 +69,8 @@ Feature: Search Ling Prop Value Pair by Categories
     And I select "Property 3" from "Linguistic Properties"
     And I press "Search"
     Then I should see the following search results:
-    | Lings         | Properties  | Value     |
-    | Speaker 1     | Property 1  | Eastern   |
-    | Sentence 1    | Property 3  | verb      |
+    | Lings         | Properties  | Value     | depth   |
+    | Speaker 1     | Property 1  | Eastern   | parent  |
+    | Sentence 1    | Property 3  | verb      | child   |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
