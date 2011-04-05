@@ -25,14 +25,15 @@ Project Plan for Search
 
 3/28
       Dennis back Wednesday 3/30, possibly meet in evening
-      Display Examples in Results
-      Keyword Search on Examples
+      Display Example text in Results
+      Keyword Search on Example text
       Filter Results by "Show" Criteria
 
 4/4
       Search Form Error Handling
 
 4/11
+      Keyword Search on Example attributes
       Save Queries for Additional Comparisons
       (TODO: Break out into smaller stories)
 
@@ -52,11 +53,10 @@ Project Plan for Search
 
 Backlog (Time Permitting):
       Similarity Tree
-      Prioritize Examples
       Universal Implications: Antecedent
       Universal Implications: Consequent
       Universal Implications: Both
-      Cross Search on Property
+      # Cross Search on Property
 
 Engineering Tasks/Processes
       QA
