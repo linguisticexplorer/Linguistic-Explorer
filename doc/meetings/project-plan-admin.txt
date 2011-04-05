@@ -55,10 +55,12 @@ x   ELPV should exist
     Examples should have a Text preference
     Group admins can set arbitrary non-searchable Example attributes
   4/4
+n   add description field to property and category
+n   seed data should include ELPV creation
     Bulk upload
     LPV mass setting page for Lings
     Check everywhere for attr_accessible and dependent_destroy
-    Admin controller for listing all data of any type
+s   Admin controller for listing all data of any type
   4/11
     Site Admin nav bar
     Group Admin nav bar
@@ -69,3 +71,18 @@ x   ELPV should exist
   4/25
     map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
   5/2
+
+
+bulk upload data
+upload in a second window
+look for form upload fields/helpers
+meta refresh tag
+pass/fail on whole dataset
+note: child lings always require parent lings, no exceptions
+
+Ling(Parent)
+Cat(Depth)Desc
+Prop(Cat)Description
+LPV
+Examples w/Keys
+ELPV (enam, ling, prop, val)
