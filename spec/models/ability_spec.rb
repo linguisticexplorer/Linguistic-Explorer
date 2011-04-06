@@ -175,7 +175,7 @@ describe Ability do
           properties(       :level0    ),
           categories(       :inclusive0),
           examples(         :inclusive ),
-#          examples_lings_properties(:#TODO),
+          examples_lings_properties(:inclusive),
           lings_properties( :inclusive )
         ].each do |data|
           data.group = groups(:inclusive)
@@ -191,7 +191,7 @@ describe Ability do
             properties(       :exclusive0),
             categories(       :exclusive0),
             examples(         :exclusive ),
-#            examples_lings_properties(:#TODO),
+            examples_lings_properties(:inclusive),
             lings_properties( :exclusive )
           ].each { |data|
             data.group = groups(:exclusive)
