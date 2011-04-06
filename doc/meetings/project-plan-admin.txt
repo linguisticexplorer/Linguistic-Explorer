@@ -71,7 +71,8 @@ s   Admin controller for listing all data of any type
   4/25
     map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
   5/2
-
+n   category should have an "unsearchable" boolean that turns them off for the search page, so things like latlong, description, and whatever can exist as LPV values that get listed on the show page for the ling
+n   lpv mass setting page should sort properties by category like search does 
 
 bulk upload data
 upload in a second window
@@ -86,3 +87,4 @@ Prop(Cat)Description
 LPV
 Examples w/Keys
 ELPV (enam, ling, prop, val)
+
