@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110401065952) do
+ActiveRecord::Schema.define(:version => 20110406221729) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(:version => 20110401065952) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "creator_id"
+    t.text     "description"
   end
 
   add_index "categories", ["group_id"], :name => "index_categories_on_group_id"
@@ -112,6 +113,7 @@ ActiveRecord::Schema.define(:version => 20110401065952) do
     t.integer  "group_id"
     t.integer  "category_id"
     t.integer  "creator_id"
+    t.text     "description"
   end
 
   add_index "properties", ["group_id"], :name => "index_properties_on_group_id"

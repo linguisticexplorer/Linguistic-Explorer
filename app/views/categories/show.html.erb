@@ -1,8 +1,10 @@
 <p>
   <b>Name:</b> <br />
   <%= @category.name %> <br />
-  <b>Depth:</b> <br />
-  <%= @category.depth %> <br />
+  <b>Type:</b> <br />
+  <%= @category.group.ling_name_for_depth(@category.depth) %> <br />
+  <b>Description:</b> <br />
+  <%= @category.description %> <br />
   <b>Created by:</b> <br />
   <%= @category.creator ? @category.creator.name : "Unknown user" %> <br />
 </p>

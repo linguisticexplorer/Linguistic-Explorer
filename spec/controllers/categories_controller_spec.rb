@@ -41,11 +41,12 @@ describe CategoriesController do
     describe "with valid params" do
       it "assigns a newly created category to @category" do
         lambda {
-          post :create, :category => {'name' => 'FROMSPACE', :depth => '0'}, :group_id => groups(:inclusive).id
+          post :create, :category => {'name' => 'FROMSPACE', :description => "lots of junk", :depth => '0'}, :group_id => groups(:inclusive).id
 
           assigns(:category).should_not be_new_record
           assigns(:category).should be_valid
           assigns(:category).name.should == 'FROMSPACE'
+          assigns(:category).description.should == "lots of junk"
           assigns(:category).depth.should == 0
         }.should change(Category, :count).by(1)
       end

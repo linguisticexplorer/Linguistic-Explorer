@@ -57,10 +57,11 @@ describe PropertiesController do
     describe "with valid params" do
       it "assigns a newly created property to @property" do
         lambda {
-          post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+          post :create, :property => {'name' => 'FROMSPACE', :description => "lots of junk", :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
           assigns(:property).should_not be_new_record
           assigns(:property).should be_valid
           assigns(:property).name.should == 'FROMSPACE'
+          assigns(:property).description.should == "lots of junk"
           assigns(:property).category.should == categories(:inclusive0)
         }.should change(Property, :count).by(1)
       end

@@ -21,6 +21,11 @@
     <%= f.collection_select :category_id, @categories[:depth_0] + @categories[:depth_1], :id, :name, :prompt => 'Select a ' + current_group.category_name %>
   </div>
 
+  <div class="field">
+    <%= f.label :description %><br />
+    <%= f.text_area :description %>
+  </div>
+
   <div class="actions">
     <%= f.submit %>
   </div>
