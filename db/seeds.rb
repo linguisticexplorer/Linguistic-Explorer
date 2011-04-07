@@ -124,7 +124,23 @@ MEANINGFUL_VALUES = {
  "4" => "Maybe"
 }
 
-puts "Done with Properties, starting LingsProperties"
+puts "Done with Properties, starting Examples"
+# Create Examples(id,lingid,group,creator,timestamp)
+number = 0
+CSV.foreach(Rails.root.join("doc", "data", "Example.csv"), :headers => true) do |row|
+  number += 1
+  name = number.to_s
+  ling = Ling.find_by_name(ling_name(row["lingid"]))
+  group = Group.find_by_name(group_name(row["group"]))
+
+  example = Example.new(:name => name)
+  example.ling = ling
+  example.group = group
+  example.save!
+  example_list[row["id"].to_s] = example.id
+end
+
+puts "Done with Examples, starting LingsProperties"
 # Create LingsProperties(id,lingid,propid,value,group,creator,timestamp)
 CSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true) do |row|
   group = Group.find_by_name(group_name(row["group"]))
@@ -148,23 +164,7 @@ CSV.foreach(Rails.root.join("doc", "data", "LingPropVal.csv"), :headers => true)
   end
 end
 
-puts "Done with LingsProperties, starting Examples"
-# Create Examples(id,lingid,group,creator,timestamp)
-number = 0
-CSV.foreach(Rails.root.join("doc", "data", "Example.csv"), :headers => true) do |row|
-  number += 1
-  name = number.to_s
-  ling = Ling.find_by_name(ling_name(row["lingid"]))
-  group = Group.find_by_name(group_name(row["group"]))
-
-  example = Example.new(:name => name)
-  example.ling = ling
-  example.group = group
-  example.save!
-  example_list[row["id"].to_s] = example.id
-end
-
-puts "Done with Examples, starting ExamplesLingsPropsVals"
+puts "Done with LingsProperties, starting ExamplesLingsProperties"
 # Create ExamplesLingsProperties(id,exampleid,LingPropValID,group,creator,timestamp)
 CSV.foreach(Rails.root.join("doc", "data", "ExampleLingPropVal.csv"), :headers => true) do |row|
   group = Group.find_by_name(group_name(row["group"]))
