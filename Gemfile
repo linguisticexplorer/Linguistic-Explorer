@@ -29,9 +29,6 @@ gem 'devise', '1.1.7'
 
 gem 'json', '1.5.1'
 
-# for Examples, arbitrary fields (key value pairs) and data
-gem 'preferences', '0.4.2', :git => 'git://github.com/bosh/preferences.git'
-
 gem 'validation_reflection', "1.0.0"
 gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
 

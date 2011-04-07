@@ -1,10 +1,4 @@
 GIT
-  remote: git://github.com/bosh/preferences.git
-  revision: 46f88126ab5e7f0419676abb19ff4ce6962bca50
-  specs:
-    preferences (0.4.2)
-
-GIT
   remote: git://github.com/bosh/rspec_rails3_validation_expectations.git
   revision: 1d1f656502177dd18c67f6eec5e244b89a9d0505
   specs:
@@ -237,7 +231,6 @@ DEPENDENCIES
   mysql
   passenger
   pg
-  preferences (= 0.4.2)!
   rails (= 3.0.6)
   rspec (= 2.5.0)
   rspec-rails (= 2.5.0)
