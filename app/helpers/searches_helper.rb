@@ -44,10 +44,14 @@ module SearchesHelper
 
   def search_result_attributes(result)
     {}.tap do |attrs|
-      attrs[:class] = "row #{dom_class(result, :result)}"
-      attrs["data-ling"] = result.ling_id
-      attrs["data-prop"] = result.prop_id
+      attrs[:class] = "row"
+      ["parent", "child"].each do |depth|
+        [:ling, :property].each do |method|
+          attrs["data-#{depth}-#{method}"] = result.send(depth, method).try(:id)
+        end
+        attrs["data-#{depth}-value"] = result.send(depth, :id)
+      end
     end
   end
-  
+
 end

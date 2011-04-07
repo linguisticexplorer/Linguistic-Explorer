@@ -41,6 +41,7 @@ Project Plan for Search
       Save Queries for Additional Comparisons
 
 4/25
+      Pagination
       Database back up procedure
 
 5/2

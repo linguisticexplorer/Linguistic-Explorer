@@ -22,17 +22,19 @@ Feature: Show search columns
   Scenario: Choose all
 
   Scenario: Choose lings only
-    When I check "Speakers" within "#show_columns"
-    And I check "Sentences" within "#show_columns"
-    And I uncheck "Properties" within "#show_columns"
-    And I uncheck "Value" within "#show_columns"
+    When I check "Speakers" within "#show_parent"
+    And I check "Sentences" within "#show_child"
+    And I uncheck "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I uncheck "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
     Then I press "Search"
     Then I should see the following search results:
-    | Lings         |
-    | Speaker 1     |
-    | Speaker 2     |
-    | Sentence 1    |
-    | Sentence 2    |
+    | Lings         | depth    |
+    | Speaker 1     | parent   |
+    | Speaker 2     | parent   |
+    | Sentence 1    | child    |
+    | Sentence 2    | child    |
     And I should not see "Property" within "#search_results"
     And I should not see "Properties" within "#search_results"
     And I should not see "Value" within "#search_results"
@@ -41,8 +43,10 @@ Feature: Show search columns
   Scenario: Choose ling depth 0 only
     When I check "Speakers" within "#show_columns"
     And I uncheck "Sentences" within "#show_columns"
-    And I uncheck "Properties" within "#show_columns"
-    And I uncheck "Value" within "#show_columns"
+    And I uncheck "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I uncheck "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
     Then I press "Search"
     Then I should see the following search results:
     | Lings         |
@@ -59,14 +63,15 @@ Feature: Show search columns
     When I check "Speakers" within "#show_columns"
     And I check "Sentences" within "#show_columns"
     And I check "Properties" within "#show_columns"
-    And I uncheck "Value" within "#show_columns"
+    And I uncheck "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
     Then I press "Search"
     Then I should see the following search results:
-    | Lings         | Property    |
-    | Speaker 1     | Property 1  |
-    | Speaker 2     | Property 2  |
-    | Sentence 1     | Property 3  |
-    | Sentence 2     | Property 4  |
+    | Lings         | Property     | depth    |
+    | Speaker 1     | Property 1   | parent   |
+    | Speaker 2     | Property 2   | parent   |
+    | Sentence 1     | Property 3  | child    |
+    | Sentence 2     | Property 4  | child    |
     And I should not see "Value" within "#search_results"
     And I should not see "PropVal" within "#search_results"
 
