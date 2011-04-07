@@ -35,7 +35,6 @@ Feature: Show search columns
     | Speaker 2     | parent   |
     | Sentence 1    | child    |
     | Sentence 2    | child    |
-    And show me the page
     And I should not see "Property" within "#search_results"
     And I should not see "Properties" within "#search_results"
     And I should not see "Value" within "#search_results"
