@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe StoredValue do
+  class StorableMock
+    def storable_keys; ["foo", "bar"] end
+    def reflect_on_all_associations(arg); [] end
+  end
+
   describe "one-liners" do
     it_should_validate_presence_of :key, :value, :storable
     it_should_belong_to :storable
@@ -8,10 +13,6 @@ describe StoredValue do
   end
 
   it "should validate that its key is among the 'storable values' list for its storable" do
-    class StorableMock
-      def storable_keys; ["foo", "bar"] end
-      def reflect_on_all_associations(whatever); [] end
-    end
     fake_storable = StorableMock.new
     stored_value = StoredValue.new(:key => "not_a_key", :value => "quux")
     stored_value.stub(:storable).and_return fake_storable
