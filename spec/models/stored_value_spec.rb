@@ -3,7 +3,7 @@ require 'spec_helper'
 describe StoredValue do
   class StorableMock
     def storable_keys; ["foo", "bar"] end
-    def reflect_on_all_associations(arg); [] end
+    def self.reflect_on_all_associations(arg); [] end
   end
 
   describe "one-liners" do
