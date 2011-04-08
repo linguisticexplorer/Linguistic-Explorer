@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110406221729) do
+ActiveRecord::Schema.define(:version => 20110407082201) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -117,6 +117,16 @@ ActiveRecord::Schema.define(:version => 20110406221729) do
   end
 
   add_index "properties", ["group_id"], :name => "index_properties_on_group_id"
+
+  create_table "stored_values", :force => true do |t|
+    t.string   "key"
+    t.string   "value"
+    t.integer  "storable_id"
+    t.string   "storable_type"
+    t.integer  "group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false

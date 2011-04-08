@@ -28,12 +28,20 @@ describe Example do
   end
 
 #  describe "stored values" do
-#    it "should have be able to store for the key text" do # even when a group has not specified text as a field name" do
+#    it "should default available but unset keys to an empty string" do
+#      ling = lings(:level0)
+#      group = ling.group
+#      example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
+#      example.storable_keys.should include :text
+#      example.stored_value(:text).should == ""
+#    end
+#
+#    it "should have be able to store a value for the key text" do # even when a group has not specified text as a field name" do
 #      ling = lings(:level0)
 #      group = ling.group
 #      example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
 #      example.store_value!(:text, "foo")
-#      example.stored_keys.should include :text
+#      example.storable_keys.should include :text
 #      example.stored_value(:text).should == "foo"
 #    end
 #
@@ -41,7 +49,7 @@ describe Example do
 #      ling = lings(:level0)
 #      group = ling.group
 #      example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
-#      example.storable_keys.should not_include :totallyfake
+#      example.storable_keys.should_not include :totallyfake
 #      example.store_value!(:totallyfake, "bar")
 #      example.stored_value(:totallyfake).should be_nil
 #    end
