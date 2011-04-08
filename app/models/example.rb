@@ -4,10 +4,12 @@ class Example < ActiveRecord::Base
   belongs_to :ling
   has_many :examples_lings_properties, :dependent => :destroy
   has_many :lings_properties, :through => :examples_lings_properties
+  has_many :stored_values, :as => :storable
 
   validates_existence_of :ling, :allow_nil => true
   validate :group_association_match
 
+  default_scope :include => :stored_values
   scope :in_group, lambda { |group| where(:group => group) }
 
   def grouped_name
@@ -18,16 +20,13 @@ class Example < ActiveRecord::Base
     errors.add(:ling, "#{group.ling_name_for_depth(ling.depth)} must belong to the same group as this #{group.example_name}") if ling && (ling.group != group)
   end
 
-  has_many :stored_values, :as => :storable
-
   def storable_keys
     ["text"]# + self.group.storable_keys
   end
 
   def store_value!(key_symbol_or_string, value_string)
     key = key_symbol_or_string.to_s
-    curr = self.stored_values.with_key(key).first
-    if curr
+    if curr = stored_values.with_key(key).first
       curr.value = value_string
     else
       StoredValue.create(:key => key, :value => value_string, :storable => self)
@@ -37,11 +36,7 @@ class Example < ActiveRecord::Base
   def stored_value(key_symbol_or_string)
     key = key_symbol_or_string.to_s
     if storable_keys.include? key
-      if record = self.stored_values.with_key(key).first
-        record.value
-      else
-        ""
-      end
+      (record = stored_values.with_key(key).first).present? ? record.value : ""
     else
       nil
     end

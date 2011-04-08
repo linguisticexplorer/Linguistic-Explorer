@@ -4,6 +4,8 @@
   <tr>
     <th>Name</th>
     <th><%= current_group.ling0_name %></th>
+    <th><%= current_group.ling1_name %></th>
+    <th>Text</th>
     <th></th>
     <th></th>
   </tr>
@@ -11,7 +13,9 @@
 <% @examples.each do |example| %>
   <tr>
     <td><%= link_to example.name, [current_group, example] %></td>
-    <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling %></td>
+    <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
+    <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
+    <td><%= example.stored_value(:text) %></td>
     <td><%= link_to 'Edit', edit_group_example_path(current_group, example) %></td>
     <td><%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>

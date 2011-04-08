@@ -30,22 +30,29 @@ describe Ling do
       group = groups(:exclusive)
       Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:parent)
     end
+
+    it "should not allow ling creation of a depth greater than the group maximum" do
+      group = Factory(:group, :depth_maximum => 0)
+      group.depth_maximum.should == 0
+      parent = Ling.create(:depth => 0, :name => 'level0', :group => group)
+      Ling.create(:name => "too-deep", :depth => 1, :parent_id => parent.id, :group_id => group.id).should have(1).errors_on(:depth)
+    end
   end
 
-  describe "type_name" do
+  describe "#grouped_name" do
     it "should use the appropriate depth type name from its parent group if it has a depth" do
       group = groups(:inclusive)
-      Ling.create(:name => "foo", :depth => 0, :group_id => group.id).type_name.should == group.ling0_name
-      Ling.create(:name => "bar", :depth => 1, :group_id => group.id).type_name.should == group.ling1_name
+      Ling.create(:name => "foo", :depth => 0, :group_id => group.id).grouped_name.should == group.ling0_name
+      Ling.create(:name => "bar", :depth => 1, :group_id => group.id).grouped_name.should == group.ling1_name
     end
 
     it "should use the depth 0 type name from its parent group if it is missing depth" do
       group = Factory(:group, :ling1_name => "", :depth_maximum => 0)
-      Ling.create(:name => "foo", :depth => nil, :group_id => group.id).type_name.should == group.ling0_name
+      Ling.create(:name => "foo", :depth => nil, :group_id => group.id).grouped_name.should == group.ling0_name
     end
   end
 
-  describe "add_property" do
+  describe "#add_property" do
     before(:each) do
       @ling = lings(:level0)
       @property = mock_model(Property)

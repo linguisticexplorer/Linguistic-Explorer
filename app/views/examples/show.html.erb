@@ -1,9 +1,14 @@
 <p>
   <b>Name:</b> <br />
   <%= @example.name %> <br />
+
   <% if @example.ling %>
     <b><%= current_group.ling0_name %>:</b> <br />
     <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
+  <% end %>
+
+  <% @example.stored_values.each do |key, value| %>
+    <b><%= key %></b>: <%= value %> <br />
   <% end %>
 
   <b>Created by:</b> <br />

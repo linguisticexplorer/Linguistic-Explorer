@@ -7,6 +7,7 @@ class Ling < ActiveRecord::Base
   validates_existence_of :parent, :allow_nil => true
   validate :parent_depth_check
   validate :group_association_match
+  validate :available_depth_for_group
 
   # TODO dependent nullify parent_id on child if parent destroyed
   belongs_to :parent, :class_name => "Ling", :foreign_key => "parent_id", :inverse_of => :children
@@ -23,7 +24,7 @@ class Ling < ActiveRecord::Base
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
 
-  def type_name
+  def grouped_name
     group.ling_name_for_depth(self.depth || 0)
   end
 
@@ -37,6 +38,10 @@ class Ling < ActiveRecord::Base
   end
 
   def group_association_match
-    errors.add(:parent, "#{group.ling0_name.humanize} must belong to the same group as this #{self.type_name}") if parent && parent.group != group
+    errors.add(:parent, "#{group.ling0_name.humanize} must belong to the same group as this #{self.grouped_name}") if parent && parent.group != group
+  end
+
+  def available_depth_for_group
+    errors.add(:depth, "is deeper than allowed in #{group.name}") if group && depth && group.depth_maximum < depth
   end
 end

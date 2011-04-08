@@ -21,6 +21,13 @@
     <%= f.collection_select :ling_id, @lings[:depth_0] + @lings[:depth_1], :id, :name, :prompt => 'Select one or this for "None"' %>
   </div>
 
+  <% @example.stored_values.each do |key, value| %>
+    <div class="field">
+      <%= f.label key %><br />
+      <%= f.text_field key, :to_s, :value => value %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit %>
   </div>
