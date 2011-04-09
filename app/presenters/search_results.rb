@@ -44,6 +44,14 @@ module SearchResults
     def child(method)
       @child.send(method) if @child
     end
+    
+    def parent_examples
+      @parent.examples.map(&:name).join(", ")
+    end
+
+    def child_examples
+      @child.examples.map(&:name).join(", ")
+    end
 
   end
 

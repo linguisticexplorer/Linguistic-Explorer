@@ -7,6 +7,7 @@ Then /^I should see the following search results:$/ do |table|
     ling  = Ling.find_by_name(row["Lings"]) if row["Lings"]
     prop  = Property.find_by_name(row["Properties"]) if row["Properties"]
     lp    = LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, prop.id, row["Value"]) if row["Value"]
+    example = Example.find_by_name_and_ling_id(row["Example"], ling.id) if row["Example"]
     depth = (row["depth"] || "parent").downcase
 
     scope = "".tap do |s|
@@ -19,6 +20,7 @@ Then /^I should see the following search results:$/ do |table|
       page.should have_content(ling.name) if ling
       page.should have_content(prop.name) if prop
       page.should have_content(lp.value) if lp
+      page.should have_content(example.name) if example
     end
   end
 end

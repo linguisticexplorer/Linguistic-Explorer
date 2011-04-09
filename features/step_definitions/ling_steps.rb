@@ -20,6 +20,19 @@ Given /^the group has a maximum depth of (\d+)$/ do |depth|
   Group.last.update_attribute(:depth_maximum, depth.to_i)
 end
 
+Given /^the following "([^\"]*)" examples:$/ do |arg1, table|
+  table.hashes.each do |hash|
+    attrs = hash.dup
+
+    ling  = Ling.find_by_name(attrs["ling name"])
+    group = Group.last
+    example = Factory(:example, :name => attrs["example"], :ling => ling, :group => group)
+
+    lings_property = LingsProperty.find_by_value(attrs["prop val"])
+    Factory(:examples_lings_property, :example => example, :lings_property => lings_property, :group => group)
+  end
+end
+
 When /^(?:|I )follow the "([^"]*)" (?:with depth "([^"]*)" )model link for (?:|the group )"([^"]*)"(?: within "([^"]*)")?$/ do |model,depth,group_name,selector|
     with_scope(selector) do
       group = Group.find_by_name(group_name)

@@ -8,8 +8,11 @@
 
     <%= label_tag     "search[include][val_0]", current_group.lings_property_name.pluralize %>
     <%= check_box_tag "search[include][val_0]", "1", true %>
+
+    <%= label_tag     "search[include][exmp_0]", "Examples" %>
+    <%= check_box_tag "search[include][exmp_0]", "1", false %>
   </div>
-  
+
   <% if current_group.has_depth? %>
     <br />
     <div id="show_child">
@@ -21,7 +24,10 @@
 
       <%= label_tag     "search[include][val_1]", current_group.lings_property_name.pluralize %>
       <%= check_box_tag "search[include][val_1]", "1", true %>
+
+      <%= label_tag     "search[include][exmp_1]", "Examples" %>
+      <%= check_box_tag "search[include][exmp_1]", "1", false %>
     </div>
   <% end %>
-    
+
 <% end %>
