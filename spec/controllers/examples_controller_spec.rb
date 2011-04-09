@@ -54,14 +54,21 @@ describe ExamplesController do
   end
 
   describe "create" do
-    describe "with valid params" do
+    describe "with valid params on example as well as stored_values" do
       it "assigns a newly created example to @example" do
         lambda {
-          post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
           assigns(:example).should_not be_new_record
           assigns(:example).should be_valid
           assigns(:example).name.should == 'Javanese'
         }.should change(Example, :count).by(1)
+      end
+
+      it "creates and associates passed stored values" do
+        lambda {
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
+          assigns(:example).stored_value(:text).should == 'foo'
+        }.should change(StoredValue, :count).by(1)
       end
 
       it "redirects to the created example" do
@@ -109,7 +116,17 @@ describe ExamplesController do
         example.should_receive(:update_attributes).with({'name' => 'eengleesh'}).and_return(true)
         Example.should_receive(:find).with(example.id).and_return(example)
 
-        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => groups(:inclusive).id
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
+      end
+
+      it "creates or updates passed stored values" do
+        example = examples(:onceuponatime)
+        #test creation of a new value of key 'text'
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:text => "foo"}
+        example.reload.stored_value(:text).should == 'foo'
+        #now update 'text' value to be 'bar'
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:text => "bar"}
+        example.reload.stored_value(:text).should == 'bar'
       end
 
       it "assigns the requested example as @example" do

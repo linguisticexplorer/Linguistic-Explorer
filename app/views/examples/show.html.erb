@@ -7,8 +7,9 @@
     <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
   <% end %>
 
-  <% @example.stored_values.each do |key, value| %>
-    <b><%= key %></b>: <%= value %> <br />
+  <% @example.storable_keys.each do |key| %>
+    <b><%= key.humanize %></b>: <br />
+    <%= @example.stored_value(key) %> <br />
   <% end %>
 
   <b>Created by:</b> <br />

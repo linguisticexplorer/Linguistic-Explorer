@@ -56,6 +56,7 @@ class ExamplesController < GroupDataController
 
     respond_to do |format|
       if @example.save
+        params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
         format.html { redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully created.')) }
         format.xml  { render :xml => @example, :status => :created, :location => @example }
       else
@@ -76,6 +77,7 @@ class ExamplesController < GroupDataController
 
     respond_to do |format|
       if @example.update_attributes(params[:example])
+        params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
         format.html { redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully updated.')) }
         format.xml  { head :ok }
       else

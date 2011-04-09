@@ -42,15 +42,15 @@ class Group < ActiveRecord::Base
   private
 
   def ensure_default_values
-    self.depth_maximum                  ||= 0
-    self.ling0_name =                   "Ling"           if self.ling0_name.blank?
-    self.ling1_name =                   "Linglet"        if self.ling1_name.blank? && self.depth_maximum > 0
-    self.ling1_name =                   nil              if self.ling1_name.blank? && self.depth_maximum <= 0
-    self.property_name =                "Property"       if self.property_name.blank?
-    self.category_name =                "Category"       if self.category_name.blank?
-    self.lings_property_name =          "Value"          if self.lings_property_name.blank?
-    self.example_name =                 "Example"        if self.example_name.blank?
+    self.depth_maximum         ||= 0
+    self.privacy =             "public"         if self.privacy.blank?
+    self.ling0_name =          "Ling"           if self.ling0_name.blank?
+    self.ling1_name =          "Linglet"        if self.ling1_name.blank? && self.depth_maximum > 0
+    self.ling1_name =          "INVALID-DEPTH"  if self.ling1_name.blank? && self.depth_maximum < 1
+    self.example_name =        "Example"        if self.example_name.blank?
+    self.property_name =       "Property"       if self.property_name.blank?
+    self.category_name =       "Category"       if self.category_name.blank?
+    self.lings_property_name = "Value"          if self.lings_property_name.blank?
     self.examples_lings_property_name = "Example Value"  if self.examples_lings_property_name.blank?
-    self.privacy =                      "public"         if self.privacy.blank?
   end
 end

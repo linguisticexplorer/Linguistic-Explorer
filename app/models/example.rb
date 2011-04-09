@@ -28,6 +28,7 @@ class Example < ActiveRecord::Base
     key = key_symbol_or_string.to_s
     if curr = stored_values.with_key(key).first
       curr.value = value_string
+      curr.save
     else
       StoredValue.create(:key => key, :value => value_string, :storable => self)
     end
@@ -36,7 +37,7 @@ class Example < ActiveRecord::Base
   def stored_value(key_symbol_or_string)
     key = key_symbol_or_string.to_s
     if storable_keys.include? key
-      (record = stored_values.with_key(key).first).present? ? record.value : ""
+      (record = stored_values.select{|sv| sv.key == key}.first).present? ? record.value : ""
     else
       nil
     end
