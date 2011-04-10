@@ -1,15 +1,15 @@
 <h2>Results</h2>
 <div id="search_results" class="table spacing">
   <div class="row">
-    <%- @search.result_headers.each do |proc| -%>
+    <%- result_headers(@search.included_columns).each do |proc| -%>
       <div class="cell"><%= proc.call @search.group %></div>
     <%- end -%>
   </div>
-  
+
   <%- @search.results.each do |result| -%>
     <%= content_tag :div, search_result_attributes(result) do %>
-      <%- @search.result_rows.each do |proc| -%>
-        <div class="cell"><%= proc.call @search.group, result %></div>
+      <%- result_rows(@search.included_columns).each do |proc| -%>
+        <div class="cell"><%= proc.call result %></div>
       <%- end -%>
     <% end %>
   <%- end -%>

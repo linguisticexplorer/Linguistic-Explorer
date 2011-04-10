@@ -1,6 +1,7 @@
 module SearchResults
   include Enumerable
-  include Layout
+  
+  delegate :included_columns, :to => :params
 
   def each
     results.each { |r| yield r }

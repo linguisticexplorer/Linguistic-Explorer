@@ -3,14 +3,14 @@
     <%= label_tag     "search[include][ling_0]", current_group.ling0_name.pluralize %>
     <%= check_box_tag "search[include][ling_0]", "1", true %>
 
-    <%= label_tag     "search[include][prop_0]", current_group.property_name.pluralize %>
-    <%= check_box_tag "search[include][prop_0]", "1", true %>
+    <%= label_tag     "search[include][property_0]", current_group.property_name.pluralize %>
+    <%= check_box_tag "search[include][property_0]", "1", true %>
 
-    <%= label_tag     "search[include][val_0]", current_group.lings_property_name.pluralize %>
-    <%= check_box_tag "search[include][val_0]", "1", true %>
+    <%= label_tag     "search[include][value_0]", current_group.lings_property_name.pluralize %>
+    <%= check_box_tag "search[include][value_0]", "1", true %>
 
-    <%= label_tag     "search[include][exmp_0]", "Examples" %>
-    <%= check_box_tag "search[include][exmp_0]", "1", false %>
+    <%= label_tag     "search[include][example_0]", "Examples" %>
+    <%= check_box_tag "search[include][example_0]", "1", false %>
   </div>
 
   <% if current_group.has_depth? %>
@@ -19,14 +19,14 @@
       <%= label_tag     "search[include][ling_1]", current_group.ling1_name.pluralize %>
       <%= check_box_tag "search[include][ling_1]", "1", true %>
 
-      <%= label_tag     "search[include][prop_1]", current_group.property_name.pluralize %>
-      <%= check_box_tag "search[include][prop_1]", "1", true %>
+      <%= label_tag     "search[include][property_1]", current_group.property_name.pluralize %>
+      <%= check_box_tag "search[include][property_1]", "1", true %>
 
-      <%= label_tag     "search[include][val_1]", current_group.lings_property_name.pluralize %>
-      <%= check_box_tag "search[include][val_1]", "1", true %>
+      <%= label_tag     "search[include][value_1]", current_group.lings_property_name.pluralize %>
+      <%= check_box_tag "search[include][value_1]", "1", true %>
 
-      <%= label_tag     "search[include][exmp_1]", "Examples" %>
-      <%= check_box_tag "search[include][exmp_1]", "1", false %>
+      <%= label_tag     "search[include][example_1]", "Examples" %>
+      <%= check_box_tag "search[include][example_1]", "1", false %>
     </div>
   <% end %>
 
