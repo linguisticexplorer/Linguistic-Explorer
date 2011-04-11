@@ -45,17 +45,25 @@ describe Group do
   end
 
   describe "#example_storable_keys" do
+    it "should by default have the key 'text'" do
+      Group.new.example_storable_keys.should include 'text'
+    end
+
     describe "should return an array of strings created from example_fields" do
-      it "that is empty if the field is empty" do
-        Factory(:group, :example_fields => "").example_storable_keys.should == []
+      it "that has only default keys if the field is empty" do
+        Factory(:group, :example_fields => "").example_storable_keys.should == ['text']
+      end
+
+      it "should ignore duplicates" do
+        Factory(:group, :example_fields => "text, foo, foo").example_storable_keys.should == ["text", "foo"]
       end
 
       it "that splits on commas if fields has any" do
-        Factory(:group, :example_fields => "foo,bar").example_storable_keys.should == ["foo", "bar"]
+        Factory(:group, :example_fields => "foo,bar").example_storable_keys.should == ["text", "foo", "bar"]
       end
 
       it "that strips leading and trailing whitespace from all values" do
-        Factory(:group, :example_fields => " foo , bar ").example_storable_keys.should == ["foo", "bar"]
+        Factory(:group, :example_fields => " foo , bar ").example_storable_keys.should == ["text", "foo", "bar"]
       end
     end
   end

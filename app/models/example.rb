@@ -1,6 +1,5 @@
 class Example < ActiveRecord::Base
   include Groupable
-  DEFAULT_STORABLE_KEYS = ["text"]
 
   belongs_to :ling
   has_many :examples_lings_properties, :dependent => :destroy
@@ -22,7 +21,7 @@ class Example < ActiveRecord::Base
   end
 
   def storable_keys
-    DEFAULT_STORABLE_KEYS + group.example_storable_keys
+    group.present? ? group.example_storable_keys : []
   end
 
   def store_value!(key_symbol_or_string, value_string)

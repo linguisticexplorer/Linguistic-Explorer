@@ -1,4 +1,5 @@
 class Group < ActiveRecord::Base
+  DEFAULT_EXAMPLE_KEYS = ["text"]
   before_create :ensure_default_values
 
   validates_presence_of   :name
@@ -40,7 +41,7 @@ class Group < ActiveRecord::Base
   end
 
   def example_storable_keys
-    !example_fields.blank? ? example_fields.split(",").collect(&:strip) : []
+    (DEFAULT_EXAMPLE_KEYS + (!example_fields.blank? ? example_fields.split(",").collect(&:strip) : [])).uniq
   end
 
   private

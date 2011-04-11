@@ -53,7 +53,7 @@ x   Group memberships should act like normal admin group data
 x   Split nav into partial
 x   ELPV should exist
 x   Examples should have a Text preference
-n   Group admins can set arbitrary non-searchable Example attributes
+x   Group admins can set arbitrary non-searchable Example attributes
   4/4
 x   add description field to property and category
 x   seed data should include example creation
