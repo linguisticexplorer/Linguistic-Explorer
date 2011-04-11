@@ -31,6 +31,9 @@ Project Plan for Search
 
 4/4
       Search Form Error Handling
+      Additional:
+        - keyword search on whole word
+        - ensure sql inject not permitted
 
 4/11
       Keyword Search on Example attributes

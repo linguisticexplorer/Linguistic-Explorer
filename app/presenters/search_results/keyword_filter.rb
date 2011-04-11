@@ -42,6 +42,15 @@ module SearchResults
       "#{model_class.name.downcase.underscorize}_keywords".to_sym
     end
 
+    def keyword(depth)
+      @params[params_key][depth.to_s]
+    end
+
+    def vals_at(depth)
+      vals = @filter.vals_at(depth)
+      keyword(depth).present? ? select_vals_by_keyword(vals, keyword(depth)) : vals
+    end
+
     def select_vals_by_keyword(vals, keyword)
       LingsProperty.select_ids.where(:id => vals) & model_class.where(:name.matches => "#{keyword}%")
     end
@@ -51,15 +60,6 @@ module SearchResults
 
     def model_class
       Ling
-    end
-
-    def keyword(depth)
-      @params[params_key][depth.to_s]
-    end
-
-    def vals_at(depth)
-      vals = @filter.vals_at(depth)
-      keyword(depth).present? ? select_vals_by_keyword(vals, keyword(depth)) : vals
     end
 
   end
@@ -83,5 +83,18 @@ module SearchResults
     end
 
   end
+
+  class ExampleKeywordStrategy < KeywordStrategy
+
+    def model_class
+      Example
+    end
+
+    def select_vals_by_keyword(vals, keyword)
+      LingsProperty.select_ids.where(:id => vals) & model_class.where(:name.matches => keyword)
+    end
+
+  end
+
 
 end

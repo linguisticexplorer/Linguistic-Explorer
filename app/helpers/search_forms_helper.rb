@@ -1,4 +1,4 @@
-module SearchesHelper
+module SearchFormsHelper
   # Search form
   def search_ling_label(search, depth)
     if search.has_ling_children?
@@ -10,6 +10,10 @@ module SearchesHelper
 
   def search_prop_label(category)
     "#{category.name} #{current_group.property_name.pluralize }".titleize
+  end
+
+  def search_example_label(search, depth)
+    "#{search_ling_label(search, depth).singularize} #{current_group.example_name}"
   end
 
   def search_text_id(text)
@@ -41,17 +45,5 @@ module SearchesHelper
   end
 
   # Results
-
-  def search_result_attributes(result)
-    {}.tap do |attrs|
-      attrs[:class] = "row"
-      ["parent", "child"].each do |depth|
-        [:ling, :property].each do |method|
-          attrs["data-#{depth}-#{method}"] = result.send(depth, method).try(:id)
-        end
-        attrs["data-#{depth}-value"] = result.send(depth, :id)
-      end
-    end
-  end
 
 end

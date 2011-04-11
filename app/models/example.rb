@@ -9,7 +9,7 @@ class Example < ActiveRecord::Base
   validates_existence_of :ling, :allow_nil => true
   validate :group_association_match
 
-  default_scope :include => :stored_values
+  # default_scope :include => :stored_values
   scope :in_group, lambda { |group| where(:group => group) }
 
   def grouped_name

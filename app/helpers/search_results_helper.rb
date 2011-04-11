@@ -26,7 +26,7 @@ module SearchResultsHelper
     # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
     COLUMNS - included_columns
   end
-
+  
   def row_methods
     @row_methods ||= {
       :ling_0     => lambda { |r|
@@ -47,5 +47,18 @@ module SearchResultsHelper
       :example_1  => lambda { |r| r.child_examples }
     }
   end
+
+  def search_result_attributes(result)
+    {}.tap do |attrs|
+      attrs[:class] = "row"
+      ["parent", "child"].each do |depth|
+        [:ling, :property].each do |method|
+          attrs["data-#{depth}-#{method}"] = result.send(depth, method).try(:id)
+        end
+        attrs["data-#{depth}-value"] = result.send(depth, :id)
+      end
+    end
+  end
+
 
 end

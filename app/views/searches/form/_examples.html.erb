@@ -1,0 +1,10 @@
+<%- @search.ling_depths.each do |depth| -%>
+  <%- example_label  = search_example_label(@search, depth) -%>
+  <%- keyword_label = "#{example_label} Keywords" -%>
+  <%= content_tag :fieldset, :id => example_label.underscorize, :class => "table" do %>
+    <%= f.text_field :example_keywords,
+      :id => search_text_id(keyword_label),
+      :label => keyword_label,
+      :name => search_text_field_name(:example_keywords, depth) %>
+  <% end %>
+<%- end -%>

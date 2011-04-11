@@ -1,6 +1,6 @@
 module SearchResults
   include Enumerable
-  
+
   delegate :included_columns, :to => :params
 
   def each
@@ -19,8 +19,7 @@ module SearchResults
       order("lings.parent_id, lings.name")
 
     if @group.has_depth?
-      children = LingsProperty.with_id(depth_1_ids).includes([:ling, :property]).
-        joins(:ling).
+      children = LingsProperty.with_id(depth_1_ids).includes([:ling, :property]).joins(:ling).
         order("lings.parent_id, lings.name")
 
       parents.map { |parent|
@@ -33,29 +32,6 @@ module SearchResults
     end
   end
 
-  class ResultSet
-    def initialize(parent, child = nil)
-      @parent, @child = parent, child
-    end
-
-    def parent(method)
-      @parent.send(method)
-    end
-
-    def child(method)
-      @child.send(method) if @child
-    end
-    
-    def parent_examples
-      @parent.examples.map(&:name).join(", ")
-    end
-
-    def child_examples
-      @child.examples.map(&:name).join(", ")
-    end
-
-  end
-
   private
 
   def filter_vals
@@ -66,6 +42,8 @@ module SearchResults
     filter = filter_by_keywords           filter, :ling
 
     filter = filter_by_keywords           filter, :property
+
+    filter = filter_by_keywords           filter, :example
 
     filter = filter_by_val_params         filter
 
@@ -104,6 +82,29 @@ module SearchResults
     SelectAllFilter.new(filter, params) do |f|
       f.strategy = strategy
     end
+  end
+
+  class ResultSet
+    def initialize(parent, child = nil)
+      @parent, @child = parent, child
+    end
+
+    def parent(method)
+      @parent.send(method)
+    end
+
+    def child(method)
+      @child.send(method) if @child
+    end
+
+    def parent_examples
+      @parent.examples.map(&:name).join(", ")
+    end
+
+    def child_examples
+      @child.examples.map(&:name).join(", ")
+    end
+
   end
 
 end
