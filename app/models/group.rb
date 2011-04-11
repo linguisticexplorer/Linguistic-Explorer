@@ -38,7 +38,11 @@ class Group < ActiveRecord::Base
   def allowable_depth_maximum
     errors.add(:depth_maximum, "must be either 0 or 1") if depth_maximum && !(0..1).include?(depth_maximum)
   end
-  
+
+  def example_storable_keys
+    !example_fields.blank? ? example_fields.split(",").collect(&:strip) : []
+  end
+
   private
 
   def ensure_default_values

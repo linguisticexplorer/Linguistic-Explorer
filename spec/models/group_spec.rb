@@ -12,6 +12,10 @@ describe Group do
     it "with a name" do
       should_be_createable :with => { :name => 'myfirstgroup' }
     end
+
+    it "without any of the fields listed in ensure_default_values" do
+      pending
+    end
   end
 
   describe "#ling_name_for_depth" do
@@ -37,6 +41,22 @@ describe Group do
 
     it "should return an array with ling0 and ling1 name if in a multi depth group" do
       Group.new(:name => "foo", :depth_maximum => 1, :ling0_name => "foo", :ling1_name => "bar").ling_names.should == ["foo", "bar"]
+    end
+  end
+
+  describe "#example_storable_keys" do
+    describe "should return an array of strings created from example_fields" do
+      it "that is empty if the field is empty" do
+        Factory(:group, :example_fields => "").example_storable_keys.should == []
+      end
+
+      it "that splits on commas if fields has any" do
+        Factory(:group, :example_fields => "foo,bar").example_storable_keys.should == ["foo", "bar"]
+      end
+
+      it "that strips leading and trailing whitespace from all values" do
+        Factory(:group, :example_fields => " foo , bar ").example_storable_keys.should == ["foo", "bar"]
+      end
     end
   end
 end

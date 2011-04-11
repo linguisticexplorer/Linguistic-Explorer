@@ -38,16 +38,16 @@ describe Example do
     it_should_have_many :stored_values
 
     describe "#storable_keys" do
-      it "should always have the key 'text'" do
-        Example.create.storable_keys.should include 'text'
+      it "should by default have the key 'text'" do
+        Example.create(:group => Factory(:group)).storable_keys.should include 'text'
       end
 
-#    it "should have any any key available to examples in the group" do
-#      group = groups(:inclusive)
-#      group.example_keys.should_not be_empty
-#      example = examples(:inclusive)
-#      group.example_keys.each{ |key| example.storable_keys.should include key }
-#    end
+    it "should have any any key available to examples in the group" do
+      group = Factory(:group, :example_fields => "foo,bar")
+      group.example_storable_keys.should_not be_empty
+      example = Factory(:example, :group => group, :ling => Factory(:ling, :group => group))
+      group.example_storable_keys.each{ |key| example.storable_keys.should include key }
+    end
     end
 
     describe "#stored_value" do

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110408091443) do
+ActiveRecord::Schema.define(:version => 20110411070823) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(:version => 20110408091443) do
     t.string   "examples_lings_property_name"
     t.integer  "depth_maximum"
     t.string   "privacy"
+    t.text     "example_fields"
   end
 
   create_table "lings", :force => true do |t|

@@ -17,47 +17,52 @@
     </div>
 
     <div class="field">
-        <%= f.label "Depth 0 Ling name" %><br />
+        <%= f.label :ling0_name, "Depth 0 Ling name" %><br />
         <%= f.text_field :ling0_name %>
     </div>
 
     <div class="field">
-        <%= f.label "Depth 1 Ling name" %><br />
+        <%= f.label :ling1_name, "Depth 1 Ling name" %><br />
         <%= f.text_field :ling1_name %>
     </div>
 
     <div class="field">
-        <%= f.label "Property name" %><br />
+        <%= f.label :property_name, "Property name" %><br />
         <%= f.text_field :property_name %>
     </div>
 
     <div class="field">
-        <%= f.label "Category name" %><br />
+        <%= f.label :category_name, "Category name" %><br />
         <%= f.text_field :category_name %>
     </div>
 
     <div class="field">
-        <%= f.label "Lings Property name" %><br />
+        <%= f.label :lings_property_name, "Lings Property name" %><br />
         <%= f.text_field :lings_property_name %>
     </div>
 
-    <div class="field">
-        <%= f.label "Example name" %><br />
-        <%= f.text_field :example_name %>
-    </div>
+  <div class="field">
+      <%= f.label :example_name, "Example name" %><br />
+      <%= f.text_field :example_name %>
+  </div>
+
+  <div class="field">
+      <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)" %><br />
+      <%= f.text_field :example_fields %>
+  </div>
 
     <div class="field">
-        <%= f.label "Example Lings Property name" %><br />
+        <%= f.label :examples_lings_property_name, "Example Lings Property name" %><br />
         <%= f.text_field :examples_lings_property_name %>
     </div>
 
     <div class="field">
-        <%= f.label "Depth Maximum" %><br />
+        <%= f.label :depth_maximum, "Depth Maximum" %><br />
         <%= f.text_field :depth_maximum %>
     </div>
 
     <div class="field">
-        <%= f.label "Privacy level" %><br />
+        <%= f.label :privacy, "Privacy level" %><br />
         <%= f.text_field :privacy %>
     </div>
 
