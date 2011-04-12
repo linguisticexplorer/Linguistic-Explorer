@@ -3,12 +3,12 @@ module SearchResultsHelper
 
   HEADERS = {
     :ling_0     => lambda { |g| g.ling0_name },
-    :ling_1     => lambda { |g| g.ling1_name },
     :property_0 => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
-    :property_1 => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
     :value_0    => lambda { |g| "#{g.ling0_name} Values" },
-    :value_1    => lambda { |g| "#{g.ling1_name} Values" },
     :example_0  => lambda { |g| "#{g.ling0_name} Examples" },
+    :ling_1     => lambda { |g| g.ling1_name },
+    :property_1 => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
+    :value_1    => lambda { |g| "#{g.ling1_name} Values" },
     :example_1  => lambda { |g| "#{g.ling1_name} Examples" }
   }
 
