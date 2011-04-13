@@ -52,21 +52,21 @@ x   Group memberships should act like normal admin group data
   3/28
 x   Split nav into partial
 x   ELPV should exist
-x   Examples should have a Text preference
-x   Group admins can set arbitrary non-searchable Example attributes
-  4/4
 x   add description field to property and category
 x   seed data should include example creation
+  4/4
 x   seed data should include ELPV creation
+x   Examples should have a Text preference
+x   Group admins can set arbitrary non-searchable Example attributes
     LPV mass setting page for Lings
-    Bulk upload
   4/11
-    Check everywhere for attr_accessible and dependent_destroy and attr_accessible
+    Bulk upload
     Site Admin nav bar
     Group Admin nav bar
+    Check everywhere for attr_accessible and dependent_destroy
   4/18
     Users should have preference to include or exclude public groups they arent members of from their dropdown
-    styling
+    styling (which can totally be one big story at the end .... not)
   4/25
     map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
   5/2
