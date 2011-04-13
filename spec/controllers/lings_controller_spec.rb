@@ -85,6 +85,35 @@ describe LingsController do
     end
   end
 
+  describe "set_values" do
+    describe "assigns" do
+      it "the requested ling to @ling and its depth to @depth" do
+        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        assigns(:ling).should == lings(:level0)
+        assigns(:depth).should == lings(:level0).depth
+
+        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        assigns(:ling).should == lings(:level1)
+        assigns(:depth).should == lings(:level1).depth
+      end
+
+      it "categories of the same depth as the ling to @categories" do
+        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        assigns(:categories).should include categories(:inclusive0)
+        assigns(:categories).should_not include categories(:inclusive1)
+
+        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        assigns(:categories).should_not include categories(:inclusive0)
+        assigns(:categories).should include categories(:inclusive1)
+      end
+
+      it "pre-existing LingsProperties for the ling to @preexisting_values" do
+        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        assigns(:preexisting_values).should include lings_properties(:level0)
+      end
+    end
+  end
+
   describe "edit" do
     describe "assigns" do
       it "the requested ling to @ling" do

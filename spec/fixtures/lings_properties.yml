@@ -13,3 +13,13 @@ exclusive:
   property: exclusive0
   value: lame
   group: exclusive
+level0:
+  ling: level0
+  property: level0
+  value: foobarbaz
+  group: inclusive
+level1:
+  ling: level1
+  property: level1
+  value: dinkdinkdink
+  group: inclusive

@@ -35,6 +35,14 @@ class LingsController < GroupDataController
     end
   end
 
+  # GET /lings/1/set_values
+  def set_values
+    @ling = Ling.find(params[:id])
+    @depth = @ling.depth
+    @categories = Category.at_depth(@depth)
+    @preexisting_values = LingsProperty.find_all_by_ling_id(@ling.id)
+  end
+
   # GET /lings/new
   # GET /lings/new?depth=0-1
   # GET /lings/new.xml

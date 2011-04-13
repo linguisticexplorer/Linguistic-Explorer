@@ -2,15 +2,23 @@ LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
 
+  #TODO: make the following line work in the lings resources block
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
 
   resources :groups do
-    resources :lings, :properties, :lings_properties, :examples, :categories, :memberships, :examples_lings_properties
-
     resources :searches, :path => "search",
-      :path_names => { :new => "/" }, :only => [:new, :create] do
+              :path_names => { :new => "/" }, :only => [:new, :create] do
       collection { get 'results' }
     end
+
+    resources :lings do
+      member do
+        get 'set_values'
+        post 'submit_values'
+      end
+    end
+
+    resources :properties, :lings_properties, :examples, :categories, :memberships, :examples_lings_properties
   end
 
   # The priority is based upon order of creation:
