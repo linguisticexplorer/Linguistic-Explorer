@@ -37,15 +37,23 @@ Project Plan for Search
 
 4/11
       Keyword Search on Example attributes
+      CSV 
       Save Queries for Additional Comparisons
-      (TODO: Break out into smaller stories)
+      - Stored as rows in search results table in DB (possible implementation)
+      - Alternatively as session data (possible implementation, not desirable)
+      - View previous queries from search index page
 
 4/18
-      Save Queries for Additional Comparisons
+      Perform comparisons on saved queries
+      - Intersection
+      - Union
+      - Difference (with parent recovery)
 
 4/25
       Pagination
+      Performance
       Database back up procedure
+      Ensure depth is represent properly in search form and results
 
 5/2
       Search Help

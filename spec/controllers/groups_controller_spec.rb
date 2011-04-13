@@ -46,6 +46,16 @@ describe GroupsController do
         assigns(:group).should be_new_record
       end
     end
+
+    describe "sets default field values:" do
+      Group::DEFAULTS.each do |key,value|
+        it "#{key} is #{value}" do
+          get :new
+          group = assigns(:group)
+          group.send(key).should == value
+        end
+      end
+    end
   end
 
   describe "edit" do
