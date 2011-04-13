@@ -9,7 +9,7 @@ Given /^the group "([^\"]*)"$/ do |name|
 end
 
 Given /^the group "([^\"]*)" with the following ling names:$/ do |name, table|
-  Given "the group \"Syntactic Structures\""
+  Given "the group \"#{name}\""
   table.hashes.each do |attrs|
     @group.ling0_name = attrs["ling0_name"]
     if attrs["ling1_name"]

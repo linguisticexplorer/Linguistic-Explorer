@@ -12,10 +12,6 @@ describe Group do
     it "with a name" do
       should_be_createable :with => { :name => 'myfirstgroup' }
     end
-
-    it "without any of the fields listed in ensure_default_values" do
-      pending
-    end
   end
 
   describe "#ling_name_for_depth" do

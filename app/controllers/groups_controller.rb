@@ -33,7 +33,7 @@ class GroupsController < ApplicationController
   # GET /groups/new
   # GET /groups/new.xml
   def new
-    @group = Group.new
+    @group = Group.new(Group::DEFAULTS)
 
     respond_to do |format|
       format.html # new.html.erb
