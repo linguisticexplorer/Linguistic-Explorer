@@ -19,4 +19,13 @@ describe Property do
       Property.create( :name => "misgrouped", :category_id => groups(:inclusive).categories.first.id, :group_id => groups(:exclusive).id ).should have(1).errors_on(:category)
     end
   end
+
+  describe "#available_values" do
+    it "should return an arrow of values from lings_properties related to itself" do
+      prop = properties(:level0)
+      lp = lings_properties(:level0)
+      prop.lings_properties.should include lp
+      prop.available_values.should include lp.value
+    end
+  end
 end

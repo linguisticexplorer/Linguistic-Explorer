@@ -1,6 +1,6 @@
 <h1>Listing all linguistic objects</h1>
 
-<% @lings.each_with_index do |lings_at_depth, depth| %>
+<% @lings_by_depth.each_with_index do |lings_at_depth, depth| %>
   <%= render :partial => "depth_table", :locals => {:lings => lings_at_depth, :depth => depth} %>
   <br />
 <% end %>

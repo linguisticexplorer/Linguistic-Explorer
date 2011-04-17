@@ -33,6 +33,6 @@
   <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
 </p>
 
-
+<%= link_to "Mass assign", set_values_group_ling_path(current_group, @ling) %> |
 <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
 <%= link_to 'Back', group_lings_path(current_group) %>

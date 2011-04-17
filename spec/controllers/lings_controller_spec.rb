@@ -23,15 +23,15 @@ describe LingsController do
 
   describe "index" do
     describe "assigns" do
-      it "@lings should be an array of subarrays ordered by ling depth" do
+      it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
         get :index, :group_id => groups(:inclusive).id
-        assigns(:lings)[0].should include lings(:level0)
-        assigns(:lings)[1].should include lings(:level1)
+        assigns(:lings_by_depth)[0].should include lings(:level0)
+        assigns(:lings_by_depth)[1].should include lings(:level1)
       end
 
-      it "@lings should be an array with current_group.depth_maximum + 1 member subarrays" do
+      it "@lings_by_depth should be an array with current_group.depth_maximum + 1 member subarrays" do
         get :index, :group_id => groups(:inclusive).id
-        assigns(:lings).size.should == groups(:inclusive).depth_maximum + 1
+        assigns(:lings_by_depth).size.should == groups(:inclusive).depth_maximum + 1
       end
     end
   end

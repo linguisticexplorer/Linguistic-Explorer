@@ -20,6 +20,10 @@ class Property < ActiveRecord::Base
     category.depth
   end
 
+  def available_values
+    lings_properties.map(&:value).uniq
+  end
+
   def group_association_match
     errors.add(:category, "#{group.category_name.humanize} must belong to the same group as this #{group.property_name}") if group && category && category.group != group
   end

@@ -1,3 +1,11 @@
+And /^there is no value set for the ling "([^\"]*)" with the property "([^\"]*)"/ do |ling_name, property_name|
+  ling = Ling.find_by_name(ling_name)
+  property = Property.find_by_name(property_name)
+  raise "Ling and Property must belong to the same group" if ling && property && ling.group != property.group
+  val = LingsProperty.find_by_ling_id_and_property_id(ling.id, property.id)
+  raise "LingsProperty with the ling #{ling_name} and property #{property_name}" if val.present?
+end
+
 Given /^the following "([^\"]*)" properties:$/ do |group_name, table|
   group = Group.find_by_name(group_name)
   raise "Group #{group_name} does not exist! Did you remember to create it first?" if group.nil?

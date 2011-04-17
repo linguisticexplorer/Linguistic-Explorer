@@ -7,6 +7,7 @@
     <% end %>
     <th></th>
     <th></th>
+    <th></th>
   </tr>
   <% lings.each do |ling| %>
     <tr>
@@ -14,6 +15,7 @@
       <% if current_group.has_depth? %>
         <td><%= (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent %></td>
       <% end %>
+      <td><%= link_to 'Mass assign', set_values_group_ling_path(current_group, ling) %></td>
       <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>
       <td><%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
     </tr>

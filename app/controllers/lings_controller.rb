@@ -16,11 +16,11 @@ class LingsController < GroupDataController
   # GET /lings
   # GET /lings.xml
   def index
-    @lings = (0..current_group.depth_maximum).to_a.map{|depth| Ling.find_all_by_depth(depth)}
+    @lings_by_depth = (0..current_group.depth_maximum).to_a.map{|depth| Ling.find_all_by_depth(depth)}
 
     respond_to do |format|
       format.html # index.html.erb
-      format.xml  { render :xml => @lings }
+      format.xml  { render :xml => @lings_by_depth }
     end
   end
 

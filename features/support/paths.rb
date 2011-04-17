@@ -20,7 +20,10 @@ module NavigationHelpers
       new_group_search_path(Group.find_by_name($1))
     when /the group (.*)/
       group_path(Group.find_by_name($1))
-
+    when /the mass assignment page for "(.*)"/
+      ling = Ling.find_by_name($1)
+      group = ling.group
+      set_values_group_ling_path(group, ling)
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:
     #

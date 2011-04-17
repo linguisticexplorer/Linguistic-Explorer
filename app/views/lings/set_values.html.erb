@@ -1,0 +1,20 @@
+<h1>Mass assigning for <%= @ling.name %></h1>
+
+<% @categories.each do |cat| %>
+  <div>
+    <h2><%= cat.name %></h2>
+    <% cat.properties.each do |prop| %>
+      <div>
+        <%= prop.name %>: <br />
+        <% prop.available_values.each do |val| %>
+          []:<%= val %> <br />
+        <% end %>
+        Other: ________ <br />
+      </div>
+      <br />
+  <% end %>
+  </div>
+<% end %>
+
+<%= link_to 'Show', [current_group, @ling] %> |
+<%= link_to 'Back', group_lings_depth_path(current_group, @depth) %>
