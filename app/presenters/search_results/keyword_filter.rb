@@ -3,7 +3,7 @@ module SearchResults
   class KeywordFilter < Filter
     attr_accessor :strategy
 
-    def initialize(filter, params)
+    def initialize(filter, query)
       super
       yield self if block_given?
     end
@@ -27,23 +27,23 @@ module SearchResults
     end
 
     def filter_vals(depth)
-      @filter_strategy_instance ||= strategy_class.new(@filter, @params)
+      @filter_strategy_instance ||= strategy_class.new(@filter, @query)
       @filter_strategy_instance.vals_at(depth)
     end
 
   end
 
   class KeywordStrategy
-    def initialize(filter, params)
-      @filter, @params = filter, params
+    def initialize(filter, query)
+      @filter, @query = filter, query
     end
 
-    def params_key
+    def query_key
       "#{model_class.name.downcase.underscorize}_keywords".to_sym
     end
 
     def keyword(depth)
-      @params[params_key][depth.to_s]
+      @query[query_key][depth.to_s]
     end
 
     def vals_at(depth)
@@ -71,12 +71,12 @@ module SearchResults
     end
 
     def keyword(category_id)
-      @params[params_key][category_id.to_s]
+      @query[query_key][category_id.to_s]
     end
 
     def vals_at(depth)
       vals          = @filter.vals_at(depth)
-      category_ids  = @params.group_prop_category_ids(depth)
+      category_ids  = @query.group_prop_category_ids(depth)
       category_ids.collect do |category_id|
         keyword(category_id).present? ? select_vals_by_keyword(vals, keyword(category_id)) : vals
       end.flatten

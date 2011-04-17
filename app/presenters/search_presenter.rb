@@ -1,4 +1,5 @@
-class Search
+class SearchPresenter
+
   def self.model_name
     "Search"
   end
@@ -12,12 +13,5 @@ class Search
     @group  = group
     @params = params
   end
-
-  def show?(search_type)
-    # TODO Not checking "Include" option to show yet
-    # show_param[search_type].present?
-    true
-  end
-
 
 end

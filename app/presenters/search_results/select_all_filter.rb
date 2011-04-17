@@ -3,9 +3,9 @@ module SearchResults
   class SelectAllFilter < Filter
     attr_accessor :strategy
 
-    def initialize(filter, params)
+    def initialize(filter, query)
       @filter   = filter
-      @params   = params
+      @query   = query
 
       yield self if block_given?
 
@@ -29,12 +29,12 @@ module SearchResults
     end
 
     def filter_by_all_selection(depth)
-      category_ids_at_depth = @params.category_ids_by_all_grouping_and_depth(grouping, depth)
+      category_ids_at_depth = @query.category_ids_by_all_grouping_and_depth(grouping, depth)
       vals_at_depth         = @filter.vals_at(depth)
 
       if category_ids_at_depth.any?
         @intersection_required = true
-        @filter_strategy_instance ||= strategy_class.new(@params)
+        @filter_strategy_instance ||= strategy_class.new(@query)
         @filter_strategy_instance.select_vals_by_all(vals_at_depth, category_ids_at_depth)
       else
         vals_at_depth
@@ -48,7 +48,7 @@ module SearchResults
     private
 
     def perform_intersection_of_results
-      intersection_filter = IntersectionFilter.new(self, @params)
+      intersection_filter = IntersectionFilter.new(self, @query)
       [intersection_filter.depth_0_vals, intersection_filter.depth_1_vals]
     end
 
@@ -59,8 +59,8 @@ module SearchResults
 
   class SelectAllStrategy
     attr_accessor :filter
-    def initialize(params)
-      @params = params
+    def initialize(query)
+      @query = query
     end
 
     def select_vals_by_all(vals, category_ids)
@@ -98,7 +98,7 @@ module SearchResults
     end
 
     def selection_by_category_id(category_id)
-      @params.selected_property_ids(category_id)
+      @query.selected_property_ids(category_id)
     end
 
   end
@@ -110,7 +110,7 @@ module SearchResults
     end
 
     def selection_by_category_id(category_id)
-      @params.selected_value_pairs(category_id)
+      @query.selected_value_pairs(category_id)
     end
 
   end

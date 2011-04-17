@@ -1,8 +1,8 @@
 Factory.define :user do |f|
-  f.name "TestWriterShouldChangeMe"
-  f.email "TestWriterShouldChangeMe@ohmy.com"
-  f.access_level "user"
-  f.password "password"
+  f.name          "Bob Jones"
+  f.email         "bob@example.com"
+  f.access_level  "user"
+  f.password      "password"
 end
 
 Factory.define :ling do |f|
@@ -54,4 +54,10 @@ Factory.define :group do |f|
   f.example_fields "gloss, number"
   f.lings_property_name "Value"
   f.examples_lings_property_name "ExampleValue"
+end
+
+Factory.define :search do |f|
+  f.name    "New Search"
+  f.association :group, :factory => :group
+  f.association :user, :factory => :user
 end

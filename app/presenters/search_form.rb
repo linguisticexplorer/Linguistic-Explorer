@@ -54,8 +54,4 @@ module SearchForm
     @group_lings_props ||= LingsProperty.in_group(@group).group(LingsProperty.group_by_statement).includes(:property) & Property.order_by_name
   end
 
-  def show_param
-    @show_param ||= @params[:show] || {}
-  end
-
 end

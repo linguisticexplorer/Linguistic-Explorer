@@ -1,7 +1,7 @@
 module SearchResults
   include Enumerable
 
-  delegate :included_columns, :to => :params
+  delegate :included_columns, :to => :query_adapter
 
   def each
     results.each { |r| yield r }
@@ -45,7 +45,7 @@ module SearchResults
 
     filter = filter_by_keywords           filter, :example
 
-    filter = filter_by_val_params         filter
+    filter = filter_by_val_query_params   filter
 
     filter = filter_by_depth_intersection filter
 
@@ -56,30 +56,30 @@ module SearchResults
     filter
   end
 
-  def params
-    @params_adapter ||= ParamsAdapter.new(@group, @params)
+  def query_adapter
+    @query_adapter ||= QueryAdapter.new(self.group, self.query)
   end
 
   def filter_by_any_selected_lings_and_props
-    SelectAnyFilter.new(params)
+    SelectAnyFilter.new(query_adapter)
   end
 
   def filter_by_keywords(filter, strategy)
-    KeywordFilter.new(filter, params) do |f|
+    KeywordFilter.new(filter, query_adapter) do |f|
       f.strategy = strategy
     end
   end
 
-  def filter_by_val_params(filter)
-    SelectValuePairsFilter.new(filter, params)
+  def filter_by_val_query_params(filter)
+    SelectValuePairsFilter.new(filter, query_adapter)
   end
 
   def filter_by_depth_intersection(filter)
-    IntersectionFilter.new(filter, params)
+    IntersectionFilter.new(filter, query_adapter)
   end
 
   def filter_by_all_conditions(filter, strategy)
-    SelectAllFilter.new(filter, params) do |f|
+    SelectAllFilter.new(filter, query_adapter) do |f|
       f.strategy = strategy
     end
   end

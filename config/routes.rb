@@ -6,9 +6,10 @@ LinguisticExplorer::Application.routes.draw do
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
 
   resources :groups do
-    resources :searches, :path => "search",
-              :path_names => { :new => "/" }, :only => [:new, :create] do
-      collection { get 'results' }
+    resources :searches do
+      collection  do
+        post 'preview'
+      end
     end
 
     resources :lings do

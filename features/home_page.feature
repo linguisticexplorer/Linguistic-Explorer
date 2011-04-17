@@ -21,3 +21,9 @@ Feature: Linguistic Explorer Home Page
     Then I should not see "Groups"
     And I should not see "Search"
     Then I should see "Coming soon"
+
+  Scenario: No saved searches
+    Given I am a visitor
+    And the group "Syntactic Structures"
+    When I go to my group searches page
+    Then I should see "You need to sign in or sign up"

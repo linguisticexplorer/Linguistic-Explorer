@@ -1,0 +1,17 @@
+<h2><%= current_group.name %> Searches</h2>
+<div id="searches" class="table">
+  <%- if @searches.any? -%>
+    <%- @searches.each do |search| -%>
+      <div class="row">
+        <div class="cell">
+          <%= link_to search.name, [current_group, search] %>
+        </div>
+      </div>
+    <%- end -%>
+  <%- else -%>
+    <div class="center">
+      No saved searches for <%= current_group.name %>
+    </div>
+  <%- end -%>
+</div>
+

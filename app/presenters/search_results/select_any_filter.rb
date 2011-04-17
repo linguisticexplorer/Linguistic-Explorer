@@ -2,8 +2,8 @@ module SearchResults
 
   class SelectAnyFilter < Filter
 
-    def initialize(params)
-      @params = params
+    def initialize(query)
+      @query = query
     end
 
     def depth_0_vals
@@ -14,7 +14,7 @@ module SearchResults
 
     def depth_1_vals
       @depth_1_vals ||= begin
-        return [] unless @params.has_depth?
+        return [] unless @query.has_depth?
         lings_property_where conditions_at_depth(Depth::CHILD)
       end
     end
@@ -31,16 +31,16 @@ module SearchResults
         prop_ids        = prop_ids(depth)
         c[:ling_id]     = ling_ids if ling_ids.any?
         c[:property_id] = prop_ids if prop_ids.any?
-        c[:group_id]    = @params.group_id
+        c[:group_id]    = @query.group_id
       end
     end
 
     def ling_ids(depth)
-      @params.send("depth_#{depth}_ling_ids")
+      @query.send("depth_#{depth}_ling_ids")
     end
 
     def prop_ids(depth)
-      @params.send("depth_#{depth}_prop_ids")
+      @query.send("depth_#{depth}_prop_ids")
     end
   end
 

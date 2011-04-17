@@ -1,11 +1,11 @@
 module SearchResults
 
   class Filter
-    attr_reader :filter, :params, :depth_0_vals, :depth_1_vals
+    attr_reader :filter, :query, :depth_0_vals, :depth_1_vals
 
-    def initialize(filter, params)
+    def initialize(filter, query)
       @filter   = filter
-      @params   = params
+      @query   = query
       
       Rails.logger.info "_______#{self.class.name}_________"
     end

@@ -2,7 +2,7 @@ module SearchResults
 
   class IntersectionFilter < Filter
 
-    def initialize(filter, params)
+    def initialize(filter, query)
       super
       @depth_0_vals, @depth_1_vals = intersect @filter
     end

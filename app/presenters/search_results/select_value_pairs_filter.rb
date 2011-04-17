@@ -14,7 +14,7 @@ module SearchResults
 
     def filter_vals(depth)
       vals  = @filter.vals_at(depth)
-      pairs = @params.lings_props_pairs(depth)
+      pairs = @query.lings_props_pairs(depth)
 
       pairs.any? ? LingsProperty.select_ids.where({ :property_value => pairs } & {:id => vals}) : vals
     end

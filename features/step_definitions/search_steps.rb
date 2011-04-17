@@ -1,3 +1,7 @@
+Given /^I have a saved group search "([^\"]*)"$/ do |search_name|
+  Factory(:search, :name => search_name, :user => @user, :group => @group)
+end
+
 When /^I allow all languages$/ do
   # no op
 end

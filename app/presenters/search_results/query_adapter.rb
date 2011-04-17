@@ -1,6 +1,6 @@
 module SearchResults
 
-  class ParamsAdapter
+  class QueryAdapter
     attr_reader :group
 
     def initialize(group, params)
