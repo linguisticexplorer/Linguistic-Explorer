@@ -114,6 +114,50 @@ describe LingsController do
     end
   end
 
+  describe "submit_values" do
+    it "assigns the requested ling to @ling" do
+      post :submit_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+      assigns(:ling).should == lings(:level0)
+    end
+
+    it "creates lings_properties for the ling and any submitted property values" do
+      ling = lings(:level0)
+      property = properties(:level0)
+      group = ling.group
+      value = "added text"
+      LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should_not be_present
+      post :submit_values, :group_id => group.id, :id => ling.id, :values => { ling.id.to_s => { property.name => { value => value } } }
+      LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should be_present
+    end
+
+    it "destroys lings_properties for the ling if they are not included in the mass assignment" do
+      lp = lings_properties(:level0)
+      lp.should be_present
+      deleted_id = lp.id
+      ling = lp.ling
+      group = lp.group
+      post :submit_values, :group_id => group.id, :id => ling.id, :values => {}
+      LingsProperty.find_by_id(deleted_id).should be_nil
+    end
+
+    it "does not do anything to lings_properties for the ling that were submitted when they already existed" do
+      lp = lings_properties(:level0)
+      lp.should be_present
+      ling = lp.ling
+      property = lp.property
+      group = lp.group
+      post :submit_values, :group_id => group.id, :id => ling.id, :values => {property.id => {lp.value => lp.value, :_new => ""}}
+      lp.reload
+      lp.should be_present
+    end
+
+    it "should redirect to set_values" do
+      lp = lings_properties(:level0)
+      post :submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id => {lp.value => "1", :_new => ""}}
+      response.should redirect_to set_values_group_ling_path(lp.group, lp.ling)
+    end
+  end
+
   describe "edit" do
     describe "assigns" do
       it "the requested ling to @ling" do

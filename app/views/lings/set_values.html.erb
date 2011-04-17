@@ -1,19 +1,9 @@
 <h1>Mass assigning for <%= @ling.name %></h1>
 
-<% @categories.each do |cat| %>
-  <div>
-    <h2><%= cat.name %></h2>
-    <% cat.properties.each do |prop| %>
-      <div>
-        <%= prop.name %>: <br />
-        <% prop.available_values.each do |val| %>
-          []:<%= val %> <br />
-        <% end %>
-        Other: ________ <br />
-      </div>
-      <br />
-  <% end %>
-  </div>
+<%= form_tag(submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
+  To add a new value to the set of options, fill in "Add new".
+  <%= render :partial => "lings/mass_assignment/category", :collection => @categories %>
+  <%= submit_tag("Submit") %>
 <% end %>
 
 <%= link_to 'Show', [current_group, @ling] %> |

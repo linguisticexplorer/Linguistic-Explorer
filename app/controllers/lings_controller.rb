@@ -43,6 +43,32 @@ class LingsController < GroupDataController
     @preexisting_values = LingsProperty.find_all_by_ling_id(@ling.id)
   end
 
+  # POST /lings/1/submit_values
+  def submit_values
+    @ling = Ling.find(params[:id])
+    stale_values = @ling.lings_properties
+
+    fresh_values = []
+    values = params.delete(:values) || []
+    values.each do |prop_id, prop_values|
+      property = Property.find(prop_id)
+      new = prop_values.delete :_new
+      new_lp = (!new.blank? ? LingsProperty.find_or_create_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, new) : nil)
+
+      fresh_values << new_lp if new_lp && new_lp.save
+      prop_values.each do |value, flag|
+        lp = LingsProperty.find_or_create_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, value)
+        fresh_values << lp if lp.save
+      end
+    end
+
+    stale_values.each do |stale|
+      stale.delete unless fresh_values.include? stale
+    end
+
+    redirect_to set_values_group_ling_path(current_group, @ling)
+  end
+
   # GET /lings/new
   # GET /lings/new?depth=0-1
   # GET /lings/new.xml

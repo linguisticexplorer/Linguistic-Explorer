@@ -1,0 +1,4 @@
+<div class="category <%= category.name.gsub(" ", "") %>">
+  <h2><%= category.name %></h2>
+  <%= render :partial => "lings/mass_assignment/property", :collection => category.properties %>
+</div>

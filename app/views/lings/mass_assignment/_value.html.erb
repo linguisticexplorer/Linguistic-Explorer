@@ -1,0 +1,4 @@
+<div class="value <%= value.gsub(" ", "") %>">
+  <%= check_box_tag "values[#{property.id}][#{value}]", value, @preexisting_values.select{|lp| lp.property == property && lp.value == value}.first %>
+  <%= label_tag "values[#{property.id}][#{value}]", value %>
+</div>
