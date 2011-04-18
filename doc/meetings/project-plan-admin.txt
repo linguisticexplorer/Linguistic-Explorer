@@ -60,19 +60,21 @@ x   Examples should have a Text preference
 x   Group admins can set arbitrary non-searchable Example attributes
 x   LPV mass setting page for Lings
   4/11
-x   Site Admin nav bar
-x   Group Admin nav bar
-x   Check everywhere for attr_accessible
+x   Site Admin notice bar
+x   Group Admin notice bar
+x   Check everywhere for attr_protected
 x   Check everywhere for dependent_destroy
-    Bulk upload
   4/18
-    Users should have preference to include or exclude public groups they arent members of from their dropdown
+    finish implementing permissions checking
+    lpv mass setting page should sort properties by category like search does
     styling (which can totally be one big story at the end .... not)
   4/25
-    map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
+    Bulk upload
+    Users should have preference to include or exclude public groups they arent members of from their dropdown
+    remove XML responses everywhere if they aren't specifically required by dennis
   5/2
     category should have an "unsearchable" boolean that turns them off for the search page, so things like latlong, description, and whatever can exist as LPV values that get listed on the show page for the ling
-    lpv mass setting page should sort properties by category like search does
+    map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
 
 bulk upload data
   one per table, another for parentage?
