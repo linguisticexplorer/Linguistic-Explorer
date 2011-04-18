@@ -62,7 +62,8 @@ x   LPV mass setting page for Lings
   4/11
 x   Site Admin nav bar
 x   Group Admin nav bar
-    Check everywhere for attr_accessible and dependent_destroy
+x   Check everywhere for attr_accessible
+x   Check everywhere for dependent_destroy
     Bulk upload
   4/18
     Users should have preference to include or exclude public groups they arent members of from their dropdown

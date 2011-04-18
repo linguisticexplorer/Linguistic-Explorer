@@ -13,6 +13,7 @@ class Property < ActiveRecord::Base
   include Extensions::Selects
   include Extensions::Wheres
   include Extensions::Orders
+
   # override
   scope :at_depth, lambda { |depth| scoped & Category.at_depth(depth) }
 

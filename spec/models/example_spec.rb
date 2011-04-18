@@ -13,17 +13,27 @@ describe Example do
   describe "should be createable" do
     it "with a ling and that ling's group id" do
       ling = lings(:level0)
-      should_be_createable :with => { :ling_id => ling.id, :group_id => ling.group.id, :name => 'example-with-ling_id' }
+      lambda do
+        Example.create(:ling_id => ling.id, :name => 'example-with-ling_id') do |e|
+          e.group = ling.group
+        end
+      end.should change(Example, :count).by(1)
     end
 
     it "unless the ling and group_id don't match" do
       ling = groups(:inclusive).lings.first
       group = groups(:exclusive)
-      Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'example-with-mismatched-object-refs').should have(1).error_on(:ling)
+      Example.create(:ling_id => ling.id, :name => 'example-with-mismatched-object-refs') do |e|
+        e.group = group
+      end.should have(1).error_on(:ling)
     end
 
     it "without a ling" do
-      should_be_createable :with => {:name => 'example-without-ling_id', :group_id => Group.first.id }
+      lambda do
+        Example.create(:name => 'example-without-ling_id') do |e|
+          e.group = groups(:inclusive)
+        end
+      end.should change(Example, :count).by(1)
     end
   end
 
@@ -75,7 +85,9 @@ describe Example do
       it "should store the value for a valid key" do
         ling = lings(:level0)
         group = ling.group
-        example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
+        example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
+          e.group = group
+        end
         example.storable_keys.should include "text"
         example.store_value!(:text, "foo")
         example.reload.stored_value(:text).should == "foo"
@@ -84,7 +96,9 @@ describe Example do
       it "should have be able to update the value" do
         ling = lings(:level0)
         group = ling.group
-        example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
+        example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
+          e.group = group
+        end
         example.storable_keys.should include "text"
         example.store_value!(:text, "foo")
         example.reload.stored_value(:text).should == "foo"
@@ -93,21 +107,32 @@ describe Example do
         example.reload.stored_value(:text).should == "bar"
       end
 
-#    it "should have be able to store a value for a key supplied by the group" do
-#      ling = lings(:level0)
-#      group = ling.group
-#      group.storable_keys_for(:example).should_not be_empty
-#      key = group_storable_keys_for(:example).first
-#      example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
-#      example.storable_keys.should include key.to_s
-#      example.store_value!(key, "baz")
-#      example.stored_value(key).should == "baz"
-#    end
+    it "should have be able to store a value for a key supplied by the group" do
+      ling = lings(:level0)
+      group = ling.group
+      group.example_fields = "custom_key"
+      group.save
+      group.reload
 
-      it "should not save the value passed or report errors on the keyname for unrecognized keys" do
+      key = group.example_storable_keys.last
+      key.should == "custom_key"
+      Group::DEFAULT_EXAMPLE_KEYS.should_not include key
+
+      example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
+        e.group = group
+      end
+
+      example.storable_keys.should include key.to_s
+      example.store_value!(key, "baz")
+      example.stored_value(key).should == "baz"
+    end
+
+      it "should not save the value passed or report errors on the key name for unrecognized keys" do
         ling = lings(:level0)
         group = ling.group
-        example = Example.create(:ling_id => ling.id, :group_id => group.id, :name => 'has-text')
+        example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
+          e.group = group
+        end
         example.storable_keys.should_not include "totallyfake"
         example.store_value!(:totallyfake, "bar")
         example.reload.stored_value(:totallyfake).should be_nil

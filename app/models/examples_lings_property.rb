@@ -15,6 +15,6 @@ class ExamplesLingsProperty < ActiveRecord::Base
   end
 
   def group_association_match
-    errors[:base] << "#{group.example_name} and #{group.lings_property_name} must belong to the same group as this #{group.examples_lings_property_name}" if (example && lings_property) && (example.group != lings_property.group || example.group != group)
+    errors[:base] << "#{group.example_name} and #{group.lings_property_name} must belong to the same group as this #{group.examples_lings_property_name}" if (example && lings_property && group) && (example.group != lings_property.group || example.group != group)
   end
 end

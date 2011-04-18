@@ -2,16 +2,16 @@ class Example < ActiveRecord::Base
   include Groupable
 
   belongs_to :ling
+  has_many :stored_values, :as => :storable, :dependent => :destroy
   has_many :examples_lings_properties, :dependent => :destroy
   has_many :lings_properties, :through => :examples_lings_properties
-  has_many :stored_values, :as => :storable
 
   validates_existence_of :ling, :allow_nil => true
   validate :group_association_match
 
   default_scope includes(:stored_values)
   scope :in_group, lambda { |group| where(:group => group) }
-  
+
   def grouped_name
     (group ? group.example_name : "Example")
   end

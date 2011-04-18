@@ -12,15 +12,47 @@ describe Category do
   end
 
   describe "createable with combinations" do
-    it "should allow depth of 0" do
-      should_be_createable :with => { :depth => 0, :name => 'demos', :group_id => Group.first.id }
+    describe "for multidepth groups" do
+      it "should allow depth of 0" do
+        lambda do
+          Category.create(:name => 'demos') do |cat|
+            cat.group = Factory(:group, :depth_maximum => 1)
+            cat.depth = 0
+          end
+        end.should change(Category, :count).by(1)
+      end
+
+      it "should allow depth of 1" do
+        lambda do
+          Category.create(:name => 'linguistic') do |cat|
+            cat.group = Factory(:group, :depth_maximum => 1)
+            cat.depth = 1
+          end
+        end.should change(Category, :count).by(1)
+      end
     end
 
-    it "should allow depth of 1" do
-      should_be_createable :with => { :depth => 0, :name => 'linguistic', :group_id => Group.first.id }
+    describe "for single depth groups" do
+      it "should allow depth of 0" do
+        lambda do
+          Category.create(:name => 'demos') do |cat|
+            cat.group = Factory(:group, :depth_maximum => 0)
+            cat.depth = 0
+          end
+        end.should change(Category, :count).by(1)
+      end
+
+      it "should not allow depth of 1" do
+        lambda do
+          Category.create(:name => 'linguistic') do |cat|
+            cat.group = Factory(:group, :depth_maximum => 0)
+            cat.depth = 1
+          end
+        end.should change(Category, :count).by(0)
+      end
     end
   end
-  
+
   describe "ids_by_group_and_depth" do
     it "should return ids for given group and depth" do
       group = groups(:exclusive)

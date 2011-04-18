@@ -12,14 +12,23 @@ describe Membership do
 
   describe "createable with combinations" do
     it "should allow a new user and group to associate" do
-      should_be_createable :with => { :group_id => Factory(:group).id, :user_id => Factory(:user).id, :level => Membership::MEMBER }
+      lambda do
+        Membership.create(:user_id => Factory(:user).id, :level => Membership::MEMBER) do |m|
+          m.group = Factory(:group)
+        end
+      end.should change(Membership, :count).by(1)
     end
 
     it "should allow a new user and group to associate" do
       group = Factory(:group)
       user = Factory(:user)
-      Membership.create( :group_id => group.id, :user_id => user.id, :level => Membership::MEMBER ).should have(0).errors
-      Membership.create( :group_id => group.id, :user_id => user.id, :level => Membership::ADMIN ).should have(1).errors_on(:user_id)
+      Membership.create(:user_id => user.id, :level => Membership::MEMBER) do |m|
+        m.group = group
+      end.should have(0).errors
+
+      Membership.create(:user_id => user.id, :level => Membership::ADMIN ) do |m|
+        m.group = group
+      end.should have(1).errors_on(:user_id)
     end
   end
 
@@ -27,8 +36,13 @@ describe Membership do
     it "should return true only if level is 'admin'" do
       group = Factory(:group)
       user = Factory(:user)
-      Membership.create(:group => group, :user => user, :level => Membership::ADMIN).group_admin?.should be_true
-      Membership.create(:group => group, :user => user, :level => Membership::MEMBER).group_admin?.should_not be_true
+      Membership.create(:user => user, :level => Membership::ADMIN) do |m|
+        m.group = group
+      end.group_admin?.should be_true
+
+      Membership.create(:user => user, :level => Membership::MEMBER) do |m|
+        m.group = group
+      end.group_admin?.should_not be_true
     end
   end
 end

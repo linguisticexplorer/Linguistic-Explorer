@@ -44,6 +44,7 @@ class CategoriesController < GroupDataController
     @category = Category.new(params[:category]) do |category|
       category.group = current_group
       category.creator = current_user
+      category.depth = params[:category][:depth].to_i
     end
 
     respond_to do |format|

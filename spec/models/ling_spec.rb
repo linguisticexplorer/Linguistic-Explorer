@@ -16,39 +16,75 @@ describe Ling do
 
   describe "createable with combinations" do
     it "should allow depth of 0 or 1 with nil parent_id" do
-      should_be_createable :with => { :parent_id => nil, :depth => 0, :name => 'toes', :group_id => Group.first.id }
-      should_be_createable :with => { :parent_id => nil, :depth => 1, :name => 'bees knees', :group_id => Group.first.id }
+      lambda do
+        Ling.create(:parent_id => nil, :name => 'toes') do |ling|
+          ling.group = groups(:inclusive)
+          ling.depth = 0
+        end
+      end.should change(Ling, :count).by(1)
+
+      lambda do
+        Ling.create(:parent_id => nil, :name => 'twinkle') do |ling|
+          ling.group = groups(:inclusive)
+          ling.depth = 1
+        end
+      end.should change(Ling, :count).by(1)
     end
 
     it "should allow depth 1 lings to have depth 0 parents" do
-      ling = lings(:level0)
-      should_be_createable :with => { :parent_id => ling.id, :name => 'snarfblat', :depth => 1, :group_id => ling.group.id }
+      parent = lings(:level0)
+      lambda do
+        Ling.create(:parent_id => parent.id, :name => 'snarfblat') do |ling|
+          ling.group = parent.group
+          ling.depth = 1
+        end
+      end.should change(Ling, :count).by(1)
     end
 
     it "should not allow ling to belong to a different group" do
       ling = groups(:inclusive).lings.select{|l| l.depth == 0}.first
       group = groups(:exclusive)
-      Ling.create(:name => "misgrouped", :depth => 1, :parent_id => ling.id, :group_id => group.id).should have(1).errors_on(:parent)
+      Ling.create(:name => "misgrouped", :parent_id => ling.id) do |l|
+        l.group = group
+        l.depth = 1
+      end.should have(1).errors_on(:parent)
     end
 
     it "should not allow ling creation of a depth greater than the group maximum" do
       group = Factory(:group, :depth_maximum => 0)
       group.depth_maximum.should == 0
-      parent = Ling.create(:depth => 0, :name => 'level0', :group => group)
-      Ling.create(:name => "too-deep", :depth => 1, :parent_id => parent.id, :group_id => group.id).should have(1).errors_on(:depth)
+      parent = Ling.create(:name => 'level0') do |ling|
+        ling.depth = 0
+        ling.group = group
+      end
+
+      Ling.create(:name => "too-deep", :parent_id => parent.id) do |ling|
+        ling.depth = 1
+        ling.group = group
+      end.should have(1).errors_on(:depth)
     end
   end
 
   describe "#grouped_name" do
     it "should use the appropriate depth type name from its parent group if it has a depth" do
       group = groups(:inclusive)
-      Ling.create(:name => "foo", :depth => 0, :group_id => group.id).grouped_name.should == group.ling0_name
-      Ling.create(:name => "bar", :depth => 1, :group_id => group.id).grouped_name.should == group.ling1_name
+      Ling.create(:name => "foo") do |ling|
+        ling.depth = 0
+        ling.group = group
+      end.grouped_name.should == group.ling0_name
+
+      Ling.create(:name => "bar") do |ling|
+        ling.depth = 1
+        ling.group = group
+      end.grouped_name.should == group.ling1_name
     end
 
     it "should use the depth 0 type name from its parent group if it is missing depth" do
       group = Factory(:group, :ling1_name => "", :depth_maximum => 0)
-      Ling.create(:name => "foo", :depth => nil, :group_id => group.id).grouped_name.should == group.ling0_name
+      Ling.create(:name => "baz") do |ling|
+        ling.depth = nil
+        ling.group = group
+      end.grouped_name.should == group.ling0_name
     end
   end
 
