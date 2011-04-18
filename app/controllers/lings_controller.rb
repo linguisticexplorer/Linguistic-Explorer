@@ -45,6 +45,7 @@ class LingsController < GroupDataController
 
   # POST /lings/1/submit_values
   def submit_values
+    puts params
     @ling = Ling.find(params[:id])
     stale_values = @ling.lings_properties
 
@@ -52,19 +53,31 @@ class LingsController < GroupDataController
     values = params.delete(:values) || []
     values.each do |prop_id, prop_values|
       property = Property.find(prop_id)
-      new = prop_values.delete :_new
-      new_lp = (!new.blank? ? LingsProperty.find_or_create_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, new) : nil)
 
-      fresh_values << new_lp if new_lp && new_lp.save
+      new_text = prop_values.delete("_new")
+      if !(new_text.blank?)
+        fresh = LingsProperty.find_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, new_text)
+        fresh ||= LingsProperty.new do |lp|
+          lp.ling  = @ling
+          lp.group = current_group
+          lp.value = new_text
+          lp.property = property
+        end
+        fresh_values << fresh if fresh.save
+      end
+
       prop_values.each do |value, flag|
-        lp = LingsProperty.find_or_create_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, value)
-        fresh_values << lp if lp.save
+        fresh = LingsProperty.find_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, value)
+        fresh ||= LingsProperty.new do |lp|
+          lp.ling  = @ling
+          lp.group = current_group
+          lp.value = value
+          lp.property = property
+        end
+        fresh_values << fresh if fresh.save
       end
     end
-
-    stale_values.each do |stale|
-      stale.delete unless fresh_values.include? stale
-    end
+    stale_values.each{ |stale| stale.delete unless fresh_values.include? stale }
 
     redirect_to set_values_group_ling_path(current_group, @ling)
   end

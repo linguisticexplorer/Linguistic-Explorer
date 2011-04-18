@@ -38,5 +38,5 @@ Feature: Using the mass lings-property value setting form
   Scenario: Values are listed as checkbox options, prechecked if already set
     When I am on the mass assignment page for "English"
     And the "sometimes" checkbox within ".AdjectiveFoo" should not be checked
-    Then the "Yes" checkbox within ".AdjectiveNoun" should be checked
-    And the "Yes" checkbox within ".AdjectiveDegree" should be checked
+    Then the "yes" checkbox within ".AdjectiveNoun" should be checked
+    And the "yes" checkbox within ".AdjectiveDegree" should be checked

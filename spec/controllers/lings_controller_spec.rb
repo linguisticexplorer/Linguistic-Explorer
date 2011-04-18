@@ -124,9 +124,9 @@ describe LingsController do
       ling = lings(:level0)
       property = properties(:level0)
       group = ling.group
-      value = "added text"
+      value = "neverbeforeseen999"
       LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should_not be_present
-      post :submit_values, :group_id => group.id, :id => ling.id, :values => { ling.id.to_s => { property.name => { value => value } } }
+      post :submit_values, :group_id => group.id, :id => ling.id, :values => { ling.id.to_s => { "_new" => value } }
       LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should be_present
     end
 
@@ -146,14 +146,14 @@ describe LingsController do
       ling = lp.ling
       property = lp.property
       group = lp.group
-      post :submit_values, :group_id => group.id, :id => ling.id, :values => {property.id => {lp.value => lp.value, :_new => ""}}
+      post :submit_values, :group_id => group.id, :id => ling.id, :values => {property.id.to_s => {lp.value => lp.value, :_new => ""}}
       lp.reload
       lp.should be_present
     end
 
     it "should redirect to set_values" do
       lp = lings_properties(:level0)
-      post :submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id => {lp.value => "1", :_new => ""}}
+      post :submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id.to_s => {lp.value => lp.value, :_new => ""}}
       response.should redirect_to set_values_group_ling_path(lp.group, lp.ling)
     end
   end
