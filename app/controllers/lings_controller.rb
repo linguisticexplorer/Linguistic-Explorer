@@ -45,7 +45,6 @@ class LingsController < GroupDataController
 
   # POST /lings/1/submit_values
   def submit_values
-    puts params
     @ling = Ling.find(params[:id])
     stale_values = @ling.lings_properties
 

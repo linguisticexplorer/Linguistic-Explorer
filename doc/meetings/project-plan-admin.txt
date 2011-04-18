@@ -58,12 +58,12 @@ x   seed data should include example creation
 x   seed data should include ELPV creation
 x   Examples should have a Text preference
 x   Group admins can set arbitrary non-searchable Example attributes
-    LPV mass setting page for Lings
+x   LPV mass setting page for Lings
   4/11
-    Bulk upload
-    Site Admin nav bar
-    Group Admin nav bar
+x   Site Admin nav bar
+x   Group Admin nav bar
     Check everywhere for attr_accessible and dependent_destroy
+    Bulk upload
   4/18
     Users should have preference to include or exclude public groups they arent members of from their dropdown
     styling (which can totally be one big story at the end .... not)

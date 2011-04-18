@@ -6,6 +6,9 @@
     <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
   <% end %>
 
+  <%= render :partial => 'layouts/admin_bar' if current_user && current_user.admin? %>
+  <%= render :partial => 'layouts/group_admin_bar' if current_user && @group && current_user.administrated_groups.include?(@group) %>
+
   <% if @group && !@group.new_record? %>
     <%= link_to current_group.name, current_group %>
     <%= link_to 'Search', new_group_search_path(current_group) %>
@@ -18,6 +21,7 @@
     <%= link_to current_group.lings_property_name, group_lings_properties_path(current_group) %>
     <%= link_to current_group.example_name, group_examples_path(current_group) %>
     <%= link_to current_group.examples_lings_property_name, group_examples_lings_properties_path(current_group) %>
+    <%= link_to "Members", group_memberships_path(current_group) %>
   <% elsif @groups %>
      <%= form_tag({:controller => "groups", :action => "index"}, :method => "get") do %>
       <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>

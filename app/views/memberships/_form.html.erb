@@ -13,12 +13,12 @@
 
   <div class="field">
     <%= f.label :user_id %><br />
-    <%= f.text_field :user_id %>
+    <%= f.collection_select :user_id, User.all, :id, :email %>
   </div>
 
   <div class="field">
-    <%= f.label :level %><br />
-    <%= f.collection_select :access_level, Membership::ACCESS_LEVELS, :to_s, :to_s, :prompt => 'Group access level:' %>
+    <%= f.label :level, 'Group access level:' %><br />
+    <%= f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s %>
   </div>
 
   <div class="actions">

@@ -70,13 +70,13 @@ describe MembershipsController do
      describe "with invalid params" do
       it "does not save a new membership" do
         lambda {
-          post :create, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
+          post :create, :membership => { 'level' => '', :user_id => Factory(:user).id }, :group_id => groups(:inclusive).id
           assigns(:membership).should_not be_valid
         }.should change(Membership, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
+        post :create, :membership => { 'level' => '', :user_id => Factory(:user).id }, :group_id => groups(:inclusive).id
         response.should be_success
         response.should render_template("new")
       end
