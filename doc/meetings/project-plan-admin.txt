@@ -1,54 +1,42 @@
 Stories
-  User Access
+  Visitor Access
+x   sign up from home page
+x   log in from home page
+x   access publicly viewable groups (databases) from home page
+x   access private group if editor or admin
+x   administer group with group admin privileges
+x   edit group with group editor privileges
+x   browse languages
+x   browse properties
 
-    Visitor can sign up from home page
-    User can log in from home page
-    User can access publicly viewable groups (databases) from home page
-    User can access private group if editor or admin
-    User can administer group with group admin privileges
-    User can edit group with group editor privileges
-    User can browse languages
-    User can see percentage of ling prop values set
-    User can browse properties
+x Group Admins
+x   set privacy status of group
+x   give editor privileges
+x   give admin privileges
+x   create lings and properties
+x   choose whether or not to add ling depth
+x   set ling and property labels
+_   add categories to lings
+x   add categories to properties
+x   set labels for 1st and 2nd level lings
+_   choose attributes for examples
+_   specify depth of ling for examples
+x   import ling/prop/example data from file (e.g. CSV)
+x     - CSV import provides explicit feedback on success/failure of individual items
 
-  Group Administration
-
-    Group Admin can set privacy status of group
-    Group Admin can give editor privileges
-    Group Admin can give admin privileges
-    Group Admin can create lings and properties
-    Group Admin can choose whether or not to add ling depth
-    Group Admin can set ling and property labels
-    Group Admin can add categories to lings
-    Group Admin can add categories to properties
-    Group Admin can set labels for 1st and 2nd level lings
-    Group Admin can choose attributes for examples
-    Group Admin can specify depth of ling for examples
-    Group Admin can import ling/prop/example data from file (e.g. CSV)
-      - CSV import provides explicit feedback on success/failure of individual items
-
-  Group Editing
-
-    Group Editor can access search interface for private group
-    Group Editor can edit content ling prop values
-    Group Editor can edit examples
-    Group Editor can edit example ling props
+x Group Editors
+x   access search interface for private group
+x   edit content ling prop values
+x   edit examples
+x   edit example ling props
 
   System Administration
-
     Sys Admin can restore database from a nightly sql dump
-
-  Enhancements
-
-    Render browse and search-result tables as javascript-enhanced data tables (http://www.datatables.net)
 
   3/21
 x   CanCan Permission setup
 x   Lings should be entirely split between depths and hidden if the group is single-depth-only
 x   Group memberships should act like normal admin group data
-    Crud controllers should all check permissions
-    Permissions violations should spit out to the homepage with an error flash
-    Links should all check permissions before adding themselves to the page
   3/28
 x   Split nav into partial
 x   ELPV should exist
@@ -64,17 +52,43 @@ x   Site Admin notice bar
 x   Group Admin notice bar
 x   Check everywhere for attr_protected
 x   Check everywhere for dependent_destroy
+x   lpv mass setting page should sort properties by category like search does
+x   Permissions violations should spit out to the homepage with an error flash
+    Crud controllers should all check permissions
   4/18
-    finish implementing permissions checking
-    lpv mass setting page should sort properties by category like search does
-    styling (which can totally be one big story at the end .... not)
-  4/25
+    Links should all check permissions before adding themselves to the page
     Bulk upload
-    Users should have preference to include or exclude public groups they arent members of from their dropdown
-    remove XML responses everywhere if they aren't specifically required by dennis
+  4/25
+    styling
+    optimize indices on tables
+    optimize includes on page loads
   5/2
-    category should have an "unsearchable" boolean that turns them off for the search page, so things like latlong, description, and whatever can exist as LPV values that get listed on the show page for the ling
+    hook in RVM, Hoptoad, etc.
     map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
+    refine tests into documentation
+    remove, resolve, or document TODO notes
+    write higher level explanation of database architecture
+    write sample plans for arbitrary-depth expansion
+    write testing style/practices guide (routing, controller, permission, model, features general, troubleshooting)
+    write guide for how to: run all tests, run a single test, create the dbs, seed the db, drop and recreate/seed the db
+
+  Non-Essential
+    Cleanup - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation
+    Chore - remove XML responses everywhere if they aren't specifically required by dennis
+    Chore - upgrade to rails 3.1.0 (requires dealing with many deprecation warnings, likely)
+    Refactor - extract stored_values into a module
+    Cleanup - there should be stored_values on Lings (varying by depth!)
+    Admin - site administrative pages for all data types ungrouped
+    Cleanup - consider renaming "LingsProperty" everywhere to "Value" (ExampleLP => ExampleValue)
+    Cleanup - Users should have preference to include or exclude public groups they arent members of from their dropdown
+    Cleanup - Memberships should not have edit/update (potentially true for ExamplesValues and LingsProperties)
+    Refactor - Determine whether the LingsPropertyController is useful now that mass setting is preset
+    Cleanup - Make mass value setting columnar with categories or make checkbox dropdowns/smaller footprint lists
+    Refactor - Decide whether ExamplesValues deserve a mass setting page like Values have (select the example, it finds the ling and all LingsProperties for the ling and lets you select any)
+    Refactor - Determine whether the ExamplesLingsPropertyController is worthwhile in place of just having them create a set of links for examples and lings_properties
+    Cleanup - Memberships should pre-filter the create/new options to non-members, or make it a text field where you have to enter an email
+    JS - jasmine integration and sample tests
+    JS - data tables integration (requires jquery)
 
 bulk upload data
   one per table, another for parentage?
