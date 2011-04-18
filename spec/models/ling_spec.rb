@@ -99,15 +99,14 @@ describe Ling do
       @ling.lings_properties.stub!(:exists?).and_return(false)
       @ling.lings_properties.should_receive(:create).with({
         :property_id => @property.id,
-        :group_id => @ling.group.id,
         :value => "new_value"
       }).and_return(lings_property)
       @ling.add_property("new_value", @property)
     end
+
     it "should return lings property if it exists" do
       @ling.lings_properties.should_receive(:exists?).with({
         :property_id => @property.id,
-        :group_id => @ling.group.id,
         :value => "existing_value"
       }).and_return(true)
       @ling.lings_properties.should_not_receive(:create)

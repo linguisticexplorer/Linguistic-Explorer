@@ -31,8 +31,12 @@ class Ling < ActiveRecord::Base
   end
 
   def add_property(value, property)
-    params = {:property_id => property.id, :value => value, :group_id => group.id}
-    lings_properties.create(params) unless lings_properties.exists?(params)
+    params = {:property_id => property.id, :value => value}
+    unless lings_properties.exists?(params)
+      lings_properties.create(params) do |lp|
+        lp.group = group
+      end
+    end
   end
 
   def parent_depth_check
