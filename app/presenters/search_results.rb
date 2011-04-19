@@ -16,22 +16,29 @@ module SearchResults
         self.parent_ids = filter.depth_0_vals.map(&:id)
         self.child_ids  = filter.depth_1_vals.map(&:id)
       end
+      parents, children = nil
 
-      parents = LingsProperty.with_id(self.parent_ids).includes([:ling, :property]).
-        joins(:ling).
-        order("lings.parent_id, lings.name")
+      Search.benchmark("____________Select parents") do
+        parents = LingsProperty.with_id(self.parent_ids).includes([:ling, :property]).
+          joins(:ling).
+          order("lings.parent_id, lings.name")
+      end
 
       if @group.has_depth?
+
+      Search.benchmark("______________Select children") do
         children = LingsProperty.with_id(self.child_ids).includes([:ling, :property]).joins(:ling).
           order("lings.parent_id, lings.name")
+      end
 
+      Search.benchmark("_____________Build result sets") do
         parents.map { |parent|
-          children.select { |child| child.ling.parent_id == parent.ling_id }.map { |child|
-            ResultSet.new(parent, child)
-          }
+          related_children = children.select { |child| child.ling.parent_id == parent.ling_id }
+          ResultFamily.new(parent, related_children)
         }.flatten
+      end
       else
-        parents.map { |parent| ResultSet.new(parent) }
+        parents.map { |parent| ResultFamily.new(parent) }
       end
     end
   end
@@ -88,27 +95,40 @@ module SearchResults
     end
   end
 
-  class ResultSet
-    def initialize(parent, child = nil)
-      @parent, @child = parent, child
-    end
+  class ResultFamily
+    attr_reader :parent
 
-    def parent(method)
-      @parent.send(method)
+    def initialize(parent, children = nil)
+      @parent, @children = parent, children
     end
-
-    def child(method)
-      @child.send(method) if @child
-    end
-
-    def parent_examples
-      @parent.examples.map(&:name).join(", ")
-    end
-
-    def child_examples
-      @child.examples.map(&:name).join(", ")
+    
+    def children
+      @children || []
     end
 
   end
+
+  # class ResultSet
+  #   def initialize(parent, child = nil)
+  #     @parent, @child = parent, child
+  #   end
+  # 
+  #   def parent(method)
+  #     @parent.send(method)
+  #   end
+  # 
+  #   def child(method)
+  #     @child.send(method) if @child
+  #   end
+  # 
+  #   def parent_examples
+  #     @parent.examples.map(&:name).join(", ")
+  #   end
+  # 
+  #   def child_examples
+  #     @child.examples.map(&:name).join(", ")
+  #   end
+  # 
+  # end
 
 end

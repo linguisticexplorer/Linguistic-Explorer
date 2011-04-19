@@ -1,6 +1,14 @@
 module SearchResultsHelper
   include ActionView
 
+  PARENT_COLUMNS = [
+    :ling_0, :property_0, :value_0, :example_0
+  ]
+
+  CHILD_COLUMNS = [
+    :ling_1, :property_1, :value_1, :example_1
+  ]
+
   HEADERS = {
     :ling_0     => lambda { |g| g.ling0_name },
     :property_0 => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
@@ -12,50 +20,66 @@ module SearchResultsHelper
     :example_1  => lambda { |g| "#{g.ling1_name} Examples" }
   }
 
-  COLUMNS = HEADERS.keys
+  COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
-  def result_headers(included_columns)
-    (COLUMNS - excluded_columns(included_columns)).map{ |k| HEADERS[k] }
+  def columns_to_include
+    @columns_to_include ||= @search.included_columns
   end
 
-  def result_rows(included_columns)
-    @result_rows ||= (COLUMNS - excluded_columns(included_columns)).map { |col| row_methods[col] }
+  def result_headers
+    columns_to_include.map{ |k| HEADERS[k] }
   end
 
-  def excluded_columns(included_columns)
+  def result_rows
+    @result_rows ||= row_methods.map { |k| row_methods[k] }
+  end
+
+  def parent_columns
+    @parent_columns ||= columns_to_include & PARENT_COLUMNS
+  end
+
+  def child_columns
+    @child_columns ||= columns_to_include & CHILD_COLUMNS
+  end
+
+  def excluded_columns
     # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
-    COLUMNS - included_columns
+    COLUMNS - @search.included_columns
   end
   
+  def link_to_ling(ling)
+    "<a href='#{group_ling_path(current_group, ling)}'>#{h(ling.name)}</a>".html_safe
+  end
+  
+  def link_to_property(property)
+    "<a href='#{group_property_path(current_group, property)}'>#{h(property.name)}</a>".html_safe
+  end
+
   def row_methods
     @row_methods ||= {
-      :ling_0     => lambda { |r|
-        link_to r.parent(:ling).name, [current_group, r.parent(:ling)]
-      },
-      :ling_1     => lambda { |r|
-        link_to r.child(:ling).name, [current_group, r.child(:ling)]
-      },
-      :property_0 => lambda { |r|
-        link_to r.parent(:property).name, [current_group, r.parent(:ling) ]
-      },
-      :property_1 => lambda { |r|
-        link_to r.child(:property).name, [current_group, r.child(:ling) ]
-      },
-      :value_0    => lambda { |r| r.parent(:value)  },
-      :value_1    => lambda { |r| r.child(:value)  },
-      :example_0  => lambda { |r| r.parent_examples },
-      :example_1  => lambda { |r| r.child_examples }
+      :ling_0     => lambda { |v| link_to_ling(v.ling) },
+      :ling_1     => lambda { |v| link_to_ling(v.ling) },
+      :property_0 => lambda { |v| link_to_property(v.property) },
+      :property_1 => lambda { |v| link_to_property(v.property) },
+      :value_0    => lambda { |v| v.value  },
+      :value_1    => lambda { |v| v.value  },
+      :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
+      :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
     }
   end
 
-  def search_result_attributes(result)
+  def search_result_attributes(parent, child = nil)
     {}.tap do |attrs|
       attrs[:class] = "row"
-      ["parent", "child"].each do |depth|
+      depths = {}.tap do |depth|
+        depth[:parent] = parent
+        depth[:child]  = child unless child.nil?
+      end
+      depths.each do |depth, lings_property|
         [:ling, :property].each do |method|
-          attrs["data-#{depth}-#{method}"] = result.send(depth, method).try(:id)
+          attrs["data-#{depth}-#{method}"] = lings_property.send(method).try(:id)
         end
-        attrs["data-#{depth}-value"] = result.send(depth, :id)
+        attrs["data-#{depth}-value"] = lings_property.id
       end
     end
   end

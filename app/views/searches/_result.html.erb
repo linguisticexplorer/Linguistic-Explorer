@@ -1,0 +1,19 @@
+<%- parent = result.parent -%>
+<%- if result.children.any? -%>
+  <%- result.children.each do |child| -%>
+    <%= content_tag :div, search_result_attributes(parent, child) do %>
+      <%- parent_columns.each do |col| -%>
+        <div class="cell"><%= row_methods[col].call(parent) %></div>
+      <%- end -%>
+      <%- child_columns.each do |col| -%>
+        <div class="cell"><%= row_methods[col].call(child) %></div>
+      <%- end -%>
+    <% end %>
+  <%- end -%>
+<%- else -%>
+  <%= content_tag :div, search_result_attributes(parent) do %>
+    <%- parent_columns.each do |col| -%>
+      <div class="cell"><%= row_methods[col].call(parent) %></div>
+    <%- end -%>
+  <% end %>
+<%- end -%>
