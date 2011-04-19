@@ -4,7 +4,10 @@
     <%- @searches.each do |search| -%>
       <div class="row">
         <div class="cell">
-          <%= link_to search.name, [current_group, search] %>
+          <%= search.name %>
+        </div>
+        <div class="cell">
+          <%= link_to "Results", [current_group, search] %>
         </div>
       </div>
     <%- end -%>

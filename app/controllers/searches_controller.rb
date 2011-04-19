@@ -6,7 +6,6 @@ class SearchesController < GroupDataController
     @search = Search.new do |s|
       s.user  = current_user
       s.group = current_group
-      s.query = params[:search]
     end
   end
 
@@ -19,11 +18,26 @@ class SearchesController < GroupDataController
   end
 
   def create
-    @search = Search.new do |s|
+    params_search = params[:search]
+
+    @search = Search.new(params[:search]) do |s|
       s.user  = current_user
       s.group = current_group
-      s.query = params[:search]
+      # s.name  = params_search[:name]
+      # s.query       = JSON.parse params_search[:query_json]
+      # s.parent_ids  = JSON.parse params_search[:parent_ids_json]
+      # s.child_ids   = JSON.parse params_search[:child_ids_json]
     end
+
+    if @search.save
+      redirect_to [current_group, :searches]
+    else
+      render :preview
+    end
+  end
+
+  def show
+    @search = Search.find(params[:id])
   end
 
   def index

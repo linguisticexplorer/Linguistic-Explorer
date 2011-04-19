@@ -100,3 +100,8 @@ Feature: Search Lings for Any Property
     Then I should not see "Phones"
     And I should not see "Sentence 1"
     And I should not see "Homonym"
+
+  Scenario: Visitor cannot save search
+    When I go to the Syntactic Structures search page
+    And I press "Search"
+    Then I should not see "Save search results"

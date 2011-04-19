@@ -1,4 +1,17 @@
 <h2><%= @search.group.name %> Results</h2>
+<%- @search.results -%>
+<%- if user_signed_in? && @search.new_record? -%>
+  <%= content_tag :fieldset do %>
+    <p>Save search results</p>
+    <%= form_for [:group, @search] do |f| %>
+      <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+      <%= f.hidden_field :query_json %>
+      <%= f.hidden_field :parent_ids_json %>
+      <%= f.hidden_field :child_ids_json %>
+      <%= f.submit "Save" %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>
 <div id="search_results" class="table spacing">
   <div class="row">
     <%- result_headers(@search.included_columns).each do |proc| -%>

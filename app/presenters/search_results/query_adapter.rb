@@ -5,7 +5,7 @@ module SearchResults
 
     def initialize(group, params)
       @group  = group
-      @params = params
+      @params = params.symbolize_keys
     end
 
     def [](key)
@@ -23,7 +23,7 @@ module SearchResults
     def properties
       self[:properties] || {}
     end
-    
+
     def group_id
       @group_id ||= @group.id
     end
@@ -101,7 +101,7 @@ module SearchResults
     def category_present?(key, depth)
       group_prop_category_ids(depth).map(&:to_s).include?(key)
     end
-    
+
     def included_columns
       # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
       @params[:include].symbolize_keys.keys

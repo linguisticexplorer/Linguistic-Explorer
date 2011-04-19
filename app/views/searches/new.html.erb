@@ -1,34 +1,4 @@
 <div class="center" style="width:800px">
   <h2>Search <%= current_group.name %></h2>
-  <%= table_form_for [:preview, :group, @search] do |f| %>
-    <div class="table">
-      <div class="row">
-        <div class="cell">
-          <h3>Display</h3>
-        </div>
-        <div class="cell">
-          <%= render :partial => 'searches/form/includes', :locals => { :f => f } %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="cell">
-          <h3>Constraints</h3>
-        </div>
-        <div class="cell">
-          <%= render :partial => 'searches/form/lings', :locals => { :f => f } %>
-          <%= render :partial => 'searches/form/properties', :locals => { :f => f } %>
-          <%= render :partial => 'searches/form/lings_properties', :locals => { :f => f } %>
-          <%= render :partial => 'searches/form/examples', :locals => { :f => f } %>
-        </div>
-      </div>
-      <div class="row">
-        <div class="cell">
-
-        </div>
-        <div class="cell">
-          <%= f.submit "Search" %>
-        </div>
-      </div>
-    </div>
-  <% end %>
+  <%= render :partial => 'form', :locals => { :search => [:preview, :group, @search] } %>
 </div>

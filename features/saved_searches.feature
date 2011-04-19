@@ -26,12 +26,38 @@ Feature: Save searches
     Then I should see "No saved searches for Syntactic Structures"
 
   Scenario: View a simple saved searches
-    And I have a saved group search "Grammar sentences"
+    And I have a saved group search "My First Search"
     When I go to my group searches page
-    Then I should see "Grammar sentences"
+    Then I should see "My First Search"
 
   Scenario: Save search
+    When I go to the Syntactic Structures search page
+    And I select "Speaker 1" from "Speakers"
+    And I select "Sentence 1" from "Sentences"
+    And I press "Search"
+    Then I should see "Save search results"
+    When I fill in "Name" with "My First Search"
+    And I press "Save"
+    Then I should see "Syntactic Structures Searches"
+    And I should see "My First Search"
+
   Scenario: See results of saved search query
+    When I go to the Syntactic Structures search page
+    And I select "Speaker 1" from "Speakers"
+    And I select "Sentence 1" from "Sentences"
+    And I press "Search"
+    Then I should see "Save search results"
+    When I fill in "Name" with "My First Search"
+    And I press "Save"
+    And I follow "Results"
+    Then I should see the following search results:
+    | Lings         | Properties  | Value     | depth   |
+    | Speaker 1     | Property 1  | Eastern   | parent  |
+    | Sentence 1    | Property 3  | verb      | child   |
+    And I should not see "Speaker 2"
+    And I should not see "Sentence 2"
+
+
   Scenario: Regenerate results of saved search query
   Scenario: Delete saved query
   Scenario: Limit user to 25 searches

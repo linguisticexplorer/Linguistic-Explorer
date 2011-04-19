@@ -8,27 +8,31 @@ module SearchResults
   end
 
   def results
-    filter = filter_vals
+    @results ||= begin
+      if self.parent_ids.blank?
+        filter = filter_vals
 
-    selected_lings_prop_ids = (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
-    depth_0_ids = filter.depth_0_vals.map(&:id)
-    depth_1_ids = filter.depth_1_vals.map(&:id)
+        selected_lings_prop_ids = (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
+        self.parent_ids = filter.depth_0_vals.map(&:id)
+        self.child_ids  = filter.depth_1_vals.map(&:id)
+      end
 
-    parents = LingsProperty.with_id(depth_0_ids).includes([:ling, :property]).
-      joins(:ling).
-      order("lings.parent_id, lings.name")
-
-    if @group.has_depth?
-      children = LingsProperty.with_id(depth_1_ids).includes([:ling, :property]).joins(:ling).
+      parents = LingsProperty.with_id(self.parent_ids).includes([:ling, :property]).
+        joins(:ling).
         order("lings.parent_id, lings.name")
 
-      parents.map { |parent|
-        children.select { |child| child.ling.parent_id == parent.ling_id }.map { |child|
-          ResultSet.new(parent, child)
-        }
-      }.flatten
-    else
-      parents.map { |parent| ResultSet.new(parent) }
+      if @group.has_depth?
+        children = LingsProperty.with_id(self.child_ids).includes([:ling, :property]).joins(:ling).
+          order("lings.parent_id, lings.name")
+
+        parents.map { |parent|
+          children.select { |child| child.ling.parent_id == parent.ling_id }.map { |child|
+            ResultSet.new(parent, child)
+          }
+        }.flatten
+      else
+        parents.map { |parent| ResultSet.new(parent) }
+      end
     end
   end
 

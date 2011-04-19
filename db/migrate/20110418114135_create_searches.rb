@@ -4,7 +4,7 @@ class CreateSearches < ActiveRecord::Migration
       t.string  :name,      :null => false
       t.integer :user_id,   :null => false
       t.integer :group_id,  :null => false
-      t.string  :query
+      t.text    :query
       t.timestamps
     end
 

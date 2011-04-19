@@ -37,6 +37,10 @@ class Ability
       # turn on public group reading
       can :read, Group,                 :privacy => "public"
       can :read, group_data, :group => {:privacy => "public"}
+
+      # TODO replace authentication check with CanCan solution
+      # can :manage Search,     :group => { :privacy => 'public' }, :user => user
+      # can :manage Search,     :group => { :id => user.group_ids }, :user => user
     end
   end
 end
