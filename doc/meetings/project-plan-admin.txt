@@ -19,7 +19,7 @@ x   set ling and property labels
 _   add categories to lings
 x   add categories to properties
 x   set labels for 1st and 2nd level lings
-_   choose attributes for examples
+x   choose attributes for examples
 _   specify depth of ling for examples
 x   import ling/prop/example data from file (e.g. CSV)
 x     - CSV import provides explicit feedback on success/failure of individual items
@@ -58,12 +58,13 @@ x   Permissions violations should spit out to the homepage with an error flash
   4/18
     Links should all check permissions before adding themselves to the page
     Bulk upload
+    dump SSWL and then send through bulk uploader
   4/25
     styling
     optimize indices on tables
     optimize includes on page loads
   5/2
-    hook in RVM, Hoptoad, etc.
+    hook in RPM, Hoptoad, etc.
     map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
     refine tests into documentation
     remove, resolve, or document TODO notes
