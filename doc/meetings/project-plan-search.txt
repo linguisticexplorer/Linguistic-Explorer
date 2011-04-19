@@ -37,11 +37,13 @@ Project Plan for Search
 
 4/11
       Keyword Search on Example attributes
-      CSV 
+      CSV generation of Searches
       Save Queries for Additional Comparisons
       - Stored as rows in search results table in DB (possible implementation)
-      - Alternatively as session data (possible implementation, not desirable)
       - View previous queries from search index page
+      - Destroy old queries
+      - Regenerate old queries
+      - Validation: limit to 25 searches
 
 4/18
       Perform comparisons on saved queries

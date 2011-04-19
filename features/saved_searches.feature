@@ -30,3 +30,9 @@ Feature: Save searches
     When I go to my group searches page
     Then I should see "Grammar sentences"
 
+  Scenario: Save search
+  Scenario: See results of saved search query
+  Scenario: Regenerate results of saved search query
+  Scenario: Delete saved query
+  Scenario: Limit user to 25 searches
+  Scenario: Create CSV from searches
