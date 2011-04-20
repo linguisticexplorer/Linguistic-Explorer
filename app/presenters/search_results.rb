@@ -9,43 +9,14 @@ module SearchResults
 
   def results
     @results ||= begin
-      if self.parent_ids.blank?
-        filter = filter_vals
-
-        selected_lings_prop_ids = (filter.depth_0_vals + filter.depth_1_vals).map(&:id)
-        self.parent_ids = filter.depth_0_vals.map(&:id)
-        self.child_ids  = filter.depth_1_vals.map(&:id)
-      end
-      parents, children = nil
-
-      Search.benchmark("____________Select parents") do
-        parents = LingsProperty.with_id(self.parent_ids).includes([:ling, :property]).
-          joins(:ling).
-          order("lings.parent_id, lings.name")
-      end
-
-      if @group.has_depth?
-
-      Search.benchmark("______________Select children") do
-        children = LingsProperty.with_id(self.child_ids).includes([:ling, :property]).joins(:ling).
-          order("lings.parent_id, lings.name")
-      end
-
-      Search.benchmark("_____________Build result sets") do
-        parents.map { |parent|
-          related_children = children.select { |child| child.ling.parent_id == parent.ling_id }
-          ResultFamily.new(parent, related_children)
-        }.flatten
-      end
-      else
-        parents.map { |parent| ResultFamily.new(parent) }
-      end
+      self.parent_ids, self.child_ids = filter_results_from_query if self.parent_ids.blank?
+      ResultMapper.new(self.parent_ids, self.child_ids).to_results
     end
   end
 
   private
 
-  def filter_vals
+  def filter_results_from_query
     # Filters return depth_0_vals and depth_1_vals
 
     filter = filter_by_any_selected_lings_and_props
@@ -64,7 +35,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :lings_property
 
-    filter
+    [filter.depth_0_ids, filter.depth_1_ids]
   end
 
   def query_adapter
@@ -93,19 +64,6 @@ module SearchResults
     SelectAllFilter.new(filter, query_adapter) do |f|
       f.strategy = strategy
     end
-  end
-
-  class ResultFamily
-    attr_reader :parent
-
-    def initialize(parent, children = nil)
-      @parent, @children = parent, children
-    end
-
-    def children
-      @children || []
-    end
-
   end
 
 end

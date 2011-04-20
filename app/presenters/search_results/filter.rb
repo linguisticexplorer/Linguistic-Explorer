@@ -6,7 +6,7 @@ module SearchResults
     def initialize(filter, query)
       @filter   = filter
       @query   = query
-      
+
       Rails.logger.info "_______#{self.class.name}_________"
     end
 
@@ -20,6 +20,14 @@ module SearchResults
       else
         super
       end
+    end
+
+    def depth_0_ids
+      depth_0_vals.map(&:id)
+    end
+
+    def depth_1_ids
+      depth_1_vals.map(&:id)
     end
 
   end

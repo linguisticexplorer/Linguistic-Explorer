@@ -2,6 +2,8 @@ class SearchesController < GroupDataController
 
   before_filter :authenticate_user!, :only => [:index]
 
+  respond_to :html, :csv
+
   def new
     @search = Search.new do |s|
       s.user  = current_user
@@ -34,6 +36,13 @@ class SearchesController < GroupDataController
 
   def show
     @search = Search.find(params[:id])
+    respond_with(@search) do |format|
+      format.html
+      format.csv {
+        send_data SearchCSV.new(@search).to_csv,
+        :type => "text/csv",
+        :filename => "terraling-#{@search.name}.csv" }
+    end
   end
 
   def index
