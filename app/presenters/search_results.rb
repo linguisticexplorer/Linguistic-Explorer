@@ -101,34 +101,11 @@ module SearchResults
     def initialize(parent, children = nil)
       @parent, @children = parent, children
     end
-    
+
     def children
       @children || []
     end
 
   end
-
-  # class ResultSet
-  #   def initialize(parent, child = nil)
-  #     @parent, @child = parent, child
-  #   end
-  # 
-  #   def parent(method)
-  #     @parent.send(method)
-  #   end
-  # 
-  #   def child(method)
-  #     @child.send(method) if @child
-  #   end
-  # 
-  #   def parent_examples
-  #     @parent.examples.map(&:name).join(", ")
-  #   end
-  # 
-  #   def child_examples
-  #     @child.examples.map(&:name).join(", ")
-  #   end
-  # 
-  # end
 
 end

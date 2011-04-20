@@ -57,7 +57,6 @@ Feature: Save searches
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
-
   Scenario: Regenerate results of saved search query
   Scenario: Delete saved query
   Scenario: Limit user to 25 searches

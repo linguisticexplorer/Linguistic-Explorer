@@ -46,13 +46,13 @@ module SearchResultsHelper
     # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
     COLUMNS - @search.included_columns
   end
-  
+
   def link_to_ling(ling)
-    "<a href='#{group_ling_path(current_group, ling)}'>#{h(ling.name)}</a>".html_safe
+    "<a href='/groups/#{current_group.to_param}/lings/#{ling.to_param}'>#{h(ling.name)}</a>".html_safe
   end
-  
+
   def link_to_property(property)
-    "<a href='#{group_property_path(current_group, property)}'>#{h(property.name)}</a>".html_safe
+    "<a href='/groups/#{current_group.to_param}/properties/#{property.to_param}'>#{h(property.name)}</a>".html_safe
   end
 
   def row_methods
@@ -71,16 +71,8 @@ module SearchResultsHelper
   def search_result_attributes(parent, child = nil)
     {}.tap do |attrs|
       attrs[:class] = "row"
-      depths = {}.tap do |depth|
-        depth[:parent] = parent
-        depth[:child]  = child unless child.nil?
-      end
-      depths.each do |depth, lings_property|
-        [:ling, :property].each do |method|
-          attrs["data-#{depth}-#{method}"] = lings_property.send(method).try(:id)
-        end
-        attrs["data-#{depth}-value"] = lings_property.id
-      end
+      attrs["data-parent-value"] = parent.id
+      attrs["data-child-value"]  = child.id unless child.nil?
     end
   end
 
