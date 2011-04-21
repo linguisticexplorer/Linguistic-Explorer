@@ -1,5 +1,5 @@
 <h2><%= current_group.name %> Searches</h2>
-<div id="searches" class="table">
+<div id="searches" class="table spacing">
   <%- if @searches.any? -%>
     <%- @searches.each do |search| -%>
       <div class="row">
@@ -8,6 +8,9 @@
         </div>
         <div class="cell">
           <%= link_to "Results", [current_group, search] %>
+        </div>
+        <div class="cell">
+          <%= link_to "Download CSV", group_search_path(current_group, search, :format => :csv) %>
         </div>
       </div>
     <%- end -%>

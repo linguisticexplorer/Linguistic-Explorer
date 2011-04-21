@@ -57,7 +57,25 @@ Feature: Save searches
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
 
+  Scenario: Export search to csv
+    When I go to the Syntactic Structures search page
+    When I check "Speakers" within "#show_parent"
+    And I check "Sentences" within "#show_child"
+    And I check "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I check "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
+    And I select "Speaker 1" from "Speakers"
+    And I press "Search"
+    Then I should see "Save search results"
+    When I fill in "Name" with "My First Search"
+    And I press "Save"
+    And I follow "Download CSV"
+    Then the csv should contain the following rows
+    | col_1     | col_2               | col_3           | col_4       |
+    | Speaker   | Speaker Properties  | Speaker Values  | Sentence    |
+    | Speaker 1 | Property 1          | Eastern         | Sentence 1  |
+
   Scenario: Regenerate results of saved search query
   Scenario: Delete saved query
   Scenario: Limit user to 25 searches
-  Scenario: Create CSV from searches

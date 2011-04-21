@@ -31,3 +31,14 @@ Then /^I should see the following search results:$/ do |table|
     end
   end
 end
+
+Then /^the csv should contain the following rows$/ do |table|
+  csv_response = CSV.parse(page.body)
+  columns = %w[col_1 col_2 col_3 col_4 col_5 col_6 col_7 col_8]
+
+  table.hashes.each_with_index do |row, i|
+    columns.each_with_index do |col, j|
+      csv_response[i][j].should == row[col] unless row[col].nil?
+    end
+  end
+end
