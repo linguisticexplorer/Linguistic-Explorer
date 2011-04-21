@@ -27,8 +27,16 @@ Feature: Save searches
 
   Scenario: View a simple saved searches
     And I have a saved group search "My First Search"
-    When I go to my group searches page
+    When I go to the Syntactic Structures search page
+    When I follow "History"
     Then I should see "My First Search"
+
+  Scenario: No link to search history if signed out
+    And I have a saved group search "My First Search"
+    When I go to the Syntactic Structures search page
+    And I follow "Sign out"
+    And I go to the Syntactic Structures search page
+    Then I should not see "History"
 
   Scenario: Save search
     When I go to the Syntactic Structures search page
