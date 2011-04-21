@@ -71,8 +71,8 @@ Feature: Save searches
     And I check "Sentences" within "#show_child"
     And I check "Properties" within "#show_parent"
     And I uncheck "Properties" within "#show_child"
-    And I check "Value" within "#show_parent"
-    And I uncheck "Value" within "#show_child"
+    And I uncheck "Value" within "#show_parent"
+    And I check "Value" within "#show_child"
     And I select "Speaker 1" from "Speakers"
     And I press "Search"
     Then I should see "Save search results"
@@ -80,10 +80,18 @@ Feature: Save searches
     And I press "Save"
     And I follow "Download CSV"
     Then the csv should contain the following rows
-    | col_1     | col_2               | col_3           | col_4       |
-    | Speaker   | Speaker Properties  | Speaker Values  | Sentence    |
-    | Speaker 1 | Property 1          | Eastern         | Sentence 1  |
+    | col_1     | col_2               | col_3       | col_4           |
+    | Speaker   | Speaker Properties  | Sentence    | Sentence Values |
+    | Speaker 1 | Property 1          | Sentence 1  | verb            |
 
-  Scenario: Regenerate results of saved search query
   Scenario: Delete saved query
+    And I have a saved group search "My First Search"
+    When I go to the Syntactic Structures search page
+    When I follow "History"
+    And I follow "Delete"
+    Then I should see "successfully deleted"
+    And I should see "Syntactic Structures Searches"
+    And I should not see "My First Search"
+    
+  Scenario: Regenerate results of saved search query
   Scenario: Limit user to 25 searches

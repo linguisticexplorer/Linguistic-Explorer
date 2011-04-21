@@ -48,5 +48,11 @@ class SearchesController < GroupDataController
   def index
     @searches = Search.where(:user => current_user, :group => current_group)
   end
+  
+  def destroy
+    @search = Search.find(params[:id])
+    @search.destroy
+    redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
+  end
 
 end

@@ -12,6 +12,9 @@
         <div class="cell">
           <%= link_to "Download CSV", group_search_path(current_group, search, :format => :csv) %>
         </div>
+        <div class="cell">
+          <%= link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete %>
+        </div>
       </div>
     <%- end -%>
   <%- else -%>
