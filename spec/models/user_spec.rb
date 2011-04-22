@@ -1,6 +1,10 @@
 require 'spec_helper'
 
 describe User do
+  before(:each) do
+    @user = User.new
+  end
+  
   describe "one-liners" do
     it_should_validate_presence_of :name, :email, :access_level
     it_should_have_many :memberships, :groups
@@ -29,6 +33,36 @@ describe User do
       group = Factory(:group)
       Membership.create(:level => "admin", :group => group, :user => user)
       user.administrated_groups.should include(group)
+    end
+  end
+  
+  describe "reached_max_search_limit?" do
+    it "should return reached max limit for search by group" do
+      group = mock(Group)
+      Search.should_receive(:reached_max_limit?).with(@user, group).and_return(true)
+      @user.reached_max_search_limit?(group).should be_true
+    end
+    it "should return reached max limit for search by group" do
+      Search.stub!(:reached_max_limit?).and_return(false)
+      @user.reached_max_search_limit?(mock(Group)).should be_false
+    end
+  end
+  
+  describe "member_of?" do
+    before(:each) do
+      @group_1 = Factory(:group, :name => "Group 1")
+      @group_2 = Factory(:group, :name => "Group 2")
+      @user.groups << @group_1
+      @user.groups << @group_2
+    end
+    it "should return false if group_id not in group_ids" do
+      @user.member_of?(Factory(:group)).should be_false
+    end
+    it "should return true if group_id in group_ids" do
+      @user.member_of?(@group_1).should be_true
+    end
+    it "should return false if not a group" do
+      @user.member_of?(mock(Object, :id => @group_1.id)).should be_false
     end
   end
 end

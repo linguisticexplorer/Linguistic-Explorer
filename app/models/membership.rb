@@ -1,5 +1,8 @@
 class Membership < ActiveRecord::Base
-  ACCESS_LEVELS = [ADMIN = "admin", MEMBER = "member"]
+  ACCESS_LEVELS = [
+    ADMIN = "admin",
+    MEMBER = "member"
+  ]
 
   include Groupable
 
@@ -11,6 +14,6 @@ class Membership < ActiveRecord::Base
   belongs_to :user
 
   def group_admin?
-    ADMIN == level
+    level == ADMIN
   end
 end

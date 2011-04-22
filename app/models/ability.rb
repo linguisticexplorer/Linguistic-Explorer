@@ -16,12 +16,12 @@ class Ability
       user.new_record? ? can(:create, User) : can(:manage, user)
 
       # turn off private groups and data
-      cannot  :manage,  Group,                 :privacy => "private"
-      cannot  :manage,  group_data, :group => {:privacy => "private"}
+      cannot  :manage,  Group,                 :privacy => Group::PRIVATE
+      cannot  :manage,  group_data, :group => {:privacy => Group::PRIVATE}
 
       # turn on group reading for members and management for member admins
-      can :read,    Group, :memberships => { :user_id => user.id, :level => 'member' }
-      can :manage,  Group, :memberships => { :user_id => user.id, :level => 'admin' }
+      can :read,    Group, :memberships => { :user_id => user.id, :level => Membership::MEMBER }
+      can :manage,  Group, :memberships => { :user_id => user.id, :level => Membership::ADMIN }
 
       # turn on group member data management and admin data reading for group members
       can :manage,  group_member_data,  :group => { :id => user.group_ids }
@@ -35,8 +35,8 @@ class Ability
       can :delete, Membership,  :user_id => user.id
 
       # turn on public group reading
-      can :read, Group,                 :privacy => "public"
-      can :read, group_data, :group => {:privacy => "public"}
+      can :read, Group,                 :privacy => Group::PUBLIC
+      can :read, group_data, :group => {:privacy => Group::PUBLIC}
 
       # TODO replace authentication check with CanCan solution
       # can :manage Search,     :group => { :privacy => 'public' }, :user => user

@@ -1,4 +1,9 @@
 class User < ActiveRecord::Base
+  ACCESS_LEVELS = [
+    ADMIN = "admin",
+    USER  = "user"
+  ]
+
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
   devise :database_authenticatable, :registerable,
@@ -13,10 +18,18 @@ class User < ActiveRecord::Base
   attr_accessible :name, :password, :password_confirmation, :remember_me
 
   def admin?
-    "admin" == self.access_level
+    self.access_level == ADMIN
   end
 
   def administrated_groups
     self.memberships.select{ |m| m.group_admin? }.map(&:group)
+  end
+
+  def reached_max_search_limit?(group)
+    Search.reached_max_limit?(self, group)
+  end
+  
+  def member_of?(group)
+    group.is_a?(Group) && group_ids.include?(group.id)
   end
 end

@@ -24,7 +24,7 @@ describe Ability do
       end
 
       it "should not be able to see private groups and their data" do
-        @group = Factory(:group, :name => "privy", :privacy => "private")
+        @group = Factory(:group, :name => "privy", :privacy => Group::PRIVATE)
         @visitor.should_not be_able_to(:read, @group)
         [ :ling, :category ].each do |model|
           @visitor.should_not be_able_to(:read, Factory(model, :group => @group))
@@ -32,7 +32,7 @@ describe Ability do
       end
 
       it "should be able to view public groups and their data" do
-        @group = Factory(:group, :name => "pubs", :privacy => "public")
+        @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
         @visitor.should be_able_to(:read, @group)
         @visitor.should be_able_to(:read, Factory(:ling, :group => @group))
         @visitor.should be_able_to(:read, Factory(:category, :group => @group))
@@ -83,7 +83,7 @@ describe Ability do
           Membership.create(:group => group, :user => user, :level => "admin")
           user.reload
           @admin = Ability.new(user)
-          @other_group = Factory(:group, :name => "openness", :privacy => "public")
+          @other_group = Factory(:group, :name => "openness", :privacy => Group::PUBLIC)
         end
 
         it "should not be able to read the group" do
@@ -118,7 +118,7 @@ describe Ability do
           Membership.create(:group => group, :user => user, :level => "admin")
           user.reload
           @admin = Ability.new(user)
-          @other_group = Factory(:group, :name => "haters", :privacy => "private")
+          @other_group = Factory(:group, :name => "haters", :privacy => Group::PRIVATE)
         end
 
         [ :read, :update, :create, :destroy ].each do |action|

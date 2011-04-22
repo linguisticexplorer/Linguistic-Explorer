@@ -26,13 +26,13 @@ Feature: Save searches
     Then I should see "No saved searches for Syntactic Structures"
 
   Scenario: View a simple saved searches
-    And I have a saved group search "My First Search"
+    Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
     When I follow "History"
     Then I should see "My First Search"
 
   Scenario: No link to search history if signed out
-    And I have a saved group search "My First Search"
+    Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
     And I follow "Sign out"
     And I go to the Syntactic Structures search page
@@ -85,13 +85,35 @@ Feature: Save searches
     | Speaker 1 | Property 1          | Sentence 1  | verb            |
 
   Scenario: Delete saved query
-    And I have a saved group search "My First Search"
+    Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
     When I follow "History"
     And I follow "Delete"
     Then I should see "successfully deleted"
     And I should see "Syntactic Structures Searches"
     And I should not see "My First Search"
-    
+
+  Scenario: Warning after 25 saved searches
+    Given I have 25 saved group searches
+    When I go to the Syntactic Structures search page
+    Then I should see "reached the system limit for saved searches"
+    When I press "Search"
+    Then I should see "reached the system limit for saved searches"
+    And I should not see "Save search results"
+
+  Scenario: Save search at limit
+    Given I have 24 saved group searches
+    When I go to the Syntactic Structures search page
+    When I press "Search"
+    And I fill in "Name" with "Search 25"
+    Then I press "Save"
+    And I should see "Search 25"
+
+  Scenario: Error on search
+    When I go to the Syntactic Structures search page
+    When I press "Search"
+    And I fill in "Name" with ""
+    Then I press "Save"
+    And I should see "can't be blank"
+
   Scenario: Regenerate results of saved search query
-  Scenario: Limit user to 25 searches

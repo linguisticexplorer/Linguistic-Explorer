@@ -2,6 +2,12 @@ Given /^I have a saved group search "([^\"]*)"$/ do |search_name|
   Factory(:search, :name => search_name, :user => @user, :group => @group)
 end
 
+Given /^I have (\d+) saved group searches$/ do |num|
+  num.to_i.times do |i|
+    Factory(:search, :name => "My search #{i + 1}", :user => @user, :group => @group)
+  end
+end
+
 When /^I allow all languages$/ do
   # no op
 end

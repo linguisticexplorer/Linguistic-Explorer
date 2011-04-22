@@ -1,8 +1,12 @@
 class Group < ActiveRecord::Base
+  PRIVACY = [
+    PRIVATE = 'private',
+    PUBLIC  = 'public'
+  ]
   DEFAULT_EXAMPLE_KEYS = ["text"]
   DEFAULTS = {
         :depth_maximum  => 1,
-        :privacy        => "public",
+        :privacy        => PUBLIC,
         :ling0_name     => "Ling",
         :ling1_name     => "Linglet",
         :example_name   => "Example",
@@ -25,8 +29,8 @@ class Group < ActiveRecord::Base
   has_many :memberships,               :dependent => :destroy
   has_many :users,                     :through => :memberships
 
-  scope :public,  where( :privacy => 'public' )
-  scope :private, where( :privacy => 'private' )
+  scope :public,  where( :privacy => PUBLIC )
+  scope :private, where( :privacy => PRIVATE )
 
   def ling_name_for_depth(depth)
     if depth > depth_maximum
@@ -52,5 +56,9 @@ class Group < ActiveRecord::Base
 
   def example_storable_keys
     (DEFAULT_EXAMPLE_KEYS + (!example_fields.blank? ? example_fields.split(",").collect(&:strip) : [])).uniq
+  end
+  
+  def private?
+    privacy == PRIVATE
   end
 end
