@@ -1,6 +1,20 @@
 class SearchComparison
   include ERB::Util
 
+  TYPES = [
+    UNION         = :union,
+    INTERSECTION  = :intersection,
+    DIFFERENCE    = :difference,
+    EXCLUSION     = :exclusion
+  ]
+
+  OPERATIONS = {
+    UNION         => :+,
+    INTERSECTION  => :&,
+    DIFFERENCE    => :-,
+    EXCLUSION     => :^
+  }
+
   def self.model_name
     "SearchComparison"
   end
@@ -14,7 +28,7 @@ class SearchComparison
   end
 
   def comparison_options
-    %w[union].map { |c| [c, c] }
+    TYPES.map { |c| [c, c] }
   end
 
   def search_options
@@ -30,7 +44,7 @@ class SearchComparison
   end
 
   def of
-    @of ||= Search.find(@of_id) unless @of_id.nil?
+    @of   ||= Search.find(@of_id) unless @of_id.nil?
   end
 
   def with
@@ -44,9 +58,8 @@ class SearchComparison
   private
 
   def compare!
-    # UNION
-    self.parent_ids = (of.parent_ids + with.parent_ids).uniq
-    self.child_ids  = (of.child_ids  + with.child_ids).uniq
+    self.parent_ids = compare_sets :parent_ids
+    self.child_ids  = compare_sets :child_ids
   end
 
   def build_search_through_comparison
@@ -69,4 +82,12 @@ class SearchComparison
       send("#{attribute}=", value)
     end
   end
+
+  def compare_sets(method_name)
+    set_1 = Set.new(of.send(method_name))
+    set_2 = Set.new(with.send(method_name))
+    op    = OPERATIONS[self.type.to_sym]
+    set_1.send(op, set_2).to_a
+  end
+
 end

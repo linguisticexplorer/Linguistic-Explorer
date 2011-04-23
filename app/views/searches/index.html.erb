@@ -1,5 +1,5 @@
 <h2><%= current_group.name %> Searches</h2>
-<div id="searches" class="table spacing">
+<div id="searches" class="table spacing margin">
   <%- if @searches.any? -%>
     <%- @searches.each do |search| -%>
       <div class="row">
@@ -14,13 +14,6 @@
         </div>
         <div class="cell">
           <%= link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete %>
-        </div>
-      </div>
-    <%- end -%>
-    <%- if @searches.size > 1 -%>
-      <div class="row">
-        <div class="cell">
-          <%= link_to("Compare searches", [:new, current_group, :search_comparison])  %>
         </div>
       </div>
     <%- end -%>

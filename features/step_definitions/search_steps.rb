@@ -99,6 +99,8 @@ Then /^I should see the following grouped search results:$/ do |table|
       page.should have_content(child_ling.name)
       page.should have_content(parent_prop.name)
       page.should have_content(child_prop.name)
+      page.should have_content(row["parent value"])
+      page.should have_content(row["child value"])
     end
   end
 end

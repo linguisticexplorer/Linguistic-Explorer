@@ -6,6 +6,8 @@
 
 .center { margin: 0 auto;}
 
+.margin { margin: 10px;}
+
 /*form*/
 .table h3 { margin: 0 2em 0 0;}
 fieldset { margin-bottom: 10px; clear:left; border:1px solid #ccc; padding:10px;}
