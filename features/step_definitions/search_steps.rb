@@ -8,6 +8,52 @@ Given /^I have (\d+) saved group searches$/ do |num|
   end
 end
 
+Given /^the following results for the group search "([^\"]*)":$/ do |search_name, table|
+  parent_ids, child_ids = [], []
+
+  table.hashes.each do |row|
+
+    parent_ling = find_or_create_ling({
+      :name => row['parent ling'],
+      :group => @group,
+      :depth => Depth::PARENT
+    })
+    child_ling = find_or_create_ling({
+      :name => row['child ling'],
+      :group => @group,
+      :depth => Depth::CHILD,
+      :parent => parent_ling
+    })
+    parent_property = find_or_create_property({
+      :name => row['parent property'],
+      :group => @group,
+      :category => find_or_create_category(:name => 'Parent category', :group => @group, :depth => Depth::PARENT)
+    })
+    child_property = find_or_create_property({
+      :name => row['child property'],
+      :group => @group,
+      :category => find_or_create_category(:name => 'Child category', :group => @group, :depth => Depth::CHILD)
+    })
+
+    parent_ids  << find_or_create_lings_property({
+      :ling => parent_ling,
+      :property => parent_property,
+      :group => @group,
+      :value => row['parent value']
+    }).id
+
+    child_ids   << find_or_create_lings_property({
+      :ling => child_ling,
+      :property => child_property,
+      :group => @group,
+      :value => row['child value']
+    }).id
+  end
+
+  Factory(:search,
+    :name => search_name, :parent_ids => parent_ids, :child_ids => child_ids, :group => @group, :user => @user)
+end
+
 When /^I allow all languages$/ do
   # no op
 end
@@ -34,6 +80,25 @@ Then /^I should see the following search results:$/ do |table|
       page.should have_content(prop.name)     if prop
       page.should have_content(lp.value)      if row["Value"]
       page.should have_content(example.name)  if example
+    end
+  end
+end
+
+Then /^I should see the following grouped search results:$/ do |table|
+  table.hashes.each do |row|
+    parent_ling  = Ling.find_by_name(row["parent ling"])
+    parent_prop  = Property.find_by_name(row["parent property"])
+    child_ling  = Ling.find_by_name(row["child ling"])
+    child_prop  = Property.find_by_name(row["child property"])
+
+    parent_lp = LingsProperty.find_by_ling_id_and_property_id(parent_ling.id, parent_prop.id)
+    child_lp = LingsProperty.find_by_ling_id_and_property_id(child_ling.id, child_prop.id)
+
+    with_scope(%Q|[data-parent-value="#{parent_lp.id}"][data-child-value="#{child_lp.id}"]|) do
+      page.should have_content(parent_ling.name)
+      page.should have_content(child_ling.name)
+      page.should have_content(parent_prop.name)
+      page.should have_content(child_prop.name)
     end
   end
 end

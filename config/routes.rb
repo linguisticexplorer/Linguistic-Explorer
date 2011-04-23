@@ -12,6 +12,8 @@ LinguisticExplorer::Application.routes.draw do
       end
     end
 
+    resources :search_comparisons, :only => [:new, :create]
+
     resources :lings do
       member do
         get 'set_values'

@@ -31,6 +31,6 @@
   </div>
 
   <%- @search.results.each do |result| -%>
-    <%= render :partial => "result", :locals => { :result => result} %>
+    <%= render :partial => "searches/result", :locals => { :result => result} %>
   <%- end -%>
 </div>

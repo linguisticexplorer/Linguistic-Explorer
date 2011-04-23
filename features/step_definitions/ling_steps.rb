@@ -7,12 +7,10 @@ Given /^the following "([^\"]*)" lings:$/ do |group_name, table|
     parent = nil
 
     unless attrs["parent"].blank?
-      parent = group.lings.find_by_name(attrs['parent']) ||
-        Factory(:ling, :name => attrs['parent'], :depth => 0, :group => group)
+      parent = find_or_create_ling(:name => attrs['parent'], :depth => Depth::PARENT, :group => group)
     end
 
-    group.lings.find_by_name(attrs['name']) ||
-      Factory(:ling, attrs.merge(:parent => parent, :depth => attrs['depth'], :group => group))
+    find_or_create_ling(attrs.merge(:parent => parent, :group => group))
   end
 end
 

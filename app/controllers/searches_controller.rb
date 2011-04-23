@@ -18,6 +18,8 @@ class SearchesController < GroupDataController
       s.group = current_group
       s.query = params[:search]
     end
+
+    # @search.get_results!
   end
 
   def create
@@ -47,7 +49,12 @@ class SearchesController < GroupDataController
   end
 
   def index
-    @searches = Search.where(:user => current_user, :group => current_group)
+    @searches   = Search.where(:user => current_user, :group => current_group)
+    @comparison = SearchComparison.new do |sc|
+      sc.user   = current_user
+      sc.group  = current_group
+      sc.searches = @searches
+    end
   end
 
   def destroy

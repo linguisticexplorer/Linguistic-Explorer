@@ -1,0 +1,11 @@
+<h2>Compare <%= current_group.name %> Searches</h2>
+
+<%- if @comparison.enough_to_compare? -%>
+  <%= render :partial => 'new' %>
+<%- else -%>
+  <div class="center">
+    Need at least two searches for <%= current_group.name %> to compare.
+    <%= link_to 'New search', [:new, current_group, :search] %>
+  </div>
+<%- end -%>
+

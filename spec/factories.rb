@@ -30,6 +30,9 @@ Factory.define :category do |f|
   f.association :group, :factory => :group
 end
 
+Factory.define :lings_property do |f|
+end
+
 Factory.define :example do |f|
   f.name "SampleExample"
 # NOTE: You must pass the following two yourself because the ling must belong to the same group as the created example

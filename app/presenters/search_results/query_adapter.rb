@@ -5,7 +5,7 @@ module SearchResults
 
     def initialize(group, params)
       @group  = group
-      @params = params.symbolize_keys
+      @params = (params || {}).symbolize_keys
     end
 
     def [](key)
@@ -104,7 +104,8 @@ module SearchResults
 
     def included_columns
       # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
-      @params[:include].symbolize_keys.keys
+      # show all columns if parameters not present
+      @params[:include] && @params[:include].symbolize_keys.keys || SearchColumns::COLUMNS
     end
 
   end

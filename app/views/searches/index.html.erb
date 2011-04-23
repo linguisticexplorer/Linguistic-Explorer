@@ -17,6 +17,13 @@
         </div>
       </div>
     <%- end -%>
+    <%- if @searches.size > 1 -%>
+      <div class="row">
+        <div class="cell">
+          <%= link_to("Compare searches", [:new, current_group, :search_comparison])  %>
+        </div>
+      </div>
+    <%- end -%>
   <%- else -%>
     <div class="center">
       No saved searches for <%= current_group.name %>
@@ -24,3 +31,6 @@
   <%- end -%>
 </div>
 
+<%- if @comparison.enough_to_compare? -%>
+  <%= render :partial => 'search_comparisons/new' %>
+<%- end -%>
