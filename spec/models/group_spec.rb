@@ -5,7 +5,7 @@ describe Group do
     it_should_validate_presence_of :name
     it_should_validate_uniqueness_of :name
     it_should_have_many :lings, :properties, :lings_properties, :examples_lings_properties, :examples, :categories
-    it_should_have_many :memberships, :users
+    it_should_have_many :memberships, :members
   end
 
   describe "should be createable" do

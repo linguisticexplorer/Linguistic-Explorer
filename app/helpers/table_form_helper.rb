@@ -91,5 +91,4 @@ module TableFormHelper
 
     form_for(record_or_name_or_array, *args, &proc)
   end
-
 end

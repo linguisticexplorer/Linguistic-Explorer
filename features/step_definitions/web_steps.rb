@@ -30,9 +30,9 @@ When /^(?:|I )press "([^"]*)"(?: within "([^"]*)")?$/ do |button, selector|
   end
 end
 
-When /^(?:|I )return to "([^"]*)"(?: within "([^"]*)")?$/ do |button, selector| # Simple replacement of "return to" for "press", seen above
+When /^(?:|I )return to "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector| # Simple replacement of "return to" for "follow", seen below
   with_scope(selector) do
-    click_button(button)
+    click_link(link)
   end
 end
 

@@ -11,14 +11,14 @@ class User < ActiveRecord::Base
 
   validates_presence_of :name, :email, :access_level
 
-  has_many :memberships, :dependent => :destroy
+  has_many :memberships, :foreign_key => :member_id, :dependent => :destroy
   has_many :groups, :through => :memberships
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :password, :password_confirmation, :remember_me
 
   def admin?
-    self.access_level == ADMIN
+    ADMIN == self.access_level
   end
 
   def administrated_groups
@@ -28,7 +28,7 @@ class User < ActiveRecord::Base
   def reached_max_search_limit?(group)
     Search.reached_max_limit?(self, group)
   end
-  
+
   def member_of?(group)
     group.is_a?(Group) && group_ids.include?(group.id)
   end

@@ -1,5 +1,4 @@
 class SearchesController < GroupDataController
-
   before_filter :authenticate_user!, :only => [:index]
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
 
@@ -10,6 +9,7 @@ class SearchesController < GroupDataController
       s.user  = current_user
       s.group = current_group
     end
+    authorize! :new, @search
   end
 
   def preview

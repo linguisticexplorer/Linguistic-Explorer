@@ -6,6 +6,7 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
     @lings = Ling.find_all_by_depth(@depth)
+    authorize! :read, @lings
 
     respond_to do |format|
       format.html # depth.html.erb
@@ -18,6 +19,7 @@ class LingsController < GroupDataController
   def index
     @lings_by_depth = (0..current_group.depth_maximum).to_a.map{|depth| Ling.find_all_by_depth(depth)}
 
+    authorize! :read, @lings_by_depth
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @lings_by_depth }

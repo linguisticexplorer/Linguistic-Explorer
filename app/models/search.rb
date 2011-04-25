@@ -1,13 +1,15 @@
 class Search < ActiveRecord::Base
+  MAX_SEARCH_LIMIT = 25
+
   include SearchForm
   include SearchResults
   include JsonAccessible
 
   belongs_to :group
-  belongs_to :user
+  belongs_to :creator, :class_name => "User"
 
-  validates_presence_of :user, :group, :name
-  validate :user_has_permission
+  validates_presence_of :creator, :group, :name
+  validate :user_not_over_search_limit
 
   serialize :query
   serialize :parent_ids
@@ -15,25 +17,15 @@ class Search < ActiveRecord::Base
 
   json_accessor :query, :parent_ids, :child_ids
 
-  MAX_SEARCH_LIMIT = 25
-
   class << self
-    def reached_max_limit?(user, group)
-      where(:user => user, :group => group).count >= MAX_SEARCH_LIMIT
+    def reached_max_limit?(creator, group)
+      where(:creator => creator, :group => group).count >= MAX_SEARCH_LIMIT
     end
   end
 
   private
 
-  def user_has_permission
-    return unless group && user
-
-    if self.class.reached_max_limit?(user, group)
-      errors[:base] << "Max save limit (25) has been reached. Please remove old searches first"
-    end
-
-    if group.private? && !user.member_of?(group)
-      errors[:base] << "You must be a member of the group to use its search features"
-    end
+  def user_not_over_search_limit
+    errors[:base] << "Max save limit (25) has been reached. Please remove old searches first" if group && creator && self.class.reached_max_limit?(creator, group)
   end
 end

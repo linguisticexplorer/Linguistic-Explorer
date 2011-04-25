@@ -20,10 +20,6 @@ module SearchFormsHelper
     "#{text.underscorize}_text"
   end
 
-  def search_options_id(text)
-    "#{text.underscorize}_options"
-  end
-
   def search_text_field_name(method, scope)
     "search[#{method.to_s}][#{scope.to_s.underscorize}]"
   end
@@ -43,7 +39,4 @@ module SearchFormsHelper
   def categorized_set_id(name, type)
     "search_group_#{name.underscorize}_#{type}"
   end
-
-  # Results
-
 end

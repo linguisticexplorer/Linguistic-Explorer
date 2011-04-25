@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <th>User</th>
+    <th>Member</th>
     <th>Level</th>
     <th></th>
     <th></th>
@@ -10,7 +10,7 @@
 
 <% @memberships.each do |membership| %>
   <tr>
-    <td><%= membership.user.name %></td>
+    <td><%= membership.member.name %></td>
     <td><%= membership.level %></td>
     <td><%= link_to 'Edit', edit_group_membership_path(current_group, membership) %></td>
     <td><%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %></td>

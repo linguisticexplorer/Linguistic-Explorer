@@ -44,7 +44,7 @@ describe MembershipsController do
     describe "with valid params" do
       it "assigns a newly created membership to @membership" do
         lambda {
-          post :create, :membership => {'level' => 'member', :user_id => Factory(:user).id}, :group_id => groups(:inclusive).id
+          post :create, :membership => {'level' => 'member', :member_id => Factory(:user).id}, :group_id => groups(:inclusive).id
           assigns(:membership).should_not be_new_record
           assigns(:membership).should be_valid
           assigns(:membership).level.should == 'member'
@@ -53,16 +53,16 @@ describe MembershipsController do
       end
 
       it "redirects to the created membership" do
-        post :create, :membership => {'level' => 'member', :user_id => Factory(:user).id}, :group_id => groups(:inclusive).id
+        post :create, :membership => {'level' => 'member', :member_id => Factory(:user).id}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_membership_url(assigns(:group), assigns(:membership)))
       end
 
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
         group_admin = Factory(:user, :access_level => 'user', :name => 'admin', :email => 'a@dmin.com')
-        Membership.create(:user => group_admin, :group => groups(:inclusive), :level => "admin")
+        Membership.create(:member => group_admin, :group => groups(:inclusive), :level => "admin")
         sign_in group_admin
-        post :create, :membership => {'level' => 'member', :user_id => user.id}, :group_id => groups(:inclusive).id
+        post :create, :membership => {'level' => 'member', :member_id => user.id}, :group_id => groups(:inclusive).id
         assigns(:membership).creator.should == group_admin
       end
     end
@@ -70,13 +70,13 @@ describe MembershipsController do
      describe "with invalid params" do
       it "does not save a new membership" do
         lambda {
-          post :create, :membership => { 'level' => '', :user_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+          post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
           assigns(:membership).should_not be_valid
         }.should change(Membership, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :membership => { 'level' => '', :user_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+        post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
         response.should be_success
         response.should render_template("new")
       end

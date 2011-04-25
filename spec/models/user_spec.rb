@@ -4,7 +4,7 @@ describe User do
   before(:each) do
     @user = User.new
   end
-  
+
   describe "one-liners" do
     it_should_validate_presence_of :name, :email, :access_level
     it_should_have_many :memberships, :groups
@@ -31,11 +31,12 @@ describe User do
     it "should return the set of groups for which a user is an admin" do
       user = Factory(:user, :email => "one@example.com", :access_level => "user")
       group = Factory(:group)
-      Membership.create(:level => "admin", :group => group, :user => user)
+
+      Membership.create(:level => "admin", :group => group, :member => user)
       user.administrated_groups.should include(group)
     end
   end
-  
+
   describe "reached_max_search_limit?" do
     it "should return reached max limit for search by group" do
       group = mock(Group)
@@ -47,7 +48,7 @@ describe User do
       @user.reached_max_search_limit?(mock(Group)).should be_false
     end
   end
-  
+
   describe "member_of?" do
     before(:each) do
       @group_1 = Factory(:group, :name => "Group 1")

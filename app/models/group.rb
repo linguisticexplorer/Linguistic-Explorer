@@ -27,7 +27,7 @@ class Group < ActiveRecord::Base
   has_many :examples,                  :dependent => :destroy
   has_many :categories,                :dependent => :destroy
   has_many :memberships,               :dependent => :destroy
-  has_many :users,                     :through => :memberships
+  has_many :members,                   :through => :memberships, :source => :member
 
   scope :public,  where( :privacy => PUBLIC )
   scope :private, where( :privacy => PRIVATE )
@@ -57,8 +57,8 @@ class Group < ActiveRecord::Base
   def example_storable_keys
     (DEFAULT_EXAMPLE_KEYS + (!example_fields.blank? ? example_fields.split(",").collect(&:strip) : [])).uniq
   end
-  
+
   def private?
-    privacy == PRIVATE
+    PRIVATE == privacy
   end
 end

@@ -20,8 +20,8 @@ class Ability
       cannot  :manage,  group_data, :group => {:privacy => Group::PRIVATE}
 
       # turn on group reading for members and management for member admins
-      can :read,    Group, :memberships => { :user_id => user.id, :level => Membership::MEMBER }
-      can :manage,  Group, :memberships => { :user_id => user.id, :level => Membership::ADMIN }
+      can :read,    Group, :memberships => { :member_id => user.id, :level => Membership::MEMBER }
+      can :manage,  Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN }
 
       # turn on group member data management and admin data reading for group members
       can :manage,  group_member_data,  :group => { :id => user.group_ids }
@@ -32,15 +32,15 @@ class Ability
       can :manage, group_data,  :group => { :id => user.administrated_groups.map(&:id) }
 
       # turn on own membership deletion
-      can :delete, Membership,  :user_id => user.id
+      can :delete, Membership,  :member_id => user.id
 
       # turn on public group reading
       can :read, Group,                 :privacy => Group::PUBLIC
       can :read, group_data, :group => {:privacy => Group::PUBLIC}
 
       # TODO replace authentication check with CanCan solution
-      # can :manage Search,     :group => { :privacy => 'public' }, :user => user
-      # can :manage Search,     :group => { :id => user.group_ids }, :user => user
+      can :manage, Search, :group => { :privacy => 'public' }, :creator_id => user.id
+#      can :manage, Search, :group => { :id => user.group_ids }, :creator => user
     end
   end
 end

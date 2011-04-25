@@ -14,7 +14,7 @@ end
 Factory.define :membership do |f|
   f.level "member"
   f.association :group, :factory => :group
-  f.association :user,  :factory => :user
+  f.association :member, :factory => :user
 end
 
 Factory.define :property do |f|
@@ -62,5 +62,5 @@ end
 Factory.define :search do |f|
   f.name    "New Search"
   f.association :group, :factory => :group
-  f.association :user, :factory => :user
+  f.association :creator, :factory => :user
 end

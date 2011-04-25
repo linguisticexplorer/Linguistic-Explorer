@@ -8,19 +8,15 @@ describe Search do
       @user  = User.new
       @group = Group.new
       @search = Search.new do |s|
-        s.user  = @user
+        s.creator  = @user
         s.group = @group
       end
     end
-    it_should_validate_presence_of :group, :user, :name
+
+    it_should_validate_presence_of :group, :creator, :name
+
     it "should validate user within max search limit" do
       Search.stub!(:reached_max_limit?).and_return(true)
-      @search.valid?
-      @search.should have(1).error_on(:base)
-    end
-    it "should validate user a member of group if group private" do
-      @group.privacy = Group::PRIVATE
-      @user.stub!(:member_of?).with(@group).and_return(false)
       @search.valid?
       @search.should have(1).error_on(:base)
     end
@@ -47,16 +43,18 @@ describe Search do
     end
 
     it "should perform count conditions where user is user and group is group" do
-      Search.should_receive(:where).with(:user => @user, :group => @group).and_return(Search)
+      Search.should_receive(:where).with(:creator => @user, :group => @group).and_return(Search)
       Search.should_receive(:count)
       Search.reached_max_limit?(@user, @group)
     end
+
     it "should return true if count for searches by user and group has reached max limit" do
       Search.stub!(:count).and_return(25)
       Search.reached_max_limit?(@user, @group).should be_true
       Search.stub!(:count).and_return(26)
       Search.reached_max_limit?(@user, @group).should be_true
     end
+
     it "should return true if count for searches by user and group has reached max limit" do
       Search.stub!(:count).and_return(24)
       Search.reached_max_limit?(@user, @group).should be_false

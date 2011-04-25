@@ -4,6 +4,7 @@ class LingsPropertiesController < GroupDataController
   # GET /lings_properties.xml
   def index
     @lings_properties = LingsProperty.all
+    authorize! :read, @lings_properties
 
     respond_to do |format|
       format.html # index.html.erb

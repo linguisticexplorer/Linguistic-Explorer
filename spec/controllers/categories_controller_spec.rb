@@ -58,7 +58,7 @@ describe CategoriesController do
 
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
-        Membership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
         assigns(:category).creator.should == user

@@ -23,6 +23,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   def show
     @group = Group.find(params[:id])
+    authorize! :read, @group
 
     respond_to do |format|
       format.html # show.html.erb

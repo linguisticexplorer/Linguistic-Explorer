@@ -4,6 +4,7 @@ class PropertiesController < GroupDataController
   # GET /properties.xml
   def index
     @properties = Property.all
+    authorize! :read, @properties
 
     respond_to do |format|
       format.html # index.html.erb

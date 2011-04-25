@@ -58,8 +58,8 @@ x   Permissions violations should spit out to the homepage with an error flash
   4/18
     Links should all check permissions before adding themselves to the page
     Bulk upload
-    dump SSWL and then send through bulk uploader
   4/25
+    dump SSWL and then send through bulk uploader
     styling
     optimize indices on tables
     optimize includes on page loads

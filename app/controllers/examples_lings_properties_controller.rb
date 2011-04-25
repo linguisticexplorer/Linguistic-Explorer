@@ -4,6 +4,7 @@ class ExamplesLingsPropertiesController < GroupDataController
   # GET /examples_lings_properties.xml
   def index
     @examples_lings_properties = ExamplesLingsProperty.all
+    authorize! :read, @examples_lings_properties
 
     respond_to do |format|
       format.html # index.html.erb

@@ -80,7 +80,7 @@ describe ExamplesLingsPropertiesController do
 
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
-        Membership.create(:user => user, :group => groups(:inclusive), :level => "admin")
+        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         example = examples(:inclusive)
         lings_property = lings_properties(:inclusive)

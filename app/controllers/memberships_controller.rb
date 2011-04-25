@@ -4,6 +4,7 @@ class MembershipsController < GroupDataController
   # GET /memberships.xml
   def index
     @memberships = Membership.all
+    authorize! :read, @memberships
 
     respond_to do |format|
       format.html # index.html.erb

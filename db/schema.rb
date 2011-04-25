@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110419011009) do
+ActiveRecord::Schema.define(:version => 20110424224343) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(:version => 20110419011009) do
   add_index "lings_properties", ["property_value"], :name => "index_lings_properties_on_property_value"
 
   create_table "memberships", :force => true do |t|
-    t.integer  "user_id"
+    t.integer  "member_id"
     t.integer  "group_id"
     t.string   "level"
     t.datetime "created_at"
@@ -108,16 +108,16 @@ ActiveRecord::Schema.define(:version => 20110419011009) do
 
   create_table "searches", :force => true do |t|
     t.string   "name",       :null => false
-    t.integer  "user_id",    :null => false
+    t.integer  "creator_id", :null => false
     t.integer  "group_id",   :null => false
-    t.text     "query"
+    t.string   "query"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "parent_ids"
     t.text     "child_ids"
   end
 
-  add_index "searches", ["user_id", "group_id"], :name => "index_searches_on_user_id_and_group_id"
+  add_index "searches", ["creator_id", "group_id"], :name => "index_searches_on_creator_id_and_group_id"
 
   create_table "stored_values", :force => true do |t|
     t.string   "key"
