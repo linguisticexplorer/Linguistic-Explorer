@@ -27,6 +27,12 @@ def category_name(name)
 end
 
 puts "Starting Users..."
+# create a toy admin account
+User.create(:name => "admin", :password => "password", :password_confirmation => "password" ) do |u|
+  u.access_level = User::ADMIN
+  u.email = "a@dmin.com"
+end
+
 # Create Users(id,name,email,accesslevel)
 CSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |row|
   user = User.find_by_email(row["email"])
@@ -35,12 +41,13 @@ CSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |ro
   next if user.present?
 
   user = User.new(
-      :name => row["name"],
-      :password => "hunter2",
-      :password_confirmation => "hunter2"
-  )
-  user.access_level = row["accesslevel"]
-  user.email = row["email"]
+    :name => row["name"],
+    :password => "hunter2",
+    :password_confirmation => "hunter2"
+  ) do |u|
+    u.access_level = row["accesslevel"]
+    u.email = row["email"]
+  end
   user.save!
   user_list[row["id"]] = row["email"]
 end

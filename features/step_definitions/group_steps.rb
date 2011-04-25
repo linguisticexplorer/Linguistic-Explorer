@@ -1,11 +1,17 @@
 Given /^the ([^ ]*?) group "([^\"]*)"$/ do |privacy, name|
-  @group = Group.find_by_name(name) || Factory(:group, :name => name)
+  Given "the group \"#{name}\""
   @group.privacy = privacy
   @group.save
 end
 
 Given /^the group "([^\"]*)"$/ do |name|
   @group = Group.find_by_name(name) || Factory(:group, :name => name)
+end
+
+Given /^the group "([^\"]*)" has a maximum depth of (\d)$/ do |name,depth|
+  Given "the group \"#{name}\""
+  @group.depth_maximum = depth.to_i
+  @group.save!
 end
 
 Given /^the group "([^\"]*)" with the following ling names:$/ do |name, table|
