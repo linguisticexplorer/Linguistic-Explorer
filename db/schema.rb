@@ -110,7 +110,7 @@ ActiveRecord::Schema.define(:version => 20110424224343) do
     t.string   "name",       :null => false
     t.integer  "creator_id", :null => false
     t.integer  "group_id",   :null => false
-    t.string   "query"
+    t.text     "query"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "parent_ids"
