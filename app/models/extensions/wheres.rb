@@ -1,7 +1,5 @@
 module Extensions
-
   module Wheres
-
     def self.included(base)
       base.class_exec do
         scope :in_group, lambda { |group| where(:group => group) }
@@ -9,5 +7,4 @@ module Extensions
       end
     end
   end
-
 end

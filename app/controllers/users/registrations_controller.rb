@@ -3,7 +3,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     email = params[:user].delete(:email)
     build_resource
     resource.email = email
-    resource.access_level = "user"
+    resource.access_level = User::USER
 
     if resource.save
       set_flash_message :notice, :signed_up

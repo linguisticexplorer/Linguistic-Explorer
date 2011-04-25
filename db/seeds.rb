@@ -71,7 +71,10 @@ CSV.foreach(Rails.root.join("doc", "data", "Group.csv"), :headers => true) do |r
   group.save!
 end
 
-puts "Done with Group, starting Memberships"
+# Ensure one public group
+Group.first.update_attribute(:privacy, Group::PUBLIC)
+
+puts "Done with Groups, starting Memberships"
 # Create GroupMemberships(id,user_id,group_id,level)
 CSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])

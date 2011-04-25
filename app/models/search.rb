@@ -26,6 +26,6 @@ class Search < ActiveRecord::Base
   private
 
   def creator_not_over_search_limit
-    errors[:base] << "Max save limit (25) has been reached. Please remove old searches first" if group && creator && self.class.reached_max_limit?(creator, group)
+    errors[:base] << "Max save limit (#{MAX_SEARCH_LIMIT}) has been reached. Please remove old searches first" if group && creator && self.class.reached_max_limit?(creator, group)
   end
 end

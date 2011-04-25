@@ -41,15 +41,10 @@
         <%= f.text_field :lings_property_name %>
     </div>
 
-  <div class="field">
-      <%= f.label :example_name, "Example name" %><br />
-      <%= f.text_field :example_name %>
-  </div>
-
-  <div class="field">
-      <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)" %><br />
-      <%= f.text_field :example_fields %>
-  </div>
+    <div class="field">
+        <%= f.label :example_name, "Example name" %><br />
+        <%= f.text_field :example_name %>
+    </div>
 
     <div class="field">
         <%= f.label :examples_lings_property_name, "Example Lings Property name" %><br />
@@ -57,13 +52,18 @@
     </div>
 
     <div class="field">
+        <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)" %><br />
+        <%= f.text_field :example_fields %>
+    </div>
+
+    <div class="field">
         <%= f.label :depth_maximum, "Depth Maximum" %><br />
-        <%= f.text_field :depth_maximum %>
+        <%= f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i %>
     </div>
 
     <div class="field">
         <%= f.label :privacy, "Privacy level" %><br />
-        <%= f.text_field :privacy %>
+        <%= f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s %>
     </div>
 
     <div class="actions">

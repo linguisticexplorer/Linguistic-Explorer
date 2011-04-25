@@ -8,7 +8,6 @@ class SearchesController < GroupDataController
       s.creator = current_user
       s.group   = current_group
     end
-    authorize! :new, @search
   end
 
   def preview
@@ -66,8 +65,8 @@ protected
 
   def check_max_search_notice
     return unless user_signed_in? || flash[:notice]
-    if Search.where(:creator => current_user, :group => current_group).count >= 25
-      flash.now[:notice] = "You have reached the system limit for saved searches (25). Please delete old searches before saving new ones."
+    if Search.where(:creator => current_user, :group => current_group).count >= Search::MAX_SEARCH_LIMIT
+      flash.now[:notice] = "You have reached the system limit for saved searches (#{Search::MAX_SEARCH_LIMIT}). Please delete old searches before saving new ones."
     end
   end
 end

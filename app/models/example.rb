@@ -12,7 +12,7 @@ class Example < ActiveRecord::Base
   default_scope includes(:stored_values)
   scope :in_group, lambda { |group| where(:group => group) }
 
-  def grouped_name
+  def grouped_name #TODO remove or add grouped name everywhere
     (group ? group.example_name : "Example")
   end
 

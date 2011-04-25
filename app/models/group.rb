@@ -3,9 +3,10 @@ class Group < ActiveRecord::Base
     PRIVATE = 'private',
     PUBLIC  = 'public'
   ]
+  MAXIMUM_ASSIGNABLE_DEPTH = 1
   DEFAULT_EXAMPLE_KEYS = ["text"]
   DEFAULTS = {
-        :depth_maximum  => 1,
+        :depth_maximum  => MAXIMUM_ASSIGNABLE_DEPTH,
         :privacy        => PUBLIC,
         :ling0_name     => "Ling",
         :ling1_name     => "Linglet",
@@ -51,7 +52,7 @@ class Group < ActiveRecord::Base
   end
 
   def allowable_depth_maximum
-    errors.add(:depth_maximum, "must be either 0 or 1") if depth_maximum && !(0..1).include?(depth_maximum)
+    errors.add(:depth_maximum, "must be either 0 or 1") if depth_maximum && !(0..MAXIMUM_ASSIGNABLE_DEPTH).include?(depth_maximum)
   end
 
   def example_storable_keys
