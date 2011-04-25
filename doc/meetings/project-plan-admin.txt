@@ -54,7 +54,7 @@ x   Check everywhere for attr_protected
 x   Check everywhere for dependent_destroy
 x   lpv mass setting page should sort properties by category like search does
 x   Permissions violations should spit out to the homepage with an error flash
-    Crud controllers should all check permissions
+x   Crud controllers should all check permissions
   4/18
     Links should all check permissions before adding themselves to the page
     Bulk upload

@@ -1,14 +1,13 @@
 class Search < ActiveRecord::Base
   MAX_SEARCH_LIMIT = 25
+  include Groupable
+  include Extensions::Wheres
 
   include SearchForm
   include SearchResults
   include JsonAccessible
 
-  belongs_to :group
-  belongs_to :creator, :class_name => "User"
-
-  validates_presence_of :creator, :group, :name
+  validates_presence_of :creator, :name
   validate :creator_not_over_search_limit
 
   serialize :query
@@ -17,9 +16,11 @@ class Search < ActiveRecord::Base
 
   json_accessor :query, :parent_ids, :child_ids
 
+  scope :by, lambda { |creator| where(:creator => creator) }
+
   class << self
     def reached_max_limit?(creator, group)
-      where(:creator => creator, :group => group).count >= MAX_SEARCH_LIMIT
+      scoped.by(creator).in_group(group).count >= MAX_SEARCH_LIMIT
     end
   end
 

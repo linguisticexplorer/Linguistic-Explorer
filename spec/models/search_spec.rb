@@ -36,19 +36,23 @@ describe Search do
 
   describe "reached_max_limit?" do
     before(:each) do
-      Search.stub!(:where).and_return(Search)
+      Search.stub!(:scoped).and_return(Search)
       Search.stub!(:count).and_return(0)
       @user = mock(User)
       @group = mock(Group)
     end
 
     it "should perform count conditions where user is user and group is group" do
-      Search.should_receive(:where).with(:creator => @user, :group => @group).and_return(Search)
+      Search.should_receive(:by).with(@user).and_return(Search)
+      Search.should_receive(:in_group).with(@group).and_return(Search)
       Search.should_receive(:count)
       Search.reached_max_limit?(@user, @group)
     end
 
     it "should return true if count for searches by user and group has reached max limit" do
+      Search.stub!(:by).and_return(Search)
+      Search.stub!(:in_group).and_return(Search)
+
       Search.stub!(:count).and_return(25)
       Search.reached_max_limit?(@user, @group).should be_true
       Search.stub!(:count).and_return(26)
@@ -56,6 +60,8 @@ describe Search do
     end
 
     it "should return true if count for searches by user and group has reached max limit" do
+      Search.stub!(:by).and_return(Search)
+      Search.stub!(:in_group).and_return(Search)
       Search.stub!(:count).and_return(24)
       Search.reached_max_limit?(@user, @group).should be_false
     end

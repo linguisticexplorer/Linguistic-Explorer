@@ -47,7 +47,8 @@ class SearchesController < GroupDataController
   end
 
   def index
-    @searches   = Search.where(:creator => current_user, :group => current_group)
+    @searches   = Search.by(current_user).in_group(current_group)
+
     @comparison = SearchComparison.new do |sc|
       sc.creator  = current_user
       sc.group    = current_group
