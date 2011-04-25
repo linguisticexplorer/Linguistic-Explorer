@@ -28,7 +28,7 @@ describe UnmodifiedGroupDataController do
 end
 
 class ModifiedGroupDataController < GroupDataController
-  skip_before_filter :load_group_from_params
+  skip_before_filter :load_and_authorize_group_from_params
   def index
     render :nothing => true
   end

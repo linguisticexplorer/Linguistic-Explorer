@@ -4,7 +4,6 @@ class ExamplesController < GroupDataController
   # GET /examples.xml
   def index
     @examples = Example.all
-    authorize! :read, @examples
 
     respond_to do |format|
       format.html # index.html.erb

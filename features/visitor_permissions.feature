@@ -20,25 +20,22 @@ Feature: Permissions testing for non-logged-in users
     And  I should not see "Group Admin Panel"
     When I follow "Syntactic Structures"
     Then I should be on the group Syntactic Structures
-    When I return to "Syntactic Structures"
     And  I follow "Search"
     Then I should be on the search page for Syntactic Structures
-    When I return to "Syntactic Structures"
-    And  I follow "Ling"
-    Then I should be on the ling page for Syntactic Structures
-    When I return to "Syntactic Structures"
+    When I go to the lings page for Syntactic Structures
+    Then I should be on the lings page for Syntactic Structures
+    When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
+    Then I should be on the ling0s page for Syntactic Structures
+    And  I follow the "Ling" with depth "1" model link for the group "Syntactic Structures"
+    Then I should be on the ling1s page for Syntactic Structures
     And  I follow "Property"
-    Then I should be on the property page for Syntactic Structures
-    When I return to "Syntactic Structures"
+    Then I should be on the properties page for Syntactic Structures
     And  I follow "Value"
-    Then I should be on the value page for Syntactic Structures
-    When I return to "Syntactic Structures"
+    Then I should be on the values page for Syntactic Structures
     And  I follow "Example"
-    Then I should be on the example page for Syntactic Structures
-    When I return to "Syntactic Structures"
-    And  I follow "Example Value"
-    Then I should be on the example value page for Syntactic Structures
-    When I return to "Syntactic Structures"
+    Then I should be on the examples page for Syntactic Structures
+    And  I follow "ExampleValue"
+    Then I should be on the example values page for Syntactic Structures
     And  I follow "Members"
     Then I should be on the memberships page for Syntactic Structures
 
