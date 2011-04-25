@@ -26,11 +26,11 @@ describe SearchResults do
   describe "LingExtractor" do
     describe "parent_ids" do
       it "should return filtered lings_properties if parents selected" do
+        #TODO blankspec
       end
       it "should return all lings_properties if no parents selected" do
-        
+        #TODO blankspec
       end
     end
   end
-
 end

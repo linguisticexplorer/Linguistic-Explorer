@@ -9,7 +9,7 @@ class Search < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
 
   validates_presence_of :creator, :group, :name
-  validate :user_not_over_search_limit
+  validate :creator_not_over_search_limit
 
   serialize :query
   serialize :parent_ids
@@ -25,7 +25,7 @@ class Search < ActiveRecord::Base
 
   private
 
-  def user_not_over_search_limit
+  def creator_not_over_search_limit
     errors[:base] << "Max save limit (25) has been reached. Please remove old searches first" if group && creator && self.class.reached_max_limit?(creator, group)
   end
 end

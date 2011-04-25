@@ -19,7 +19,7 @@ class SearchComparison
     "SearchComparison"
   end
 
-  attr_accessor :searches, :user, :group, :type, :of_id, :with_id, :parent_ids, :child_ids
+  attr_accessor :searches, :creator, :group, :type, :of_id, :with_id, :parent_ids, :child_ids
   attr_reader :results
 
   def initialize(opts = {})
@@ -36,7 +36,7 @@ class SearchComparison
   end
 
   def searches
-    @searches ||= Search.where(:user => user, :group => group)
+    @searches ||= Search.where(:creator => user, :group => group)
   end
 
   def enough_to_compare?
@@ -65,7 +65,7 @@ class SearchComparison
   def build_search_through_comparison
     compare!
     Search.new do |s|
-      s.user        = user
+      s.creator     = creator
       s.group       = group
       s.parent_ids  = parent_ids
       s.child_ids   = child_ids
@@ -89,5 +89,4 @@ class SearchComparison
     op    = OPERATIONS[self.type.to_sym]
     set_1.send(op, set_2).to_a
   end
-
 end

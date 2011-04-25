@@ -7,6 +7,8 @@ module SearchColumns
     :ling_1, :property_1, :value_1, :example_1
   ]
 
+  COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
+
   HEADERS = {
     :ling_0     => lambda { |g| g.ling0_name },
     :property_0 => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
@@ -17,8 +19,6 @@ module SearchColumns
     :value_1    => lambda { |g| "#{g.ling1_name} Values" },
     :example_1  => lambda { |g| "#{g.ling1_name} Examples" }
   }
-
-  COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   def columns_to_include
     @columns_to_include ||= @search.included_columns
