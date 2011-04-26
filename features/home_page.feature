@@ -26,4 +26,4 @@ Feature: Linguistic Explorer Home Page
     Given I am a visitor
     And the group "Syntactic Structures"
     When I go to my group searches page
-    Then I should see "You need to sign in or sign up"
+    Then I should see "You are not authorized"

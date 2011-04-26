@@ -39,8 +39,10 @@ class Ability
       can :read, group_data, :group => {:privacy => Group::PUBLIC}
 
       # TODO replace authentication check with CanCan solution
-      can :manage, Search, :group => { :privacy => Group::PUBLIC }, :creator_id => user.id
-#      can :manage, Search, :group => { :id => user.group_ids }, :creator => user
+      can :manage, Search do |search|
+        search.is_manageable_by?(user)
+      end
+
     end
   end
 end
