@@ -87,8 +87,15 @@ class LingsController < GroupDataController
   # GET /lings/new.xml
   def new
     @depth = params[:depth].to_i
-    @ling = Ling.new{ |l| l.depth = @depth }
-    @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
+    @parents = (params[:depth] ? Ling.find_all_by_depth(@depth - 1) : [])
+
+    @ling = Ling.new do |l|
+      l.depth = @depth
+      l.creator = current_user
+      l.group = current_group
+    end
+
+    authorize! :new, @ling
 
     respond_to do |format|
       format.html # new.html.erb

@@ -46,20 +46,37 @@ describe LingsController do
 
     it "should authorize read on @ling" do
       @ling = lings(:english)
+      @group = @ling.group
       @user = Factory(:user, :name => "auth-tester", :email => "auth@test.com", :access_level => User::USER)
       @ability = Ability.new(@user)
   		Ability.stub(:new).and_return(@ability)
       Ling.stub(:find).and_return(@ling)
-      @ability.should_receive(:can?).ordered.and_return(true)
+      @ability.should_receive(:can?).ordered.with(:show, @group).and_return(true)
       @ability.should_receive(:can?).ordered.with(:read, @ling).and_return(true)
 
-      get :show, :group_id => @ling.group.id, :id => @ling.id
+      get :show, :group_id => @group.id, :id => @ling.id
 
       response.should render_template :show
     end
   end
 
   describe "new" do
+    it "should authorize :new on @ling" do
+      @user = Factory(:user, :email => "auth@test.com", :access_level => User::USER)
+      @group = Factory(:group)
+      @ling = Ling.new
+      @ability = Ability.new(@user)
+  		Ability.stub(:new).and_return(@ability)
+      Ling.stub(:new).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      @ability.should_receive(:can?).ordered.with(:show, @group).and_return(true)
+      @ability.should_receive(:can?).ordered.with(:new, @ling).and_return(true)
+
+      get :new, :group_id => @group.id
+
+      response.should render_template :new
+    end
+
     describe "with a depth parameter > 0" do
       it "assigns a new ling to @ling, with depth the same as the param" do
         get :new, :group_id => groups(:inclusive).id, :depth => 1
