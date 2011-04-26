@@ -71,7 +71,7 @@ x   Crud controllers should all check permissions
     write higher level explanation of database architecture
     write sample plans for arbitrary-depth expansion
     write testing style/practices guide (routing, controller, permission, model, features general, troubleshooting)
-    write guide for how to: run all tests, run a single test, create the dbs, seed the db, drop and recreate/seed the db
+    write guide for how to: run all tests, run a single test, create the dbs, seed the db, drLop and recreate/seed the db
 
   Non-Essential
     Cleanup - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation

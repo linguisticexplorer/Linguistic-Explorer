@@ -43,6 +43,18 @@ describe LingsController do
         assigns(:ling).should == lings(:english)
       end
     end
+
+    it "should authorize read on @ling" do
+      @ling = lings(:english)
+      @user = Factory(:user, :name => "auth-tester", :email => "auth@test.com", :access_level => User::USER)
+      @ability = Ability.new(@user)
+  		Ability.stub(:new).and_return(@ability)
+      Ling.stub(:find).and_return(@ling)
+      @ability.should_receive(:can?).ordered
+      @ability.should_receive(:can?).ordered.with(:read, @ling).and_return(true)
+
+      get :show, :group_id => @ling.group.id, :id => @ling.id
+    end
   end
 
   describe "new" do

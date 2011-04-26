@@ -28,6 +28,7 @@ class LingsController < GroupDataController
   # GET /lings/1.xml
   def show
     @ling = Ling.find(params[:id])
+    authorize! :read, @ling
 
     respond_to do |format|
       format.html # show.html.erb

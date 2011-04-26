@@ -1,13 +1,7 @@
 class GroupDataController < ApplicationController
-  before_filter :load_and_authorize_group_from_params
+  load_and_authorize_resource :group
 
-  private
-
-  def load_and_authorize_group_from_params
-    @group = Group.find(params[:group_id])
-    authorize! :read, @group
-  end
-
+private
   def current_group
     @group
   end
