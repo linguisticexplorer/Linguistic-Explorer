@@ -45,13 +45,16 @@ describe LingsController do
     end
 
     it "should authorize read on @ling" do
+      @user = Factory(:user, :access_level => User::USER)
       @ling = lings(:english)
       @group = @ling.group
-      @user = Factory(:user, :name => "auth-tester", :email => "auth@test.com", :access_level => User::USER)
       @ability = Ability.new(@user)
+
   		Ability.stub(:new).and_return(@ability)
       Ling.stub(:find).and_return(@ling)
-      @ability.should_receive(:can?).ordered.with(:show, @group).and_return(true)
+      Group.stub(:find).and_return(@group)
+
+      @ability.stub(:can?).and_return(true)
       @ability.should_receive(:can?).ordered.with(:read, @ling).and_return(true)
 
       get :show, :group_id => @group.id, :id => @ling.id
@@ -62,14 +65,16 @@ describe LingsController do
 
   describe "new" do
     it "should authorize :new on @ling" do
-      @user = Factory(:user, :email => "auth@test.com", :access_level => User::USER)
-      @group = Factory(:group)
+      @user = Factory(:user, :access_level => User::USER)
       @ling = Ling.new
+      @group = Factory(:group)
       @ability = Ability.new(@user)
+
   		Ability.stub(:new).and_return(@ability)
       Ling.stub(:new).and_return(@ling)
       Group.stub(:find).and_return(@group)
-      @ability.should_receive(:can?).ordered.with(:show, @group).and_return(true)
+
+      @ability.stub(:can?).ordered.and_return(true)
       @ability.should_receive(:can?).ordered.with(:new, @ling).and_return(true)
 
       get :new, :group_id => @group.id
@@ -117,6 +122,43 @@ describe LingsController do
   end
 
   describe "set_values" do
+    it "should authorize :read on @ling" do
+      @user = Factory(:user, :access_level => User::USER)
+      @ling = lings(:level0)
+      @group = groups(:inclusive)
+      @ability = Ability.new(@user)
+
+  		Ability.stub(:new).and_return(@ability)
+      Ling.stub(:new).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+
+      @ability.stub(:can?).and_return(true)
+      @ability.should_receive(:can?).ordered.with(:read, @ling).and_return(true)
+
+      get :set_values, :group_id => @group.id, :id => @ling.id
+
+      response.should render_template :set_values
+    end
+
+    it "should authorize :read on lings_properties associated with the current group and ling" do
+      @user = Factory(:user, :access_level => User::USER)
+      @ling = lings(:level0)
+      @lings_property = lings_properties(:level0)
+      @group = groups(:inclusive)
+      @ability = Ability.new(@user)
+
+  		Ability.stub(:new).and_return(@ability)
+      LingsProperty.stub(:find).and_return( [@lings_property] )
+      Group.stub(:find).and_return(@group)
+
+      @ability.should_receive(:can?).ordered.with(:read, @lings_property).and_return(true)
+      @ability.stub(:can?).and_return(true)
+
+      get :set_values, :group_id => @group.id, :id => @ling.id
+
+      response.should render_template :set_values
+    end
+
     describe "assigns" do
       it "the requested ling to @ling and its depth to @depth" do
         get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
@@ -141,6 +183,7 @@ describe LingsController do
       it "pre-existing LingsProperties for the ling to @preexisting_values" do
         get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
         assigns(:preexisting_values).should include lings_properties(:level0)
+        assigns(:preexisting_values).should_not include lings_properties(:level1)
       end
     end
   end

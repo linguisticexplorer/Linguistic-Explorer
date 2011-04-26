@@ -39,9 +39,16 @@ class LingsController < GroupDataController
   # GET /lings/1/set_values
   def set_values
     @ling = Ling.find(params[:id])
+
+    authorize! :read, @ling
+
     @depth = @ling.depth
     @categories = Category.at_depth(@depth)
     @preexisting_values = LingsProperty.find_all_by_ling_id(@ling.id)
+
+    @preexisting_values.each do |lp|
+      authorize! :read, lp
+    end
   end
 
   # POST /lings/1/submit_values
@@ -95,7 +102,7 @@ class LingsController < GroupDataController
       l.group = current_group
     end
 
-    authorize! :new, @ling
+    authorize! :new, @ling #TODO technically there should be an auth read on parents, but group is already checked, and parents are viewable if group is...
 
     respond_to do |format|
       format.html # new.html.erb
