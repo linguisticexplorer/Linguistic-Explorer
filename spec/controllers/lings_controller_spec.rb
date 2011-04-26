@@ -50,10 +50,12 @@ describe LingsController do
       @ability = Ability.new(@user)
   		Ability.stub(:new).and_return(@ability)
       Ling.stub(:find).and_return(@ling)
-      @ability.should_receive(:can?).ordered
+      @ability.should_receive(:can?).ordered.and_return(true)
       @ability.should_receive(:can?).ordered.with(:read, @ling).and_return(true)
 
       get :show, :group_id => @ling.group.id, :id => @ling.id
+
+      response.should render_template :show
     end
   end
 
