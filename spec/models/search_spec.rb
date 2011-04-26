@@ -66,4 +66,46 @@ describe Search do
       Search.reached_max_limit?(@user, @group).should be_false
     end
   end
+
+  describe "is_manageable_by?" do
+    before(:each) do
+      @user  = User.new
+      @group = Group.new
+
+      @search = Search.new do |s|
+        s.creator  = @user
+        s.group = @group
+      end
+    end
+    describe "anonymous_user" do
+      it "should be false" do
+        @search.is_manageable_by?(@user).should be_false
+      end
+    end
+
+    describe "search is new_record" do
+      before(:each) do
+        @creator = User.last || Factory(:user, :email => "bob-searcher@example.com")
+        @search.creator = @creator
+        @ability = mock(Ability, :can? => true)
+        Ability.stub!(:new).and_return(@ability)
+      end
+
+      it "should be false if user is not creator" do
+        @search.is_manageable_by?(Factory(:user)).should be_false
+      end
+
+      describe "user is creator" do
+        it "should be true if user has group access" do
+          @ability.stub!(:can?).and_return(true)
+          @search.is_manageable_by?(@creator).should be_true
+        end
+        it "should be false if no group access" do
+          @ability.stub!(:can?).and_return(false)
+          @search.is_manageable_by?(@creator).should be_false
+        end
+
+      end
+    end
+  end
 end

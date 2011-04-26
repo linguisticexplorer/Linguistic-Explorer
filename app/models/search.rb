@@ -24,6 +24,10 @@ class Search < ActiveRecord::Base
     end
   end
 
+  def is_manageable_by?(user)
+    user.id.present? && user == creator && user.can_read_group?(group)
+  end
+
   private
 
   def creator_not_over_search_limit
