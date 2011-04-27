@@ -9,12 +9,26 @@ module SearchResults
 
   def results
     @results ||= begin
-      self.parent_ids, self.child_ids = filter_results_from_query if self.parent_ids.blank?
-      ResultMapper.new(self.parent_ids, self.child_ids).to_results
+      self.result_rows = filter_results_from_query if self.result_rows.blank?
+      ResultMapper.new(self.result_rows).to_results
     end
   end
 
   private
+
+  def map_results(parent_ids, child_ids)
+
+    if self.group.has_depth?
+      children = LingsProperty.with_id(child_ids).includes([:ling, :property]).joins(:ling).
+        order("lings.parent_id, lings.name")
+      children.map do |child|
+        parent_id = parent_ids.detect { |parent_id| child.parent_ling_id == parent_id }
+        [parent_id, child.id]
+      end
+    else
+      parent_ids.map { |id| [id] }
+    end
+  end
 
   def filter_results_from_query
     # Filters return depth_0_vals and depth_1_vals
@@ -35,7 +49,7 @@ module SearchResults
 
     filter = filter_by_all_conditions     filter, :lings_property
 
-    [filter.depth_0_ids, filter.depth_1_ids]
+    map_results filter.depth_0_ids, filter.depth_1_ids
   end
 
   def query_adapter

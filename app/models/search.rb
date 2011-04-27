@@ -11,12 +11,15 @@ class Search < ActiveRecord::Base
   validate :creator_not_over_search_limit
 
   serialize :query
-  serialize :parent_ids
-  serialize :child_ids
+  # serialize :parent_ids
+  # serialize :child_ids
+  serialize :result_rows
 
-  json_accessor :query, :parent_ids, :child_ids
+  json_accessor :query, :result_rows
 
   scope :by, lambda { |creator| where(:creator => creator) }
+
+  attr_accessor :parent_ids, :child_ids
 
   class << self
     def reached_max_limit?(creator, group)

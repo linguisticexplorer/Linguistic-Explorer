@@ -120,3 +120,7 @@ Then /^the csv should contain the following rows$/ do |table|
     end
   end
 end
+
+Then /^I should see (\d+) search result rows?$/ do |count|
+  page.should have_css("div.search_result.row", :count => count.to_i)
+end

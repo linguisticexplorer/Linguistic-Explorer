@@ -58,8 +58,11 @@ class SearchComparison
   private
 
   def compare!
-    self.parent_ids = compare_sets :parent_ids
-    self.child_ids  = compare_sets :child_ids
+    if of.group.has_depth?
+      self.child_ids  = compare_sets :child_ids
+    else
+      raise "Shallow search comparison not implemented"
+    end
   end
 
   def build_search_through_comparison
