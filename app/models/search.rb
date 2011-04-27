@@ -25,7 +25,7 @@ class Search < ActiveRecord::Base
   end
 
   def is_manageable_by?(user)
-    user.id.present? && user == creator && user.can_read_group?(group)
+    user.id.present? && user == creator && Ability.new(user).can?(:read, group)
   end
 
   private

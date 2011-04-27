@@ -32,8 +32,4 @@ class User < ActiveRecord::Base
   def member_of?(group)
     group.is_a?(Group) && group_ids.include?(group.id)
   end
-
-  def can_read_group?(group)
-    Ability.new(self).can?(:read, group)
-  end
 end

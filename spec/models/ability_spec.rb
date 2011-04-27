@@ -23,23 +23,31 @@ describe Ability do
         @visitor.should_not be_able_to(:read, User)
       end
 
-      it "should not be able to see private groups and their data" do
+      it "should not be able to read private groups" do
         @group = Factory(:group, :name => "privy", :privacy => Group::PRIVATE)
         @visitor.should_not be_able_to(:read, @group)
-        [ :ling, :category ].each do |model|
-          @visitor.should_not be_able_to(:read, Factory(model, :group => @group))
-        end
       end
 
-      it "should be able to search public groups" do
-        @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
+      it "should not be able to see private group data" do
+        @group = Factory(:group, :name => "privy", :privacy => Group::PRIVATE)
+        [ :ling, :category ].each do |model|
+          instance = Factory(model, :group => @group)
+          instance.group.private?.should be_true
+          @visitor.should_not be_able_to(:read, instance)
+        end
       end
 
       it "should be able to view public groups and their data" do
         @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
+        @group.private?.should be_false
         @visitor.should be_able_to(:read, @group)
         @visitor.should be_able_to(:read, Factory(:ling, :group => @group))
         @visitor.should be_able_to(:read, Factory(:category, :group => @group))
+      end
+
+      it "should not be able to save searches, even on visible groups" do
+        @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
+        @visitor.should_not be_able_to(:create, Factory(:search, :group => @group))
       end
     end
 
@@ -59,28 +67,38 @@ describe Ability do
     end
 
     describe "Group Admins" do
-      describe "on their own group" do
-        before do
-          @group = Factory(:group)
-          @user  = Factory(:user)
-          Membership.create(:group => @group, :member => @user, :level => Membership::ADMIN)
-          @user.reload
-          @admin = Ability.new(@user)
-        end
-
-        it "should be able to manage it" do
-          @admin.should be_able_to(:manage, @group)
-        end
-
-        [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to more commplex creation requirements
-          it "should be able to manage the group's #{klass.to_s.pluralize}" do
-            instance = klass.create(:group => @group)
-            @admin.should be_able_to(:manage, instance)
+      Group::PRIVACY.each do |privacy|
+        describe "on a #{privacy} group they administrate" do
+          before do
+            @group = Factory(:group, :privacy => privacy)
+            if Group::PRIVATE == privacy
+              @group.private?.should be_true
+            elsif Group::PUBLIC == privacy
+              @group.private?.should be_false
+            end
+            @user  = Factory(:user)
+            Membership.create(:group => @group, :member => @user, :level => Membership::ADMIN)
+            @user.reload
+            @admin = Ability.new(@user)
           end
-        end
 
-        it "should be able to manage their own searches" do
-          @admin.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+          it "should be able to manage it" do
+            @admin.should be_able_to(:manage, @group)
+          end
+
+          [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to more commplex creation requirements
+            it "should be able to manage the group's #{klass.to_s.pluralize}" do
+              instance = klass.new do |k|
+                k.group = @group
+                k.creator = @user
+              end
+              @admin.should be_able_to(:manage, instance)
+            end
+          end
+
+          it "should be able to manage their own searches" do
+            @admin.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+          end
         end
       end
 
@@ -92,6 +110,7 @@ describe Ability do
           @user.reload
           @admin = Ability.new(@user)
           @other_group = Factory(:group, :name => "openness", :privacy => Group::PUBLIC)
+          @other_group.private?.should be_false
         end
 
         it "should be able to read the group" do
@@ -116,12 +135,16 @@ describe Ability do
 
           [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to creation difficulty
             it "should not be able to perform :#{action} on #{klass.to_s.capitalize}" do
-              instance = klass.create(:group => @other_group)
+              instance = klass.new do |k|
+                k.group = @other_group
+                k.creator = @user
+              end
               @admin.should_not be_able_to(action, instance)
             end
           end
         end
-      end
+
+    end
 
       describe "with a private group that they are not a member of" do
         before do
@@ -131,10 +154,15 @@ describe Ability do
           user.reload
           @admin = Ability.new(user)
           @other_group = Factory(:group, :name => "haters", :privacy => Group::PRIVATE)
+          @other_group.private?.should be_true
         end
 
         it "should not be able to search on the group" do
-          @admin.should_not be_able_to(:create, Search.new(:group => @other_group, :creator => @user))
+          instance = Search.new do |s|
+            s.group = @other_group
+            s.creator = @user
+          end
+          @admin.should_not be_able_to(:create, instance)
         end
 
         [ :read, :update, :create, :destroy ].each do |action|
@@ -144,7 +172,10 @@ describe Ability do
 
           [ Ling, Category, Example, Membership ].each do |klass| # Property, LingsProperty, ExamplesLingsProperty removed due to creation difficulty
             it "should not be able to perform :#{action} on #{klass.to_s.capitalize}" do
-              instance = klass.create(:group => @other_group)
+              instance = klass.new do |k|
+                k.group = @other_group
+                k.creator = @user
+              end
               @admin.should_not be_able_to(action, instance)
             end
           end
@@ -153,37 +184,66 @@ describe Ability do
     end
 
     describe "Group Members" do
-      before do
-        @group = Factory(:group)
-        @user = Factory(:user)
-        @membership = Membership.create(:group => @group, :member => @user, :level => Membership::MEMBER)
-        @user.reload
-        @member = Ability.new(@user)
-      end
+      Group::PRIVACY.each do |privacy|
+        describe "on a #{privacy} group they are a member of" do
+          before do
+            @group = Factory(:group, :privacy => privacy)
+            if Group::PRIVATE == privacy
+              @group.private?.should be_true
+            elsif Group::PUBLIC == privacy
+              @group.private?.should be_false
+            end
+            @user = Factory(:user)
+            @membership = Membership.create(:group => @group, :member => @user, :level => Membership::MEMBER)
+            @user.reload
+            @member = Ability.new(@user)
+          end
 
-      it "should be able to manage their own searches" do
-        @member.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
-      end
+          it "should be able to read the group" do
+            @member.should be_able_to(:read, @group)
+            @member.should_not be_able_to(:create, @group)
+            @member.should_not be_able_to(:update, @group)
+            @member.should_not be_able_to(:delete, @group)
+          end
 
-      it "should be able to manage examples, LPVs, ELPVs in their groups" do
-        [ ExamplesLingsProperty, LingsProperty, Example ].each { |klass| @member.should be_able_to(:manage, klass) }
-      end
+          it "should be able to manage their own searches" do
+            @member.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+          end
 
-      [ Ling, Property, Category ].each do |klass|
-        it "should only be able to read the group and its #{klass.to_s.pluralize}" do
-          instance = klass.new(:group => @group)
-          @member.should      be_able_to(:read,   instance)
-          @member.should_not  be_able_to(:create, klass.new(:group => @group))
-          @member.should_not  be_able_to(:update, instance)
-          @member.should_not  be_able_to(:delete, instance)
+          it "should not be able to manage the searches of others" do
+            @member.should_not be_able_to(:manage, Factory(:search, :group => @group, :creator => Factory(:user, :email => "foonique@bar.com")))
+          end
+
+          [ ExamplesLingsProperty, LingsProperty, Example ].each do |klass|
+            it "should be able to manage #{klass.to_s.pluralize} in their groups" do
+              instance = klass.new do |k|
+                k.group = @group
+                k.creator = @user
+              end
+              @member.should be_able_to(:manage, instance)
+            end
+          end
+
+          [ Ling, Property, Category ].each do |klass|
+            it "should only be able to read the group and its #{klass.to_s.pluralize}" do
+              instance = klass.new do |k|
+                k.group = @group
+                k.creator = @user
+              end
+              @member.should      be_able_to(:read,   instance)
+              @member.should_not  be_able_to(:create, instance)
+              @member.should_not  be_able_to(:update, instance)
+              @member.should_not  be_able_to(:delete, instance)
+            end
+          end
+
+          it "should only be able to read and delete their own memberships" do
+            @member.should      be_able_to(:read,   @membership)
+            @member.should      be_able_to(:delete, @membership)
+            @member.should_not  be_able_to(:create,  Membership.new(:member => @user, :group => @group))
+            @member.should_not  be_able_to(:update, @membership)
+          end
         end
-      end
-
-      it "should only be able to read and delete their own memberships" do
-        @member.should      be_able_to(:read,   @membership)
-        @member.should      be_able_to(:delete, @membership)
-        @member.should_not  be_able_to(:create,  Membership.new(:member => @user, :group => @group))
-        @member.should_not  be_able_to(:update, @membership)
       end
     end
 
@@ -215,23 +275,27 @@ describe Ability do
         ].each do |data|
           data.group = groups(:inclusive)
           @nonmember.should     be_able_to(:read,   data)
+          @nonmember.should_not be_able_to(:create, data)
           @nonmember.should_not be_able_to(:update, data)
           @nonmember.should_not be_able_to(:delete, data)
         end
       end
 
-      [ :read, :update, :delete ].each do |action|
+      [ :create, :read, :update, :delete ].each do |action|
         it "should not be able to :#{action} private group data" do
           [ lings(            :exclusive0),
             properties(       :exclusive0),
             categories(       :exclusive0),
             examples(         :exclusive ),
-            examples_lings_properties(:inclusive),
+            examples_lings_properties(:exclusive),
             lings_properties( :exclusive )
-          ].each { |data|
-            data.group = groups(:exclusive)
+          ].each do |data|
+            data.should be_present
+            data.group.should == groups(:exclusive)
+            data.group.private?.should be_true
+            @nonmember.can?(action, data.group).should be_false
             @nonmember.can?(action, data).should be_false
-          }
+          end
         end
       end
     end
