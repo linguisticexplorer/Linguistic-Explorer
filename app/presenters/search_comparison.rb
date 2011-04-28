@@ -19,7 +19,7 @@ class SearchComparison
     "SearchComparison"
   end
 
-  attr_accessor :searches, :creator, :group, :type, :of_id, :with_id, :parent_ids, :child_ids
+  attr_accessor :searches, :creator, :group, :type, :of_id, :with_id, :result_rows
   attr_reader :results
 
   def initialize(opts = {})
@@ -57,21 +57,13 @@ class SearchComparison
 
   private
 
-  def compare!
-    if of.group.has_depth?
-      self.child_ids  = compare_sets :child_ids
-    else
-      raise "Shallow search comparison not implemented"
-    end
-  end
-
   def build_search_through_comparison
-    compare!
+    result_rows = compare_sets of.result_rows, with.result_rows
+
     Search.new do |s|
       s.creator     = creator
       s.group       = group
-      s.parent_ids  = parent_ids
-      s.child_ids   = child_ids
+      s.result_rows = result_rows
 
       # Set query from "of" search as basis for comparison
       # Needed to determined included columns for results
@@ -86,9 +78,9 @@ class SearchComparison
     end
   end
 
-  def compare_sets(method_name)
-    set_1 = Set.new(of.send(method_name))
-    set_2 = Set.new(with.send(method_name))
+  def compare_sets(results_1, results_2)
+    set_1 = Set.new(results_1)
+    set_2 = Set.new(results_2)
     op    = OPERATIONS[self.type.to_sym]
     set_1.send(op, set_2).to_a
   end

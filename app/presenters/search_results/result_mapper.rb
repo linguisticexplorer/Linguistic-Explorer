@@ -11,8 +11,9 @@ module SearchResults
     def to_results
       @to_results ||= begin
         result_rows.group_by { |row| row[Depth::PARENT] }.map do |parent_id, result_row|
-          parent            = parents.detect { |parent| parent.id == parent_id }
-          related_children  = children.select { |child| child.parent_ling_id == parent_id }
+          parent    = parents.detect { |parent| parent.id == parent_id }
+          child_ids = related_child_ids(parent_id)
+          related_children  = children.select { |child| child_ids.include? child.id }
           ResultFamily.new(parent, related_children)
         end
       end
@@ -26,8 +27,8 @@ module SearchResults
 
     def children
       @children ||= begin
-        if child_ids.present?
-          LingsProperty.with_id(child_ids).includes([:ling, :property]).joins(:ling).
+        if all_child_ids.present?
+          LingsProperty.with_id(all_child_ids).includes([:ling, :property]).joins(:ling).
           order("lings.parent_id, lings.name").to_a
         else
           []
@@ -39,7 +40,11 @@ module SearchResults
       result_rows.map { |row| row[Depth::PARENT]  }.flatten.uniq.compact
     end
 
-    def child_ids
+    def related_child_ids(parent_id)
+      result_rows.select { |row| row[Depth::PARENT] == parent_id }.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
+    end
+
+    def all_child_ids
       result_rows.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
     end
   end
