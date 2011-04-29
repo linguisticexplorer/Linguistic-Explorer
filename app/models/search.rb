@@ -1,7 +1,7 @@
 class Search < ActiveRecord::Base
   MAX_SEARCH_LIMIT = 25
   include Groupable
-  include Extensions::Wheres
+  include Concerns::Wheres
 
   include SearchForm
   include SearchResults

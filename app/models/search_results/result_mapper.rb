@@ -22,8 +22,8 @@ module SearchResults
       @result_groups = result_groups
     end
 
-    def to_results
-      @to_results ||= begin
+    def to_result_families
+      @result_families ||= begin
         result_groups.map do |parent_id, child_ids|
           parent            = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
           related_children  = children.select { |child| child_ids.include? child.id }

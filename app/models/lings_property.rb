@@ -16,8 +16,8 @@ class LingsProperty < ActiveRecord::Base
 
   before_save  :set_property_value
 
-  include Extensions::Selects
-  include Extensions::Wheres
+  include Concerns::Selects
+  include Concerns::Wheres
 
   scope :ling_ids, select("#{self.table_name}.ling_id")
   scope :prop_ids, select("#{self.table_name}.property_id")

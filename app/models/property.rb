@@ -10,9 +10,9 @@ class Property < ActiveRecord::Base
   belongs_to :creator, :class_name => "User"
   has_many :lings_properties, :dependent => :destroy
 
-  include Extensions::Selects
-  include Extensions::Wheres
-  include Extensions::Orders
+  include Concerns::Selects
+  include Concerns::Wheres
+  include Concerns::Orders
 
   # override
   scope :at_depth, lambda { |depth| scoped & Category.at_depth(depth) }

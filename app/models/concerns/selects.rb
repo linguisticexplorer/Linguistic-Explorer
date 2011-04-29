@@ -1,4 +1,4 @@
-module Extensions
+module Concerns
   module Selects
     def self.included(base)
       base.class_exec do

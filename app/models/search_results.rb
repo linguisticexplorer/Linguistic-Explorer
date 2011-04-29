@@ -10,7 +10,7 @@ module SearchResults
   def results
     @results ||= begin
       ensure_result_groups!
-      ResultMapper.new(self.result_groups).to_results
+      ResultMapper.new(self.result_groups).to_result_families
     end
   end
 

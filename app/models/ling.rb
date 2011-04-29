@@ -17,9 +17,9 @@ class Ling < ActiveRecord::Base
   has_many :lings_properties, :dependent => :destroy
   has_many :properties, :through => :lings_properties
 
-  include Extensions::Wheres
-  include Extensions::Selects
-  include Extensions::Orders
+  include Concerns::Wheres
+  include Concerns::Selects
+  include Concerns::Orders
 
   attr_protected :depth
 
