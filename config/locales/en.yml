@@ -15,3 +15,11 @@ en:
               existence: "must point to a valid Group"
       messages:
         existence: "must point to a valid object"
+  unauthorized:
+    manage:
+      all: "You are not authorized to %{action} the requested data."
+      user: "You cannot %{action} another user."
+      group: "You cannot manage the requested group."
+    read:
+      user: "You may not view other users."
+      group: "You may not view the requested group or its data."
