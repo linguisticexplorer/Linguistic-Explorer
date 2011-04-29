@@ -19,17 +19,17 @@ class Ability
       can     :read,   Group,                  :privacy => Group::PUBLIC
       can     :read,   group_data, :group => { :privacy => Group::PUBLIC  }
 
-      # turn on group reading for members
-      can     :read,   Group,      :memberships => { :member_id => user.id } #currently breaks nothing when off
       # turn on full data management for group admins
-      can     :manage, Group,      :memberships => { :member_id => user.id, :level => Membership::ADMIN  }
-      can     :manage, group_data, :group => { :id => user.administrated_groups.map(&:id) }
+      can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN  }
+      can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)
+      # turn on group reading for members
+      can     :read,   Group, :memberships => { :member_id => user.id } #currently breaks nothing when off
+      # turn on group member data management and all data reading for group members
+      can     :manage, group_member_data,       :group_id => user.group_ids #currently breaks nothing when off
+      can     :read,   group_data,              :group_id => user.group_ids #currently breaks nothing when off
 
-      # turn on group member data management and admin data reading for group members
-      can     :manage, group_member_data, :group => { :id => user.group_ids } #currently breaks nothing when off
-      can     :read,   group_admin_data,  :group => { :id => user.group_ids } #currently breaks nothing when off
       # turn on own membership deletion
-      can     :delete, Membership,        :member_id => user.id
+      can     :delete, Membership,              :member_id => user.id
 
       # turn on custom search authorization method
       can :manage, Search do |search|
