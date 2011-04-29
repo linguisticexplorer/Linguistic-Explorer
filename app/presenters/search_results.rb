@@ -35,9 +35,15 @@ module SearchResults
       parent_results = LingsProperty.select_ids.with_id(parent_ids)
       child_results = LingsProperty.with_id(child_ids).includes([:ling]).
         joins(:ling).order("lings.parent_id, lings.name")
-      child_results.map do |child|
-        parent = parent_results.detect { |parent| child.parent_ling_id == parent.ling_id }
-        [parent.id, child.id]
+        
+      # group parents separately with each related child
+      [].tap do |rows|
+        parent_results.each do |parent|
+          related_children = child_results.select { |child| child.parent_ling_id == parent.ling_id }
+          related_children.each do |child|
+            rows << [parent.id, child.id]
+          end
+        end
       end
     else
       parent_ids.map { |id| [id] }
