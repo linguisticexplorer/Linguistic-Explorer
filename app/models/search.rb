@@ -1,7 +1,7 @@
 class Search < ActiveRecord::Base
   MAX_SEARCH_LIMIT = 25
   include Groupable
-  include Extensions::Wheres
+  include Concerns::Wheres
 
   include SearchForm
   include SearchResults
@@ -13,15 +13,15 @@ class Search < ActiveRecord::Base
   serialize :query
   # serialize :parent_ids
   # serialize :child_ids
-  serialize :result_rows
+  serialize :result_groups
 
-  json_accessor :query, :result_rows
+  json_accessor :query, :result_groups
 
   scope :by, lambda { |creator| where(:creator => creator) }
 
   attr_accessor :parent_ids, :child_ids
   
-  before_save :ensure_result_rows!
+  before_save :ensure_result_groups!
 
   class << self
     def reached_max_limit?(creator, group)

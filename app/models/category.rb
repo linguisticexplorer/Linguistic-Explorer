@@ -8,8 +8,8 @@ class Category < ActiveRecord::Base
 
   has_many :properties, :dependent => :destroy
 
-  include Extensions::Wheres
-  include Extensions::Selects
+  include Concerns::Wheres
+  include Concerns::Selects
 
   def self.ids_by_group_and_depth(group, depth)
     in_group(group).at_depth(depth).map(&:id)
