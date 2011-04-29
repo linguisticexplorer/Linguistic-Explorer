@@ -1,17 +1,23 @@
 require 'spec_helper'
 
-class UnmodifiedGroupDataController < GroupDataController
+class ExtendingController < GroupDataController
   def index
+    render :nothing => true
+  end
+
+  def data_test
+    @ling = Ling.find(params[:id])
     render :nothing => true
   end
 end
 
-describe UnmodifiedGroupDataController do
+describe ExtendingController do
   before do
     LinguisticExplorer::Application.routes.draw do
       root :to => 'home#index'
       devise_for :user
-      match 'unmodified_group_data/index' => 'unmodified_group_data#index'
+      match 'extending/index' => 'extending#index'
+      match 'extending/data_test/#id' => 'extending#data_test'
     end
     sign_out :user
   end
@@ -27,30 +33,3 @@ describe UnmodifiedGroupDataController do
   end
 end
 
-class ModifiedGroupDataController < GroupDataController
-  skip_before_filter :load_and_authorize_group_from_params
-  def index
-    render :nothing => true
-  end
-end
-
-describe ModifiedGroupDataController do
-  before do
-    LinguisticExplorer::Application.routes.draw do
-      root :to => 'home#index'
-      devise_for :user
-      match 'modified_group_data/index' => 'modified_group_data#index'
-    end
-    sign_out :user
-  end
-
-  it "should allow skip_before_filter to skip group preloading" do
-    get :index
-    response.should be_success
-    assigns(:group).should be_nil
-  end
-
-  after do
-    Rails.application.reload_routes!
-  end
-end
