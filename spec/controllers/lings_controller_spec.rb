@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe LingsController do
+  before do
+    @ability = Ability.new(nil)
+    @ability.stub(:can?).ordered.and_return(true)
+    Ability.stub(:new).and_return(@ability)
+  end
+
   describe "depth" do
     it "@depth should be the passed depth value" do
       depth_test_no = 0
@@ -50,18 +56,11 @@ describe LingsController do
       @user = Factory(:user, :access_level => User::USER)
       @ling = Ling.new
       @group = Factory(:group)
-      @ability = Ability.new(@user)
-
-  		Ability.stub(:new).and_return(@ability)
-      Ling.stub(:new).and_return(@ling)
-      Group.stub(:find).and_return(@group)
-
-      @ability.stub(:can?).ordered.and_return(true)
       @ability.should_receive(:can?).ordered.with(:new, @ling).and_return(true)
 
+      Ling.stub(:new).and_return(@ling)
+      Group.stub(:find).and_return(@group)
       get :new, :group_id => @group.id
-
-      response.should render_template :new
     end
 
     describe "with a depth parameter > 0" do
@@ -105,10 +104,6 @@ describe LingsController do
 
   describe "set_values" do
     it "should authorize :manage on LingsProperties associated with the ling" do
-      @user = Factory(:user, :access_level => User::USER)
-      @ability = Ability.new(@user)
-      Ability.stub(:new).and_return(@ability)
-
       @ling = lings(:level0)
       Ling.stub(:find).and_return(@ling)
       @group = @ling.group
@@ -118,14 +113,11 @@ describe LingsController do
       @preexisting_values.should_not be_empty
       @ling.stub(:lings_properties).and_return( @preexisting_values )
 
-      @ability.stub(:can?).ordered.and_return(true) #todo this is too strong a stub, because then the should_render_template will always pass and is thus useless
       @preexisting_values.each do |lp|
         @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
       end
 
       get :set_values, :group_id => @group.id, :id => @ling.id
-
-      response.should render_template :set_values
     end
 
     describe "assigns" do
@@ -161,6 +153,23 @@ describe LingsController do
     it "assigns the requested ling to @ling" do
       post :submit_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
       assigns(:ling).should == lings(:level0)
+    end
+
+    it "should authorize :manage on preexisting LingsProperties" do
+      @ling = lings(:level0)
+      Ling.stub(:find).and_return(@ling)
+      @group = @ling.group
+      Group.stub(:find).and_return(@group)
+
+      @preexisting_values = @ling.lings_properties
+      @preexisting_values.should_not be_empty
+      @ling.stub(:lings_properties).and_return( @preexisting_values )
+
+      @preexisting_values.each do |lp|
+        @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
+      end
+
+      post :submit_values, :group_id => @group.id, :id => @ling.id
     end
 
     it "creates lings_properties for the ling and any submitted property values" do

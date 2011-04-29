@@ -52,6 +52,9 @@ class LingsController < GroupDataController
   def submit_values
     @ling = Ling.find(params[:id])
     stale_values = @ling.lings_properties
+    stale_values.each do |lp|
+      authorize! :manage, lp
+    end
 
     fresh_values = []
     values = params.delete(:values) || []
@@ -67,7 +70,7 @@ class LingsController < GroupDataController
           lp.value = new_text
           lp.property = property
         end
-        fresh_values << fresh if fresh.save
+        fresh_values << fresh if fresh.save ###
       end
 
       prop_values.each do |value, flag|
@@ -78,10 +81,16 @@ class LingsController < GroupDataController
           lp.value = value
           lp.property = property
         end
-        fresh_values << fresh if fresh.save
+        ####
+        fresh_values << fresh if fresh.save ###
       end
     end
-    stale_values.each{ |stale| stale.delete unless fresh_values.include? stale }
+    stale_values.each do |stale|
+      if !(fresh_values.include? stale)
+
+        stale.delete
+      end
+    end
 
     redirect_to set_values_group_ling_path(current_group, @ling)
   end
