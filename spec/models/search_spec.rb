@@ -23,17 +23,28 @@ describe Search do
   end
 
   describe "query" do
-    it "should serialize query params" do
+    before(:each) do
       builder = SearchResults::SearchFilterBuilder
-      builder.stub!(:new).and_return(mock(builder, :filtered_ids => [[], []]))
+      builder.stub!(:new).and_return(mock(builder, :filtered_parent_and_child_ids => [[], []]))
+      @search = Factory(:search)
+    end
 
-      search = Factory(:search)
-      search.query = { "lings" => [1,2,3], "properties" => [4,5,6] }
-      search.save
+    it "should serialize query params" do
+      @search.query = { "lings" => [1,2,3], "properties" => [4,5,6] }
+      @search.save
 
-      retrieved = Search.find(search.id)
+      retrieved = Search.find(@search.id)
 
       retrieved.query.should == { "lings" => [1,2,3], "properties" => [4,5,6] }
+    end
+
+    it "should serialize result_groups" do
+      @search.result_groups = { 1 => [2,3,4], 5 => [6] }
+      @search.save
+
+      retrieved = Search.find(@search.id)
+
+      retrieved.result_groups.should == { 1 => [2,3,4], 5 => [6] }
     end
   end
 

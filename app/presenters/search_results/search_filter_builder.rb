@@ -8,8 +8,8 @@ module SearchResults
       @query = query
     end
 
-    def filtered_ids
-      @filtered_ids ||= filter_search_query
+    def filtered_parent_and_child_ids
+      @filtered_parent_and_child_ids ||= filter_search_query
     end
 
     private

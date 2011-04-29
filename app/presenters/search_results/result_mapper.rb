@@ -2,17 +2,30 @@ module SearchResults
 
   class ResultMapper
 
-    attr_reader :result_rows
+    def self.build_result_groups(parent_ids, child_ids = [])
+      parent_results  = LingsProperty.select_ids.with_id(parent_ids)
+      child_results   = LingsProperty.with_id(child_ids).includes([:ling]).
+        joins(:ling).order("lings.parent_id, lings.name")
 
-    def initialize(result_rows)
-      @result_rows = result_rows
+      # group parents separately with each related child
+      {}.tap do |groups|
+        parent_results.each do |parent|
+          related_children  = child_results.select { |child| child.parent_ling_id == parent.ling_id }
+          groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
+        end
+      end
+    end
+
+    attr_reader :result_groups
+
+    def initialize(result_groups)
+      @result_groups = result_groups
     end
 
     def to_results
       @to_results ||= begin
-        result_rows.group_by { |row| row[Depth::PARENT] }.map do |parent_id, result_row|
-          parent    = parents.detect { |parent| parent.id == parent_id }
-          child_ids = related_child_ids(parent_id)
+        result_groups.map do |parent_id, child_ids|
+          parent            = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
           related_children  = children.select { |child| child_ids.include? child.id }
           ResultFamily.new(parent, related_children)
         end
@@ -36,16 +49,12 @@ module SearchResults
       end
     end
 
-    def parent_ids
-      result_rows.map { |row| row[Depth::PARENT]  }.flatten.uniq.compact
-    end
-
-    def related_child_ids(parent_id)
-      result_rows.select { |row| row[Depth::PARENT] == parent_id }.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
-    end
-
     def all_child_ids
-      result_rows.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
+      result_groups.values.flatten.uniq.compact
+    end
+
+    def parent_ids
+      result_groups.keys
     end
   end
 

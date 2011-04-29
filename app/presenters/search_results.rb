@@ -9,17 +9,36 @@ module SearchResults
 
   def results
     @results ||= begin
-      ensure_result_rows!
-      ResultMapper.new(self.result_rows).to_results
+      ensure_result_groups!
+      ResultMapper.new(self.result_groups).to_results
+    end
+  end
+
+  def result_rows=(result_rows)
+    self.result_groups = result_rows.group_by { |row| row[0] }
+    self.result_groups.values.map! { |row| row.map! { |r| r[1] }.compact! }
+  end
+
+  def result_rows
+    [].tap do |rows|
+      self.result_groups.each do |parent_id, child_ids|
+        if child_ids.present?
+          child_ids.each do |child_id|
+            rows << [parent_id, child_id]
+          end
+        else
+          rows << [parent_id]
+        end
+      end
     end
   end
 
   private
 
-  def ensure_result_rows!
-    return true unless self.result_rows.blank?
+  def ensure_result_groups!
+    return true unless self.result_groups.blank?
     return true unless self.query.present? || self.parent_ids.present?
-    self.result_rows = build_result_rows(*parent_and_child_lings_property_ids)
+    self.result_groups = build_result_groups(*parent_and_child_lings_property_ids)
   end
 
   def parent_and_child_lings_property_ids
@@ -30,28 +49,12 @@ module SearchResults
     filter_lings_property_ids_from_query
   end
 
-  def build_result_rows(parent_ids, child_ids = nil)
-    if self.group.has_depth? && child_ids.present?
-      parent_results = LingsProperty.select_ids.with_id(parent_ids)
-      child_results = LingsProperty.with_id(child_ids).includes([:ling]).
-        joins(:ling).order("lings.parent_id, lings.name")
-        
-      # group parents separately with each related child
-      [].tap do |rows|
-        parent_results.each do |parent|
-          related_children = child_results.select { |child| child.parent_ling_id == parent.ling_id }
-          related_children.each do |child|
-            rows << [parent.id, child.id]
-          end
-        end
-      end
-    else
-      parent_ids.map { |id| [id] }
-    end
+  def build_result_groups(parent_ids, child_ids = nil)
+    ResultMapper.build_result_groups(parent_ids, child_ids)
   end
 
   def filter_lings_property_ids_from_query
-    SearchFilterBuilder.new(query_adapter).filtered_ids
+    SearchFilterBuilder.new(query_adapter).filtered_parent_and_child_ids
   end
 
   def query_adapter
