@@ -1,3 +1,5 @@
+<% page_heading "Search" %>
+
 <div class="center" style="width:800px">
   <h2>Search <%= current_group.name %></h2>
   <%= render :partial => 'form', :locals => { :search => [:preview, :group, @search] } %>

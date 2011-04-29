@@ -1,9 +1,11 @@
+<% page_heading current_group.example_name %>
+
 <p>
   <b>Name:</b> <br />
   <%= @example.name %> <br />
 
   <% if @example.ling %>
-    <b><%= current_group.ling0_name %>:</b> <br />
+    <b><%= @example.ling.grouped_name %>:</b> <br />
     <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
   <% end %>
 

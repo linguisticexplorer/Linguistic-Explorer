@@ -1,12 +1,16 @@
 <%- unless Settings.in_preview -%>
-<h2>
-  <%= link_to "Linguistic Explorer", root_path %>
-</h2>
+  <% page_heading "Home" %>
 
-<div>
-  <%= link_to "Groups", groups_path %>
-</div>
+  <h2>
+    <%= link_to "Linguistic Explorer", root_path %>
+  </h2>
+
+  <div>
+    <%= link_to "Groups", groups_path %>
+  </div>
 <%- else -%>
+  <% page_heading "Preview" %>
+
   <h2>Terraling</h2>
   <br/>
   <div>Coming soon, an advanced linguistics search engine from the New York University Computer Science department.</div>

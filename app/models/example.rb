@@ -17,7 +17,7 @@ class Example < ActiveRecord::Base
   end
 
   def group_association_match
-    errors.add(:ling, "#{group.ling_name_for_depth(ling.depth)} must belong to the same group as this #{group.example_name}") if ling && (ling.group != group)
+    errors.add(:ling, "#{ling.grouped_name} must belong to the same group as this #{group.example_name}") if ling && (ling.group != group)
   end
 
   def storable_keys

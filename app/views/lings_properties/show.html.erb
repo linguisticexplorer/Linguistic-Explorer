@@ -1,5 +1,7 @@
+<% page_heading @lings_property.ling.grouped_name %>
+
 <p>
-  <b><%= current_group.ling_name_for_depth( @lings_property.ling.depth ) %>:</b> <br />
+  <b><%= @lings_property.ling.grouped_name %>:</b> <br />
   <%= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling) %> <br />
 
   <b><%= current_group.property_name %>:</b> <br />
@@ -15,3 +17,4 @@
 
 <%= link_to 'Edit', edit_group_lings_property_path(current_group, @lings_property) %> |
 <%= link_to 'Back', group_lings_properties_path(current_group) %>
+

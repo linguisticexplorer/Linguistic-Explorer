@@ -40,10 +40,6 @@ class LingsProperty < ActiveRecord::Base
     ling.name
   end
 
-  def ling_name_for_depth(given_depth)
-    ling_name if given_depth == ling.depth
-  end
-
   def parent_name
     ling.parent.try(:name)
   end
@@ -63,11 +59,11 @@ class LingsProperty < ActiveRecord::Base
   private
 
   def association_depth_match
-    errors[:base] << "Must choose #{group.ling_name_for_depth(ling.depth)} and #{group.property_name} with matching depth" if ling && property && ling.depth != property.depth
+    errors[:base] << "Must choose #{ling.grouped_name} and #{group.property_name} with matching depth" if ling && property && ling.depth != property.depth
   end
 
   def group_association_match
-    errors[:base] << "#{group.ling_name_for_depth(ling.depth).humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group)
+    errors[:base] << "#{ling.grouped_name.humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group)
   end
 
   def set_property_value

@@ -1,3 +1,5 @@
+<% page_heading @ling.grouped_name %>
+
 <h1>Mass assigning for <%= @ling.name %></h1>
 
 <%= form_tag(submit_values_group_ling_path(current_group, @ling), :method => "post") do %>

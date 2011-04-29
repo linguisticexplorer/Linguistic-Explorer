@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>LinguisticExplorer</title>
-  <%= stylesheet_link_tag :all %>
-  <%= javascript_include_tag :defaults %>
-  <%= csrf_meta_tag %>
-</head>
-<body>
+  <head>
+    <title><%= page_title %></title>
+    <%= stylesheet_link_tag :all %>
+    <%= javascript_include_tag :defaults %>
+    <%= csrf_meta_tag %>
+  </head>
+  <body>
 
-<%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
+  <%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
 
-<p class="notice"><%= notice %></p>
-<p class="notice"><%= alert %></p>
+  <p class="notice"><%= notice %></p>
+  <p class="notice"><%= alert %></p>
 
-<%= yield %>
+  <%= yield %>
 
-</body>
+  </body>
 </html>
