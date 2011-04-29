@@ -1,8 +1,7 @@
 Feature: Using the mass lings-property value setting form
 
   Background:
-    Given I am a visitor
-    And the group "Syntactic Structures"
+    Given the group "Syntactic Structures"
     And the group has a maximum depth of 1
     And the following "Syntactic Structures" lings:
     | name        | depth |
@@ -17,10 +16,12 @@ Feature: Using the mass lings-property value setting form
     | SomethingOther    | 2HeadGiant  | yes         | LevelTwo | 1     |
     | SomethingElse     | 2HeadGiant  | no          | LevelTwo | 1     |
     And there is no value set for the ling "English" with the property "Adjective Foo"
+
+    When I am signed in as a member of Syntactic Structures
     And I go to the group Syntactic Structures
     And I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
 
-  Scenario: Visitor can get to the ling mass setting form
+  Scenario: Signed in members can get to the ling mass setting form
     Then I should see "English"
     When I follow "English"
     Then I should see "Mass assign"

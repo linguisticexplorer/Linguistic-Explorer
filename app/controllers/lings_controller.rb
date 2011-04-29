@@ -39,15 +39,12 @@ class LingsController < GroupDataController
   # GET /lings/1/set_values
   def set_values
     @ling = Ling.find(params[:id])
-
-    authorize! :read, @ling
-
     @depth = @ling.depth
     @categories = Category.at_depth(@depth)
-    @preexisting_values = LingsProperty.find_all_by_ling_id(@ling.id)
+    @preexisting_values = @ling.lings_properties
 
     @preexisting_values.each do |lp|
-      authorize! :read, lp
+      authorize! :manage, lp
     end
   end
 
