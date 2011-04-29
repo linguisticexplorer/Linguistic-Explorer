@@ -23,12 +23,11 @@ Feature: Compare searches
     And I select "First search" from "of"
     And I select "Second search" from "with"
     And I press "Go"
+    Then I should see 3 search result rows
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 1   | Property 1      | parent val 1  | Sentence 1  | Property 11    | child val 1  |
-    | Speaker 1   | Property 1      | parent val 1  | Sentence 3  | Property 13    | child val 3  |
     | Speaker 1   | Property 3      | parent val 3  | Sentence 3  | Property 13    | child val 3  |
-    | Speaker 1   | Property 3      | parent val 3  | Sentence 1  | Property 11    | child val 1  |
     | Speaker 2   | Property 2      | parent val 2  | Sentence 2  | Property 12    | child val 2  |
 
   Scenario: Intersect two saved searches
@@ -36,6 +35,7 @@ Feature: Compare searches
     And I select "First search" from "of"
     And I select "Second search" from "with"
     And I press "Go"
+    Then I should see 1 search result row
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 2   | Property 2      | parent val 2  | Sentence 2  | Property 12    | child val 2  |
@@ -45,6 +45,7 @@ Feature: Compare searches
     And I select "First search" from "of"
     And I select "Second search" from "with"
     And I press "Go"
+    Then I should see 1 search result row
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 1   | Property 1      | parent val 1  | Sentence 1  | Property 11    | child val 1  |
@@ -54,6 +55,7 @@ Feature: Compare searches
     And I select "Second search" from "of"
     And I select "First search" from "with"
     And I press "Go"
+    Then I should see 1 search result row
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 1   | Property 3      | parent val 3  | Sentence 3  | Property 13    | child val 3 |
@@ -63,9 +65,8 @@ Feature: Compare searches
     And I select "First search" from "of"
     And I select "Second search" from "with"
     And I press "Go"
-    Then I should see the following grouped search results:
+    Then I should see 2 search result rows
+    And I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 1   | Property 1      | parent val 1  | Sentence 1  | Property 11    | child val 1  |
-    | Speaker 1   | Property 1      | parent val 1  | Sentence 3  | Property 13    | child val 3  |
     | Speaker 1   | Property 3      | parent val 3  | Sentence 3  | Property 13    | child val 3  |
-    | Speaker 1   | Property 3      | parent val 3  | Sentence 1  | Property 11    | child val 1  |

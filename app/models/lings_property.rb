@@ -56,6 +56,10 @@ class LingsProperty < ActiveRecord::Base
     property.category_id
   end
 
+  def parent_ling_id
+    ling.parent_id
+  end
+
   private
 
   def association_depth_match

@@ -2,33 +2,53 @@ module SearchResults
 
   class ResultMapper
 
-    def initialize(parent_ids, child_ids)
-      @parent_ids, @child_ids = parent_ids, child_ids
+    attr_reader :result_rows
+
+    def initialize(result_rows)
+      @result_rows = result_rows
     end
 
     def to_results
-      if @child_ids.any?
-        parents.map { |parent|
-          related_children = children.select { |child| child.ling.parent_id == parent.ling_id }
+      @to_results ||= begin
+        result_rows.group_by { |row| row[Depth::PARENT] }.map do |parent_id, result_row|
+          parent    = parents.detect { |parent| parent.id == parent_id }
+          child_ids = related_child_ids(parent_id)
+          related_children  = children.select { |child| child_ids.include? child.id }
           ResultFamily.new(parent, related_children)
-        }.flatten
-      else
-        parents.map { |parent| ResultFamily.new(parent) }
+        end
       end
     end
 
     def parents
-      @parents ||= LingsProperty.with_id(@parent_ids).includes([:ling, :property]).
+      @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property]).
         joins(:ling).
-        order("lings.parent_id, lings.name")
+        order("lings.parent_id, lings.name").to_a
     end
 
     def children
-      @children ||= LingsProperty.with_id(@child_ids).includes([:ling, :property]).joins(:ling).
-        order("lings.parent_id, lings.name")
+      @children ||= begin
+        if all_child_ids.present?
+          LingsProperty.with_id(all_child_ids).includes([:ling, :property]).joins(:ling).
+          order("lings.parent_id, lings.name").to_a
+        else
+          []
+        end
+      end
+    end
+
+    def parent_ids
+      result_rows.map { |row| row[Depth::PARENT]  }.flatten.uniq.compact
+    end
+
+    def related_child_ids(parent_id)
+      result_rows.select { |row| row[Depth::PARENT] == parent_id }.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
+    end
+
+    def all_child_ids
+      result_rows.map { |row| row[Depth::CHILD]   }.flatten.uniq.compact
     end
   end
-  
+
   class ResultFamily
     attr_reader :parent
 

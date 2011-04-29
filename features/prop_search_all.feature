@@ -22,7 +22,7 @@ Feature: Search with All
     | Property 4    | Sentence 2  | noun      | Linguistic  | 1     |
     | Property 3    | Sentence 3  | noun      | Linguistic  | 1     |
 
-  Scenario: Visitor allows all properties
+  Scenario: Visitor searches all properties
     When I go to the Syntactic Structures search page
     And I select "Property 1" from "Demographic Properties"
     And I select "Property 2" from "Demographic Properties"

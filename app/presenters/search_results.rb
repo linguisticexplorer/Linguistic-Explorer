@@ -9,61 +9,53 @@ module SearchResults
 
   def results
     @results ||= begin
-      self.parent_ids, self.child_ids = filter_results_from_query if self.parent_ids.blank?
-      ResultMapper.new(self.parent_ids, self.child_ids).to_results
+      ensure_result_rows!
+      ResultMapper.new(self.result_rows).to_results
     end
   end
 
   private
 
-  def filter_results_from_query
-    # Filters return depth_0_vals and depth_1_vals
+  def ensure_result_rows!
+    return true unless self.result_rows.blank?
+    return true unless self.query.present? || self.parent_ids.present?
+    self.result_rows = build_result_rows(*parent_and_child_lings_property_ids)
+  end
 
-    filter = filter_by_any_selected_lings_and_props
+  def parent_and_child_lings_property_ids
+    ids = [self.parent_ids, self.child_ids].compact
 
-    filter = filter_by_keywords           filter, :ling
+    return ids if ids.any?
 
-    filter = filter_by_keywords           filter, :property
+    filter_lings_property_ids_from_query
+  end
 
-    filter = filter_by_keywords           filter, :example
+  def build_result_rows(parent_ids, child_ids = nil)
+    if self.group.has_depth? && child_ids.present?
+      parent_results = LingsProperty.select_ids.with_id(parent_ids)
+      child_results = LingsProperty.with_id(child_ids).includes([:ling]).
+        joins(:ling).order("lings.parent_id, lings.name")
+        
+      # group parents separately with each related child
+      [].tap do |rows|
+        parent_results.each do |parent|
+          related_children = child_results.select { |child| child.parent_ling_id == parent.ling_id }
+          related_children.each do |child|
+            rows << [parent.id, child.id]
+          end
+        end
+      end
+    else
+      parent_ids.map { |id| [id] }
+    end
+  end
 
-    filter = filter_by_val_query_params   filter
-
-    filter = filter_by_depth_intersection filter
-
-    filter = filter_by_all_conditions     filter, :property
-
-    filter = filter_by_all_conditions     filter, :lings_property
-
-    [filter.depth_0_ids, filter.depth_1_ids]
+  def filter_lings_property_ids_from_query
+    SearchFilterBuilder.new(query_adapter).filtered_ids
   end
 
   def query_adapter
     @query_adapter ||= QueryAdapter.new(self.group, self.query)
-  end
-
-  def filter_by_any_selected_lings_and_props
-    SelectAnyFilter.new(query_adapter)
-  end
-
-  def filter_by_keywords(filter, strategy)
-    KeywordFilter.new(filter, query_adapter) do |f|
-      f.strategy = strategy
-    end
-  end
-
-  def filter_by_val_query_params(filter)
-    SelectValuePairsFilter.new(filter, query_adapter)
-  end
-
-  def filter_by_depth_intersection(filter)
-    IntersectionFilter.new(filter, query_adapter)
-  end
-
-  def filter_by_all_conditions(filter, strategy)
-    SelectAllFilter.new(filter, query_adapter) do |f|
-      f.strategy = strategy
-    end
   end
 
 end

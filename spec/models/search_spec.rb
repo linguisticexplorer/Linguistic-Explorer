@@ -24,6 +24,9 @@ describe Search do
 
   describe "query" do
     it "should serialize query params" do
+      builder = SearchResults::SearchFilterBuilder
+      builder.stub!(:new).and_return(mock(builder, :filtered_ids => [[], []]))
+
       search = Factory(:search)
       search.query = { "lings" => [1,2,3], "properties" => [4,5,6] }
       search.save

@@ -19,8 +19,7 @@
 
       <%= f.label :name %>&nbsp;<%= f.text_field :name %>
       <%= f.hidden_field :query_json %>
-      <%= f.hidden_field :parent_ids_json %>
-      <%= f.hidden_field :child_ids_json %>
+      <%= f.hidden_field :result_rows_json %>
       <%= f.submit "Save" %>
     <%- end -%>
   <%- end -%>
