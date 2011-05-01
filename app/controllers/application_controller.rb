@@ -9,4 +9,10 @@ class ApplicationController < ActionController::Base
   def current_group
     nil # A stub so that the nav bar always gets a nil if current_group isn't defined/available
   end
+
+  def collection_authorize!(action, collection, *args)
+    collection.each do |item|
+      authorize! action, item, *args
+    end
+  end
 end

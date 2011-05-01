@@ -42,19 +42,14 @@ class LingsController < GroupDataController
     @depth = @ling.depth
     @categories = Category.at_depth(@depth)
     @preexisting_values = @ling.lings_properties
-
-    @preexisting_values.each do |lp|
-      authorize! :read, lp
-    end
+    collection_authorize! :read, @preexisting_values
   end
 
   # POST /lings/1/submit_values
   def submit_values
     @ling = Ling.find(params[:id])
     stale_values = @ling.lings_properties
-    stale_values.each do |lp|
-      authorize! :manage, lp
-    end
+    collection_authorize! :manage, stale_values
 
     fresh_values = []
     values = params.delete(:values) || []
@@ -84,14 +79,11 @@ class LingsController < GroupDataController
         fresh_values << fresh
       end
     end
-    fresh_values.each do |fresh|
-      authorize! :create, fresh
-      fresh.save
-    end
+    collection_authorize! :create, fresh_values
+    fresh_values.each{|fresh| fresh.save}
+
     stale_values.each do |stale|
-      if !(fresh_values.include? stale)
-        stale.delete
-      end
+      stale.delete if !(fresh_values.include? stale)
     end
 
     redirect_to set_values_group_ling_path(current_group, @ling)
@@ -109,8 +101,7 @@ class LingsController < GroupDataController
       l.creator = current_user
       l.group = current_group
     end
-
-    authorize! :new, @ling #TODO technically there should be an auth read on parents, but group is already checked, and parents are viewable if group is...
+    authorize! :new, @ling
 
     respond_to do |format|
       format.html # new.html.erb
