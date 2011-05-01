@@ -70,12 +70,10 @@ describe GroupsController do
   describe "create" do
     describe "with valid params" do
       it "assigns a newly created group to @group" do
-        lambda {
-          post :create, :group => {:name => 'TheBestTheBestTheBest', :depth_maximum => "1"}
-          assigns(:group).should_not be_new_record
-          assigns(:group).should be_valid
-          assigns(:group).name.should == 'TheBestTheBestTheBest'
-        }.should change(Group, :count).by(1)
+        params = {'name' => 'TheBestTheBestTheBest'}
+        @group = Factory(:group)
+        Group.should_receive(:new).with(params).and_return(@group)
+        post :create, :group => params
       end
 
       it "redirects to the created group" do

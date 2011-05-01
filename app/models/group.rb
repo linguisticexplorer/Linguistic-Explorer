@@ -20,6 +20,7 @@ class Group < ActiveRecord::Base
   validates_presence_of     :name
   validates_uniqueness_of   :name
   validates_numericality_of :depth_maximum, :<= => MAXIMUM_ASSIGNABLE_DEPTH
+  validates_inclusion_of    :privacy,       :in => PRIVACY
 
   has_many :examples_lings_properties, :dependent => :destroy
   has_many :lings,                     :dependent => :destroy
