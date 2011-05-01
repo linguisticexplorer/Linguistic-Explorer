@@ -1,5 +1,5 @@
 Given /^I am a visitor$/ do
-  # no op
+  visit destroy_user_session_path
 end
 
 Given /^I am signed in as a ([^ ]+) of (.*)/ do |membership_level, group|
