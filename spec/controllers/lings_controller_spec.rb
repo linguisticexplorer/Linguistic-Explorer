@@ -383,6 +383,17 @@ describe LingsController do
   end
 
   describe "destroy" do
+    it "should authorize :destroy on the passed ling" do
+      @group = Factory(:group)
+      @ling = Factory(:ling, :group => @group)
+      @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
+
+      Ling.stub(:find).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      post :destroy, :group_id => @group.id, :id => @ling.id
+    end
+
+
     it "calls destroy on the requested ling" do
       ling = lings(:english)
       ling.should_receive(:destroy).and_return(true)

@@ -23,13 +23,13 @@ class Ability
       can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN  }
       can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)
       # turn on group reading for members
-      can     :read,   Group, :memberships => { :member_id => user.id } #currently breaks nothing when off
+      can     :read,   Group, :memberships => { :member_id => user.id }
       # turn on group member data management and all data reading for group members
-      can     :manage, group_member_data,       :group_id => user.group_ids #currently breaks nothing when off
-      can     :read,   group_data,              :group_id => user.group_ids #currently breaks nothing when off
+      can     :manage, group_member_data,       :group_id => user.group_ids
+      can     :read,   group_data,              :group_id => user.group_ids
 
       # turn on own membership deletion
-      can     :delete, Membership,              :member_id => user.id
+      can     :destroy, Membership,             :member_id => user.id
 
       # turn on custom search authorization method
       can :manage, Search do |search|

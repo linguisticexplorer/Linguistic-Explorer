@@ -203,7 +203,7 @@ describe Ability do
             @member.should be_able_to(:read, @group)
             @member.should_not be_able_to(:create, @group)
             @member.should_not be_able_to(:update, @group)
-            @member.should_not be_able_to(:delete, @group)
+            @member.should_not be_able_to(:destroy, @group)
           end
 
           it "should be able to manage their own searches" do
@@ -233,13 +233,13 @@ describe Ability do
               @member.should      be_able_to(:read,   instance)
               @member.should_not  be_able_to(:create, instance)
               @member.should_not  be_able_to(:update, instance)
-              @member.should_not  be_able_to(:delete, instance)
+              @member.should_not  be_able_to(:destroy, instance)
             end
           end
 
           it "should only be able to read and delete their own memberships" do
             @member.should      be_able_to(:read,   @membership)
-            @member.should      be_able_to(:delete, @membership)
+            @member.should      be_able_to(:destroy, @membership)
             @member.should_not  be_able_to(:create,  Membership.new(:member => @user, :group => @group))
             @member.should_not  be_able_to(:update, @membership)
           end
@@ -277,11 +277,11 @@ describe Ability do
           @nonmember.should     be_able_to(:read,   data)
           @nonmember.should_not be_able_to(:create, data)
           @nonmember.should_not be_able_to(:update, data)
-          @nonmember.should_not be_able_to(:delete, data)
+          @nonmember.should_not be_able_to(:destroy, data)
         end
       end
 
-      [ :create, :read, :update, :delete ].each do |action|
+      [ :create, :read, :update, :destroy ].each do |action|
         it "should not be able to :#{action} private group data" do
           [ lings(            :exclusive0),
             properties(       :exclusive0),

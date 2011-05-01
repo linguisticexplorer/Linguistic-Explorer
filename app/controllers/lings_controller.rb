@@ -172,6 +172,7 @@ class LingsController < GroupDataController
   # DELETE /lings/1.xml
   def destroy
     @ling = Ling.find(params[:id])
+    authorize! :destroy, @ling
     @depth = @ling.depth
     @ling.destroy
 
