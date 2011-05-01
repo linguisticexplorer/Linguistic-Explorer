@@ -1,18 +1,19 @@
 class GroupsController < ApplicationController
-
   # GET /groups
   # GET /groups.xml
   def index
     if params[:group_id]
       begin
         @group = Group.find(params[:group_id])
+        authorize! :show, @group
         redirect_to @group
         return
       rescue ActiveRecord::RecordNotFound
       end
     end
 
-    @groups = Group.all
+    @groups = Group.accessible_by(current_ability).uniq
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @groups }
@@ -23,7 +24,7 @@ class GroupsController < ApplicationController
   # GET /groups/1.xml
   def show
     @group = Group.find(params[:id])
-    authorize! :read, @group
+    authorize! :show, @group
 
     respond_to do |format|
       format.html # show.html.erb
@@ -35,6 +36,7 @@ class GroupsController < ApplicationController
   # GET /groups/new.xml
   def new
     @group = Group.new(Group::DEFAULTS)
+    authorize! :create, @group
 
     respond_to do |format|
       format.html # new.html.erb
@@ -45,12 +47,14 @@ class GroupsController < ApplicationController
   # GET /groups/1/edit
   def edit
     @group = Group.find(params[:id])
+    authorize! :update, @group
   end
 
   # POST /groups
   # POST /groups.xml
   def create
     @group = Group.new(params[:group])
+    authorize! :create, @group
 
     respond_to do |format|
       if @group.save
@@ -67,6 +71,7 @@ class GroupsController < ApplicationController
   # PUT /groups/1.xml
   def update
     @group = Group.find(params[:id])
+    authorize! :update, @group
 
     respond_to do |format|
       if @group.update_attributes(params[:group])
@@ -83,6 +88,7 @@ class GroupsController < ApplicationController
   # DELETE /groups/1.xml
   def destroy
     @group = Group.find(params[:id])
+    authorize! :destroy, @group
     @group.destroy
 
     respond_to do |format|

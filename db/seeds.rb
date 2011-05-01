@@ -79,7 +79,7 @@ puts "Done with Groups, starting Memberships"
 CSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])
   group = Group.find_by_name(group_name(row["group_id"]))
-  Membership.create(:member => user, :group => group, :level => row["level"])
+  Membership.create(:member => user, :group => group, :level => row["level"].downcase)
 end
 
 puts "Done with Memberships, starting Lings"
@@ -206,3 +206,5 @@ end
 puts "Done with ExamplesLingsPropsVals"
 
 puts "Seeding complete!"
+puts "Counts:"
+puts [User, Group, Membership, Ling, Category, Property, LingsProperty, Example, ExamplesLingsProperty].collect{|klass| [klass.to_s, klass.count].join(": ")}.join "\t"

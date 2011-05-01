@@ -1,24 +1,39 @@
 require 'spec_helper'
 
 describe GroupsController do
+  before do
+    @ability = Ability.new(nil)
+    @ability.stub(:can?).and_return true
+    @controller.stub(:current_ability).and_return(@ability)
+  end
+
   describe "index" do
-    describe "assigns" do
-      it "@groups should contain every group" do
+    describe "without a group_id parameter" do
+      it "@groups should contain accessible groups" do
+        @group = Factory(:group)
+        Group.should_receive(:accessible_by).with(@ability).and_return( [@group] )
         get :index
-        assigns(:groups).should include groups(:inclusive)
+        assigns(:groups).should include @group
       end
     end
 
-    describe "with a valid group_id parameter" do
-      it "should redirect to show for that group" do
+    describe "with a group_id parameter" do
+      it "should authorize :show on group" do
+        @ability = Ability.new(nil)
+        @group = Factory(:group)
+        @ability.should_receive(:can?).with(:show, @group).and_return true
+        @controller.stub(:current_ability).and_return(@ability)
+        Group.stub(:find).and_return(@group)
+        get :index, :group_id => @group.id
+      end
+
+      it "should redirect to show for that group if valid" do
         get :index, :group_id => groups(:inclusive).id
         response.should redirect_to(group_path(groups(:inclusive)))
         assigns[:group].should == groups(:inclusive)
       end
-    end
 
-    describe "with a group_id parameter that doesn't actually point to a group" do
-      it "should render index as normal" do
+      it "should render index as normal if invalid" do
         get :index, :group_id => "invalid-id"
         response.should_not redirect_to(groups_path + "/invalid-id")
         assigns[:group].should be_nil
@@ -27,8 +42,13 @@ describe GroupsController do
   end
 
   describe "show" do
-    it "should set session[:current_group] " do
-      get :show, :id => groups(:inclusive).id
+    it "should authorize :show on group" do
+      @ability = Ability.new(nil)
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:show, @group).and_return true
+      @controller.stub(:current_ability).and_return(@ability)
+      Group.stub(:find).and_return(@group)
+      get :show, :id => @group.id
     end
 
     describe "assigns" do
@@ -40,6 +60,15 @@ describe GroupsController do
   end
 
   describe "new" do
+    it "should authorize :create on group" do
+      @group = Factory(:group)
+      @ability = Ability.new(nil)
+      Group.should_receive(:new).and_return(@group)
+      @ability.should_receive(:can?).with(:create, @group).and_return true
+      @controller.stub(:current_ability).and_return(@ability)
+      get :new
+    end
+
     describe "assigns" do
       it "a new group to @group" do
         get :new
@@ -59,6 +88,15 @@ describe GroupsController do
   end
 
   describe "edit" do
+    it "should authorize :update on group" do
+      @ability = Ability.new(nil)
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:update, @group).and_return true
+      @controller.stub(:current_ability).and_return(@ability)
+      Group.stub(:find).and_return(@group)
+      get :edit, :id => @group.id
+    end
+
     describe "assigns" do
       it "the requested group to @group" do
         get :edit, :id => groups(:inclusive).id
@@ -68,20 +106,30 @@ describe GroupsController do
   end
 
   describe "create" do
+    it "should authorize :create on group" do
+      @ability = Ability.new(nil)
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:create, @group).and_return true
+      @controller.stub(:current_ability).and_return(@ability)
+      Group.stub(:new).and_return(@group)
+      group_params = {'name' => 'TheBestTheBestTheBest'}
+      post :create, :group => group_params
+    end
+
     describe "with valid params" do
       it "assigns a newly created group to @group" do
-        params = {'name' => 'TheBestTheBestTheBest'}
+        group_params = {'name' => 'TheBestTheBestTheBest'}
         @group = Factory(:group)
-        Group.should_receive(:new).with(params).and_return(@group)
-        post :create, :group => params
+        Group.should_receive(:new).with(group_params).and_return(@group)
+        post :create, :group => group_params
       end
 
       it "redirects to the created group" do
         @group = groups(:inclusive)
-        params = {:name => 'NewGroup'}
+        group_params = {:name => 'NewGroup'}
         Group.should_receive(:new).and_return(@group)
 
-        post :create, :group => params
+        post :create, :group => group_params
         assigns[:group].should == @group
         response.should redirect_to(group_url(assigns[:group]))
       end
@@ -104,6 +152,13 @@ describe GroupsController do
   end
 
   describe "update" do
+    it "should authorize :update on the passed group" do
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:update, @group).and_return(true)
+      Group.stub(:find).and_return(@group)
+      put :update, :id => @group.id, :group => {'name' => 'lamegroup'}
+    end
+
     describe "with valid params" do
       it "updates the requested group" do
         group = groups(:inclusive)
@@ -141,6 +196,13 @@ describe GroupsController do
   end
 
   describe "destroy" do
+    it "should authorize :destroy on the passed group" do
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:destroy, @group).and_return(true)
+      Group.stub(:find).and_return(@group)
+      delete :destroy, :id => @group.id
+    end
+
     it "calls destroy on the requested group" do
       group_id = groups(:inclusive).id
       Group.find(group_id).should_not be_nil
