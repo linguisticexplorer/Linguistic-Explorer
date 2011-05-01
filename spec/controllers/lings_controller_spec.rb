@@ -56,7 +56,6 @@ describe LingsController do
 
   describe "new" do
     it "should authorize :new on @ling" do
-      @user = Factory(:user, :access_level => User::USER)
       @ling = Ling.new
       @group = Factory(:group)
       @ability.should_receive(:can?).ordered.with(:new, @ling).and_return(true)
@@ -250,6 +249,16 @@ describe LingsController do
         get :edit, :group_id => groups(:inclusive).id, :id => lings(:level0)
         assigns(:parents).should == []
       end
+    end
+
+    it "should authorize :update on the passed ling" do
+      @group = Factory(:group)
+      @ling = Factory(:ling, :group => @group)
+      @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
+
+      Ling.stub(:new).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      get :edit, :group_id => @group.id, :id => @ling.id
     end
   end
 

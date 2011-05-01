@@ -90,7 +90,6 @@ class LingsController < GroupDataController
     end
     stale_values.each do |stale|
       if !(fresh_values.include? stale)
-
         stale.delete
       end
     end
@@ -122,6 +121,7 @@ class LingsController < GroupDataController
   # GET /lings/1/edit
   def edit
     @ling = Ling.find(params[:id])
+    authorize! :update, @ling
     @depth = @ling.depth
     @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
   end
