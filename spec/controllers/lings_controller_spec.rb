@@ -263,6 +263,16 @@ describe LingsController do
   end
 
   describe "create" do
+    it "should authorize :create on the passed ling params" do
+      @group = Factory(:group)
+      @ling = Factory(:ling, :group => @group)
+      @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
+
+      Ling.stub(:new).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      post :create, :group_id => @group.id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+    end
+
     describe "with valid params" do
       it "assigns a newly created ling to @ling" do
         lambda {
@@ -318,6 +328,16 @@ describe LingsController do
   end
 
   describe "update" do
+    it "should authorize :update on the passed ling" do
+      @group = Factory(:group)
+      @ling = Factory(:ling, :group => @group)
+      @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
+
+      Ling.stub(:find).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
+    end
+
     describe "with valid params" do
       it "calls update with the passed params on the requested ling" do
         ling = lings(:english)

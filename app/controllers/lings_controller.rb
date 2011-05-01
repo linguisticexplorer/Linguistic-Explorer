@@ -134,6 +134,7 @@ class LingsController < GroupDataController
       ling.creator  = current_user
       ling.depth    = params[:ling][:depth].to_i
     end
+    authorize! :create, @ling
     @depth = @ling.depth
 
     respond_to do |format|
@@ -152,6 +153,7 @@ class LingsController < GroupDataController
   # PUT /lings/1.xml
   def update
     @ling = Ling.find(params[:id])
+    authorize! :update, @ling
     @depth = @ling.depth
 
     respond_to do |format|
