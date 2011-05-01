@@ -16,7 +16,7 @@ class LingsController < GroupDataController
   # GET /lings
   # GET /lings.xml
   def index
-    @lings_by_depth = (0..current_group.depth_maximum).to_a.map{|depth| Ling.accessible_by(current_ability).find_all_by_depth(depth)}
+    @lings_by_depth = current_group.depths.map{|depth| Ling.accessible_by(current_ability).find_all_by_depth(depth)}
 
     respond_to do |format|
       format.html # index.html.erb
@@ -44,7 +44,7 @@ class LingsController < GroupDataController
     @preexisting_values = @ling.lings_properties
 
     @preexisting_values.each do |lp|
-      authorize! :manage, lp
+      authorize! :read, lp
     end
   end
 
@@ -70,7 +70,7 @@ class LingsController < GroupDataController
           lp.value = new_text
           lp.property = property
         end
-        fresh_values << fresh if fresh.save ###
+        fresh_values << fresh
       end
 
       prop_values.each do |value, flag|
@@ -81,9 +81,12 @@ class LingsController < GroupDataController
           lp.value = value
           lp.property = property
         end
-        ####
-        fresh_values << fresh if fresh.save ###
+        fresh_values << fresh
       end
+    end
+    fresh_values.each do |fresh|
+      authorize! :create, fresh
+      fresh.save
     end
     stale_values.each do |stale|
       if !(fresh_values.include? stale)

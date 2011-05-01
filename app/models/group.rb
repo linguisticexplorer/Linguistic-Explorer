@@ -17,9 +17,9 @@ class Group < ActiveRecord::Base
         :examples_lings_property_name => "Example Value"
   }
 
-  validates_presence_of   :name
-  validates_uniqueness_of :name
-  validate :allowable_depth_maximum
+  validates_presence_of     :name
+  validates_uniqueness_of   :name
+  validates_numericality_of :depth_maximum, :<= => MAXIMUM_ASSIGNABLE_DEPTH
 
   has_many :examples_lings_properties, :dependent => :destroy
   has_many :lings,                     :dependent => :destroy
@@ -35,11 +35,9 @@ class Group < ActiveRecord::Base
 
   def ling_name_for_depth(depth)
     if depth > depth_maximum
-      "Error: No objects for depth #{depth} exist in this group."
-    elsif depth == 0
-      ling0_name
-    elsif depth == 1
-      ling1_name
+      raise Exception.new "The ling depth requested was too deep for the group."
+    else
+      ling_names[depth.to_i]
     end
   end
 
@@ -51,8 +49,8 @@ class Group < ActiveRecord::Base
     depth_maximum >= 1
   end
 
-  def allowable_depth_maximum
-    errors.add(:depth_maximum, "must be either 0 or 1") if depth_maximum && !(0..MAXIMUM_ASSIGNABLE_DEPTH).include?(depth_maximum)
+  def depths
+    (0..depth_maximum).to_a
   end
 
   def example_storable_keys

@@ -3,8 +3,8 @@ require 'spec_helper'
 describe LingsController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).ordered.and_return(true)
-    Ability.stub(:new).and_return(@ability)
+    @ability.stub(:can?).and_return true
+    @controller.stub(:current_ability).and_return(@ability)
   end
 
   describe "depth" do
@@ -30,7 +30,10 @@ describe LingsController do
   describe "index" do
     describe "assigns" do
       it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
-        get :index, :group_id => groups(:inclusive).id
+        @group = groups(:inclusive)
+        get :index, :group_id => @group.id
+
+        assigns(:lings_by_depth).size.should == @group.depths.count
         assigns(:lings_by_depth)[0].should include lings(:level0)
         assigns(:lings_by_depth)[1].should include lings(:level1)
       end
@@ -103,7 +106,7 @@ describe LingsController do
   end
 
   describe "set_values" do
-    it "should authorize :manage on LingsProperties associated with the ling" do
+    it "should authorize :read on LingsProperties associated with the ling" do
       @ling = lings(:level0)
       Ling.stub(:find).and_return(@ling)
       @group = @ling.group
@@ -114,7 +117,7 @@ describe LingsController do
       @ling.stub(:lings_properties).and_return( @preexisting_values )
 
       @preexisting_values.each do |lp|
-        @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
+        @ability.should_receive(:can?).ordered.with(:read, lp).and_return(true)
       end
 
       get :set_values, :group_id => @group.id, :id => @ling.id
@@ -157,19 +160,35 @@ describe LingsController do
 
     it "should authorize :manage on preexisting LingsProperties" do
       @ling = lings(:level0)
-      Ling.stub(:find).and_return(@ling)
       @group = @ling.group
+      Ling.stub(:find).and_return(@ling)
       Group.stub(:find).and_return(@group)
 
-      @preexisting_values = @ling.lings_properties
-      @preexisting_values.should_not be_empty
-      @ling.stub(:lings_properties).and_return( @preexisting_values )
-
+      @preexisting_values = [ lings_properties(:level0) ]
       @preexisting_values.each do |lp|
         @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
       end
+      @ling.stub(:lings_properties).and_return( @preexisting_values )
 
       post :submit_values, :group_id => @group.id, :id => @ling.id
+    end
+
+    it "should authorize :create on new lings_properties" do
+      value = "foobar"
+      @ling = lings(:level0)
+      @group = @ling.group
+      @property = properties(:level0)
+      @lings_property = Factory(:lings_property, :group => @group, :ling => @ling, :property => @property, :value => value)
+      @ling.should_receive(:lings_properties).and_return []
+      Ling.stub(:find).and_return(@ling)
+      Group.stub(:find).and_return(@group)
+      Property.stub(:find).and_return(@property)
+      LingsProperty.stub(:find_by_group_id_and_ling_id_and_property_id_and_value).and_return( @lings_property )
+
+      @ability.should_receive(:can?).ordered.with(:show, @group).and_return(true)
+      @ability.should_receive(:can?).ordered.with(:create, @lings_property).and_return(true)
+
+      post :submit_values, :group_id => @group.id, :id => @ling.id, :values => { @ling.id.to_s => { "_new" => value }}
     end
 
     it "creates lings_properties for the ling and any submitted property values" do
