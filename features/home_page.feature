@@ -16,7 +16,7 @@ Feature: Linguistic Explorer Home Page
 
   Scenario: When in previews
     Given I am a visitor
-    And the settings "in preview" is true
+    And the setting "in preview" is true
     And the public group "Syntactic Structures"
     When I go to the home page
     Then I should not see "Groups"

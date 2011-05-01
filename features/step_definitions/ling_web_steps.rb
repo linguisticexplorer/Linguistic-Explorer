@@ -1,4 +1,4 @@
-Given /^the settings "([^\"]*)" is true$/ do |setting|
+Given /^the setting(?:|s) "([^\"]*)" is true$/ do |setting|
   Settings.stub!(setting.underscorize.to_sym => true)
 end
 
