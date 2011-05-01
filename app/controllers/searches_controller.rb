@@ -45,7 +45,7 @@ class SearchesController < GroupDataController
   end
 
   def index
-    authorize! :new, new_search_for_authorization
+    authorize! :new, new_search_for_authorization #TODO turning this off didn't break anything...
 
     @searches   = Search.by(current_user).in_group(current_group)
 

@@ -16,8 +16,9 @@ module NavigationHelpers
       when /the login page/
         new_user_session_path
 
-      when /the new search page/
-        new_search_path
+      when /the group (.*)/
+        group_path(Group.find_by_name($1))
+
       when /the (.+) search page/
         new_group_search_path(Group.find_by_name($1))
       when /the search page for (.+)/
@@ -39,15 +40,11 @@ module NavigationHelpers
         group_examples_lings_properties_path(Group.find_by_name($1))
       when /the memberships page for (.+)/
         group_memberships_path(Group.find_by_name($1))
-
-      when /the group (.*)/
-        group_path(Group.find_by_name($1))
-
       when /the mass assignment page for "(.*)"/
         ling = Ling.find_by_name($1)
         group = ling.group
         set_values_group_ling_path(group, ling)
-      when /my group searches/
+      when /my group searches page/
         group_searches_path(Group.last)
 
     # Add more mappings here.

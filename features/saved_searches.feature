@@ -1,9 +1,8 @@
 Feature: Save searches
 
   Background:
-
     Given I am signed in as "bob@example.com"
-    And the group "Syntactic Structures"
+    And the public group "Syntactic Structures"
     And the group "Syntactic Structures" with the following ling names:
     | ling0_name  | ling1_name  |
     | Speaker     | Sentence    |
