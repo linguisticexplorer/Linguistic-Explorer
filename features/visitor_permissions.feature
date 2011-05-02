@@ -6,16 +6,14 @@ Feature: Permissions testing for non-logged-in users
     And the private group "Secret Club"
     When I go to the home page
     Then I should see "Select a Group"
-
-  Scenario: Visitors should be able to choose a public group to enter
     When I select "Syntactic Structures" from "group_id"
     And  I press "Go"
+
+  Scenario: Visitors should be able to choose a public group to enter
     Then I should be on the group Syntactic Structures
     Then I should see "Syntactic Structures" within "#group_nav_bar"
 
   Scenario: The standard user should be able to view pages for all group data in a public group
-    When I select "Syntactic Structures" from "group_id"
-    And  I press "Go"
     Then I should see "Syntactic Structures" within "#group_nav_bar"
     And  I should not see "Group Admin Panel"
     When I follow "Syntactic Structures"

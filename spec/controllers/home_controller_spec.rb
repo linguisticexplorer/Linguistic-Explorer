@@ -1,8 +1,10 @@
 require 'spec_helper'
 
 describe HomeController do
-  it "assigns all groups to @groups" do
+  it "assigns accessible groups @groups" do
+    @group = groups(:inclusive)
+    Group.should_receive(:accessible_by).and_return ( [ @group ] )
     get :index
-    assigns(:groups).size.should == Group.all.size
+    assigns(:groups).should include @group
   end
 end
