@@ -31,6 +31,18 @@ Feature: Keyword Search on Ling
     And I should not see "Answer"
     And I should not see "noun"
 
+  Scenario: Partial keyword search on ling depth 0
+    When I fill in "Language Keywords" with "glish"
+    And I press "Search"
+    Then I should see the following search results:
+    | Lings         | Properties    | Value     | depth   |
+    | English       | Property 1    | Eastern   | parent  |
+    | Question      | Property 3    | verb      | child   |
+    And I should not see "Spanish"
+    And I should not see "Western"
+    And I should not see "Answer"
+    And I should not see "noun"
+
   Scenario: Keyword search on ling depth 1
     When I fill in "Sentence Keywords" with "Quest"
     And I press "Search"

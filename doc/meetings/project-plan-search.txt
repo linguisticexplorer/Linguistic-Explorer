@@ -52,10 +52,10 @@ Project Plan for Search
       - Difference (with parent recovery)
 
 4/25
-      Pagination
       Performance
       Database back up procedure
-      Ensure depth is represent properly in search form and results
+      Keyword search
+      Example attributes and rendering
 
 5/2
       Look/Feel/Data-to-render pass through (based on SSWL)

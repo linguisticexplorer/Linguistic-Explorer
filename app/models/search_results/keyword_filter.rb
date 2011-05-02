@@ -52,7 +52,8 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      LingsProperty.select_ids.where(:id => vals) & model_class.where(:name.matches => "#{keyword}%")
+      LingsProperty.select_ids.where(:id => vals) &
+        model_class.unscoped.where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
     end
   end
 
@@ -88,10 +89,6 @@ module SearchResults
 
     def model_class
       Example
-    end
-
-    def select_vals_by_keyword(vals, keyword)
-      LingsProperty.select_ids.where(:id => vals) & model_class.unscoped.where(:name.matches => keyword)
     end
 
   end

@@ -67,3 +67,16 @@ Feature: Search Examples
     And I should not see "Example 2"
     And I should not see "Example 3"
     And I should not see "Example 4"
+  
+  Scenario: Partial keyword search on example
+    When I go to the Syntactic Structures search page
+    And I fill in "Example Keywords" with "1"
+    And I check "Examples" within "#show_parent"
+    And I press "Search"
+    Then I should see the following search results:
+    | Lings         | Example     | depth   |
+    | Speaker 1     | Example 1   | parent  |
+    | Sentence 1    |             | child   |
+    And I should not see "Example 2"
+    And I should not see "Example 3"
+    And I should not see "Example 4"
