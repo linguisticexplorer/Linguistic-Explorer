@@ -16,7 +16,9 @@ class LingsController < GroupDataController
   # GET /lings
   # GET /lings.xml
   def index
-    @lings_by_depth = current_group.depths.map{|depth| Ling.accessible_by(current_ability).find_all_by_depth(depth)}
+    @lings_by_depth = current_group.depths.collect do |depth|
+      Ling.accessible_by(current_ability).find_all_by_depth(depth)
+    end
 
     respond_to do |format|
       format.html # index.html.erb

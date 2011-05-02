@@ -55,6 +55,10 @@ describe LingsController do
   end
 
   describe "new" do
+    def do_new_with_depth(depth)
+      get :new, :group_id => groups(:inclusive).id, :depth => depth
+    end
+
     it "should authorize :new on @ling" do
       @ling = Ling.new
       @group = Factory(:group)
@@ -67,38 +71,38 @@ describe LingsController do
 
     describe "with a depth parameter > 0" do
       it "assigns a new ling to @ling, with depth the same as the param" do
-        get :new, :group_id => groups(:inclusive).id, :depth => 1
+        do_new_with_depth(1)
         assigns(:ling).should be_new_record
         assigns(:ling).depth.should == 1
       end
 
       it "should assign @depth the value of the parameter" do
-        get :new, :group_id => groups(:inclusive).id, :depth => 1
+        do_new_with_depth(1)
         assigns(:depth).should == 1
       end
 
       it "should assign lings of @depth-1 depth to @parents" do
-        get :new, :group_id => groups(:inclusive).id, :depth => 1
+        do_new_with_depth(1)
         assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
       end
     end
 
     describe "with a depth parameter of 0" do
       it "should assign 0 to @depth" do
-        get :new, :group_id => groups(:inclusive).id, :depth => 0
+        do_new_with_depth(0)
         assigns(:depth).should == 0
       end
     end
 
     describe "without a depth parameter" do
       it "assigns a new ling to @ling, with depth 0" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new_with_depth(nil)
         assigns(:ling).should be_new_record
         assigns(:ling).depth.should == 0
       end
 
       it "should assign 0 to @depth" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new_with_depth(nil)
         assigns(:depth).should == 0
       end
     end
@@ -122,29 +126,33 @@ describe LingsController do
       get :set_values, :group_id => @group.id, :id => @ling.id
     end
 
+    def do_set_values_on_ling(ling)
+      get :set_values, :group_id => groups(:inclusive).id, :id => ling.id
+    end
+
     describe "assigns" do
       it "the requested ling to @ling and its depth to @depth" do
-        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        do_set_values_on_ling lings(:level0)
         assigns(:ling).should == lings(:level0)
         assigns(:depth).should == lings(:level0).depth
 
-        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        do_set_values_on_ling lings(:level1)
         assigns(:ling).should == lings(:level1)
         assigns(:depth).should == lings(:level1).depth
       end
 
       it "categories of the same depth as the ling to @categories" do
-        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        do_set_values_on_ling lings(:level0)
         assigns(:categories).should include categories(:inclusive0)
         assigns(:categories).should_not include categories(:inclusive1)
 
-        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level1)
+        do_set_values_on_ling lings(:level1)
         assigns(:categories).should_not include categories(:inclusive0)
         assigns(:categories).should include categories(:inclusive1)
       end
 
       it "pre-existing LingsProperties for the ling to @preexisting_values" do
-        get :set_values, :group_id => groups(:inclusive).id, :id => lings(:level0)
+        do_set_values_on_ling lings(:level0)
         assigns(:preexisting_values).should include lings_properties(:level0)
         assigns(:preexisting_values).should_not include lings_properties(:level1)
       end
@@ -229,24 +237,35 @@ describe LingsController do
   end
 
   describe "edit" do
+    def do_edit_on_ling(ling)
+      get :edit, :group_id => groups(:inclusive).id, :id => ling.id
+    end
+
     describe "assigns" do
       it "the requested ling to @ling" do
-        get :edit, :group_id => groups(:inclusive).id, :id => lings(:english)
+        do_edit_on_ling(lings(:english))
         assigns(:ling).should == lings(:english)
       end
 
       it "the requested ling's depth to @depth" do
-        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level1)
-        assigns(:depth).should == lings(:level1).depth
+        @ling = lings(:level1)
+        do_edit_on_ling(@ling)
+        assigns(:depth).should == @ling.depth
       end
 
       it "available @depth-1 depth lings to @parents" do
-        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level1)
-        assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
+        @ling = lings(:level1)
+        @ling.depth.should == 1
+        do_edit_on_ling(@ling)
+        parent_depths = assigns(:parents).collect(&:depth)
+        parent_depths.uniq.size.should == 1
+        parent_depths.first.should == 0
       end
 
-      it "an empty array to @parents if depth is < 0" do
-        get :edit, :group_id => groups(:inclusive).id, :id => lings(:level0)
+      it "an empty array to @parents if depth is <= 0" do
+        @ling = lings(:level0)
+        @ling.depth.should == 0
+        do_edit_on_ling(@ling)
         assigns(:parents).should == []
       end
     end
@@ -274,9 +293,13 @@ describe LingsController do
     end
 
     describe "with valid params" do
+      def do_valid_create
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+      end
+
       it "assigns a newly created ling to @ling" do
         lambda {
-          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+          do_valid_create
           assigns(:ling).should_not be_new_record
           assigns(:ling).should be_valid
           assigns(:ling).name.should == 'Javanese'
@@ -284,7 +307,7 @@ describe LingsController do
       end
 
       it "redirects to the created ling" do
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+        do_valid_create
         response.should redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
       end
 
@@ -292,36 +315,40 @@ describe LingsController do
         user = Factory(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+        do_valid_create
         assigns(:ling).creator.should == user
       end
     end
 
     describe "with invalid params" do
+      def do_invalid_create
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => 1}
+      end
+
       it "does not save a new ling" do
         lambda {
-          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => nil}
+          do_invalid_create
           assigns(:ling).should_not be_valid
         }.should change(Ling, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => ''}
+        do_invalid_create
         response.should be_success
         response.should render_template("new")
       end
 
       describe "assigns" do
-        before do
-          post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', :depth => 1}
-        end
-
-        it "the requested ling's depth to @depth" do
+        it "the attempted ling's depth to @depth" do
+          do_invalid_create
           assigns(:depth).should == 1
         end
 
         it "available @depth-1 depth lings to @parents" do
-          assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
+          do_invalid_create
+          parent_depths = assigns(:parents).collect(&:depth)
+          parent_depths.uniq.size.should == 1
+          parent_depths.first.should == 0
         end
       end
     end
@@ -359,38 +386,45 @@ describe LingsController do
     end
 
     describe "with invalid params" do
-      before do
+      def do_invalid_update
         put :update, :group_id => groups(:inclusive).id, :id => lings(:level1), :ling => {'name' => ''}
       end
 
       it "assigns the ling as @ling" do
+        do_invalid_update
         assigns(:ling).should == lings(:level1)
       end
 
       it "assigns the requested ling's depth to @depth" do
+        do_invalid_update
         assigns(:depth).should == 1
       end
 
       it "assigns available @depth-1 depth lings to @parents" do
+        do_invalid_update
         assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
       end
 
       it "re-renders the 'edit' template" do
+        do_invalid_update
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "destroy" do
+    def do_destroy_on_ling(ling)
+      post :destroy, :group_id => ling.group.id, :id => ling.id
+    end
+
     it "should authorize :destroy on the passed ling" do
-      @group = Factory(:group)
-      @ling = Factory(:ling, :group => @group)
+      @group = groups(:inclusive)
+      @ling = Factory(:ling, :name => "thosewhoareabouttodie", :group => @group)
       @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
 
       Ling.stub(:find).and_return(@ling)
       Group.stub(:find).and_return(@group)
-      post :destroy, :group_id => @group.id, :id => @ling.id
+      do_destroy_on_ling(@ling)
     end
 
 
@@ -398,17 +432,16 @@ describe LingsController do
       ling = lings(:english)
       ling.should_receive(:destroy).and_return(true)
       Ling.should_receive(:find).with(ling.id).and_return(ling)
-
-      delete :destroy, :group_id => groups(:inclusive).id, :id => ling.id
+      do_destroy_on_ling(ling)
     end
 
     it "assigns the deleted ling's depth to @depth" do
-      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:level1)
+      do_destroy_on_ling(lings(:level1))
       assigns(:depth).should == 1
     end
 
     it "redirects to the lings list for the appropriate depth" do
-      delete :destroy, :group_id => groups(:inclusive).id, :id => lings(:level1)
+      do_destroy_on_ling(lings(:level1))
       response.should redirect_to(group_lings_depth_url(assigns(:group), assigns(:depth)))
     end
   end

@@ -55,9 +55,13 @@ describe PropertiesController do
 
   describe "create" do
     describe "with valid params" do
+      def do_valid_create
+        post :create, :property => {'name' => 'FROMSPACE', :description => "lots of junk", :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+      end
+
       it "assigns a newly created property to @property" do
         lambda {
-          post :create, :property => {'name' => 'FROMSPACE', :description => "lots of junk", :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+          do_valid_create
           assigns(:property).should_not be_new_record
           assigns(:property).should be_valid
           assigns(:property).name.should == 'FROMSPACE'
@@ -67,7 +71,7 @@ describe PropertiesController do
       end
 
       it "redirects to the created property" do
-        post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+        do_valid_create
         response.should redirect_to(group_property_url(assigns(:group), assigns(:property)))
       end
 
@@ -75,21 +79,25 @@ describe PropertiesController do
         user = Factory(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
-        post :create, :property => {'name' => 'FROMSPACE', :category_id => categories(:inclusive0).id}, :group_id => groups(:inclusive).id
+        do_valid_create
         assigns(:property).creator.should == user
       end
     end
 
     describe "with invalid params" do
+      def do_invalid_create
+        post :create, :property => {'name' => ''}, :group_id => groups(:inclusive).id
+      end
+
       it "does not save a new property" do
         lambda {
-          post :create, :property => {'name' => ''}, :group_id => groups(:inclusive).id
+          do_invalid_create
           assigns(:property).should_not be_valid
         }.should change(Property, :count).by(0)
       end
 
       it "@categories should be a hash with two level members" do
-        post :create, :property => {}, :group_id => groups(:inclusive).id
+        do_invalid_create
         cats = assigns(:categories)
         cats.should be_a Hash
         cats[:depth_0].should include categories(:inclusive0)
@@ -97,7 +105,7 @@ describe PropertiesController do
       end
 
       it "re-renders the 'new' template" do
-        post :create, :property => {}, :group_id => groups(:inclusive).id
+        do_invalid_create
         response.should be_success
         response.should render_template("new")
       end
@@ -106,35 +114,40 @@ describe PropertiesController do
 
   describe "update" do
     describe "with valid params" do
+      def do_valid_update_on_property(property)
+        put :update, :id => property.id, :property => {'name' => 'ayb'}, :group_id => groups(:inclusive).id
+      end
+
       it "calls update with the passed params on the requested property" do
         property = properties(:valid)
         property.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
         Property.should_receive(:find).with(property.id).and_return(property)
-
-        put :update, :id => property.id, :property => {'name' => 'ayb'}, :group_id => groups(:inclusive).id
+        do_valid_update_on_property(property)
       end
 
       it "assigns the requested property as @property" do
-        put :update, :id => properties(:valid), :group_id => groups(:inclusive).id
+        do_valid_update_on_property(properties(:valid))
         assigns(:property).should == properties(:valid)
       end
 
       it "redirects to the property" do
-        put :update, :id => properties(:valid), :group_id => groups(:inclusive).id
+        do_valid_update_on_property(properties(:valid))
         response.should redirect_to(group_property_url(assigns(:group), properties(:valid)))
       end
     end
 
     describe "with invalid params" do
-      before do
+      def do_invalid_update
         put :update, :id => properties(:valid), :property => {'name' => ''}, :group_id => groups(:inclusive).id
       end
 
       it "assigns the property as @property" do
+        do_invalid_update
         assigns(:property).should == properties(:valid)
       end
 
       it "@categories should be a hash with two level members" do
+        do_invalid_update
         cats = assigns(:categories)
         cats.should be_a Hash
         cats[:depth_0].should include categories(:inclusive0)
@@ -142,10 +155,10 @@ describe PropertiesController do
       end
 
       it "re-renders the 'edit' template" do
+        do_invalid_update
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "destroy" do

@@ -68,15 +68,19 @@ describe MembershipsController do
     end
 
      describe "with invalid params" do
+      def do_invalid_create
+        post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+      end
+
       it "does not save a new membership" do
         lambda {
-          post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+          do_invalid_create
           assigns(:membership).should_not be_valid
         }.should change(Membership, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+        do_invalid_create
         response.should be_success
         response.should render_template("new")
       end
@@ -107,21 +111,18 @@ describe MembershipsController do
     end
 
     describe "with invalid params" do
-      before do
-        @membership = Factory(:membership, :group => groups(:inclusive))
-        put :update, :id => @membership, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
-      end
-
       it "assigns the membership as @membership" do
+        @membership = Factory(:membership, :group => groups(:inclusive))
         put :update, :id => @membership, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
         assigns(:membership).should == @membership
       end
 
       it "re-renders the 'edit' template" do
+        @membership = Factory(:membership, :group => groups(:inclusive))
+        put :update, :id => @membership, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "destroy" do

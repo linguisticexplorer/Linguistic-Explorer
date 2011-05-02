@@ -60,18 +60,22 @@ describe GroupsController do
   end
 
   describe "new" do
+    def do_new
+      get :new
+    end
+
     it "should authorize :create on group" do
       @group = Factory(:group)
       @ability = Ability.new(nil)
       Group.should_receive(:new).and_return(@group)
       @ability.should_receive(:can?).with(:create, @group).and_return true
       @controller.stub(:current_ability).and_return(@ability)
-      get :new
+      do_new
     end
 
     describe "assigns" do
       it "a new group to @group" do
-        get :new
+        do_new
         assigns(:group).should be_new_record
       end
     end
@@ -79,7 +83,7 @@ describe GroupsController do
     describe "sets default field values:" do
       Group::DEFAULTS.each do |key,value|
         it "#{key} is #{value}" do
-          get :new
+          do_new
           group = assigns(:group)
           group.send(key).should == value
         end
@@ -106,6 +110,10 @@ describe GroupsController do
   end
 
   describe "create" do
+    def do_create_with_params(params)
+      post :create, :group => params
+    end
+
     it "should authorize :create on group" do
       @ability = Ability.new(nil)
       @group = Factory(:group)
@@ -113,7 +121,7 @@ describe GroupsController do
       @controller.stub(:current_ability).and_return(@ability)
       Group.stub(:new).and_return(@group)
       group_params = {'name' => 'TheBestTheBestTheBest'}
-      post :create, :group => group_params
+      do_create_with_params(group_params)
     end
 
     describe "with valid params" do
@@ -121,7 +129,7 @@ describe GroupsController do
         group_params = {'name' => 'TheBestTheBestTheBest'}
         @group = Factory(:group)
         Group.should_receive(:new).with(group_params).and_return(@group)
-        post :create, :group => group_params
+        do_create_with_params(group_params)
       end
 
       it "redirects to the created group" do
@@ -129,7 +137,7 @@ describe GroupsController do
         group_params = {:name => 'NewGroup'}
         Group.should_receive(:new).and_return(@group)
 
-        post :create, :group => group_params
+        do_create_with_params(group_params)
         assigns[:group].should == @group
         response.should redirect_to(group_url(assigns[:group]))
       end
@@ -138,13 +146,15 @@ describe GroupsController do
     describe "with invalid params" do
       it "does not save a new group" do
         lambda {
-          post :create, :group => {'name' => ''}
+          invalid_params = {'name' => ''}
+          do_create_with_params(invalid_params)
           assigns(:group).should_not be_valid
         }.should change(Group, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
-        post :create, :group => {}
+        invalid_params = {'name' => ''}
+        do_create_with_params(invalid_params)
         response.should be_success
         response.should render_template("new")
       end
@@ -152,47 +162,56 @@ describe GroupsController do
   end
 
   describe "update" do
+    def do_update_on_group_with_params(group, params)
+      put :update, :id => group.id, :group => params
+    end
+
     it "should authorize :update on the passed group" do
+      params = {'name' => 'lamegroup'}
       @group = Factory(:group)
       @ability.should_receive(:can?).with(:update, @group).and_return(true)
       Group.stub(:find).and_return(@group)
-      put :update, :id => @group.id, :group => {'name' => 'lamegroup'}
+      do_update_on_group_with_params(@group, params)
     end
 
     describe "with valid params" do
       it "updates the requested group" do
         group = groups(:inclusive)
         group.name.should_not == 'number1group'
-        put :update, :id => group.id, :group => {'name' => 'number1group'}
+        params = {'name' => 'number1group'}
+
+        do_update_on_group_with_params(group, params)
+
         group.reload
         group.name.should == 'number1group'
       end
 
       it "assigns the requested group as @group" do
-        put :update, :id => groups(:inclusive).id
-        assigns(:group).should == groups(:inclusive)
+        @group = groups(:inclusive)
+        do_update_on_group_with_params(@group, {})
+        assigns(:group).should == @group
       end
 
       it "redirects to the group" do
-        put :update, :id => groups(:inclusive).id
-        response.should redirect_to(group_url(groups(:inclusive)))
+        @group = groups(:inclusive)
+        do_update_on_group_with_params(@group, {})
+        response.should redirect_to(group_url(@group))
       end
     end
 
     describe "with invalid params" do
-      before do
-        put :update, :id => groups(:inclusive).id, :group => {'name' => ''}
-      end
-
       it "assigns the group as @group" do
-        assigns(:group).should == groups(:inclusive)
+        @group = groups(:inclusive)
+        invalid_params = {'name' => ''}
+        do_update_on_group_with_params(@group, invalid_params)
+        assigns(:group).should == @group
       end
 
       it "re-renders the 'edit' template" do
+        do_update_on_group_with_params(groups(:inclusive), {'name' => ''})
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "destroy" do

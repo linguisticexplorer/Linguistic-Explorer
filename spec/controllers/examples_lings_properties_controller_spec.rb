@@ -21,37 +21,44 @@ describe ExamplesLingsPropertiesController do
 
   describe "new" do
     describe "assigns" do
-      it "a new examples_lings_property to @examples_lings_property" do
+      def do_new
         get :new, :group_id => groups(:inclusive).id
+      end
+      it "a new examples_lings_property to @examples_lings_property" do
+        do_new
         assigns(:examples_lings_property).should be_new_record
       end
 
       it "available examples to @examples" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new
         assigns(:examples).size.should == Example.all.size
       end
 
       it "available lings_properties to @lings_properties" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new
         assigns(:lings_properties).size.should == LingsProperty.all.size
       end
     end
   end
 
   describe "edit" do
+    def do_edit
+      get :edit, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
+    end
+
     describe "assigns" do
       it "the requested examples_lings_property to @examples_lings_property" do
-        get :edit, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
+        do_edit
         assigns(:examples_lings_property).should == examples_lings_properties(:inclusive)
       end
 
       it "available examples to @examples" do
-        get :edit, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
+        do_edit
         assigns(:examples).size.should == Example.all.size
       end
 
       it "available lings_properties to @lings_properties" do
-        get :edit, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
+        do_edit
         assigns(:lings_properties).size.should == LingsProperty.all.size
       end
     end
@@ -142,29 +149,32 @@ describe ExamplesLingsPropertiesController do
     end
 
     describe "with invalid params" do
-      before do
+      def do_invalid_update
         put :update, :id => examples_lings_properties(:inclusive), :examples_lings_property => {:example_id => nil}, :group_id => groups(:inclusive).id
       end
 
       describe "assigns" do
         it "the examples_lings_property as @examples_lings_property" do
+          do_invalid_update
           assigns(:examples_lings_property).should == examples_lings_properties(:inclusive)
         end
 
         it "available lings to @lings" do
+          do_invalid_update
           assigns(:examples).size.should == Example.all.size
         end
 
         it "available properties to @properties" do
+          do_invalid_update
           assigns(:lings_properties).size.should == LingsProperty.all.size
         end
       end
 
       it "re-renders the 'edit' template" do
+        do_invalid_update
         response.should render_template("edit")
       end
     end
-
   end
 
   describe "destroy" do
@@ -172,7 +182,6 @@ describe ExamplesLingsPropertiesController do
       examples_lings_property = examples_lings_properties(:inclusive)
       examples_lings_property.should_receive(:destroy).and_return(true)
       ExamplesLingsProperty.should_receive(:find).with(examples_lings_property.id).and_return(examples_lings_property)
-
       delete :destroy, :id => examples_lings_property.id, :group_id => groups(:inclusive).id
     end
 

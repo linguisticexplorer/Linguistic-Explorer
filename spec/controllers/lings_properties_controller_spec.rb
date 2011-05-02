@@ -21,18 +21,22 @@ describe LingsPropertiesController do
 
   describe "new" do
     describe "assigns" do
-      it "a new lings_property to @lings_property" do
+      def do_new
         get :new, :group_id => groups(:inclusive).id
+      end
+
+      it "a new lings_property to @lings_property" do
+        do_new
         assigns(:lings_property).should be_new_record
       end
 
       it "available lings to @lings" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new
         assigns(:lings).size.should == Ling.all.size
       end
 
       it "available properties to @properties" do
-        get :new, :group_id => groups(:inclusive).id
+        do_new
         assigns(:properties).size.should == Property.all.size
       end
     end

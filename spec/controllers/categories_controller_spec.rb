@@ -42,7 +42,6 @@ describe CategoriesController do
       it "assigns a newly created category to @category" do
         lambda {
           post :create, :category => {'name' => 'FROMSPACE', :description => "lots of junk", :depth => '0'}, :group_id => groups(:inclusive).id
-
           assigns(:category).should_not be_new_record
           assigns(:category).should be_valid
           assigns(:category).name.should == 'FROMSPACE'
@@ -122,7 +121,6 @@ describe CategoriesController do
       category = categories(:inclusive0)
       category.should_receive(:destroy).and_return(true)
       Category.should_receive(:find).with(category.id).and_return(category)
-
       delete :destroy, :id => category.id, :group_id => groups(:inclusive).id
     end
 

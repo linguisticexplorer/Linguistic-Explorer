@@ -84,29 +84,6 @@ describe ExamplesController do
         assigns(:example).creator.should == user
       end
     end
-
-#     xdescribe "NO POSSIBLE INVALIDS with invalid params" do
-#      it "does not save a new example" do
-#        lambda {
-#          post :create, :example => {'name' => ''}
-#          assigns(:example).should_not be_valid
-#        }.should change(Example, :count).by(0)
-#      end
-#
-#      it "@lings should be a hash with two depth members" do
-#        post :create, :example => {'name' => ''}
-#        lings = assigns(:lings)
-#        lings.should be_a Hash
-#        lings[:depth_0].should include lings(:level0)
-#        lings[:depth_1].should include lings(:level1)
-#      end
-#
-#      it "re-renders the 'new' template" do
-#        post :create, :example => {'name' => ''}
-#        response.should be_success
-#        response.should render_template("new")
-#      end
-#    end
   end
 
   describe "update" do
@@ -139,30 +116,6 @@ describe ExamplesController do
         response.should redirect_to(group_example_url(assigns(:group), examples(:onceuponatime)))
       end
     end
-
-#    xdescribe "NO POSSIBLE INVALIDS with invalid params" do
-#      before do
-#        put :update, :id => examples(:onceuponatime), :example => {'name' => ''}
-#      end
-#
-#      it "assigns the example as @example" do
-#        put :update, :id => examples(:onceuponatime), :example => {'name' => ''}
-#        assigns(:example).should == examples(:onceuponatime)
-#      end
-#
-#      it "@lings should be a hash with two depth members" do
-#        put :update, :id => examples(:onceuponatime), :example => {'name' => ''}
-#        lings = assigns(:lings)
-#        lings.should be_a Hash
-#        lings[:depth_0].should include lings(:level0)
-#        lings[:depth_1].should include lings(:level1)
-#      end
-#
-#      it "re-renders the 'edit' template" do
-#        response.should render_template("edit")
-#      end
-#    end
-
   end
 
   describe "destroy" do
