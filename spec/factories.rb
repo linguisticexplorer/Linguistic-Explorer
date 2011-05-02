@@ -64,3 +64,6 @@ Factory.define :search do |f|
   f.association :group, :factory => :group
   f.association :creator, :factory => :user
 end
+
+Factory.define :stored_value do |f|
+end

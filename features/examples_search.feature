@@ -67,7 +67,7 @@ Feature: Search Examples
     And I should not see "Example 2"
     And I should not see "Example 3"
     And I should not see "Example 4"
-  
+
   Scenario: Partial keyword search on example
     When I go to the Syntactic Structures search page
     And I fill in "Example Keywords" with "1"
@@ -80,3 +80,24 @@ Feature: Search Examples
     And I should not see "Example 2"
     And I should not see "Example 3"
     And I should not see "Example 4"
+
+  Scenario: Keyword search on example stored values
+    Given the group example fields "origin, era"
+    And the following example stored values
+    | example     | key         | value     |
+    | Example 1   | origin      | middle    |
+    | Example 2   | era         | golden    |
+    | Example 3   | era         | olden     |
+    | Example 4   | era         | golden    |
+    When I go to the Syntactic Structures search page
+    And I check "Examples" within "#show_parent"
+    And I check "Examples" within "#show_child"
+    And I select "Era Contains" from "Speaker Example Attribute"
+    And I fill in "Example Keyword" with "gold"
+    And I press "Search"
+    Then I should see the following search results:
+    | Lings         | Example     | depth   |
+    | Speaker 2     | Example 2   | parent  |
+    | Sentence 2    | Example 4   | child   |
+    And I should not see "Example 1"
+    And I should not see "Example 3"

@@ -46,14 +46,22 @@ module SearchResults
       @query[query_key][depth.to_s]
     end
 
+    def group
+      @query.group
+    end
+
     def vals_at(depth)
       vals = @filter.vals_at(depth)
       keyword(depth).present? ? select_vals_by_keyword(vals, keyword(depth)) : vals
     end
 
     def select_vals_by_keyword(vals, keyword)
-      LingsProperty.select_ids.where(:id => vals) &
-        model_class.unscoped.where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+      LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
+    end
+
+    def search_scope_name_by_keyword(keyword)
+      model_class.unscoped.where(:group_id => group.id).
+        where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
     end
   end
 
@@ -86,9 +94,36 @@ module SearchResults
   end
 
   class ExampleKeywordStrategy < KeywordStrategy
+    # query: :example_fields=>{"0"=>["origin"], "1"=>["text"]}, :example_keywords=>{"0"=>"gold", "1"=>""}}
 
     def model_class
       Example
+    end
+
+    def keyword(depth)
+      @query[query_key][depth.to_s]
+    end
+
+    def vals_at(depth)
+      vals = @filter.vals_at(depth)
+      keyword(depth).present? ? select_vals_by_keyword(vals, keyword(depth), depth) : vals
+    end
+
+    def select_vals_by_keyword(vals, keyword, depth)
+      example_attribute = @query[:example_fields][depth.to_s].to_sym
+      keyword_scope = case example_attribute
+      when :text
+        search_scope_name_by_keyword(keyword)
+      else
+        # keyword search by stored value key/pair
+        (
+          model_class.unscoped.where(:group_id => group.id) &
+          StoredValue.unscoped.with_key(example_attribute).
+            where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
+        )
+      end
+
+      LingsProperty.select_ids.where(:id => vals) & keyword_scope
     end
 
   end

@@ -2,7 +2,8 @@ module SearchForm
 
   attr_accessor :lings,         :properties,          :lings_props,
                 :property_set,  :lings_property_set,
-                :ling_keywords, :property_keywords,   :example_keywords
+                :ling_keywords, :property_keywords,   :example_keywords,
+                :example_fields
 
   def ling_options(depth)
     group_lings_at_depth(depth).map { |l| [l.name, l.id] }
@@ -14,6 +15,10 @@ module SearchForm
 
   def lings_prop_options(category)
     group_lings_props_in_category(category).map { |p| ["#{p.prop_name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
+  end
+
+  def example_field_options
+    @group.example_storable_keys.map { |ef| ["#{ef.titleize} Contains", ef.downcase ] }
   end
 
   def ling_depths

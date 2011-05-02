@@ -59,6 +59,17 @@ Given /^the following results for the group search "([^\"]*)":$/ do |search_name
   )
 end
 
+Given /^the group example fields "([^\"]*)"$/ do |text|
+  @group.update_attribute(:example_fields, text)
+end
+
+Given /^the following example stored values$/ do |table|
+  table.hashes.each do |attrs|
+    example = Example.find_by_name(attrs['example'])
+    Factory(:stored_value, :key => attrs['key'], :value => attrs['value'], :storable => example)
+  end
+end
+
 When /^I allow all languages$/ do
   # no op
 end
