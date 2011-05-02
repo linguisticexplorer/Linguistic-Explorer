@@ -1,4 +1,5 @@
 class LingsController < GroupDataController
+  DATA_MODEL_NAME = :ling
   helper :groups
 
   # GET /lings/depth/0-1

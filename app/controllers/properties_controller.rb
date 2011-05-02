@@ -1,4 +1,5 @@
 class PropertiesController < GroupDataController
+  DATA_MODEL_NAME = :property
 
   # GET /properties
   # GET /properties.xml

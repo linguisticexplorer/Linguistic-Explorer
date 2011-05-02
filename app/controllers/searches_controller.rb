@@ -1,4 +1,5 @@
 class SearchesController < GroupDataController
+  DATA_MODEL_NAME = :search
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
 
   respond_to :html, :csv
@@ -49,7 +50,7 @@ class SearchesController < GroupDataController
 
     @searches   = Search.by(current_user).in_group(current_group)
 
-    @comparison = SearchComparison.new do |sc|
+    @search_comparison = SearchComparison.new do |sc|
       sc.creator  = current_user
       sc.group    = current_group
       sc.searches = @searches

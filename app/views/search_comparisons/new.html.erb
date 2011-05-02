@@ -2,7 +2,7 @@
 
 <h2>Compare <%= current_group.name %> Searches</h2>
 
-<%- if @comparison.enough_to_compare? -%>
+<%- if @search_comparison.enough_to_compare? -%>
   <%= render :partial => 'new' %>
 <%- else -%>
   <div class="center">

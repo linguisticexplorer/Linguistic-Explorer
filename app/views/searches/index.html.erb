@@ -26,6 +26,6 @@
   <%- end -%>
 </div>
 
-<%- if @comparison.enough_to_compare? -%>
+<%- if @search_comparison.enough_to_compare? -%>
   <%= render :partial => 'search_comparisons/new' %>
 <%- end -%>

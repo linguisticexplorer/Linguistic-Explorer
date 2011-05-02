@@ -1,4 +1,5 @@
 class LingsPropertiesController < GroupDataController
+  DATA_MODEL_NAME = :lings_Property
 
   # GET /lings_properties
   # GET /lings_properties.xml
