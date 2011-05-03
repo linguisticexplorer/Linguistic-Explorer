@@ -9,11 +9,13 @@ set :application  , "terraling"
 set :deploy_to    , "/var/www/apps/#{application}"
 set :deploy_via   , :remote_cache
 set :user         , "admin"
+set :use_sudo, true
 
 # source control
 set :scm          , :git
 set :repository   , "git://github.com/linguisticexplorer/Linguistic-Explorer.git"
 set :branch       , "master"
+
 
 # role :web, HTTP server (Apache)/etc
 # role :app, app server
