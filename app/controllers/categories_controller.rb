@@ -1,5 +1,4 @@
 class CategoriesController < GroupDataController
-  DATA_MODEL_NAME = :category
 
   # GET /categories
   # GET /categories.xml

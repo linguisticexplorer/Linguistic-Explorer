@@ -1,5 +1,4 @@
 class ExamplesController < GroupDataController
-  DATA_MODEL_NAME = :example
 
   # GET /examples
   # GET /examples.xml

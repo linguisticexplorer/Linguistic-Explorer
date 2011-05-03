@@ -23,4 +23,3 @@ en:
     read:
       user: "You may not view other users."
       group: "You may not view the requested group or its data."
-  misgrouped: "Error: misgrouped request. The data did not belong to the requested group. Please submit a bug report with details"

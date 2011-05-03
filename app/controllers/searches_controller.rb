@@ -1,5 +1,4 @@
 class SearchesController < GroupDataController
-  DATA_MODEL_NAME = :search
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
 
   respond_to :html, :csv

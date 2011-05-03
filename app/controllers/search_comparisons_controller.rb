@@ -1,5 +1,4 @@
 class SearchComparisonsController < GroupDataController
-  DATA_MODEL_NAME = :search_comparison
 
   def new
     @search_comparison  = SearchComparison.new() do |sc|

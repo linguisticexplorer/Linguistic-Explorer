@@ -1,5 +1,4 @@
 class MembershipsController < GroupDataController
-  DATA_MODEL_NAME = :membership
 
   # GET /memberships
   # GET /memberships.xml
