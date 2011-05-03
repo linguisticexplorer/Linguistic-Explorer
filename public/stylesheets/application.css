@@ -14,14 +14,6 @@ body, p, ol, ul, td {
   line-height: 18px;
 }
 
-body.map {
-  background-image: url(/images/map_bg.gif);
-}
-body.map #main {
-  background-color:transparent;
-  box-shadow:none;
-}
-
 pre {
   background-color: #eee;
   padding: 10px;
@@ -49,20 +41,20 @@ div.field, div.actions {
 }
 
 /* header */
-#header_wrap {
-}
 #header {
   color: white;
+  padding:1em;
 }
 #header h2 {
-  font-family: "Quattrocento Sans", Helvetica, Verdana, Arial, sans-serif;
+  font-family: Helvetica, Verdana, Arial, sans-serif;
   font-weight:bold;
-  font-size:200%;
+  font-size:150%;
   text-shadow: #111 2px 2px;
 }
 #header h2 a {
   color:#ccc;
 }
+
 #user_nav {
   color:#ccc;
   font-size:90%;
@@ -71,10 +63,22 @@ div.field, div.actions {
   color:white;
   font-weight:bold;
 }
+#group_nav_bar a {
+  font-weight:normal;
+  color:#ccc;
+}
+#group_nav_bar a.group {
+  color:white;
+}
 /* main layout */
+body.map { background-image: url(/images/map_bg.gif); }
+body.map #main {
+  background-color:transparent;
+  box-shadow:none;
+}
 
 .container { width: 950px; padding:1em; margin:0 auto;}
-body.full_width #main { width: auto;}
+body.full_width #main { width: auto; padding: 0; }
 
 #main {
   box-shadow: #CCC 0px 1px 3px;
@@ -85,6 +89,23 @@ body.full_width #main { width: auto;}
   color:#C30;
   font-weight:bold;
   margin-bottom:1em;
+}
+body.full_width #main h2 {
+  color:white;
+  padding:1em;
+  clear: both;
+  margin-bottom:0;
+  border-top:1px solid white;
+  border-bottom:1px solid white;
+  
+  background: #C30; /* Old browsers */
+  background: -moz-linear-gradient(top, #C30 0%, #8f0222 51%, #6d0019 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#C30), color-stop(51%,#8f0222), color-stop(100%,#6d0019)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #C30 0%,#8f0222 51%,#6d0019 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #C30 0%,#8f0222 51%,#6d0019 100%); /* Opera11.10+ */
+  background: -ms-linear-gradient(top, #C30 0%,#8f0222 51%,#6d0019 100%); /* IE10+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#C30', endColorstr='#6d0019',GradientType=0 ); /* IE6-9 */
+  background: linear-gradient(top, #C30 0%,#8f0222 51%,#6d0019 100%); /* W3C */
 }
 
 .table h3 { margin: 0 2em 0 0;}
@@ -115,7 +136,7 @@ body.full_width #main { width: auto;}
 }
 
 /* footer */
-#footer {margin:30px auto;border-top:1px solid #BAB86C;}
+#footer { margin:30px auto; text-align:center; }
 
 /* forms */
 fieldset { margin-bottom: 10px; clear:left; border:1px solid #ccc; padding:10px;}

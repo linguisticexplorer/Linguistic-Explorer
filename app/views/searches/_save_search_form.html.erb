@@ -1,0 +1,22 @@
+<%- if display_save_search_form?(@search) -%>
+  <%= content_tag :fieldset do %>
+    <p>Save search results</p>
+    <%= form_for [:group, @search] do |f| %>
+      <% if @search.errors.any? %>
+        <div id="error_explanation">
+          <h2><%= pluralize(@search  .errors.count, "error") %> prohibited this search from being saved:</h2>
+          <ul>
+          <% @search.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= f.label :name %>&nbsp;<%= f.text_field :name %>
+      <%= f.hidden_field :query_json %>
+      <%= f.hidden_field :result_groups_json %>
+      <%= f.submit "Save" %>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

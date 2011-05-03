@@ -25,7 +25,9 @@ module SearchColumns
   end
 
   def result_headers
-    columns_to_include.map{ |k| HEADERS[k] }
+    header_keys = columns_to_include
+    header_keys -= child_columns unless @search.group.has_depth?
+    header_keys.map{ |k| HEADERS[k] }
   end
 
   def result_rows
@@ -38,11 +40,6 @@ module SearchColumns
 
   def child_columns
     @child_columns ||= columns_to_include & CHILD_COLUMNS
-  end
-
-  def excluded_columns
-    # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
-    COLUMNS - @search.included_columns
   end
 
 end

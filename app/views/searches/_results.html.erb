@@ -1,40 +1,21 @@
 <%
   page_heading "Search"
   add_body_classes "full_width"
+  results = @search.results
 %>
 
-<h2><%= @search.group.name %> Results</h2>
-<%- @search.results -%>
-<%- if display_save_search_form?(@search) -%>
-  <%= content_tag :fieldset do %>
-    <p>Save search results</p>
-    <%= form_for [:group, @search] do |f| %>
-      <% if @search.errors.any? %>
-        <div id="error_explanation">
-          <h2><%= pluralize(@search  .errors.count, "error") %> prohibited this search from being saved:</h2>
-          <ul>
-          <% @search.errors.full_messages.each do |msg| %>
-            <li><%= msg %></li>
-          <% end %>
-          </ul>
-        </div>
-      <% end %>
+<h2 class="red_grad"><%= @search.group.name %> Results</h2>
+<div id="search_results" class="padded_left padded_right">
+  <%= render :partial => 'searches/save_search_form' %>
+  <div class="table spacing expand_width">
+    <div class="row">
+      <%- result_headers.each do |proc| -%>
+        <div class="cell"><%= proc.call @search.group %></div>
+      <%- end -%>
+    </div>
 
-      <%= f.label :name %>&nbsp;<%= f.text_field :name %>
-      <%= f.hidden_field :query_json %>
-      <%= f.hidden_field :result_groups_json %>
-      <%= f.submit "Save" %>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
-<div id="search_results" class="table spacing">
-  <div class="row">
-    <%- result_headers.each do |proc| -%>
-      <div class="cell"><%= proc.call @search.group %></div>
+    <%- @search.results.each do |result| -%>
+      <%= render :partial => "searches/result", :locals => { :result => result} %>
     <%- end -%>
   </div>
-
-  <%- @search.results.each do |result| -%>
-    <%= render :partial => "searches/result", :locals => { :result => result} %>
-  <%- end -%>
 </div>

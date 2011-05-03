@@ -1,6 +1,6 @@
 <div id="group_nav_bar">
   <% if @group && !@group.new_record? %>
-    <%= link_to current_group.name, current_group %>
+    <%= link_to current_group.name, current_group, :class => "group" %>
     <%= link_to 'Search', [:new, current_group, :search] %>
     <%= link_to 'History', [current_group, :searches] if user_signed_in? %>
     <%= link_to current_group.ling0_name, group_lings_depth_path(current_group, Depth::PARENT) %>
