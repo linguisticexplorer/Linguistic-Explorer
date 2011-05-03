@@ -32,4 +32,8 @@ class User < ActiveRecord::Base
   def member_of?(group)
     group.is_a?(Group) && group_ids.include?(group.id)
   end
+
+  def group_admin_of?(group)
+    group.membership_for(user).try(:group_admin?)
+  end
 end

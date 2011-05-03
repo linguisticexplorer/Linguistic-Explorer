@@ -61,4 +61,8 @@ class Group < ActiveRecord::Base
   def private?
     PRIVATE == privacy
   end
+
+  def membership_for(user)
+    memberships.where(:member_id => user.id)
+end
 end

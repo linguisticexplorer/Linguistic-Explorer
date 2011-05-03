@@ -12,7 +12,11 @@ class GroupsController < ApplicationController
       end
     end
 
-    @groups = Group.accessible_by(current_ability).uniq
+    @groups = if user_signed_in?
+      Group.accessible_by(current_ability).uniq
+    else
+      Group.public
+    end
 
     respond_to do |format|
       format.html # index.html.erb

@@ -18,7 +18,7 @@ class Ability
       # turn on reading for public groups and data
       can     :read,   Group,                  :privacy => Group::PUBLIC
       can     :read,   group_data, :group => { :privacy => Group::PUBLIC  }
-
+      
       # turn on full data management for group admins
       can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN  }
       can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)

@@ -9,9 +9,17 @@ describe GroupsController do
 
   describe "index" do
     describe "without a group_id parameter" do
-      it "@groups should contain accessible groups" do
+      it "@groups should contain accessible groups for signed in user" do
+        @controller.stub!(:user_signed_in?).and_return(true)
         @group = Factory(:group)
         Group.should_receive(:accessible_by).with(@ability).and_return( [@group] )
+        get :index
+        assigns(:groups).should include @group
+      end
+      it "@groups should contain accessible groups" do
+        @controller.stub!(:user_signed_in?).and_return(false)
+        @group = Factory(:group)
+        Group.should_receive(:public).and_return( [@group] )
         get :index
         assigns(:groups).should include @group
       end
