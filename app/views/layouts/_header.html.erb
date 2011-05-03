@@ -1,0 +1,12 @@
+<div id="header_wrap" class="blue_bg">
+  <div id="header" class="container">
+    <div class="table expand_width">
+      <div class="mcell padded_right logo" style="width:125px">
+        <h2><%= link_to 'TerraLing', root_url %></h2>
+      </div>
+      <div class="mcell padded_left padded_right">
+        <%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
+      </div>
+    </div>
+  </div>
+</div>

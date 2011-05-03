@@ -1,12 +1,24 @@
+<% add_body_classes "map" %>
 <%- unless Settings.in_preview -%>
   <% page_heading "Home" %>
 
-  <h2>
-    <%= link_to "TerraLing", root_path %>
-  </h2>
-
-  <div>
-    <%= link_to "Groups", groups_path %>
+  <div id="inner">
+    <div id="title">
+      <h1>TerraLing</h1>
+      <h2>
+        Searchable Database of the World's Languages
+      </h2>
+    </div>
+    <div id="intro">
+      <p>TerraLing is a searchable database that allows users to discover which properties (morphological, syntactic,
+        and semantic) characterize a language, as well as how these properties relate across languages. This system is
+        designed to be free to the public and open-ended. Anyone can use the database to perform queries.</p>
+      <p>Visit the list of <%= link_to "public groups", groups_path %> to begin searching or <%= link_to 'sign up for an account', new_user_registration_path %>
+        to get access more groups and search features.</p>
+      <p>TerraLing is the next generation of the <%= link_to "Linguistic Explorer", "http://linguisticexplorer.org/" %> project. 
+        To learn more about the objectives of TerraLing, please visit <a href="http://linguistics.as.nyu.edu/object/linguistics.events.database_workshop">the original workshop site</a>. <!-- or watch our <a href="#TB_inline?height=315&width=504&inlineId=video&modal=false" class="thickbox">tutorial video.</a> --></p>
+      <p>To read about updates and post questions, please visit <a href="http://groups.google.com/group/sswllinguistics">our Google Group</a>.</p>
+    </div>
   </div>
 <%- else -%>
   <% page_heading "Preview" %>

@@ -1,4 +1,7 @@
-<% page_heading "Search" %>
+<%
+  page_heading "Search"
+  add_body_classes "full_width"
+%>
 
 <h2><%= @search.group.name %> Results</h2>
 <%- @search.results -%>

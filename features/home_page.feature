@@ -8,7 +8,7 @@ Feature: Linguistic Explorer Home Page
     Then I should see "TerraLing"
 
   Scenario: Visitor can visit a public group
-    And I follow "Groups"
+    And I follow "public groups"
     And I follow "Syntactic Structures"
     Then I should be on the group Syntactic Structures
 
