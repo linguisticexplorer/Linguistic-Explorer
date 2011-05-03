@@ -48,7 +48,7 @@ LinguisticExplorer::Application.configure do
   config.active_support.deprecation = :notify
 
   Settings.configure do |s|
-    s.in_preview = true
+    # s.in_preview = false
   end
 
 end
