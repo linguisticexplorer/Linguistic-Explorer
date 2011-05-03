@@ -57,10 +57,12 @@ Project Plan for Search
       Keyword search
       Example attributes and rendering
 
-5/2
+5/2 
+      Engineer upload csv script for Dennis
+      Server monitoring
       Look/Feel/Data-to-render pass through (based on SSWL)
-      Search Help
       Documentation
+      Search Help
 
 5/9 (Spring Classes End)
 

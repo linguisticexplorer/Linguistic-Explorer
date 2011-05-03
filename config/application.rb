@@ -43,7 +43,8 @@ module LinguisticExplorer
     require "settings"
 
     Settings.configure do |s|
-      s.in_preview = false
+      s.in_preview          = false
+      s.group_data_enabled  = true
     end
   end
 end
