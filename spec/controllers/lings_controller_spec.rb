@@ -8,6 +8,14 @@ describe LingsController do
   end
 
   describe "depth" do
+    it "should find lings through the current group" do
+      @group = Factory(:group)
+      @lings = @group.lings
+      Group.stub(:find).and_return(Group)
+      Group.should_receive(:lings).and_return @group.lings
+      get :depth, :group_id => @group.id, :depth => 0
+    end
+
     it "@depth should be the passed depth value" do
       depth_test_no = 0
       get :depth, :group_id => groups(:inclusive).id, :depth => depth_test_no
@@ -409,7 +417,6 @@ describe LingsController do
       Group.stub(:find).and_return(@group)
       do_destroy_on_ling(@ling)
     end
-
 
     it "calls destroy on the requested ling" do
       ling = lings(:english)

@@ -5,7 +5,7 @@ class LingsController < GroupDataController
   # GET /lings/depth/0-1.xml
   def depth
     @depth = params[:depth].to_i
-    @lings = Ling.find_all_by_depth(@depth)
+    @lings = current_group.lings.at_depth(@depth)
 
     respond_to do |format|
       format.html # depth.html.erb
