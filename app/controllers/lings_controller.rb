@@ -44,13 +44,13 @@ class LingsController < GroupDataController
     @depth = @ling.depth
     @categories = Category.at_depth(@depth)
     @preexisting_values = @ling.lings_properties
-    collection_authorize! :read, @preexisting_values
   end
 
   # POST /lings/1/submit_values
   def submit_values
     @ling = Ling.find(params[:id])
     stale_values = @ling.lings_properties
+
     collection_authorize! :manage, stale_values
 
     fresh_values = []
@@ -64,8 +64,8 @@ class LingsController < GroupDataController
         fresh ||= LingsProperty.new do |lp|
           lp.ling  = @ling
           lp.group = current_group
-          lp.value = new_text
           lp.property = property
+          lp.value = new_text
         end
         fresh_values << fresh
       end
@@ -75,18 +75,17 @@ class LingsController < GroupDataController
         fresh ||= LingsProperty.new do |lp|
           lp.ling  = @ling
           lp.group = current_group
-          lp.value = value
           lp.property = property
+          lp.value = value
         end
         fresh_values << fresh
       end
     end
-    collection_authorize! :create, fresh_values
-    fresh_values.each{|fresh| fresh.save}
 
-    stale_values.each do |stale|
-      stale.delete if !(fresh_values.include? stale)
-    end
+    collection_authorize! :create, fresh_values
+
+    fresh_values.each{ |fresh| fresh.save }
+    stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) }
 
     redirect_to set_values_group_ling_path(current_group, @ling)
   end
@@ -103,6 +102,7 @@ class LingsController < GroupDataController
       l.creator = current_user
       l.group = current_group
     end
+
     authorize! :new, @ling
 
     respond_to do |format|
@@ -114,8 +114,10 @@ class LingsController < GroupDataController
   # GET /lings/1/edit
   def edit
     @ling = Ling.find(params[:id])
-    authorize! :update, @ling
     @depth = @ling.depth
+
+    authorize! :update, @ling
+
     @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
   end
 
@@ -127,8 +129,9 @@ class LingsController < GroupDataController
       ling.creator  = current_user
       ling.depth    = params[:ling][:depth].to_i
     end
-    authorize! :create, @ling
     @depth = @ling.depth
+
+    authorize! :create, @ling
 
     respond_to do |format|
       if @ling.save
@@ -146,8 +149,9 @@ class LingsController < GroupDataController
   # PUT /lings/1.xml
   def update
     @ling = Ling.find(params[:id])
-    authorize! :update, @ling
     @depth = @ling.depth
+
+    authorize! :update, @ling
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
@@ -165,8 +169,9 @@ class LingsController < GroupDataController
   # DELETE /lings/1.xml
   def destroy
     @ling = Ling.find(params[:id])
-    authorize! :destroy, @ling
     @depth = @ling.depth
+    authorize! :destroy, @ling
+
     @ling.destroy
 
     respond_to do |format|

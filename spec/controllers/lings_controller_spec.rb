@@ -109,23 +109,6 @@ describe LingsController do
   end
 
   describe "set_values" do
-    it "should authorize :read on LingsProperties associated with the ling" do
-      @ling = lings(:level0)
-      Ling.stub(:find).and_return(@ling)
-      @group = @ling.group
-      Group.stub(:find).and_return(@group)
-
-      @preexisting_values = @ling.lings_properties
-      @preexisting_values.should_not be_empty
-      @ling.stub(:lings_properties).and_return( @preexisting_values )
-
-      @preexisting_values.each do |lp|
-        @ability.should_receive(:can?).ordered.with(:read, lp).and_return(true)
-      end
-
-      get :set_values, :group_id => @group.id, :id => @ling.id
-    end
-
     def do_set_values_on_ling(ling)
       get :set_values, :group_id => groups(:inclusive).id, :id => ling.id
     end
