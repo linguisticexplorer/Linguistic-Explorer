@@ -17,7 +17,7 @@ class LingsController < GroupDataController
   # GET /lings.xml
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
-      Ling.accessible_by(current_ability).find_all_by_depth(depth)
+      current_group.lings.at_depth(depth)
     end
 
     respond_to do |format|

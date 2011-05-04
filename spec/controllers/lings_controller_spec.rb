@@ -9,8 +9,7 @@ describe LingsController do
 
   describe "depth" do
     it "should find lings through the current group" do
-      @group = Factory(:group)
-      @lings = @group.lings
+      @group = groups(:inclusive)
       Group.stub(:find).and_return(Group)
       Group.should_receive(:lings).and_return @group.lings
       get :depth, :group_id => @group.id, :depth => 0
@@ -37,7 +36,15 @@ describe LingsController do
 
   describe "index" do
     describe "assigns" do
-      it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
+    it "should find lings through the current group" do
+      @group = groups(:inclusive)
+      Group.stub(:find).and_return(Group)
+      Group.should_receive(:depths).and_return @group.depths
+      Group.should_receive(:lings).exactly(@group.depths.size).times.and_return @group.lings
+      get :index, :group_id => @group.id
+    end
+
+    it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
         @group = groups(:inclusive)
         get :index, :group_id => @group.id
 
@@ -54,11 +61,9 @@ describe LingsController do
   end
 
   describe "show" do
-    describe "assigns" do
-      it "@ling should match the passed id" do
-        get :show, :group_id => groups(:inclusive).id, :id => lings(:english)
-        assigns(:ling).should == lings(:english)
-      end
+    it "@ling should match the passed id" do
+      get :show, :group_id => groups(:inclusive).id, :id => lings(:english)
+      assigns(:ling).should == lings(:english)
     end
   end
 
