@@ -4,7 +4,7 @@
 # id,name,depth,group_id,creator_id,description
 # 
 # ==> Example.csv <==
-# id,ling_id,group_id,creator_id,name
+# id,name,ling_id,group_id,creator_id
 # 
 # ==> ExampleLingsProperty.csv <===
 # id,example_id,lings_property_id,group_id,creator_id
@@ -28,7 +28,7 @@
 # id, storable_id, storable_type, key, value, group_id
 # 
 # ==> User.csv <==
-# id,name,email,accesslevel, password
+# id,name,email,access_level,password
 # 
 
 module GroupData
