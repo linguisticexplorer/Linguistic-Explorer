@@ -50,7 +50,7 @@ group :development, :test, :pg_test do
   gem 'ruby-debug19'
   gem 'factory_girl_rails'
   gem "cucumber", "0.10.2"
-  gem "database_cleaner"
+  gem "database_cleaner", "0.6.7"
   gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
   gem 'capybara'
   gem 'launchy'

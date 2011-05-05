@@ -1,0 +1,2 @@
+id,name,privacy,depth_maximum,ling0_name,ling1_name,property_name,category_name,lings_property_name,example_name,examples_lings_property_name,example_fields
+499372886,SSWL,public,1,Parent,Child,Property,Category,Value,Example,ExampleValue,"gloss, number"

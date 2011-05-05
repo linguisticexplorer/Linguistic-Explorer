@@ -1,0 +1,6 @@
+id,example_id,lings_property_id,group_id,creator_id
+id,exampleid,LingPropValID,group,creator,timestamp
+0,43,1103,group_0,user_0_2
+1,25,92,group_0,user_0_8
+2,10,104,group_0,user_0_8
+3,40,1072,group_0,user_0_3

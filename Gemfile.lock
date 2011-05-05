@@ -49,8 +49,8 @@ GEM
     capistrano (2.5.20)
       highline
       highline
-      net-scp
       net-scp (>= 1.0.0)
+      net-scp
       net-sftp
       net-sftp (>= 2.0.0)
       net-ssh (>= 2.0.14)
@@ -84,7 +84,7 @@ GEM
     culerity (0.2.15)
     daemon_controller (0.2.6)
     daemons (1.0.10)
-    database_cleaner (0.6.6)
+    database_cleaner (0.6.7)
     devise (1.1.7)
       bcrypt-ruby (~> 2.1.2)
       warden (~> 1.0.2)
@@ -221,7 +221,7 @@ DEPENDENCIES
   capybara
   cucumber (= 0.10.2)
   cucumber-rails (= 0.4.0)
-  database_cleaner
+  database_cleaner (= 0.6.7)
   devise (= 1.1.7)
   factory_girl_rails
   json (= 1.5.1)
