@@ -12,6 +12,7 @@ module GroupData
     describe "import!" do
       before(:each) do
         @importer = Importer.import(Rails.root.join("spec", "csv", "import.yml"))
+        @current_group = Group.find_by_name(@group.name)
       end
 
       it "should load configuration from yaml" do
@@ -19,8 +20,11 @@ module GroupData
       end
 
       it "should import group" do
-        imported = Group.find_by_name(@group.name)
-        attributes_should_match(imported, @group)
+        attributes_should_match(@current_group, @group)
+      end
+
+      it "should cache group id" do
+        @importer.group_ids.values.first.should == @current_group.id
       end
 
       it "should import users" do
@@ -29,6 +33,57 @@ module GroupData
           attributes_should_match(imported, user, :except => :password)
         end
       end
+
+      it "should cache user ids" do
+        @importer.user_ids.values.first.should == User.find_by_name(@users.first.name).id
+      end
+
+      it "should import memberships" do
+        @users.each_with_index do |user, i|
+          imported_user = User.find_by_name(user.name)
+          imported  = @current_group.membership_for(imported_user)
+
+          attributes_should_match(imported, @memberships[i])
+        end
+      end
+
+      it "should import lings" do
+        @lings.each_with_index do |ling|
+          imported = Ling.find_by_name(ling.name)
+          attributes_should_match(imported, ling)
+        end
+      end
+
+      it "should associate child lings with parent lings" do
+        children = @current_group.lings.where('parent_id IS NOT NULL')
+        children.size.should == 2
+        children.map(&:parent).compact.size.should == 2
+      end
+
+      it "should import properties" do
+        pending
+      end
+
+      it "should import categories" do
+        pending
+      end
+
+      it "should import examples" do
+        pending
+      end
+
+      it "should import lings_properties" do
+        pending
+      end
+
+      it "should import examples_lings_properties" do
+        pending
+      end
+
+      it "should import stored_values" do
+        pending
+      end
+
     end
 
     describe "csv generation" do

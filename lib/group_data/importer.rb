@@ -51,28 +51,74 @@ module GroupData
       @config.symbolize_keys!
     end
 
+    def group_ids
+      @group_ids ||= {}
+    end
+
+    def user_ids
+      @user_ids ||= {}
+    end
+
+    def ling_ids
+      @ling_ids ||= {}
+    end
+
     def import!
-      CSV.foreach(@config[:group], :headers => true) do |row|
-        group = Group.find_or_create_by_name(row["name"])
-        set_csv_row_attributes_on(group, row)
-        group.save!
+      # processing groups
+      csv_for_each :group do |row|
+        group = Group.find_or_initialize_by_name(row["name"])
+        update_csv_row_attributes_on(group, row)
+        group_ids[row["id"]] = group.id
       end
 
-      CSV.foreach(@config[:user], :headers => true) do |row|
-        user = User.find_or_create_by_email(row["email"])
+      # processing users
+      csv_for_each :user do |row|
+        user = User.find_or_initialize_by_email(row["email"])
         if user.new_record?
-          set_csv_row_attributes_on(user, row)
           user.password_confirmation = row["password"]
-          user.save!
+          update_csv_row_attributes_on(user, row)
         end
+        user_ids[row["id"]] = user.id
+      end
+
+      # processing memberships
+      csv_for_each :membership do |row|
+        group_id  = group_ids[row["group_id"]]
+        member_id = user_ids[row["member_id"]]
+        membership = Membership.find_or_initialize_by_group_id_and_member_id(group_id, member_id)
+        update_csv_row_attributes_on(membership, row)
+      end
+
+      # processing lings
+      csv_for_each :ling do |row|
+        group_id  = group_ids[row["group_id"]]
+        ling      = Ling.find_or_initialize_by_group_id_and_name(group_id, row["name"])
+        update_csv_row_attributes_on(ling, row)
+        ling_ids[row["id"]] = ling.id
+      end
+
+      # parent/child ling associations
+      csv_for_each :ling do |row|
+        next if row["parent_id"].blank?
+        child   = Ling.find(ling_ids[row["id"]])
+        parent  = Ling.find(ling_ids[row["parent_id"]])
+        child.parent = parent
+        child.save!
       end
     end
 
     private
 
-    def set_csv_row_attributes_on(model, row)
+    def update_csv_row_attributes_on(model, row)
       model.class.importable_attributes.each do |attribute|
         model.send("#{attribute}=", row[attribute])
+      end
+      model.save!
+    end
+
+    def csv_for_each(key)
+      CSV.foreach(@config[key], :headers => true) do |row|
+        yield(row)
       end
     end
   end

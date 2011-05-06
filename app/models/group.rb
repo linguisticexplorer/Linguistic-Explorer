@@ -70,6 +70,6 @@ class Group < ActiveRecord::Base
   end
 
   def membership_for(user)
-    memberships.where(:member_id => user.id)
-end
+    memberships.where(:member_id => user.id).first
+  end
 end
