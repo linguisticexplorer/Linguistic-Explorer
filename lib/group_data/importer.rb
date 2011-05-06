@@ -22,7 +22,7 @@
 # id,member_id,group_id,level,creator_id
 #
 # ==> Property.csv <==
-# id,name,description,category,group_id,creator_id
+# id,name,description,category_id,group_id,creator_id
 #
 # ===> StoredValue.csv <=====
 # id, storable_id, storable_type, key, value, group_id
@@ -51,8 +51,8 @@ module GroupData
       @config.symbolize_keys!
     end
 
-    def group_ids
-      @group_ids ||= {}
+    def groups
+      @groups ||= {}
     end
 
     def user_ids
@@ -63,12 +63,22 @@ module GroupData
       @ling_ids ||= {}
     end
 
+    def category_ids
+      @category_ids ||= {}
+    end
+
+    def property_ids
+      @property_ids ||= {}
+    end
+
     def import!
       # processing groups
       csv_for_each :group do |row|
         group = Group.find_or_initialize_by_name(row["name"])
-        update_csv_row_attributes_on(group, row)
-        group_ids[row["id"]] = group.id
+        save_model_with_attributes(group, row)
+
+        # cache group id
+        groups[row["id"]] = group
       end
 
       # processing users
@@ -76,24 +86,28 @@ module GroupData
         user = User.find_or_initialize_by_email(row["email"])
         if user.new_record?
           user.password_confirmation = row["password"]
-          update_csv_row_attributes_on(user, row)
+          save_model_with_attributes(user, row)
         end
+
+        # cache user id
         user_ids[row["id"]] = user.id
       end
 
       # processing memberships
       csv_for_each :membership do |row|
-        group_id  = group_ids[row["group_id"]]
-        member_id = user_ids[row["member_id"]]
-        membership = Membership.find_or_initialize_by_group_id_and_member_id(group_id, member_id)
-        update_csv_row_attributes_on(membership, row)
+        group       = groups[row["group_id"]]
+        member_id   = user_ids[row["member_id"]]
+        membership  = group.memberships.find_or_initialize_by_member_id(member_id)
+        save_model_with_attributes(membership, row)
       end
 
       # processing lings
       csv_for_each :ling do |row|
-        group_id  = group_ids[row["group_id"]]
-        ling      = Ling.find_or_initialize_by_group_id_and_name(group_id, row["name"])
-        update_csv_row_attributes_on(ling, row)
+        group     = groups[row["group_id"]]
+        ling      = group.lings.find_or_initialize_by_name(row["name"])
+        save_model_with_attributes(ling, row)
+
+        # cache ling id
         ling_ids[row["id"]] = ling.id
       end
 
@@ -105,11 +119,55 @@ module GroupData
         child.parent = parent
         child.save!
       end
+
+      # processing categories
+      csv_for_each :category do |row|
+        group     = groups[row["group_id"]]
+        category  = group.categories.find_or_initialize_by_name(row["name"])
+        save_model_with_attributes category, row
+
+        # cache category id
+        category_ids[row["id"]] = category.id
+      end
+
+      # processing properties
+      csv_for_each :property do |row|
+        group    = groups[row["group_id"]]
+        category = group.categories.find(category_ids[row["category_id"]])
+        property = group.properties.find_or_initialize_by_name(row["name"]) do |p|
+          p.category = category
+        end
+        save_model_with_attributes property, row
+
+        # cache property id
+        property_ids[row["id"]] = property.id
+      end
+
+      # processing examples
+      csv_for_each :example do |row|
+        group    = groups[row["group_id"]]
+        ling     = Ling.find(ling_ids[row["ling_id"]])
+        example  = group.examples.find_or_initialize_by_name(row["name"]) do |e|
+          e.ling = ling
+        end
+        save_model_with_attributes example, row
+      end
+
+      csv_for_each :lings_property do |row|
+        group       = groups[row["group_id"]]
+        ling_id     = ling_ids[row["ling_id"]]
+        value       = row["value"]
+        property_id = property_ids[row["property_id"]]
+        conditions  = { :value => value, :ling_id => ling_id, :property_id => property_id }
+
+        next if group.lings_properties.exists?(conditions)
+        group.lings_properties.create(conditions)
+      end
     end
 
     private
 
-    def update_csv_row_attributes_on(model, row)
+    def save_model_with_attributes(model, row)
       model.class.importable_attributes.each do |attribute|
         model.send("#{attribute}=", row[attribute])
       end

@@ -23,8 +23,8 @@ module GroupData
         attributes_should_match(@current_group, @group)
       end
 
-      it "should cache group id" do
-        @importer.group_ids.values.first.should == @current_group.id
+      it "should cache groups" do
+        @importer.groups.values.first.id.should == @current_group.id
       end
 
       it "should import users" do
@@ -61,19 +61,32 @@ module GroupData
       end
 
       it "should import properties" do
-        pending
+        @properties.each do |property|
+          imported = @current_group.properties.find_by_name(property.name)
+          imported.category.should be_present
+          attributes_should_match imported, property
+        end
       end
 
       it "should import categories" do
-        pending
+        @categories.each do |category|
+          imported = @current_group.categories.find_by_name(category.name)
+          attributes_should_match imported, category
+        end
       end
 
       it "should import examples" do
-        pending
+        @examples.each do |example|
+          imported = @current_group.examples.find_by_name(example.name)
+          attributes_should_match imported, example
+        end
       end
 
       it "should import lings_properties" do
-        pending
+        @lings_properties.each do |lings_property|
+          imported = @current_group.lings_properties.where(:value => lings_property.value).first
+          attributes_should_match imported, lings_property
+        end
       end
 
       it "should import examples_lings_properties" do
