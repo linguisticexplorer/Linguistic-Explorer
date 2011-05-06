@@ -1,7 +1,11 @@
 class ExamplesLingsProperty < ActiveRecord::Base
   include Groupable
+  include CSVAttributes
 
   CSV_ATTRIBUTES = %w[ id example_id lings_property_id group_id creator_id ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
 
   validates_presence_of :example, :lings_property
   validates_existence_of :example, :lings_property

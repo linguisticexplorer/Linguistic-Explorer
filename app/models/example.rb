@@ -1,7 +1,11 @@
 class Example < ActiveRecord::Base
   include Groupable
+  include CSVAttributes
   
   CSV_ATTRIBUTES = %w[ id name ling_id group_id creator_id ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
   
   belongs_to :ling
   has_many :stored_values, :as => :storable, :dependent => :destroy

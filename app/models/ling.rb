@@ -1,7 +1,11 @@
 class Ling < ActiveRecord::Base
   include Groupable
+  include CSVAttributes
 
   CSV_ATTRIBUTES = %w[ id name depth parent_id group_id creator_id ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
 
   validates_presence_of :name, :depth
   validates_numericality_of :depth

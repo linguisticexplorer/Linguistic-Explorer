@@ -1,10 +1,15 @@
 class Membership < ActiveRecord::Base
+  include CSVAttributes
+
   ACCESS_LEVELS = [
     ADMIN = "admin",
     MEMBER = "member"
   ]
-  
+
   CSV_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
 
   include Groupable
 

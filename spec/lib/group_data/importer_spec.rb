@@ -20,10 +20,13 @@ module GroupData
 
       it "should import group" do
         imported = Group.find_by_name(@group.name)
-        imported.should be_present
-        Group::CSV_ATTRIBUTES.each do |attribute|
-          next if attribute =~ /id$/
-          imported.send(attribute).should == @group.send(attribute)
+        attributes_should_match(imported, @group)
+      end
+
+      it "should import users" do
+        @users.each do |user|
+          imported = User.find_by_name(user.name)
+          attributes_should_match(imported, user, :except => :password)
         end
       end
     end
@@ -43,6 +46,13 @@ module GroupData
       end
     end
 
+    def attributes_should_match(imported, source, opts = {})
+      imported.should be_present
+      attributes = source.class.importable_attributes - [opts[:except]].flatten.compact.map(&:to_s)
+      attributes.each do |attribute|
+        imported.send(attribute).should == source.send(attribute)
+      end
+    end
 
     def generate_group_data_csvs!
       # Create users
@@ -136,7 +146,7 @@ module GroupData
         @properties, @lings_properties, @examples_lings_properties, @stored_values]
 
       @group_data.each do |models|
-        generate_csv_and_destroy_records *models
+        generate_csv_and_destroy_records(*models)
       end
     end
   end

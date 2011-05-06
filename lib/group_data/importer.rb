@@ -54,11 +54,25 @@ module GroupData
     def import!
       CSV.foreach(@config[:group], :headers => true) do |row|
         group = Group.find_or_create_by_name(row["name"])
-        Group::CSV_ATTRIBUTES.each do |attribute|
-          next if attribute =~ /id$/
-          group.send("#{attribute}=", row[attribute])
-        end
+        set_csv_row_attributes_on(group, row)
         group.save!
+      end
+
+      CSV.foreach(@config[:user], :headers => true) do |row|
+        user = User.find_or_create_by_email(row["email"])
+        if user.new_record?
+          set_csv_row_attributes_on(user, row)
+          user.password_confirmation = row["password"]
+          user.save!
+        end
+      end
+    end
+
+    private
+
+    def set_csv_row_attributes_on(model, row)
+      model.class.importable_attributes.each do |attribute|
+        model.send("#{attribute}=", row[attribute])
       end
     end
   end

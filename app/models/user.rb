@@ -1,10 +1,15 @@
 class User < ActiveRecord::Base
+  include CSVAttributes
+
   ACCESS_LEVELS = [
     ADMIN = "admin",
     USER  = "user"
   ]
-  
+
   CSV_ATTRIBUTES = %w[ id name email access_level password ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -38,8 +43,8 @@ class User < ActiveRecord::Base
   def group_admin_of?(group)
     group.membership_for(user).try(:group_admin?)
   end
-  
+
   def fake_password
-    
+
   end
 end

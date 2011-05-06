@@ -1,5 +1,5 @@
 id,name,description,category_id,group_id,creator_id
-822047800,Property 0,This is property 0,842050036,499372886,23
-822047801,Property 1,This is property 1,842050036,499372886,23
-822047802,Property 2,This is property 2,842050037,499372886,23
-822047803,Property 3,This is property 3,842050037,499372886,23
+1,Property 0,This is property 0,1,1,1
+2,Property 1,This is property 1,1,1,1
+3,Property 2,This is property 2,2,1,1
+4,Property 3,This is property 3,2,1,1

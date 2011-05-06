@@ -1,4 +1,6 @@
 class Group < ActiveRecord::Base
+  include CSVAttributes
+  
   PRIVACY = [
     PRIVATE = 'private',
     PUBLIC  = 'public'
@@ -18,6 +20,9 @@ class Group < ActiveRecord::Base
   }
 
   CSV_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
   
   validates_presence_of     :name
   validates_uniqueness_of   :name

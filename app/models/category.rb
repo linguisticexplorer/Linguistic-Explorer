@@ -1,8 +1,12 @@
 class Category < ActiveRecord::Base
   include Groupable
+  include CSVAttributes
 
   CSV_ATTRIBUTES = %w[ id name depth group_id creator_id description ]
-
+  def self.csv_attributes
+    CSV_ATTRIBUTES
+  end
+  
   validates_presence_of :name, :depth
   validates_uniqueness_of :name, :scope => :group_id
   validates_numericality_of :depth
