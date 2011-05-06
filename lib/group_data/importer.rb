@@ -44,31 +44,22 @@ module GroupData
 
     attr_accessor :config
 
+    def self.lazy_init_cache(*caches)
+      caches.each do |cache|
+        define_method("#{cache}") do
+          instance_variable_get("@#{cache}") ||
+            (instance_variable_set("@#{cache}", {}) && instance_variable_get("@#{cache}"))
+        end
+      end
+    end
+
+    lazy_init_cache :groups, :user_ids, :ling_ids, :category_ids, :property_ids, :example_ids, :lings_property_ids
+
     # accepts path to yaml file containing paths to csvs
     def initialize(path)
       @path = path
       @config = YAML.load_file(@path)
       @config.symbolize_keys!
-    end
-
-    def groups
-      @groups ||= {}
-    end
-
-    def user_ids
-      @user_ids ||= {}
-    end
-
-    def ling_ids
-      @ling_ids ||= {}
-    end
-
-    def category_ids
-      @category_ids ||= {}
-    end
-
-    def property_ids
-      @property_ids ||= {}
     end
 
     def import!
@@ -151,6 +142,9 @@ module GroupData
           e.ling = ling
         end
         save_model_with_attributes example, row
+
+        # cache example id
+        example_ids[row["id"]] = example.id
       end
 
       csv_for_each :lings_property do |row|
@@ -160,8 +154,29 @@ module GroupData
         property_id = property_ids[row["property_id"]]
         conditions  = { :value => value, :ling_id => ling_id, :property_id => property_id }
 
-        next if group.lings_properties.exists?(conditions)
-        group.lings_properties.create(conditions)
+        lp = group.lings_properties.where(conditions).first || group.lings_properties.create(conditions)
+
+        # cache lings_property id
+        lings_property_ids[row["id"]] = lp.id
+      end
+
+      csv_for_each :examples_lings_property do |row|
+        group             = groups[row["group_id"]]
+        example_id        = example_ids[row["example_id"]]
+        lings_property_id = lings_property_ids[row["lings_property_id"]]
+        conditions  = { :example_id => example_id, :lings_property_id => lings_property_id }
+
+        group.examples_lings_properties.where(conditions).first || group.examples_lings_properties.create(conditions)
+      end
+
+      csv_for_each :stored_value do |row|
+        group         = groups[row["group_id"]]
+        storable_type = row['storable_type']
+        storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
+        conditions = { :storable_id => storable_id, :storable_type => storable_type,
+            :key => row["key"], :value => row["value"] }
+
+        group.stored_values.where(conditions).first || group.stored_values.create(conditions)
       end
     end
 

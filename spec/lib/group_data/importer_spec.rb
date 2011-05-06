@@ -23,6 +23,10 @@ module GroupData
         attributes_should_match(@current_group, @group)
       end
 
+      it "should parse example fields" do
+
+      end
+
       it "should cache groups" do
         @importer.groups.values.first.id.should == @current_group.id
       end
@@ -39,6 +43,7 @@ module GroupData
       end
 
       it "should import memberships" do
+        @current_group.memberships.size.should == @memberships.size
         @users.each_with_index do |user, i|
           imported_user = User.find_by_name(user.name)
           imported  = @current_group.membership_for(imported_user)
@@ -48,6 +53,7 @@ module GroupData
       end
 
       it "should import lings" do
+        @current_group.lings.size.should == @lings.size
         @lings.each_with_index do |ling|
           imported = Ling.find_by_name(ling.name)
           attributes_should_match(imported, ling)
@@ -61,6 +67,7 @@ module GroupData
       end
 
       it "should import properties" do
+        @current_group.properties.size.should == @properties.size
         @properties.each do |property|
           imported = @current_group.properties.find_by_name(property.name)
           imported.category.should be_present
@@ -69,6 +76,7 @@ module GroupData
       end
 
       it "should import categories" do
+        @current_group.categories.size.should == @categories.size
         @categories.each do |category|
           imported = @current_group.categories.find_by_name(category.name)
           attributes_should_match imported, category
@@ -76,6 +84,7 @@ module GroupData
       end
 
       it "should import examples" do
+        @current_group.examples.size.should == @examples.size
         @examples.each do |example|
           imported = @current_group.examples.find_by_name(example.name)
           attributes_should_match imported, example
@@ -83,6 +92,7 @@ module GroupData
       end
 
       it "should import lings_properties" do
+        @current_group.lings_properties.size.should == @lings_properties.size
         @lings_properties.each do |lings_property|
           imported = @current_group.lings_properties.where(:value => lings_property.value).first
           attributes_should_match imported, lings_property
@@ -90,11 +100,20 @@ module GroupData
       end
 
       it "should import examples_lings_properties" do
-        pending
+        @current_group.examples_lings_properties.size.should == @examples_lings_properties.size
+        @examples.each do |example|
+          imported_example = @current_group.examples.find_by_name(example.name)
+          elp = @current_group.examples_lings_properties.select { |elp| elp.example_id == imported_example.id }
+          elp.should be_present
+        end
       end
 
       it "should import stored_values" do
-        pending
+        @current_group.stored_values.size.should == @stored_values.size
+        @stored_values.each do |sv|
+          imported = @current_group.stored_values.find_by_value(sv.value)
+          attributes_should_match imported, sv
+        end
       end
 
     end
@@ -200,11 +219,11 @@ module GroupData
 
       @stored_values = [].tap do |models|
         @examples.each do |example|
-          models << Factory(:stored_value, :storable => example,
+          models << Factory(:stored_value, :storable => example, :group => @group,
             :key => "words", :value => "#{example.name} blah blah blah")
         end
         @examples.each do |example|
-          models << Factory(:stored_value, :storable => example,
+          models << Factory(:stored_value, :storable => example, :group => @group,
             :key => "gloss", :value => "#{example.name} gloss")
         end
       end

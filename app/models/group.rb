@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
   include CSVAttributes
-  
+
   PRIVACY = [
     PRIVATE = 'private',
     PUBLIC  = 'public'
@@ -23,7 +23,7 @@ class Group < ActiveRecord::Base
   def self.csv_attributes
     CSV_ATTRIBUTES
   end
-  
+
   validates_presence_of     :name
   validates_uniqueness_of   :name
   validates_numericality_of :depth_maximum, :<= => MAXIMUM_ASSIGNABLE_DEPTH
@@ -37,6 +37,7 @@ class Group < ActiveRecord::Base
   has_many :categories,                :dependent => :destroy
   has_many :memberships,               :dependent => :destroy
   has_many :members,                   :through => :memberships, :source => :member
+  has_many :stored_values,             :dependent => :destroy
 
   scope :public,  where( :privacy => PUBLIC )
   scope :private, where( :privacy => PRIVATE )

@@ -6,8 +6,8 @@ class StoredValue < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  
   belongs_to :storable, :polymorphic => true
+  belongs_to :group
   validates_presence_of :key, :value, :storable
   validates_existence_of :storable
   validate :key_is_allowed_for_storable
