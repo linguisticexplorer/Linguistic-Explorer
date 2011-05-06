@@ -1,7 +1,7 @@
 class Category < ActiveRecord::Base
   include Groupable
 
-  IMPORT_ATTRIBUTES = %w[ id name depth group_id creator_id description ]
+  CSV_ATTRIBUTES = %w[ id name depth group_id creator_id description ]
 
   validates_presence_of :name, :depth
   validates_uniqueness_of :name, :scope => :group_id

@@ -1,4 +1,7 @@
 class StoredValue < ActiveRecord::Base
+  
+  CSV_ATTRIBUTES = %w[ id storable_id storable_type key value group_id ]
+  
   belongs_to :storable, :polymorphic => true
   validates_presence_of :key, :value, :storable
   validates_existence_of :storable

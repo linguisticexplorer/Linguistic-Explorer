@@ -1,0 +1,11 @@
+--- 
+user: /Users/ross/dev/linguistic-explorer/spec/csv/User.csv
+category: /Users/ross/dev/linguistic-explorer/spec/csv/Category.csv
+example: /Users/ross/dev/linguistic-explorer/spec/csv/Example.csvy.csv
+examples_lings_property: /Users/ross/dev/linguistic-explorer/spec/csv/ExamplesLingsPropert
+group: /Users/ross/dev/linguistic-explorer/spec/csv/Group.csv
+ling: /Users/ross/dev/linguistic-explorer/spec/csv/Ling.csv
+lings_property: /Users/ross/dev/linguistic-explorer/spec/csv/LingsProperty.csv
+membership: /Users/ross/dev/linguistic-explorer/spec/csv/Membership.csv
+property: /Users/ross/dev/linguistic-explorer/spec/csv/Property.csv
+stored_value: /Users/ross/dev/linguistic-explorer/spec/csv/StoredValue.csv

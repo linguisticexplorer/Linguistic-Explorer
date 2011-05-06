@@ -4,7 +4,7 @@ class Membership < ActiveRecord::Base
     MEMBER = "member"
   ]
   
-  IMPORT_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
+  CSV_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
 
   include Groupable
 

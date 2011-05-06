@@ -17,8 +17,8 @@ class Group < ActiveRecord::Base
         :examples_lings_property_name => "Example Value"
   }
 
-  IMPORT_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
-
+  CSV_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
+  
   validates_presence_of     :name
   validates_uniqueness_of   :name
   validates_numericality_of :depth_maximum, :<= => MAXIMUM_ASSIGNABLE_DEPTH

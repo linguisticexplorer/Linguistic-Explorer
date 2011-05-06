@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     USER  = "user"
   ]
   
-  IMPORT_ATTRIBUTES = %w[ id name email access_level password ]
+  CSV_ATTRIBUTES = %w[ id name email access_level password ]
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable

@@ -1,7 +1,7 @@
 class ExamplesLingsProperty < ActiveRecord::Base
   include Groupable
 
-  IMPORT_ATTRIBUTES = %w[ id example_id lings_property_id group_id creator_id ]
+  CSV_ATTRIBUTES = %w[ id example_id lings_property_id group_id creator_id ]
 
   validates_presence_of :example, :lings_property
   validates_existence_of :example, :lings_property

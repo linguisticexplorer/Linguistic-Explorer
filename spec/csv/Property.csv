@@ -1,5 +1,5 @@
-id,name,description,category,group_id,creator_id
-822047800,Property 0,This is property 0,#<Category:0x00000103135368>,499372886,23
-822047801,Property 1,This is property 1,#<Category:0x00000103135368>,499372886,23
-822047802,Property 2,This is property 2,#<Category:0x00000101333e00>,499372886,23
-822047803,Property 3,This is property 3,#<Category:0x00000101333e00>,499372886,23
+id,name,description,category_id,group_id,creator_id
+822047800,Property 0,This is property 0,842050036,499372886,23
+822047801,Property 1,This is property 1,842050036,499372886,23
+822047802,Property 2,This is property 2,842050037,499372886,23
+822047803,Property 3,This is property 3,842050037,499372886,23

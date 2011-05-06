@@ -3,8 +3,48 @@ require 'spec_helper'
 module GroupData
 
   describe Importer do
-    before(:all) do
 
+    before(:all) do
+      # Create fixture CSVs for import
+      generate_group_data_csvs!
+    end
+
+    describe "import!" do
+      before(:each) do
+        @importer = Importer.import(Rails.root.join("spec", "csv", "import.yml"))
+      end
+
+      it "should load configuration from yaml" do
+        @importer.config[:ling].should == Rails.root.join("spec", "csv", "Ling.csv").to_s
+      end
+
+      it "should import group" do
+        imported = Group.find_by_name(@group.name)
+        imported.should be_present
+        Group::CSV_ATTRIBUTES.each do |attribute|
+          next if attribute =~ /id$/
+          imported.send(attribute).should == @group.send(attribute)
+        end
+      end
+    end
+
+    describe "csv generation" do
+      it "should have cleaned the db" do
+        Group.find_by_name(@group.name).should be_nil
+      end
+      it "should have the correct number of csv rows to import" do
+        @group_data.each do |models|
+          csv_row_count_should_equal_count_of(*models)
+        end
+      end
+      it "should have the correct number of csv data sets to import" do
+        data_sets_size = 10
+        @group_data.size.should == data_sets_size
+      end
+    end
+
+
+    def generate_group_data_csvs!
       # Create users
       @users = [].tap do |models|
         User::ACCESS_LEVELS.each do |al|
@@ -15,7 +55,18 @@ module GroupData
       @admin  = @users.first
       @user   = @users.last
 
-      @group  = Factory(:group, :name => "SSWL")
+      # Group
+      @group  = Factory(:group, :name => "SSWL", :privacy => Group::PRIVATE,
+        :depth_maximum => 1, :ling0_name => "Language", :ling1_name => "Speaker",
+        :property_name => "Grammar", :category_name => "Demographic",
+        :lings_property_name => "Value", :example_name => "Quotes",
+        :examples_lings_property_name => "Quote Values", :example_fields => "words, gloss")
+
+      # Memberships
+      @memberships = [].tap do |models|
+        models << Factory(:membership, :group => @group, :member => @admin, :level => Membership::ADMIN, :creator => @admin)
+        models << Factory(:membership, :group => @group, :member => @user, :level => Membership::MEMBER, :creator => @admin)
+      end
 
       # Parent Lings
       @lings = [].tap do |models|
@@ -32,11 +83,7 @@ module GroupData
         end
       end
 
-      @memberships = [].tap do |models|
-        models << Factory(:membership, :group => @group, :member => @admin, :level => Membership::ADMIN, :creator => @admin)
-        models << Factory(:membership, :group => @group, :member => @user, :level => Membership::MEMBER, :creator => @admin)
-      end
-
+      # Categories
       @categories = [].tap do |models|
         { :parent => Depth::PARENT, :child => Depth::CHILD }.each do |k, depth|
           models << Factory(:category, :group => @group, :creator => @admin,
@@ -51,6 +98,7 @@ module GroupData
         end
       end
 
+      #
       @properties = [].tap do |models|
         @lings.each_with_index do |ling, i|
           models << Factory(:property, :name => "Property #{i}", :description => "This is property #{i}",
@@ -72,63 +120,24 @@ module GroupData
         end
       end
 
-      # @stored_values = [].tap do |models|
-      #   @examples.each do |example|
-      #     models << Factory(:stored_value, :storable => @examples.first,
-      #       :key => "words", :value => "#{example.name} blah blah blah")
-      #   end
-      # end
+      @stored_values = [].tap do |models|
+        @examples.each do |example|
+          models << Factory(:stored_value, :storable => example,
+            :key => "words", :value => "#{example.name} blah blah blah")
+        end
+        @examples.each do |example|
+          models << Factory(:stored_value, :storable => example,
+            :key => "gloss", :value => "#{example.name} gloss")
+        end
+      end
 
-      generate_csv *@users
-      generate_csv @group
-      generate_csv *@memberships
-      generate_csv *@examples
-      generate_csv *@lings
-      generate_csv *@categories
-      generate_csv *@properties
-      generate_csv *@lings_properties
-      generate_csv *@examples_lings_properties
-      # generate_csv *@stored_values
+      # Transfer model data to csv and destroy so we can test import of data
+      @group_data = [@users, [@group], @memberships, @examples, @lings, @categories,
+        @properties, @lings_properties, @examples_lings_properties, @stored_values]
+
+      @group_data.each do |models|
+        generate_csv_and_destroy_records *models
+      end
     end
-
-    it "should have two users" do
-      csv_row_count_should_equal_count_of(*@users)
-    end
-
-    it "should have a group" do
-      csv_row_count_should_equal_count_of(@group)
-    end
-
-    it "should have four lings" do
-      csv_row_count_should_equal_count_of(*@lings)
-    end
-
-    it "should have memberships" do
-      csv_row_count_should_equal_count_of(*@memberships)
-    end
-
-    it "should have categories" do
-      csv_row_count_should_equal_count_of(*@categories)
-    end
-
-    it "should have examples" do
-      csv_row_count_should_equal_count_of(*@examples)
-    end
-
-    it "should have properties" do
-      csv_row_count_should_equal_count_of(*@properties)
-    end
-
-    it "should have lings properties" do
-      csv_row_count_should_equal_count_of(*@lings_properties)
-    end
-
-    it "should have lings properties" do
-      csv_row_count_should_equal_count_of(*@examples_lings_properties)
-    end
-
-    # it "should have stored values" do
-    #   csv_row_count_should_equal_count_of(*@stored_values)
-    # end
   end
 end
