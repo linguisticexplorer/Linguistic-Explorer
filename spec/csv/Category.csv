@@ -1,3 +1,0 @@
-id,name,depth,group_id,creator_id,description
-1,Parent Category,0,1,1,This is the parent category
-2,Child Category,1,1,1,This is the child category

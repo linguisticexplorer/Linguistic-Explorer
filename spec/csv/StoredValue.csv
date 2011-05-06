@@ -1,9 +1,0 @@
-id,storable_id,storable_type,key,value,group_id
-1,1,Example,words,Example 0 blah blah blah,
-2,2,Example,words,Example 1 blah blah blah,
-3,3,Example,words,Example 2 blah blah blah,
-4,4,Example,words,Example 3 blah blah blah,
-5,1,Example,gloss,Example 0 gloss,
-6,2,Example,gloss,Example 1 gloss,
-7,3,Example,gloss,Example 2 gloss,
-8,4,Example,gloss,Example 3 gloss,
