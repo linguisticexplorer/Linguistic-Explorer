@@ -1,3 +1,3 @@
 id,name,depth,group_id,creator_id,description
-category_0_0,Category 0 0,0,group_0,user_0_3,this is category 0 0
-category_1_0,Category 0 0,1,group_0,user_0_3,this is category 1 0
+842050036,Parent Category,0,499372886,23,This is the parent category
+842050037,Child Category,1,499372886,23,This is the child category

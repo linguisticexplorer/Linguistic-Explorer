@@ -1,6 +1,8 @@
 class LingsProperty < ActiveRecord::Base
   include Groupable
 
+  IMPORT_ATTRIBUTES = %w[ id ling_id property_id value group_id creator_id ]
+
   validates_presence_of :value, :property, :ling
   validates_existence_of :ling, :property
   validates_uniqueness_of :value, :scope => [:ling_id, :property_id]

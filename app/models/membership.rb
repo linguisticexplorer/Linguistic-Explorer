@@ -3,6 +3,8 @@ class Membership < ActiveRecord::Base
     ADMIN = "admin",
     MEMBER = "member"
   ]
+  
+  IMPORT_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
 
   include Groupable
 

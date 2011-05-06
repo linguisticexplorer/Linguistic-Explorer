@@ -1,6 +1,8 @@
 class Property < ActiveRecord::Base
   include Groupable
 
+  IMPORT_ATTRIBUTES = %w[ id name description category group_id creator_id ]
+
   validates_presence_of :name, :category
   validates_uniqueness_of :name, :scope => :group_id
   validates_existence_of :category

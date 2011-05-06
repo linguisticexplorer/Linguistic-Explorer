@@ -1,6 +1,8 @@
 class Example < ActiveRecord::Base
   include Groupable
-
+  
+  IMPORT_ATTRIBUTES = %w[ id name ling_id group_id creator_id ]
+  
   belongs_to :ling
   has_many :stored_values, :as => :storable, :dependent => :destroy
   has_many :examples_lings_properties, :dependent => :destroy
