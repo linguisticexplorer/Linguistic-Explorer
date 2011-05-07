@@ -290,7 +290,7 @@ describe LingsController do
 
     describe "with valid params" do
       def do_valid_create
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}, :stored_values => {:description => "foo"}
       end
 
       it "assigns a newly created ling to @ling" do
@@ -300,6 +300,13 @@ describe LingsController do
           assigns(:ling).should be_valid
           assigns(:ling).name.should == 'Javanese'
         }.should change(Ling, :count).by(1)
+      end
+
+      it "creates and associates passed stored values" do
+        lambda {
+          do_valid_create
+          assigns(:ling).stored_value(:description).should == 'foo'
+        }.should change(StoredValue, :count).by(1)
       end
 
       it "redirects to the created ling" do
@@ -318,7 +325,11 @@ describe LingsController do
 
     describe "with invalid params" do
       def do_invalid_create
-        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => 1}
+        post :create, :group_id => groups(:inclusive).id, :ling => {'name' => '', 'depth' => 1}, :stored_values => {:description => "foo"}
+      end
+
+      it "does not create passed stored values" do
+        lambda { do_invalid_create }.should change(StoredValue, :count).by(0)
       end
 
       it "does not save a new ling" do
@@ -370,6 +381,19 @@ describe LingsController do
         put :update, :group_id => groups(:inclusive).id, :id => ling.id, :ling => {'name' => 'eengleesh'}
       end
 
+      it "creates or updates passed stored values" do
+        first_value = "foo"
+        second_value = "bar"
+        ling = lings(:level0)
+        #test creation of a new value for key 'description'
+        put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
+        ling.reload.stored_value(:description).should == first_value
+
+        #now do a bad update with 'description' set as the new value
+        put :update, :id => ling.id, :ling => {'name' => "ee"}, :group_id => ling.group.id, :stored_values => {:description => second_value}
+        ling.reload.stored_value(:description).should == second_value
+      end
+
       it "assigns the requested ling as @ling" do
         put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
         assigns(:ling).should == lings(:english)
@@ -394,6 +418,19 @@ describe LingsController do
       it "assigns the requested ling's depth to @depth" do
         do_invalid_update
         assigns(:depth).should == 1
+      end
+
+      it "does not create or update for passed stored values" do
+        first_value = "foo"
+        second_value = "bar"
+        ling = lings(:level0)
+        #test creation of a new value for key 'description'
+        put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
+        ling.reload.stored_value(:description).should == first_value
+
+        #now do a bad update with 'description' set as the new value
+        put :update, :id => ling.id, :ling => {'name' => ""}, :group_id => ling.group.id, :stored_values => {:description => second_value}
+        ling.reload.stored_value(:description).should == first_value
       end
 
       it "assigns available @depth-1 depth lings to @parents" do

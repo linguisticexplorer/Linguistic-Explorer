@@ -2,7 +2,6 @@
     <% if @group.errors.any? %>
         <div id="error_explanation">
             <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
-
             <ul>
                 <% @group.errors.full_messages.each do |msg| %>
                     <li><%= msg %></li>
@@ -49,6 +48,11 @@
     <div class="field">
         <%= f.label :examples_lings_property_name, "Example Lings Property name" %><br />
         <%= f.text_field :examples_lings_property_name %>
+    </div>
+
+    <div class="field">
+        <%= f.label :ling_fields, "Unsearchable field names available for Lings, split on commas ('description' is pre-included by default)" %><br />
+        <%= f.text_field :ling_fields %>
     </div>
 
     <div class="field">

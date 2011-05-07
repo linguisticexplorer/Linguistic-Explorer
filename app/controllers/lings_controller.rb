@@ -135,6 +135,7 @@ class LingsController < GroupDataController
 
     respond_to do |format|
       if @ling.save
+        params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
         format.html { redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully created.')) }
         format.xml  { render :xml => @ling, :status => :created, :location => @ling }
       else
@@ -155,6 +156,7 @@ class LingsController < GroupDataController
 
     respond_to do |format|
       if @ling.update_attributes(params[:ling])
+        params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
         format.html { redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully updated.') ) }
         format.xml  { head :ok }
       else

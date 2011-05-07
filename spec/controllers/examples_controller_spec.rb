@@ -43,7 +43,7 @@ describe ExamplesController do
         assigns(:example).should == examples(:onceuponatime)
       end
 
-      it "@lings should be a hash with two depth members" do
+      it "@lings should be a hash with two depth members" do #TODO this might need fixing for 0-depth groups
         get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         lings = assigns(:lings)
         lings.should be_a Hash
