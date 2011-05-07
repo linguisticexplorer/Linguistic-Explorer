@@ -7,6 +7,11 @@
   <b>Name:</b> <br />
   <%= @ling.name %> <br />
 
+  <% @ling.storable_keys.each do |key| %>
+    <b><%= key.humanize %></b>: <br />
+    <%= @ling.stored_value(key) %> <br />
+  <% end %>
+
   <% if @ling.depth == 1 && @ling.parent %>
     <b><%= current_group.ling0_name %>:</b> <br />
     <%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> <br />

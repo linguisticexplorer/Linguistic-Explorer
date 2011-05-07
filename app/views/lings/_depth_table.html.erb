@@ -5,6 +5,9 @@
     <% if current_group.has_depth? %>
       <th><%= current_group.ling_name_for_depth(depth - 1) %></th>
     <% end %>
+    <% current_group.ling_storable_keys.each do |key| %>
+      <th><%= key.humanize %></th>
+    <% end %>
     <th></th>
     <th></th>
     <th></th>
@@ -14,6 +17,9 @@
       <td><%= link_to ling.name, [current_group, ling] %></td>
       <% if current_group.has_depth? %>
         <td><%= (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent %></td>
+      <% end %>
+      <% current_group.ling_storable_keys.each do |key| %>
+        <td><%= ling.stored_value(key) %></td>
       <% end %>
       <td><%= link_to 'Mass assign', set_values_group_ling_path(current_group, ling) %></td>
       <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>

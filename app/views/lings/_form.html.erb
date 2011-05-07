@@ -26,6 +26,13 @@
     </div>
   <% end %>
 
+  <% @ling.storable_keys.each do |key| %>
+    <div class="field">
+      <%= label :stored_values, key %><br />
+      <%= text_field :stored_values, key, :value => @ling.stored_value(key) %>
+    </div>
+  <% end %>
+
   <div class="actions">
     <%= f.submit("Create " + current_group.ling_name_for_depth(@depth)) %>
   </div>
