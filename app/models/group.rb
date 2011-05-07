@@ -6,7 +6,6 @@ class Group < ActiveRecord::Base
     PUBLIC  = 'public'
   ]
   MAXIMUM_ASSIGNABLE_DEPTH = 1
-  DEFAULT_EXAMPLE_KEYS = ["text"]
   DEFAULTS = {
         :depth_maximum  => MAXIMUM_ASSIGNABLE_DEPTH,
         :privacy        => PUBLIC,
@@ -18,6 +17,8 @@ class Group < ActiveRecord::Base
         :lings_property_name => "Value",
         :examples_lings_property_name => "Example Value"
   }
+  DEFAULT_EXAMPLE_KEYS = ["text"]
+  DEFAULT_LING_KEYS = ["description"]
 
   CSV_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
   def self.csv_attributes
@@ -37,7 +38,7 @@ class Group < ActiveRecord::Base
   has_many :categories,                :dependent => :destroy
   has_many :memberships,               :dependent => :destroy
   has_many :members,                   :through => :memberships, :source => :member
-  has_many :stored_values,             :dependent => :destroy
+#  has_many :stored_values,             :dependent => :destroy
 
   scope :public,  where( :privacy => PUBLIC )
   scope :private, where( :privacy => PRIVATE )
@@ -60,6 +61,10 @@ class Group < ActiveRecord::Base
 
   def depths
     (0..depth_maximum).to_a
+  end
+
+  def ling_storable_keys
+    (DEFAULT_LING_KEYS + (!ling_fields.blank? ? ling_fields.split(",").collect(&:strip) : [])).uniq
   end
 
   def example_storable_keys

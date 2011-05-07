@@ -22,6 +22,7 @@ class Ling < ActiveRecord::Base
   has_many :examples, :dependent => :destroy
   has_many :lings_properties, :dependent => :destroy
   has_many :properties, :through => :lings_properties
+  has_many :stored_values, :as => :storable, :dependent => :destroy
 
   include Concerns::Wheres
   include Concerns::Selects
@@ -55,5 +56,28 @@ class Ling < ActiveRecord::Base
 
   def available_depth_for_group
     errors.add(:depth, "is deeper than allowed in #{group.name}") if group && depth && group.depth_maximum < depth
+  end
+
+  def storable_keys
+    group.present? ? group.ling_storable_keys : []
+  end
+
+  def store_value!(key_symbol_or_string, value_string)
+    key = key_symbol_or_string.to_s
+    if curr = stored_values.with_key(key).first
+      curr.value = value_string
+      curr.save
+    else
+      StoredValue.create(:key => key, :value => value_string, :storable => self)
+    end
+  end
+
+  def stored_value(key_symbol_or_string)
+    key = key_symbol_or_string.to_s
+    if storable_keys.include? key
+      (record = stored_values.select{|sv| sv.key == key}.first).present? ? record.value : ""
+    else
+      nil
+    end
   end
 end

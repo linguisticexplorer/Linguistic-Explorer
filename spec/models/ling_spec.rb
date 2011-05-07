@@ -113,4 +113,98 @@ describe Ling do
       @ling.add_property("existing_value", @property)
     end
   end
+
+  describe "StoredValues" do
+    it_should_have_many :stored_values
+
+    describe "#storable_keys" do
+      it "should return the associated group's ling_storable_keys value if group is present" do
+        group = groups(:inclusive)
+        ling = Ling.create(:group => group)
+        ling.storable_keys.should == group.ling_storable_keys
+      end
+
+      it "should return the an empty array if group is not present" do
+        Ling.create.storable_keys.should == []
+      end
+    end
+
+    describe "#stored_value" do
+      it "should default available but unset keys to an empty string" do
+        ling = lings(:level0)
+        group = ling.group
+
+        ling.storable_keys.should_not be_empty
+        group.ling_storable_keys.should_not be_empty
+        ling.stored_value(group.ling_storable_keys.first).should == ""
+      end
+
+      it "should return the value of in the associated StoredValue record if there is one" do
+        ling = lings(:level0)
+        ling.storable_keys.should_not be_empty
+
+        key = ling.group.ling_storable_keys.first
+        key.should be_present
+        StoredValue.find_by_group_id_and_key_and_storable_type(ling.group.id, key, "Ling").should be_nil
+        StoredValue.create(:storable => ling, :key => key, :value => "awesome")
+        ling.reload.stored_value(key).should == "awesome"
+      end
+
+      it "should return nil if the key is invalid" do
+        ling = lings(:level0)
+        ling.storable_keys.should_not include "totallyfake"
+        ling.stored_value("totallyfake").should be_nil
+      end
+    end
+
+    describe "#store_value!" do
+      it "should store the value for a valid key" do
+        ling = lings(:level0)
+        group = ling.group
+
+        key = ling.storable_keys.first
+        key.should be_present
+        ling.store_value!(key, "foo")
+        ling.reload.stored_value(key).should == "foo"
+      end
+
+      it "should have be able to update the value" do
+        ling = lings(:level0)
+        group = ling.group
+
+        key = ling.storable_keys.last
+        key.should be_present
+        ling.store_value!(key, "foo")
+        ling.reload.stored_value(key).should == "foo"
+
+        ling.store_value!(key, "bar")
+        ling.reload.stored_value(key).should == "bar"
+      end
+
+      it "should have be able to store a value for a key supplied by the group" do
+        ling = lings(:level0)
+        group = ling.group
+        group.ling_fields = "custom_key"
+        group.save
+        group.reload
+
+        key = group.ling_storable_keys.last
+        key.should == "custom_key"
+        Group::DEFAULT_LING_KEYS.should_not include key
+        ling.storable_keys.should include key.to_s
+
+        ling.store_value!(key, "baz")
+        ling.stored_value(key).should == "baz"
+      end
+
+      it "should not save the value passed or report errors on the key name for unrecognized keys" do
+        ling = lings(:level0)
+        group = ling.group
+        fake_key = "totallyfake"
+        ling.storable_keys.should_not include fake_key
+        ling.store_value!(fake_key, "bar")
+        ling.reload.stored_value(fake_key).should be_nil
+      end
+    end
+  end
 end

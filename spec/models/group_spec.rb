@@ -79,4 +79,28 @@ describe Group do
       end
     end
   end
+
+  describe "#ling_storable_keys" do
+    it "should by default have description" do
+      Group.new.ling_storable_keys.should include 'description'
+    end
+
+    describe "should return an array of strings created from example_fields" do
+      it "that has only default keys if the field is empty" do
+        Factory(:group, :ling_fields => "").ling_storable_keys.should == ['description']
+      end
+
+      it "should ignore duplicates" do
+        Factory(:group, :ling_fields => "description, foo, foo").ling_storable_keys.should == ["description", "foo"]
+      end
+
+      it "that splits on commas if fields has any" do
+        Factory(:group, :ling_fields => "foo,bar").ling_storable_keys.should == ["description", "foo", "bar"]
+      end
+
+      it "that strips leading and trailing whitespace from all values" do
+        Factory(:group, :ling_fields => " foo , bar ").ling_storable_keys.should == ["description", "foo", "bar"]
+      end
+    end
+  end
 end

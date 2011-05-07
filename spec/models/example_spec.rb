@@ -62,7 +62,6 @@ describe Example do
       it "should default available but unset keys to an empty string" do
         example = examples(:valueless)
         example.storable_keys.should include "text"
-        StoredValue.find_by_group_id_and_key(example.group.id, "text").should be_nil
         example.stored_value(:text).should == ""
       end
 
@@ -107,25 +106,25 @@ describe Example do
         example.reload.stored_value(:text).should == "bar"
       end
 
-    it "should have be able to store a value for a key supplied by the group" do
-      ling = lings(:level0)
-      group = ling.group
-      group.example_fields = "custom_key"
-      group.save
-      group.reload
+      it "should have be able to store a value for a key supplied by the group" do
+        ling = lings(:level0)
+        group = ling.group
+        group.example_fields = "custom_key"
+        group.save
+        group.reload
 
-      key = group.example_storable_keys.last
-      key.should == "custom_key"
-      Group::DEFAULT_EXAMPLE_KEYS.should_not include key
+        key = group.example_storable_keys.last
+        key.should == "custom_key"
+        Group::DEFAULT_EXAMPLE_KEYS.should_not include key
 
-      example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
-        e.group = group
+        example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
+          e.group = group
+        end
+
+        example.storable_keys.should include key.to_s
+        example.store_value!(key, "baz")
+        example.stored_value(key).should == "baz"
       end
-
-      example.storable_keys.should include key.to_s
-      example.store_value!(key, "baz")
-      example.stored_value(key).should == "baz"
-    end
 
       it "should not save the value passed or report errors on the key name for unrecognized keys" do
         ling = lings(:level0)
