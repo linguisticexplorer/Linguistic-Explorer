@@ -10,5 +10,7 @@
 </p>
 
 
-<%= link_to 'Edit', edit_group_path(@group) %> |
-<%= link_to 'Back', groups_path %>
+<% if can? :update, @group %>
+  <%= link_to 'Edit', edit_group_path(@group) %> |
+<% end %>
+<%= link_to 'Groups', groups_path %>

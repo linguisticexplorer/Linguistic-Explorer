@@ -16,6 +16,7 @@ describe GroupsController do
         get :index
         assigns(:groups).should include @group
       end
+
       it "@groups should contain accessible groups" do
         @controller.stub!(:user_signed_in?).and_return(false)
         @group = Factory(:group)

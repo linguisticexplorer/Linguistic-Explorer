@@ -32,12 +32,18 @@
     <td><%= link_to group.example_name, group_examples_path(group) %></td>
     <td><%= group.depth_maximum %></td>
     <td><%= group.privacy %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><% if can? :update, @group %>
+      <%= link_to 'Edit', edit_group_path(group) %>
+    <% end %></td>
+    <td><% if can? :destroy, @group %>
+      <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %>
+    <% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New Group', new_group_path %>
+<% if can? :create, Group.new %>
+  <%= link_to 'New Group', new_group_path %>
+<% end %>

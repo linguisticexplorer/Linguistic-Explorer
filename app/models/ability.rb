@@ -14,13 +14,12 @@ class Ability
     else
       # New users should be able to sign up, logged in users should be able to manage themselves
       user.new_record? ? can(:create, User) : can(:manage, user)
-
       # turn on reading for public groups and data
-      can     :read,   Group,                  :privacy => Group::PUBLIC
-      can     :read,   group_data, :group => { :privacy => Group::PUBLIC  }
-      
+      can     :read,   Group,                   :privacy => Group::PUBLIC
+      can     :read,   group_data, :group => {  :privacy => Group::PUBLIC }
+
       # turn on full data management for group admins
-      can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN  }
+      can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN }
       can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)
       # turn on group reading for members
       can     :read,   Group, :memberships => { :member_id => user.id }
