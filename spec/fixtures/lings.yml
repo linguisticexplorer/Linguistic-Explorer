@@ -10,6 +10,10 @@ exclusive0:
   name: BOOP
   group: exclusive
   depth: 0
+exclusive1:
+  name: DEEP
+  group: exclusive
+  depth: 1
 level1:
   name: standardissue
   group: inclusive

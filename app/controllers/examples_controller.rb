@@ -3,7 +3,7 @@ class ExamplesController < GroupDataController
   # GET /examples
   # GET /examples.xml
   def index
-    @examples = Example.all
+    @examples = current_group.examples
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class ExamplesController < GroupDataController
   # GET /examples/1
   # GET /examples/1.xml
   def show
-    @example = Example.find(params[:id])
+    @example = current_group.examples.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,10 +25,16 @@ class ExamplesController < GroupDataController
   # GET /examples/new
   # GET /examples/new.xml
   def new
-    @example = Example.new
+    @example = Example.new do |e|
+      e.group = current_group
+      e.creator = current_user
+    end
+
+    authorize! :create, @example
+
     @lings = {
-          :depth_0 => Ling.find_all_by_depth(0),
-          :depth_1 => Ling.find_all_by_depth(1)
+          :depth_0 => current_group.lings.at_depth(0),
+          :depth_1 => current_group.lings.at_depth(1)
     }
 
     respond_to do |format|
@@ -39,10 +45,12 @@ class ExamplesController < GroupDataController
 
   # GET /examples/1/edit
   def edit
-    @example = Example.find(params[:id])
+    @example = current_group.examples.find(params[:id])
+    authorize! :update, @example
+
     @lings = {
-          :depth_0 => Ling.find_all_by_depth(0),
-          :depth_1 => Ling.find_all_by_depth(1)
+          :depth_0 => current_group.lings.at_depth(0),
+          :depth_1 => current_group.lings.at_depth(1)
     }
   end
 
@@ -54,6 +62,8 @@ class ExamplesController < GroupDataController
       example.creator = current_user
     end
 
+    authorize! :create, @example
+
     respond_to do |format|
       if @example.save
         params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
@@ -61,8 +71,8 @@ class ExamplesController < GroupDataController
         format.xml  { render :xml => @example, :status => :created, :location => @example }
       else
         @lings = {
-              :depth_0 => Ling.find_all_by_depth(0),
-              :depth_1 => Ling.find_all_by_depth(1)
+              :depth_0 => current_group.lings.at_depth(0),
+              :depth_1 => current_group.lings.at_depth(1)
         }
         format.html { render :action => "new" }
         format.xml  { render :xml => @example.errors, :status => :unprocessable_entity }
@@ -73,7 +83,8 @@ class ExamplesController < GroupDataController
   # PUT /examples/1
   # PUT /examples/1.xml
   def update
-    @example = Example.find(params[:id])
+    @example = current_group.examples.find(params[:id])
+    authorize! :update, @example
 
     respond_to do |format|
       if @example.update_attributes(params[:example])
@@ -82,8 +93,8 @@ class ExamplesController < GroupDataController
         format.xml  { head :ok }
       else
         @lings = {
-              :depth_0 => Ling.find_all_by_depth(0),
-              :depth_1 => Ling.find_all_by_depth(1)
+              :depth_0 => current_group.lings.at_depth(0),
+              :depth_1 => current_group.lings.at_depth(1)
         }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @example.errors, :status => :unprocessable_entity }
@@ -94,7 +105,9 @@ class ExamplesController < GroupDataController
   # DELETE /examples/1
   # DELETE /examples/1.xml
   def destroy
-    @example = Example.find(params[:id])
+    @example = current_group.examples.find(params[:id])
+    authorize! :destroy, @example
+
     @example.destroy
 
     respond_to do |format|

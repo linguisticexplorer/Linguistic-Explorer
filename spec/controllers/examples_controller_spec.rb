@@ -1,25 +1,47 @@
 require 'spec_helper'
 
 describe ExamplesController do
+  before do
+    @ability = Ability.new(nil)
+    @ability.stub(:can?).and_return true
+    @controller.stub(:current_ability).and_return(@ability)
+  end
+
   describe "index" do
-    describe "assigns" do
-      it "@examples should contain every example" do
-        get :index, :group_id => groups(:inclusive).id
-        assigns(:examples).should include examples(:onceuponatime)
-      end
+    it "@examples should contain examples from the current group" do
+      @group = groups(:inclusive)
+      Group.stub(:find).and_return(Group)
+
+      Group.should_receive(:examples).and_return @group.examples
+
+      get :index, :group_id => @group.id
     end
   end
 
   describe "show" do
-    describe "assigns" do
-      it "@example should match the passed id" do
-        get :show, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-        assigns(:example).should == examples(:onceuponatime)
-      end
+    it "@example should be found by id through current_group" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+      Group.stub(:find).and_return(Group)
+      Group.should_receive(:examples).and_return @group.examples
+
+      get :show, :id => @example.id, :group_id => @group.id
+      assigns(:example).should == @example
     end
   end
 
   describe "new" do
+    it "should authorize :create on @example" do
+      @group = Factory(:group)
+      @example = Example.new
+
+      @ability.should_receive(:can?).ordered.with(:create, @example).and_return(true)
+
+      Example.stub(:new).and_return(@example)
+      Group.stub(:find).and_return(@group)
+      get :new, :group_id => @group.id
+    end
+
     describe "assigns" do
       it "a new example to @example" do
         get :new, :group_id => groups(:inclusive).id
@@ -32,11 +54,37 @@ describe ExamplesController do
         lings.should be_a Hash
         lings[:depth_0].should include lings(:level0)
         lings[:depth_1].should include lings(:level1)
+        lings[:depth_0].should_not include lings(:exclusive0)
+        lings[:depth_1].should_not include lings(:exclusive1)
       end
     end
   end
 
   describe "edit" do
+    it "should authorize :update on @example" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+
+      @ability.should_receive(:can?).ordered.with(:update, @example).and_return(true)
+
+      Example.stub(:find).and_return @example
+      Group.stub(:find).and_return Group
+      Group.stub(:examples).and_return @group.examples
+      Group.stub(:lings).and_return @group.lings
+      get :edit, :id => @example.id, :group_id => @group.id
+    end
+
+    it "loads the requested example through current group" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+      Group.stub(:find).and_return Group
+      Group.stub(:lings).and_return @group.lings
+
+      Group.should_receive(:examples).and_return @group.examples
+
+      get :edit, :group_id => @group.id, :id => @example.id
+    end
+
     describe "assigns" do
       it "the requested example to @example" do
         get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
@@ -49,12 +97,25 @@ describe ExamplesController do
         lings.should be_a Hash
         lings[:depth_0].should include lings(:level0)
         lings[:depth_1].should include lings(:level1)
+        lings[:depth_0].should_not include lings(:exclusive0)
+        lings[:depth_1].should_not include lings(:exclusive1)
       end
     end
   end
 
   describe "create" do
-    describe "with valid params on example as well as stored_values" do
+    it "should authorize :create on the example with params" do
+      @group = Factory(:group)
+      @example = Factory(:example, :group => @group)
+
+      @ability.should_receive(:can?).ordered.with(:create, @example).and_return(true)
+
+      Example.stub(:new).and_return(@example)
+      Group.stub(:find).and_return(@group)
+      post :create, :group_id => @group.id, :example => {'name' => 'Javanese'}
+    end
+
+    describe "with valid params and valid stored_values" do
       it "assigns a newly created example to @example" do
         lambda {
           post :create, :example => {'name' => 'Javanese'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
@@ -80,20 +141,59 @@ describe ExamplesController do
         user = Factory(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
+
         post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
+
         assigns(:example).creator.should == user
+      end
+
+      it "should set the group to current group" do
+        @group = groups(:inclusive)
+
+        post :create, :group_id => @group.id, :example => {'name' => 'Javanese'}
+
+        assigns(:group).should == @group
+        assigns(:example).group.should == @group
       end
     end
   end
 
   describe "update" do
+    it "should authorize :update on the passed example" do
+      @group = Factory(:group)
+      @example = Factory(:example, :group => @group)
+
+      @ability.should_receive(:can?).ordered.with(:update, @example).and_return(true)
+
+      Example.stub(:find).and_return(@example)
+      Group.stub(:find).and_return(@group)
+      put :update, :id => @example.id, :example => {'name' => 'ayb'}, :group_id => @group.id
+    end
+
+    it "loads the requested example through current group" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+      @exes = @group.examples
+      Group.stub(:find).and_return @group
+      @group.should_receive(:examples).and_return @exes
+
+      put :update, :group_id => @group.id, :id => @example.id, :example => {'name' => 'eengleesh'}
+
+      assigns(:example).should == @example
+    end
+
     describe "with valid params" do
       it "calls update with the passed params on the requested example" do
-        example = examples(:onceuponatime)
-        example.should_receive(:update_attributes).with({'name' => 'eengleesh'}).and_return(true)
-        Example.should_receive(:find).with(example.id).and_return(example)
+        @example = examples(:onceuponatime)
+        new_name = "foobard"
+        @group = @example.group
+        @group.stub(:examples).and_return Example
+        Example.stub(:find).with(@example.id).and_return(@example)
+        Group.stub(:find).and_return @group
 
-        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
+        @example.should_receive(:update_attributes).with({'name' => new_name}).and_return(true)
+
+        put :update, :id => example.id, :example => {'name' => new_name}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
       end
 
       it "creates or updates passed stored values" do
@@ -119,12 +219,40 @@ describe ExamplesController do
   end
 
   describe "destroy" do
-    it "calls destroy on the requested example" do
-      example = examples(:onceuponatime)
-      example.should_receive(:destroy).and_return(true)
-      Example.should_receive(:find).with(example.id).and_return(example)
+    def do_destroy_on_example(example)
+      post :destroy, :group_id => example.group.id, :id => example.id
+    end
 
-      delete :destroy, :id => example.id, :group_id => groups(:inclusive).id
+    it "should authorize :destroy on the passed example" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+
+      @ability.should_receive(:can?).ordered.with(:destroy, @example).and_return(true)
+
+      Group.stub(:find).and_return(@group)
+      do_destroy_on_example(@example)
+    end
+
+    it "loads the example through current group" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+
+      @group.should_receive(:examples).and_return Example.where(:group => @group)
+
+      Group.stub(:find).and_return @group
+      post :destroy, :group_id => @group.id, :id => @example.id
+    end
+
+    it "calls destroy on the requested example" do
+      @example = examples(:onceuponatime)
+      @group = @example.group
+      @group.stub(:examples).and_return Example
+
+      @example.should_receive(:destroy).and_return(true)
+
+      Example.stub(:find).and_return @example
+      Group.stub(:find).and_return @group
+      do_destroy_on_example(@example)
     end
 
     it "redirects to the examples list" do

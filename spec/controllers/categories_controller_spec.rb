@@ -8,28 +8,26 @@ describe CategoriesController do
   end
 
   describe "index" do
-    describe "assigns" do
-      it "@categories should contain categories for the current group" do
-        @group = groups(:inclusive)
-        Group.stub(:find).and_return(Group)
-        Group.should_receive(:categories).and_return @group.categories
-        get :index, :group_id => @group.id
-      end
+    it "@categories should contain categories for the current group" do
+      @group = groups(:inclusive)
+      Group.stub(:find).and_return(Group)
+
+      Group.should_receive(:categories).and_return @group.categories
+
+      get :index, :group_id => @group.id
     end
   end
 
   describe "show" do
-    describe "assigns" do
-      it "@category should be found by id through current_group" do
-        @group = groups(:inclusive)
-        @category = categories(:inclusive1)
-        @category.group.should == @group
-        Group.stub(:find).and_return(Group)
-        Group.should_receive(:categories).and_return @group.categories
+    it "@category should be found by id through current_group" do
+      @group = groups(:inclusive)
+      @category = categories(:inclusive1)
+      @category.group.should == @group
+      Group.stub(:find).and_return(Group)
+      Group.should_receive(:categories).and_return @group.categories
 
-        get :show, :id => @category.id, :group_id => @group.id
-        assigns(:category).should == @category
-      end
+      get :show, :id => @category.id, :group_id => @group.id
+      assigns(:category).should == @category
     end
   end
 
@@ -66,18 +64,17 @@ describe CategoriesController do
       get :edit, :id => @category.id, :group_id => @group.id
     end
 
+    it "loads the requested category through current group" do
+      @category = categories(:inclusive0)
+      @group = @category.group
+      Group.stub(:find).and_return Group
+
+      Group.should_receive(:categories).and_return @group.categories
+
+      get :edit, :group_id => @group.id, :id => @category.id
+    end
+
     describe "assigns" do
-      it "loads the requested category through current group" do
-        @category = categories(:inclusive0)
-        @group = @category.group
-
-        Group.stub(:find).and_return Group
-        Group.should_receive(:categories).and_return @group.categories
-        get :edit, :group_id => @group.id, :id => @category.id
-
-        assigns(:category).should == @category
-      end
-
       it "the requested category's depth to @depth" do
         @category = categories(:inclusive1)
         get :edit, :id => @category.id, :group_id => groups(:inclusive).id
@@ -129,7 +126,7 @@ describe CategoriesController do
         assigns(:category).creator.should == user
       end
 
-      it "should set the group on the new category to current group" do
+      it "should set the group to current group" do
         @group = groups(:inclusive)
 
         post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
