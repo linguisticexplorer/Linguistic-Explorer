@@ -8,7 +8,7 @@ describe ExamplesController do
   end
 
   describe "index" do
-    it "@examples should contain examples from the current group" do
+    it "@examples should load through the current group" do
       @group = groups(:inclusive)
       Group.stub(:find).and_return(Group)
 
