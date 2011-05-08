@@ -21,7 +21,8 @@ LinguisticExplorer::Application.routes.draw do
       end
     end
 
-    resources :properties, :lings_properties, :examples, :categories, :memberships, :examples_lings_properties
+    resources :examples_lings_properties, :except => [:edit, :update]
+    resources :properties, :lings_properties, :examples, :categories, :memberships
   end
 
   # The priority is based upon order of creation:

@@ -34,6 +34,7 @@ describe GroupsController do
   describe 'nested routes for' do
     nested_resources = ["lings", "properties", "lings_properties", "examples", "categories", "memberships", "examples_lings_properties"]
     nested_resources.each do |resource|
+      skip_edit_and_update = (resource == "examples_lings_properties")
       describe resource do
         it "recognizes and generates #index" do
           { :get => "groups/1/#{resource}" }.should route_to(:controller => resource, :action => "index", :group_id => "1")
@@ -47,20 +48,22 @@ describe GroupsController do
           { :get => "groups/1/#{resource}/1" }.should route_to(:controller => resource, :action => "show", :id => "1", :group_id => "1")
         end
 
-        it "recognizes and generates #edit" do
-          { :get => "groups/1/#{resource}/1/edit" }.should route_to(:controller => resource, :action => "edit", :id => "1", :group_id => "1")
-        end
-
         it "recognizes and generates #create" do
           { :post => "groups/1/#{resource}" }.should route_to(:controller => resource, :action => "create", :group_id => "1")
         end
 
-        it "recognizes and generates #update" do
-          { :put => "groups/1/#{resource}/1" }.should route_to(:controller => resource, :action => "update", :id => "1", :group_id => "1")
-        end
-
         it "recognizes and generates #destroy" do
           { :delete => "groups/1/#{resource}/1" }.should route_to(:controller => resource, :action => "destroy", :id => "1", :group_id => "1")
+        end
+
+        unless skip_edit_and_update
+          it "recognizes and generates #edit" do
+            { :get => "groups/1/#{resource}/1/edit" }.should route_to(:controller => resource, :action => "edit", :id => "1", :group_id => "1")
+          end
+
+          it "recognizes and generates #update" do
+            { :put => "groups/1/#{resource}/1" }.should route_to(:controller => resource, :action => "update", :id => "1", :group_id => "1")
+          end
         end
       end
     end

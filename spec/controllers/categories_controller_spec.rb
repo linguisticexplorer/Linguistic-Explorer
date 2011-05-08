@@ -222,7 +222,7 @@ describe CategoriesController do
 
   describe "destroy" do
     def do_destroy_on_category(category)
-      post :destroy, :group_id => category.group.id, :id => category.id
+      delete :destroy, :group_id => category.group.id, :id => category.id
     end
 
     it "should authorize :destroy on the passed category" do
@@ -242,7 +242,7 @@ describe CategoriesController do
       @group.should_receive(:categories).and_return Category.where(:group => @group)
 
       Group.stub(:find).and_return @group
-      post :destroy, :group_id => @group.id, :id => @category.id
+      delete :destroy, :group_id => @group.id, :id => @category.id
     end
 
     it "calls destroy on the requested category" do

@@ -7,14 +7,12 @@
     <th><%= current_group.example_name %></th>
     <th><%= current_group.lings_property_name %></th>
     <th></th>
-    <th></th>
   </tr>
 
 <% @examples_lings_properties.each do |examples_lings_property| %>
   <tr>
     <td><%= link_to examples_lings_property.example.name, group_property_path(current_group, examples_lings_property.example) %><td>
     <td><%= link_to examples_lings_property.lings_property.property_value, [current_group, examples_lings_property.lings_property] %></td>
-    <td><%= link_to 'Edit', edit_group_examples_lings_property_path(current_group, examples_lings_property) %></td>
     <td><%= link_to 'Destroy', [current_group, examples_lings_property], :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>

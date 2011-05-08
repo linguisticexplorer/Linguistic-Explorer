@@ -19,6 +19,14 @@ describe ExamplesController do
   end
 
   describe "show" do
+    describe "assigns" do
+      it "@examples should match the passed id" do
+        @example = examples(:onceuponatime)
+        get :show, :id => @example.id, :group_id => @example.group.id
+        assigns(:example).should == @example
+      end
+    end
+
     it "@example should be found by id through current_group" do
       @example = examples(:onceuponatime)
       @group = @example.group
@@ -82,7 +90,7 @@ describe ExamplesController do
 
       Group.should_receive(:examples).and_return @group.examples
 
-      get :edit, :group_id => @group.id, :id => @example.id
+      get :edit, :id => @example.id, :group_id => @group.id
     end
 
     describe "assigns" do
@@ -220,7 +228,7 @@ describe ExamplesController do
 
   describe "destroy" do
     def do_destroy_on_example(example)
-      post :destroy, :group_id => example.group.id, :id => example.id
+      delete :destroy, :group_id => example.group.id, :id => example.id
     end
 
     it "should authorize :destroy on the passed example" do
@@ -240,7 +248,7 @@ describe ExamplesController do
       @group.should_receive(:examples).and_return Example.where(:group => @group)
 
       Group.stub(:find).and_return @group
-      post :destroy, :group_id => @group.id, :id => @example.id
+      delete :destroy, :group_id => @group.id, :id => @example.id
     end
 
     it "calls destroy on the requested example" do

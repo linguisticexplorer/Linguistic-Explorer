@@ -536,7 +536,7 @@ describe LingsController do
 
   describe "destroy" do
     def do_destroy_on_ling(ling)
-      post :destroy, :group_id => ling.group.id, :id => ling.id
+      delete :destroy, :group_id => ling.group.id, :id => ling.id
     end
 
     it "should authorize :destroy on the passed ling" do
@@ -555,7 +555,7 @@ describe LingsController do
       @group.should_receive(:lings).and_return Ling.where(:group => @group)
 
       Group.stub(:find).and_return @group
-      post :destroy, :group_id => @group.id, :id => @ling.id
+      delete :destroy, :group_id => @group.id, :id => @ling.id
     end
 
     it "calls destroy on the requested ling" do
