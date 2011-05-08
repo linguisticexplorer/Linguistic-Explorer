@@ -36,10 +36,7 @@ describe CategoriesController do
   describe "new" do
     it "should authorize :create on @category" do
       @group = Factory(:group)
-      @category = Category.new do |c|
-        c.group = @group
-        c.depth = 0
-      end
+      @category = Category.new
 
       @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
 
