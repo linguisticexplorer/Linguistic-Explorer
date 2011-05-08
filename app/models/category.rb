@@ -6,11 +6,13 @@ class Category < ActiveRecord::Base
   def self.csv_attributes
     CSV_ATTRIBUTES
   end
-  
+
   validates_presence_of :name, :depth
   validates_uniqueness_of :name, :scope => :group_id
   validates_numericality_of :depth
   validate :depth_for_group
+
+  attr_protected :depth
 
   has_many :properties, :dependent => :destroy
 
