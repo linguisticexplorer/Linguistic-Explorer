@@ -101,7 +101,7 @@ class LingsController < GroupDataController
       l.group = current_group
     end
 
-    authorize! :new, @ling
+    authorize! :create, @ling
 
     respond_to do |format|
       format.html # new.html.erb

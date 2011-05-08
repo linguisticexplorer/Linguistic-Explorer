@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe CategoriesController do
+  before do
+    @ability = Ability.new(nil)
+    @ability.stub(:can?).and_return true
+    @controller.stub(:current_ability).and_return(@ability)
+  end
+
   describe "index" do
     describe "assigns" do
       it "@categories should contain categories for the current group" do
@@ -28,6 +34,20 @@ describe CategoriesController do
   end
 
   describe "new" do
+    it "should authorize :new on @category" do
+      @group = Factory(:group)#groups(:inclusive)
+      @category = Category.new do |c|
+        c.group = @group
+        c.depth = 0
+      end
+
+      @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
+
+      Category.stub(:new).and_return(@category)
+      Group.stub(:find).and_return(@group)
+      get :new, :group_id => @group.id
+    end
+
     describe "assigns" do
       it "a new category to @category" do
         get :new, :group_id => groups(:inclusive).id

@@ -204,10 +204,10 @@ describe LingsController do
       get :new, :group_id => groups(:inclusive).id, :depth => depth
     end
 
-    it "should authorize :new on @ling" do
+    it "should authorize :create on @ling" do
       @ling = Ling.new
       @group = Factory(:group)
-      @ability.should_receive(:can?).ordered.with(:new, @ling).and_return(true)
+      @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
 
       Ling.stub(:new).and_return(@ling)
       Group.stub(:find).and_return(@group)
@@ -241,6 +241,12 @@ describe LingsController do
     end
 
     describe "with a depth parameter of 0" do
+      it "assigns a new ling to @ling, with depth the same as the param" do
+        do_new_with_depth(0)
+        assigns(:ling).should be_new_record
+        assigns(:ling).depth.should == 0
+      end
+
       it "should assign 0 to @depth" do
         do_new_with_depth(0)
         assigns(:depth).should == 0

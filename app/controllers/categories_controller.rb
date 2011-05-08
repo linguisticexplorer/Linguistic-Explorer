@@ -25,7 +25,13 @@ class CategoriesController < GroupDataController
   # GET /categories/new
   # GET /categories/new.xml
   def new
-    @category = Category.new
+    @depth = params[:depth].to_i
+    @category = Category.new do |c|
+      c.group = current_group
+      c.creator = current_user
+      c.depth = @depth
+    end
+    authorize! :create, @category
 
     respond_to do |format|
       format.html # new.html.erb
@@ -41,10 +47,11 @@ class CategoriesController < GroupDataController
   # POST /categories
   # POST /categories.xml
   def create
+    @depth = params[:category].delete(:depth).to_i
     @category = Category.new(params[:category]) do |category|
       category.group = current_group
       category.creator = current_user
-      category.depth = params[:category][:depth].to_i
+      category.depth = @depth
     end
 
     respond_to do |format|
