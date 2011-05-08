@@ -8,7 +8,8 @@ describe HomeController do
     get :index
     assigns(:groups).should include @group
   end
-  it "assigns accessible groups @groups" do
+
+  it "assigns public groups to @groups if not signed in" do
     @controller.stub!(:user_signed_in?).and_return(false)
     @group = groups(:inclusive)
     Group.should_receive(:public).and_return ( [ @group ] )

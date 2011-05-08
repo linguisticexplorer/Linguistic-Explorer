@@ -3,7 +3,7 @@ class CategoriesController < GroupDataController
   # GET /categories
   # GET /categories.xml
   def index
-    @categories = Category.all
+    @categories = current_group.categories
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class CategoriesController < GroupDataController
   # GET /categories/1
   # GET /categories/1.xml
   def show
-    @category = Category.find(params[:id])
+    @category = current_group.categories.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb

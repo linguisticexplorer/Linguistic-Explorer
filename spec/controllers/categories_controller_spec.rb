@@ -3,18 +3,26 @@ require 'spec_helper'
 describe CategoriesController do
   describe "index" do
     describe "assigns" do
-      it "@categories should contain every category" do
-        get :index, :group_id => groups(:inclusive).id
-        assigns(:categories).should include categories(:inclusive0)
+      it "@categories should contain categories for the current group" do
+        @group = groups(:inclusive)
+        Group.stub(:find).and_return(Group)
+        Group.should_receive(:categories).and_return @group.categories
+        get :index, :group_id => @group.id
       end
     end
   end
 
   describe "show" do
     describe "assigns" do
-      it "@category should match the passed id" do
-        get :show, :id => categories(:inclusive1), :group_id => groups(:inclusive).id
-        assigns(:category).should == categories(:inclusive1)
+      it "@category should be found by id through current_group" do
+        @group = groups(:inclusive)
+        @category = categories(:inclusive1)
+        @category.group.should == @group
+        Group.stub(:find).and_return(Group)
+        Group.should_receive(:categories).and_return @group.categories
+
+        get :show, :id => @category.id, :group_id => @group.id
+        assigns(:category).should == @category
       end
     end
   end

@@ -29,8 +29,7 @@ class LingsController < GroupDataController
   # GET /lings/1
   # GET /lings/1.xml
   def show
-    @ling = Ling.find(params[:id])
-    authorize! :read, @ling
+    @ling = current_group.lings.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,15 +39,15 @@ class LingsController < GroupDataController
 
   # GET /lings/1/set_values
   def set_values
-    @ling = Ling.find(params[:id])
+    @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
-    @categories = Category.at_depth(@depth)
+    @categories = current_group.categories.at_depth(@depth)
     @preexisting_values = @ling.lings_properties
   end
 
   # POST /lings/1/submit_values
   def submit_values
-    @ling = Ling.find(params[:id])
+    @ling = current_group.lings.find(params[:id])
     stale_values = @ling.lings_properties
 
     collection_authorize! :manage, stale_values
@@ -56,11 +55,11 @@ class LingsController < GroupDataController
     fresh_values = []
     values = params.delete(:values) || []
     values.each do |prop_id, prop_values|
-      property = Property.find(prop_id)
+      property = current_group.properties.find(prop_id)
 
       new_text = prop_values.delete("_new")
       if !(new_text.blank?)
-        fresh = LingsProperty.find_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, new_text)
+        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, new_text)
         fresh ||= LingsProperty.new do |lp|
           lp.ling  = @ling
           lp.group = current_group
@@ -71,7 +70,7 @@ class LingsController < GroupDataController
       end
 
       prop_values.each do |value, flag|
-        fresh = LingsProperty.find_by_group_id_and_ling_id_and_property_id_and_value(current_group.id, @ling.id, property.id, value)
+        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, value)
         fresh ||= LingsProperty.new do |lp|
           lp.ling  = @ling
           lp.group = current_group
@@ -95,7 +94,7 @@ class LingsController < GroupDataController
   # GET /lings/new.xml
   def new
     @depth = params[:depth].to_i
-    @parents = (params[:depth] ? Ling.find_all_by_depth(@depth - 1) : [])
+    @parents = (@depth && @depth > 0 ? current_group.lings.at_depth(@depth - 1) : [])
 
     @ling = Ling.new do |l|
       l.depth = @depth
@@ -113,12 +112,12 @@ class LingsController < GroupDataController
 
   # GET /lings/1/edit
   def edit
-    @ling = Ling.find(params[:id])
+    @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
 
     authorize! :update, @ling
 
-    @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
+    @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
   end
 
   # POST /lings
@@ -149,7 +148,7 @@ class LingsController < GroupDataController
   # PUT /lings/1
   # PUT /lings/1.xml
   def update
-    @ling = Ling.find(params[:id])
+    @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
 
     authorize! :update, @ling
@@ -170,7 +169,7 @@ class LingsController < GroupDataController
   # DELETE /lings/1
   # DELETE /lings/1.xml
   def destroy
-    @ling = Ling.find(params[:id])
+    @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
     authorize! :destroy, @ling
 
