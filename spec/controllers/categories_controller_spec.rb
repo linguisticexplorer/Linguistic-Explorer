@@ -54,10 +54,41 @@ describe CategoriesController do
   end
 
   describe "edit" do
+    it "should authorize :update on @category" do
+      @category = categories(:inclusive0)
+      @group = @category.group
+
+      @ability.should_receive(:can?).ordered.with(:update, @category).and_return(true)
+
+      Category.stub(:find).and_return @category
+      Group.stub(:find).and_return Group
+      Group.stub(:categories).and_return @group.categories
+      get :edit, :id => @category.id, :group_id => @group.id
+    end
+
     describe "assigns" do
+      it "loads the requested category through current group" do
+        @category = categories(:inclusive0)
+        @group = @category.group
+
+        Group.stub(:find).and_return Group
+        Group.should_receive(:categories).and_return @group.categories
+
+        get :edit, :group_id => @group.id, :id => @category.id
+
+        assigns(:category).should == @category
+      end
+
+      it "the requested category's depth to @depth" do
+        @category = categories(:inclusive1)
+        get :edit, :id => @category.id, :group_id => groups(:inclusive).id
+        assigns(:depth).should == @category.depth
+      end
+
       it "the requested category to @category" do
-        get :edit, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-        assigns(:category).should == categories(:inclusive0)
+        @category = categories(:inclusive0)
+        get :edit, :id => @category.id, :group_id => groups(:inclusive).id
+        assigns(:category).should == @category
       end
     end
   end

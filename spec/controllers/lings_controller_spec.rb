@@ -11,7 +11,9 @@ describe LingsController do
     it "should find lings through the current group" do
       @group = groups(:inclusive)
       Group.stub(:find).and_return(Group)
+
       Group.should_receive(:lings).and_return @group.lings
+
       get :depth, :group_id => @group.id, :depth => 0
     end
 
@@ -41,6 +43,7 @@ describe LingsController do
       Group.stub(:find).and_return(Group)
       Group.should_receive(:depths).and_return @group.depths
       Group.should_receive(:lings).exactly(@group.depths.size).times.and_return @group.lings
+
       get :index, :group_id => @group.id
     end
 
@@ -65,10 +68,11 @@ describe LingsController do
       @group = groups(:inclusive)
       @ling = lings(:english)
       @ling.group.should == @group
+
       Group.stub(:find).and_return(Group)
       Group.should_receive(:lings).and_return @group.lings
-
       get :show, :id => @ling.id, :group_id => @group.id
+
       assigns(:ling).should == @ling
     end
   end
@@ -83,6 +87,7 @@ describe LingsController do
         @ling = lings(:level0)
         @group = groups(:inclusive)
         @ling.group.should == @group
+
         Group.stub(:find).and_return(Group)
         Group.stub(:categories).and_return @group.categories
         Group.should_receive(:lings).and_return @group.lings
@@ -104,6 +109,7 @@ describe LingsController do
         @category = categories(:inclusive0)
         @other_depth_category = categories(:inclusive1)
         @group = groups(:inclusive)
+
         Group.stub(:find).and_return(Group)
         Group.stub(:lings).and_return @group.lings
         Group.should_receive(:categories).and_return @group.categories
@@ -127,24 +133,26 @@ describe LingsController do
       @ling = lings(:level0)
       @group = groups(:inclusive)
       @ling.group.should == @group
+
       Group.stub(:find).and_return(Group)
       Group.should_receive(:lings).and_return @group.lings
       post :submit_values, :group_id => @group.id, :id => @ling.id
+
       assigns(:ling).should == lings(:level0)
     end
 
     it "should authorize :manage on preexisting LingsProperties" do
       @ling = lings(:level0)
       @group = @ling.group
-      Ling.stub(:find).and_return(@ling)
-      Group.stub(:find).and_return(@group)
-
       @preexisting_values = [ lings_properties(:level0) ]
       @preexisting_values.each do |lp|
         @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
       end
+
       @ling.stub(:lings_properties).and_return( @preexisting_values )
 
+      Ling.stub(:find).and_return(@ling)
+      Group.stub(:find).and_return(@group)
       post :submit_values, :group_id => @group.id, :id => @ling.id
     end
 
@@ -153,11 +161,11 @@ describe LingsController do
       @group = @ling.group
       @new_property = LingsProperty.new
       @new_property.should_receive(:save).and_return true
-      LingsProperty.stub(:find_by_ling_id_and_property_id_and_value).and_return nil
-      LingsProperty.stub(:new).and_return @new_property
 
       @ability.should_receive(:can?).ordered.with(:create, @new_property).and_return(true)
 
+      LingsProperty.stub(:find_by_ling_id_and_property_id_and_value).and_return nil
+      LingsProperty.stub(:new).and_return @new_property
       post :submit_values, :group_id => @group.id, :id => @ling.id, :values => { @ling.id.to_s => { "_new" => "foobar" }}
     end
 
@@ -167,7 +175,9 @@ describe LingsController do
       group = ling.group
       value = "neverbeforeseen999"
       LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should_not be_present
+
       post :submit_values, :group_id => group.id, :id => ling.id, :values => { ling.id.to_s => { "_new" => value } }
+
       LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should be_present
     end
 
@@ -177,7 +187,9 @@ describe LingsController do
       deleted_id = lp.id
       ling = lp.ling
       group = lp.group
+
       post :submit_values, :group_id => group.id, :id => ling.id, :values => {}
+
       LingsProperty.find_by_id(deleted_id).should be_nil
     end
 
@@ -187,7 +199,9 @@ describe LingsController do
       ling = lp.ling
       property = lp.property
       group = lp.group
+
       post :submit_values, :group_id => group.id, :id => ling.id, :values => {property.id.to_s => {lp.value => lp.value, :_new => ""}}
+
       lp.reload
       lp.should be_present
     end
@@ -207,6 +221,7 @@ describe LingsController do
     it "should authorize :create on @ling" do
       @ling = Ling.new
       @group = Factory(:group)
+
       @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
 
       Ling.stub(:new).and_return(@ling)
@@ -295,9 +310,9 @@ describe LingsController do
         @ling.depth.should == 1
         @group = @ling.group
         @group.should_receive(:lings).twice.and_return Ling
+
         Ling.should_receive(:at_depth).and_return Ling.where(:depth => 0)
         Group.stub(:find).and_return @group
-
         get :edit, :group_id => @group.id, :id => @ling.id
 
         parent_depths = assigns(:parents).collect(&:depth).uniq
@@ -307,7 +322,9 @@ describe LingsController do
       it "an empty array to @parents if depth is <= 0" do
         @ling = lings(:level0)
         @ling.depth.should == 0
+
         do_edit_on_ling(@ling)
+
         assigns(:parents).should == []
       end
     end
@@ -315,6 +332,7 @@ describe LingsController do
     it "should authorize :update on the passed ling" do
       @group = Factory(:group)
       @ling = Factory(:ling, :group => @group)
+
       @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
 
       Ling.stub(:new).and_return(@ling)
@@ -327,6 +345,7 @@ describe LingsController do
     it "should authorize :create on the passed ling params" do
       @group = Factory(:group)
       @ling = Factory(:ling, :group => @group)
+
       @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
 
       Ling.stub(:new).and_return(@ling)
@@ -363,8 +382,10 @@ describe LingsController do
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
+
         sign_in user
         do_valid_create
+
         assigns(:ling).creator.should == user
       end
     end
@@ -411,6 +432,7 @@ describe LingsController do
     it "should authorize :update on the passed ling" do
       @group = Factory(:group)
       @ling = Factory(:ling, :group => @group)
+
       @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
 
       Ling.stub(:find).and_return(@ling)
@@ -431,7 +453,9 @@ describe LingsController do
     it "assigns the requested ling's depth to @depth" do
       @ling = lings(:level1)
       @group = groups(:inclusive)
+
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
+
       assigns(:depth).should == 1
     end
 
@@ -441,7 +465,9 @@ describe LingsController do
         @group = @ling.group
         new_name = 'eengleesh'
         @ling.name.should_not == new_name
+
         put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => new_name}
+
         @ling.reload.name.should == new_name
       end
 
@@ -449,6 +475,7 @@ describe LingsController do
         first_value = "foo"
         second_value = "bar"
         ling = lings(:level0)
+
         #test creation of a new value for key 'description'
         put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
         ling.reload.stored_value(:description).should == first_value
@@ -473,6 +500,7 @@ describe LingsController do
         first_value = "foo"
         second_value = "bar"
         ling = lings(:level0)
+
         #test creation of a new value for key 'description'
         put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
         ling.reload.stored_value(:description).should == first_value
@@ -502,6 +530,7 @@ describe LingsController do
     it "should authorize :destroy on the passed ling" do
       @group = groups(:inclusive)
       @ling = Factory(:ling, :name => "thosewhoareabouttodie", :group => @group)
+
       @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
 
       Ling.stub(:find).and_return(@ling)
@@ -512,7 +541,9 @@ describe LingsController do
     it "loads the ling through current group" do
       @ling = lings(:english)
       @group = @ling.group
+
       @group.should_receive(:lings).and_return Ling.where(:group => @group)
+
       Group.stub(:find).and_return @group
       post :destroy, :group_id => @group.id, :id => @ling.id
     end
@@ -521,9 +552,11 @@ describe LingsController do
       @ling = lings(:english)
       @group = @ling.group
       @group.stub(:lings).and_return Ling
+
+      @ling.should_receive(:destroy).and_return(true)
+
       Ling.stub(:find).and_return @ling
       Group.stub(:find).and_return @group
-      @ling.should_receive(:destroy).and_return(true)
       do_destroy_on_ling(@ling)
     end
 

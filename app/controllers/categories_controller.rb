@@ -41,7 +41,9 @@ class CategoriesController < GroupDataController
 
   # GET /categories/1/edit
   def edit
-    @category = Category.find(params[:id])
+    @category = current_group.categories.find(params[:id])
+    @depth = @category.depth
+    authorize! :update, @category
   end
 
   # POST /categories
