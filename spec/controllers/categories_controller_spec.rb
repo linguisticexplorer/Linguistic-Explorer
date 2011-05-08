@@ -34,8 +34,8 @@ describe CategoriesController do
   end
 
   describe "new" do
-    it "should authorize :new on @category" do
-      @group = Factory(:group)#groups(:inclusive)
+    it "should authorize :create on @category" do
+      @group = Factory(:group)
       @category = Category.new do |c|
         c.group = @group
         c.depth = 0
