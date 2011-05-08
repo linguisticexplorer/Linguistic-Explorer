@@ -73,7 +73,6 @@ describe CategoriesController do
 
         Group.stub(:find).and_return Group
         Group.should_receive(:categories).and_return @group.categories
-
         get :edit, :group_id => @group.id, :id => @category.id
 
         assigns(:category).should == @category
@@ -94,6 +93,17 @@ describe CategoriesController do
   end
 
   describe "create" do
+    it "should authorize :create on the passed category params" do
+      @group = Factory(:group)
+      @category = Factory(:category, :group => @group)
+
+      @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
+
+      Category.stub(:new).and_return(@category)
+      Group.stub(:find).and_return(@group)
+      post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
+    end
+
     describe "with valid params" do
       it "assigns a newly created category to @category" do
         lambda {
@@ -118,6 +128,15 @@ describe CategoriesController do
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
         assigns(:category).creator.should == user
       end
+
+      it "should set the group on the new category to current group" do
+        @group = groups(:inclusive)
+
+        post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
+
+        assigns(:group).should == @group
+        assigns(:category).group.should == @group
+      end
     end
 
     describe "with invalid params" do
@@ -136,18 +155,50 @@ describe CategoriesController do
   end
 
   describe "update" do
+    it "should authorize :update on the passed category" do
+      @group = Factory(:group)
+      @category = Factory(:category, :group => @group)
+
+      @ability.should_receive(:can?).ordered.with(:update, @category).and_return(true)
+
+      Category.stub(:find).and_return(@category)
+      Group.stub(:find).and_return(@group)
+      put :update, :id => @category.id, :category => {'name' => 'ayb', :depth => "0"}, :group_id => @group.id
+    end
+
+    it "loads the requested category through current group" do
+      @category = categories(:inclusive0)
+      @group = @category.group
+      @cats = @group.categories
+      Group.stub(:find).and_return @group
+      @group.should_receive(:categories).and_return @cats
+
+      put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
+
+      assigns(:category).should == @category
+    end
+
+    it "assigns the requested category's depth to @depth" do
+      @category = categories(:inclusive1)
+      @group = groups(:inclusive)
+      @category.depth.should == 1
+
+      put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
+
+      assigns(:depth).should == 1
+    end
+
     describe "with valid params" do
       it "calls update with the passed params on the requested category" do
-        category = categories(:inclusive0)
-        category.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
-        Category.should_receive(:find).with(category.id).and_return(category)
+        @category = categories(:inclusive0)
+        @group = @category.group
+        @group.stub(:categories).and_return Category
+        Category.stub(:find).with(@category.id).and_return(@category)
+        Group.stub(:find).and_return @group
 
-        put :update, :id => category.id, :category => {'name' => 'ayb'}, :group_id => groups(:inclusive).id
-      end
+        @category.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
 
-      it "assigns the requested category as @category" do
-        put :update, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-        assigns(:category).should == categories(:inclusive0)
+        put :update, :id => @category.id, :category => {'name' => 'ayb'}, :group_id => @group.id
       end
 
       it "redirects to the category" do
@@ -173,11 +224,40 @@ describe CategoriesController do
   end
 
   describe "destroy" do
+    def do_destroy_on_category(category)
+      post :destroy, :group_id => category.group.id, :id => category.id
+    end
+
+    it "should authorize :destroy on the passed category" do
+      @group = groups(:inclusive)
+      @category = categories(:inclusive0)
+
+      @ability.should_receive(:can?).ordered.with(:destroy, @category).and_return(true)
+
+      Group.stub(:find).and_return(@group)
+      do_destroy_on_category(@category)
+    end
+
+    it "loads the category through current group" do
+      @category = categories(:inclusive0)
+      @group = @category.group
+
+      @group.should_receive(:categories).and_return Category.where(:group => @group)
+
+      Group.stub(:find).and_return @group
+      post :destroy, :group_id => @group.id, :id => @category.id
+    end
+
     it "calls destroy on the requested category" do
-      category = categories(:inclusive0)
-      category.should_receive(:destroy).and_return(true)
-      Category.should_receive(:find).with(category.id).and_return(category)
-      delete :destroy, :id => category.id, :group_id => groups(:inclusive).id
+      @category = categories(:inclusive0)
+      @group = @category.group
+      @group.stub(:categories).and_return Category
+
+      @category.should_receive(:destroy).and_return(true)
+
+      Category.stub(:find).and_return @category
+      Group.stub(:find).and_return @group
+      do_destroy_on_category(@category)
     end
 
     it "redirects to the categories list" do

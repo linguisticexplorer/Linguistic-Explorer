@@ -56,6 +56,8 @@ class CategoriesController < GroupDataController
       category.depth = @depth
     end
 
+    authorize! :create, @category
+
     respond_to do |format|
       if @category.save
         format.html { redirect_to(group_category_url(current_group, @category), :notice => (current_group.category_name + ' was successfully created.')) }
@@ -70,7 +72,10 @@ class CategoriesController < GroupDataController
   # PUT /categories/1
   # PUT /categories/1.xml
   def update
-    @category = Category.find(params[:id])
+    @category = current_group.categories.find(params[:id])
+    @depth = @category.depth
+
+    authorize! :update, @category
 
     respond_to do |format|
       if @category.update_attributes(params[:category])
@@ -86,7 +91,9 @@ class CategoriesController < GroupDataController
   # DELETE /categories/1
   # DELETE /categories/1.xml
   def destroy
-    @category = Category.find(params[:id])
+    @category = current_group.categories.find(params[:id])
+    authorize! :destroy, @category
+
     @category.destroy
 
     respond_to do |format|

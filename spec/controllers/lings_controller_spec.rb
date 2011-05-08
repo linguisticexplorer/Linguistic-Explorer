@@ -382,11 +382,20 @@ describe LingsController do
       it "should set creator to be the currently logged in user" do
         user = Factory(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
-
         sign_in user
+
         do_valid_create
 
         assigns(:ling).creator.should == user
+      end
+
+      it "should set the group on the new ling to current group" do
+        @group = groups(:inclusive)
+
+        post :create, :group_id => @group.id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}, :stored_values => {:description => "foo"}
+
+        assigns(:group).should == @group
+        assigns(:ling).group.should == @group
       end
     end
 
@@ -443,7 +452,9 @@ describe LingsController do
     it "loads the requested ling through current group" do
       @ling = lings(:english)
       @group = @ling.group
-      @group.should_receive(:lings).and_return @group.lings
+      @lings = @group.lings
+      Group.stub(:find).and_return @group
+      @group.should_receive(:lings).and_return @lings
 
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
 
@@ -453,6 +464,7 @@ describe LingsController do
     it "assigns the requested ling's depth to @depth" do
       @ling = lings(:level1)
       @group = groups(:inclusive)
+      @ling.depth.should == 1
 
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
 
@@ -533,8 +545,6 @@ describe LingsController do
 
       @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
 
-      Ling.stub(:find).and_return(@ling)
-      Group.stub(:find).and_return(@group)
       do_destroy_on_ling(@ling)
     end
 
