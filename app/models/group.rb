@@ -38,7 +38,7 @@ class Group < ActiveRecord::Base
   has_many :categories,                :dependent => :destroy
   has_many :memberships,               :dependent => :destroy
   has_many :members,                   :through => :memberships, :source => :member
-#  has_many :stored_values,             :dependent => :destroy
+  has_many :stored_values,             :dependent => :destroy
 
   scope :public,  where( :privacy => PUBLIC )
   scope :private, where( :privacy => PRIVATE )
@@ -78,4 +78,5 @@ class Group < ActiveRecord::Base
   def membership_for(user)
     memberships.where(:member_id => user.id).first
   end
+
 end

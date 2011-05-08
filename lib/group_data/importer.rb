@@ -31,6 +31,8 @@
 # id,name,email,access_level,password
 #
 
+require 'csv'
+
 module GroupData
   class Importer
 
