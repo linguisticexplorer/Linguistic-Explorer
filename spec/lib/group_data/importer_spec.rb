@@ -11,6 +11,7 @@ module GroupData
 
     describe "import!" do
       before(:each) do
+        pending("Tests fail on machines without a /users/ross directory")
         @importer = Importer.import(Rails.root.join("spec", "csv", "import.yml"))
         @current_group = Group.find_by_name(@group.name)
       end
