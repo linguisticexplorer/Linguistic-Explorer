@@ -30,11 +30,10 @@ describe ExamplesLingsPropertiesController do
       @elp = examples_lings_properties(:inclusive)
       @group = @elp.group
       Group.stub(:find).and_return(Group)
+
       Group.should_receive(:examples_lings_properties).and_return @group.examples_lings_properties
 
       get :show, :id => @elp.id, :group_id => @group.id
-
-      assigns(:examples_lings_property).should == @elp
     end
   end
 
@@ -192,14 +191,14 @@ describe ExamplesLingsPropertiesController do
       do_destroy_on_examples_lings_property(@elp)
     end
 
-    it "loads the example through current group" do
+    it "loads the examples_lings_property through current group" do
       @group.should_receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group => @group)
       Group.stub(:find).and_return @group
 
       do_destroy_on_examples_lings_property(@elp)
     end
 
-    it "calls destroy on the requested example" do
+    it "calls destroy on the requested examples_lings_property" do
       @group.stub(:examples_lings_properties).and_return ExamplesLingsProperty
 
       @elp.should_receive(:destroy).and_return(true)

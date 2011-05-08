@@ -1,9 +1,24 @@
 require 'spec_helper'
 
 describe LingsPropertiesController do
+  before do
+    @ability = Ability.new(nil)
+    @ability.stub(:can?).and_return true
+    @controller.stub(:current_ability).and_return(@ability)
+  end
+
   describe "index" do
+    it "@lings_properties should lings_properties through the current group" do
+      @group = groups(:inclusive)
+      Group.stub(:find).and_return(Group)
+
+      Group.should_receive(:lings_properties).and_return @group.lings_properties
+
+      get :index, :group_id => @group.id
+    end
+
     describe "assigns" do
-      it "@lings_properties should contain every lings_property" do
+      it "@lings_properties should contain lings_properties for the group" do
         get :index, :group_id => groups(:inclusive).id
         assigns(:lings_properties).should include lings_properties(:smelly)
       end
@@ -17,168 +32,56 @@ describe LingsPropertiesController do
         assigns(:lings_property).should == lings_properties(:smelly)
       end
     end
-  end
 
-  describe "new" do
-    describe "assigns" do
-      def do_new
-        get :new, :group_id => groups(:inclusive).id
-      end
+    it "@lings_property should be found by id through current_group" do
+      @lp = lings_properties(:level0)
+      @group = @lp.group
+      Group.stub(:find).and_return(Group)
 
-      it "a new lings_property to @lings_property" do
-        do_new
-        assigns(:lings_property).should be_new_record
-      end
+      Group.should_receive(:lings_properties).and_return @group.lings_properties
 
-      it "available lings to @lings" do
-        do_new
-        assigns(:lings).size.should == Ling.all.size
-      end
-
-      it "available properties to @properties" do
-        do_new
-        assigns(:properties).size.should == Property.all.size
-      end
+      get :show, :id => @lp.id, :group_id => @group.id
     end
-  end
-
-  describe "edit" do
-    describe "assigns" do
-      it "the requested lings_property to @lings_property" do
-        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        assigns(:lings_property).should == lings_properties(:smelly)
-      end
-
-      it "available lings to @lings" do
-        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        assigns(:lings).size.should == Ling.all.size
-      end
-
-      it "available properties to @properties" do
-        get :edit, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        assigns(:properties).size.should == Property.all.size
-      end
-    end
-  end
-
-  describe "create" do
-    describe "with valid params" do
-      it "assigns a newly created lings_property to @lings_property" do
-        lambda {
-          ling = lings(:level0)
-          property = properties(:level0)
-          post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id.to_i, 'property_id' => property.id.to_i}, :group_id => groups(:inclusive).id
-          assigns(:lings_property).should_not be_new_record
-          assigns(:lings_property).should be_valid
-          assigns(:lings_property).value.should == 'FROMSPACE'
-          assigns(:lings_property).ling.should == ling
-          assigns(:lings_property).property.should == property
-        }.should change(LingsProperty, :count).by(1)
-      end
-
-      it "redirects to the created property" do
-        ling = lings(:level0)
-        property = properties(:level0)
-        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
-        response.should redirect_to(group_lings_property_url(assigns(:group), assigns(:lings_property)))
-      end
-
-      it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
-        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
-        sign_in user
-        ling = lings(:level0)
-        property = properties(:level0)
-        post :create, :lings_property => {'value' => 'FROMSPACE', 'ling_id' => ling.id, 'property_id' => property.id}, :group_id => groups(:inclusive).id
-        assigns(:lings_property).creator.should == user
-      end
-    end
-
-    describe "with invalid params" do
-      it "does not save a new property" do
-        lambda {
-          post :create, :lings_property => {'value' => ''}, :group_id => groups(:inclusive).id
-          assigns(:lings_property).should_not be_valid
-        }.should change(LingsProperty, :count).by(0)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
-        response.should be_success
-        response.should render_template("new")
-      end
-
-      it "assigns available lings to @lings" do
-        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
-        assigns(:lings).size.should == Ling.all.size
-      end
-
-      it "available properties to @properties" do
-        post :create, :lings_property => {}, :group_id => groups(:inclusive).id
-        assigns(:properties).size.should == Property.all.size
-      end
-    end
-  end
-
-  describe "update" do
-    describe "with valid params" do
-      it "calls update with the passed params on the requested property" do
-        lings_property = lings_properties(:smelly)
-        lings_property.should_receive(:update_attributes).with({'value' => 'no'}).and_return(true)
-        LingsProperty.should_receive(:find).with(lings_property.id).and_return(lings_property)
-
-        put :update, :id => lings_property.id, :lings_property => {'value' => 'no'}, :group_id => groups(:inclusive).id
-      end
-
-      it "assigns the requested lings_property as @lings_property" do
-        put :update, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        assigns(:lings_property).should == lings_properties(:smelly)
-      end
-
-      it "redirects to the property" do
-        put :update, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        response.should redirect_to(group_lings_property_url(assigns(:group), lings_properties(:smelly)))
-      end
-    end
-
-    describe "with invalid params" do
-      before do
-        put :update, :id => lings_properties(:smelly), :lings_property => {'value' => ''}, :group_id => groups(:inclusive).id
-      end
-
-      describe "assigns" do
-        it "the lings_property as @lings_property" do
-          assigns(:lings_property).should == lings_properties(:smelly)
-        end
-
-        it "available lings to @lings" do
-          assigns(:lings).size.should == Ling.all.size
-        end
-
-        it "available properties to @properties" do
-          assigns(:properties).size.should == Property.all.size
-        end
-      end
-
-      it "re-renders the 'edit' template" do
-        response.should render_template("edit")
-      end
-    end
-
   end
 
   describe "destroy" do
-    it "calls destroy on the requested lings_property" do
-      lings_property = lings_properties(:smelly)
-      lings_property.should_receive(:destroy).and_return(true)
-      LingsProperty.should_receive(:find).with(lings_property.id).and_return(lings_property)
+    def do_destroy_on_lings_property(lp)
+      delete :destroy, :group_id => lp.group.id, :id => lp.id
+    end
 
-      delete :destroy, :id => lings_property.id, :group_id => groups(:inclusive).id
+    before do
+      @lp = lings_properties(:inclusive)
+      @group = @lp.group
+    end
+
+    it "should authorize :destroy on the passed lings_property" do
+      @ability.should_receive(:can?).ordered.with(:destroy, @lp).and_return(true)
+      Group.stub(:find).and_return(@group)
+
+      do_destroy_on_lings_property(@lp)
+    end
+
+    it "loads the lings_property through current group" do
+      @group.should_receive(:lings_properties).and_return LingsProperty.where(:group => @group)
+      Group.stub(:find).and_return @group
+
+      do_destroy_on_lings_property(@lp)
+    end
+
+    it "calls destroy on the requested lings_property" do
+      @group.stub(:lings_properties).and_return LingsProperty
+
+      @lp.should_receive(:destroy).and_return(true)
+
+      LingsProperty.stub(:find).and_return @lp
+      Group.stub(:find).and_return @group
+      do_destroy_on_lings_property(@lp)
     end
 
     it "redirects to the lings_properties list" do
-      delete :destroy, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-      response.should redirect_to(group_lings_properties_url(assigns(:group)))
+      @group = groups(:inclusive)
+      delete :destroy, :id => lings_properties(:inclusive), :group_id => @group.id
+      response.should redirect_to(group_lings_properties_url(@group))
     end
   end
 end
