@@ -35,8 +35,8 @@ module GroupData
   class Importer
 
     class << self
-      def import(path)
-        importer = new(path)
+      def import(config)
+        importer = new(config)
         importer.import!
         importer
       end
@@ -56,9 +56,8 @@ module GroupData
     lazy_init_cache :groups, :user_ids, :ling_ids, :category_ids, :property_ids, :example_ids, :lings_property_ids
 
     # accepts path to yaml file containing paths to csvs
-    def initialize(path)
-      @path = path
-      @config = YAML.load_file(@path)
+    def initialize(config)
+      @config = config
       @config.symbolize_keys!
     end
 

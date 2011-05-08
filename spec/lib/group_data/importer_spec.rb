@@ -11,8 +11,8 @@ module GroupData
 
     describe "import!" do
       before(:each) do
-        pending("Tests fail on machines without a /users/ross directory")
-        @importer = Importer.import(Rails.root.join("spec", "csv", "import.yml"))
+        @config   = YAML.load_file(Rails.root.join("spec", "csv", "import.yml"))
+        @importer = Importer.import(@config)
         @current_group = Group.find_by_name(@group.name)
       end
 
@@ -25,7 +25,7 @@ module GroupData
       end
 
       it "should parse example fields" do
-
+        @current_group.example_storable_keys.should == ["text", "words", "gloss"]
       end
 
       it "should cache groups" do
