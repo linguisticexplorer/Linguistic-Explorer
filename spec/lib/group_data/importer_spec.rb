@@ -11,6 +11,22 @@ module GroupData
 
     describe "import!" do
       before(:each) do
+        config = {}.tap do |paths|
+          [:user,
+          :category,
+          :example,
+          :examples_lings_property,
+          :group,
+          :ling,
+          :lings_property,
+          :membership,
+          :property,
+          :stored_value].each do |model|
+            paths[model] = Rails.root.join("spec", "csv", "#{model.to_s.camelize}.csv").to_s
+          end
+        end
+        File.open(Rails.root.join("spec", "csv", "import.yml"), "wb") { |f| f.write config.to_yaml }
+
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "import.yml"))
         @importer = Importer.import(@config)
         @current_group = Group.find_by_name(@group.name)

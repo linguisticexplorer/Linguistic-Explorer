@@ -55,7 +55,7 @@ Error: No configuration file specified.
             upload local_yml[path_key], remote_path
           end
 
-          File.open("import.yml", "wb+") { |f| f.write remote_yml }
+          File.open("import.yml", "wb+") { |f| f.write remote_yml.to_yml }
           upload "import.yml", remote_config
         ensure
           File.unlink("import.yml")
