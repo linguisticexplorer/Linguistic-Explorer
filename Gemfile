@@ -34,6 +34,8 @@ gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_exi
 
 gem 'cancan', "1.6.4"
 
+gem 'newrelic_rpm'
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
