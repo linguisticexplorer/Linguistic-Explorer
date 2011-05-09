@@ -36,7 +36,7 @@ class SearchComparison
   end
 
   def searches
-    @searches ||= Search.where(:creator => user, :group => group)
+    @searches ||= Search.where(:creator => creator, :group => group)
   end
 
   def enough_to_compare?
