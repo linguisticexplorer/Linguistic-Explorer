@@ -15,12 +15,18 @@
   <tr>
     <td><%= link_to property.name, [current_group, property] %></td>
     <td><%= link_to property.category.name, group_category_path(current_group, property.category) %></td>
-    <td><%= link_to 'Edit', edit_group_property_path(current_group, property) %></td>
-    <td><%= link_to 'Destroy', [current_group, property], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><% if can? :edit, property %>
+      <%= link_to 'Edit', edit_group_property_path(current_group, property) %>
+    <% end %></td>
+    <td><% if can? :destroy, property %>
+      <%= link_to 'Destroy', [current_group, property], :confirm => 'Are you sure?', :method => :delete %>
+    <% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to "New #{current_group.property_name}", new_group_property_path(current_group) %>
+<% if can? :create, Property.new{|p| p.group = current_group} %>
+  <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group) %>
+<% end %>

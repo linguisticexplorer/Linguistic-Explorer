@@ -10,6 +10,7 @@
   <%= @membership.creator ? @membership.creator.name : "Unknown user" %> <br />
 </p>
 
-
-<%= link_to 'Edit', edit_group_membership_path(current_group, @membership) %> |
+<% if can? :edit, @membership %>
+  <%= link_to 'Edit', edit_group_membership_path(current_group, @membership) %> |
+<% end %>
 <%= link_to 'Back', group_memberships_path(current_group) %>

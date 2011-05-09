@@ -13,11 +13,15 @@
   <tr>
     <td><%= link_to examples_lings_property.example.name, group_property_path(current_group, examples_lings_property.example) %><td>
     <td><%= link_to examples_lings_property.lings_property.property_value, [current_group, examples_lings_property.lings_property] %></td>
-    <td><%= link_to 'Destroy', [current_group, examples_lings_property], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><% if can? :destroy, examples_lings_property %>
+      <%= link_to 'Destroy', [current_group, examples_lings_property], :confirm => 'Are you sure?', :method => :delete %>
+    <% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to "New #{current_group.examples_lings_property_name}", new_group_examples_lings_property_path(current_group) %>
+<% if can? :create, ExamplesLingsProperty.new{|elp| elp.group = current_group} %>
+  <%= link_to "New #{current_group.examples_lings_property_name}", new_group_examples_lings_property_path(current_group) %>
+<% end %>

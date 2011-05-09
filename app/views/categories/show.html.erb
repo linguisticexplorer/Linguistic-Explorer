@@ -11,6 +11,7 @@
   <%= @category.creator ? @category.creator.name : "Unknown user" %> <br />
 </p>
 
-
-<%= link_to 'Edit', edit_group_category_path(current_group, @category) %> |
+<% if can? :edit, @category%>
+  <%= link_to 'Edit', edit_group_category_path(current_group, @category) %> |
+<% end %>
 <%= link_to 'Back', group_categories_path(current_group) %>

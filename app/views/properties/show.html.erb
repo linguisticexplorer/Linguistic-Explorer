@@ -11,6 +11,7 @@
   <%= @property.creator ? @property.creator.name : "Unknown user" %> <br />
 </p>
 
-
-<%= link_to 'Edit', edit_group_property_path(current_group, @property) %> |
+<% if can? :edit, @property %>
+  <%= link_to 'Edit', edit_group_property_path(current_group, @property) %> |
+<% end %>
 <%= link_to 'Back', group_properties_path(current_group) %>

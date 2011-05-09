@@ -40,6 +40,10 @@
   <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
 </p>
 
-<%= link_to "Mass assign", set_values_group_ling_path(current_group, @ling) %> |
-<%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+<% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+  <%= link_to "Mass assign", set_values_group_ling_path(current_group, @ling) %> |
+<% end %>
+<% if can? :edit, @ling %>
+  <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+<% end %>
 <%= link_to 'Back', group_lings_path(current_group) %>

@@ -21,10 +21,19 @@
       <% current_group.ling_storable_keys.each do |key| %>
         <td><%= ling.stored_value(key) %></td>
       <% end %>
-      <td><%= link_to 'Mass assign', set_values_group_ling_path(current_group, ling) %></td>
-      <td><%= link_to 'Edit', edit_group_ling_path(current_group, ling) %></td>
-      <td><%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %></td>
+      <td><% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+        <%= link_to 'Mass assign', set_values_group_ling_path(current_group, ling) %>
+      <% end %></td>
+      <td><% if can? :edit, ling %>
+        <%= link_to 'Edit', edit_group_ling_path(current_group, ling) %>
+      <% end %></td>
+      <td><% if can? :destroy, ling %>
+        <%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %>
+      <% end %></td>
     </tr>
   <% end %>
 </table>
-<%= link_to "New #{current_group.ling_name_for_depth(depth)}", new_group_ling_path(current_group, :depth => depth) %>
+
+<% if can? :create, Ling.new{|l| l.group = current_group} %>
+  <%= link_to "New #{current_group.ling_name_for_depth(depth)}", new_group_ling_path(current_group, :depth => depth) %>
+<% end %>

@@ -22,12 +22,18 @@
     <% current_group.example_storable_keys.each do |key| %>
       <td><%= example.stored_value(key) %></td>
     <% end %>
-    <td><%= link_to 'Edit', edit_group_example_path(current_group, example) %></td>
-    <td><%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><% if can? :edit, example %>
+      <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
+    <% end %></td>
+    <td><% if can? :destroy, example %>
+      <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
+    <% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+<% if can? :create, Example.new{|e| e.group = current_group } %>
+  <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+<% end %>

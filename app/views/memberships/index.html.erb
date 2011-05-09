@@ -14,12 +14,18 @@
   <tr>
     <td><%= membership.member.name %></td>
     <td><%= membership.level %></td>
-    <td><%= link_to 'Edit', edit_group_membership_path(current_group, membership) %></td>
-    <td><%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %></td>
+    <td><% if can? :edit, membership %>
+      <%= link_to 'Edit', edit_group_membership_path(current_group, membership) %>
+    <% end %></td>
+  <td><% if can? :destroy, membership %>
+    <%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %>
+  <% end %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to "New Membership", new_group_membership_path(current_group) %>
+<% if can? :create, Membership.new{|m| m.group = current_group} %>
+  <%= link_to "New Membership", new_group_membership_path(current_group) %>
+<% end %>

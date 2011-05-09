@@ -18,6 +18,7 @@
   <%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
 </p>
 
-
-<%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |
+<% if can? :edit, @example%>
+  <%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |
+<% end %>
 <%= link_to 'Back', group_examples_path(current_group) %>
