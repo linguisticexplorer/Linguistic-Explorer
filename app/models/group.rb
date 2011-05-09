@@ -20,6 +20,8 @@ class Group < ActiveRecord::Base
   DEFAULT_EXAMPLE_KEYS = ["text"]
   DEFAULT_LING_KEYS = ["description"]
 
+  INFO_ATTRIBUTES = %w[privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ling_fields]
+
   CSV_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
   def self.csv_attributes
     CSV_ATTRIBUTES
@@ -78,6 +80,14 @@ class Group < ActiveRecord::Base
 
   def membership_for(user)
     memberships.where(:member_id => user.id).first
+  end
+
+  def description
+    # TODO - add to group for display on groups#show
+  end
+
+  def info_attribute_names
+    INFO_ATTRIBUTES
   end
 
 end

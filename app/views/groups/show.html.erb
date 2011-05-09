@@ -1,16 +1,30 @@
+<% add_body_classes "map" %>
 <% page_heading "Group" %>
 
-<p>
-    <b>Name:</b> <br />
-    <%= @group.name %> <br />
-    <b>Privacy:</b> <br />
-    <%= @group.privacy %> <br />
-    <b>Depth Maximum:</b> <br />
-    <%= @group.depth_maximum %> <br />
-</p>
+<div id="inner">
+  <div id="title">
+    <h1><%= @group.name %></h1>
+    <h2>
+      TerraLing
+    </h2>
+  </div>
+  <div id="intro">
+    <%- if @group.description.present? -%>
+      <p><%= @group.description %></p>
+    <% end %>
+    <p>
+      <%- @group.info_attribute_names.each do |attr_name| -%>
+        <span class="strong"><%= attr_name.titleize %>:</span> <%= @group.send(attr_name) %> <br />
+      <%- end -%>
+    </p>
+    <p>
+      <% if can? :update, @group %>
+        <%= link_to 'Edit', edit_group_path(@group) %> |
+      <% end %>
+      <%= link_to 'Groups', groups_path %>
+    </p>
+  </div>
+</div>
 
 
-<% if can? :update, @group %>
-  <%= link_to 'Edit', edit_group_path(@group) %> |
-<% end %>
-<%= link_to 'Groups', groups_path %>
+
