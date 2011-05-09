@@ -21,7 +21,8 @@
       <% if can? :update, @group %>
         <%= link_to 'Edit', edit_group_path(@group) %> |
       <% end %>
-      <%= link_to 'Groups', groups_path %>
+      <%= link_to 'Search this group', [:new, current_group, :search] %> |
+      <%= link_to 'All groups', groups_path %>
     </p>
   </div>
 </div>
