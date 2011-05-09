@@ -1,0 +1,11 @@
+--- 
+user: /path/to/csv/User.csv
+category: /path/to/csv/Category.csv
+example: /path/to/csv/Example.csv
+examples_lings_property: /path/to/csv/ExamplesLingsProperty.csv
+group: /path/to/csv/Group.csv
+ling: /path/to/csv/Ling.csv
+lings_property: /path/to/csv/LingsProperty.csv
+membership: /path/to/csv/Membership.csv
+property: /path/to/csv/Property.csv
+stored_value: /path/to/csv/StoredValue.csv

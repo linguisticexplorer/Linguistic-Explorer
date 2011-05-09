@@ -18,7 +18,7 @@ module GroupData
         download remote_file, local_file
       end
 
-      usage = "Usage: cap group_data:upload -s conf=/path/to/config.yml"
+      usage = "Usage: cap group_data:upload\n\ncap group_data:upload -s conf=/path/to/config.yml"
       desc <<-DESC
         Upload csv files into production database from specified yaml file.
 
@@ -33,7 +33,8 @@ module GroupData
         require 'yaml'
 
         local_yml = begin
-          YAML.load_file("/Users/ross/dev/linguistic-explorer/spec/csv/import.yml")
+          local_config = defined?(conf) ? conf : "config/import.yml"
+          YAML.load_file(local_config)
         rescue
           puts <<-MSG
 Error: No configuration file specified.
@@ -42,10 +43,11 @@ Error: No configuration file specified.
           MSG
         end
 
-        remote_dir    = "/var/tmp/#{Time.now.to_i}"
-        remote_config = "#{remote_dir}/config.yml"
 
-        run "mkdir #{remote_dir}"
+        # Translate local config into remote config
+        remote_dir    = "/var/tmp/#{Time.now.to_i}"
+        config_name   = "config.yml"
+        remote_config = "#{remote_dir}/#{config_name}"
 
         remote_yml = {}.tap do |yml|
           local_yml.each do |path_key, path|
@@ -56,18 +58,26 @@ Error: No configuration file specified.
         puts remote_yml
         puts local_yml
 
+        # Upload local config and csvs to remote server
         begin
+          run "mkdir #{remote_dir}"
           remote_yml.each do |path_key, remote_path|
             upload local_yml[path_key], remote_path
           end
 
-          File.open("import.yml", "wb+") { |f| f.write remote_yml.to_yml }
-          upload "import.yml", remote_config
+          File.open(config_name, "wb+") { |f| f.write remote_yml.to_yaml }
+          upload config_name, remote_config
         ensure
-          File.unlink("import.yml")
+          File.unlink config_name
         end
 
-        run("cd #{deploy_to}/current && /usr/bin/env rake group_data:import RAILS_ENV=production CONFIG=#{remote_config}")
+        cmd = ["cd #{deploy_to}/current"]
+        cmd << "/usr/bin/env rake group_data:import RAILS_ENV=production CONFIG=#{remote_config}"
+        cmd = cmd.join(' && ')
+        
+        
+        run cmd
+        puts "Importing data..."
       end
     end
   end

@@ -1,5 +1,4 @@
 $: << File.join(File.dirname(__FILE__), "..", "lib")
-require "capistrano_database_yml"
 
 # require profile scripts
 default_run_options[:pty]   = true
@@ -40,4 +39,8 @@ namespace :deploy do
   end
 end
 
+# Import and download tasks
 require 'group_data/capistrano'
+
+# Setup production database.yml
+require "capistrano_database_yml"

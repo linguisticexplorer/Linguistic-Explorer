@@ -11,3 +11,4 @@ config/database.yml
 .rvmrc
 spec/csv/*.csv
 spec/csv/*.yml
+config/import.yml

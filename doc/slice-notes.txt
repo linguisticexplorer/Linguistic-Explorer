@@ -1,8 +1,8 @@
 passenger start -a localhost -p 3001 -d
 
 =============== Phusion Passenger Standalone web server started ===============
-PID file: /Users/ross/dev/linguistic-explorer/tmp/pids/passenger.3001.pid
-Log file: /Users/ross/dev/linguistic-explorer/log/passenger.3001.log
+PID file: /Users/<username>/dev/linguistic-explorer/tmp/pids/passenger.3001.pid
+Log file: /Users/<username>/dev/linguistic-explorer/log/passenger.3001.log
 Environment: development
 Accessible via: http://localhost:3001/
 

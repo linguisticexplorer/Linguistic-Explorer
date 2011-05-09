@@ -1,11 +1,11 @@
 --- 
-user: /Users/ross/dev/linguistic-explorer/spec/csv/User.csv
-category: /Users/ross/dev/linguistic-explorer/spec/csv/Category.csv
-example: /Users/ross/dev/linguistic-explorer/spec/csv/Example.csv
-examples_lings_property: /Users/ross/dev/linguistic-explorer/spec/csv/ExamplesLingsProperty.csv
-group: /Users/ross/dev/linguistic-explorer/spec/csv/Group.csv
-ling: /Users/ross/dev/linguistic-explorer/spec/csv/Ling.csv
-lings_property: /Users/ross/dev/linguistic-explorer/spec/csv/LingsProperty.csv
-membership: /Users/ross/dev/linguistic-explorer/spec/csv/Membership.csv
-property: /Users/ross/dev/linguistic-explorer/spec/csv/Property.csv
-stored_value: /Users/ross/dev/linguistic-explorer/spec/csv/StoredValue.csv
+user: /Users/<username>/dev/linguistic-explorer/spec/csv/User.csv
+category: /Users/<username>/dev/linguistic-explorer/spec/csv/Category.csv
+example: /Users/<username>/dev/linguistic-explorer/spec/csv/Example.csv
+examples_lings_property: /Users/<username>/dev/linguistic-explorer/spec/csv/ExamplesLingsProperty.csv
+group: /Users/<username>/dev/linguistic-explorer/spec/csv/Group.csv
+ling: /Users/<username>/dev/linguistic-explorer/spec/csv/Ling.csv
+lings_property: /Users/<username>/dev/linguistic-explorer/spec/csv/LingsProperty.csv
+membership: /Users/<username>/dev/linguistic-explorer/spec/csv/Membership.csv
+property: /Users/<username>/dev/linguistic-explorer/spec/csv/Property.csv
+stored_value: /Users/<username>/dev/linguistic-explorer/spec/csv/StoredValue.csv
