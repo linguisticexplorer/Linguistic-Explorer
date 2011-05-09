@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110507050036) do
+ActiveRecord::Schema.define(:version => 20110509012610) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -33,6 +33,9 @@ ActiveRecord::Schema.define(:version => 20110507050036) do
     t.integer  "creator_id"
   end
 
+  add_index "examples", ["group_id"], :name => "index_examples_on_group_id"
+  add_index "examples", ["ling_id"], :name => "index_examples_on_ling_id"
+
   create_table "examples_lings_properties", :force => true do |t|
     t.integer  "example_id"
     t.integer  "lings_property_id"
@@ -41,6 +44,8 @@ ActiveRecord::Schema.define(:version => 20110507050036) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "examples_lings_properties", ["group_id"], :name => "index_examples_lings_properties_on_group_id"
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -95,6 +100,8 @@ ActiveRecord::Schema.define(:version => 20110507050036) do
     t.integer  "creator_id"
   end
 
+  add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
+
   create_table "properties", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -128,6 +135,8 @@ ActiveRecord::Schema.define(:version => 20110507050036) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "stored_values", ["group_id"], :name => "index_stored_values_on_group_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
