@@ -39,6 +39,7 @@ class Group < ActiveRecord::Base
   has_many :memberships,               :dependent => :destroy
   has_many :members,                   :through => :memberships, :source => :member
   has_many :stored_values,             :dependent => :destroy
+  has_many :searches,                  :dependent => :destroy
 
   scope :public,  where( :privacy => PUBLIC )
   scope :private, where( :privacy => PRIVATE )

@@ -19,6 +19,7 @@ class User < ActiveRecord::Base
   validates_presence_of :name, :email, :access_level
 
   has_many :memberships, :foreign_key => :member_id, :dependent => :destroy
+  has_many :searches, :foreign_key=> :creator_id, :dependent => :destroy
   has_many :groups, :through => :memberships
 
   # Setup accessible (or protected) attributes for your model

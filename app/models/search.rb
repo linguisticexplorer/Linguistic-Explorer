@@ -20,7 +20,7 @@ class Search < ActiveRecord::Base
   scope :by, lambda { |creator| where(:creator => creator) }
 
   attr_accessor :parent_ids, :child_ids
-  
+
   before_save :ensure_result_groups!
 
   class << self
@@ -32,7 +32,7 @@ class Search < ActiveRecord::Base
   def is_manageable_by?(user)
     user.id.present? && user == creator && Ability.new(user).can?(:read, group)
   end
-  
+
   private
 
   def creator_not_over_search_limit

@@ -5,7 +5,7 @@ describe Group do
     it_should_validate_presence_of :name
     it_should_validate_uniqueness_of :name
     it_should_validate_numericality_of :depth_maximum, :<= => Group::MAXIMUM_ASSIGNABLE_DEPTH
-    it_should_have_many :lings, :properties, :lings_properties, :examples_lings_properties, :examples, :categories, :memberships, :members
+    it_should_have_many :lings, :properties, :lings_properties, :examples_lings_properties, :examples, :categories, :memberships, :members, :searches
   end
 
   describe "should be createable" do

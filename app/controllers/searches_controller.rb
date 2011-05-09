@@ -8,6 +8,7 @@ class SearchesController < GroupDataController
       s.creator = current_user
       s.group   = current_group
     end
+    authorize! :search, @search
   end
 
   def preview
@@ -16,6 +17,7 @@ class SearchesController < GroupDataController
       s.group   = current_group
       s.query   = params[:search]
     end
+    authorize! :search, @search
 
     # @search.get_results!
   end
@@ -25,6 +27,7 @@ class SearchesController < GroupDataController
       s.creator = current_user
       s.group   = current_group
     end
+    authorize! :create, @search
 
     if @search.save
       redirect_to [current_group, :searches]
@@ -34,7 +37,9 @@ class SearchesController < GroupDataController
   end
 
   def show
-    @search = Search.find(params[:id])
+    @search = current_group.searches.find(params[:id])
+    authorize! :search, @search
+
     respond_with(@search) do |format|
       format.html
       format.csv {
@@ -45,9 +50,8 @@ class SearchesController < GroupDataController
   end
 
   def index
-    authorize! :new, new_search_for_authorization #TODO turning this off didn't break anything...
-
-    @searches   = Search.by(current_user).in_group(current_group)
+    @searches = current_user.present? ? current_group.searches.by(current_user) : [ Search.new ]
+    collection_authorize! :update, @searches
 
     @search_comparison = SearchComparison.new do |sc|
       sc.creator  = current_user
@@ -57,7 +61,9 @@ class SearchesController < GroupDataController
   end
 
   def destroy
-    @search = Search.find(params[:id])
+    @search = current_group.searches.find(params[:id])
+    authorize! :destroy, @search
+
     @search.destroy
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
@@ -69,13 +75,6 @@ protected
     # TODO replace with class method
     if Search.where(:creator => current_user, :group => current_group).count >= Search::MAX_SEARCH_LIMIT
       flash.now[:notice] = "You have reached the system limit for saved searches (#{Search::MAX_SEARCH_LIMIT}). Please delete old searches before saving new ones."
-    end
-  end
-
-  def new_search_for_authorization
-    Search.new do |s|
-      s.creator = current_user
-      s.group   = current_group
     end
   end
 end

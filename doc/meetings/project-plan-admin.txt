@@ -31,7 +31,7 @@ x   edit examples
 x   edit example ling props
 
   System Administration
-    Sys Admin can restore database from a nightly sql dump
+x   Sys Admin can restore database from a nightly sql dump
 
   3/21
 x   CanCan Permission setup
@@ -56,11 +56,11 @@ x   lpv mass setting page should sort properties by category like search does
 x   Permissions violations should spit out to the homepage with an error flash
 x   Crud controllers should all check permissions
   4/18
-    Links should all check permissions before adding themselves to the page
-    Bulk upload
+x   Links should all check permissions before adding themselves to the page
+x   Bulk upload
   4/25
-    dump SSWL and then send through bulk uploader
-    styling
+x   dump SSWL and then send through bulk uploader
+x   styling
     optimize indices on tables
     optimize includes on page loads
   5/2

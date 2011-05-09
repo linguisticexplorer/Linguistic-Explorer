@@ -7,7 +7,7 @@ describe User do
 
   describe "one-liners" do
     it_should_validate_presence_of :name, :email, :access_level
-    it_should_have_many :memberships, :groups
+    it_should_have_many :memberships, :groups, :searches
   end
 
   describe "createable with combinations" do

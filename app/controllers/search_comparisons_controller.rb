@@ -1,10 +1,10 @@
 class SearchComparisonsController < GroupDataController
-
   def new
-    @search_comparison  = SearchComparison.new() do |sc|
+    @search_comparison  = SearchComparison.new do |sc|
       sc.creator = current_user
       sc.group   = current_group
     end
+    authorize! :create, @search_comparison
   end
 
   def create
@@ -12,6 +12,7 @@ class SearchComparisonsController < GroupDataController
       sc.creator = current_user
       sc.group   = current_group
     end
+    authorize! :create, @search_comparison
 
     @search = @search_comparison.search
 
