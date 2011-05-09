@@ -10,3 +10,4 @@ tmp/*
 config/database.yml
 .rvmrc
 spec/csv/*csv
+spec/csv/import.yml
