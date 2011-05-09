@@ -16,6 +16,15 @@ describe ExamplesController do
 
       get :index, :group_id => @group.id
     end
+
+    describe "assigns" do
+      it "@examples should contain examples from the group" do
+        get :index, :group_id => groups(:inclusive).id
+
+        assigns(:examples).should include examples(:inclusive)
+        assigns(:examples).should_not include examples(:exclusive)
+      end
+    end
   end
 
   describe "show" do
@@ -31,6 +40,7 @@ describe ExamplesController do
       @example = examples(:onceuponatime)
       @group = @example.group
       Group.stub(:find).and_return(Group)
+
       Group.should_receive(:examples).and_return @group.examples
 
       get :show, :id => @example.id, :group_id => @group.id
@@ -95,8 +105,9 @@ describe ExamplesController do
 
     describe "assigns" do
       it "the requested example to @example" do
-        get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-        assigns(:example).should == examples(:onceuponatime)
+        @example = examples(:onceuponatime)
+        get :edit, :id => @example.id, :group_id => @example.group.id
+        assigns(:example).should == @example
       end
 
       it "@lings should be a hash with two depth members" do #TODO this might need fixing for 0-depth groups
@@ -201,7 +212,7 @@ describe ExamplesController do
 
         @example.should_receive(:update_attributes).with({'name' => new_name}).and_return(true)
 
-        put :update, :id => example.id, :example => {'name' => new_name}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
+        put :update, :id => @example.id, :example => {'name' => new_name}, :stored_values => {:text => "foo"}, :group_id => @example.group.id
       end
 
       it "creates or updates passed stored values" do

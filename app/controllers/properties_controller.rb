@@ -3,7 +3,7 @@ class PropertiesController < GroupDataController
   # GET /properties
   # GET /properties.xml
   def index
-    @properties = Property.all
+    @properties = current_group.properties
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,7 +14,7 @@ class PropertiesController < GroupDataController
   # GET /properties/1
   # GET /properties/1.xml
   def show
-    @property = Property.find(params[:id])
+    @property = current_group.properties.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -25,10 +25,15 @@ class PropertiesController < GroupDataController
   # GET /properties/new
   # GET /properties/new.xml
   def new
-    @property = Property.new
+    @property = Property.new do |p|
+      p.group = current_group
+      p.creator = current_user
+    end
+    authorize! :create, @property
+
     @categories = {
-          :depth_0 => Category.find_all_by_depth(0),
-          :depth_1 => Category.find_all_by_depth(1)
+          :depth_0 => current_group.categories.at_depth(0),
+          :depth_1 => current_group.categories.at_depth(1)
     }
 
     respond_to do |format|
@@ -39,10 +44,12 @@ class PropertiesController < GroupDataController
 
   # GET /properties/1/edit
   def edit
-    @property = Property.find(params[:id])
+    @property = current_group.properties.find(params[:id])
+    authorize! :update, @property
+
     @categories = {
-          :depth_0 => Category.find_all_by_depth(0),
-          :depth_1 => Category.find_all_by_depth(1)
+          :depth_0 => current_group.categories.at_depth(0),
+          :depth_1 => current_group.categories.at_depth(1)
     }
   end
 
@@ -53,6 +60,7 @@ class PropertiesController < GroupDataController
       property.group = current_group
       property.creator = current_user
     end
+    authorize! :create, @property
 
     respond_to do |format|
       if @property.save
@@ -60,8 +68,8 @@ class PropertiesController < GroupDataController
         format.xml  { render :xml => @property, :status => :created, :location => @property }
       else
         @categories = {
-              :depth_0 => Category.find_all_by_depth(0),
-              :depth_1 => Category.find_all_by_depth(1)
+              :depth_0 => current_group.categories.at_depth(0),
+              :depth_1 => current_group.categories.at_depth(1)
         }
         format.html { render :action => "new" }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
@@ -72,7 +80,8 @@ class PropertiesController < GroupDataController
   # PUT /properties/1
   # PUT /properties/1.xml
   def update
-    @property = Property.find(params[:id])
+    @property = current_group.properties.find(params[:id])
+    authorize! :update, @property
 
     respond_to do |format|
       if @property.update_attributes(params[:property])
@@ -80,8 +89,8 @@ class PropertiesController < GroupDataController
         format.xml  { head :ok }
       else
         @categories = {
-              :depth_0 => Category.find_all_by_depth(0),
-              :depth_1 => Category.find_all_by_depth(1)
+              :depth_0 => current_group.categories.at_depth(0),
+              :depth_1 => current_group.categories.at_depth(1)
         }
         format.html { render :action => "edit" }
         format.xml  { render :xml => @property.errors, :status => :unprocessable_entity }
@@ -92,7 +101,9 @@ class PropertiesController < GroupDataController
   # DELETE /properties/1
   # DELETE /properties/1.xml
   def destroy
-    @property = Property.find(params[:id])
+    @property = current_group.properties.find(params[:id])
+    authorize! :destroy, @property
+
     @property.destroy
 
     respond_to do |format|

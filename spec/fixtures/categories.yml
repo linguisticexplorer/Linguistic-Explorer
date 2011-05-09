@@ -10,3 +10,7 @@ exclusive0:
   name: coolness
   group: exclusive
   depth: 0
+exclusive1:
+  name: delvedeep
+  group: exclusive
+  depth: 1

@@ -59,9 +59,12 @@ describe Category do
       depth = 0
       Category.ids_by_group_and_depth(group, depth).should == [categories(:exclusive0).id]
     end
-    it "should return empty array if no ids" do
+
+    it "should return empty array if there are no matching categories" do
       group = groups(:exclusive)
       depth = 1
+      Category.delete_all
+
       Category.ids_by_group_and_depth(group, depth).should be_empty
     end
   end
