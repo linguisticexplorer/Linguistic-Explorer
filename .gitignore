@@ -9,4 +9,5 @@ tmp/*
 .idea/*
 config/database.yml
 .rvmrc
-spec/csv/import.yml
+spec/csv/*.csv
+spec/csv/*.yml

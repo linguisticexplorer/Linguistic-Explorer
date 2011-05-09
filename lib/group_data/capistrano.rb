@@ -11,8 +11,14 @@ module GroupData
 
     namespace :group_data do
 
-      usage = "Usage: cap group_data:upload -s conf=/path/to/config.yml"
+      desc "Download sql dump file from production"
+      task :dump do
+        remote_file = "/var/backups/database/terraling_production.sql"
+        local_file  = ENV['DEST'] || "./terraling_production.sql"
+        download remote_file, local_file
+      end
 
+      usage = "Usage: cap group_data:upload -s conf=/path/to/config.yml"
       desc <<-DESC
         Upload csv files into production database from specified yaml file.
 

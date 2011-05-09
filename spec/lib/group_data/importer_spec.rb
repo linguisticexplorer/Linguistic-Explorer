@@ -22,7 +22,7 @@ module GroupData
           :membership,
           :property,
           :stored_value].each do |model|
-            paths[model] = Rails.root.join("spec", "csv", "#{model.to_s.camelize}.csv").to_s
+            paths[model.to_s] = Rails.root.join("spec", "csv", "#{model.to_s.camelize}.csv").to_s
           end
         end
         File.open(Rails.root.join("spec", "csv", "import.yml"), "wb") { |f| f.write config.to_yaml }
