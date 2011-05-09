@@ -64,15 +64,6 @@ module GroupData
     end
 
     def import!
-      # processing groups
-      csv_for_each :group do |row|
-        group = Group.find_or_initialize_by_name(row["name"])
-        save_model_with_attributes(group, row)
-
-        # cache group id
-        groups[row["id"]] = group
-      end
-
       # processing users
       csv_for_each :user do |row|
         user = User.find_or_initialize_by_email(row["email"])
@@ -85,18 +76,31 @@ module GroupData
         user_ids[row["id"]] = user.id
       end
 
+      # processing groups
+      csv_for_each :group do |row|
+        group = Group.find_or_initialize_by_name(row["name"])
+        save_model_with_attributes(group, row)
+
+        # cache group id
+        groups[row["id"]] = group
+      end
+
       # processing memberships
       csv_for_each :membership do |row|
         group       = groups[row["group_id"]]
         member_id   = user_ids[row["member_id"]]
-        membership  = group.memberships.find_or_initialize_by_member_id(member_id)
+        membership  = group.memberships.find_or_initialize_by_member_id(member_id) do |m|
+          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+        end
         save_model_with_attributes(membership, row)
       end
 
       # processing lings
       csv_for_each :ling do |row|
         group     = groups[row["group_id"]]
-        ling      = group.lings.find_or_initialize_by_name(row["name"])
+        ling      = group.lings.find_or_initialize_by_name(row["name"]) do |m|
+          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+        end
         save_model_with_attributes(ling, row)
 
         # cache ling id
@@ -115,7 +119,9 @@ module GroupData
       # processing categories
       csv_for_each :category do |row|
         group     = groups[row["group_id"]]
-        category  = group.categories.find_or_initialize_by_name(row["name"])
+        category  = group.categories.find_or_initialize_by_name(row["name"]) do |m|
+          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+        end
         save_model_with_attributes category, row
 
         # cache category id
@@ -128,6 +134,7 @@ module GroupData
         category = group.categories.find(category_ids[row["category_id"]])
         property = group.properties.find_or_initialize_by_name(row["name"]) do |p|
           p.category = category
+          p.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
         end
         save_model_with_attributes property, row
 
@@ -141,6 +148,7 @@ module GroupData
         ling     = Ling.find(ling_ids[row["ling_id"]])
         example  = group.examples.find_or_initialize_by_name(row["name"]) do |e|
           e.ling = ling
+          e.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
         end
         save_model_with_attributes example, row
 
@@ -155,7 +163,10 @@ module GroupData
         property_id = property_ids[row["property_id"]]
         conditions  = { :value => value, :ling_id => ling_id, :property_id => property_id }
 
-        lp = group.lings_properties.where(conditions).first || group.lings_properties.create(conditions)
+        lp = group.lings_properties.where(conditions).first ||
+          group.lings_properties.create(conditions) do |lp|
+            lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          end
 
         # cache lings_property id
         lings_property_ids[row["id"]] = lp.id
@@ -167,7 +178,10 @@ module GroupData
         lings_property_id = lings_property_ids[row["lings_property_id"]]
         conditions  = { :example_id => example_id, :lings_property_id => lings_property_id }
 
-        group.examples_lings_properties.where(conditions).first || group.examples_lings_properties.create(conditions)
+        group.examples_lings_properties.where(conditions).first ||
+          group.examples_lings_properties.create(conditions) do |elp|
+            elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          end
       end
 
       csv_for_each :stored_value do |row|

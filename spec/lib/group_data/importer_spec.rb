@@ -66,6 +66,7 @@ module GroupData
           imported  = @current_group.membership_for(imported_user)
 
           attributes_should_match(imported, @memberships[i])
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -74,6 +75,7 @@ module GroupData
         @lings.each_with_index do |ling|
           imported = Ling.find_by_name(ling.name)
           attributes_should_match(imported, ling)
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -89,6 +91,7 @@ module GroupData
           imported = @current_group.properties.find_by_name(property.name)
           imported.category.should be_present
           attributes_should_match imported, property
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -97,6 +100,7 @@ module GroupData
         @categories.each do |category|
           imported = @current_group.categories.find_by_name(category.name)
           attributes_should_match imported, category
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -105,6 +109,7 @@ module GroupData
         @examples.each do |example|
           imported = @current_group.examples.find_by_name(example.name)
           attributes_should_match imported, example
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -113,6 +118,7 @@ module GroupData
         @lings_properties.each do |lings_property|
           imported = @current_group.lings_properties.where(:value => lings_property.value).first
           attributes_should_match imported, lings_property
+          imported.creator.name.should == @admin.name
         end
       end
 
@@ -120,8 +126,9 @@ module GroupData
         @current_group.examples_lings_properties.size.should == @examples_lings_properties.size
         @examples.each do |example|
           imported_example = @current_group.examples.find_by_name(example.name)
-          elp = @current_group.examples_lings_properties.select { |elp| elp.example_id == imported_example.id }
-          elp.should be_present
+          imported = @current_group.examples_lings_properties.detect { |elp| elp.example_id == imported_example.id }
+          imported.should be_present
+          imported.creator.name.should == @admin.name
         end
       end
 
