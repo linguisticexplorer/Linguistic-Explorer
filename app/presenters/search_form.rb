@@ -14,7 +14,8 @@ module SearchForm
   end
 
   def lings_prop_options(category)
-    group_lings_props_in_category(category).map { |p| ["#{p.prop_name}: #{p.value}", "#{p.property_id}:#{p.value}"] }
+    group_lings_props_in_category(category).map { |lp| 
+        ["#{lp.prop_name}: #{lp.value}", lp.property_value] }.uniq
   end
 
   def example_field_options
