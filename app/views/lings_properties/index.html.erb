@@ -15,7 +15,7 @@
     <td><%= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling) %></td>
     <td><%= link_to lings_property.property.name, group_property_path(current_group, lings_property.property) %><td>
     <td><%= link_to lings_property.value, [current_group, lings_property] %></td>
-    <td><% if can? :destroy, ling %>
+    <td><% if can? :destroy, lings_property %>
       <%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete %>
     <% end %></td>
   </tr>
