@@ -1,7 +1,2 @@
-id,name,depth,group,creator,timestamp
-category_1_1,category_1_1,1,group_1,user_1_5,68
-category_1_0,category_1_0,1,group_0,user_0_3,750
-category_1_2,category_1_2,1,group_2,user_2_8,529
-category_0_0,category_0_0,0,group_0,user_0_3,342
-category_0_1,category_0_1,0,group_1,user_1_8,527
-category_0_2,category_0_2,0,group_2,user_2_2,462
+id,name,depth,group_id,creator_id,description
+cat1,cat1,0,0,0,category description
