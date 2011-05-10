@@ -1,5 +1,5 @@
-Stories
-  Visitor Access
+xStories
+x Visitor Access
 x   sign up from home page
 x   log in from home page
 x   access publicly viewable groups (databases) from home page
@@ -16,11 +16,9 @@ x   give admin privileges
 x   create lings and properties
 x   choose whether or not to add ling depth
 x   set ling and property labels
-_   add categories to lings
 x   add categories to properties
 x   set labels for 1st and 2nd level lings
 x   choose attributes for examples
-_   specify depth of ling for examples
 x   import ling/prop/example data from file (e.g. CSV)
 x     - CSV import provides explicit feedback on success/failure of individual items
 
@@ -29,10 +27,10 @@ x   access search interface for private group
 x   edit content ling prop values
 x   edit examples
 x   edit example ling props
-
-  System Administration
+x System Administration
 x   Sys Admin can restore database from a nightly sql dump
 
+TIMELINE
   3/21
 x   CanCan Permission setup
 x   Lings should be entirely split between depths and hidden if the group is single-depth-only
@@ -61,41 +59,43 @@ x   Bulk upload
   4/25
 x   dump SSWL and then send through bulk uploader
 x   styling
-    optimize indices on tables
-    optimize includes on page loads
   5/2
-    hook in RPM, Hoptoad, etc.
-    map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
-    refine tests into documentation
-    remove, resolve, or document TODO notes
-    write higher level explanation of database architecture
-    write sample plans for arbitrary-depth expansion
-    write testing style/practices guide (routing, controller, permission, model, features general, troubleshooting)
-    write guide for how to: run all tests, run a single test, create the dbs, seed the db, drLop and recreate/seed the db
-
-  Non-Essential
-    Cleanup - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation
-    Chore - remove XML responses everywhere if they aren't specifically required by dennis
-    Chore - upgrade to rails 3.1.0 (requires dealing with many deprecation warnings, likely)
-    Refactor - extract stored_values into a module
-    Cleanup - there should be stored_values on Lings (varying by depth!)
-    Admin - site administrative pages for all data types ungrouped
-    Cleanup - consider renaming "LingsProperty" everywhere to "Value" (ExampleLP => ExampleValue)
-    Cleanup - Users should have preference to include or exclude public groups they arent members of from their dropdown
-    Cleanup - Memberships should not have edit/update (potentially true for ExamplesValues and LingsProperties)
-    Refactor - Determine whether the LingsPropertyController is useful now that mass setting is preset
-    Cleanup - Make mass value setting columnar with categories or make checkbox dropdowns/smaller footprint lists
-    Refactor - Decide whether ExamplesValues deserve a mass setting page like Values have (select the example, it finds the ling and all LingsProperties for the ling and lets you select any)
-    Refactor - Determine whether the ExamplesLingsPropertyController is worthwhile in place of just having them create a set of links for examples and lings_properties
-    Cleanup - Memberships should pre-filter the create/new options to non-members, or make it a text field where you have to enter an email
-    JS - jasmine integration and sample tests
-    JS - data tables integration (requires jquery)
-
-bulk upload data
-  one per table, another for parentage?
-  upload in a second window
-  pass/fail on whole dataset
-  look for form upload fields/helpers
-  meta refresh tag
-  note: child lings always require parent lings, no exceptions
-  examples also require lings
+x   Hoptoad, etc.
+x   hook in RPM
+    Code
+        remove, resolve, or document TODO notes
+        optimize indices on tables
+        remove XML responses everywhere
+    Hand Testing
+        check user flow (sign up, sign in, sign out, reset password) and make sure there is a link to the user self management page
+        hand test permissions everywhere
+    Docs
+        high level explanation of database architecture
+        testing style/practices guide
+            routing
+            controller
+            permission
+            model
+            features general
+            troubleshooting
+        doing things
+            run specs
+            run features (++verbose mode)
+            run single test
+            create the dbs
+            seed the db
+            drop and recreate/seed the db
+            deploy
+            git commands
+        Non-Essential
+            Docs     - sample plans for arbitrary-depth expansion
+            Admin    - site admin-only pages for all data types ungrouped
+            Feature  - map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
+            Cleanup  - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation
+            Chore    - upgrade to rails 3.1.0 (requires dealing with many deprecation warnings, likely)
+            Refactor - extract stored_values into a module
+            Cleanup  - consider renaming "LingsProperty" everywhere to "Value" (ExampleLP => ExampleValue)
+            Cleanup  - Users should have preference to include or exclude public groups they arent members of from their dropdown
+            Refactor - Decide whether ExamplesValues deserve a mass setting page like Values have (select the example, it finds the ling and all LingsProperties for the ling and lets you select any) and potentially remove the whole ELP controller
+            Cleanup  - Memberships should pre-filter the create/new options to non-members, or make user selection a text field where you have to enter an email (maybe even lets you create an invite a user?)
+            Feature  - specify depth of ling for examples

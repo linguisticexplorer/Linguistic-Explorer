@@ -36,6 +36,10 @@ gem 'cancan', "1.6.4"
 
 gem 'newrelic_rpm'
 
+platforms :mingw, :mswin do
+  gem "nokogiri", "1.4.4.1"
+end
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
