@@ -45,11 +45,11 @@ module SearchResults
     end
 
     def selected_value_pairs(category_id)
-      lings_props[category_id.to_s]
+      lings_props[category_id.to_s] || []
     end
 
     def selected_property_ids(category_id)
-      properties[category_id.to_s]
+      properties[category_id.to_s] || []
     end
 
     def group_prop_category_ids(depth)
