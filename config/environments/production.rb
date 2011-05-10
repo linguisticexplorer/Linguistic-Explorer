@@ -48,7 +48,6 @@ LinguisticExplorer::Application.configure do
   config.active_support.deprecation = :notify
 
   Settings.configure do |s|
-    s.group_data_enabled  = false
   end
 
 end

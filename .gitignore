@@ -12,3 +12,4 @@ config/database.yml
 spec/csv/*.csv
 spec/csv/*.yml
 config/import.yml
+doc/data/*

@@ -1,4 +1,2 @@
-id,name,privacy
-group_0,group_0,Public
-group_1,group_1,Private
-group_2,group_2,Private
+id,name,privacy,depth_maximum,ling0_name,ling1_name,property_name,category_name,lings_property_name,example_name,example_lings_property_name,example_fields
+0,Test - SSWL,public,0,Language,not-present,Property,Category,Value,Example,Example Value,"gloss, words, translation, comment"

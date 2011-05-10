@@ -3,16 +3,17 @@
 require 'net/http'
 
 %w[
-    ExampleLingPropVal.csv
-    Category.csv
-    Example.csv
-    LingPropVal.csv
-    Property.csv
-    Ling.csv
-    User.csv
-    Group.csv
-    GroupMembership.csv
-  ].each do |csv|
+  StoredValue.csv
+  ExampleLingsProperty.csv
+  Example.csv
+  LingsProperty.csv
+  Category.csv
+  Property.csv
+  Ling.csv
+  Membership.csv
+  Group.csv
+  User.csv
+].each do |csv|
     File.open(File.join("doc", "data", csv), "w") do |f|
       f.puts Net::HTTP.get URI.parse("http://cs.nyu.edu/cs/faculty/shasha/papers/#{csv}")
     end

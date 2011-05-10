@@ -1,7 +1,7 @@
 class Settings
 
   class << self
-    attr_accessor :in_preview, :group_data_enabled
+    attr_accessor :in_preview
 
     def configure
       yield self
