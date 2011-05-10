@@ -76,7 +76,7 @@ module GroupData
         user_ids[row["id"]] = user.id
       end
 
-      # processing groups
+      puts "processing groups"
       csv_for_each :group do |row|
         group = Group.find_or_initialize_by_name(row["name"])
         save_model_with_attributes(group, row)
@@ -85,7 +85,7 @@ module GroupData
         groups[row["id"]] = group
       end
 
-      # processing memberships
+      puts "processing memberships"
       csv_for_each :membership do |row|
         group       = groups[row["group_id"]]
         member_id   = user_ids[row["member_id"]]
@@ -95,7 +95,7 @@ module GroupData
         save_model_with_attributes(membership, row)
       end
 
-      # processing lings
+      puts "processing lings"
       csv_for_each :ling do |row|
         group     = groups[row["group_id"]]
         ling      = group.lings.find_or_initialize_by_name(row["name"]) do |m|
@@ -107,7 +107,7 @@ module GroupData
         ling_ids[row["id"]] = ling.id
       end
 
-      # parent/child ling associations
+      puts "parent/child ling associations"
       csv_for_each :ling do |row|
         next if row["parent_id"].blank?
         child   = Ling.find(ling_ids[row["id"]])
@@ -116,7 +116,7 @@ module GroupData
         child.save!
       end
 
-      # processing categories
+      puts "processing categories"
       csv_for_each :category do |row|
         group     = groups[row["group_id"]]
         category  = group.categories.find_or_initialize_by_name(row["name"]) do |m|
@@ -128,7 +128,7 @@ module GroupData
         category_ids[row["id"]] = category.id
       end
 
-      # processing properties
+      puts "processing properties"
       csv_for_each :property do |row|
         group    = groups[row["group_id"]]
         category = group.categories.find(category_ids[row["category_id"]])
@@ -142,7 +142,7 @@ module GroupData
         property_ids[row["id"]] = property.id
       end
 
-      # processing examples
+      puts "processing examples"
       csv_for_each :example do |row|
         group    = groups[row["group_id"]]
         ling     = Ling.find(ling_ids[row["ling_id"]])
@@ -156,6 +156,7 @@ module GroupData
         example_ids[row["id"]] = example.id
       end
 
+      puts "processing lings_property"
       csv_for_each :lings_property do |row|
         group       = groups[row["group_id"]]
         ling_id     = ling_ids[row["ling_id"]]
@@ -171,7 +172,8 @@ module GroupData
         # cache lings_property id
         lings_property_ids[row["id"]] = lp.id
       end
-
+      
+      puts "processing examples_lings_property"
       csv_for_each :examples_lings_property do |row|
         group             = groups[row["group_id"]]
         example_id        = example_ids[row["example_id"]]
@@ -184,6 +186,7 @@ module GroupData
           end
       end
 
+      puts "processing stored value"
       csv_for_each :stored_value do |row|
         group         = groups[row["group_id"]]
         storable_type = row['storable_type']
