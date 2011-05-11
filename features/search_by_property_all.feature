@@ -27,7 +27,7 @@ Feature: Search with All
     And I select "Property 1" from "Demographic Properties"
     And I select "Property 2" from "Demographic Properties"
     And I choose "All" within "#demographic_properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties        | Value     | depth   |
     | Speaker 1     | Property 1        | Eastern   | parent  |

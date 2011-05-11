@@ -28,7 +28,7 @@ Feature: Search Any Ling Prop Value Pair
   Scenario: Visitor selects one value pair
     When I go to the Syntactic Structures search page
     And I select "Adjective Noun: yes" from "Grammar Value Pairs"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     And I should see "English"
     And I should see "Adjective Noun"
@@ -43,7 +43,7 @@ Feature: Search Any Ling Prop Value Pair
     When I go to the Syntactic Structures search page
     And I select "Adjective Noun: yes" from "Grammar Value Pairs"
     And I select "Degree Adjective: no" from "Grammar Value Pairs"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     And I should see "English"
     And I should see "Spanish"

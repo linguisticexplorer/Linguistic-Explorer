@@ -1,21 +1,24 @@
 <%
   page_heading "Search"
   add_body_classes "full_width"
-  results = @search.results
 %>
 
 <h2 class="red_grad"><%= @search.group.name %> Results</h2>
 <div id="search_results" class="padded_left padded_right">
+  <%- if @search.results.any? -%>
   <%= render :partial => 'searches/save_search_form' %>
-  <div class="table spacing expand_width">
-    <div class="row">
-      <%- result_headers.each do |proc| -%>
-        <div class="cell"><%= proc.call @search.group %></div>
+    <div class="table spacing expand_width">
+      <div class="row">
+        <%- result_headers.each do |proc| -%>
+          <div class="cell"><%= proc.call @search.group %></div>
+        <%- end -%>
+      </div>
+
+      <%- @search.results.each do |result| -%>
+        <%= render :partial => "searches/result", :locals => { :result => result} %>
       <%- end -%>
     </div>
-
-    <%- @search.results.each do |result| -%>
-      <%= render :partial => "searches/result", :locals => { :result => result} %>
-    <%- end -%>
-  </div>
+  <%- else -%>
+    <div class="notice">Your search query returned no results.</div>
+  <%- end -%>
 </div>

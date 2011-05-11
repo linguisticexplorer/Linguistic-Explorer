@@ -23,7 +23,7 @@ Feature: Search All Ling Prop Value Pair
     And I select "Adjective Noun: yes" from "Grammar Value Pairs"
     And I select "Adjective Degree: yes" from "Grammar Value Pairs"
     And I choose "All" within "#grammar_value_pairs"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        | Value     |

@@ -70,3 +70,8 @@ Feature: Compare searches
     | parent ling | parent property | parent value  | child ling  | child property | child value  |
     | Speaker 1   | Property 1      | parent val 1  | Sentence 1  | Property 11    | child val 1  |
     | Speaker 1   | Property 3      | parent val 3  | Sentence 3  | Property 13    | child val 3  |
+
+  Scenario: Nothing selected
+    When I press "Go"
+    Then I should see "Please select a comparison and two searches"
+    

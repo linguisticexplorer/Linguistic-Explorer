@@ -21,7 +21,7 @@ Feature: Save searches
 
   Scenario: View no saved searches
     When I go to my group searches page
-    Then I should see "Syntactic Structures Searches"
+    Then I should see "Syntactic Structures Search History"
     Then I should see "No saved searches for Syntactic Structures"
 
   Scenario: View a simple saved searches
@@ -41,18 +41,18 @@ Feature: Save searches
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Save search results"
     When I fill in "Name" with "My First Search"
     And I press "Save"
-    Then I should see "Syntactic Structures Searches"
+    Then I should see "Syntactic Structures Search History"
     And I should see "My First Search"
 
   Scenario: See results of saved search query
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Save search results"
     When I fill in "Name" with "My First Search"
     And I press "Save"
@@ -73,7 +73,7 @@ Feature: Save searches
     And I uncheck "Examples" within "#show_parent"
     And I check "Value" within "#show_child"
     And I select "Speaker 1" from "Speakers"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Save search results"
     When I fill in "Name" with "My First Search"
     And I press "Save"
@@ -89,28 +89,28 @@ Feature: Save searches
     When I follow "History"
     And I follow "Delete"
     Then I should see "successfully deleted"
-    And I should see "Syntactic Structures Searches"
+    And I should see "Syntactic Structures Search History"
     And I should not see "My First Search"
 
   Scenario: Warning after 25 saved searches
     Given I have 25 saved group searches
     When I go to the Syntactic Structures search page
     Then I should see "reached the system limit for saved searches"
-    When I press "Search"
+    When I press "Show results"
     Then I should see "reached the system limit for saved searches"
     And I should not see "Save search results"
 
   Scenario: Save search at limit
     Given I have 24 saved group searches
     When I go to the Syntactic Structures search page
-    When I press "Search"
+    When I press "Show results"
     And I fill in "Name" with "Search 25"
     Then I press "Save"
     And I should see "Search 25"
 
   Scenario: Error on search
     When I go to the Syntactic Structures search page
-    When I press "Search"
+    When I press "Show results"
     And I fill in "Name" with ""
     Then I press "Save"
     And I should see "can't be blank"
