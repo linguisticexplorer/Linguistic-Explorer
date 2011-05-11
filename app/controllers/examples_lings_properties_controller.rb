@@ -26,7 +26,7 @@ class ExamplesLingsPropertiesController < GroupDataController
     authorize! :create, @examples_lings_property
 
     if @examples_lings_property.save
-      redirect_to(group_examples_lings_property_url(current_group, @examples_lings_property), :notice => (current_group.examples_lings_property_name + ' was successfully created.'))
+      redirect_to([current_group, @examples_lings_property], :notice => (current_group.examples_lings_property_name + ' was successfully created.'))
     else
       @examples = current_group.examples
       @lings_properties = current_group.lings_properties

@@ -5,6 +5,8 @@ class PropertiesController < GroupDataController
 
   def show
     @property = current_group.properties.find(params[:id])
+#    @category = @property.category
+#    @values = @property.lings_properties
   end
 
   def new
@@ -14,20 +16,14 @@ class PropertiesController < GroupDataController
     end
     authorize! :create, @property
 
-    @categories = {
-          :depth_0 => current_group.categories.at_depth(0),
-          :depth_1 => current_group.categories.at_depth(1)
-    }
+    @categories = get_categories
   end
 
   def edit
     @property = current_group.properties.find(params[:id])
     authorize! :update, @property
 
-    @categories = {
-          :depth_0 => current_group.categories.at_depth(0),
-          :depth_1 => current_group.categories.at_depth(1)
-    }
+    @categories = get_categories
   end
 
   def create
@@ -38,12 +34,10 @@ class PropertiesController < GroupDataController
     authorize! :create, @property
 
     if @property.save
-      redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + ' was successfully created.'))
+      redirect_to([current_group, @property],
+                  :notice => (current_group.property_name + ' was successfully created.'))
     else
-      @categories = {
-            :depth_0 => current_group.categories.at_depth(0),
-            :depth_1 => current_group.categories.at_depth(1)
-      }
+      @categories = get_categories
       render :action => "new"
     end
   end
@@ -53,12 +47,10 @@ class PropertiesController < GroupDataController
     authorize! :update, @property
 
     if @property.update_attributes(params[:property])
-      redirect_to(group_property_url(current_group, @property), :notice => (current_group.property_name + ' was successfully updated.'))
+      redirect_to([current_group, @property],
+                  :notice => (current_group.property_name + ' was successfully updated.'))
     else
-      @categories = {
-            :depth_0 => current_group.categories.at_depth(0),
-            :depth_1 => current_group.categories.at_depth(1)
-      }
+      @categories = get_categories
       render :action => "edit"
     end
   end
@@ -70,5 +62,12 @@ class PropertiesController < GroupDataController
     @property.destroy
 
     redirect_to(group_properties_url(current_group))
+  end
+
+  private
+
+  def get_categories
+    {:depth_0 => current_group.categories.at_depth(0),
+     :depth_1 => current_group.categories.at_depth(1) }
   end
 end

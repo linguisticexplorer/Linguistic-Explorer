@@ -32,7 +32,8 @@ class MembershipsController < GroupDataController
     authorize! :create, @membership
 
     if @membership.save
-      redirect_to(group_membership_url(current_group, @membership), :notice => 'Membership was successfully created.')
+      redirect_to([current_group, @membership],
+                  :notice => 'Membership was successfully created.')
     else
       @users = User.all
       render :action => "new"
@@ -44,7 +45,8 @@ class MembershipsController < GroupDataController
     authorize! :update, @membership
 
     if @membership.update_attributes(params[:membership])
-      redirect_to(group_membership_url(current_group, @membership), :notice => 'Membership was successfully updated.')
+      redirect_to([current_group, @membership],
+                  :notice => 'Membership was successfully updated.')
     else
       render :action => "edit"
     end

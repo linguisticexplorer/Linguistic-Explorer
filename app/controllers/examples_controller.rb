@@ -14,20 +14,14 @@ class ExamplesController < GroupDataController
     end
     authorize! :create, @example
 
-    @lings = {
-          :depth_0 => current_group.lings.at_depth(0),
-          :depth_1 => current_group.lings.at_depth(1)
-    }
+    @lings = get_lings
   end
 
   def edit
     @example = current_group.examples.find(params[:id])
     authorize! :update, @example
 
-    @lings = {
-          :depth_0 => current_group.lings.at_depth(0),
-          :depth_1 => current_group.lings.at_depth(1)
-    }
+    @lings = get_lings
   end
 
   def create
@@ -39,12 +33,10 @@ class ExamplesController < GroupDataController
 
     if @example.save
       params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-      redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully created.'))
+      redirect_to([current_group, @example],
+                  :notice => (current_group.example_name + ' was successfully created.'))
     else
-      @lings = {
-            :depth_0 => current_group.lings.at_depth(0),
-            :depth_1 => current_group.lings.at_depth(1)
-      }
+      @lings = get_lings
       render :action => "new"
     end
   end
@@ -55,12 +47,10 @@ class ExamplesController < GroupDataController
 
     if @example.update_attributes(params[:example])
       params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-      redirect_to([current_group, @example], :notice => (current_group.example_name + ' was successfully updated.'))
+      redirect_to([current_group, @example],
+                  :notice => (current_group.example_name + ' was successfully updated.'))
     else
-      @lings = {
-            :depth_0 => current_group.lings.at_depth(0),
-            :depth_1 => current_group.lings.at_depth(1)
-      }
+      @lings = get_lings
       render :action => "edit"
     end
   end
@@ -72,5 +62,12 @@ class ExamplesController < GroupDataController
     @example.destroy
 
     redirect_to(group_examples_url(current_group))
+  end
+
+  private
+
+  def get_lings
+    { :depth_0 => current_group.lings.at_depth(0),
+      :depth_1 => current_group.lings.at_depth(1) }
   end
 end

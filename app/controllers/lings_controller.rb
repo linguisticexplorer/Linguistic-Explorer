@@ -99,7 +99,8 @@ class LingsController < GroupDataController
 
     if @ling.save
       params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
-      redirect_to([current_group, @ling], :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully created.'))
+      redirect_to([current_group, @ling],
+                  :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully created.'))
     else
       @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
       render :action => "new"
@@ -114,7 +115,8 @@ class LingsController < GroupDataController
 
     if @ling.update_attributes(params[:ling])
       params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
-      redirect_to(group_ling_url(current_group, @ling), :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully updated.') )
+      redirect_to(group_ling_url(current_group, @ling),
+                  :notice => (current_group.ling_name_for_depth(@depth) + ' was successfully updated.') )
     else
       @parents = @depth ? Ling.find_all_by_depth(@depth - 1) : []
       render :action => "edit"

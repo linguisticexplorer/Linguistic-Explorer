@@ -35,7 +35,8 @@ class CategoriesController < GroupDataController
     authorize! :create, @category
 
     if @category.save
-      redirect_to(group_category_url(current_group, @category), :notice => (current_group.category_name + ' was successfully created.'))
+      redirect_to([current_group, @category],
+                  :notice => (current_group.category_name + ' was successfully created.'))
     else
       render :action => "new"
     end
@@ -48,7 +49,8 @@ class CategoriesController < GroupDataController
     @depth = @category.depth
 
     if @category.update_attributes(params[:category])
-      redirect_to(group_category_url(current_group, @category), :notice => (current_group.category_name + ' was successfully updated.'))
+      redirect_to([current_group, @category],
+                  :notice => (current_group.category_name + ' was successfully updated.'))
     else
       render :action => "edit"
     end
