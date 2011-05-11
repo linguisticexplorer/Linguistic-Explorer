@@ -21,7 +21,7 @@ Feature: Save searches
 
   Scenario: View no saved searches
     When I go to my group searches page
-    Then I should see "Syntactic Structures Searches"
+    Then I should see "Syntactic Structures Search History"
     Then I should see "No saved searches for Syntactic Structures"
 
   Scenario: View a simple saved searches
@@ -45,7 +45,7 @@ Feature: Save searches
     Then I should see "Save search results"
     When I fill in "Name" with "My First Search"
     And I press "Save"
-    Then I should see "Syntactic Structures Searches"
+    Then I should see "Syntactic Structures Search History"
     And I should see "My First Search"
 
   Scenario: See results of saved search query
@@ -89,7 +89,7 @@ Feature: Save searches
     When I follow "History"
     And I follow "Delete"
     Then I should see "successfully deleted"
-    And I should see "Syntactic Structures Searches"
+    And I should see "Syntactic Structures Search History"
     And I should not see "My First Search"
 
   Scenario: Warning after 25 saved searches

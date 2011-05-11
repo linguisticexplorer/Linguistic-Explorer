@@ -51,6 +51,11 @@ class SearchComparison
     @with ||= Search.find(@with_id) unless @with_id.nil?
   end
 
+  def save
+    return false unless type.present? && of_id.present? && with_id.present?
+    search
+  end
+
   def search
     @search ||= build_search_through_comparison
   end

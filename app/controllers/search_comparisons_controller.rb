@@ -14,8 +14,12 @@ class SearchComparisonsController < GroupDataController
     end
     authorize! :create, @search_comparison
 
-    @search = @search_comparison.search
-
-    render :template => 'searches/preview'
+    if @search_comparison.save
+      @search = @search_comparison.search
+      render :template => 'searches/preview'
+    else
+      flash.now[:notice] = "Please select a comparison and two searches"
+      render :action => :new
+    end
   end
 end
