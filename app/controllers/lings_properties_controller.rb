@@ -3,7 +3,7 @@ class LingsPropertiesController < GroupDataController
   # GET /lings_properties
   # GET /lings_properties.xml
   def index
-    @lings_properties = current_group.lings_properties
+    @lings_properties = current_group.lings_properties.includes(:ling, :property)
 
     respond_to do |format|
       format.html # index.html.erb

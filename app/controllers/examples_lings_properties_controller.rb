@@ -3,7 +3,7 @@ class ExamplesLingsPropertiesController < GroupDataController
   # GET /examples_lings_properties
   # GET /examples_lings_properties.xml
   def index
-    @examples_lings_properties = current_group.examples_lings_properties
+    @examples_lings_properties = current_group.examples_lings_properties.includes({:example => :stored_values}, :lings_property)
 
     respond_to do |format|
       format.html # index.html.erb

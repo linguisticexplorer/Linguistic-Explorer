@@ -3,7 +3,7 @@ class ExamplesController < GroupDataController
   # GET /examples
   # GET /examples.xml
   def index
-    @examples = current_group.examples
+    @examples = current_group.examples.includes(:group, :ling)
 
     respond_to do |format|
       format.html # index.html.erb
