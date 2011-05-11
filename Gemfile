@@ -34,13 +34,8 @@ gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_exi
 
 gem 'cancan', "1.6.4"
 
-
-platforms :mingw, :mswin do
-  gem "nokogiri", "1.4.4.1"
-end
-
+gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
 gem 'newrelic_rpm'
-
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
