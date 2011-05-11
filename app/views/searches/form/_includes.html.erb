@@ -10,7 +10,7 @@
     <%= check_box_tag "search[include][value_0]", "1", true %>
 
     <%= label_tag     "search[include][example_0]", "Examples" %>
-    <%= check_box_tag "search[include][example_0]", "1", false %>
+    <%= check_box_tag "search[include][example_0]", "1", true %>
   </div>
 
   <% if current_group.has_depth? %>
@@ -26,7 +26,7 @@
       <%= check_box_tag "search[include][value_1]", "1", true %>
 
       <%= label_tag     "search[include][example_1]", "Examples" %>
-      <%= check_box_tag "search[include][example_1]", "1", false %>
+      <%= check_box_tag "search[include][example_1]", "1", true %>
     </div>
   <% end %>
 
