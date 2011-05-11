@@ -90,4 +90,8 @@ class Group < ActiveRecord::Base
     INFO_ATTRIBUTES
   end
 
+  def examples_lings_property_name
+    read_attribute(:examples_lings_property_name) || DEFAULTS[:examples_lings_property_name]
+  end
+
 end
