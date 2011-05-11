@@ -74,4 +74,17 @@ Feature: Compare searches
   Scenario: Nothing selected
     When I press "Go"
     Then I should see "Please select a comparison and two searches"
-    
+
+  Scenario: Difference with self, no results
+    When I select "difference" from "Perform"
+    And I select "First search" from "of"
+    And I select "First search" from "with"
+    And I press "Go"
+    Then I should see no search result rows
+
+  Scenario: Intersection with self, no results
+    When I select "intersection" from "Perform"
+    And I select "First search" from "of"
+    And I select "First search" from "with"
+    And I press "Go"
+    Then I should see 2 search result rows

@@ -36,7 +36,7 @@ module SearchResults
   private
 
   def ensure_result_groups!
-    return true unless self.result_groups.blank?
+    return true unless self.result_groups.nil?
     return true unless self.query.present? || self.parent_ids.present?
     self.result_groups = build_result_groups(*parent_and_child_lings_property_ids)
   end
