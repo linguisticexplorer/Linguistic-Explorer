@@ -1,4 +1,4 @@
-<%- @search.ling_depths.each do |depth| -%>
+<%- current_group.depths.each do |depth| -%>
   <%- ling_label  = search_ling_label(@search, depth) -%>
   <%- keyword_label = "#{ling_label.singularize} Keywords" -%>
   <%= content_tag :fieldset, :id => ling_label.underscorize, :class => "table" do %>

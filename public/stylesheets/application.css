@@ -97,7 +97,7 @@ body.full_width #main h2 {
   margin-bottom:0;
   border-top:1px solid white;
   border-bottom:1px solid white;
-  
+
   background: #C30; /* Old browsers */
   background: -moz-linear-gradient(top, #C30 0%, #8f0222 51%, #6d0019 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#C30), color-stop(51%,#8f0222), color-stop(100%,#6d0019)); /* Chrome,Safari4+ */
@@ -173,3 +173,13 @@ fieldset select, fieldset input[type="text"] { width:250px;}
   font-size: 12px;
   list-style: square;
 }
+
+/* Search form */
+#new_search .cell.label {
+  color: #C30;
+}
+#new_search .cell.label,
+#new_search .cell.field { width:45%;}
+
+.hidden_label label { display:none;}
+.selection_row .cell { padding-top:20px;}

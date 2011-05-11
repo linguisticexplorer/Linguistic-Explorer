@@ -22,12 +22,8 @@ module SearchForm
     @group.example_storable_keys.map { |ef| ["#{ef.titleize} Contains", ef.downcase ] }
   end
 
-  def ling_depths
-    @ling_depths ||= Ling.select("DISTINCT depth").map(&:depth)
-  end
-
   def property_categories
-    @property_categories ||= Category.in_group(@group).order(:name)
+    @property_categories ||= Category.in_group(@group).order(:depth, :name)
   end
 
   def has_ling_children?

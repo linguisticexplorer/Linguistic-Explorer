@@ -13,10 +13,8 @@
       :label => keyword_label,
       :name => search_text_field_name(:property_keywords, category.id) %>
 
-    <div class="row">
-      <div class="cell label">
-        Selection
-      </div>
+    <div class="selection_row row">
+      <div class="cell label">Selection</div>
       <div class="cell field">
         <%= f.label "group", "Any", :for => categorized_set_id(category.name, "any") %>
         <%= f.radio_button "property_set", "any", :checked => true,

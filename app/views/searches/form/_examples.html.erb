@@ -1,14 +1,11 @@
-<%- @search.ling_depths.each do |depth| -%>
+<%- current_group.depths.each do |depth| -%>
   <%- example_label  = search_example_label(@search, depth) -%>
   <%- keyword_label = "#{example_label} Keywords" -%>
   <%= content_tag :fieldset, :id => example_label.underscorize, :class => "table" do %>
-    <div class="row">
-      <div class="cell label"><label><%= example_label %> Text Search</label></div>
-      <div class="cell field">&nbsp;</div>
-    </div>
     <%= f.select :example_fields, @search.example_field_options, {},
       :name => search_text_field_name(:example_fields, depth),
-      :label => "#{example_label} Attribute" %>
+      :label => "#{example_label} Attribute",
+      :label_class => 'hidden_label' %>
     <%= f.text_field :example_keywords,
       :id => search_text_id(keyword_label),
       :label => keyword_label,
