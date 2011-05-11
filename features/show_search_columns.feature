@@ -28,7 +28,7 @@ Feature: Show search columns
     And I uncheck "Properties" within "#show_child"
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
-    Then I press "Search"
+    Then I press "Show results"
     Then I should see the following search results:
     | Lings         | depth    |
     | Speaker 1     | parent   |
@@ -47,7 +47,7 @@ Feature: Show search columns
     And I uncheck "Properties" within "#show_child"
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
-    Then I press "Search"
+    Then I press "Show results"
     Then I should see the following search results:
     | Lings         |
     | Speaker 1     |
@@ -65,7 +65,7 @@ Feature: Show search columns
     And I check "Properties" within "#show_columns"
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
-    Then I press "Search"
+    Then I press "Show results"
     Then I should see the following search results:
     | Lings         | Property     | depth    |
     | Speaker 1     | Property 1   | parent   |

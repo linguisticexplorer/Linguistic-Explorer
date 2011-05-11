@@ -51,7 +51,7 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Basic depth search
     When I select "Sentence 1" from "Sentences"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |
@@ -61,7 +61,7 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Basic categorized property search
     When I select "Property 3" from "Linguistic Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |
@@ -71,7 +71,7 @@ Feature: Search Ling Prop Value Pair by Categories
 
   Scenario: Basic categorized property search
     When I select "Property 3: verb" from "Linguistic Value Pairs"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Sentence 1"
     And I should see "Property 3"
     And I should see "verb"

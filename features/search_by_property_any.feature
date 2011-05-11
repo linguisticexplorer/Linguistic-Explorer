@@ -18,7 +18,7 @@ Feature: Search with Any
 
   Scenario: Visitor allows all properties
     When I go to the Syntactic Structures search page
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties        | Value     |
     | English       | Adjective Noun    | yes       |
@@ -29,7 +29,7 @@ Feature: Search with Any
   Scenario: Visitor searches any property
     When I go to the Syntactic Structures search page
     And I select "Adjective Noun" from "Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        | Value     |

@@ -21,7 +21,7 @@ Feature: Keyword Search on Ling
 
   Scenario: Keyword search on ling depth 0
     When I fill in "Language Keywords" with "Eng"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties    | Value     | depth   |
     | English       | Property 1    | Eastern   | parent  |
@@ -33,7 +33,7 @@ Feature: Keyword Search on Ling
 
   Scenario: Partial keyword search on ling depth 0
     When I fill in "Language Keywords" with "glish"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties    | Value     | depth   |
     | English       | Property 1    | Eastern   | parent  |
@@ -45,7 +45,7 @@ Feature: Keyword Search on Ling
 
   Scenario: Keyword search on ling depth 1
     When I fill in "Sentence Keywords" with "Quest"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties    | Value     | depth   |
     | English       | Property 1    | Eastern   | parent  |
@@ -57,7 +57,7 @@ Feature: Keyword Search on Ling
 
   Scenario: Keyword search on property
     When I fill in "Demographic Keywords" with "Property 1"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties    | Value     | depth   |
     | English       | Property 1    | Eastern   | parent  |

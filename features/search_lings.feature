@@ -20,7 +20,7 @@ Feature: Search Lings for Any Property
   Scenario: Visitor selects one language
     When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     And I should see "English"
     And I should not see "Spanish"
@@ -29,7 +29,7 @@ Feature: Search Lings for Any Property
   Scenario: Visitor selects all languages
     When I go to the Syntactic Structures search page
     And I allow all languages
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     And I should see "English"
     And I should see "Spanish"
@@ -39,7 +39,7 @@ Feature: Search Lings for Any Property
     When I go to the Syntactic Structures search page
     And I select "English" from "Languages"
     And I select "Adjective Noun" from "Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        |
@@ -54,7 +54,7 @@ Feature: Search Lings for Any Property
     And I select "Spanish" from "Languages"
     And I select "German" from "Languages"
     And I select "Adjective Noun" from "Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        |
@@ -67,7 +67,7 @@ Feature: Search Lings for Any Property
     When I go to the Syntactic Structures search page
     And I allow all languages
     And I select "Adjective Noun" from "Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        |
@@ -82,7 +82,7 @@ Feature: Search Lings for Any Property
     And I allow all languages
     And I select "Adjective Degree" from "Properties"
     And I select "Degree Adjective" from "Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see "Results"
     Then I should see the following search results:
     | Lings         | Properties        |
@@ -103,5 +103,5 @@ Feature: Search Lings for Any Property
 
   Scenario: Visitor cannot save search
     When I go to the Syntactic Structures search page
-    And I press "Search"
+    And I press "Show results"
     Then I should not see "Save search results"

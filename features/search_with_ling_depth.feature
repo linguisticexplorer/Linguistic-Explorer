@@ -26,7 +26,7 @@ Feature: Search Ling Prop Value Pair by Categories
     And  I select "Sentence 1" from "Sentences"
     And  I select "Sentence 2" from "Sentences"
     And  I select "Property 1" from "Demographic Properties"
-    And  I press "Search"
+    And  I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |
@@ -39,7 +39,7 @@ Feature: Search Ling Prop Value Pair by Categories
     And  I select "Sentence 1" from "Sentences"
     And  I select "Sentence 2" from "Sentences"
     And  I select "Property 1" from "Demographic Properties"
-    And  I press "Search"
+    And  I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |
@@ -54,7 +54,7 @@ Feature: Search Ling Prop Value Pair by Categories
     And I select "Sentence 1" from "Sentences"
     And I select "Sentence 2" from "Sentences"
     And I select "Property 3" from "Linguistic Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |
@@ -67,7 +67,7 @@ Feature: Search Ling Prop Value Pair by Categories
     When I select "Speaker 1" from "Speakers"
     And I select "Speaker 2" from "Speakers"
     And I select "Property 3" from "Linguistic Properties"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Properties  | Value     | depth   |
     | Speaker 1     | Property 1  | Eastern   | parent  |

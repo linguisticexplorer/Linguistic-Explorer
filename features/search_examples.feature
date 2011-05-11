@@ -30,7 +30,7 @@ Feature: Search Examples
     And I select "Speaker 1" from "Speakers"
     And I check "Examples" within "#show_parent"
     And I uncheck "Examples" within "#show_child"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 1     | Example 1   | parent  |
@@ -46,7 +46,7 @@ Feature: Search Examples
     And I select "Speaker 1" from "Speakers"
     And I uncheck "Examples" within "#show_parent"
     And I check "Examples" within "#show_child"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 1     |             | parent  |
@@ -62,7 +62,7 @@ Feature: Search Examples
     And I fill in "Example Keywords" with "Example 1"
     And I check "Examples" within "#show_parent"
     And I uncheck "Examples" within "#show_child"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 1     | Example 1   | parent  |
@@ -76,7 +76,7 @@ Feature: Search Examples
     And I fill in "Example Keywords" with "1"
     And I check "Examples" within "#show_parent"
     And I uncheck "Examples" within "#show_child"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 1     | Example 1   | parent  |
@@ -98,7 +98,7 @@ Feature: Search Examples
     And I check "Examples" within "#show_child"
     And I select "Era Contains" from "Speaker Example Attribute"
     And I fill in "Example Keyword" with "gold"
-    And I press "Search"
+    And I press "Show results"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 2     | Example 2   | parent  |
