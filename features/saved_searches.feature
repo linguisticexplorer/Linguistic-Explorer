@@ -70,6 +70,7 @@ Feature: Save searches
     And I check "Properties" within "#show_parent"
     And I uncheck "Properties" within "#show_child"
     And I uncheck "Value" within "#show_parent"
+    And I uncheck "Examples" within "#show_parent"
     And I check "Value" within "#show_child"
     And I select "Speaker 1" from "Speakers"
     And I press "Search"

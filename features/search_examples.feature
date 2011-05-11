@@ -29,6 +29,7 @@ Feature: Search Examples
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
     And I check "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
     And I press "Search"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
@@ -43,6 +44,7 @@ Feature: Search Examples
   Scenario: Visitor chooses child ling examples
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
+    And I uncheck "Examples" within "#show_parent"
     And I check "Examples" within "#show_child"
     And I press "Search"
     Then I should see the following search results:
@@ -59,6 +61,7 @@ Feature: Search Examples
     When I go to the Syntactic Structures search page
     And I fill in "Example Keywords" with "Example 1"
     And I check "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
     And I press "Search"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
@@ -72,6 +75,7 @@ Feature: Search Examples
     When I go to the Syntactic Structures search page
     And I fill in "Example Keywords" with "1"
     And I check "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
     And I press "Search"
     Then I should see the following search results:
     | Lings         | Example     | depth   |
