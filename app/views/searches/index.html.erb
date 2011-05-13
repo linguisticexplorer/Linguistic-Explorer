@@ -1,5 +1,5 @@
-<% 
-  page_heading "Search" 
+<%
+  page_heading "Search"
   add_body_classes "full_width"
 %>
 
@@ -30,5 +30,8 @@
 </div>
 
 <%- if @search_comparison.enough_to_compare? -%>
-  <%= render :partial => 'search_comparisons/new' %>
+  <div id="search_comparisons" class="padded border margin">
+    <h3>Search comparisons</h3>
+    <%= render :partial => 'search_comparisons/new' %>
+  </div>
 <%- end -%>

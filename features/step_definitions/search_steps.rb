@@ -107,8 +107,20 @@ Then /^I should see the following grouped search results:$/ do |table|
     child_ling  = Ling.find_by_name(row["child ling"])
     child_prop  = Property.find_by_name(row["child property"])
 
-    parent_lp = LingsProperty.find_by_ling_id_and_property_id(parent_ling.id, parent_prop.id)
-    child_lp = LingsProperty.find_by_ling_id_and_property_id(child_ling.id, child_prop.id)
+    parent_lp = begin
+      if parent_ling
+        LingsProperty.find_by_ling_id_and_property_id(parent_ling.id, parent_prop.id)
+      else
+        LingsProperty.find_by_property_id(parent_prop.id)
+      end
+    end
+    child_lp  = begin
+      if child_ling
+        LingsProperty.find_by_ling_id_and_property_id(child_ling.id, child_prop.id)
+      else
+        LingsProperty.find_by_property_id(child_prop.id)
+      end
+    end
 
     with_scope(%Q|[data-parent-value="#{parent_lp.id}"][data-child-value="#{child_lp.id}"]|) do
       page.should have_content(parent_ling.name)

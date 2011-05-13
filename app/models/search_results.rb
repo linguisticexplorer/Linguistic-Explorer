@@ -1,5 +1,6 @@
 module SearchResults
   include Enumerable
+  include Comparisons
 
   delegate :included_columns, :to => :query_adapter
 
@@ -11,25 +12,6 @@ module SearchResults
     @results ||= begin
       ensure_result_groups!
       ResultMapper.new(self.result_groups).to_result_families
-    end
-  end
-
-  def result_rows=(result_rows)
-    self.result_groups = result_rows.group_by { |row| row[0] }
-    self.result_groups.values.map! { |row| row.map! { |r| r[1] }.compact! }
-  end
-
-  def result_rows
-    [].tap do |rows|
-      self.result_groups.each do |parent_id, child_ids|
-        if child_ids.present?
-          child_ids.each do |child_id|
-            rows << [parent_id, child_id]
-          end
-        else
-          rows << [parent_id]
-        end
-      end
     end
   end
 

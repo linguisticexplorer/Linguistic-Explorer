@@ -88,3 +88,20 @@ Feature: Compare searches
     And I select "First search" from "with"
     And I press "Go"
     Then I should see 2 search result rows
+
+  Scenario: Comparison based on included columns: properties and values
+    When I uncheck "Speakers" within "#show_parent"
+    And I uncheck "Sentences" within "#show_child"
+    And I uncheck "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
+    When I select "intersection" from "Perform"
+    And I select "First search" from "of"
+    And I select "Second search" from "with"
+    And I press "Go"
+    Then I should see 1 search result row
+    And I should see "Property 2"
+    And I should see "parent val 2"
+    And I should see "Property 12"
+    And I should see "child val 2"
+    And I should not see "Lings" within "#search_results"
+    And I should not see "Example" within "#search_results"

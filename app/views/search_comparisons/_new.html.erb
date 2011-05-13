@@ -1,6 +1,12 @@
-<%= form_for :comparison, :url => [current_group, :search_comparisons] do |f| %>
-  <%= f.label :type, "Perform" %> <%= f.select :type, @search_comparison.comparison_options, :include_blank => true %>
-  <%= f.label :of_id, "of" %> <%= f.select :of_id, @search_comparison.search_options, :include_blank => true %>
-  <%= f.label :with_id, "with" %> <%= f.select :with_id, @search_comparison.search_options, :include_blank => true %>
-  <%= f.submit "Go" %>
-<% end %>
+<div class="padded">
+  <%= form_for :comparison, :url => [current_group, :search_comparisons] do |f| %>
+    <%= f.label :type, "Perform" %> <%= f.select :type, @search_comparison.comparison_options, :include_blank => true %>
+    <%= f.label :of_id, "of" %> <%= f.select :of_id, @search_comparison.search_options, :include_blank => true %>
+    <%= f.label :with_id, "with" %> <%= f.select :with_id, @search_comparison.search_options, :include_blank => true %>
+    <label>using the following columns</label>
+    <%= render :partial => 'searches/form/includes', :locals => { :resource_name => :comparison } %>
+    
+    <%= f.submit "Go" %>
+  <% end %>
+  
+</div>

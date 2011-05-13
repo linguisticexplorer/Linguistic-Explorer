@@ -1,32 +1,33 @@
+<%- resource_name ||= :search -%>
 <%= content_tag :fieldset, :id => "show_columns" do %>
   <div id="show_parent">
-    <%= label_tag     "search[include][ling_0]", current_group.ling0_name.pluralize %>
-    <%= check_box_tag "search[include][ling_0]", "1", true %>
+    <%= label_tag     included_column_name(resource_name, :ling_0), current_group.ling0_name.pluralize %>
+    <%= check_box_tag included_column_name(resource_name, :ling_0), "1", true %>
 
-    <%= label_tag     "search[include][property_0]", current_group.property_name.pluralize %>
-    <%= check_box_tag "search[include][property_0]", "1", true %>
+    <%= label_tag     included_column_name(resource_name, :property_0), current_group.property_name.pluralize %>
+    <%= check_box_tag included_column_name(resource_name, :property_0), "1", true %>
 
-    <%= label_tag     "search[include][value_0]", current_group.lings_property_name.pluralize %>
-    <%= check_box_tag "search[include][value_0]", "1", true %>
+    <%= label_tag     included_column_name(resource_name, :value_0), current_group.lings_property_name.pluralize %>
+    <%= check_box_tag included_column_name(resource_name, :value_0), "1", true %>
 
-    <%= label_tag     "search[include][example_0]", "Examples" %>
-    <%= check_box_tag "search[include][example_0]", "1", true %>
+    <%= label_tag     included_column_name(resource_name, :example_0), "Examples" %>
+    <%= check_box_tag included_column_name(resource_name, :example_0), "1", true %>
   </div>
 
   <% if current_group.has_depth? %>
     <br />
     <div id="show_child">
-      <%= label_tag     "search[include][ling_1]", current_group.ling1_name.pluralize %>
-      <%= check_box_tag "search[include][ling_1]", "1", true %>
+      <%= label_tag     included_column_name(resource_name, :ling_1), current_group.ling1_name.pluralize %>
+      <%= check_box_tag included_column_name(resource_name, :ling_1), "1", true %>
 
-      <%= label_tag     "search[include][property_1]", current_group.property_name.pluralize %>
-      <%= check_box_tag "search[include][property_1]", "1", true %>
+      <%= label_tag     included_column_name(resource_name, :property_1), current_group.property_name.pluralize %>
+      <%= check_box_tag included_column_name(resource_name, :property_1), "1", true %>
 
-      <%= label_tag     "search[include][value_1]", current_group.lings_property_name.pluralize %>
-      <%= check_box_tag "search[include][value_1]", "1", true %>
+      <%= label_tag     included_column_name(resource_name, :value_1), current_group.lings_property_name.pluralize %>
+      <%= check_box_tag included_column_name(resource_name, :value_1), "1", true %>
 
-      <%= label_tag     "search[include][example_1]", "Examples" %>
-      <%= check_box_tag "search[include][example_1]", "1", true %>
+      <%= label_tag     included_column_name(resource_name, :example_1), "Examples" %>
+      <%= check_box_tag included_column_name(resource_name, :example_1), "1", true %>
     </div>
   <% end %>
 

@@ -11,8 +11,6 @@ class Search < ActiveRecord::Base
   validate :creator_not_over_search_limit
 
   serialize :query
-  # serialize :parent_ids
-  # serialize :child_ids
   serialize :result_groups
 
   json_accessor :query, :result_groups

@@ -78,7 +78,7 @@ body.map #main {
 }
 
 .container { width: 950px; padding:1em; margin:0 auto;}
-body.full_width #main { width: auto; padding: 0; }
+body.full_width #main { width: auto; padding: 0 0 1em; }
 
 #main {
   box-shadow: #CCC 0px 1px 3px;
@@ -148,6 +148,8 @@ fieldset select, fieldset input[type="text"] { width:250px;}
   background-color: red;
   display: table;
 }
+
+#search_comparisons fieldset { border:none; padding:10px 0;}
 
 #error_explanation {
   width: 60%;

@@ -15,11 +15,22 @@ class SearchComparison
     EXCLUSION     => :^
   }
 
+  INCLUDED_TO_ATTRS = {
+    :ling_0 => :ling_id,
+    :property_0 => :property_id,
+    :value_0 => :value,
+    :example_0 => :example_ids,
+    :ling_1 => :ling_id,
+    :property_1 => :property_id,
+    :value_1 => :value,
+    :example_1 => :example_ids
+  }
+
   def self.model_name
     "SearchComparison"
   end
 
-  attr_accessor :searches, :creator, :group, :type, :of_id, :with_id, :result_rows
+  attr_accessor :searches, :creator, :group, :type, :of_id, :with_id, :result_rows, :include
   attr_reader :results
 
   def initialize(opts = {})
@@ -62,9 +73,27 @@ class SearchComparison
 
   private
 
-  def build_search_through_comparison
-    result_rows = compare_sets of.result_rows, with.result_rows
+  def included_columns
+    @included_columns ||= @include.dup.symbolize_keys.keys
+  end
 
+  def parent_attrs
+    included_columns.select { |key| key =~ /#{Depth::PARENT}/}.map { |col| INCLUDED_TO_ATTRS[col] }
+  end
+
+  def child_attrs
+    included_columns.select { |key| key =~ /#{Depth::CHILD}/}.map { |col| INCLUDED_TO_ATTRS[col] }
+  end
+
+  def updated_of_query
+    query = of.query || {}
+    query["include"] = @include
+    query
+  end
+
+  def build_search_through_comparison
+    result_rows = compare_sets of.result_rows(parent_attrs, child_attrs), with.result_rows(parent_attrs, child_attrs)
+    
     Search.new do |s|
       s.creator     = creator
       s.group       = group
@@ -73,7 +102,7 @@ class SearchComparison
       # Set query from "of" search as basis for comparison
       # Needed to determined included columns for results
       # TODO save as separate column
-      s.query = of.query
+      s.query = updated_of_query
     end
   end
 

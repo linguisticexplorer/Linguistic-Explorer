@@ -66,6 +66,15 @@ class LingsProperty < ActiveRecord::Base
     ling.parent_id
   end
 
+  def column_map(attrs)
+    [].tap do |cols|
+      cols << self.id
+      attrs.each do |attribute|
+        cols << self.send(attribute)
+      end
+    end
+  end
+
   private
 
   def association_depth_match

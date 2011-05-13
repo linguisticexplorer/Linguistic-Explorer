@@ -39,4 +39,9 @@ module SearchFormsHelper
   def categorized_set_id(name, type)
     "search_group_#{name.underscorize}_#{type}"
   end
+
+  def included_column_name(resource_name, method)
+    # search[include][ling_0]
+    "#{resource_name}[include][#{method}]"
+  end
 end
