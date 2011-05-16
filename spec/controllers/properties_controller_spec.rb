@@ -34,6 +34,19 @@ describe PropertiesController do
         get :show, :id => @property.id, :group_id => @property.group.id
         assigns(:property).should == @property
       end
+
+      it "@values should contain all values associated with the property" do
+        @ling = lings(:level0)
+        @group = @ling.group
+        @lp = lings_properties(:level0)
+        @lp.ling.should == @ling
+        @property = @lp.property
+
+        get :show, :id => @property.id, :group_id => @group.id
+
+        assigns(:values).should include @lp
+        assigns(:values).size.should == @property.lings_properties.size
+      end
     end
 
     it "@property should be found by id through current_group" do

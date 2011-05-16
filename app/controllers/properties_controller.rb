@@ -5,8 +5,7 @@ class PropertiesController < GroupDataController
 
   def show
     @property = current_group.properties.find(params[:id])
-#    @category = @property.category
-#    @values = @property.lings_properties
+    @values = @property.lings_properties.order(:ling_id)
   end
 
   def new

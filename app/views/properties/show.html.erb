@@ -11,6 +11,29 @@
   <%= @property.creator ? @property.creator.name : "Unknown user" %> <br />
 </p>
 
+<br />
+
+<div class="values">
+  <h3><%= current_group.lings_property_name.pluralize %></h3>
+
+  <table>
+    <thead>
+      <th><%= current_group.ling_name_for_depth(@property.depth) %></th>
+      <th><%= current_group.lings_property_name %></th>
+      <th> Creator </th>
+    </thead>
+    <tbody>
+      <% @values.each do |value| %>
+        <tr>
+          <td><%=	link_to value.ling.name, [current_group, value.ling] %></td>
+          <td><%=	link_to value.value, [current_group, value] %></td>
+          <td><%=	(value.creator ? value.creator.name : "") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 <% if can? :edit, @property %>
   <%= link_to 'Edit', edit_group_property_path(current_group, @property) %> |
 <% end %>
