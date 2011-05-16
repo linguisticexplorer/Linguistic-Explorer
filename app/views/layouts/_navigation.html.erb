@@ -7,7 +7,7 @@
       <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
     <% end %>
   </div>
+  <%= render :partial => 'layouts/group_nav_bar' %>
   <%= render :partial => 'layouts/admin_bar' if current_user && current_user.admin? %>
   <%= render :partial => 'layouts/group_admin_bar' if current_user && @group && (current_user.admin? || current_user.administrated_groups.include?(@group)) %>
-  <%= render :partial => 'layouts/group_nav_bar' %>
 </div>
