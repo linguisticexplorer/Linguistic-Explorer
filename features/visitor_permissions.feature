@@ -32,7 +32,7 @@ Feature: Permissions testing for non-logged-in users
     Then I should be on the values page for Syntactic Structures
     And  I follow "Example"
     Then I should be on the examples page for Syntactic Structures
-    And  I follow "ExampleValue"
+    And  I follow "Example Value"
     Then I should be on the example values page for Syntactic Structures
     And  I follow "Members"
     Then I should be on the memberships page for Syntactic Structures

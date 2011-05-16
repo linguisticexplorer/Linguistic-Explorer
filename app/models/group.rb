@@ -6,17 +6,6 @@ class Group < ActiveRecord::Base
     PUBLIC  = 'public'
   ]
   MAXIMUM_ASSIGNABLE_DEPTH = 1
-  DEFAULTS = {
-        :depth_maximum  => MAXIMUM_ASSIGNABLE_DEPTH,
-        :privacy        => PUBLIC,
-        :ling0_name     => "Ling",
-        :ling1_name     => "Linglet",
-        :example_name   => "Example",
-        :property_name  => "Property",
-        :category_name  => "Category",
-        :lings_property_name => "Value",
-        :examples_lings_property_name => "Example Value"
-  }
   DEFAULT_EXAMPLE_KEYS = ["text"]
   DEFAULT_LING_KEYS = ["description"]
 
@@ -89,9 +78,4 @@ class Group < ActiveRecord::Base
   def info_attribute_names
     INFO_ATTRIBUTES
   end
-
-  def examples_lings_property_name
-    read_attribute(:examples_lings_property_name) || DEFAULTS[:examples_lings_property_name]
-  end
-
 end

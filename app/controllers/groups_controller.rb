@@ -23,7 +23,7 @@ class GroupsController < ApplicationController
   end
 
   def new
-    @group = Group.new(Group::DEFAULTS)
+    @group = Group.new
     authorize! :create, @group
   end
 

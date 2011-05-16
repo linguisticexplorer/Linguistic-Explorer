@@ -1,3 +1,10 @@
+Factory.define :group do |f|
+  f.name           "The Best Group"
+  f.privacy        Group::PUBLIC
+  f.depth_maximum  Group::MAXIMUM_ASSIGNABLE_DEPTH
+  f.example_fields "gloss, number"
+end
+
 Factory.define :user do |f|
   f.name          "Bob Jones"
   f.email         "bob@example.com"
@@ -41,22 +48,6 @@ Factory.define :example do |f|
 end
 
 Factory.define :examples_lings_property do |f|
-end
-
-Factory.define :group do |f|
-#TODO: cucumber specs depend on this factory to create a group with appropriately-named custom name fields. If defaults ever get changed, many cuke features will blow up.
-#TODO: the fix is to manually fix the selectors or to overhaul the step/matcher to route through the naming scheme
-  f.name "The Best Group"
-  f.privacy        Group::PUBLIC
-  f.ling0_name     "Parent"
-  f.ling1_name     "Child"
-  f.example_name   "Example"
-  f.property_name  "Property"
-  f.category_name  "Category"
-  f.depth_maximum  Group::MAXIMUM_ASSIGNABLE_DEPTH
-  f.example_fields "gloss, number"
-  f.lings_property_name "Value"
-  f.examples_lings_property_name "ExampleValue"
 end
 
 Factory.define :search do |f|

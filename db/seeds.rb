@@ -57,16 +57,7 @@ puts "Done with Users, starting Groups"
 CSV.foreach(Rails.root.join("doc", "data", "Group.csv"), :headers => true) do |row|
   group = Group.find_or_create_by_name(group_name(row["name"]))
   group.depth_maximum  ||= 1
-  group.ling0_name     ||= "Parent"
-  group.ling1_name     ||= "Child"
-  group.example_name   ||= "Example"
-  group.property_name  ||= "Property"
-  group.category_name  ||= "Category"
-  group.depth_maximum  ||= 1
   group.example_fields ||= "gloss, number"
-  group.lings_property_name ||= "Value"
-  group.examples_lings_property_name ||= "ExampleValue"
-
   group.privacy = row["privacy"].downcase
   group.save!
 end

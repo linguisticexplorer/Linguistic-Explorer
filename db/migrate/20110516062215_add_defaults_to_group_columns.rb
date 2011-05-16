@@ -18,7 +18,11 @@ class AddDefaultsToGroupColumns < ActiveRecord::Migration
 
   def self.down
     COLUMNS.each do |(key, options)|
-      change_column :groups, key, options[:type], :default => ""
+      if key == :depth_maximum
+        change_column :groups, key, options[:type], :default => 0
+      else
+        change_column :groups, key, options[:type], :default => ""
+      end
     end
   end
 end
