@@ -14,6 +14,7 @@ class LingsController < GroupDataController
 
   def show
     @ling = current_group.lings.find(params[:id])
+    @values = @ling.lings_properties.order(:property_id)
   end
 
   def set_values

@@ -75,6 +75,19 @@ describe LingsController do
 
       assigns(:ling).should == @ling
     end
+
+    it "@values should contain all values associated with the ling" do
+      @property = properties(:level0)
+      @group = @property.group
+      @lp = lings_properties(:level0)
+      @lp.property.should == @property
+      @ling = @lp.ling
+
+      get :show, :id => @ling.id, :group_id => @group.id
+
+      assigns(:values).should include @lp
+      assigns(:values).size.should == @ling.lings_properties.size
+    end
   end
 
   describe "set_values" do

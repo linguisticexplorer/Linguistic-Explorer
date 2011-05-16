@@ -29,16 +29,34 @@
     <% end %>
   <% end %>
 
-  <% if !@ling.lings_properties.empty? %>
-    <b><%= current_group.lings_property_name %>:</b> <br />
-    <% @ling.lings_properties.each do |lp| %>
-      <%= link_to "#{lp.property.name}: #{lp.value}", group_lings_property_path(current_group, lp) %> <br />
-    <% end %>
-  <% end %>
-
   <b>Created by:</b> <br />
   <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
 </p>
+
+<br />
+
+<div class="values">
+  <h3><%= current_group.lings_property_name.pluralize %></h3>
+
+  <table>
+    <thead>
+      <th><%= current_group.property_name %></th>
+      <th><%= current_group.lings_property_name %></th>
+      <th> Creator </th>
+    </thead>
+    <tbody>
+      <% @values.each do |value| %>
+        <tr>
+          <td><%=	link_to value.property.name, [current_group, value.property] %></td>
+          <td><%=	link_to value.value, [current_group, value] %></td>
+          <td><%=	(value.creator ? value.creator.name : "") %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<br />
 
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
   <%= link_to "Mass assign", set_values_group_ling_path(current_group, @ling) %> |
