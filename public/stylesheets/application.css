@@ -119,6 +119,15 @@ body.full_width #main h2 {
 #intro p{font-size:1.2em;line-height:135%;text-align:justify;}
 #intro p+p {margin-top:20px;}
 
+#messages{ text-align:center; }
+#messages .alert{  border: 1px solid #C30; }
+#messages .notice{ border: 1px solid #DD0; }
+#messages p{
+  background-color:#DDD;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+
 #title h1 {
   font-size: 5em;
   font-family: Helvetica,Verdana,Arial,sans-serif;
