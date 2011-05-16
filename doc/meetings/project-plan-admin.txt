@@ -63,7 +63,7 @@ x   styling
 x   Hoptoad, etc.
 x   hook in RPM
     Code
-        remove, resolve, or document TODO notes
+        remove, resolve, or document todo notes
         optimize indices on tables
         remove XML responses everywhere
     Hand Testing

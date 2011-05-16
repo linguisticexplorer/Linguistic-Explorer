@@ -1,12 +1,12 @@
 class Example < ActiveRecord::Base
   include Groupable
   include CSVAttributes
-  
+
   CSV_ATTRIBUTES = %w[ id name ling_id group_id creator_id ]
   def self.csv_attributes
     CSV_ATTRIBUTES
   end
-  
+
   belongs_to :ling
   has_many :stored_values, :as => :storable, :dependent => :destroy
   has_many :examples_lings_properties, :dependent => :destroy
@@ -18,7 +18,7 @@ class Example < ActiveRecord::Base
   default_scope includes(:stored_values)
   scope :in_group, lambda { |group| where(:group => group) }
 
-  def grouped_name #TODO remove or add grouped name everywhere
+  def grouped_name
     (group ? group.example_name : "Example")
   end
 

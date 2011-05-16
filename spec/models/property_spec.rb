@@ -7,7 +7,6 @@ describe Property do
 
     it_should_belong_to :group, :creator, :category
     it_should_have_many :lings_properties
-#    should_validate_existence_of :group, :category, :creator
   end
 
   describe "should be createable" do

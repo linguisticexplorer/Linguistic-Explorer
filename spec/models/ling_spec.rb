@@ -8,10 +8,6 @@ describe Ling do
 
     it_should_have_many :examples, :children, :lings_properties, :children
     it_should_belong_to :parent, :group, :creator
-
-#    should_validate_existence_of :group
-#    should_validate_existence_of :creator
-#    should_validate_existence_of :parent, :allow_nil => true
   end
 
   describe "createable with combinations" do

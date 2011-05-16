@@ -7,7 +7,6 @@ describe Membership do
     it_should_validate_inclusion_of :level, :in => Membership::ACCESS_LEVELS
 
     it_should_belong_to :member, :group
-#    it_should_validate_existence_of :group, :user
   end
 
   describe "createable with combinations" do

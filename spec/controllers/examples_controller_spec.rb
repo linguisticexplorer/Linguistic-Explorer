@@ -110,7 +110,7 @@ describe ExamplesController do
         assigns(:example).should == @example
       end
 
-      it "@lings should be a hash with two depth members" do #TODO this might need fixing for 0-depth groups
+      it "@lings should be a hash with two depth members" do
         get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
         lings = assigns(:lings)
         lings.should be_a Hash

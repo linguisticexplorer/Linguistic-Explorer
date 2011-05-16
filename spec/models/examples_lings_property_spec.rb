@@ -5,7 +5,6 @@ describe ExamplesLingsProperty do
     it_should_validate_presence_of :example, :lings_property, :group
     it_should_validate_uniqueness_of :example_id, :scope => :lings_property_id
     it_should_belong_to :example, :lings_property, :group, :creator
-#    should_validate_existence_of :example, :lings_property, :group, :creator
   end
 
   describe "should be createable" do

@@ -2,7 +2,6 @@ LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
 
-  #TODO: make the following line work in the lings resources block
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
 
   resources :groups do
