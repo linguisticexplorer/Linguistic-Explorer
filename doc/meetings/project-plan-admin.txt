@@ -60,41 +60,16 @@ x   Bulk upload
 x   dump SSWL and then send through bulk uploader
 x   styling
   5/2
-x   Hoptoad, etc.
 x   hook in RPM
-    Code
-        optimize indices on tables
-x       remove XML responses everywhere
-    Hand Testing
-        check user flow (sign up, sign in, sign out, reset password) and make sure there is a link to the user self management page
-        hand test permissions everywhere
-x   Docs
-        high level explanation of database architecture
-        testing style/practices guide
-            routing
-            controller
-            permission
-            model
-            features general
-            troubleshooting
-        doing things
-            run specs
-            run features (++verbose mode)
-            run single test
-            create the dbs
-            seed the db
-            drop and recreate/seed the db
-            deploy
-            git commands
-        Non-Essential
-            Docs     - sample plans for arbitrary-depth expansion
-            Admin    - site admin-only pages for all data types ungrouped
-            Feature  - map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
-            Cleanup  - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation
-            Chore    - upgrade to rails 3.1.0 (requires dealing with many deprecation warnings, likely)
-            Refactor - extract stored_values into a module
-            Cleanup  - consider renaming "LingsProperty" everywhere to "Value" (ExampleLP => ExampleValue)
-            Cleanup  - Users should have preference to include or exclude public groups they arent members of from their dropdown
-            Refactor - Decide whether ExamplesValues deserve a mass setting page like Values have (select the example, it finds the ling and all LingsProperties for the ling and lets you select any) and potentially remove the whole ELP controller
-            Cleanup  - Memberships should pre-filter the create/new options to non-members, or make user selection a text field where you have to enter an email (maybe even lets you create an invite a user?)
-            Feature  - specify depth of ling for examples
+x   remove XML responses everywhere
+    check user flow (sign up, sign in, sign out, reset password) and make sure there is a link to the user self management page
+    hand test permissions everywhere
+    Hoptoad
+    Email
+
+    Cleanup  - indices on tables
+    Feature  - map it! functionality automatically appears on a search result set with objects that have "latlong" preferences/attributes
+    Cleanup  - Do not display depth selectors anywhere (reference type names), do not allow or show the option of depth change post record creation
+    Chore    - upgrade to rails 3.1.0 (requires dealing with many deprecation warnings, likely)
+    Refactor - extract stored_values into a module
+    Refactor - Decide whether ExamplesValues deserve a mass setting page like Values have (select the example, it finds the ling and all LingsProperties for the ling and lets you select any) and potentially remove the whole ELP controller
