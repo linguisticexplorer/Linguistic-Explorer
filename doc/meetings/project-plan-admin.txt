@@ -63,13 +63,12 @@ x   styling
 x   Hoptoad, etc.
 x   hook in RPM
     Code
-        remove, resolve, or document todo notes
         optimize indices on tables
-        remove XML responses everywhere
+x       remove XML responses everywhere
     Hand Testing
         check user flow (sign up, sign in, sign out, reset password) and make sure there is a link to the user self management page
         hand test permissions everywhere
-    Docs
+x   Docs
         high level explanation of database architecture
         testing style/practices guide
             routing
