@@ -22,6 +22,11 @@ class GroupsController < ApplicationController
     authorize! :show, @group
   end
 
+  def info
+    @group = Group.find(params[:id])
+    authorize! :show, @group
+  end
+
   def new
     @group = Group.new
     authorize! :create, @group

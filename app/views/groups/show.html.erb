@@ -1,5 +1,5 @@
 <% add_body_classes "map" %>
-<% page_heading "Group" %>
+<% page_heading @group.name %>
 
 <div id="inner">
   <div id="title">
@@ -9,15 +9,15 @@
     <%- if @group.description.present? -%>
       <p><%= @group.description %></p>
     <% end %>
+
+    <% @group.depths.each do |depth| %>
+      <p><%= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth) %></p>
+    <% end %>
+    <p><%= link_to @group.property_name.pluralize, group_properties_path(@group) %></p>
+    <p><%= link_to @group.example_name.pluralize, group_examples_path(@group) %></p>
+
     <p>
-      <%- @group.info_attribute_names.each do |attr_name| -%>
-        <span class="strong"><%= attr_name.titleize %>:</span> <%= @group.send(attr_name) %> <br />
-      <%- end -%>
-    </p>
-    <p>
-      <% if can? :update, @group %>
-        <%= link_to 'Edit', edit_group_path(@group) %> |
-      <% end %>
+      <%= link_to 'Group Info', info_group_path(@group) %> |
       <%= link_to 'Search this group', [:new, current_group, :search] %> |
       <%= link_to 'All groups', groups_path %>
     </p>

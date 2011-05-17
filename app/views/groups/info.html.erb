@@ -1,0 +1,29 @@
+<% add_body_classes "map" %>
+<% page_heading "Group Info" %>
+
+<div id="inner">
+  <div id="title">
+    <h1><%= @group.name %></h1>
+  </div>
+  <div id="intro">
+    <%- if @group.description.present? -%>
+      <p><%= @group.description %></p>
+    <% end %>
+    <p>
+      <%- @group.info_attribute_names.each do |attr_name| -%>
+        <span class="strong"><%= attr_name.titleize %>:</span> <%= @group.send(attr_name) %> <br />
+      <%- end -%>
+    </p>
+
+    <p>
+      <% if can? :update, @group %>
+        <%= link_to 'Edit', edit_group_path(@group) %> |
+      <% end %>
+      <%= link_to 'Back', current_group %> |
+      <%= link_to 'Search this group', [:new, current_group, :search] %>
+    </p>
+  </div>
+</div>
+
+
+

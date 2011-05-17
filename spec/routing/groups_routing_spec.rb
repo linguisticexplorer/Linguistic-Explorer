@@ -10,6 +10,10 @@ describe GroupsController do
       { :get => "/groups/new" }.should route_to(:controller => "groups", :action => "new")
     end
 
+    it "recognizes and generates #info" do
+      { :get => "/groups/1/info" }.should route_to(:controller => "groups", :action => "info", :id => "1")
+    end
+
     it "recognizes and generates #show" do
       { :get => "/groups/1" }.should route_to(:controller => "groups", :action => "show", :id => "1")
     end

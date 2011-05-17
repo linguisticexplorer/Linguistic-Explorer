@@ -68,6 +68,24 @@ describe GroupsController do
     end
   end
 
+  describe "info" do
+    it "should authorize :show on group" do
+      @ability = Ability.new(nil)
+      @group = Factory(:group)
+      @ability.should_receive(:can?).with(:show, @group).and_return true
+      @controller.stub(:current_ability).and_return(@ability)
+      Group.stub(:find).and_return(@group)
+      get :info, :id => @group.id
+    end
+
+    describe "assigns" do
+      it "@group should match the requested group id" do
+        get :info, :id => groups(:inclusive).id
+        assigns(:group).should == groups(:inclusive)
+      end
+    end
+  end
+
   describe "new" do
     def do_new
       get :new
