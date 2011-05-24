@@ -68,14 +68,14 @@ Error: No configuration file specified.
           File.open(config_name, "wb+") { |f| f.write remote_yml.to_yaml }
           upload config_name, remote_config
         ensure
-          File.unlink config_name
+          File.unlink config_name if File.exists? config_name
         end
 
         cmd = ["cd #{deploy_to}/current"]
         cmd << "/usr/bin/env rake group_data:import RAILS_ENV=production CONFIG=#{remote_config}"
         cmd = cmd.join(' && ')
-        
-        
+
+
         run cmd
         puts "Importing data..."
       end

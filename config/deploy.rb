@@ -21,11 +21,15 @@ set :branch       , "master"
 # role :db, master db server
 server "50.56.97.125:10003", :app, :web, :db, :primary => true
 
-# RVM Ruby Version Manager
-$:.unshift(File.expand_path('./lib', ENV['rvm_path']))  # Add RVM's lib directory to the load path.
-require "rvm/capistrano"
-set :rvm_ruby_string, "1.9.2-head@ling"                 # set rvm ruby version and gemset
-set :rvm_type, :user
+begin
+  # RVM Ruby Version Manager
+  $:.unshift(File.expand_path('./lib', ENV['rvm_path']))  # Add RVM's lib directory to the load path.
+  require "rvm/capistrano"
+  set :rvm_ruby_string, "1.9.2-head@ling"                 # set rvm ruby version and gemset
+  set :rvm_type, :user
+rescue LoadError
+  puts "rvm not installed"
+end
 
 # Bundler
 require 'bundler/capistrano'
