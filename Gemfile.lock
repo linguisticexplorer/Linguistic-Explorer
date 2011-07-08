@@ -221,7 +221,7 @@ DEPENDENCIES
   mongrel (= 1.2.0.pre2)
   mysql
   newrelic_rpm
-  nokogiri (<= 1.5.0.beta.2, >= 1.4.4.1)
+  nokogiri (>= 1.4.4.1, <= 1.5.0.beta.2)
   passenger
   pg
   rails (= 3.0.6)
