@@ -1,0 +1,27 @@
+* Reset della ricerca -> V
+    Quando si fa una ricerca e si selezionano vari campi sarebbe
+    opportuno avere un tasto per fare il reset dei campi selezionati
+
+* aggiungere un tasto "Search" ad inizio pagina -> V
+
+* aggiungere la funzione di "Implicazione Universale" (cfr SSWL)
+    Bisogna prevedere sia una ricerca antecedente, consequenziale che
+    entrambe per l'implicazione universale
+
+* Aggiungere tests
+
+* Albero di somiglianza
+    guardare codice SSWL per API con il linguaggio R
+
+* aggiungere funzionalità di Localizzazione (Map it)
+    guardare codice SSWL per utilizzo API Google Maps
+
+* Migliorare sistema di upload
+    Inserire un sistema di controllo del formato di upload inviato
+    Prevedere un sistema di controllo della dimensione dei file in upload
+    Migliorare le performance per l'upload di file
+    Risolvere problema crash per file in upload di grosse dimensioni
+
+* Ottenere codice SSWL  -> V
+
+* Far girare TerraLing in locale -> V

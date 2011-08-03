@@ -1,0 +1,45 @@
+Installare Terraling:
+
+Installare Ruby 1.9.x
+Installare RVM
+Installare Rails 3.x
+Installare GIT -> configurare github.com
+
+Installare MySQL 5.x
+Installare PostgreSQL 9.x
+
+Modifiche da fare:
+Per utilizzare Terraling con Rails3 bisogna cambiare l'adapter da mysql a mysql2
+File: Gemfile
+gem 'mysql'  => gem 'mysql2', '~> 0.2.7'
+
+Da eliminare:
+Gemfile.lock
+
+Da eseguire:
+PATH=$PATH:/path/to/PostgreSQL/bin/ rvmsudo bundle install -> usually "/Library/PostgreSQL/9.0/bin/"
+rake db:setup
+
+File mancanti:
+./config/database.yml -> da configurare ad hoc per MySQL (user, password e host, adapter: "mysql2")
+./doc/data/Callhome-English.IPA.sample.csv
+./doc/data/Callhome-Spanish.IPA.sample.csv
+/doc/data/Category.csv
+./doc/data/CELEX-German.IPA.sample.csv
+./doc/data/dendo.csv
+./doc/data/Example.csv
+./doc/data/ExampleLingPropVal.csv
+./doc/data/Group.csv
+./doc/data/GroupMembership.csv
+./doc/data/in.csv
+./doc/data/Ling.csv
+./doc/data/LingPropVal.csv
+./doc/data/Property.csv
+./doc/data/User.csv
+
+Per eseguire i test:
+rake rspec = oppure = Tools -> Rake Tasks -> Rspec
+
+Per fare il login come admin:
+mail:   a@dmin.com
+psw:    password
