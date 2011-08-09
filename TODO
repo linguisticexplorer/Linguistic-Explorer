@@ -9,19 +9,46 @@
     entrambe per l'implicazione universale
 
 * Aggiungere tests
+    Nuovi testcase - RSpec:
+
+    Nuove Features - Cucumber:
+    - "Visitor allows all languages, all properties"
+    - "Visitor allows one language, multiple properties, language has not all properties chosen"
+    - "Visitor allows one language, multiple properties, language has all properties chosen"
+    - "Visitor can read Group Info"
+    - "Exclusion of second search with first search"
+    - "Exclusion with self, no results"
+    - "Union with self, no results"
+    - "Wrong keyword search on ling depth 0, Right keyword on ling depth 1, no result"
+    - "Wrong keyword search, no result"
+    - "Combined keywords search on ling depth 0 and depth 1"
+    - "Partial keyword search on property, one result"
+    - "Partial keyword search on property, all results"
+    - "Save compared search"
+    - "Visitor selects two value pairs, no result"
+    - "Visitor selects one value pair" - All
+    - "The administrator is signed in and then signs out"
+    - "Choose value pair too"
+    - "Right keyword search on ling depth 0, Wrong keyword on ling depth 1, no result"
 
 * Albero di somiglianza
     guardare codice SSWL per API con il linguaggio R
+    - Considerare l'utilizzo di un wrapper Ruby per il linguaggio R
+        * rsruby, crantastic, rinruby, simpler
 
 * aggiungere funzionalità di Localizzazione (Map it)
     guardare codice SSWL per utilizzo API Google Maps
+    - Considerare plugin Ruby on Rails per l'utilizzo di provider di mappe: gmaps4rails ci piace.
 
 * Migliorare sistema di upload
-    Inserire un sistema di controllo del formato di upload inviato
+    Inserire un sistema di controllo del formato per il file in upload
     Prevedere un sistema di controllo della dimensione dei file in upload
     Migliorare le performance per l'upload di file
-    Risolvere problema crash per file in upload di grosse dimensioni
+    Risolvere problema del crash per file in upload di grosse dimensioni
 
 * Ottenere codice SSWL  -> V
 
 * Far girare TerraLing in locale -> V
+
+* Riuscire a sincronizzare il codice con github mediante l'account: dovrebbe esistere un nuovo
+  "branch" del codice (non il fork quindi)

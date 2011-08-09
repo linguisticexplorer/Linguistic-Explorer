@@ -45,11 +45,10 @@ Feature: Search All Ling Prop Value Pair
     And I should not see "no"
     And I should not see "Degree Adjective"
 
-  Scenario: Visitor selects two value pairs, no result
+  Scenario: Visitor selects two value pairs, no results
     When I go to the Syntactic Structures search page
     And I select "Degree Adjective: no" from "Grammar Value Pairs"
     And I select "Adjective Degree: no" from "Grammar Value Pairs"
     And I choose "All" within "#grammar_value_pairs"
     And I press "Show results"
-    Then I should see "Results"
     Then I should see no search result rows

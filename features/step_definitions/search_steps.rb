@@ -156,3 +156,7 @@ end
 Then /^I should see no search result rows?$/ do
   page.should_not have_css("div.search_result.row")
 end
+
+Then /^I should see a map?/ do
+  #page.should have_css("div.map_canvas")
+end

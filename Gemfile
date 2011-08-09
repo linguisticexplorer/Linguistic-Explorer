@@ -56,10 +56,11 @@ group :development, :test, :pg_test do
   gem "cucumber", "0.10.2"
   gem "database_cleaner", "0.6.7"
   gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
-  gem 'capybara'
+  gem 'capybara', "~>0.4.1"
   gem 'launchy'
+  gem 'gmaps4rails'
 end
 
 group :pg_test do
-  gem 'pg'
+  #gem 'pg'
 end

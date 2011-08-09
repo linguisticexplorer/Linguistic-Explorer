@@ -12,18 +12,22 @@ module SearchResults
     def intersect(filter)
       d_0_vals, d_1_vals = [@filter.depth_0_vals, @filter.depth_1_vals]
 
+      Rails.logger.debug "d_1_vals: #{d_1_vals.inspect} \n-> .to_a.any? #{d_1_vals.to_a.any?} \n-> .blank? #{d_1_vals.blank?}"
       # Calling "to_a" because of bug in rails when calling empty?/any? on relation not yet loaded
       # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
       if d_1_vals.to_a.any?
         d_1_vals  = filter_depth_1_vals_by_selected_ling_parents  d_0_vals, d_1_vals
         d_0_vals  = filter_depth_0_vals_by_filtered_depth_1_vals  d_0_vals, d_1_vals
       end
+
       [d_0_vals, d_1_vals]
     end
 
     def filter_depth_1_vals_by_selected_ling_parents(depth_0_vals, depth_1_vals)
+      return [] if depth_1_vals == [-1]
       val_ids         = depth_1_vals.map(&:id).uniq
       parent_ling_ids = depth_0_vals.map(&:ling_id).uniq
+
 
       LingsProperty.select_ids.
         with_id(val_ids).
@@ -32,8 +36,10 @@ module SearchResults
     end
 
     def filter_depth_0_vals_by_filtered_depth_1_vals(depth_0_vals, depth_1_vals)
+      return [] if depth_1_vals == [-1]
       val_ids         = depth_0_vals.map(&:id).uniq
       parent_ling_ids = depth_1_vals.map(&:parent_id).uniq
+
       LingsProperty.select_ids.
         with_id(val_ids).
         with_ling_id(parent_ling_ids).
