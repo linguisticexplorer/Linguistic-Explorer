@@ -1,4 +1,4 @@
-Feature: Show search columns
+Feature: Show simple search columns
 
   Background:
     Given I am a visitor

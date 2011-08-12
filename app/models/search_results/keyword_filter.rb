@@ -31,11 +31,10 @@ module SearchResults
       result = @filter_strategy_instance.vals_at(depth)
 
       ##########################################################################
-      # Trick to solve problem with intersection on no results found in depth 1#
-      # keyword search                                                         #
+      # Trick to solve problem with intersection on no results found in depth  #
+      # 1 keyword search                                                       #
       ##########################################################################
-      result = [] if (depth.to_s=='0') & (result==[-1])
-      return result
+      (depth.to_s=='0') & (result==[-1]) ? [] : result
     end
 
   end
@@ -64,14 +63,17 @@ module SearchResults
 
     def select_vals_by_keyword(vals, keyword)
       result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
-      return [-1] if result.empty?
-      return result
+
+      # With this trick it is possible to know if a keyword
+      # search was performed or not with no results
+      result.empty? ? [-1] : result
     end
 
     def search_scope_name_by_keyword(keyword)
-
-      model_class.unscoped.where(:group_id => group.id).
+      result = model_class.unscoped.where(:group_id => group.id).
         where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+
+      return result
     end
   end
 

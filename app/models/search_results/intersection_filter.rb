@@ -12,7 +12,6 @@ module SearchResults
     def intersect(filter)
       d_0_vals, d_1_vals = [@filter.depth_0_vals, @filter.depth_1_vals]
 
-      Rails.logger.debug "d_1_vals: #{d_1_vals.inspect} \n-> .to_a.any? #{d_1_vals.to_a.any?} \n-> .blank? #{d_1_vals.blank?}"
       # Calling "to_a" because of bug in rails when calling empty?/any? on relation not yet loaded
       # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
       if d_1_vals.to_a.any?

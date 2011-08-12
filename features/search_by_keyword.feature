@@ -109,6 +109,12 @@ Feature: Keyword Search on Ling
     And I press "Show results"
     Then I should see no search result rows
 
+  Scenario: Wrong (but existing in DB) keyword search on ling depth 0, Right keyword on ling depth 1, no results
+    When I fill in "Language Keywords" with "Spa"
+    When I fill in "Sentence Keywords" with "Quest"
+    And I press "Show results"
+    Then I should see no search result rows
+
   Scenario: Right keyword search on ling depth 0, Wrong (but existing in DB) keyword on ling depth 1, no results
     When I fill in "Language Keywords" with "Eng"
     When I fill in "Sentence Keywords" with "Ans"

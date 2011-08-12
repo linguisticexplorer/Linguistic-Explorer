@@ -4,9 +4,9 @@ module SearchResults
     attr_accessor :strategy
 
     def initialize(filter, query)
-      @filter   = filter
-      @query   = query
-
+      #@filter   = filter
+      #@query   = query
+      super
       yield self if block_given?
 
       @depth_0_vals, @depth_1_vals = filter_by_all_selection_within_category

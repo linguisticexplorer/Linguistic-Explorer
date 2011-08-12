@@ -18,7 +18,7 @@ class SearchesController < GroupDataController
       s.query   = params[:search]
     end
 
-    Rails.logger.debug "Step 1"
+    Rails.logger.debug "Step 1 => #{self.class}"
     authorize! :search, @search
 
     # @search.get_results!

@@ -59,6 +59,7 @@ module SearchResults
         f.strategy = strategy
       end
     end
+
   end
 
 end
