@@ -32,6 +32,7 @@
 #
 
 require 'csv'
+require 'crewait'
 
 module GroupData
   class Importer
@@ -55,6 +56,7 @@ module GroupData
       end
     end
 
+    #puts "Loading lazy_cache"
     lazy_init_cache :groups, :user_ids, :ling_ids, :category_ids, :property_ids, :example_ids, :lings_property_ids
 
     # accepts path to yaml file containing paths to csvs
@@ -64,7 +66,16 @@ module GroupData
     end
 
     def import!
+
+      Crewait.start_waiting
+      reset = "\r\e[0K"
+
       # processing users
+      logger.info "processing #{csv_size(:user)} users"
+      #puts "processing users"
+
+      print "processing users..."
+
       csv_for_each :user do |row|
         user = User.find_or_initialize_by_email(row["email"])
         if user.new_record?
@@ -75,8 +86,12 @@ module GroupData
         # cache user id
         user_ids[row["id"]] = user.id
       end
+      print "#{reset}processing users...[OK]"
 
-      logger.info "processing groups"
+      logger.info "processing #{csv_size(:group)} groups"
+      print "\nprocessing groups..."
+      #puts "processing groups"
+
       csv_for_each :group do |row|
         group = Group.find_or_initialize_by_name(row["name"])
         save_model_with_attributes(group, row)
@@ -84,8 +99,13 @@ module GroupData
         # cache group id
         groups[row["id"]] = group
       end
+      print "#{reset}processing groups...[OK]"
 
-      logger.info "processing memberships"
+      logger.info "processing #{csv_size(:membership)} memberships"
+      #puts "processing memberships"
+
+      print "\nprocessing memberships..."
+
       csv_for_each :membership do |row|
         group       = groups[row["group_id"]]
         member_id   = user_ids[row["member_id"]]
@@ -93,9 +113,15 @@ module GroupData
           m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
         end
         save_model_with_attributes(membership, row)
-      end
 
-      logger.info "processing lings"
+      end
+      print "#{reset}processing memberships...[OK]"
+
+      logger.info "processing #{csv_size(:ling)} lings"
+      #puts "processing lings"
+
+      print "\nprocessing lings..."
+
       csv_for_each :ling do |row|
         group     = groups[row["group_id"]]
         ling      = group.lings.find_or_initialize_by_name(row["name"]) do |m|
@@ -106,17 +132,28 @@ module GroupData
         # cache ling id
         ling_ids[row["id"]] = ling.id
       end
+      print "#{reset}processing lings...[OK]"
 
-      logger.info "parent/child ling associations"
+      logger.info "processing #{csv_size(:ling)} parent/child ling associations"
+      #puts "parent/child ling associations"
+
+      print "\nprocessing ling associations..."
+
       csv_for_each :ling do |row|
         next if row["parent_id"].blank?
         child   = Ling.find(ling_ids[row["id"]])
         parent  = Ling.find(ling_ids[row["parent_id"]])
         child.parent = parent
         child.save!
-      end
 
-      logger.info "processing categories"
+      end
+      print "#{reset}processing ling associations...[OK]"
+
+      logger.info "processing #{csv_size(:category)} categories"
+      #puts "processing categories"
+
+      print "\nprocessing categories..."
+
       csv_for_each :category do |row|
         group     = groups[row["group_id"]]
         category  = group.categories.find_or_initialize_by_name(row["name"]) do |m|
@@ -127,8 +164,13 @@ module GroupData
         # cache category id
         category_ids[row["id"]] = category.id
       end
+      print "#{reset}processing categories...[OK]"
 
-      logger.info "processing properties"
+      logger.info "processing #{csv_size(:property)} properties"
+      #puts "processing properties"
+
+      print "\nprocessing properties..."
+
       csv_for_each :property do |row|
         group    = groups[row["group_id"]]
         category = group.categories.find(category_ids[row["category_id"]])
@@ -141,8 +183,13 @@ module GroupData
         # cache property id
         property_ids[row["id"]] = property.id
       end
+      print "#{reset}processing properties...[OK]"
 
-      logger.info "processing examples"
+      logger.info "processing #{csv_size(:example)} examples"
+      #puts "processing examples"
+
+      print "\nprocessing examples..."
+
       csv_for_each :example do |row|
         group    = groups[row["group_id"]]
         ling     = Ling.find(ling_ids[row["ling_id"]])
@@ -155,25 +202,46 @@ module GroupData
         # cache example id
         example_ids[row["id"]] = example.id
       end
+      print "#{reset}processing examples...[OK]"
 
-      logger.info "processing lings_property"
+      total = csv_size(:lings_property)
+      logger.info "processing #{total} lings_property"
+
+      print "\nprocessing lings_property..."
+      print " will take about #{total/5000} minutes for #{total} rows" unless total<10000
+
       csv_for_each :lings_property do |row|
         group       = groups[row["group_id"]]
         ling_id     = ling_ids[row["ling_id"]]
         value       = row["value"]
         property_id = property_ids[row["property_id"]]
-        conditions  = { :value => value, :ling_id => ling_id, :property_id => property_id }
+
+        conditions = { :value => value,
+                        :ling_id => ling_id,
+                        :property_id => property_id,
+                        :property_value => "#{property_id}:#{value}"
+          }
+        if row["creator_id"].present?
+          creator = User.find(user_ids[row["creator_id"]])
+          conditions[:created_at] = creator.created_at
+          conditions[:updated_at] = creator.updated_at
+          conditions[:group_id] = group.id
+          conditions[:creator_id] = creator.id
+        end
 
         lp = group.lings_properties.where(conditions).first ||
-          group.lings_properties.create(conditions) do |lp|
-            lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-          end
+            group.lings_properties.crewait(conditions)
 
         # cache lings_property id
         lings_property_ids[row["id"]] = lp.id
       end
-      
-      logger.info "processing examples_lings_property"
+
+      Crewait.go!
+      print "#{reset}processing lings_property...[OK]"
+
+      logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
+      print "\nprocessing examples_lings_property..."
+
       csv_for_each :examples_lings_property do |row|
         group             = groups[row["group_id"]]
         example_id        = example_ids[row["example_id"]]
@@ -185,8 +253,11 @@ module GroupData
             elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
           end
       end
+      print "#{reset}processing examples_lings_property...[OK]"
 
-      logger.info "processing stored value"
+      logger.info "processing #{csv_size(:stored_value)} stored value"
+      print "\nprocessing stored_values..."
+
       csv_for_each :stored_value do |row|
         group         = groups[row["group_id"]]
         storable_type = row['storable_type']
@@ -195,7 +266,9 @@ module GroupData
             :key => row["key"], :value => row["value"] }
 
         group.stored_values.where(conditions).first || group.stored_values.create(conditions)
+
       end
+      print "#{reset}processing stored_values...[OK]\n"
     end
 
     private
@@ -211,6 +284,10 @@ module GroupData
       CSV.foreach(@config[key], :headers => true) do |row|
         yield(row)
       end
+    end
+
+    def csv_size(key)
+      (CSV.read(@config[key]).length) -1
     end
     
     def logger

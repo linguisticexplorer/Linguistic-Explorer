@@ -16,7 +16,7 @@ module SearchResults
           groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
         end
       end
-      Rails.logger.debug "DEBUG: Results =>\n#{result.inspect}"
+      #Rails.logger.debug "DEBUG: Results =>\n#{result.inspect}"
       return result
     end
 
@@ -66,7 +66,7 @@ module SearchResults
       parent_filtered_results = parent_results.select { |r| r if filter.columns_filter(r, Depth::PARENT) }
       child_filtered_results = child_results.select { |r| r if filter.columns_filter(r, Depth::CHILD) }
 
-      Rails.logger.debug "DEBUG: \nParents\n\tPre:#{parent_results.count} \t Post:#{parent_filtered_results.count}\nChildren\n\tPre:#{child_results.count} \t Post:#{child_filtered_results.count}"
+      #Rails.logger.debug "DEBUG: \nParents\n\tPre:#{parent_results.count} \t Post:#{parent_filtered_results.count}\nChildren\n\tPre:#{child_results.count} \t Post:#{child_filtered_results.count}"
       #parent_filtered_results.each do |parent|
       #  Rails.logger.debug "DEBUG: \nParent: #{parent.inspect}"
       #end
@@ -95,7 +95,7 @@ module SearchResults
   class ColumnsFilter
 
     def initialize(columns)
-      Rails.logger.debug "DEBUG: #{columns}"
+      #Rails.logger.debug "DEBUG: #{columns}"
       @columns ||= columns
       @selected ||={}
       @test_0 = true
@@ -104,7 +104,7 @@ module SearchResults
         @test_0 &= col.to_s=~/0/
         @test_1 &= col.to_s=~/1/
       end
-      Rails.logger.debug "DEBUG: \n\tTest_0: #{@test_0} \n\tTest_1: #{@test_1}"
+      #Rails.logger.debug "DEBUG: \n\tTest_0: #{@test_0} \n\tTest_1: #{@test_1}"
     end
 
     def columns_filter(result, family)
@@ -142,7 +142,7 @@ module SearchResults
       return false if index.empty?
       @selected[index]= 1 if !@selected[index].nil?
       @selected[index]= 0 if @selected[index].nil?
-      Rails.logger.debug "DEBUG: \n\t#{@selected[index]== 0} =>\n\tIndex:#{index.inspect}" if @selected[index]== 0
+      #Rails.logger.debug "DEBUG: \n\t#{@selected[index]== 0} =>\n\tIndex:#{index.inspect}" if @selected[index]== 0
       return @selected[index]== 0
     end
 
