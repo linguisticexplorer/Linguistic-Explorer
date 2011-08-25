@@ -11,7 +11,7 @@ module GroupData
   Capistrano::Configuration.instance.load do
 
     namespace :group_data do
-      
+
       desc "Download sql dump file from production"
       task :dump do
         remote_file = "/var/backups/database/terraling_production.sql"
@@ -32,12 +32,13 @@ module GroupData
       DESC
       task :import do
         require 'yaml'
-        
+        require 'group_data/validator'
+
         okString = "OK"
         errString = "ERROR"
         defaultConfig = "config/import.yml"
         err = 0
-        
+
         # Use exists? instead of defined? -> Capistrano Doc
         if exists?(:conf)
           puts "Custom configuration file:\n\t\e[34m#{conf}\e[0m"
@@ -46,7 +47,10 @@ module GroupData
           puts "Using default configuration file:\n\t\e[34m#{defaultConfig}\e[0m"
           local_config ||= defaultConfig
         end
-        
+
+
+        # Load configuration file, if it doesn't find specified path
+        # will make a try to load default configuration file
         local_yml = begin
           print "Reading configuration file..."
           #local_config = "config/import.yml"
@@ -64,7 +68,7 @@ module GroupData
           err += 1
           retry if err <2
           puts
-          exit
+          exit(1)
         rescue
           print "\e[31mERROR\n\e[0m"
           puts <<-MSG
@@ -74,33 +78,42 @@ module GroupData
 
 \tExiting the task
           MSG
-          exit
+          exit(1)
         end
         err = 0
         # Config file found
         print "\e[32m#{okString}\n\e[0m"
 
-        print "Check data files..."
+
+        # Check files are in path
+        print "Check files..."
         ok = true
         local_yml.each do |path_key, path|
-           ok &= File.exists? path
+          ok &= File.exists? path
           if(!ok)
-          print "\e[31mERROR\n\e[0m"
-          puts <<-MSG
+            print "\e[31mERROR\n\e[0m"
+            puts <<-MSG
 \tError: CSV file does not exist: \n\t#{path_key} => \e[34m#{path}\e[0m
 
 \tExiting the task
-          MSG
-          exit
-        end
+            MSG
+            exit(1)
+          end
         end
 
         print "\e[32m#{okString}\n\e[0m"
+
+        # Validate data in files with a local Rake task before send to the remote server
+        puts "Check data files..."
+        system "rake group_data:validate CONFIG=#{local_config}"
+        exit(1) if $? != 0                                      # Will exit if rake task exit with an error
+        puts "Check data files...\e[32m#{okString}\n\e[0m"
+
         # Translate local config into remote config
         remote_dir    = "/var/tmp/#{Time.now.to_i}"
         config_name   = "config.yml"
         remote_config = "#{remote_dir}/#{config_name}"
-        
+
         puts "Temporary remote configuration will placed at:\n\t '\e[34m#{remote_config}\e[0m'\n"
 
         remote_yml = {}.tap do |yml|
@@ -112,7 +125,7 @@ module GroupData
         #puts remote_yml
         puts
         #puts local_yml
-        
+
         # Upload local config and csvs to remote server
         begin
           run "mkdir #{remote_dir}"
@@ -133,19 +146,18 @@ module GroupData
           File.unlink config_name if File.exists? config_name
         end
 
-        #cmd = ["cd #{deploy_to}/current"]
+        cmd = ["cd #{deploy_to}/current"]
 
-        # For debug in localhost purpose
-        cmd = ["cd #{deploy_to}"]
-        cmd << "export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/"
-        cmd << "/usr/bin/env rake group_data:import RAILS_ENV=development CONFIG=#{remote_config} --trace"
+        # Sometimes it is useful for testing in localhost...
+        #cmd << "export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/"
+
+        cmd << "/usr/bin/env rake group_data:import RAILS_ENV=development CONFIG=#{remote_config}"
         cmd = cmd.join(' && ')
-
 
         run cmd
         puts "Importing data...Done"
       end
     end
-  end
 
+  end
 end
