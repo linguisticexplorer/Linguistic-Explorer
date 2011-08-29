@@ -3,7 +3,7 @@ module CSVHelper
   def generate_csv_and_destroy_records(*models)
     base = models.first.class
 
-    CSV.open("spec/csv/#{base.name}.csv", "wb") do |csv|
+    CSV.open("spec/csv/good/#{base.name}.csv", "wb") do |csv|
       # header row
       cols = base::CSV_ATTRIBUTES
       csv << cols
@@ -17,11 +17,45 @@ module CSVHelper
     models.map { |m| m.destroy }
   end
 
-  def csv_row_count_should_equal_count_of(*models)
-    # Add one to account for header row
-    CSV.read("spec/csv/#{models.first.class.name}.csv").size.should == models.size + 1
+  def generate_bad_csv_from_good_ones!(dir)
+    files = File.join(Rails.root.join("spec", "csv", "good"), "*.csv")
+    Dir.glob(files).each do |file|
+      FileUtils.cp(file, Rails.root.join("spec", "csv", "bad", dir, file.gsub(/.*good\//, "")))
+    end
+    files = File.join(Rails.root.join("spec", "csv", "bad", dir), "*.csv")
+    generate_bad_csv_no_id!(files) if dir=="no_id"
+    generate_bad_csv_foreign_key!(files) if dir=="bad_foreign_key"
+    generate_bad_csv_creator_id!(files) if dir=="bad_creator_id"
   end
 
+  def generate_bad_csv_no_id!(files)
+    generate_bad_csvs(files) do |content, row|
+      new_row = row.to_hash
+      new_row["id"] = nil if new_row["id"].present?
+      content << new_row
+    end
+  end
+
+  def generate_bad_csv_foreign_key!(files)
+    generate_bad_csvs(files) do |content, row|
+      new_row = row.to_hash
+      new_row["group_id"] = "-1" if new_row["group_id"].present?
+      content << new_row
+    end
+  end
+
+  def generate_bad_csv_creator_id!(files)
+    generate_bad_csvs(files) do |content, row|
+      new_row = row.to_hash
+      new_row["creator_id"] = "-1" if new_row["creator_id"].present?
+      content << new_row
+    end
+  end
+
+  def csv_row_count_should_equal_count_of(*models)
+    # Add one to account for header row
+    CSV.read("spec/csv/good/#{models.first.class.name}.csv").size.should == models.size + 1
+  end
 
   def generate_group_data_csvs!
     # Create users
@@ -117,8 +151,23 @@ module CSVHelper
     @group_data.each do |models|
       generate_csv_and_destroy_records(*models)
     end
+  end
 
-    return @group_data
+  def generate_bad_csvs(files)
+    Dir.glob(files).each do |file|
+      content = []
+      header = (CSV.read file).shift
+      CSV.foreach(file, :headers => true) do |row|
+        yield(content, row)
+      end
+
+      CSV.open(file, "wb") do |csv|
+        csv << header
+        content.each do |row|
+          csv <<  header.map {|attribute| row[attribute]}
+        end
+      end
+    end
   end
 
 end

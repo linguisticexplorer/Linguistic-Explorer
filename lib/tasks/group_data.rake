@@ -26,7 +26,7 @@ namespace :group_data do
 
     config    = YAML.load_file(ENV['CONFIG'])
 
-    GroupData::Validator.validate(config)
+    GroupData::Validator.load(config).validate!
   end
 
 end

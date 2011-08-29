@@ -6,14 +6,7 @@ module GroupData
 
     before(:all) do
       # Create fixture CSVs for import
-      @group_data = generate_group_data_csvs!
-
-      # Set properly data
-      @users, @group, @memberships, @examples, @lings, @categories,
-      @properties, @lings_properties, @examples_lings_properties, @stored_values = @group_data
-
-      # Extract from array groups data
-      @group = @group[0]
+      generate_group_data_csvs!
     end
 
     describe "import!" do
@@ -29,18 +22,18 @@ module GroupData
           :membership,
           :property,
           :stored_value].each do |model|
-            paths[model.to_s] = Rails.root.join("spec", "csv", "#{model.to_s.camelize}.csv").to_s
+            paths[model.to_s] = Rails.root.join("spec", "csv", "good","#{model.to_s.camelize}.csv").to_s
           end
         end
-        File.open(Rails.root.join("spec", "csv", "import.yml"), "wb") { |f| f.write config.to_yaml }
+        File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
 
-        @config   = YAML.load_file(Rails.root.join("spec", "csv", "import.yml"))
+        @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
         @importer = Importer.import(@config)
         @current_group = Group.find_by_name(@group.name)
       end
 
       it "should load configuration from yaml" do
-        @importer.config[:ling].should == Rails.root.join("spec", "csv", "Ling.csv").to_s
+        @importer.config[:ling].should == Rails.root.join("spec", "csv", "good","Ling.csv").to_s
       end
 
       it "should import group" do
