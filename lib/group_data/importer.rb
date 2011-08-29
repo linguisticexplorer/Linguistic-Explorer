@@ -65,9 +65,15 @@ module GroupData
       @config.symbolize_keys!
     end
 
-    def import!
+    def set_creator(conditions, group, row)
+      creator = User.find(user_ids[row["creator_id"]])
+      conditions[:created_at] = creator.created_at
+      conditions[:updated_at] = creator.updated_at
+      conditions[:group_id] = group.id
+      conditions[:creator_id] = creator.id
+    end
 
-      Crewait.start_waiting
+    def import!
       reset = "\r\e[0K"
 
       # processing users
@@ -210,6 +216,7 @@ module GroupData
       print "\nprocessing lings_property..."
       print " will take about #{total/5000} minutes for #{total} rows" unless total<10000
 
+      Crewait.start_waiting
       csv_for_each :lings_property do |row|
         group       = groups[row["group_id"]]
         ling_id     = ling_ids[row["ling_id"]]
@@ -221,13 +228,8 @@ module GroupData
                         :property_id => property_id,
                         :property_value => "#{property_id}:#{value}"
           }
-        if row["creator_id"].present?
-          creator = User.find(user_ids[row["creator_id"]])
-          conditions[:created_at] = creator.created_at
-          conditions[:updated_at] = creator.updated_at
-          conditions[:group_id] = group.id
-          conditions[:creator_id] = creator.id
-        end
+
+        set_creator(conditions, group, row) if row["creator_id"].present?
 
         lp = group.lings_properties.where(conditions).first ||
             group.lings_properties.crewait(conditions)
@@ -242,17 +244,26 @@ module GroupData
       logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
       print "\nprocessing examples_lings_property..."
 
+      Crewait.start_waiting
       csv_for_each :examples_lings_property do |row|
         group             = groups[row["group_id"]]
         example_id        = example_ids[row["example_id"]]
         lings_property_id = lings_property_ids[row["lings_property_id"]]
         conditions  = { :example_id => example_id, :lings_property_id => lings_property_id }
 
+        set_creator(conditions, group, row) if row["creator_id"].present?
+
+        #group.examples_lings_properties.where(conditions).first ||
+        #  group.examples_lings_properties.create(conditions) do |elp|
+        #    elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+        #  end
+
         group.examples_lings_properties.where(conditions).first ||
-          group.examples_lings_properties.create(conditions) do |elp|
-            elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-          end
+            group.examples_lings_properties.crewait(conditions)
+
       end
+
+      Crewait.go!
       print "#{reset}processing examples_lings_property...[OK]"
 
       logger.info "processing #{csv_size(:stored_value)} stored value"
