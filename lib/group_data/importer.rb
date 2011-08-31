@@ -311,26 +311,10 @@ module GroupData
       file = @config[:group]
       string_fixed = "examples_lings_property_name"
       bad_string = "example_lings_property_name"
-      content = []
 
-      # Load CSV header and fix it
-      header = (CSV.read file).shift
-      typo = (header[header.length-2].match string_fixed).nil?
-      header[header.length-2] = string_fixed if typo
-
-      # For each line fix key value
-      CSV.foreach(file, :headers => true) do |row|
-        new_row = row.to_hash
-        new_row[string_fixed] = new_row.delete(bad_string) if typo
-        content << new_row
-      end
-
-      CSV.open(file, "wb") do |csv|
-        csv << header
-        content.each do |row|
-          csv <<  header.map {|attribute| row[attribute]}
-        end
-      end
+      text = File.read(file)
+      new_text = text.gsub(/#{bad_string}.*,/, string_fixed)
+      File.open(file, "w") {|file| file.puts new_text}
     end
     
     def logger
