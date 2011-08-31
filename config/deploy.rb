@@ -4,12 +4,10 @@ $: << File.join(File.dirname(__FILE__), "..", "lib")
 default_run_options[:pty]   = true
 ssh_options[:forward_agent] = true
 
-#set :application  , "terraling"
-#set :deploy_to    , "/var/www/apps/#{application}"
-set :application  , "Linguistic-Explorer"
-set :deploy_to       , "~/RubymineProjects/#{application}"
+set :application  , "terraling"
+set :deploy_to    , "/var/www/apps/#{application}"
 set :deploy_via   , :remote_cache
-set :user         , "Marco Liberati"
+set :user         , "admin"
 set :use_sudo, true
 
 # source control
@@ -21,8 +19,7 @@ set :branch       , "master"
 # role :web, HTTP server (Apache)/etc
 # role :app, app server
 # role :db, master db server
-#server "50.56.97.125:10003", :app, :web, :db, :primary => true
-server "localhost:22", :app, :web, :db, :primary => true
+server "50.56.97.125:10003", :app, :web, :db, :primary => true
 
 begin
   # RVM Ruby Version Manager
