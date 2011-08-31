@@ -18,7 +18,7 @@ module SearchResults
   private
 
   def ensure_result_groups!
-    Rails.logger.debug "Step 2 => #{self.class}"
+    #Rails.logger.debug "Step 2 => #{self.class}"
     return true unless self.result_groups.nil?
     return true unless self.query.present? || self.parent_ids.present?
     self.result_groups = build_result_groups(*parent_and_child_lings_property_ids)
@@ -28,7 +28,7 @@ module SearchResults
     ids = [self.parent_ids, self.child_ids].compact
 
     return ids if ids.any?
-    Rails.logger.debug "Step 3 => #{self.class}"
+    #Rails.logger.debug "Step 3 => #{self.class}"
     filter_lings_property_ids_from_query
   end
 
