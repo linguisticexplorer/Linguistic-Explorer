@@ -22,7 +22,7 @@ Feature: Search with All
     | Property 4    | Sentence 2  | noun      | Linguistic  | 1     |
     | Property 3    | Sentence 3  | noun      | Linguistic  | 1     |
 
-  Scenario: Visitor searches all properties
+  Scenario: Visitor searches all properties from two
     When I go to the Syntactic Structures search page
     And I select "Property 1" from "Demographic Properties"
     And I select "Property 2" from "Demographic Properties"
@@ -38,3 +38,23 @@ Feature: Search with All
     And I should not see "Speaker 3"
     And I should not see "Sentence 2"
     And I should not see "Sentence 3"
+
+# All checkbox is for selections only or for keywords too?!
+#  Scenario: Visitor searches all properties from two (one with keyword)
+#    When I go to the Syntactic Structures search page
+#    Then show me the page
+#    And I select "Property 1" from "Demographic Properties"
+#    When I fill in "Demographic Keywords" with "Property 2"
+#    And I choose "All" within "#demographic_properties"
+#    And I press "Show results"
+#    Then show me the page
+#    Then I should see the following search results:
+#    | Lings         | Properties        | Value     | depth   |
+#    | Speaker 1     | Property 1        | Eastern   | parent  |
+#    | Speaker 1     | Property 2        | Western   | parent  |
+#    | Sentence 1    | Property 3        | verb      | child   |
+#    | Sentence 1    | Property 4        | noun      | child   |
+#    And I should not see "Speaker 2"
+#    And I should not see "Speaker 3"
+#    And I should not see "Sentence 2"
+#    And I should not see "Sentence 3"

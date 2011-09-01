@@ -26,7 +26,7 @@ module ApplicationHelper
     classes << "current_user" if user_signed_in?
     classes << @body_classes if @body_classes
     classes << additional_classes
-    classes.flatten.uniq.join(" ")
+    classes.flatten.uniq.join(" - ")
   end
 
 end

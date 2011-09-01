@@ -38,3 +38,10 @@ Feature: Signing in and out
     Then I should be on the login page
     And  I should not see "Signed in as bob@dole.com"
     And  I should see "Invalid email or password"
+
+  Scenario: The administrator is signed in and then signs out
+    Given I am signed in as "a@min.com"
+    Then  I should see "Sign out"
+    When  I follow "Sign out"
+    Then  I should be on the home page
+    And   I should see "sign in"

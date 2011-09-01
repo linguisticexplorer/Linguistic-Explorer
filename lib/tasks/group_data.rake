@@ -14,4 +14,19 @@ namespace :group_data do
     GroupData::Importer.import(config)
   end
 
+  usage = "Usage: rake group_data:validate CONFIG=/path/to/config.yml"
+
+  desc <<-DESC
+    Validate data in .csv files specified in configuration yml
+
+    #{usage}
+  DESC
+  task :validate => :environment do
+    raise "Must specify a config file.\n\n#{usage}" unless ENV['CONFIG'].present?
+
+    config    = YAML.load_file(ENV['CONFIG'])
+
+    GroupData::Validator.load(config).validate!
+  end
+
 end

@@ -1,11 +1,12 @@
 source 'http://rubygems.org'
+#source 'http://gems.github.com'
 
 gem 'rails', '3.0.6'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
-gem 'mysql'
+gem 'mysql2', '~> 0.2.7'
 
 # Use unicorn as the web server
 # gem 'unicorn'
@@ -37,6 +38,9 @@ gem 'cancan', "1.6.4"
 gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
 gem 'newrelic_rpm'
 
+# for speed-up batch insert into DB
+gem 'crewait'
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
@@ -52,13 +56,14 @@ group :development, :test, :pg_test do
 
   gem 'ruby-debug19'
   gem 'factory_girl_rails'
-  gem "cucumber", "0.10.2"
+  gem "cucumber", "1.0.0"
   gem "database_cleaner", "0.6.7"
   gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
-  gem 'capybara'
+  gem 'capybara', "~>0.4.1"
   gem 'launchy'
+  gem 'gmaps4rails'
 end
 
 group :pg_test do
-  gem 'pg'
+  #gem 'pg'
 end

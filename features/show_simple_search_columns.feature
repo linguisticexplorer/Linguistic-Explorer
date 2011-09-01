@@ -1,4 +1,4 @@
-Feature: Show search columns
+Feature: Show simple search columns
 
   Background:
     Given I am a visitor
@@ -75,4 +75,16 @@ Feature: Show search columns
     And I should not see "Value" within "#search_results"
     And I should not see "PropVal" within "#search_results"
 
-  Scenario: Choose value pair only
+  Scenario: Choose value pair too
+    When I check "Speakers" within "#show_columns"
+    And I check "Sentences" within "#show_columns"
+    And I uncheck "Properties" within "#show_columns"
+    And I check "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
+    Then I press "Show results"
+    Then I should see the following search results:
+    | Lings         | Property     | PropVal    | depth    |
+    | Speaker 1     | Property 1   | PropVal 1  | parent   |
+    | Speaker 2     | Property 2   | PropVal 2  | parent   |
+    | Sentence 1    | Property 3   | PropVal 3  | child   |
+    | Sentence 2    | Property 4   | PropVal 4  | child   |

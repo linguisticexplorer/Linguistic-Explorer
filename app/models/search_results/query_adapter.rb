@@ -82,6 +82,12 @@ module SearchResults
       @group.has_depth?
     end
 
+   def included_columns
+      # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
+      # show all columns if parameters not present
+      @params[:include] && @params[:include].symbolize_keys.keys || SearchColumns::COLUMNS
+    end
+
     private
 
     def ling_extractor
@@ -100,12 +106,6 @@ module SearchResults
 
     def category_present?(key, depth)
       group_prop_category_ids(depth).map(&:to_s).include?(key)
-    end
-
-    def included_columns
-      # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
-      # show all columns if parameters not present
-      @params[:include] && @params[:include].symbolize_keys.keys || SearchColumns::COLUMNS
     end
 
   end

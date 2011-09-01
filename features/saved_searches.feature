@@ -47,6 +47,7 @@ Feature: Save searches
     And I press "Save"
     Then I should see "Syntactic Structures Search History"
     And I should see "My First Search"
+    And I should not see "My Second Search"
 
   Scenario: See results of saved search query
     When I go to the Syntactic Structures search page

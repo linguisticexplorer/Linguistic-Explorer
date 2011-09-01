@@ -2,18 +2,22 @@ module SearchResults
 
   class ResultMapper
 
-    def self.build_result_groups(parent_ids, child_ids = [])
+    def self.build_result_groups(parent_ids, child_ids = [], columns)
       parent_results  = LingsProperty.select_ids.with_id(parent_ids)
       child_results   = LingsProperty.with_id(child_ids).includes([:ling]).
         joins(:ling).order("lings.parent_id, lings.name")
 
+      child_filtered_results, parent_filtered_results = filter_results_by_columns(parent_results, child_results, columns)
+
       # group parents separately with each related child
-      {}.tap do |groups|
-        parent_results.each do |parent|
-          related_children  = child_results.select { |child| child.parent_ling_id == parent.ling_id }
+      result = {}.tap do |groups|
+        parent_filtered_results.each do |parent|
+          related_children  = child_filtered_results.select { |child| child.parent_ling_id == parent.ling_id }
           groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
         end
       end
+      #Rails.logger.debug "DEBUG: Results =>\n#{result.inspect}"
+      return result
     end
 
     attr_reader :result_groups
@@ -56,6 +60,23 @@ module SearchResults
     def parent_ids
       result_groups.keys
     end
+
+    def self.filter_results_by_columns(parent_results, child_results, columns)
+      filter = ColumnsFilter.new(columns)
+      parent_filtered_results = parent_results.select { |r| r if filter.columns_filter(r, Depth::PARENT) }
+      child_filtered_results = child_results.select { |r| r if filter.columns_filter(r, Depth::CHILD) }
+
+      #Rails.logger.debug "DEBUG: \nParents\n\tPre:#{parent_results.count} \t Post:#{parent_filtered_results.count}\nChildren\n\tPre:#{child_results.count} \t Post:#{child_filtered_results.count}"
+      #parent_filtered_results.each do |parent|
+      #  Rails.logger.debug "DEBUG: \nParent: #{parent.inspect}"
+      #end
+      #child_filtered_results.each do |child|
+      #  Rails.logger.debug "DEBUG: \nChild: #{child.inspect}"
+      #end
+      return child_filtered_results, parent_filtered_results
+      #return child_results, parent_results
+    end
+
   end
 
   class ResultFamily
@@ -69,5 +90,75 @@ module SearchResults
       @children || []
     end
 
+  end
+
+  class ColumnsFilter
+
+    def initialize(columns)
+      #Rails.logger.debug "DEBUG: #{columns}"
+      @columns ||= columns
+      @selected ||={}
+      @test_0 = true
+      @test_1 = true
+      @columns.each do |col|
+        @test_0 &= col.to_s=~/0/
+        @test_1 &= col.to_s=~/1/
+      end
+      #Rails.logger.debug "DEBUG: \n\tTest_0: #{@test_0} \n\tTest_1: #{@test_1}"
+    end
+
+    def columns_filter(result, family)
+      depth = -1
+      #family==0 ? Rails.logger.debug("DEBUG: Parent =>") : Rails.logger.debug("DEBUG: Child =>")
+      depth = Depth::PARENT if (@test_0 || !@test_0 && !@test_1) && family==Depth::PARENT
+      depth = Depth::CHILD if @test_1 || !@test_0 && !@test_1 && family==Depth::CHILD
+      return false if depth == -1
+      #return child_columns_filter(result, depth) if family==Depth::CHILD
+      return parent_columns_filter(result, depth)
+    end
+
+    private
+
+    def child_columns_filter(result, depth)
+      index = []
+      @columns.each do |col|
+        next if col.to_s=~/value/
+        index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
+      end
+
+      already_written?(index)
+    end
+
+    def parent_columns_filter(result, depth)
+      index = []
+      @columns.each do |col|
+        index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
+      end
+
+      already_written?(index)
+    end
+
+    def already_written?(index)
+      return false if index.empty?
+      @selected[index]= 1 if !@selected[index].nil?
+      @selected[index]= 0 if @selected[index].nil?
+      #Rails.logger.debug "DEBUG: \n\t#{@selected[index]== 0} =>\n\tIndex:#{index.inspect}" if @selected[index]== 0
+      return @selected[index]== 0
+    end
+
+    def columns_mapping
+      row_methods ||= {
+      :ling_0     => lambda { |v| v.ling },
+      :ling_1     => lambda { |v| v.ling },
+      :property_0 => lambda { |v| v.property },
+      :property_1 => lambda { |v| v.property },
+      :value_0    => lambda { |v| v.property_value.gsub!(/.*\:/){""} },
+      #:value_0    => lambda { |v| v.ling },
+      #:value_0    => lambda { |v| v.value  },
+      :value_1    => lambda { |v| v.property_value.gsub!(/.*\:/){""}  },
+      :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
+      :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
+    }
+    end
   end
 end

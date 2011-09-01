@@ -77,6 +77,36 @@ Feature: Search Lings for Any Property
     And I should not see "Adjective Degree"
     And I should not see "Degree Adjective"
 
+  Scenario: Visitor allows one language, multiple properties, language has all properties chosen
+    When I go to the Syntactic Structures search page
+    And I select "English" from "Languages"
+    And I select "Adjective Degree" from "Properties"
+    And I select "Adjective Noun" from "Properties"
+    And I press "Show results"
+    Then I should see "Results"
+    Then I should see the following search results:
+    | Lings         | Properties        |
+    | English       | Adjective Degree  |
+    | English        | Adjective Noun |
+    And I should not see "Spanish"
+    And I should not see "German"
+    And I should not see "Degree Adjective"
+
+    Scenario: Visitor allows one language, multiple properties, language has not all properties chosen
+    When I go to the Syntactic Structures search page
+    And I select "Spanish" from "Languages"
+    And I select "Adjective Degree" from "Properties"
+    And I select "Adjective Noun" from "Properties"
+    And I press "Show results"
+    Then I should see "Results"
+    Then I should see the following search results:
+    | Lings         | Properties        |
+    | Spanish        | Adjective Noun |
+    And I should not see "English"
+    And I should not see "German"
+    And I should not see "Adjective Degree"
+    And I should not see "Degree Adjective"
+
   Scenario: Visitor allows all languages, multiple properties
     When I go to the Syntactic Structures search page
     And I allow all languages
@@ -90,6 +120,19 @@ Feature: Search Lings for Any Property
     | German        | Degree Adjective  |
     And I should not see "Spanish"
     And I should not see "Adjective Noun"
+
+    Scenario: Visitor allows all languages, all properties
+    When I go to the Syntactic Structures search page
+    And I allow all languages
+    And I allow all properties
+    And I press "Show results"
+    Then I should see "Results"
+    Then I should see the following search results:
+    | Lings         | Properties        |
+    | English       | Adjective Degree  |
+    | English       | Adjective Noun    |
+    | Spanish       | Adjective Noun    |
+    | German        | Degree Adjective  |
 
   Scenario: Scope search to group
     Given the group "Phones"
