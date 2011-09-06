@@ -68,6 +68,7 @@ module GroupData
     def import!
       reset = "\r\e[0K"
 
+      start = Time.now
       # processing users
       logger.info "processing #{csv_size(:user)} users"
       #puts "processing users"
@@ -211,9 +212,12 @@ module GroupData
       logger.info "processing #{total} lings_property"
 
       print "\nprocessing lings_property..."
-      print " will take about #{total/5000} minutes for #{total} rows" unless total<10000
+      print " will take about #{total/3000} minutes for #{total} rows" unless total<10000
 
       Crewait.start_waiting
+      counter = 0
+      step = 1
+      limit_step = 40000
       csv_for_each :lings_property do |row|
         group       = groups[row["group_id"]]
         ling_id     = ling_ids[row["ling_id"]]
@@ -230,7 +234,15 @@ module GroupData
 
         lp = group.lings_properties.where(conditions).first ||
             group.lings_properties.crewait(conditions)
+        counter += 1
 
+        if(counter == step * limit_step)
+          Crewait.go!
+
+          #puts "Still #{total - (step*limit_step)} to do"
+          Crewait.start_waiting
+          step += 1
+        end
         # cache lings_property id
         lings_property_ids[row["id"]] = lp.id
       end
@@ -242,6 +254,9 @@ module GroupData
       print "\nprocessing examples_lings_property..."
 
       Crewait.start_waiting
+      counter = 0
+      step = 1
+
       csv_for_each :examples_lings_property do |row|
         group             = groups[row["group_id"]]
         example_id        = example_ids[row["example_id"]]
@@ -258,6 +273,14 @@ module GroupData
         group.examples_lings_properties.where(conditions).first ||
             group.examples_lings_properties.crewait(conditions)
 
+        if(counter == step * limit_step)
+          Crewait.go!
+
+          #puts "Still #{total - (step*limit_step)} to do"
+          Crewait.start_waiting
+          step += 1
+        end
+
       end
 
       Crewait.go!
@@ -266,6 +289,10 @@ module GroupData
       logger.info "processing #{csv_size(:stored_value)} stored value"
       print "\nprocessing stored_values..."
 
+      Crewait.start_waiting
+      counter = 0
+      step = 1
+
       csv_for_each :stored_value do |row|
         group         = groups[row["group_id"]]
         storable_type = row['storable_type']
@@ -273,13 +300,36 @@ module GroupData
         conditions = { :storable_id => storable_id, :storable_type => storable_type,
             :key => row["key"], :value => row["value"] }
 
-        group.stored_values.where(conditions).first || group.stored_values.create(conditions)
+        group.stored_values.where(conditions).first || group.stored_values.crewait(conditions)
+
+        if(counter == step * limit_step)
+          Crewait.go!
+
+          #puts "Still #{total - (step*limit_step)} to do"
+          Crewait.start_waiting
+          step += 1
+        end
 
       end
+
+      Crewait.go!
+
       print "#{reset}processing stored_values...[OK]\n"
+
+      elapsed = seconds_fraction_to_time(Time.now - start)
+      puts "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
+
     end
 
     private
+
+def seconds_fraction_to_time(time_difference)
+    hours = (time_difference / 3600).to_i
+    mins = ((time_difference / 3600 - hours) * 60).to_i
+    seconds = (time_difference % 60 ).to_i
+    [hours,mins,seconds]
+  end
+
 
     def set_creator(conditions, group, row)
       creator = User.find(user_ids[row["creator_id"]])
