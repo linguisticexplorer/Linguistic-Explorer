@@ -289,10 +289,6 @@ module GroupData
       logger.info "processing #{csv_size(:stored_value)} stored value"
       print "\nprocessing stored_values..."
 
-      Crewait.start_waiting
-      counter = 0
-      step = 1
-
       csv_for_each :stored_value do |row|
         group         = groups[row["group_id"]]
         storable_type = row['storable_type']
@@ -300,19 +296,10 @@ module GroupData
         conditions = { :storable_id => storable_id, :storable_type => storable_type,
             :key => row["key"], :value => row["value"] }
 
-        group.stored_values.where(conditions).first || group.stored_values.crewait(conditions)
+        group.stored_values.where(conditions).first || group.stored_values.create(conditions)
 
-        if(counter == step * limit_step)
-          Crewait.go!
-
-          #puts "Still #{total - (step*limit_step)} to do"
-          Crewait.start_waiting
-          step += 1
-        end
 
       end
-
-      Crewait.go!
 
       print "#{reset}processing stored_values...[OK]\n"
 

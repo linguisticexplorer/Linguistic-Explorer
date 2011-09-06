@@ -108,7 +108,6 @@ module GroupData
         group = true
         row.each do |field|
           group &= field[1].present?
-          print "\n==> #{red(field[0])}" unless group
         end
         print "\n#{red("ERROR")} - Missing parameter in Group.csv - line #{i+1}" unless group
 
