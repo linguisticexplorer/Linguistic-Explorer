@@ -1,0 +1,9 @@
+id,storable_id,storable_type,key,value,group_id
+,746783306,Example,words,Example 0 blah blah blah,499372918
+,746783307,Example,words,Example 1 blah blah blah,499372918
+,746783308,Example,words,Example 2 blah blah blah,499372918
+,746783309,Example,words,Example 3 blah blah blah,499372918
+,746783306,Example,gloss,Example 0 gloss,499372918
+,746783307,Example,gloss,Example 1 gloss,499372918
+,746783308,Example,gloss,Example 2 gloss,499372918
+,746783309,Example,gloss,Example 3 gloss,499372918

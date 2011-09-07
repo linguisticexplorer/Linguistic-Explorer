@@ -1,0 +1,11 @@
+--- 
+user: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/User.csv
+category: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Category.csv
+example: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Example.csv
+examples_lings_property: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/ExamplesLingsProperty.csv
+group: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Group.csv
+ling: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Ling.csv
+lings_property: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/LingsProperty.csv
+membership: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Membership.csv
+property: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/Property.csv
+stored_value: /Users/Marco/RubymineProjects/Linguistic-Explorer/spec/csv/good/StoredValue.csv
