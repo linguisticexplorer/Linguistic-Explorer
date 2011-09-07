@@ -151,7 +151,7 @@ module GroupData
         # Sometimes it is useful for testing in localhost...
         #cmd << "export DYLD_LIBRARY_PATH=/usr/local/mysql/lib/"
 
-        cmd << "/usr/bin/env rake group_data:import RAILS_ENV=development CONFIG=#{remote_config}"
+        cmd << "/usr/bin/env bundle exec rake group_data:import RAILS_ENV=production CONFIG=#{remote_config}"
         cmd = cmd.join(' && ')
 
         run cmd
