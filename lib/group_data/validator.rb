@@ -70,6 +70,7 @@ module GroupData
     def validate!
 
       reset = "\r\e[0K"
+      start = Time.now
 
       @check_users = true
       print "processing users..."
@@ -107,7 +108,6 @@ module GroupData
         group = true
         row.each do |field|
           group &= field[1].present?
-          print "\n==> #{red(field[0])}" unless group
         end
         print "\n#{red("ERROR")} - Missing parameter in Group.csv - line #{i+1}" unless group
 
@@ -388,10 +388,19 @@ module GroupData
       add_check_all(@check_stored_values)
       print "#{reset}processing stored_values...[OK]\n"
 
+      elapsed = seconds_fraction_to_time(Time.now - start)
+      puts "Time for validation: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
       @check_all
     end
 
     private
+
+    def seconds_fraction_to_time(time_difference)
+    hours = (time_difference / 3600).to_i
+    mins = ((time_difference / 3600 - hours) * 60).to_i
+    seconds = (time_difference % 60 ).to_i
+    [hours,mins,seconds]
+  end
 
     def csv_for_each(key)
       CSV.foreach(@config[key], :headers => true) do |row|
@@ -437,7 +446,7 @@ module GroupData
       if(prec_i < i.truncate && progress_value<max_value)
         $stdout.flush
         prec_i = i.to_i
-        #print "#{reset}processing #{key.to_s}...#{i.to_i}%"
+        print "#{reset}processing #{key.to_s}...#{i.to_i}%"
       end
 
     end
