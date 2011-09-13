@@ -65,6 +65,7 @@ module GroupData
       @config = config
       @config.symbolize_keys!
       @check_all = true
+      @headers = load_headers
     end
 
     def validate!
@@ -74,8 +75,10 @@ module GroupData
 
       @check_users = true
       print "processing users..."
-      i = 0
+      i = 1
       total = csv_size(:user)
+
+      add_check_all(validate_csv_header :user, @check_users)
       csv_for_each :user do |row|
         user = true
         row.each do |field|
@@ -83,12 +86,14 @@ module GroupData
         end
 
         puts "\n#{red("ERROR")} - Missing parameter in User.csv - line #{i+1}" unless user
-        progress_loading(:user, i, total) if user
-        i += 1
 
         @check_users &= user
         # cache user id
         user_ids[row["id"]] = true
+
+        progress_loading(:user, i, total) if user
+        i += 1
+        break unless user
       end
 
       add_check_all(@check_users)
@@ -97,8 +102,10 @@ module GroupData
 
       @check_groups = true
       print "\nprocessing groups..."
-      i = 0
+      i = 1
       total = csv_size(:group)
+
+      add_check_all(validate_csv_header :group, @check_groups)
 
       # This function will change the header
       # due to a typo on the project
@@ -111,12 +118,19 @@ module GroupData
         end
         print "\n#{red("ERROR")} - Missing parameter in Group.csv - line #{i+1}" unless group
 
-        progress_loading(:group, i, total) if group
-        i += 1
+        group &= row["privacy"].downcase == "public" || row["privacy"].downcase == "private"
+        print "\n#{red("ERROR")} - Privacy value should be valid in Group.csv - line #{i+1}\n => '#{row["privacy"]}' not valid" unless group
+
+        group &= !row["privacy"].downcase!
+        print "\n#{red("ERROR")} - Privacy should be lowercase in Group.csv - line #{i+1}" unless group
 
         @check_groups &= group
         # cache group id
         groups[row["id"]] = true
+
+        progress_loading(:group, i, total) if group
+        i += 1
+        break unless group
       end
 
       add_check_all(@check_groups)
@@ -124,9 +138,11 @@ module GroupData
       print "#{reset}processing groups...[OK]"
 
       print "\nprocessing memberships..."
-      i = 0
+      i = 1
       total = csv_size(:membership)
       @check_memberships = true
+
+      add_check_all(validate_csv_header :membership, @check_memberships)
       csv_for_each :membership do |row|
         membership = true
         row.each do |field|
@@ -140,10 +156,17 @@ module GroupData
         membership &= user_ids[row["creator_id"]] if row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Membership.csv - [Creator_ID] line #{i+1}" unless membership && row["creator_id"].present?
 
+        membership &= row["level"].downcase == "admin" || row["level"].downcase == "member"
+        print "\n#{red("ERROR")} - Access Level value should be valid in Membership.csv - line #{i+1}\n => #{row["level"]} not valid" unless membership
+
+        membership &= !row["level"].downcase!
+        print "\n#{red("ERROR")} - Access Level should be lowercase in Membership.csv - line #{i+1}" unless membership
+
+        @check_memberships &= membership
         progress_loading(:membership, i, total) if membership
         i += 1
 
-        @check_memberships &= membership
+        break unless membership
       end
 
       add_check_all(@check_memberships)
@@ -151,9 +174,11 @@ module GroupData
       print "#{reset}processing memberships...[OK]"
 
       print "\nprocessing lings..."
-      i = 0
+      i = 1
       total = csv_size(:ling)
       @check_lings = true
+
+      add_check_all(validate_csv_header :ling, @check_lings)
       csv_for_each :ling do |row|
         ling = true
         row.each do |field|
@@ -164,15 +189,16 @@ module GroupData
         ling &= groups[row["group_id"]] if ling
         print "\n#{red("ERROR")} - Foreign Key check fails in Ling.csv - [Group_ID] line #{i+1}" unless ling
 
-        ling &= user_ids[row["creator_id"]] if row["creator_id"].present?
+        ling &= user_ids[row["creator_id"]] if ling && row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Ling.csv - [Creator_ID] line #{i+1}" unless ling && row["creator_id"].present?
-
-        progress_loading(:ling, i, total) if ling
-        i += 1
 
         @check_lings &= ling
         # cache ling id
-        ling_ids[row["id"]] = true
+        ling_ids[row["id"]] = row["group_id"]
+
+        progress_loading(:ling, i, total) if ling
+        i += 1
+        break unless ling
       end
 
       add_check_all(@check_lings)
@@ -180,18 +206,23 @@ module GroupData
       print "#{reset}processing lings...[OK]"
 
       print "\nprocessing ling associations..."
-      i = 0
+      i = 1
       total = csv_size(:ling)
       @check_parents = true
       csv_for_each :ling do |row|
         next if row["parent_id"].blank?
-        parent = ling_ids[row["parent_id"]]
 
+        parent = ling_ids[row["parent_id"]].present?
         print "\n#{red("ERROR")} - Key check fails in Ling.csv - [Parent_ID] line #{i+1}" unless parent
-        progress_loading(:ling, i, total) if parent
-        i += 1
+
+        parent &= ling_ids[row["parent_id"]] == row["group_id"]
+        print "\n#{red("ERROR")} - Key check fails in Ling.csv - [Group_ID] line #{i+1}\n=> Should be '#{ling_ids[row["parent_id"]]}' instead of '#{row["group_id"]}'" unless parent
 
         @check_parents &= parent
+
+        progress_loading(:ling, i, total) if parent
+        i += 1
+        break unless parent
       end
 
       add_check_all(@check_parents)
@@ -199,13 +230,15 @@ module GroupData
       print "#{reset}processing ling associations...[OK]"
 
       print "\nprocessing categories..."
-      i = 0
+      i = 1
       total = csv_size(:category)
       @check_categories = true
+
+      add_check_all(validate_csv_header :category, @check_categories)
       csv_for_each :category do |row|
         category = true
         row.each do |field|
-          category &= field[1].present? unless field[0]=="creator_id"
+          category &= field[1].present? unless field[0]=="creator_id" || field[0]=="description"
         end
         print "\n#{red("ERROR")} - Missing parameter in Category.csv - line #{i+1}" unless category
 
@@ -215,12 +248,14 @@ module GroupData
         category &= user_ids[row["creator_id"]] if row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Category.csv - [Creator_ID] line #{i+1}" unless category && row["creator_id"].present?
 
-        progress_loading(:category, i, total) if category
-        i += 1
-
         @check_categories &= category
+
         # cache category id
         category_ids[row["id"]] = true
+
+        progress_loading(:category, i, total) if category
+        i += 1
+        break unless category
       end
 
       add_check_all(@check_categories)
@@ -228,13 +263,15 @@ module GroupData
       print "#{reset}processing categories...[OK]"
 
       print "\nprocessing properties..."
-      i = 0
+      i = 1
       total = csv_size(:property)
       @check_properties = true
+
+      add_check_all(validate_csv_header :property, @check_properties)
       csv_for_each :property do |row|
         property = true
         row.each do |field|
-          property &= field[1].present? unless field[0]=="creator_id"
+          property &= field[1].present? unless field[0]=="creator_id" || field[0]=="description"
         end
 
         print "\n#{red("ERROR")} - Missing parameter in Property.csv - line #{i+1}" unless property
@@ -249,12 +286,15 @@ module GroupData
         print "\n#{red("ERROR")} - Foreign Key check fails in Property.csv - [Creator_ID] line #{i+1}" unless property && row["creator_id"].present?
 
 
-        progress_loading(:property, i, total) if property
-        i += 1
+
 
         @check_properties &= property
         # cache property id
         property_ids[row["id"]] = true
+
+        progress_loading(:property, i, total) if property
+        i += 1
+        break unless property
       end
 
       add_check_all(@check_properties)
@@ -262,9 +302,11 @@ module GroupData
       print "#{reset}processing properties...[OK]"
 
       print "\nprocessing examples..."
-      i = 0
+      i = 1
       total = csv_size(:example)
       @check_examples = true
+
+      add_check_all(validate_csv_header :example, @check_examples)
       csv_for_each :example do |row|
         example = true
         row.each do |field|
@@ -282,12 +324,13 @@ module GroupData
         example &= user_ids[row["creator_id"]] if row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Example.csv - [Creator_ID] line #{i+1}" unless example && row["creator_id"].present?
 
-        progress_loading(:example, i, total) if example
-        i += 1
-
         @check_examples &= example
         # cache example id
         example_ids[row["id"]] = true
+
+        progress_loading(:example, i, total) if example
+        i += 1
+        break unless example
       end
 
       add_check_all(@check_examples)
@@ -295,9 +338,11 @@ module GroupData
       print "#{reset}processing examples...[OK]"
 
       print "\nprocessing lings_property..."
-      i = 0
+      i = 1
       total = csv_size(:lings_property)
       @check_lings_properties = true
+
+      add_check_all(validate_csv_header :lings_property, @check_lings_properties)
       csv_for_each :lings_property do |row|
         lp = true
         row.each do |field|
@@ -315,14 +360,14 @@ module GroupData
         lp &= user_ids[row["creator_id"]] if row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Ling_property.csv - [Creator_ID] line #{i+1}" unless lp && row["creator_id"].present?
 
-        progress_loading(:lings_property, i, total) if lp
-        i += 1
-
         @check_lings_properties &= lp
 
-        break if !check_lings_properties
         # cache lings_property id
         lings_property_ids[row["id"]] = true
+
+        progress_loading(:lings_property, i, total) if lp
+        i += 1
+        break unless lp
       end
 
       add_check_all(@check_lings_properties)
@@ -330,9 +375,11 @@ module GroupData
       print "#{reset}processing lings_property...[OK]"
 
       print "\nprocessing examples_lings_property..."
-      i = 0
+      i = 1
       total = csv_size(:examples_lings_property)
       @check_examples_lp = true
+
+      add_check_all(validate_csv_header :examples_lings_property, @check_examples_lp)
       csv_for_each :examples_lings_property do |row|
         elp = true
         row.each do |field|
@@ -353,10 +400,11 @@ module GroupData
         elp &= user_ids[row["creator_id"]] if row["creator_id"].present?
         print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Creator_ID] line #{i+1}" unless elp && row["creator_id"].present?
 
+        @check_examples_lp &= elp
+
         progress_loading(:examples_lings_property, i, total) if elp
         i += 1
-
-        @check_examples_lp &= elp
+        break unless elp
       end
 
       add_check_all(@check_examples_lp)
@@ -364,9 +412,11 @@ module GroupData
       print "#{reset}processing examples_lings_property...[OK]"
 
       print "\nprocessing stored_values..."
-      i = 0
+      i = 1
       total = csv_size(:stored_value)
       @check_stored_values = true
+
+      add_check_all(validate_csv_header :stored_value, @check_stored_values)
       csv_for_each :stored_value do |row|
         value = true
         row.each do |field|
@@ -378,11 +428,11 @@ module GroupData
         value &= groups[row["group_id"]]
         print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Group_ID] line #{i+1}" unless value
 
+        @check_stored_values &= value
 
         progress_loading(:stored_value, i, total)
         i += 1
-
-        @check_stored_values &= value
+        break unless value
       end
 
       add_check_all(@check_stored_values)
@@ -418,9 +468,24 @@ module GroupData
       string_fixed = "examples_lings_property_name,"
       bad_string = "example_lings_propert"
 
-      text = File.read(file)
+      text = File.read(file){|f| f.readline}
       new_text = text.gsub(/#{bad_string}.*,/, string_fixed)
       File.open(file, "w") {|file| file.puts new_text}
+    end
+
+    def validate_csv_header(key, check)
+      file = @config[key]
+      text = File.read(file){|f| f.readline}
+      header = @headers[key]
+
+      header.each do |title|
+        check &= text.match title
+
+        print "\n#{red("ERROR")} - Header Validation fails for #{key}\n=> Please check for '#{title}' column" unless check
+        break unless check
+      end
+
+      return check
     end
 
     def red(string)
@@ -455,6 +520,20 @@ module GroupData
       @check_all &= check_partial
       puts unless @check_all
       exit(1) unless @check_all
+    end
+
+    def load_headers
+      { :user => ["name","id","email","access_level","password"],
+        :group => ["id", "name" ,"privacy", "depth_maximum", "ling0_name", "ling1_name", "property_name", "category_name", "lings_property_name", "example_name", "examples_lings_property_name", "example_fields" ],
+        :membership => [ "id", "member_id", "group_id", "level", "creator_id" ],
+        :ling => [ "id","name","parent_id,depth","group_id","creator_id" ],
+        :category => [ "id","name","depth","group_id","creator_id","description" ],
+        :property => [ "id","name","description","category_id","group_id","creator_id" ],
+        :example => [ "id","ling_id","group_id","creator_id","name" ],
+        :lings_property => [ "id","ling_id","property_id","value","group_id","creator_id" ],
+        :examples_lings_property => [ "id","example_id","lings_property_id","group_id","creator_id" ],
+        :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ]
+      }
     end
 
   end

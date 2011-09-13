@@ -289,6 +289,8 @@ module GroupData
       logger.info "processing #{csv_size(:stored_value)} stored value"
       print "\nprocessing stored_values..."
 
+      # Cannot use Crewait here due to reserver sql keywords issue
+      # https://github.com/theAlmanac/crewait/issues/9
       csv_for_each :stored_value do |row|
         group         = groups[row["group_id"]]
         storable_type = row['storable_type']
