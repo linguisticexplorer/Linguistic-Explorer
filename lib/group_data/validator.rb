@@ -36,8 +36,9 @@ require 'csv'
 module GroupData
   class Validator
 
-    attr_reader :check_all, :check_users, :check_groups, :check_memberships, :check_categories, :check_lings, :check_properties
-    attr_reader :check_lings_properties, :check_examples_lp, :check_stored_values, :check_examples, :check_parents
+    attr_reader :check_all, :check_users, :check_groups, :check_memberships,
+                :check_categories, :check_lings, :check_properties, :check_lings_properties,
+                :check_examples_lp, :check_stored_values, :check_examples, :check_parents
 
     class << self
       def load(config)
@@ -421,7 +422,7 @@ module GroupData
         print "\n#{red("ERROR")} - Missing parameter in Stored_value.csv - line #{i+1}" unless stored_value
 
         stored_value &= groups[row["group_id"]]
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Group_ID] line #{i+1}" unless stored_value
+        print "\n#{red("ERROR")} - Foreign Key check fails in StoredValue.csv - [Group_ID] line #{i+1}" unless stored_value
 
         @check_stored_values &= stored_value
 
