@@ -184,7 +184,7 @@ module GroupData
       before(:all) do
         # Create fixture CSVs for validation
         generate_bad_csv_from_good_ones! "bad_foreign_key"
-        @count = {:count => 2} # Skip Users & Groups
+        @count = {:count => 2} # Skip Users & Groups => it follows array order in load_config()
       end
 
       before(:each) do
