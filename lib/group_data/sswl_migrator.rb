@@ -449,12 +449,12 @@ module GroupData
       { :user => ["name","id","email","access_level","password"],
         :group => ["id", "name" ,"privacy", "depth_maximum", "ling0_name", "ling1_name", "property_name", "category_name", "lings_property_name", "example_name", "examples_lings_property_name", "example_fields" ],
         :membership => [ "id", "member_id", "group_id", "level", "creator_id" ],
-        :ling => [ "id","name","parent_id","depth","group_id" ],
-        :category => [ "id","name","depth","group_id","description" ],
-        :property => [ "id","name","description","category_id","group_id" ],
-        :example => [ "id","ling_id","group_id","name" ],
-        :lings_property => [ "id","ling_id","property_id","value","group_id" ],
-        :examples_lings_property => [ "id","example_id","lings_property_id","group_id" ],
+        :ling => [ "id","name","parent_id","depth","group_id", "creator_id" ],
+        :category => [ "id","name","depth","group_id","description", "creator_id" ],
+        :property => [ "id","name","description","category_id","group_id", "creator_id" ],
+        :example => [ "id","ling_id","group_id","name", "creator_id" ],
+        :lings_property => [ "id","ling_id","property_id","value","group_id", "creator_id" ],
+        :examples_lings_property => [ "id","example_id","lings_property_id","group_id", "creator_id" ],
         :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ]
       }
     end
