@@ -9,8 +9,14 @@ tmp/*
 .idea/*
 config/database.yml
 .rvmrc
-spec/csv/*.csv
-spec/csv/*.yml
+spec/csv/bad/bad_creator_id/*.csv
+spec/csv/bad/bad_creator_id/*.yml
+spec/csv/bad/bad_foreign_key/*.csv
+spec/csv/bad/bad_foreign_key/*.yml
+spec/csv/bad/no_id/*.csv
+spec/csv/bad/no_id/*.yml
+spec/csv/good/*.yml
+spec/csv/good/*.csv
 config/import.yml
 doc/data/*
 doc/TODO
