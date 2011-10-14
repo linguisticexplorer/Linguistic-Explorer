@@ -224,11 +224,12 @@ module GroupData
         value       = row["value"]
         property_id = property_ids[row["property_id"]]
 
-        conditions = { :value => value,
-                        :ling_id => ling_id,
-                        :property_id => property_id,
-                        :property_value => "#{property_id}:#{value}"
-          }
+        conditions = { value: value,
+                       ling_id: ling_id,
+                       property_id: property_id,
+                       property_value: "#{property_id}:#{value}",
+                       group_id: group
+        }
 
         set_creator(conditions, group, row) if row["creator_id"].present?
 

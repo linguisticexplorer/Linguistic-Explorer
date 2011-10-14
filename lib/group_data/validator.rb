@@ -36,6 +36,12 @@ require 'csv'
 module GroupData
   class Validator
 
+    FOREIGN_KEY = 1
+    MISSING = 2
+    HEADER = 3
+    VALIDITY_CHECK = 4
+    LOWERCASE = 5
+
     attr_reader :check_all, :check_users, :check_groups, :check_memberships,
                 :check_categories, :check_lings, :check_properties, :check_lings_properties,
                 :check_examples_lp, :check_stored_values, :check_examples, :check_parents
@@ -76,7 +82,7 @@ module GroupData
 
       @check_users = true
       print "processing users..."
-      i = 1
+      line = reset_line
 
       add_check_all(validate_csv_header :user, @check_users)
       csv_for_each :user do |row|
@@ -85,14 +91,14 @@ module GroupData
           user &= value.present?
         end
 
-        puts "\n#{red("ERROR")} - Missing parameter in User.csv - line #{i+1}" unless user
+        print_error MISSING, :user, line unless user
 
         @check_users &= user
         # cache user id
         user_ids[row["id"]] = true
 
-        progress_loading(:user, i, csv_size(:user)) if user
-        i += 1
+        progress_loading(:user, line, csv_size(:user)) if user
+        line += 1
         break unless user
       end
 
@@ -102,7 +108,7 @@ module GroupData
 
       @check_groups = true
       print "\nprocessing groups..."
-      i = 1
+      line = reset_line
 
       add_check_all(validate_csv_header :group, @check_groups)
 
@@ -115,20 +121,20 @@ module GroupData
         row.each do |col, value|
           group &= value.present?
         end
-        print "\n#{red("ERROR")} - Missing parameter in Group.csv - line #{i+1}" unless group
+        print_error MISSING, :group, line unless group
 
         group &= row["privacy"].downcase == "public" || row["privacy"].downcase == "private"
-        print "\n#{red("ERROR")} - Privacy value should be valid in Group.csv - line #{i+1}\n => '#{row["privacy"]}' not valid" unless group
+        print_error VALIDITY_CHECK, :group, line, "Privacy", row["privacy"] unless group
 
         group &= !row["privacy"].downcase!
-        print "\n#{red("ERROR")} - Privacy should be lowercase in Group.csv - line #{i+1}" unless group
+        print_error LOWERCASE, :membership, line, "Privacy", row["privacy"] unless group
 
         @check_groups &= group
         # cache group id
         groups[row["id"]] = true
 
-        progress_loading(:group, i, csv_size(:group)) if group
-        i += 1
+        progress_loading(:group, line, csv_size(:group)) if group
+        line += 1
         break unless group
       end
 
@@ -137,7 +143,7 @@ module GroupData
       print "#{reset}processing groups...[OK]"
 
       print "\nprocessing memberships..."
-      i = 1
+      line = reset_line
 
       @check_memberships = true
 
@@ -147,23 +153,23 @@ module GroupData
         row.each do |col, value|
           membership &= value.present? unless col=="creator_id"
         end
-        print "\n#{red("ERROR")} - Missing parameter in Membership.csv - line #{i+1}" unless membership
+        print_error MISSING, :membership, line unless membership
 
         membership &= groups[row["group_id"]] if membership
-        print "\n#{red("ERROR")} - Foreign Key check fails in Membership.csv - [Group_ID] line #{i+1}" unless membership
+        print_error FOREIGN_KEY, :membership, line, "group_id" unless membership
 
         membership &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Membership.csv - [Creator_ID] line #{i+1}" unless membership && row["creator_id"].present?
+        print_error FOREIGN_KEY, :membership, line, "creator_id" unless membership && !row["creator_id"].present?
 
         membership &= row["level"].downcase == "admin" || row["level"].downcase == "member"
-        print "\n#{red("ERROR")} - Access Level value should be valid in Membership.csv - line #{i+1}\n => #{row["level"]} not valid" unless membership
+        print_error VALIDITY_CHECK, :membership, line, "Access Level", row["level"] unless membership
 
         membership &= !row["level"].downcase!
-        print "\n#{red("ERROR")} - Access Level should be lowercase in Membership.csv - line #{i+1}" unless membership
+        print_error LOWERCASE, :membership, line, "Access Level", row["level"] unless membership
 
         @check_memberships &= membership
-        progress_loading(:membership, i, csv_size(:membership)) if membership
-        i += 1
+        progress_loading(:membership, line, csv_size(:membership)) if membership
+        line += 1
 
         break unless membership
       end
@@ -173,7 +179,7 @@ module GroupData
       print "#{reset}processing memberships...[OK]"
 
       print "\nprocessing lings..."
-      i = 1
+      line = reset_line
 
       @check_lings = true
 
@@ -183,20 +189,20 @@ module GroupData
         row.each do |col, value|
           ling &= value.present? unless col=="creator_id" || col=="parent_id"
         end
-        print "\n#{red("ERROR")} - Missing parameter in Ling.csv - line #{i+1}" unless ling
+        print_error MISSING, :ling, line unless ling
 
         ling &= groups[row["group_id"]] if ling
-        print "\n#{red("ERROR")} - Foreign Key check fails in Ling.csv - [Group_ID] line #{i+1}" unless ling
+        print_error FOREIGN_KEY, :ling, line, "group_id" unless ling
 
         ling &= user_ids[row["creator_id"]] if ling && row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Ling.csv - [Creator_ID] line #{i+1}" unless ling && row["creator_id"].present?
+        print_error FOREIGN_KEY, :ling, line, "creator_id" unless ling && !row["creator_id"].present?
 
         @check_lings &= ling
         # cache ling id
         ling_ids[row["id"]] = row["group_id"]
 
-        progress_loading(:ling, i, csv_size(:ling)) if ling
-        i += 1
+        progress_loading :ling, line, csv_size(:ling) if ling
+        line += 1
         break unless ling
       end
 
@@ -205,22 +211,23 @@ module GroupData
       print "#{reset}processing lings...[OK]"
 
       print "\nprocessing ling associations..."
-      i = 1
+      line = reset_line
 
       @check_parents = true
       csv_for_each :ling do |row|
         next if row["parent_id"].blank?
 
         parent = ling_ids[row["parent_id"]].present?
-        print "\n#{red("ERROR")} - Key check fails in Ling.csv - [Parent_ID] line #{i+1}" unless parent
+        print_error FOREIGN_KEY, :ling, line, "parent_id" unless parent
 
         parent &= ling_ids[row["parent_id"]] == row["group_id"]
-        print "\n#{red("ERROR")} - Key check fails in Ling.csv - [Group_ID] line #{i+1}\n=> Should be '#{ling_ids[row["parent_id"]]}' instead of '#{row["group_id"]}'" unless parent
+        print_error FOREIGN_KEY, :ling, line, "group_id" unless parent
+        print "\n=> Should be '#{ling_ids[row["parent_id"]]}' instead of '#{row["group_id"]}'" unless parent
 
         @check_parents &= parent
 
-        progress_loading(:ling, i, csv_size(:ling)) if parent
-        i += 1
+        progress_loading(:ling, line, csv_size(:ling)) if parent
+        line += 1
         break unless parent
       end
 
@@ -229,7 +236,7 @@ module GroupData
       print "#{reset}processing ling associations...[OK]"
 
       print "\nprocessing categories..."
-      i = 1
+      line = reset_line
 
       @check_categories = true
 
@@ -239,21 +246,21 @@ module GroupData
         row.each do |col, value|
           category &= value.present? unless col=="creator_id" || col=="description"
         end
-        print "\n#{red("ERROR")} - Missing parameter in Category.csv - line #{i+1}" unless category
+        print_error MISSING, :category, line unless category
 
         category &= groups[row["group_id"]] if category
-        print "\n#{red("ERROR")} - Foreign Key check fails in Category.csv - [Group_ID] line #{i+1}" unless category
+        print_error FOREIGN_KEY, :category, line, "group_id" unless category
 
         category &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Category.csv - [Creator_ID] line #{i+1}" unless category && row["creator_id"].present?
+        print_error FOREIGN_KEY, :category, line, "creator_id" unless category && !row["creator_id"].present?
 
         @check_categories &= category
 
         # cache category id
         category_ids[row["id"]] = true
 
-        progress_loading(:category, i, csv_size(:category)) if category
-        i += 1
+        progress_loading(:category, line, csv_size(:category)) if category
+        line += 1
         break unless category
       end
 
@@ -262,7 +269,7 @@ module GroupData
       print "#{reset}processing categories...[OK]"
 
       print "\nprocessing properties..."
-      i = 1
+      line = reset_line
 
       @check_properties = true
 
@@ -273,23 +280,23 @@ module GroupData
           property &= value.present? unless col=="creator_id" || col=="description"
         end
 
-        print "\n#{red("ERROR")} - Missing parameter in Property.csv - line #{i+1}" unless property
+        print_error MISSING, :property, line unless property
 
         property &= groups[row["group_id"]] if property
-        print "\n#{red("ERROR")} - Foreign Key check fails in Property.csv - [Group_ID] line #{i+1}" unless property
+        print_error FOREIGN_KEY, :property, line, "group_id" unless property
 
         property &= category_ids[row["category_id"]] if property
-        print "\n#{red("ERROR")} - Foreign Key check fails in Property.csv - [Category_ID] line #{i+1}" unless property
+        print_error FOREIGN_KEY, :property, line, "category_id" unless property
 
         property &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Property.csv - [Creator_ID] line #{i+1}" unless property && row["creator_id"].present?
+        print_error FOREIGN_KEY, :property, line, "creator_id" unless property && !row["creator_id"].present?
 
         @check_properties &= property
         # cache property id
         property_ids[row["id"]] = true
 
-        progress_loading(:property, i, csv_size(:property)) if property
-        i += 1
+        progress_loading(:property, line, csv_size(:property)) if property
+        line += 1
         break unless property
       end
 
@@ -298,7 +305,7 @@ module GroupData
       print "#{reset}processing properties...[OK]"
 
       print "\nprocessing examples..."
-      i = 1
+      line = reset_line
 
       @check_examples = true
 
@@ -309,23 +316,23 @@ module GroupData
           example &= value.present? unless col=="creator_id"
         end
 
-        print "\n#{red("ERROR")} - Missing parameter in Example.csv - line #{i+1}" unless example
+        print_error MISSING, :example, line unless example
 
         example &= groups[row["group_id"]] if example
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example.csv - [Group_ID] line #{i+1}" unless example
+        print_error FOREIGN_KEY, :example, line, "group_id" unless example
 
         example &= ling_ids[row["ling_id"]] if example
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example.csv - [Ling_ID] line #{i+1}" unless example
+        print_error FOREIGN_KEY, :example, line, "ling_id" unless example
 
         example &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example.csv - [Creator_ID] line #{i+1}" unless example && row["creator_id"].present?
+        print_error FOREIGN_KEY, :example, line, "creator_id" unless example && !row["creator_id"].present?
 
         @check_examples &= example
         # cache example id
         example_ids[row["id"]] = true
 
-        progress_loading(:example, i, csv_size(:example)) if example
-        i += 1
+        progress_loading(:example, line, csv_size(:example)) if example
+        line += 1
         break unless example
       end
 
@@ -334,7 +341,7 @@ module GroupData
       print "#{reset}processing examples...[OK]"
 
       print "\nprocessing lings_property..."
-      i = 1
+      line = reset_line
 
       @check_lings_properties = true
 
@@ -345,24 +352,24 @@ module GroupData
           lp &= value.present? unless col=="creator_id"
         end
 
-        print "\n#{red("ERROR")} - Missing parameter in Ling_property.csv - line #{i+1}" unless lp
+        print_error MISSING, :lings_property, line unless lp
 
         lp &= groups[row["group_id"]] if lp
-        print "\n#{red("ERROR")} - Foreign Key check fails in Ling_property.csv - [Group_ID] line #{i+1}" unless lp
+        print_error FOREIGN_KEY, :lings_property, line, "group_id" unless lp
 
         lp &= ling_ids[row["ling_id"]] if lp
-        print "\n#{red("ERROR")} - Foreign Key check fails in Ling_property.csv - [Ling_ID] line #{i+1}" unless lp
+        print_error FOREIGN_KEY, :lings_property, line, "ling_id" unless lp
 
         lp &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Ling_property.csv - [Creator_ID] line #{i+1}" unless lp && row["creator_id"].present?
+        print_error FOREIGN_KEY, :lings_property, line, "creator_id" unless lp && !row["creator_id"].present?
 
         @check_lings_properties &= lp
 
         # cache lings_property id
         lings_property_ids[row["id"]] = true
 
-        progress_loading(:lings_property, i, csv_size(:lings_property)) if lp
-        i += 1
+        progress_loading(:lings_property, line, csv_size(:lings_property)) if lp
+        line += 1
         break unless lp
       end
 
@@ -371,7 +378,7 @@ module GroupData
       print "#{reset}processing lings_property...[OK]"
 
       print "\nprocessing examples_lings_property..."
-      i = 1
+      line = reset_line
 
       @check_examples_lp = true
 
@@ -382,24 +389,24 @@ module GroupData
           elp &= value.present? unless col=="creator_id"
         end
 
-        print "\n#{red("ERROR")} - Missing parameter in Example_ling_property.csv - line #{i+1}" unless elp
+        print_error MISSING, :examples_lings_property, line unless elp
 
         elp &= groups[row["group_id"]]
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Group_ID] line #{i+1}" unless elp
+        print_error FOREIGN_KEY, :examples_lings_property, line, "group_id" unless elp
 
         elp &= lings_property_ids[row["lings_property_id"]]
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Ling_ID] line #{i+1}" unless elp
+        print_error FOREIGN_KEY, :examples_lings_property, line, "lings_property_id" unless elp
 
         elp &= example_ids[row["example_id"]]
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Example_ID] line #{i+1}" unless elp
+        print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp
 
         elp &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print "\n#{red("ERROR")} - Foreign Key check fails in Example_ling_property.csv - [Creator_ID] line #{i+1}" unless elp && row["creator_id"].present?
+        print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp && !row["creator_id"].present?
 
         @check_examples_lp &= elp
 
-        progress_loading(:examples_lings_property, i, csv_size(:examples_lings_property)) if elp
-        i += 1
+        progress_loading(:examples_lings_property, line, csv_size(:examples_lings_property)) if elp
+        line += 1
         break unless elp
       end
 
@@ -408,7 +415,7 @@ module GroupData
       print "#{reset}processing examples_lings_property...[OK]"
 
       print "\nprocessing stored_values..."
-      i = 1
+      line = reset_line
 
       @check_stored_values = true
 
@@ -419,15 +426,18 @@ module GroupData
           stored_value &= value.present?
         end
 
-        print "\n#{red("ERROR")} - Missing parameter in Stored_value.csv - line #{i+1}" unless stored_value
+        print_error MISSING, :stored_value, line unless stored_value
 
         stored_value &= groups[row["group_id"]]
-        print "\n#{red("ERROR")} - Foreign Key check fails in StoredValue.csv - [Group_ID] line #{i+1}" unless stored_value
+        print_error FOREIGN_KEY, :stored_value, line, "group_id" unless stored_value
+
+        stored_value &= example_ids[row["storable_id"]]
+        print_error FOREIGN_KEY, :stored_value, line, "storable_id" unless stored_value
 
         @check_stored_values &= stored_value
 
-        progress_loading(:stored_value, i, csv_size(:stored_value))
-        i += 1
+        progress_loading(:stored_value, line, csv_size(:stored_value))
+        line += 1
         break unless stored_value
       end
 
@@ -440,6 +450,10 @@ module GroupData
     end
 
     private
+
+    def reset_line()
+      return 1
+    end
 
     def seconds_fraction_to_time(time_difference)
       hours = (time_difference / 3600).to_i
@@ -475,13 +489,27 @@ module GroupData
       header = @headers[key]
 
       header.each do |title|
-        check &= text.match title
+        check &= text.match title unless title=="creator_id"
 
-        print "\n#{red("ERROR")} - Header Validation fails for #{key}\n=> Please check for '#{title}' column" unless check
+        print_header_error key, title unless check
         break unless check
       end
 
       return check
+    end
+
+    def print_error(type, key, line, *args)
+      col, name, value = args if args.size >0
+      print "\n#{red("ERROR")} - Foreign Key check fails in #{key.to_s.camelize}.csv - [#{col.capitalize}] line #{line+1}" if type==FOREIGN_KEY
+      print "\n#{red("ERROR")} - Missing parameter in #{key.to_s.camelize}.csv - line #{line+1}" if type==MISSING
+      print "\n#{red("ERROR")} - Header Validation fails for #{key.to_s.camelize}.csv\n=> Please check for '#{col}' column" if type==HEADER
+      print "\n#{red("ERROR")} - #{name} value should be valid in #{key.to_s.camelize}.csv - line #{line+1}\n => '#{value}' not valid" if type==VALIDITY_CHECK
+      print "\n#{red("ERROR")} - #{name} should be lowercase in #{key.to_s.camelize}.csv - line #{line+1}" if LOWERCASE
+      print "\n"
+    end
+
+    def print_header_error(key, title)
+      print_error HEADER, key, 0, title
     end
 
     def red(string)
