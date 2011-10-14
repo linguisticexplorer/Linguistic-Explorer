@@ -38,7 +38,7 @@ module GroupData
       @headers = load_headers
     end
 
-    def validate!
+    def migrate!
 
       reset = "\r\e[0K"
       start = Time.now
