@@ -82,10 +82,16 @@ module SearchResults
       @group.has_depth?
     end
 
-   def included_columns
+    def included_columns
       # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
       # show all columns if parameters not present
-      @params[:include] && @params[:include].symbolize_keys.keys || SearchColumns::COLUMNS
+      included ||= @params[:include] && @params[:include].symbolize_keys.keys
+
+      return SearchColumns::COLUMNS if included.nil?
+
+      included_ordered = order_columns SearchColumns::COLUMNS, included
+
+      return included_ordered
     end
 
     private
@@ -106,6 +112,35 @@ module SearchResults
 
     def category_present?(key, depth)
       group_prop_category_ids(depth).map(&:to_s).include?(key)
+    end
+
+    def order_columns(fixed_array, params_array)
+      hash_fixed = positions_hash fixed_array
+      hash_params = positions_hash params_array
+
+      hash_params.each do |key, value|
+        if value != hash_fixed[key]
+          old = hash_params.key(hash_fixed[key])
+          hash_params[old] = value unless old.nil?
+          hash_params[key] = hash_fixed[key]
+        end
+      end
+
+      index_ordered = hash_params.invert.keys.sort
+      included_ordered = []
+      index_ordered.each do |index_col|
+        included_ordered << hash_params.key(index_col)
+      end
+
+      return included_ordered
+    end
+
+    def positions_hash(array)
+      hash = {}
+      array.each do |key|
+        hash[key] = array.index(key)
+      end
+      return hash
     end
 
   end

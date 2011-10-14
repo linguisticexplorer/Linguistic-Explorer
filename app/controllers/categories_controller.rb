@@ -1,6 +1,6 @@
 class CategoriesController < GroupDataController
   def index
-    @categories = current_group.categories
+    @categories = current_group.categories.paginate(:page => params[:page], :order => "name")
   end
 
   def show

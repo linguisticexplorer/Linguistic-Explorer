@@ -3,9 +3,13 @@ module SearchResults
   class ResultMapper
 
     def self.build_result_groups(parent_ids, child_ids = [], columns)
-      parent_results  = LingsProperty.select_ids.with_id(parent_ids)
+      # Eager-loading for a fast response on a big set of data
+      parent_results  = LingsProperty.select_ids.with_id(parent_ids).
+          includes(:property, :examples, :examples_lings_properties)
+
       child_results   = LingsProperty.with_id(child_ids).includes([:ling]).
-        joins(:ling).order("lings.parent_id, lings.name")
+        joins(:ling).order("lings.parent_id, lings.name").
+          includes(:property, :examples, :examples_lings_properties)
 
       child_filtered_results, parent_filtered_results = filter_results_by_columns(parent_results, child_results, columns)
 
@@ -16,7 +20,7 @@ module SearchResults
           groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
         end
       end
-      #Rails.logger.debug "DEBUG: Results =>\n#{result.inspect}"
+      #Rails.logger.debug "DEBUG: Results => #{result.size}"
       return result
     end
 
@@ -66,15 +70,7 @@ module SearchResults
       parent_filtered_results = parent_results.select { |r| r if filter.columns_filter(r, Depth::PARENT) }
       child_filtered_results = child_results.select { |r| r if filter.columns_filter(r, Depth::CHILD) }
 
-      #Rails.logger.debug "DEBUG: \nParents\n\tPre:#{parent_results.count} \t Post:#{parent_filtered_results.count}\nChildren\n\tPre:#{child_results.count} \t Post:#{child_filtered_results.count}"
-      #parent_filtered_results.each do |parent|
-      #  Rails.logger.debug "DEBUG: \nParent: #{parent.inspect}"
-      #end
-      #child_filtered_results.each do |child|
-      #  Rails.logger.debug "DEBUG: \nChild: #{child.inspect}"
-      #end
-      return child_filtered_results, parent_filtered_results
-      #return child_results, parent_results
+      [child_filtered_results, parent_filtered_results]
     end
 
   end
@@ -119,16 +115,6 @@ module SearchResults
 
     private
 
-    def child_columns_filter(result, depth)
-      index = []
-      @columns.each do |col|
-        next if col.to_s=~/value/
-        index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
-      end
-
-      already_written?(index)
-    end
-
     def parent_columns_filter(result, depth)
       index = []
       @columns.each do |col|
@@ -153,12 +139,20 @@ module SearchResults
       :property_0 => lambda { |v| v.property },
       :property_1 => lambda { |v| v.property },
       :value_0    => lambda { |v| v.property_value.gsub!(/.*\:/){""} },
-      #:value_0    => lambda { |v| v.ling },
-      #:value_0    => lambda { |v| v.value  },
       :value_1    => lambda { |v| v.property_value.gsub!(/.*\:/){""}  },
       :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
       :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
     }
     end
+
+    #def child_columns_filter(result, depth)
+    #  index = []
+    #  @columns.each do |col|
+    #    next if col.to_s=~/value/
+    #    index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
+    #  end
+    #
+    #  already_written?(index)
+    #end
   end
 end

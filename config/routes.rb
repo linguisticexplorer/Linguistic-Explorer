@@ -11,7 +11,7 @@ LinguisticExplorer::Application.routes.draw do
 
     resources :searches do
       collection do
-        post 'preview'
+        get 'preview'
       end
     end
 

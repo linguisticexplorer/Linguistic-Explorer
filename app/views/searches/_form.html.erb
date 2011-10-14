@@ -1,41 +1,47 @@
-<%= table_form_for search do |f| %>
-  <div class="table center expand_width">
-    <div class="row">
-      <div class="cell">
-        <h3>Display</h3>
+<%= table_form_for search, :html => {:method => "get"} do |f| %>
+    <div class="table center expand_width">
+      <div class="row">
+        <div class="cell">
+          <h3>Display</h3>
+        </div>
+        <div class="cell">
+          <%= render :partial => 'searches/form/includes' %>
+        </div>
       </div>
-      <div class="cell">
-        <%= render :partial => 'searches/form/includes' %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="cell">
+      <div class="row">
+        <div class="cell">
+
+        </div>
+        <div class="cell">
+          <%= f.submit "Show results", :name => nil %>
+          <input class="nudge" type="reset" value="Reset">
+        </div>
 
       </div>
-      <div class="cell">
-        <%= f.submit "Show results" %>
-        <input class="nudge" type="reset" value="Reset">
+      <div class="row">
+        <div class="cell">
+          &nbsp;
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="cell">
-        <h3>Constraints</h3>
+      <div class="row">
+        <div class="cell">
+          <h3>Constraints</h3>
+        </div>
+        <div class="cell">
+          <%= render :partial => 'searches/form/lings', :locals => { :f => f } %>
+          <%= render :partial => 'searches/form/properties', :locals => { :f => f } %>
+          <%= render :partial => 'searches/form/lings_properties', :locals => { :f => f } %>
+          <%= render :partial => 'searches/form/examples', :locals => { :f => f } %>
+        </div>
       </div>
-      <div class="cell">
-        <%= render :partial => 'searches/form/lings', :locals => { :f => f } %>
-        <%= render :partial => 'searches/form/properties', :locals => { :f => f } %>
-        <%= render :partial => 'searches/form/lings_properties', :locals => { :f => f } %>
-        <%= render :partial => 'searches/form/examples', :locals => { :f => f } %>
-      </div>
-    </div>
-    <div class="row">
-      <div class="cell">
+      <div class="row">
+        <div class="cell">
 
-      </div>
-      <div class="cell">
-        <%= f.submit "Show results" %>
-        <input class="nudge" type="reset" value="Reset">
+        </div>
+        <div class="cell">
+          <%= f.submit "Show results", :name => nil %>
+          <input class="nudge" type="reset" value="Reset">
+        </div>
       </div>
     </div>
-  </div>
 <% end %>

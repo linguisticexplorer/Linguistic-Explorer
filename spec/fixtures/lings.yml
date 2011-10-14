@@ -15,7 +15,7 @@ exclusive1:
   group: exclusive
   depth: 1
 level1:
-  name: standardissue
+  name: a_standard_issue
   group: inclusive
   depth: 1
   parent_id: nil

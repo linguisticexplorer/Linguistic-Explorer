@@ -3,18 +3,18 @@ class LingsController < GroupDataController
 
   def depth
     @depth = params[:depth].to_i
-    @lings = current_group.lings.at_depth(@depth)
+    @lings = current_group.lings.at_depth(@depth).paginate(:page => params[:page], :order => "name")
   end
 
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
-      current_group.lings.at_depth(depth)
+      current_group.lings.at_depth(depth).paginate(:page => params[:page])
     end
   end
 
   def show
     @ling = current_group.lings.find(params[:id])
-    @values = @ling.lings_properties.order(:property_id)
+    @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
   end
 
   def set_values

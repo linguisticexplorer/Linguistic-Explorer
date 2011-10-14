@@ -16,6 +16,8 @@ module SearchResults
       vals  = @filter.vals_at(depth)
       pairs = @query.lings_props_pairs(depth)
 
+      #Rails.logger.debug "DEBUG: I'm here! (0) #{LingsProperty.select_ids.class}"
+
       pairs.any? ? LingsProperty.select_ids.where({ :property_value => pairs } & {:id => vals}) : vals
     end
 

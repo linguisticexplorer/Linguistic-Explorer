@@ -1,6 +1,6 @@
 class ExamplesController < GroupDataController
   def index
-    @examples = current_group.examples.includes(:group, :ling)
+    @examples = current_group.examples.includes(:group, :ling).paginate(:page => params[:page], :order => "name")
   end
 
   def show

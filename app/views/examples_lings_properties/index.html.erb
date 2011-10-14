@@ -1,7 +1,10 @@
 <% page_heading current_group.examples_lings_property_name.pluralize %>
 
 <h1>Listing <%= current_group.examples_lings_property_name.pluralize %></h1>
-
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @examples_lings_properties %>
+</div>
 <table>
   <tr>
     <th><%= current_group.example_name %></th>
@@ -19,9 +22,13 @@
   </tr>
 <% end %>
 </table>
-
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @examples_lings_properties %>
+</div>
 <br />
 
 <% if can? :create, ExamplesLingsProperty.new{|elp| elp.group = current_group} %>
   <%= link_to "New #{current_group.examples_lings_property_name}", new_group_examples_lings_property_path(current_group) %>
 <% end %>
+

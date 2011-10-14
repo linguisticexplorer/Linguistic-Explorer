@@ -62,3 +62,8 @@ Then /^the select menu for "([^\"]*)" should not contain the following:$/ do |la
     end
   end
 end
+When /^I follow the "([^"]*)" for the group "([^"]*)"$/ do |model, group_name|
+    group = Group.find_by_name(group_name)
+    link = "#{model}"
+    click_link(link)
+end

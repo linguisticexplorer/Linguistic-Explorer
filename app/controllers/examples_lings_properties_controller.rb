@@ -1,6 +1,7 @@
 class ExamplesLingsPropertiesController < GroupDataController
   def index
-    @examples_lings_properties = current_group.examples_lings_properties.includes({:example => :stored_values}, :lings_property)
+    @examples_lings_properties = current_group.examples_lings_properties.includes({:example => :stored_values}, :lings_property).
+        paginate(:page => params[:page], :order => "examples.name")
   end
 
   def show

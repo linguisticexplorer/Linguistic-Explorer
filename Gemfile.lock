@@ -194,6 +194,7 @@ GEM
     validation_reflection (1.0.0)
     warden (1.0.5)
       rack (>= 1.0)
+    will_paginate (3.0.0)
     xpath (0.1.4)
       nokogiri (~> 1.3)
 
@@ -226,3 +227,4 @@ DEPENDENCIES
   ruby-debug19
   validates_existence (= 0.5.6)!
   validation_reflection (= 1.0.0)
+  will_paginate (~> 3.0)

@@ -1,6 +1,6 @@
 class MembershipsController < GroupDataController
   def index
-    @memberships = current_group.memberships
+    @memberships = current_group.memberships.paginate(:page => params[:page], :order=>"users.name").includes(:member)
   end
 
   def show

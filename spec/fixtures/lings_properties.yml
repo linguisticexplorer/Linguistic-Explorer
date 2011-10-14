@@ -1,7 +1,7 @@
 smelly:
   ling: english
   property: valid
-  value: smelly
+  value: aromatic
   group: inclusive
 inclusive:
   ling: english

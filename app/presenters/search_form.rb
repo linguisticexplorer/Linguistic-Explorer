@@ -14,8 +14,8 @@ module SearchForm
   end
 
   def lings_prop_options(category)
-    group_lings_props_in_category(category).map { |lp| 
-        ["#{lp.prop_name}: #{lp.value}", lp.property_value] }.uniq
+    group_lings_props_in_category(category).map { |lp|
+        ["#{lp.prop_name}: #{lp.value}", lp.property_value] }.uniq.paginate(:page => @offset)
   end
 
   def example_field_options
@@ -53,7 +53,8 @@ module SearchForm
   end
 
   def group_lings_props
-    @group_lings_props ||= LingsProperty.in_group(@group).group(LingsProperty.group_by_statement).includes(:property) & Property.order_by_name
+    #@group_lings_props ||= LingsProperty.in_group(@group).group(LingsProperty.group_by_statement).includes(:property) & Property.order_by_name
+    @group_lings_props ||= LingsProperty.in_group(@group).includes(:property).limit(50000).offset(@offset)
   end
 
 end

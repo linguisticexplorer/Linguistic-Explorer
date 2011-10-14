@@ -1,4 +1,8 @@
 <h1>Listing <%= current_group.ling_name_for_depth(depth).pluralize %></h1>
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate lings %>
+</div>
 <table>
   <tr>
     <th>Name</th>
@@ -33,7 +37,10 @@
     </tr>
   <% end %>
 </table>
-
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate lings %>
+</div>
 <% if can? :create, Ling.new{|l| l.group = current_group} %>
   <%= link_to "New #{current_group.ling_name_for_depth(depth)}", new_group_ling_path(current_group, :depth => depth) %>
 <% end %>

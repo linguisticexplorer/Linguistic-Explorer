@@ -1,6 +1,7 @@
 class LingsPropertiesController < GroupDataController
   def index
-    @lings_properties = current_group.lings_properties.includes(:ling, :property)
+    @lings_properties = current_group.lings_properties.paginate(:page => params[:page], :order=> "value").
+        includes(:ling, :property)
   end
 
   def show

@@ -1,11 +1,12 @@
 class PropertiesController < GroupDataController
   def index
-    @properties = current_group.properties
+    # Added Eager Loading
+    @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
   end
 
   def show
     @property = current_group.properties.find(params[:id])
-    @values = @property.lings_properties.order(:ling_id)
+    @values = @property.lings_properties.order(:ling_id).paginate(:page => params[:page])
   end
 
   def new

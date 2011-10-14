@@ -1,7 +1,10 @@
 <% page_heading "Groups" %>
 
 <h1>Listing groups</h1>
-
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @groups %>
+</div>
 <table>
   <tr>
     <th></th>
@@ -43,7 +46,10 @@
 </table>
 
 <br />
-
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @groups %>
+</div>
 <% if can? :create, Group.new %>
   <%= link_to 'New Group', new_group_path %>
 <% end %>

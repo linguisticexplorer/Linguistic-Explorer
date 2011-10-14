@@ -17,6 +17,8 @@ spec/csv/bad/no_id/*.csv
 spec/csv/bad/no_id/*.yml
 spec/csv/good/*.yml
 spec/csv/good/*.csv
+spec/csv/sswl/*.csv
+spec/csv/sswl/*.csv
 config/import.yml
 doc/data/*
 doc/TODO

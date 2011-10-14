@@ -1,4 +1,5 @@
 class SearchesController < GroupDataController
+
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
 
   respond_to :html, :csv
@@ -7,7 +8,9 @@ class SearchesController < GroupDataController
     @search = Search.new do |s|
       s.creator = current_user
       s.group   = current_group
+      s.offset = params[:page]
     end
+
     authorize! :search, @search
   end
 
@@ -16,9 +19,10 @@ class SearchesController < GroupDataController
       s.creator = current_user
       s.group   = current_group
       s.query   = params[:search]
+      s.offset  = params[:page]
     end
 
-    #Rails.logger.debug "Step 1 => #{self.class}"
+    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
     authorize! :search, @search
 
     # @search.get_results!

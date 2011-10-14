@@ -64,6 +64,8 @@ module SearchResults
     def select_vals_by_keyword(vals, keyword)
       result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
 
+      #Rails.logger.debug "DEBUG: I'm here! (1) - \n#{result.nil?}; #{result.empty?}; #{result.size}"
+      #return [-1]
       # With this trick it is possible to know if a keyword
       # search was performed or not with no results
       result.empty? ? [-1] : result
@@ -98,9 +100,14 @@ module SearchResults
     def vals_at(depth)
       vals          = @filter.vals_at(depth)
       category_ids  = @query.group_prop_category_ids(depth)
+
+      #Rails.logger.debug "DEBUG: I'm here! (1.4) => \n#{vals.size}"
+      #TODO: Manage the case of vals > 100000 to redirect to search with a flash
       category_ids.collect do |category_id|
-        keyword(category_id).present? ? select_vals_by_keyword(vals, keyword(category_id)) : vals
+        keyword(category_id).present? ? select_vals_by_keyword(vals, keyword(category_id)) :
+            vals.size < 100000 ? vals : [-1]
       end.flatten
+
     end
 
   end

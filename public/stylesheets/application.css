@@ -194,3 +194,44 @@ fieldset select, fieldset input[type="text"] { width:250px;}
 
 .hidden_label label { display:none;}
 .selection_row .cell { padding-top:20px;}
+
+img.loading {
+    width: 24px;
+    height: 24px;
+}
+
+.loading{
+   color: #C30;
+}
+
+/* For more paginating styles: http://mislav.uniqpath.com/will_paginate/ */
+/* Pagination Apple-style */
+.apple_pagination {
+  /*background: #f1f1f1;*/
+  background:  #fff;
+  border: 1px #fff;
+  text-align: center;
+  padding: 1em;
+  cursor: default; }
+  .apple_pagination a, .apple_pagination span {
+    padding: 0.2em 0.3em; }
+  .apple_pagination .disabled {
+    color: #aaaaaa; }
+  .apple_pagination .current {
+    font-style: normal;
+    font-weight: bold;
+    color: #C30;
+    background-color: #bebebe;
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.5;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
+    text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px; }
+  .apple_pagination a {
+    text-decoration: none;
+    color: #C30; }
+    .apple_pagination a:hover, .apple_pagination a:focus {
+      text-decoration: underline; }
