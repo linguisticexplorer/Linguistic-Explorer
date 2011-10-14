@@ -19,12 +19,12 @@ module GroupData
         download remote_file, local_file
       end
 
-      usage = "Usage:\tcap group_data:upload\n\n\t\tcap group_data:upload -s conf=/path/to/config.yml"
+      usage = "Usage:\tcap group_data:import\n\n\t\tcap group_data:import -s conf=/path/to/config.yml"
       desc <<-DESC
         Upload csv files into production database from specified yaml file.
 
         By default, if no config file is specified with -s config or c options \
-        then the script will not proceeed.
+        then the script will not proceed.
 
         Usage: #{usage}
 
@@ -41,10 +41,10 @@ module GroupData
 
         # Use exists? instead of defined? -> Capistrano Doc
         if exists?(:conf)
-          puts "Custom configuration file:\n\t\e[34m#{conf}\e[0m"
+          puts "Custom configuration file:\n\t#{blue conf}"
           local_config ||= conf
         else
-          puts "Using default configuration file:\n\t\e[34m#{defaultConfig}\e[0m"
+          puts "Using default configuration file:\n\t#{blue defaultConfig}"
           local_config ||= defaultConfig
         end
 
@@ -57,57 +57,57 @@ module GroupData
           local_config = defaultConfig if err==1
           YAML.load_file(local_config)
         rescue Errno::ENOENT
-          print "\e[31m#{errString}\n\e[0m"
+          print "#{red errString}\n"
           puts <<-MSG
-\tError: Configuration file not found => #{local_config}
+          \tError: Configuration file not found => #{local_config}
           
-\t#{usage}
+          \t#{usage}
             
-\tWill use default configuration file: \e[34m./#{defaultConfig}\e[0m
+          \tWill use default configuration file: #{blue defaultConfig}
           MSG
           err += 1
           retry if err <2
           puts
-          exit(1)
+          exit_with_error
         rescue
-          print "\e[31mERROR\n\e[0m"
+          print "#{red "ERROR"}\n"
           puts <<-MSG
-\tError: Problem loading the configuration file => #{local_config}
+          \tError: Problem loading the configuration file => #{local_config}
 
-\t#{usage}
+          \t#{usage}
 
-\tExiting the task
+          \tExiting the task
           MSG
-          exit(1)
+          exit_with_error
         end
         err = 0
         # Config file found
-        print "\e[32m#{okString}\n\e[0m"
+        print "#{green okString}\n"
 
 
-        # Check files are in path
+        # Check that files are in path
         print "Check files..."
         ok = true
         local_yml.each do |path_key, path|
           ok &= File.exists? path
           if(!ok)
-            print "\e[31mERROR\n\e[0m"
+            print "#{red "ERROR"}\n"
             puts <<-MSG
-\tError: CSV file does not exist: \n\t#{path_key} => \e[34m#{path}\e[0m
+            \tError: CSV file does not exist: \n\t#{path_key} => #{blue path}
 
-\tExiting the task
+            \tExiting the task
             MSG
-            exit(1)
+            exit_with_error
           end
         end
 
-        print "\e[32m#{okString}\n\e[0m"
+        print "#{green okString}\n"
 
         # Validate data in files with a local Rake task before send to the remote server
         puts "Check data files..."
         system "rake group_data:validate CONFIG=#{local_config}"
-        exit(1) if $? != 0                                      # Will exit if rake task exit with an error
-        puts "Check data files...\e[32m#{okString}\n\e[0m"
+        exit_if_rake_error                                      # Will exit if rake task exit with an error
+        puts "Check data files...#{green okString}\n"
 
         # Translate local config into remote config
         remote_dir    = "/var/tmp/#{Time.now.to_i}"
@@ -135,13 +135,13 @@ module GroupData
             upload local_yml[path_key], remote_path
           end
           print "Uploading CSVs to remote path..."
-          print "\e[32m#{okString}\n\e[0m"
+          print "#{green okString}\n"
 
           File.open(config_name, "wb+") { |f| f.write remote_yml.to_yaml }
           upload config_name, remote_config
 
           print "Uploading Configuration file..."
-          print "\e[32m#{okString}\n\e[0m"
+          print "#{green okString}\n"
         ensure
           File.unlink config_name if File.exists? config_name
         end
@@ -157,6 +157,27 @@ module GroupData
         run cmd
         puts "Importing data...Done"
       end
+
+      def blue(text)
+          return "\e[34m#{text}\e[0m"
+      end
+
+      def green(text)
+          return "\e[32m#{text}\e[0m"
+      end
+
+      def red(text)
+          "\e[31m#{text}\e[0m"
+      end
+
+      def exit_if_rake_error()
+        exit_with_error if $? != 0
+      end
+
+      def exit_with_error()
+        exit(1)
+      end
+
     end
 
   end

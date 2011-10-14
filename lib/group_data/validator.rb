@@ -124,10 +124,10 @@ module GroupData
         print_error MISSING, :group, line unless group
 
         group &= row["privacy"].downcase == "public" || row["privacy"].downcase == "private"
-        print_error VALIDITY_CHECK, :group, line, "Privacy", row["privacy"] unless group
+        print_error VALIDITY_CHECK, :group, line, "privacy", "Privacy", row["privacy"] unless group
 
         group &= !row["privacy"].downcase!
-        print_error LOWERCASE, :membership, line, "Privacy", row["privacy"] unless group
+        print_error LOWERCASE, :membership, line, "privacy",  "Privacy", row["privacy"] unless group
 
         @check_groups &= group
         # cache group id
@@ -158,14 +158,16 @@ module GroupData
         membership &= groups[row["group_id"]] if membership
         print_error FOREIGN_KEY, :membership, line, "group_id" unless membership
 
-        membership &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :membership, line, "creator_id" unless membership && !row["creator_id"].present?
+        if row["creator_id"].present?
+          membership &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :membership, line, "creator_id" unless membership
+        end
 
         membership &= row["level"].downcase == "admin" || row["level"].downcase == "member"
-        print_error VALIDITY_CHECK, :membership, line, "Access Level", row["level"] unless membership
+        print_error VALIDITY_CHECK, :membership, line, "level", "Access Level", row["level"] unless membership
 
         membership &= !row["level"].downcase!
-        print_error LOWERCASE, :membership, line, "Access Level", row["level"] unless membership
+        print_error LOWERCASE, :membership, line, "level", "Access Level", row["level"] unless membership
 
         @check_memberships &= membership
         progress_loading(:membership, line, csv_size(:membership)) if membership
@@ -194,8 +196,10 @@ module GroupData
         ling &= groups[row["group_id"]] if ling
         print_error FOREIGN_KEY, :ling, line, "group_id" unless ling
 
-        ling &= user_ids[row["creator_id"]] if ling && row["creator_id"].present?
-        print_error FOREIGN_KEY, :ling, line, "creator_id" unless ling && !row["creator_id"].present?
+        if row["creator_id"].present?
+          ling &= user_ids[row["creator_id"]] if ling
+          print_error FOREIGN_KEY, :ling, line, "creator_id" unless ling
+        end
 
         @check_lings &= ling
         # cache ling id
@@ -251,8 +255,10 @@ module GroupData
         category &= groups[row["group_id"]] if category
         print_error FOREIGN_KEY, :category, line, "group_id" unless category
 
-        category &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :category, line, "creator_id" unless category && !row["creator_id"].present?
+        if row["creator_id"].present?
+          category &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :category, line, "creator_id" unless category
+        end
 
         @check_categories &= category
 
@@ -288,8 +294,10 @@ module GroupData
         property &= category_ids[row["category_id"]] if property
         print_error FOREIGN_KEY, :property, line, "category_id" unless property
 
-        property &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :property, line, "creator_id" unless property && !row["creator_id"].present?
+        if row["creator_id"].present?
+          property &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :property, line, "creator_id" unless property
+        end
 
         @check_properties &= property
         # cache property id
@@ -324,8 +332,10 @@ module GroupData
         example &= ling_ids[row["ling_id"]] if example
         print_error FOREIGN_KEY, :example, line, "ling_id" unless example
 
-        example &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :example, line, "creator_id" unless example && !row["creator_id"].present?
+        if row["creator_id"].present?
+          example &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :example, line, "creator_id" unless example
+        end
 
         @check_examples &= example
         # cache example id
@@ -360,8 +370,10 @@ module GroupData
         lp &= ling_ids[row["ling_id"]] if lp
         print_error FOREIGN_KEY, :lings_property, line, "ling_id" unless lp
 
-        lp &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :lings_property, line, "creator_id" unless lp && !row["creator_id"].present?
+        if row["creator_id"].present?
+          lp &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :lings_property, line, "creator_id" unless lp
+        end
 
         @check_lings_properties &= lp
 
@@ -400,8 +412,10 @@ module GroupData
         elp &= example_ids[row["example_id"]]
         print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp
 
-        elp &= user_ids[row["creator_id"]] if row["creator_id"].present?
-        print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp && !row["creator_id"].present?
+        if row["creator_id"].present?
+          elp &= user_ids[row["creator_id"]]
+          print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp
+        end
 
         @check_examples_lp &= elp
 
@@ -499,12 +513,12 @@ module GroupData
     end
 
     def print_error(type, key, line, *args)
-      col, name, value = args if args.size >0
+      col, name, value = args
       print "\n#{red("ERROR")} - Foreign Key check fails in #{key.to_s.camelize}.csv - [#{col.capitalize}] line #{line+1}" if type==FOREIGN_KEY
       print "\n#{red("ERROR")} - Missing parameter in #{key.to_s.camelize}.csv - line #{line+1}" if type==MISSING
       print "\n#{red("ERROR")} - Header Validation fails for #{key.to_s.camelize}.csv\n=> Please check for '#{col}' column" if type==HEADER
       print "\n#{red("ERROR")} - #{name} value should be valid in #{key.to_s.camelize}.csv - line #{line+1}\n => '#{value}' not valid" if type==VALIDITY_CHECK
-      print "\n#{red("ERROR")} - #{name} should be lowercase in #{key.to_s.camelize}.csv - line #{line+1}" if LOWERCASE
+      print "\n#{red("ERROR")} - #{name} should be lowercase in #{key.to_s.camelize}.csv - line #{line+1}" if type==LOWERCASE
       print "\n"
     end
 
