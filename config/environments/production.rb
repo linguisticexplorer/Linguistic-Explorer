@@ -37,8 +37,11 @@ LinguisticExplorer::Application.configure do
   # Disable delivery errors, bad email addresses will be ignored
   # config.action_mailer.raise_delivery_errors = false
 
-  # needed for Devise
-  config.action_mailer.default_url_options = { :host => 'linguisticexplorer.terraling.com'}
+  # needed for Devise and Postfix
+  config.action_mailer.default_url_options = {
+      :host => 'linguisticexplorer.terraling.com',
+      :enable_starttls_auto => false
+  }
 
   # Enable threaded mode
   # config.threadsafe!
