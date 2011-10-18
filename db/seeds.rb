@@ -45,7 +45,7 @@ CSV.foreach(Rails.root.join("doc", "data", "User.csv"), :headers => true) do |ro
     :password => "hunter2",
     :password_confirmation => "hunter2"
   ) do |u|
-    u.access_level = row["accesslevel"]
+    u.access_level = row["level"]
     u.email = row["email"]
   end
   user.save!
