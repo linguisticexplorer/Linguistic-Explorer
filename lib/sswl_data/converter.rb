@@ -1,12 +1,10 @@
-# GroupDataSSWLMigrator
+# SswlData::Converter
 #
 #
-
-
 require 'csv'
 
-module GroupData
-  class SSWLMigrator
+module SswlData
+  class Converter
 
     class << self
       def load(config)
@@ -34,16 +32,17 @@ module GroupData
     def initialize(config)
       @config = config
       @config.symbolize_keys!
-      @check_all = true
+      @sanitized = {}
       @headers = load_headers
     end
 
-    def migrate!
+    def convert!
 
       reset = "\r\e[0K"
       start = Time.now
-
-      print "migrating users..."
+      #sanitize_csv :user
+      #exit(1)
+      print "converting users..."
 
       # SSWL
       #
@@ -60,7 +59,11 @@ module GroupData
         char_array =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten;
         password  =  (0..8).map{ char_array[rand(char_array.length)]  }.join;
 
-        email = row["email"].present? ? row["email"] : "#{row["first_name"].gsub(/\s/, '')}@#{row["last_name"].gsub(/\s/, '')}.com"
+        first_name = row["first_name"]
+        first_name = first_name.gsub(/\s/, '') if first_name =~ /\s/
+        last_name =  row["last_name"]
+        last_name = last_name.gsub(/\s/, '') if last_name =~ /\s/
+        email = row["email"].present? ? row["email"] : "#{first_name}@#{last_name}.com"
         # cache user id
         user_ids[row["id"]] ||= {
             "id" => "#{row["id"]}",
@@ -73,9 +76,9 @@ module GroupData
 
       write_csv :user, user_ids
 
-      print "#{reset}migrating users...[OK]"
+      print "#{reset}converting users...[OK]"
 
-      print "\nmigrating groups..."
+      print "\nconverting groups..."
 
       # Terraling
       #
@@ -85,15 +88,15 @@ module GroupData
       CSV.open(new_path_for_csv(:group), "wb") do |csv|
         csv << @headers[:group]
         time = Time.new
-        name = "SSWL_Migration"
+        name = "SSWL_convertion"
         csv << ["0",name,"public","0","Language","not-present","Property",
                 "Category","Value","Example","Example Value","gloss, words, translation, comment"]
 
       end
 
-      print "#{reset}migrating groups...[OK]"
+      print "#{reset}converting groups...[OK]"
 
-      print "\nmigrating memberships..."
+      print "\nconverting memberships..."
 
       # SSWL
       #
@@ -117,9 +120,9 @@ module GroupData
 
       write_csv :membership, member_ids
 
-      print "#{reset}migrating memberships...[OK]"
+      print "#{reset}converting memberships...[OK]"
 
-      print "\nmigrating lings..."
+      print "\nconverting lings..."
 
       # SSWL
       #
@@ -145,9 +148,9 @@ module GroupData
 
       write_csv :ling, ling_ids
 
-      print "#{reset}migrating lings...[OK]"
+      print "#{reset}converting lings...[OK]"
 
-      print "\nmigrating categories..."
+      print "\nconverting categories..."
 
       # Terraling
       #
@@ -155,13 +158,13 @@ module GroupData
       # id,name,depth,group_id,creator_id,description
       CSV.open(new_path_for_csv(:category), "wb") do |csv|
         csv << @headers[:category]
-        csv << [ "0","Category 0","0","0",nil,"Category created from SSWL Migration" ]
+        csv << [ "0","Category 0","0","0","Category created from SSWL Migration",nil ]
 
       end
 
-      print "#{reset}migrating categories...[OK]"
+      print "#{reset}converting categories...[OK]"
 
-      print "\nmigrating examples..."
+      print "\nconverting examples..."
 
       # SSWL
       #
@@ -187,10 +190,11 @@ module GroupData
 
       write_csv :example, example_ids
 
-      print "#{reset}migrating examples...[OK]"
+      print "#{reset}converting examples...[OK]"
 
-      print "\nmigrating properties..."
+      print "\nconverting properties..."
 
+      #sanitize_text_in_fields :property
       # SSWL
       # ===> Properties.csv <====
       # id, property, description
@@ -202,20 +206,22 @@ module GroupData
       csv_for_each :property do |row|
         max_id = Integer(row["id"]) unless max_id > Integer(row["id"])
 
+        #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
+        #puts "DEBUG: #{description}"
         # cache property id
         property_ids[row["property"]] ||= {
             "id" => "#{row["id"]}",
             "name" => "#{row["property"]}",
             "group_id" => "0",
             "category_id" => "0",
-            "description" => "#{row["description"]}"
+            #"description" => description
         }
 
       end
 
-      print "#{reset}migrating properties...[OK]"
+      print "#{reset}converting properties...[OK]"
 
-      print "\nmigrating lings_property..."
+      print "\nconverting lings_property..."
 
       # SSWL
       #
@@ -256,7 +262,7 @@ module GroupData
 
       write_csv :lings_property, lings_property_ids
 
-      print "#{reset}migrating lings_property...[OK]"
+      print "#{reset}converting lings_property...[OK]"
 
       # SSWL
       #
@@ -268,7 +274,7 @@ module GroupData
       # ==> ExampleLingsProperty.csv <===
       # id,example_id,lings_property_id,group_id,creator_id
       #
-      print "\nmigrating examples_lings_property..."
+      print "\nconverting examples_lings_property..."
 
       cache_properties = {}
 
@@ -312,7 +318,7 @@ module GroupData
 
       write_csv :examples_lings_property, examples_lings_property_ids
 
-      print "#{reset}migrating examples_lings_property...[OK]"
+      print "#{reset}converting examples_lings_property...[OK]"
 
       # SSWL
       #
@@ -324,7 +330,7 @@ module GroupData
       # ===> StoredValue.csv <=====
       # id, storable_id, storable_type, key, value, group_id
       #
-      print "\nmigrating stored_values..."
+      print "\nconverting stored_values..."
 
       csv_for_each :stored_value do |row|
         next unless property_ids[row["property"]].nil?
@@ -341,7 +347,7 @@ module GroupData
 
       write_csv :stored_value, stored_value_ids
 
-      print "#{reset}migrating stored_values...[OK]"
+      print "#{reset}converting stored_values...[OK]"
 
       print "\nCreating YAML configuration file for importing..."
 
@@ -355,7 +361,7 @@ module GroupData
       print "#{reset}Creating YAML configuration file for importing...[OK]\n"
 
       elapsed = seconds_fraction_to_time(Time.now - start)
-      puts "Time for validation: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
+      puts "Time for converting: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
     end
 
     private
@@ -363,12 +369,21 @@ module GroupData
     # Change from double-quotes in descriptions
     # writing single quote to sanitize csv for parser
     def sanitize_csv(key)
-      file = @config[key]
-      bad_string = '\\\\"'
-      string_fixed = "'"
-      text = File.read(file){|f| f.readline}
-      new_text = text.gsub(/#{bad_string}/, string_fixed)
-      File.open(file, "w") {|file| file.puts new_text}
+      if !@sanitized[key]
+        file = @config[key]
+        strings = {
+            "\"" => "\\\\'",
+            "\\\\;" => "\.",
+            "END" => ""
+        }
+        @sanitized[key] ||= true
+
+        strings.each do |bad, fixed|
+          text = File.read(file){|f| f.readline}
+          new_text = text.gsub(/#{bad}/, fixed)
+          File.open(file, "w") {|file| file.puts new_text}
+        end
+      end
     end
 
     def csv_for_each(key)
@@ -379,8 +394,8 @@ module GroupData
         line_cache = "#{row}"
       end
     rescue  CSV::MalformedCSVError => e
-      print "\n#{red e.message} - "
-      print "\nCheck the entry next to this one of #{@config[key]}:\n #{red line_cache}"
+      print "\n#{red e.message}"
+      print "\nCheck the entry next to this one of #{@config[key]}:\n #{red line_cache}" unless line_cache.size<1
     end
 
     def write_csv(key, data_ids)
@@ -425,7 +440,7 @@ module GroupData
       else
         puts "#{red "I haven't found any entry in languages file!!!" }"
       end
-      #exit(1)
+      puts "\n"
     end
 
     def search_alternatives(ling_property)
@@ -436,6 +451,15 @@ module GroupData
         found.nil? ? next : result << index
       end
       result
+    end
+
+    def sanitize_text_in_fields(key)
+      file = @config[key]
+      bad_string = '\r\n"'
+      string_fixed = "\#"
+      text = File.read(file){|f| f.readline}
+      new_text = text.gsub(/#{bad_string}/, string_fixed)
+      File.open(file, "w") {|file| file.puts new_text}
     end
 
     def seconds_fraction_to_time(time_difference)
