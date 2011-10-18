@@ -38,7 +38,7 @@ LinguisticExplorer::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # needed for Devise
-  config.action_mailer.default_url_options = { :host => 'mail.terraling.com'}
+  config.action_mailer.default_url_options = { :host => 'linguisticexplorer'}
 
   # Enable threaded mode
   # config.threadsafe!
