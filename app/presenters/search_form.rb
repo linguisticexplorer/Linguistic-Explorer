@@ -14,8 +14,8 @@ module SearchForm
   end
 
   def lings_prop_options(category)
-    group_lings_props_in_category(category).map { |lp|
-        ["#{lp.prop_name}: #{lp.value}", lp.property_value] }.uniq.paginate(:page => @offset)
+    results = group_lings_props_in_category(category).map { |lp|
+        ["#{lp.prop_name}: #{lp.value}", lp.property_value] }
   end
 
   def example_field_options
@@ -33,28 +33,38 @@ module SearchForm
   protected
 
   def group_lings_at_depth(depth)
-    group_lings.select { |l| l.depth.to_i == depth.to_i }
+    results = group_lings(depth)
   end
 
   def group_properties_in_category(category)
-    group_properties.select { |c| c.category_id.to_i == category.id }
+    results = group_properties(category)
   end
 
   def group_lings_props_in_category(category)
-    group_lings_props.select { |pv| pv.category_id.to_i == category.id }
+    group_lings_props(category)
   end
 
-  def group_lings
-    @group_lings ||= Ling.in_group(@group).order(:name)
+  def group_lings(depth)
+    @group_lings = Ling.in_group(@group).order(:name).where(:depth => depth.to_i)
   end
 
-  def group_properties
-    @group_properties ||= Property.in_group(@group).order_by_name
+  def group_properties(category)
+    @group_properties = Property.in_group(@group).order_by_name.where(:category => category)
   end
 
-  def group_lings_props
-    #@group_lings_props ||= LingsProperty.in_group(@group).group(LingsProperty.group_by_statement).includes(:property) & Property.order_by_name
-    @group_lings_props ||= LingsProperty.in_group(@group).includes(:property).limit(50000).offset(@offset)
+  def group_lings_props(category)
+    select_string = "properties.`id`, lings_properties.`id`, lings_properties.`ling_id`, lings_properties.`property_id`, lings_properties.`property_value`, lings_properties.`value`, count(*)"
+    group_string = "properties.`name`, lings_properties.`value`, lings_properties.`property_value`"
+    order_string = "properties.`name`"
+    where_string = "properties.`category_id`= ?"
+    @group_lings_props = LingsProperty.
+          in_group(@group).
+          select(select_string).
+          joins(:property).
+          group(group_string).
+          order(order_string).
+          where(where_string, category.id).
+          includes(:property)
   end
 
 end
