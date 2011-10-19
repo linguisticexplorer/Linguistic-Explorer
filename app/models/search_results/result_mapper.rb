@@ -5,7 +5,7 @@ module SearchResults
     def self.build_result_groups(parent_ids, child_ids = [], columns)
       # Eager-loading for a fast response on a big set of data
       parent_results  = LingsProperty.select_ids.with_id(parent_ids).
-          includes(:property, :examples, :examples_lings_properties)
+          includes(:property, :examples, :examples_lings_properties, :ling)
 
       child_results   = LingsProperty.with_id(child_ids).includes([:ling]).
         joins(:ling).order("lings.parent_id, lings.name").
