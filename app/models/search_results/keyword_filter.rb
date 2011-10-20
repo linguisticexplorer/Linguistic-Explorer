@@ -68,6 +68,7 @@ module SearchResults
       #return [-1]
       # With this trick it is possible to know if a keyword
       # search was performed or not with no results
+      # TODO Implement with Exceptions!!!
       result.empty? ? [-1] : result
     end
 
@@ -103,11 +104,15 @@ module SearchResults
 
       #Rails.logger.debug "DEBUG: I'm here! (1.4) => \n#{vals.size}"
       #TODO: Manage the case of vals > 100000 to redirect to search with a flash
-      category_ids.collect do |category_id|
-        keyword(category_id).present? ? select_vals_by_keyword(vals, keyword(category_id)) :
-            vals.size < 100000 ? vals : [-1]
+      result = category_ids.collect do |category_id|
+        if keyword(category_id).present?
+           select_vals_by_keyword(vals, keyword(category_id))
+        else
+           vals.size < 100000 ? vals : [-1]
+        end
       end.flatten
-
+      Rails.logger.debug "DEBUG: Result #{result.size}"# if result == [-1]
+      return result
     end
 
   end

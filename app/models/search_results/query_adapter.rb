@@ -89,9 +89,11 @@ module SearchResults
 
       return SearchColumns::COLUMNS if included.nil?
 
-      included_ordered = order_columns SearchColumns::COLUMNS, included
+      order_columns SearchColumns::COLUMNS, included
+    end
 
-      return included_ordered
+    def is_depth_1_interesting?
+      (included_columns & SearchColumns::CHILD_COLUMNS).any?
     end
 
     private

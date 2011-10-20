@@ -14,7 +14,9 @@ module SearchResults
 
       # Calling "to_a" because of bug in rails when calling empty?/any? on relation not yet loaded
       # Fixed at https://github.com/rails/rails/commit/015192560b7e81639430d7e46c410bf6a3cd9223
-      if d_1_vals.to_a.any?
+
+      # If depth 1 is not interesting it could make a useless work
+      if @query.is_depth_1_interesting? && d_1_vals.to_a.any?
         d_1_vals  = filter_depth_1_vals_by_selected_ling_parents  d_0_vals, d_1_vals
         d_0_vals  = filter_depth_0_vals_by_filtered_depth_1_vals  d_0_vals, d_1_vals
       end
