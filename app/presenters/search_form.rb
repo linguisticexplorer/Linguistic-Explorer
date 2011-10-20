@@ -59,11 +59,13 @@ module SearchForm
     where_string = "properties.`category_id`= ?"
     @group_lings_props = LingsProperty.
           in_group(@group).
+        # This particular select query will dramatic improve performance for a big set of data
           select(select_string).
           joins(:property).
           group(group_string).
           order(order_string).
           where(where_string, category.id).
+        # Trick for eager loading
           includes(:property)
   end
 
