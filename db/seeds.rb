@@ -70,7 +70,7 @@ puts "Done with Groups, starting Memberships"
 CSV.foreach(Rails.root.join("doc", "data", "GroupMembership.csv"), :headers => true) do |row|
   user = User.find_by_email(user_list[row["user_id"]])
   group = Group.find_by_name(group_name(row["group_id"]))
-  Membership.create(:member => user, :group => group, :level => row["level"].downcase)
+  Membership.create(:member => user, :group => group, :level => row["access_level"].downcase)
 end
 
 puts "Done with Memberships, starting Lings"
