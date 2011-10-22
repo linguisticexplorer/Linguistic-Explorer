@@ -19,7 +19,7 @@ module SearchResults
       ResultMapper.new(self.result_groups).to_result_families
     end
 
-    Rails.logger.debug "DEBUG: Inspecting #{@results.inspect}"
+    #Rails.logger.debug "DEBUG: Inspecting #{@results.inspect}"
     # TODO: paginate also for children!!!
     # Suggestion: flatten results, do the pagination, re-create results with the result of pagination
     total_rows = 0
@@ -30,7 +30,7 @@ module SearchResults
         end
       end
     end
-    #Rails.logger.debug "Step 2 => #{self.class} - Results size:\n#{total_rows}"
+    Rails.logger.debug "Step 2 => #{self.class} - Results size:#{total_rows}"
     #@results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE, :total_entries => total_rows)
     @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
   end

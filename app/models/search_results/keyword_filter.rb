@@ -31,10 +31,11 @@ module SearchResults
       result = @filter_strategy_instance.vals_at(depth)
 
       ##########################################################################
-      # Trick to solve problem with intersection on no results found in depth  #
-      # 1 keyword search                                                       #
+      # Trick to solve issue #1                                                #
+      # This shows an empty result if no entry has found on depth 0 if         #
+      # NO_DEPTH_1_RESULT retrieved                                            #
       ##########################################################################
-      (depth.to_s=='0') & (result==[-1]) ? [] : result
+      is_depth_0?(depth) & any_error?(result) ? [] : result
     end
 
   end
@@ -68,8 +69,8 @@ module SearchResults
       #return [-1]
       # With this trick it is possible to know if a keyword
       # search was performed or not with no results
-      # TODO Implement with Exceptions!!!
-      result.empty? ? [-1] : result
+      #result.empty? ? [-1] : result
+      result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
     def search_scope_name_by_keyword(keyword)
@@ -102,16 +103,17 @@ module SearchResults
       vals          = @filter.vals_at(depth)
       category_ids  = @query.group_prop_category_ids(depth)
 
-      #Rails.logger.debug "DEBUG: I'm here! (1.4) => \n#{vals.size}"
+      #Rails.logger.debug "DEBUG: I'm here! (1.4) => \n#{vals.inspect}"
       #TODO: Manage the case of vals > 100000 to redirect to search with a flash
       result = category_ids.collect do |category_id|
         if keyword(category_id).present?
            select_vals_by_keyword(vals, keyword(category_id))
         else
-           vals.size < 100000 ? vals : [-1]
+          vals.size < 100000 ? vals : Filter::RESULT_TOO_BIG
+          #vals.size < 100000 ? vals : [-1]
         end
       end.flatten
-      Rails.logger.debug "DEBUG: Result #{result.size}"# if result == [-1]
+      #Rails.logger.debug "DEBUG: Result #{result.size}"# if result == [-1]
       return result
     end
 
@@ -151,6 +153,5 @@ module SearchResults
     end
 
   end
-
 
 end
