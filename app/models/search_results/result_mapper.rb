@@ -8,20 +8,18 @@ module SearchResults
           includes(:property, :examples, :examples_lings_properties, :ling)
 
       child_results   = LingsProperty.with_id(child_ids).includes([:ling]).
-        joins(:ling).order("lings.parent_id, lings.name").
+          joins(:ling).order("lings.parent_id, lings.name").
           includes(:property, :examples, :examples_lings_properties)
 
       child_filtered_results, parent_filtered_results = filter_results_by_columns(parent_results, child_results, columns)
 
-      # group parents separately with each related child
-      result = {}.tap do |groups|
+      #group parents separately with each related child
+      {}.tap do |groups|
         parent_filtered_results.each do |parent|
           related_children  = child_filtered_results.select { |child| child.parent_ling_id == parent.ling_id }
           groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
         end
       end
-      #Rails.logger.debug "DEBUG: Results => #{result.size}"
-      return result
     end
 
     attr_reader :result_groups
@@ -30,27 +28,31 @@ module SearchResults
       @result_groups = result_groups
     end
 
-    def to_result_families
-      @result_families ||= begin
-        result_groups.map do |parent_id, child_ids|
-          parent            = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
+    def to_flatten_results
+      @flatten_results ||= [].tap do |entry|
+        result_groups.each do |parent_id, child_ids|
+          parent           = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
           related_children  = children.select { |child| child_ids.include? child.id }
-          ResultFamily.new(parent, related_children)
+          if related_children.any?
+            related_children.each { |child| entry << ResultEntry.new(parent, child) }
+          else
+            entry << ResultEntry.new(parent)
+          end
         end
       end
     end
 
     def parents
       @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property]).
-        joins(:ling).
-        order("lings.parent_id, lings.name").to_a
+          joins(:ling).
+          order("lings.parent_id, lings.name").to_a
     end
 
     def children
       @children ||= begin
         if all_child_ids.present?
           LingsProperty.with_id(all_child_ids).includes([:ling, :property]).joins(:ling).
-          order("lings.parent_id, lings.name").to_a
+              order("lings.parent_id, lings.name").to_a
         else
           []
         end
@@ -75,15 +77,15 @@ module SearchResults
 
   end
 
-  class ResultFamily
+  class ResultEntry
     attr_reader :parent
 
-    def initialize(parent, children = nil)
-      @parent, @children = parent, children
+    def initialize(parent, child=nil)
+      @parent, @child = parent, child
     end
 
-    def children
-      @children || []
+    def child
+      @child
     end
 
   end
@@ -134,15 +136,15 @@ module SearchResults
 
     def columns_mapping
       row_methods ||= {
-      :ling_0     => lambda { |v| v.ling },
-      :ling_1     => lambda { |v| v.ling },
-      :property_0 => lambda { |v| v.property },
-      :property_1 => lambda { |v| v.property },
-      :value_0    => lambda { |v| v.property_value.gsub!(/.*\:/){""} },
-      :value_1    => lambda { |v| v.property_value.gsub!(/.*\:/){""}  },
-      :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
-      :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
-    }
+          :ling_0     => lambda { |v| v.ling },
+          :ling_1     => lambda { |v| v.ling },
+          :property_0 => lambda { |v| v.property },
+          :property_1 => lambda { |v| v.property },
+          :value_0    => lambda { |v| v.property_value.gsub!(/.*\:/){""} },
+          :value_1    => lambda { |v| v.property_value.gsub!(/.*\:/){""}  },
+          :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
+          :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
+      }
     end
 
     #def child_columns_filter(result, depth)

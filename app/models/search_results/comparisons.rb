@@ -9,14 +9,12 @@ module SearchResults
     def result_rows(parent_attr_names, child_attr_names = [])
       [].tap do |rows|
         self.results.each do |result|
-          parent = result.parent
+          parent, child = result.parent, result.child
           parent_map = parent.column_map(parent_attr_names)
-          if result.children.any?
-            result.children.each do |child|
-              rows << ResultRow.new(parent_map, child.column_map(child_attr_names))
-            end
-          else
+          if child.nil?
             rows << ResultRow.new(parent_map)
+          else
+            rows << ResultRow.new(parent_map, child.column_map(child_attr_names))
           end
         end
       end

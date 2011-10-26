@@ -16,22 +16,10 @@ module SearchResults
     @results ||= begin
       ensure_result_groups!
       Rails.logger.debug "Step 4 => #{self.class} - Rendering"
-      ResultMapper.new(self.result_groups).to_result_families
+      ResultMapper.new(self.result_groups).to_flatten_results
     end
 
-    #Rails.logger.debug "DEBUG: Inspecting #{@results.inspect}"
-    # TODO: paginate also for children!!!
-    # Suggestion: flatten results, do the pagination, re-create results with the result of pagination
-    total_rows = 0
-    @results.each do |result|
-      if result.children.any?
-        result.children.each do |child|
-          total_rows +=1
-        end
-      end
-    end
-    Rails.logger.debug "Step 2 => #{self.class} - Results size:#{total_rows}"
-    #@results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE, :total_entries => total_rows)
+    #Rails.logger.debug "Step 2 => #{self.class} - Results size:#{@results.size}"
     @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
   end
 

@@ -13,9 +13,7 @@ class SearchCSV
 
       # data rows
       @search.results.each do |result|
-        result.children.each do |child|
-          csv << parent_data(result.parent) + child_data(child)
-        end
+        csv << parent_data(result.parent) + child_data(result.child)
       end
     end
   end
