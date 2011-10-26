@@ -36,8 +36,8 @@ module SearchResults
     end
 
     def any_error?(result)
-      ERRORS.each { |error| return true if error==result }
-      return false
+      errors = ERRORS.select { |error| error==result }
+      return errors.count > 0
     end
 
     def is_depth_0?(depth)
