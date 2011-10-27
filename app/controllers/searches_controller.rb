@@ -1,6 +1,7 @@
 class SearchesController < GroupDataController
 
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
+  rescue_from Exceptions::ResultsTooBigError, :with => :rescue_from_big_result_error
 
   respond_to :html, :csv
 
@@ -8,7 +9,6 @@ class SearchesController < GroupDataController
     @search = Search.new do |s|
       s.creator = current_user
       s.group   = current_group
-      s.offset = params[:page]
     end
 
     authorize! :search, @search
@@ -83,4 +83,10 @@ protected
       flash.now[:notice] = "You have reached the system limit for saved searches (#{Search::MAX_SEARCH_LIMIT}). Please delete old searches before saving new ones."
     end
   end
+
+  def rescue_from_big_result_error(exception = nil)
+    flash[:notice] = "The result of the query is too big: please try with a focused search"
+    redirect_to :action => :new
+  end
+
 end

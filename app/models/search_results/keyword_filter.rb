@@ -41,6 +41,7 @@ module SearchResults
   end
 
   class KeywordStrategy
+
     def initialize(filter, query)
       @filter, @query = filter, query
     end
@@ -65,8 +66,6 @@ module SearchResults
     def select_vals_by_keyword(vals, keyword)
       result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
 
-      #Rails.logger.debug "DEBUG: I'm here! (1) - \n#{result.nil?}; #{result.empty?}; #{result.size}"
-      #return [-1]
       # With this trick it is possible to know if a keyword
       # search was performed or not with no results
       #result.empty? ? [-1] : result
@@ -75,10 +74,11 @@ module SearchResults
 
     def search_scope_name_by_keyword(keyword)
       result = model_class.unscoped.where(:group_id => group.id).
-        where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+          where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
 
       return result
     end
+
   end
 
   class LingKeywordStrategy < KeywordStrategy
@@ -103,18 +103,14 @@ module SearchResults
       vals          = @filter.vals_at(depth)
       category_ids  = @query.group_prop_category_ids(depth)
 
-      #Rails.logger.debug "DEBUG: I'm here! (1.4) => \n#{vals.inspect}"
-      #TODO: Manage the case of vals > 100000 to redirect to search with a flash
-      result = category_ids.collect do |category_id|
+      category_ids.collect do |category_id|
         if keyword(category_id).present?
-           select_vals_by_keyword(vals, keyword(category_id))
+          select_vals_by_keyword(vals, keyword(category_id))
         else
-          vals.size < 100000 ? vals : Filter::RESULT_TOO_BIG
-          #vals.size < 100000 ? vals : [-1]
+          raise Exceptions::ResultsTooBigError if vals.size > Exceptions::RESULTS_THRESHOLD
+          vals
         end
       end.flatten
-      #Rails.logger.debug "DEBUG: Result #{result.size}"# if result == [-1]
-      return result
     end
 
   end
@@ -138,16 +134,16 @@ module SearchResults
     def select_vals_by_keyword(vals, keyword, depth)
       example_attribute = @query[:example_fields][depth.to_s].to_sym
       keyword_scope = case example_attribute
-      when :text
-        search_scope_name_by_keyword(keyword)
-      else
-        # keyword search by stored value key/pair
-        (
-          model_class.unscoped.where(:group_id => group.id) &
-          StoredValue.unscoped.with_key(example_attribute).
-            where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
-        )
-      end
+                        when :text
+                          search_scope_name_by_keyword(keyword)
+                        else
+                          # keyword search by stored value key/pair
+                          (
+                          model_class.unscoped.where(:group_id => group.id) &
+                              StoredValue.unscoped.with_key(example_attribute).
+                                  where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
+                          )
+                      end
 
       LingsProperty.select_ids.where(:id => vals) & keyword_scope
     end
