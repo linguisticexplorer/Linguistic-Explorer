@@ -66,9 +66,6 @@ module SearchResults
     def select_vals_by_keyword(vals, keyword)
       result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
 
-      # With this trick it is possible to know if a keyword
-      # search was performed or not with no results
-      #result.empty? ? [-1] : result
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 

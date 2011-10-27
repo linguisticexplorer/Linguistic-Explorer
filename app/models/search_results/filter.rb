@@ -4,8 +4,7 @@ module SearchResults
     attr_reader :filter, :query, :depth_0_vals, :depth_1_vals
 
     ERRORS = [
-      NO_DEPTH_1_RESULT = [-1],
-      RESULT_TOO_BIG = [-2]
+      NO_DEPTH_1_RESULT = [-1]
     ]
 
     def initialize(filter, query)
