@@ -70,10 +70,8 @@ module SearchResults
     end
 
     def search_scope_name_by_keyword(keyword)
-      result = model_class.in_group(group).unscoped.
+      model_class.in_group(group).unscoped.
           where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
-
-      return result
     end
 
   end
@@ -135,14 +133,16 @@ module SearchResults
                           search_scope_name_by_keyword(keyword)
                         else
                           # keyword search by stored value key/pair
-                          (
-                          model_class.unscoped.where(:group_id => group.id) &
-                              StoredValue.unscoped.with_key(example_attribute).
-                                  where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
-                          )
+                          search_scope_value_by_stored_value_key_pair(keyword, example_attribute)
                       end
 
       LingsProperty.select_ids.where(:id => vals) & keyword_scope
+    end
+
+    def search_scope_value_by_stored_value_key_pair(keyword, key)
+      model_class.unscoped.where(:group_id => group.id) &
+        StoredValue.unscoped.with_key(key).
+        where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
     end
 
   end
