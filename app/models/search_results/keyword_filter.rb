@@ -70,7 +70,7 @@ module SearchResults
     end
 
     def search_scope_name_by_keyword(keyword)
-      result = model_class.unscoped.where(:group_id => group.id).
+      result = model_class.in_group(group).unscoped.
           where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
 
       return result
