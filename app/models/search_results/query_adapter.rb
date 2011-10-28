@@ -78,6 +78,12 @@ module SearchResults
       }
     end
 
+    def category_ids_by_cross_grouping_and_depth(grouping, depth)
+      group_prop_category_ids(depth).select { |c|
+        category_ids_by_cross_grouping(grouping).include?(c)
+      }
+    end
+
     def has_depth?
       @group.has_depth?
     end
@@ -107,9 +113,15 @@ module SearchResults
     end
 
     def category_ids_by_all_grouping(grouping)
-      # {"1"=>"all", "2"=>"any"} --> [1]
+      # {"1"=>"all", "2"=>"any", "3"=>"cross"} --> [1]
       category_all_pairs = self[grouping].group_by { |k,v| v }["all"] || []
       category_all_pairs.map { |c| c.first }.map(&:to_i)
+    end
+
+    def category_ids_by_cross_grouping(grouping)
+      # {"1"=>"all", "2"=>"any", "3"=>"cross"} --> [3]
+      category_cross_pairs = self[grouping].group_by { |k, v| v }["cross"] || []
+      category_cross_pairs.map { |c| c.first }.map(&:to_i)
     end
 
     def category_present?(key, depth)

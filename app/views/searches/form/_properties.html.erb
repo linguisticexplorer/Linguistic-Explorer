@@ -24,6 +24,10 @@
         <%= f.radio_button "property_set", "all",
           :id => categorized_set_id(category.name, "all"),
           :name => categorized_field_name(:property, category.id) %>
+        <%= f.label "property_set", "Cross", :for => categorized_set_id(category.name, "cross") %>
+        <%= f.radio_button "property_set", "cross",
+          :id => categorized_set_id(category.name, "cross"),
+          :name => categorized_field_name(:property, category.id) %>
       </div>
     </div>
   <% end %>
