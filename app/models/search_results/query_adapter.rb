@@ -89,7 +89,7 @@ module SearchResults
     end
 
     def included_columns
-      # {"ling_0"=>"1", "ling_1"=>"1", "prop"=>"1", "value"=>"1"}
+      # {"ling_0"=>"1", "ling_1"=>"1", "prop_0"=>"1", "value_0"=>"1"}
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
