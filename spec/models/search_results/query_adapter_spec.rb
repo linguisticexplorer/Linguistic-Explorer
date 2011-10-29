@@ -31,5 +31,19 @@ module SearchResults
         @query.selected_value_pairs("2").should == []
       end
     end
+
+    describe "included_columns" do
+      before(:each) do
+        params = { :include => {"value_1"=>"1", "ling_0"=>"1"}}
+        @query = QueryAdapter.new(@group, params)
+      end
+      it "should return columns ordered" do
+        @query.included_columns.should == [:ling_0, :value_1]
+      end
+      it "should say depth 1 is interesting" do
+        @query.is_depth_1_interesting?.should be_true
+      end
+    end
+
   end
 end
