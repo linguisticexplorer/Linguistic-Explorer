@@ -7,6 +7,10 @@ module SearchColumns
     :ling_1, :property_1, :value_1, :example_1
   ]
 
+  CROSS_COLUMNS = [
+      :property_0, :value_0, :property_1, :value_1, :count
+  ]
+
   COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   HEADERS = {
