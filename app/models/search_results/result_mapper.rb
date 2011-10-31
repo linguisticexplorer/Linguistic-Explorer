@@ -69,8 +69,8 @@ module SearchResults
 
     def self.filter_results_by_columns(parent_results, child_results, columns)
       filter = ColumnsFilter.new(columns)
-      parent_filtered_results = parent_results.select { |r| r if filter.columns_filter(r, Depth::PARENT) }
-      child_filtered_results = child_results.select { |r| r if filter.columns_filter(r, Depth::CHILD) }
+      parent_filtered_results = parent_results.select { |r| r if filter.filter_result_by_column?(r, Depth::PARENT) }
+      child_filtered_results = child_results.select { |r| r if filter.filter_result_by_column?(r, Depth::CHILD) }
 
       [child_filtered_results, parent_filtered_results]
     end
@@ -93,49 +93,48 @@ module SearchResults
   class ColumnsFilter
 
     def initialize(columns)
-      #Rails.logger.debug "DEBUG: #{columns}"
       @columns ||= columns
-      @selected ||={}
-      @test_0 = true
-      @test_1 = true
-      @columns.each do |col|
-        @test_0 &= col.to_s=~/0/
-        @test_1 &= col.to_s=~/1/
-      end
-      #Rails.logger.debug "DEBUG: \n\tTest_0: #{@test_0} \n\tTest_1: #{@test_1}"
+      @selected ||= Hash.new
+      @all_depth_0_columns = columns.all? {|col| col.to_s=~/0/ }
+      @all_depth_1_columns = columns.all? {|col| col.to_s=~/1/ }
     end
 
-    def columns_filter(result, family)
-      depth = -1
-      #family==0 ? Rails.logger.debug("DEBUG: Parent =>") : Rails.logger.debug("DEBUG: Child =>")
-      depth = Depth::PARENT if (@test_0 || !@test_0 && !@test_1) && family==Depth::PARENT
-      depth = Depth::CHILD if @test_1 || !@test_0 && !@test_1 && family==Depth::CHILD
-      return false if depth == -1
-      #return child_columns_filter(result, depth) if family==Depth::CHILD
-      return parent_columns_filter(result, depth)
+    def filter_result_by_column?(result, family_role)
+      depth = Depth::PARENT if is_parent_and_no_child_columns? family_role
+      depth = Depth::CHILD if is_child_and_no_parent_columns? family_role
+      depth.nil? ? depth : filter_by_columns(result, depth)
     end
 
     private
 
-    def parent_columns_filter(result, depth)
+    def is_parent_and_no_child_columns?(family_role)
+      !@all_depth_1_columns && family_role==Depth::PARENT
+    end
+
+    def is_child_and_no_parent_columns?(family_role)
+      @all_depth_1_columns || !@all_depth_0_columns && family_role==Depth::CHILD
+    end
+
+    def filter_by_columns(result, depth)
       index = []
       @columns.each do |col|
-        index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
+        index << result_mapping(col, result) if col.to_s=~/#{depth}/
       end
-
       already_written?(index)
     end
 
     def already_written?(index)
       return false if index.empty?
-      @selected[index]= 1 if !@selected[index].nil?
-      @selected[index]= 0 if @selected[index].nil?
-      #Rails.logger.debug "DEBUG: \n\t#{@selected[index]== 0} =>\n\tIndex:#{index.inspect}" if @selected[index]== 0
+      @selected[index]= @selected[index].nil? ? 0 : 1
       return @selected[index]== 0
     end
 
+    def result_mapping(col, result)
+      columns_mapping[col].call(result)
+    end
+
     def columns_mapping
-      row_methods ||= {
+      {
           :ling_0     => lambda { |v| v.ling },
           :ling_1     => lambda { |v| v.ling },
           :property_0 => lambda { |v| v.property },
@@ -146,15 +145,5 @@ module SearchResults
           :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
       }
     end
-
-    #def child_columns_filter(result, depth)
-    #  index = []
-    #  @columns.each do |col|
-    #    next if col.to_s=~/value/
-    #    index << columns_mapping[col].call(result) if col.to_s=~/#{depth}/
-    #  end
-    #
-    #  already_written?(index)
-    #end
   end
 end
