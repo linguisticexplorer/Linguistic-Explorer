@@ -264,4 +264,38 @@ Feature: Show filtered search columns
     Then I should see 1 search result rows
     Then I should see the following search results:
     | Lings         | Values    | Properties     | depth    |
-    | Speaker 3     | PropVal 6 | Property 7   | parent   |
+    | Speaker 3     | PropVal 6 | Property 7     | parent   |
+
+  Scenario: Choose one Speaker, show parent Values only
+    When I uncheck "Speakers" within "#show_parent"
+    And I uncheck "Sentences" within "#show_child"
+    And I uncheck "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I check "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
+    And I uncheck "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
+    And I select "Speaker 1" from "Speakers"
+    Then I press "Show results"
+    Then I should see 1 search result rows
+    And I should not see "Speakers" within "#search_results"
+    And I should not see "Sentences" within "#search_results"
+    And I should not see "Properties" within "#search_results"
+    And I should not see "Examples" within "#search_results"
+
+  Scenario: Choose one Speaker, show children Values only
+    When I uncheck "Speakers" within "#show_parent"
+    And I uncheck "Sentences" within "#show_child"
+    And I uncheck "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I uncheck "Value" within "#show_parent"
+    And I check "Value" within "#show_child"
+    And I uncheck "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
+    And I select "Speaker 1" from "Speakers"
+    Then I press "Show results"
+    Then I should see 2 search result rows
+    And I should not see "Speakers" within "#search_results"
+    And I should not see "Sentences" within "#search_results"
+    And I should not see "Properties" within "#search_results"
+    And I should not see "Examples" within "#search_results"
