@@ -102,7 +102,7 @@ module SearchResults
         if keyword(category_id).present?
           select_vals_by_keyword(vals, keyword(category_id))
         else
-          raise Exceptions::ResultsTooBigError if vals.size > Exceptions::RESULTS_FLATTEN_THRESHOLD
+          raise Exceptions::ResultTooBigError if vals.size > Search::RESULTS_FLATTEN_THRESHOLD
           vals
         end
       end.flatten

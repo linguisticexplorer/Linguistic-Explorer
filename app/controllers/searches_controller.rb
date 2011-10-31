@@ -1,7 +1,7 @@
 class SearchesController < GroupDataController
 
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
-  rescue_from Exceptions::ResultsTooBigError, :with => :rescue_from_big_result_error
+  rescue_from Exceptions::ResultSearchError, :with => :rescue_from_big_result_error
 
   respond_to :html, :csv
 
@@ -79,13 +79,13 @@ protected
   def check_max_search_notice
     return unless user_signed_in? || flash[:notice]
     # TODO replace with class method
-    if Search.where(:creator => current_user, :group => current_group).count >= Search::MAX_SEARCH_LIMIT
+    if Search.where(:creator_id => current_user, :group_id => current_group).count >= Search::MAX_SEARCH_LIMIT
       flash.now[:notice] = "You have reached the system limit for saved searches (#{Search::MAX_SEARCH_LIMIT}). Please delete old searches before saving new ones."
     end
   end
 
-  def rescue_from_big_result_error(exception = nil)
-    flash[:notice] = "The result of the query is too big: please try with a focused search"
+  def rescue_from_big_result_error(exception)
+    flash[:notice] = exception.message
     redirect_to :action => :new
   end
 
