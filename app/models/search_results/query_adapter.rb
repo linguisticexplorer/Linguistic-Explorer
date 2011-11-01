@@ -93,6 +93,7 @@ module SearchResults
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
+      return SearchColumns::CROSS_COLUMNS if is_cross_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
@@ -100,6 +101,10 @@ module SearchResults
 
     def is_depth_1_interesting?
       (included_columns & SearchColumns::CHILD_COLUMNS).any?
+    end
+
+    def is_cross_search?
+      Depth::DEPTHS.any? { |d| category_ids_by_cross_grouping_and_depth(:property_set, d).any? }
     end
 
     private
@@ -120,7 +125,8 @@ module SearchResults
 
     def category_ids_by_cross_grouping(grouping)
       # {"1"=>"all", "2"=>"any", "3"=>"cross"} --> [3]
-      category_cross_pairs = self[grouping].group_by { |k, v| v }["cross"] || []
+      category_cross_pairs ||= [] if self[grouping].nil?
+      category_cross_pairs ||= self[grouping].group_by { |k, v| v }["cross"] || []
       category_cross_pairs.map { |c| c.first }.map(&:to_i)
     end
 

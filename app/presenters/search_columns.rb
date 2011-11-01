@@ -21,7 +21,8 @@ module SearchColumns
     :ling_1     => lambda { |g| g.ling1_name },
     :property_1 => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
     :value_1    => lambda { |g| "#{g.ling1_name} Values" },
-    :example_1  => lambda { |g| "#{g.ling1_name} Examples" }
+    :example_1  => lambda { |g| "#{g.ling1_name} Examples" },
+    :count      => lambda { |g| "Lings Count"}
   }
 
   def columns_to_include
