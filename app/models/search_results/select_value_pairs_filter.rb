@@ -13,15 +13,18 @@ module SearchResults
     private
 
     def filter_vals(depth)
-      cross_disabled = @query.category_ids_by_cross_grouping_and_depth(:property_set, depth).empty?
       vals  = @filter.vals_at(depth)
       pairs = @query.lings_props_pairs(depth)
 
-      if pairs.any? && cross_disabled
+      if pairs.any? && value_pairs_search_enabled?
          LingsProperty.select_ids.where({ :property_value => pairs } & {:id => vals})
       else
         vals
       end
+    end
+
+    def value_pairs_search_enabled?
+      !@query.is_cross_search?
     end
 
   end
