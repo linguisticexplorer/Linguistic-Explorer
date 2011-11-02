@@ -82,6 +82,7 @@ module GroupData
       reset = "\r\e[0K"
 
       @check_users = true
+      line = reset_line
 
       add_check_all(validate_csv_header :user, @check_users)
       user_bar = ProgressBar.new("Users...", csv_size(:user))
@@ -97,7 +98,7 @@ module GroupData
         # cache user id
         user_ids[row["id"]] = true
         user_bar.inc
-        #progress_loading(:user, line, csv_size(:user)) if user
+        line += 1
         break unless user
       end
       user_bar.finish
@@ -106,7 +107,7 @@ module GroupData
       @check_groups = true
 
       add_check_all(validate_csv_header :group, @check_groups)
-
+      line = reset_line
       # This function will change the header
       # due to a very common typo on csv
       fix_csv_elp_name
@@ -128,7 +129,7 @@ module GroupData
         # cache group id
         groups[row["id"]] = true
         group_bar.inc
-        #progress_loading(:group, line, csv_size(:group)) if group
+        line += 1
         break unless group
       end
       group_bar.finish
@@ -136,7 +137,7 @@ module GroupData
       add_check_all(@check_groups)
 
       @check_memberships = true
-
+      line = reset_line
       add_check_all(validate_csv_header :membership, @check_memberships)
       member_bar = ProgressBar.new("Memberships", csv_size(:membership))
       csv_for_each :membership do |row|
@@ -161,7 +162,7 @@ module GroupData
         print_error LOWERCASE, :membership, line, "level", "Access Level", row["level"] unless membership
 
         @check_memberships &= membership
-        #progress_loading(:membership, line, csv_size(:membership)) if membership
+        line += 1
         member_bar.inc
 
         break unless membership
@@ -170,7 +171,7 @@ module GroupData
       add_check_all(@check_memberships)
 
       @check_lings = true
-
+      line = reset_line
       add_check_all(validate_csv_header :ling, @check_lings)
       ling_bar = ProgressBar.new("Lings", csv_size(:ling))
       csv_for_each :ling do |row|
@@ -192,13 +193,13 @@ module GroupData
         # cache ling id
         ling_ids[row["id"]] = row["group_id"]
 
-        #progress_loading :ling, line, csv_size(:ling) if ling
+        line += 1
         ling_bar.inc
         break unless ling
       end
       ling_bar.finish
       add_check_all(@check_lings)
-
+      line = reset_line
       @check_parents = true
       ling_ass_bar = ProgressBar.new("Lings Associations", csv_size(:ling))
       csv_for_each :ling do |row|
@@ -216,7 +217,7 @@ module GroupData
 
         @check_parents &= parent
 
-        #progress_loading(:ling, line, csv_size(:ling)) if parent
+        line += 1
         ling_ass_bar.inc
         break unless parent
       end
@@ -224,7 +225,7 @@ module GroupData
       add_check_all(@check_parents)
 
       @check_categories = true
-
+      line = reset_line
       add_check_all(validate_csv_header :category, @check_categories)
       cat_bar = ProgressBar.new("Category", csv_size(:category))
       csv_for_each :category do |row|
@@ -247,7 +248,7 @@ module GroupData
         # cache category id
         category_ids[row["id"]] = true
 
-        #progress_loading(:category, line, csv_size(:category)) if category
+        line += 1
         cat_bar.inc
         break unless category
       end
@@ -255,7 +256,7 @@ module GroupData
       add_check_all(@check_categories)
 
       @check_properties = true
-
+      line = reset_line
       add_check_all(validate_csv_header :property, @check_properties)
       prop_bar = ProgressBar.new("Property", csv_size(:property))
       csv_for_each :property do |row|
@@ -281,7 +282,7 @@ module GroupData
         # cache property id
         property_ids[row["id"]] = true
 
-        #progress_loading(:property, line, csv_size(:property)) if property
+        line += 1
         prop_bar.inc
         break unless property
       end
@@ -289,7 +290,7 @@ module GroupData
       add_check_all(@check_properties)
 
       @check_examples = true
-
+      line = reset_line
       add_check_all(validate_csv_header :example, @check_examples)
       ex_bar = ProgressBar.new("Examples", csv_size(:example))
       csv_for_each :example do |row|
@@ -315,7 +316,7 @@ module GroupData
         # cache example id
         example_ids[row["id"]] = true
 
-        #progress_loading(:example, line, csv_size(:example)) if example
+        line += 1
         ex_bar.inc
         break unless example
       end
@@ -323,7 +324,7 @@ module GroupData
       add_check_all(@check_examples)
 
       @check_lings_properties = true
-
+      line = reset_line
       add_check_all(validate_csv_header :lings_property, @check_lings_properties)
       lp_bar = ProgressBar.new("Lings Properties", csv_size(:lings_property))
       csv_for_each :lings_property do |row|
@@ -356,7 +357,7 @@ module GroupData
       add_check_all(@check_lings_properties)
 
       @check_examples_lp = true
-
+      line = reset_line
       add_check_all(validate_csv_header :examples_lings_property, @check_examples_lp)
       elp_bar = ProgressBar.new("Examples Lings Properties", csv_size(:examples_lings_property))
       csv_for_each :examples_lings_property do |row|
@@ -383,7 +384,7 @@ module GroupData
 
         @check_examples_lp &= elp
         elp_bar.inc
-        #progress_loading(:examples_lings_property, line, csv_size(:examples_lings_property)) if elp
+        line += 1
         break unless elp
       end
       elp_bar.finish
@@ -391,7 +392,7 @@ module GroupData
       add_check_all(@check_examples_lp)
 
       @check_stored_values = true
-
+      line = reset_line
       add_check_all(validate_csv_header :stored_value, @check_stored_values)
       sv_bar = ProgressBar.new("Stored Values", csv_size(:stored_value))
       csv_for_each :stored_value do |row|
@@ -410,7 +411,7 @@ module GroupData
 
         @check_stored_values &= stored_value
 
-        #progress_loading(:stored_value, line, csv_size(:stored_value))
+        line += 1
         sv_bar.inc
         break unless stored_value
       end
@@ -420,6 +421,10 @@ module GroupData
     end
 
     private
+
+    def reset_line()
+      return 1
+    end
 
     def csv_for_each(key)
       CSV.foreach(@config[key], :headers => true) do |row|
