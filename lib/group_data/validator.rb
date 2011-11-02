@@ -32,6 +32,7 @@
 #
 
 require 'csv'
+require 'progressbar'
 
 module GroupData
   class Validator
@@ -64,7 +65,7 @@ module GroupData
       end
     end
 
-    ##puts "Loading lazy_cache"
+    #puts "Loading lazy_cache"
     lazy_init_cache :groups, :user_ids, :ling_ids, :category_ids, :property_ids, :example_ids, :lings_property_ids
 
     # accepts path to yaml file containing paths to csvs
@@ -75,16 +76,15 @@ module GroupData
       @headers = load_headers
     end
 
+    # disabled progress_loading graphical interface for best performance
     def validate!
 
       reset = "\r\e[0K"
-      start = Time.now
 
       @check_users = true
-      print "processing users..."
-      line = reset_line
 
       add_check_all(validate_csv_header :user, @check_users)
+      user_bar = ProgressBar.new("Users...", csv_size(:user))
       csv_for_each :user do |row|
         user = true
         row.each do |col, value|
@@ -96,26 +96,21 @@ module GroupData
         @check_users &= user
         # cache user id
         user_ids[row["id"]] = true
-
-        progress_loading(:user, line, csv_size(:user)) if user
-        line += 1
+        user_bar.inc
+        #progress_loading(:user, line, csv_size(:user)) if user
         break unless user
       end
-
+      user_bar.finish
       add_check_all(@check_users)
 
-      print "#{reset}processing users...[OK]"
-
       @check_groups = true
-      print "\nprocessing groups..."
-      line = reset_line
 
       add_check_all(validate_csv_header :group, @check_groups)
 
       # This function will change the header
       # due to a very common typo on csv
       fix_csv_elp_name
-
+      group_bar = ProgressBar.new("Groups...", csv_size(:group))
       csv_for_each :group do |row|
         group = true
         row.each do |col, value|
@@ -127,27 +122,23 @@ module GroupData
         print_error VALIDITY_CHECK, :group, line, "privacy", "Privacy", row["privacy"] unless group
 
         group &= !row["privacy"].downcase!
-        print_error LOWERCASE, :membership, line, "privacy",  "Privacy", row["privacy"] unless group
+        print_error LOWERCASE, :group, line, "privacy",  "Privacy", row["privacy"] unless group
 
         @check_groups &= group
         # cache group id
         groups[row["id"]] = true
-
-        progress_loading(:group, line, csv_size(:group)) if group
-        line += 1
+        group_bar.inc
+        #progress_loading(:group, line, csv_size(:group)) if group
         break unless group
       end
+      group_bar.finish
 
       add_check_all(@check_groups)
-
-      print "#{reset}processing groups...[OK]"
-
-      print "\nprocessing memberships..."
-      line = reset_line
 
       @check_memberships = true
 
       add_check_all(validate_csv_header :membership, @check_memberships)
+      member_bar = ProgressBar.new("Memberships", csv_size(:membership))
       csv_for_each :membership do |row|
         membership = true
         row.each do |col, value|
@@ -170,22 +161,18 @@ module GroupData
         print_error LOWERCASE, :membership, line, "level", "Access Level", row["level"] unless membership
 
         @check_memberships &= membership
-        progress_loading(:membership, line, csv_size(:membership)) if membership
-        line += 1
+        #progress_loading(:membership, line, csv_size(:membership)) if membership
+        member_bar.inc
 
         break unless membership
       end
-
+      member_bar.finish
       add_check_all(@check_memberships)
-
-      print "#{reset}processing memberships...[OK]"
-
-      print "\nprocessing lings..."
-      line = reset_line
 
       @check_lings = true
 
       add_check_all(validate_csv_header :ling, @check_lings)
+      ling_bar = ProgressBar.new("Lings", csv_size(:ling))
       csv_for_each :ling do |row|
         ling = true
         row.each do |col, value|
@@ -205,21 +192,20 @@ module GroupData
         # cache ling id
         ling_ids[row["id"]] = row["group_id"]
 
-        progress_loading :ling, line, csv_size(:ling) if ling
-        line += 1
+        #progress_loading :ling, line, csv_size(:ling) if ling
+        ling_bar.inc
         break unless ling
       end
-
+      ling_bar.finish
       add_check_all(@check_lings)
 
-      print "#{reset}processing lings...[OK]"
-
-      print "\nprocessing ling associations..."
-      line = reset_line
-
       @check_parents = true
+      ling_ass_bar = ProgressBar.new("Lings Associations", csv_size(:ling))
       csv_for_each :ling do |row|
-        next if row["parent_id"].blank?
+        if row["parent_id"].blank?
+          ling_ass_bar.inc
+          next
+        end
 
         parent = ling_ids[row["parent_id"]].present?
         print_error FOREIGN_KEY, :ling, line, "parent_id" unless parent
@@ -230,21 +216,17 @@ module GroupData
 
         @check_parents &= parent
 
-        progress_loading(:ling, line, csv_size(:ling)) if parent
-        line += 1
+        #progress_loading(:ling, line, csv_size(:ling)) if parent
+        ling_ass_bar.inc
         break unless parent
       end
-
+      ling_ass_bar.finish
       add_check_all(@check_parents)
-
-      print "#{reset}processing ling associations...[OK]"
-
-      print "\nprocessing categories..."
-      line = reset_line
 
       @check_categories = true
 
       add_check_all(validate_csv_header :category, @check_categories)
+      cat_bar = ProgressBar.new("Category", csv_size(:category))
       csv_for_each :category do |row|
         category = true
         row.each do |col, value|
@@ -256,7 +238,7 @@ module GroupData
         print_error FOREIGN_KEY, :category, line, "group_id" unless category
 
         if row["creator_id"].present?
-          category &= user_ids[row["creator_id"]]
+          category &= user_ids[row["creator_id"]] if category
           print_error FOREIGN_KEY, :category, line, "creator_id" unless category
         end
 
@@ -265,21 +247,17 @@ module GroupData
         # cache category id
         category_ids[row["id"]] = true
 
-        progress_loading(:category, line, csv_size(:category)) if category
-        line += 1
+        #progress_loading(:category, line, csv_size(:category)) if category
+        cat_bar.inc
         break unless category
       end
-
+      cat_bar.finish
       add_check_all(@check_categories)
-
-      print "#{reset}processing categories...[OK]"
-
-      print "\nprocessing properties..."
-      line = reset_line
 
       @check_properties = true
 
       add_check_all(validate_csv_header :property, @check_properties)
+      prop_bar = ProgressBar.new("Property", csv_size(:property))
       csv_for_each :property do |row|
         property = true
         row.each do |col, value|
@@ -295,7 +273,7 @@ module GroupData
         print_error FOREIGN_KEY, :property, line, "category_id" unless property
 
         if row["creator_id"].present?
-          property &= user_ids[row["creator_id"]]
+          property &= user_ids[row["creator_id"]] if property
           print_error FOREIGN_KEY, :property, line, "creator_id" unless property
         end
 
@@ -303,21 +281,17 @@ module GroupData
         # cache property id
         property_ids[row["id"]] = true
 
-        progress_loading(:property, line, csv_size(:property)) if property
-        line += 1
+        #progress_loading(:property, line, csv_size(:property)) if property
+        prop_bar.inc
         break unless property
       end
-
+      prop_bar.finish
       add_check_all(@check_properties)
-
-      print "#{reset}processing properties...[OK]"
-
-      print "\nprocessing examples..."
-      line = reset_line
 
       @check_examples = true
 
       add_check_all(validate_csv_header :example, @check_examples)
+      ex_bar = ProgressBar.new("Examples", csv_size(:example))
       csv_for_each :example do |row|
         example = true
         row.each do |col, value|
@@ -333,7 +307,7 @@ module GroupData
         print_error FOREIGN_KEY, :example, line, "ling_id" unless example
 
         if row["creator_id"].present?
-          example &= user_ids[row["creator_id"]]
+          example &= user_ids[row["creator_id"]] if example
           print_error FOREIGN_KEY, :example, line, "creator_id" unless example
         end
 
@@ -341,21 +315,17 @@ module GroupData
         # cache example id
         example_ids[row["id"]] = true
 
-        progress_loading(:example, line, csv_size(:example)) if example
-        line += 1
+        #progress_loading(:example, line, csv_size(:example)) if example
+        ex_bar.inc
         break unless example
       end
-
+      ex_bar.finish
       add_check_all(@check_examples)
-
-      print "#{reset}processing examples...[OK]"
-
-      print "\nprocessing lings_property..."
-      line = reset_line
 
       @check_lings_properties = true
 
       add_check_all(validate_csv_header :lings_property, @check_lings_properties)
+      lp_bar = ProgressBar.new("Lings Properties", csv_size(:lings_property))
       csv_for_each :lings_property do |row|
         lp = true
         row.each do |col, value|
@@ -371,30 +341,24 @@ module GroupData
         print_error FOREIGN_KEY, :lings_property, line, "ling_id" unless lp
 
         if row["creator_id"].present?
-          lp &= user_ids[row["creator_id"]]
+          lp &= user_ids[row["creator_id"]] if lp
           print_error FOREIGN_KEY, :lings_property, line, "creator_id" unless lp
         end
 
         @check_lings_properties &= lp
-
+        lp_bar.inc
         # cache lings_property id
         lings_property_ids[row["id"]] = true
 
-        progress_loading(:lings_property, line, csv_size(:lings_property)) if lp
-        line += 1
         break unless lp
       end
-
+      lp_bar.finish
       add_check_all(@check_lings_properties)
-
-      print "#{reset}processing lings_property...[OK]"
-
-      print "\nprocessing examples_lings_property..."
-      line = reset_line
 
       @check_examples_lp = true
 
       add_check_all(validate_csv_header :examples_lings_property, @check_examples_lp)
+      elp_bar = ProgressBar.new("Examples Lings Properties", csv_size(:examples_lings_property))
       csv_for_each :examples_lings_property do |row|
         elp = true
         row.each do |col, value|
@@ -403,37 +367,33 @@ module GroupData
 
         print_error MISSING, :examples_lings_property, line unless elp
 
-        elp &= groups[row["group_id"]]
+        elp &= groups[row["group_id"]] if elp
         print_error FOREIGN_KEY, :examples_lings_property, line, "group_id" unless elp
 
-        elp &= lings_property_ids[row["lings_property_id"]]
+        elp &= lings_property_ids[row["lings_property_id"]] if elp
         print_error FOREIGN_KEY, :examples_lings_property, line, "lings_property_id" unless elp
 
-        elp &= example_ids[row["example_id"]]
+        elp &= example_ids[row["example_id"]] if elp
         print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp
 
         if row["creator_id"].present?
-          elp &= user_ids[row["creator_id"]]
+          elp &= user_ids[row["creator_id"]] if elp
           print_error FOREIGN_KEY, :examples_lings_property, line, "example_id" unless elp
         end
 
         @check_examples_lp &= elp
-
-        progress_loading(:examples_lings_property, line, csv_size(:examples_lings_property)) if elp
-        line += 1
+        elp_bar.inc
+        #progress_loading(:examples_lings_property, line, csv_size(:examples_lings_property)) if elp
         break unless elp
       end
+      elp_bar.finish
 
       add_check_all(@check_examples_lp)
-
-      print "#{reset}processing examples_lings_property...[OK]"
-
-      print "\nprocessing stored_values..."
-      line = reset_line
 
       @check_stored_values = true
 
       add_check_all(validate_csv_header :stored_value, @check_stored_values)
+      sv_bar = ProgressBar.new("Stored Values", csv_size(:stored_value))
       csv_for_each :stored_value do |row|
         stored_value = true
         row.each do |col, value|
@@ -442,39 +402,24 @@ module GroupData
 
         print_error MISSING, :stored_value, line unless stored_value
 
-        stored_value &= groups[row["group_id"]]
+        stored_value &= groups[row["group_id"]] if stored_value
         print_error FOREIGN_KEY, :stored_value, line, "group_id" unless stored_value
 
-        stored_value &= example_ids[row["storable_id"]]
+        stored_value &= example_ids[row["storable_id"]] if stored_value
         print_error FOREIGN_KEY, :stored_value, line, "storable_id" unless stored_value
 
         @check_stored_values &= stored_value
 
-        progress_loading(:stored_value, line, csv_size(:stored_value))
-        line += 1
+        #progress_loading(:stored_value, line, csv_size(:stored_value))
+        sv_bar.inc
         break unless stored_value
       end
-
+      sv_bar.finish
       add_check_all(@check_stored_values)
-      print "#{reset}processing stored_values...[OK]\n"
-
-      elapsed = seconds_fraction_to_time(Time.now - start)
-      puts "Time for validation: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
       @check_all
     end
 
     private
-
-    def reset_line()
-      return 1
-    end
-
-    def seconds_fraction_to_time(time_difference)
-      hours = (time_difference / 3600).to_i
-      mins = ((time_difference / 3600 - hours) * 60).to_i
-      seconds = (time_difference % 60 ).to_i
-      [hours,mins,seconds]
-    end
 
     def csv_for_each(key)
       CSV.foreach(@config[key], :headers => true) do |row|
@@ -528,30 +473,6 @@ module GroupData
 
     def red(string)
       "\e[31m#{string}\e[0m"
-    end
-
-    # Thanks to http://snippets.dzone.com/posts/show/3760 proof-of-concept
-    def progress_loading(key, progress_value, max_value)
-      # move cursor to beginning of line
-      cr = "\r"
-      prec_i = -1
-
-      # ANSI escape code to clear line from cursor to end of line
-      # "\e" is an alternative to "\033"
-      # cf. http://en.wikipedia.org/wiki/ANSI_escape_code
-
-      clear = "\e[0K"
-
-      # reset lines
-      reset = cr + clear
-
-      i = progress_value.round(2) / max_value *100
-      if(prec_i < i.truncate && progress_value<max_value)
-        $stdout.flush
-        prec_i = i.to_i
-        print "#{reset}processing #{key.to_s}...#{i.to_i}%"
-      end
-
     end
 
     def add_check_all(check_partial)
