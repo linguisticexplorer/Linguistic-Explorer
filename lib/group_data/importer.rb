@@ -32,7 +32,6 @@
 #
 
 require 'csv'
-require 'crewait'
 
 module GroupData
   class Importer
@@ -51,7 +50,7 @@ module GroupData
       caches.each do |cache|
         define_method("#{cache}") do
           instance_variable_get("@#{cache}") ||
-            (instance_variable_set("@#{cache}", {}) && instance_variable_get("@#{cache}"))
+              (instance_variable_set("@#{cache}", {}) && instance_variable_get("@#{cache}"))
         end
       end
     end
@@ -193,117 +192,85 @@ module GroupData
       #puts "processing examples"
 
       print "\nprocessing examples..."
+      Example.transaction do
+        csv_for_each :example do |row|
+          group    = groups[row["group_id"]]
+          ling     = Ling.find(ling_ids[row["ling_id"]])
+          example  = group.examples.find_or_initialize_by_name(row["name"]) do |e|
+            e.ling = ling
+            e.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          end
+          save_model_with_attributes example, row
 
-      csv_for_each :example do |row|
-        group    = groups[row["group_id"]]
-        ling     = Ling.find(ling_ids[row["ling_id"]])
-        example  = group.examples.find_or_initialize_by_name(row["name"]) do |e|
-          e.ling = ling
-          e.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          # cache example id
+          example_ids[row["id"]] = example.id
         end
-        save_model_with_attributes example, row
-
-        # cache example id
-        example_ids[row["id"]] = example.id
       end
+
       print "#{reset}processing examples...[OK]"
 
       total = csv_size(:lings_property)
       logger.info "processing #{total} lings_property"
 
       print "\nprocessing lings_property..."
-      print " will take about #{total/3000} minutes for #{total} rows" unless total<10000
+      print " will take about #{total/6000} minutes for #{total} rows" unless total<100000
 
-      Crewait.start_waiting
-      counter = 0
-      step = 1
-      limit_step = 40000
-      csv_for_each :lings_property do |row|
-        group       = groups[row["group_id"]]
-        ling_id     = ling_ids[row["ling_id"]]
-        value       = row["value"]
-        property_id = property_ids[row["property_id"]]
+      LingsProperty.transaction do
+        csv_for_each :lings_property do |row|
+          group       = groups[row["group_id"]]
+          ling_id     = ling_ids[row["ling_id"]]
+          value       = row["value"]
+          property_id = property_ids[row["property_id"]]
+          conditions  = { :value => value, :ling_id => ling_id, :property_id => property_id }
 
-        conditions = { value: value,
-                       ling_id: ling_id,
-                       property_id: property_id,
-                       property_value: "#{property_id}:#{value}",
-                       group_id: group
-        }
+          lp = group.lings_properties.where(conditions).first ||
+              group.lings_properties.create(conditions) do |lp|
+                lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+              end
 
-        set_creator(conditions, group, row) if row["creator_id"].present?
-
-        lp = group.lings_properties.where(conditions).first ||
-            group.lings_properties.crewait(conditions)
-        counter += 1
-
-        if(counter == step * limit_step)
-          Crewait.go!
-
-          #puts "Still #{total - (step*limit_step)} to do"
-          Crewait.start_waiting
-          step += 1
+          # cache lings_property id
+          lings_property_ids[row["id"]] = lp.id
         end
-        # cache lings_property id
-        lings_property_ids[row["id"]] = lp.id
       end
 
-      Crewait.go!
       print "#{reset}processing lings_property...[OK]"
 
       logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
       print "\nprocessing examples_lings_property..."
 
-      Crewait.start_waiting
-      counter = 0
-      step = 1
+      ExamplesLingsProperty.transaction do
+        csv_for_each :examples_lings_property do |row|
+          group             = groups[row["group_id"]]
+          example_id        = example_ids[row["example_id"]]
+          lings_property_id = lings_property_ids[row["lings_property_id"]]
+          conditions  = { :example_id => example_id, :lings_property_id => lings_property_id }
 
-      csv_for_each :examples_lings_property do |row|
-        group             = groups[row["group_id"]]
-        example_id        = example_ids[row["example_id"]]
-        lings_property_id = lings_property_ids[row["lings_property_id"]]
-        conditions  = { :example_id => example_id, :lings_property_id => lings_property_id }
-
-        set_creator(conditions, group, row) if row["creator_id"].present?
-
-        #group.examples_lings_properties.where(conditions).first ||
-        #  group.examples_lings_properties.create(conditions) do |elp|
-        #    elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-        #  end
-
-        group.examples_lings_properties.where(conditions).first ||
-            group.examples_lings_properties.crewait(conditions)
-
-        if(counter == step * limit_step)
-          Crewait.go!
-
-          #puts "Still #{total - (step*limit_step)} to do"
-          Crewait.start_waiting
-          step += 1
+          group.examples_lings_properties.where(conditions).first ||
+              group.examples_lings_properties.create(conditions) do |elp|
+                elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+              end
         end
 
       end
 
-      Crewait.go!
       print "#{reset}processing examples_lings_property...[OK]"
 
       logger.info "processing #{csv_size(:stored_value)} stored value"
       print "\nprocessing stored_values..."
 
-      # Cannot use Crewait here due to reserver sql keywords issue
-      # https://github.com/theAlmanac/crewait/issues/9
-      csv_for_each :stored_value do |row|
-        group         = groups[row["group_id"]]
-        storable_type = row['storable_type']
-        storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
-        conditions = { :storable_id => storable_id, :storable_type => storable_type,
-            :key => row["key"], :value => row["value"] }
+      StoredValue.transaction do
+        csv_for_each :stored_value do |row|
+          group         = groups[row["group_id"]]
+          storable_type = row['storable_type']
+          storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
+          conditions = { :storable_id => storable_id, :storable_type => storable_type,
+                         :key => row["key"], :value => row["value"] }
 
-        group.stored_values.where(conditions).first || group.stored_values.create(conditions)
+          group.stored_values.where(conditions).first || group.stored_values.create(conditions)
 
 
+        end
       end
-
       print "#{reset}processing stored_values...[OK]\n"
 
       elapsed = seconds_fraction_to_time(Time.now - start)
@@ -313,12 +280,12 @@ module GroupData
 
     private
 
-def seconds_fraction_to_time(time_difference)
-    hours = (time_difference / 3600).to_i
-    mins = ((time_difference / 3600 - hours) * 60).to_i
-    seconds = (time_difference % 60 ).to_i
-    [hours,mins,seconds]
-  end
+    def seconds_fraction_to_time(time_difference)
+      hours = (time_difference / 3600).to_i
+      mins = ((time_difference / 3600 - hours) * 60).to_i
+      seconds = (time_difference % 60 ).to_i
+      [hours,mins,seconds]
+    end
 
 
     def set_creator(conditions, group, row)
@@ -356,7 +323,7 @@ def seconds_fraction_to_time(time_difference)
       new_text = text.gsub(/#{bad_string}.*,/, string_fixed)
       File.open(file, "w") {|file| file.puts new_text}
     end
-    
+
     def logger
       @logger ||= begin
         if Rails.env.production?

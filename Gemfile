@@ -38,9 +38,6 @@ gem 'cancan', "1.6.4"
 gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
 gem 'newrelic_rpm'
 
-# for speed-up batch insert into DB
-gem 'crewait'
-
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
