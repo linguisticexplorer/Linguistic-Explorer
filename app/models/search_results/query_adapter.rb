@@ -63,7 +63,7 @@ module SearchResults
 
     def properties_by_depth
       return properties if properties.empty?
-      result = {}.tap do |hash|
+      {}.tap do |hash|
         Depth::DEPTHS.each do |depth|
           hash[depth.to_s] = group_prop_category_ids(depth).inject([]) do |memo, id|
             memo << properties[id.to_s]
@@ -104,7 +104,7 @@ module SearchResults
     end
 
     def is_cross_search?
-      Depth::DEPTHS.any? { |d| category_ids_by_cross_grouping_and_depth(:property_set, d).any? }
+      category_ids_by_cross_grouping(:property_set).any?
     end
 
     private
