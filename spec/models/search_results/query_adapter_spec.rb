@@ -45,5 +45,15 @@ module SearchResults
       end
     end
 
+    describe "is_cross_search?" do
+      before(:each) do
+        params = { :property_set => {"1" => "all", "2" => "cross"}}
+        @query = QueryAdapter.new(@group, params)
+      end
+      it "should assert that is a cross search" do
+        @query.is_cross_search?.should be_true
+      end
+    end
+
   end
 end
