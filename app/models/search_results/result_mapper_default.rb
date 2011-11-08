@@ -12,7 +12,7 @@ module SearchResults
       @flatten_results ||= [].tap do |entry|
         result_groups.each do |parent_id, child_ids|
           parent           = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
-          related_children  = children.select { |child| child_ids.include? child.id }
+          related_children = children.select { |child| child_ids.include? child.id.to_i }
           if related_children.any?
             related_children.each { |child| entry << ResultEntry.new(parent, child) }
           else
