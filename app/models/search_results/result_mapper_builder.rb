@@ -20,8 +20,7 @@ module SearchResults
     end
 
     def strategy
-      @strategy ||= :default if @result[:type].nil?
-      @strategy ||= @result[:type]
+      @strategy ||= @result[:type] || :default
     end
 
     def strategy_class
