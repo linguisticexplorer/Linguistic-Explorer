@@ -34,11 +34,19 @@ module SearchResults
 
   def ensure_result_groups!
     Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
-    return true unless self.result_groups.present?
-    return true unless self.query.present?
-    self.result_groups ||= build_result_groups(filter_lings_property_ids_from_query)
-    puts self.result_groups
-    self.result_groups
+    puts "DEBUG: Searching..."
+    return true unless self.result_groups.nil?
+    return true unless self.query.present? || self.parent_ids.present?
+    self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)
+  end
+
+  def parent_and_child_lings_property_ids
+    ids = [self.parent_ids, self.child_ids].compact
+
+    puts "DEBUG: #{self.parent_ids.inspect}"
+    return result_adapter(ids) if ids.any?
+    #Rails.logger.debug "Step 3 => #{self.class}"
+    result_adapter(filter_lings_property_ids_from_query)
   end
 
   def build_result_groups(result_adapter)
@@ -46,11 +54,15 @@ module SearchResults
   end
 
   def filter_lings_property_ids_from_query
-    SearchFilterBuilder.new(query_adapter).perform_search
+    SearchFilterBuilder.new(query_adapter).filtered_parent_and_child_ids
   end
 
   def query_adapter
     @query_adapter ||= QueryAdapter.new(self.group, self.query)
+  end
+
+  def result_adapter(result_ids)
+    @result_adapter ||= ResultAdapter.new(query_adapter, result_ids)
   end
 
 end

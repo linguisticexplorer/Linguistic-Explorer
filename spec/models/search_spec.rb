@@ -26,7 +26,7 @@ describe Search do
     before(:each) do
       builder = SearchResults::SearchFilterBuilder
       result_mock = SearchResults::ResultAdapter
-      builder.stub!(:new).and_return(mock(builder, :perform_search => result_mock.new({}, {})))
+      builder.stub!(:new).and_return(mock(builder, :filtered_parent_and_child_ids => [[], []]))
       @search = Factory(:search)
     end
 
