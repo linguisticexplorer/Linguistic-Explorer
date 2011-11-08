@@ -18,23 +18,23 @@ module SearchResults
       Rails.logger.debug "Step 4 => #{self.class} - Rendering"
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
-    #Rails.logger.debug "Step 2 => #{self.class} - Results size:#{@results.inspect}"
+    #Rails.logger.debug "Step 2 => #{self.class} - Results Inspect:#{@results.inspect}"
     @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
   end
 
   def default?
-    self.result_groups[:type] == :default
+    return true unless self.result_groups["type"].present?
+    self.result_groups["type"] == :default
   end
 
   def cross?
-    self.result_groups[:type] == :cross
+    self.result_groups["type"] == :cross
   end
 
   private
 
   def ensure_result_groups!
     Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
-    puts "DEBUG: Searching..."
     return true unless self.result_groups.nil?
     return true unless self.query.present? || self.parent_ids.present?
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)

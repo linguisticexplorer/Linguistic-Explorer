@@ -93,7 +93,7 @@ class SearchComparison
 
   def build_search_through_comparison
     result_rows = compare_sets of.result_rows(parent_attrs, child_attrs), with.result_rows(parent_attrs, child_attrs)
-    
+
     Search.new do |s|
       s.creator     = creator
       s.group       = group

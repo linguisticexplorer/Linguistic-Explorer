@@ -10,17 +10,17 @@ module SearchResults
     end
 
     def to_flatten_results
-      @flatten_results ||= strategy_class.new(clean_result).to_flatten_results
+      @flatten_results ||= strategy_class.new(sanitize_result).to_flatten_results
     end
 
     private
 
-    def clean_result
-      @result.select {|k,v| k!=:type}
+    def sanitize_result
+      @result.delete_if {|k,v| /type/.match(k.to_s)}
     end
 
     def strategy
-      @strategy ||= @result[:type] || :default
+      @strategy ||= @result["type"] || :default
     end
 
     def strategy_class
@@ -28,14 +28,13 @@ module SearchResults
     end
 
     def self.build_result_groups(result_adapter)
-      result_groups = case result_adapter.type
-                        when :cross
-                          cross_builder(result_adapter).build_result_groups
-                        else
-                          default_builder(result_adapter).build_result_groups
-                      end
-      result_groups[:type] = result_adapter.type
-      result_groups
+      type = {"type" => result_adapter.type}
+      case result_adapter.type
+        when :cross
+          cross_builder(result_adapter).build_result_groups.merge(type)
+        else
+          default_builder(result_adapter).build_result_groups.merge(type)
+      end
     end
 
 
