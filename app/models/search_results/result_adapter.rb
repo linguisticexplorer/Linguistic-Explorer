@@ -26,7 +26,7 @@ module SearchResults
     end
 
     def type
-      return :cross if @query.present? && is_cross_search?
+      return :cross if is_cross_search?
       :default
     end
 
