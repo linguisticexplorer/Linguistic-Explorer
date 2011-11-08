@@ -32,8 +32,8 @@ module SearchResults
 
       ##########################################################################
       # Trick to solve issue #1                                                #
-      # This shows an empty result if no entry has found on depth 0 if         #
-      # NO_DEPTH_1_RESULT retrieved                                            #
+      # This shows a NO_DEPTH_1_RESULT as result if no result is retrieved     #
+      # in depth 1 search.                                                     #
       ##########################################################################
       is_depth_0?(depth) & any_error?(result) ? [] : result
     end
