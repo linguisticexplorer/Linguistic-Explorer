@@ -34,8 +34,11 @@ module SearchResults
 
   def ensure_result_groups!
     Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
-    return true unless self.result_groups.present? || self.query.present?
+    return true unless self.result_groups.present?
+    return true unless self.query.present?
     self.result_groups ||= build_result_groups(filter_lings_property_ids_from_query)
+    puts self.result_groups
+    self.result_groups
   end
 
   def build_result_groups(result_adapter)
