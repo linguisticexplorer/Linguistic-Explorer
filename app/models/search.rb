@@ -22,7 +22,7 @@ class Search < ActiveRecord::Base
 
   scope :by, lambda { |creator| where(:creator => creator) }
 
-  attr_accessor :offset
+  attr_accessor :parent_ids, :child_ids, :offset
 
   before_save :ensure_result_groups!
 

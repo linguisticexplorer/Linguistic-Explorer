@@ -8,15 +8,11 @@ module SearchResults
       @query = query
     end
 
-    def perform_search
-      ResultAdapter.new(@query, filtered_parent_and_child_ids)
-    end
-
-    private
-
     def filtered_parent_and_child_ids
       @filtered_parent_and_child_ids ||= filter_search_query
     end
+
+    private
 
     def filter_search_query
       # Filters return depth_0_vals and depth_1_vals

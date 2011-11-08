@@ -43,7 +43,6 @@ module SearchResults
   def parent_and_child_lings_property_ids
     ids = [self.parent_ids, self.child_ids].compact
 
-    puts "DEBUG: #{self.parent_ids.inspect}"
     return result_adapter(ids) if ids.any?
     #Rails.logger.debug "Step 3 => #{self.class}"
     result_adapter(filter_lings_property_ids_from_query)

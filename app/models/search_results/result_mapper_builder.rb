@@ -20,6 +20,7 @@ module SearchResults
     end
 
     def strategy
+      @strategy ||= :default if @result[:type].nil?
       @strategy ||= @result[:type]
     end
 
