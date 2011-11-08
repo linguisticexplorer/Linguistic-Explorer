@@ -37,13 +37,7 @@ module SearchResults
 
       @filter = filter_by_all_conditions     :lings_property
 
-      #@filter = filter_by_cross_conditions
-
       [@filter.depth_0_ids, @filter.depth_1_ids]
-    end
-
-    def filter_by_cross_conditions
-       CrossFilter.new(@filter, @query)
     end
 
     def filter_by_any_selected_lings_and_props
