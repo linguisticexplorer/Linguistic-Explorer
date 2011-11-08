@@ -5,7 +5,6 @@ class Search < ActiveRecord::Base
   RESULTS_CROSS_THRESHOLD = 4
   RESULTS_FLATTEN_THRESHOLD = 100000
 
-
   include Groupable
   include Concerns::Wheres
 
@@ -23,7 +22,7 @@ class Search < ActiveRecord::Base
 
   scope :by, lambda { |creator| where(:creator => creator) }
 
-  attr_accessor :parent_ids, :child_ids, :offset
+  attr_accessor :offset
 
   before_save :ensure_result_groups!
 

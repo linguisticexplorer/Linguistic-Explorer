@@ -12,14 +12,17 @@ module SearchResultsHelper
 
   def row_methods
     @row_methods ||= {
-      :ling_0     => lambda { |v| link_to_ling(v.ling) },
-      :ling_1     => lambda { |v| link_to_ling(v.ling) },
-      :property_0 => lambda { |v| link_to_property(v.property) },
-      :property_1 => lambda { |v| link_to_property(v.property) },
-      :value_0    => lambda { |v| v.value  },
-      :value_1    => lambda { |v| v.value  },
-      :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
-      :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
+      :ling_0         => lambda { |v| link_to_ling(v.ling) },
+      :ling_1         => lambda { |v| link_to_ling(v.ling) },
+      :property_0     => lambda { |v| link_to_property(v.property) },
+      :property_1     => lambda { |v| link_to_property(v.property) },
+      :value_0        => lambda { |v| v.value  },
+      :value_1        => lambda { |v| v.value  },
+      :example_0      => lambda { |v| v.examples.map(&:name).join(", ") },
+      :example_1      => lambda { |v| v.examples.map(&:name).join(", ") },
+      :cross_property => lambda { |v| link_to_property(v.property) },
+      :cross_value    => lambda { |v| v.value },
+      :count          => lambda { |v| v.count }
     }
   end
 
@@ -28,6 +31,16 @@ module SearchResultsHelper
       attrs[:class] = "search_result row"
       attrs["data-parent-value"] = entry.parent.id
       attrs["data-child-value"]  = entry.child.id unless entry.child.nil?
+    end
+  end
+
+  def search_result_attributes_for_cross(entry)
+    {}.tap do |attrs|
+      attrs[:class] = "search_result row"
+      entry.parent.each_index do |index|
+        attrs["data-parent-value-#{index}"] = entry.parent[index].id
+      end
+      attrs["data-child-value"] = entry.child.count
     end
   end
 

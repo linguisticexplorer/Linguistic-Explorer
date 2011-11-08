@@ -8,11 +8,15 @@ module SearchResults
       @query = query
     end
 
-    def filtered_parent_and_child_ids
-      @filtered_parent_and_child_ids ||= filter_search_query
+    def perform_search
+      ResultAdapter.new(@query, filtered_parent_and_child_ids)
     end
 
     private
+
+    def filtered_parent_and_child_ids
+      @filtered_parent_and_child_ids ||= filter_search_query
+    end
 
     def filter_search_query
       # Filters return depth_0_vals and depth_1_vals
@@ -33,7 +37,7 @@ module SearchResults
 
       @filter = filter_by_all_conditions     :lings_property
 
-      @filter = filter_by_cross_conditions
+      #@filter = filter_by_cross_conditions
 
       [@filter.depth_0_ids, @filter.depth_1_ids]
     end

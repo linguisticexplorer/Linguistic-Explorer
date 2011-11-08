@@ -78,9 +78,9 @@ module SearchResults
       }
     end
 
-    def category_ids_by_cross_grouping_and_depth(grouping, depth)
+    def category_ids_by_cross_grouping_and_depth(depth)
       group_prop_category_ids(depth).select { |c|
-        category_ids_by_cross_grouping(grouping).include?(c)
+        category_ids_by_cross_grouping(:property_set).include?(c)
       }
     end
 
@@ -93,7 +93,7 @@ module SearchResults
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
-      return SearchColumns::CROSS_COLUMNS if is_cross_search?
+      return scale SearchColumns::CROSS_COLUMNS if is_cross_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
@@ -107,7 +107,26 @@ module SearchResults
       category_ids_by_cross_grouping(:property_set).any?
     end
 
+    def depth_of_cross_search
+      return nil if !is_cross_search?
+      return Depth::PARENT if category_ids_by_cross_grouping_and_depth(0).any?
+      Depth::CHILD
+    end
+
     private
+
+    # Columns number for Cross search can vary from the number
+    # of property chosen: this method will scale the number of
+    # columns
+    def scale(columns)
+      name, value, count = columns
+      key = properties.keys.first
+      props_size = properties[key].size
+      [].tap do |columns_to_show|
+        props_size.times {|i| columns_to_show << [name, value] }
+        columns_to_show << count
+      end.flatten
+    end
 
     def ling_extractor
       @ling_extractor ||= LingExtractor.new(@group, lings)
@@ -125,6 +144,7 @@ module SearchResults
 
     def category_ids_by_cross_grouping(grouping)
       # {"1"=>"all", "2"=>"any", "3"=>"cross"} --> [3]
+
       category_cross_pairs ||= [] if self[grouping].nil?
       category_cross_pairs ||= self[grouping].group_by { |k, v| v }["cross"] || []
       category_cross_pairs.map { |c| c.first }.map(&:to_i)

@@ -16,36 +16,34 @@ module SearchResults
     @results ||= begin
       ensure_result_groups!
       Rails.logger.debug "Step 4 => #{self.class} - Rendering"
-      ResultMapper.new(self.result_groups).to_flatten_results
+      ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
-
-    #Rails.logger.debug "Step 2 => #{self.class} - Results size:#{@results.size}"
+    #Rails.logger.debug "Step 2 => #{self.class} - Results size:#{@results.inspect}"
     @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
+  end
+
+  def default?
+    self.result_groups[:type] == :default
+  end
+
+  def cross?
+    self.result_groups[:type] == :cross
   end
 
   private
 
   def ensure_result_groups!
     Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
-    return true unless self.result_groups.nil?
-    return true unless self.query.present? || self.parent_ids.present?
-    self.result_groups = build_result_groups(*parent_and_child_lings_property_ids)
+    return true unless self.result_groups.nil? || self.query.present?
+    self.result_groups ||= build_result_groups(filter_lings_property_ids_from_query)
   end
 
-  def parent_and_child_lings_property_ids
-    ids = [self.parent_ids, self.child_ids].compact
-
-    return ids if ids.any?
-    #Rails.logger.debug "Step 3 => #{self.class}"
-    filter_lings_property_ids_from_query
-  end
-
-  def build_result_groups(parent_ids, child_ids = nil)
-    ResultMapper.build_result_groups(parent_ids, child_ids, included_columns)
+  def build_result_groups(result_adapter)
+    ResultMapperBuilder.build_result_groups(result_adapter)
   end
 
   def filter_lings_property_ids_from_query
-    SearchFilterBuilder.new(query_adapter).filtered_parent_and_child_ids
+    SearchFilterBuilder.new(query_adapter).perform_search
   end
 
   def query_adapter

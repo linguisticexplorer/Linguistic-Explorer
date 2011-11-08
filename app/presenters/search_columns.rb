@@ -8,21 +8,24 @@ module SearchColumns
   ]
 
   CROSS_COLUMNS = [
-      :property_0, :value_0, :property_1, :value_1, :count
+      :cross_property, :cross_value,
+      :count
   ]
 
   COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   HEADERS = {
-    :ling_0     => lambda { |g| g.ling0_name },
-    :property_0 => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
-    :value_0    => lambda { |g| "#{g.ling0_name} Values" },
-    :example_0  => lambda { |g| "#{g.ling0_name} Examples" },
-    :ling_1     => lambda { |g| g.ling1_name },
-    :property_1 => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
-    :value_1    => lambda { |g| "#{g.ling1_name} Values" },
-    :example_1  => lambda { |g| "#{g.ling1_name} Examples" },
-    :count      => lambda { |g| "Lings Count"}
+    :ling_0         => lambda { |g| g.ling0_name },
+    :property_0     => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
+    :value_0        => lambda { |g| "#{g.ling0_name} Values" },
+    :example_0      => lambda { |g| "#{g.ling0_name} Examples" },
+    :ling_1         => lambda { |g| g.ling1_name },
+    :property_1     => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
+    :value_1        => lambda { |g| "#{g.ling1_name} Values" },
+    :example_1      => lambda { |g| "#{g.ling1_name} Examples" },
+    :count          => lambda { |g| "Lings Count"},
+    :cross_property => lambda { |g| "Property Name"},
+    :cross_value    => lambda { |g| "Value" }
   }
 
   def columns_to_include

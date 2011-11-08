@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module SearchResults
-  describe ResultMapper do
+  describe ResultMapperBuilder do
   
   end
 end
