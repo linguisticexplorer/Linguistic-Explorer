@@ -18,12 +18,12 @@ module SearchResults
       Rails.logger.debug "Step 4 => #{self.class} - Rendering"
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
-    #Rails.logger.debug "Step 2 => #{self.class} - Results Inspect:#{@results.inspect}"
+    #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
     @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
   end
 
   def default?
-    return true unless self.result_groups["type"].present?
+    return true unless self.result_groups.key?("type")
     self.result_groups["type"] == :default
   end
 
