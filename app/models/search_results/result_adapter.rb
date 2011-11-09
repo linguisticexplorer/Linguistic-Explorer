@@ -48,7 +48,7 @@ module SearchResults
 
     def assert_is_valid_cross
       # TODO: write something nicer here
-      properties = @query.category_ids_by_cross_grouping_and_depth(depth_for_cross)
+      properties = @query.selected_properties_to_cross(depth_for_cross)
       # Raise an Exception if there are less properties than required
       raise Exceptions::ResultAtLeastTwoForCrossError if properties.size < 2
       # Avoid Cartesian Product with too many properties

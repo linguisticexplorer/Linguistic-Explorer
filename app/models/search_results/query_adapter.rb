@@ -78,10 +78,8 @@ module SearchResults
       }
     end
 
-    def category_ids_by_cross_grouping_and_depth(depth)
-      group_prop_category_ids(depth).select { |c|
-        category_ids_by_cross_grouping(:property_set).include?(c)
-      }
+    def selected_properties_to_cross(depth)
+      selected_property_ids(category_ids_by_cross_grouping_and_depth(depth).first)
     end
 
     def has_depth?
@@ -93,7 +91,7 @@ module SearchResults
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
-      return SearchColumns::CROSS_COLUMNS if is_cross_search?
+      return scale SearchColumns::CROSS_COLUMNS if is_cross_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
@@ -114,6 +112,12 @@ module SearchResults
     end
 
     private
+
+    def category_ids_by_cross_grouping_and_depth(depth)
+      group_prop_category_ids(depth).select { |c|
+        category_ids_by_cross_grouping(:property_set).include?(c)
+      }
+    end
 
     # Columns number for Cross search can vary from the number
     # of property chosen: this method will scale the number of
