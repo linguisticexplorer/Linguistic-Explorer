@@ -28,7 +28,7 @@ Feature: Errors that happen during the Search
     And I press "Show results"
     Then I should be on the Syntactic Structures search page
     And I should see "An error occurred during the search"
-    And I should see "Please select less than"
+    And I should see "Please select at least"
 
   Scenario: Visitor try to cross-search with one property, redirect to the Search page with notice
     When I go to the Syntactic Structures search page
