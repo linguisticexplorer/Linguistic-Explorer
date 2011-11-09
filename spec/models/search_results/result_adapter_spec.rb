@@ -17,16 +17,7 @@ module SearchResults
         @result.type.should == :default
       end
     end
-    describe "Cross type of search" do
-      before(:each) do
-        params = { :property_set => {"1" => "any", "2" => "cross"}}
-        @query = QueryAdapter.new(@group, params)
-        @result = ResultAdapter.new(@query, [])
-      end
-      it "should return the cross type of the search" do
-        @result.type.should == :cross
-      end
-    end
+
     describe "Included Columns" do
       before(:each) do
         params = { :include => {"value_1"=>"1", "ling_0"=>"1"}}
