@@ -20,7 +20,7 @@ module SearchResults
     end
 
     def strategy
-      @strategy ||= @result["type"] || :default
+      @strategy ||= @result["type"] || "default"
     end
 
     def strategy_class
@@ -34,7 +34,7 @@ module SearchResults
         else
           default_builder(result_adapter).build_result_groups
                end
-      result["type"] = result_adapter.type
+      result["type"] = result_adapter.type.to_s
       result
     end
 

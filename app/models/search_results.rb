@@ -24,11 +24,11 @@ module SearchResults
 
   def default?
     return true unless self.result_groups.key?("type")
-    self.result_groups["type"] == :default
+    self.result_groups["type"] ==  "default"
   end
 
   def cross?
-    self.result_groups["type"] == :cross
+    self.result_groups["type"] == "cross"
   end
 
   private
