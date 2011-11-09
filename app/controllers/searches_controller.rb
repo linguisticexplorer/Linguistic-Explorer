@@ -1,7 +1,7 @@
 class SearchesController < GroupDataController
 
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
-  rescue_from Exceptions::ResultSearchError, :with => :rescue_from_big_result_error
+  rescue_from Exceptions::ResultSearchError, :with => :rescue_from_result_error
 
   respond_to :html, :csv
 
@@ -84,7 +84,7 @@ protected
     end
   end
 
-  def rescue_from_big_result_error(exception)
+  def rescue_from_result_error(exception)
     flash[:notice] = exception.message
     redirect_to :action => :new
   end
