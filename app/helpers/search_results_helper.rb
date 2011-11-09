@@ -37,10 +37,8 @@ module SearchResultsHelper
   def search_result_attributes_for_cross(entry)
     {}.tap do |attrs|
       attrs[:class] = "search_result row"
-      entry.parent.each_index do |index|
-        attrs["data-parent-value-#{index}"] = entry.parent[index].id
-      end
-      attrs["data-child-value"] = entry.child.count
+      attrs["data-parent-value"] = entry.parent.inject(0) {|sum, lp| sum + lp.id}
+      attrs["data-child-value"] = "#{attrs["data-parent-value"]}-#{entry.child.count}"
     end
   end
 
