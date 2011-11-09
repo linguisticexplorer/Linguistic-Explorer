@@ -105,6 +105,36 @@ Then /^I should see the following search results:$/ do |table|
   end
 end
 
+Then /^I should see the following Cross search results:$/ do |table|
+  table.hashes.each do |row|
+    prop_cols = row.keys.select {|col| /Name/.match(col)}
+    props = [].tap do |prop|
+      prop_cols.each do |col|
+        prop << Property.find_by_name(row[col])
+      end
+    end
+
+    lps_cols = row.keys.select {|col| /Value/.match(col)}
+    lps = [].tap do |lp|
+      lps_cols.each_index do |index|
+        lp << LingsProperty.find_by_property_id_and_value(props[index].id, row[lps_cols[index]])
+      end
+    end
+
+    with_scope(%Q|[data-parent-value="#{lps.inject(0){|sum, lp| sum + lp.id}}"]|) do
+      props.each do |prop|
+        page.should have_content(prop.name)
+      end
+      lps.each do |lp|
+        page.should have_content(lp.value)
+      end
+      page.should have_content(row["Count"])
+    end
+
+
+  end
+end
+
 Then /^I should see the following grouped search results:$/ do |table|
   table.hashes.each do |row|
     parent_ling  = Ling.find_by_name(row["parent ling"])
