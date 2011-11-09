@@ -37,6 +37,16 @@ Feature: Save searches
     And I go to the Syntactic Structures search page
     Then I should not see "History"
 
+  Scenario: No save search form if signed out
+    When I go to the Syntactic Structures search page
+    And I follow "Sign out"
+    And I go to the Syntactic Structures search page
+    And I select "Speaker 1" from "Speakers"
+    And I select "Sentence 1" from "Sentences"
+    And I press "Show results"
+    And show me the page
+    Then I should not see "Save search results"
+
   Scenario: Save search
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
@@ -117,3 +127,22 @@ Feature: Save searches
     And I should see "can't be blank"
 
   Scenario: Regenerate results of saved search query
+    When I go to the Syntactic Structures search page
+    And I select "Speaker 1" from "Speakers"
+    And I select "Sentence 1" from "Sentences"
+    And I press "Show results"
+    Then I should see "Save search results"
+    When I fill in "Name" with "My First Search"
+    And I press "Save"
+    Then I go to the Syntactic Structures search page
+    And I select "Speaker 2" from "Speakers"
+    And I select "Sentence 2" from "Sentences"
+    And I press "Show results"
+    Then I follow "History"
+    And I follow "Results"
+    Then I should see the following grouped search results:
+    | parent ling | parent property | parent value  | child ling  | child property  | child value  |
+    | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
+    And I should not see "Speaker 2"
+    And I should not see "Sentence 2"
+
