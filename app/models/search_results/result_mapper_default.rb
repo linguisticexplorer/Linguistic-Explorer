@@ -23,15 +23,14 @@ module SearchResults
     end
 
     def parents
-      @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property]).
-          joins(:ling).
-          order("lings.parent_id, lings.name").to_a
+      @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property, :examples, :examples_lings_properties]).
+          joins(:ling).order("lings.parent_id, lings.name").to_a
     end
 
     def children
       @children ||= begin
         if all_child_ids.present?
-          LingsProperty.with_id(all_child_ids).includes([:ling, :property]).joins(:ling).
+          LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).joins(:ling).
               order("lings.parent_id, lings.name").to_a
         else
           []
