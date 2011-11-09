@@ -43,6 +43,6 @@ module SearchResultsHelper
   end
 
   def display_save_search_form?(search)
-    user_signed_in? && search.new_record? && !current_user.reached_max_search_limit?(current_group)
+    user_signed_in? && search.new_record? && search.default? && !current_user.reached_max_search_limit?(current_group)
   end
 end

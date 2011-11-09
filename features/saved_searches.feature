@@ -44,7 +44,6 @@ Feature: Save searches
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
-    And show me the page
     Then I should not see "Save search results"
 
   Scenario: Save search
@@ -145,4 +144,13 @@ Feature: Save searches
     | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
     And I should not see "Speaker 2"
     And I should not see "Sentence 2"
+
+
+  Scenario: No save option for Cross Search
+    When I go to the Syntactic Structures search page
+    And I select "Property 1" from "Demographic Properties"
+    And I select "Property 2" from "Demographic Properties"
+    And I choose "Cross" within "#demographic_properties"
+    And I press "Show results"
+    Then I should not see "Save search results"
 
