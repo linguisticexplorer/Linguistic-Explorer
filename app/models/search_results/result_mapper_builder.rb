@@ -16,7 +16,7 @@ module SearchResults
     private
 
     def sanitize_result
-      @result.delete_if {|k,v| /type/.match(k.to_s)}
+      @result.select {|k,v| !/type/.match(k.to_s)}
     end
 
     def strategy
@@ -28,13 +28,14 @@ module SearchResults
     end
 
     def self.build_result_groups(result_adapter)
-      type = {"type" => result_adapter.type}
-      case result_adapter.type
+      result = case result_adapter.type
         when :cross
-          cross_builder(result_adapter).build_result_groups.merge(type)
+          cross_builder(result_adapter).build_result_groups
         else
-          default_builder(result_adapter).build_result_groups.merge(type)
-      end
+          default_builder(result_adapter).build_result_groups
+               end
+      result["type"] = result_adapter.type
+      result
     end
 
 
