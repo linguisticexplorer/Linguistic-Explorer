@@ -10,12 +10,12 @@ module SearchResults
     end
 
     def to_flatten_results
-      @flatten_results ||= strategy_class.new(sanitize_result).to_flatten_results
+      @flatten_results ||= strategy_class.new(remove_type_from_result).to_flatten_results
     end
 
     private
 
-    def sanitize_result
+    def remove_type_from_result
       @result.select {|k,v| !/type/.match(k.to_s)}
     end
 
