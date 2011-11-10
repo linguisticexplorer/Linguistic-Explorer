@@ -38,7 +38,7 @@ module SearchColumns
   end
 
   def result_headers_lings_cross
-    header_keys = [:ling_0]
+    header_keys = cross_columns
     header_keys.map{ |k| HEADERS[k] }
   end
 
@@ -52,6 +52,14 @@ module SearchColumns
 
   def child_columns
     @child_columns ||= columns_to_include & CHILD_COLUMNS
+  end
+
+  def cross_columns
+    if @search.depth_of_cross_search == Depth::PARENT
+      [PARENT_COLUMNS.first]
+    else
+      [CHILD_COLUMNS.first]
+    end
   end
 
 end

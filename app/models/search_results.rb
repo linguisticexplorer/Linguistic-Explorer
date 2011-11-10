@@ -6,7 +6,7 @@ module SearchResults
   # https://github.com/mislav/will_paginate/wiki/Backwards-incompatibility
   require 'will_paginate/array'
 
-  delegate :included_columns, :to => :query_adapter
+  delegate :included_columns, :depth_of_cross_search, :to => :query_adapter
 
   def each
     results.each { |r| yield r }

@@ -50,6 +50,7 @@ Feature: Search with Cross
     And I should not see "Sentence 2"
     And I should not see "verb"
     And I follow "1"
+    And I should see "Ling"
     Then I should see 1 search result rows
 
   Scenario: Visitor searches cross Linguistic Properties from two
@@ -82,6 +83,7 @@ Feature: Search with Cross
     And I should not see "Sentence 2"
     And I should not see "Eastern"
     And I follow "1"
+    And I should see "Linglet"
     Then I should see 1 search result rows
 
    Scenario: Visitor searches cross both Demographic and Linguistic Properties from two each
