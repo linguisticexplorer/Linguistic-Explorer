@@ -1,0 +1,14 @@
+<div class="table spacing expand_width">
+  <div class="row">
+    <%- result_headers_lings_cross.each do |proc| -%>
+        <div class="cell"><%= proc.call @search.group %></div>
+    <%- end -%>
+  </div>
+  <%- if @search.cross? %>
+      <%- @presenter.filter_lings_row(@search).each do |result| -%>
+          <%- result.child.each do |ling| -%>
+            <%= render :partial => "searches/cross/result_ling", :locals => { :result => ling }, :inline => true %>
+           <%- end -%>
+      <%- end -%>
+  <%- end -%>
+</div>

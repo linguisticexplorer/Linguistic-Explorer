@@ -1,9 +1,9 @@
 <%- parent, child = result.parent, result.child -%>
-<%- #Rails.logger.debug "DEBUG #{child.inspect}" -%>
+<%- Rails.logger.debug "DEBUG #{parent}" -%>
 <%= content_tag :div, search_result_attributes_for_cross(result) do %>
    <%- parent.each do |prop| -%>
       <div class="cell"><%= row_methods[:cross_property].call(*prop)%></div>
       <div class="cell"><%= row_methods[:cross_value].call(*prop)%></div>
    <%- end -%>
-      <div class="cell"><%= row_methods[:count].call(child)%></div>
+      <div class="cell"><%= row_methods[:count].call(parent, child) %></div>
 <% end %>
