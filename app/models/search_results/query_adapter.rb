@@ -111,13 +111,13 @@ module SearchResults
       Depth::CHILD
     end
 
-    private
-
     def category_ids_by_cross_grouping_and_depth(depth)
       group_prop_category_ids(depth).select { |c|
         category_ids_by_cross_grouping(:property_set).include?(c)
       }
     end
+
+    private
 
     # Columns number for Cross search can vary from the number
     # of property chosen: this method will scale the number of
