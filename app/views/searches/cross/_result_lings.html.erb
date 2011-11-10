@@ -5,7 +5,7 @@
     <%- end -%>
   </div>
   <%- if @search.cross? %>
-      <%- @presenter.filter_lings_row(@search).each do |result| -%>
+      <%- @presenter_results.each do |result| -%>
           <%- result.child.each do |ling| -%>
             <%= render :partial => "searches/cross/result_ling", :locals => { :result => ling }, :inline => true %>
            <%- end -%>

@@ -82,8 +82,8 @@ class SearchesController < GroupDataController
       s.offset  = params[:page]
     end
 
-    @presenter = SearchCross.new(params[:cross_ids])
-    Rails.logger.debug "DEBUG: Cross => #{@search.results.size}"
+    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
+
     authorize! :cross, @search
   end
 
