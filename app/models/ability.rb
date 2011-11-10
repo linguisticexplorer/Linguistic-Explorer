@@ -36,6 +36,7 @@ class Ability
       end
 
       can :search, Search, :group => { :privacy => Group::PUBLIC }
+      can :cross, Search, :group => { :privacy => Group::PUBLIC }
 
       can :manage, SearchComparison do |sc|
         sc.searches.all?{|s| s.is_manageable_by?(user)}

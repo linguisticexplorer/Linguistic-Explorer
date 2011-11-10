@@ -74,6 +74,19 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
+  def cross_lings
+    @search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+      s.query   = params[:search]
+      s.offset  = params[:page]
+    end
+
+    @presenter = SearchCross.new(params[:cross_ids])
+    Rails.logger.debug "DEBUG: Cross => #{@search.results.size}"
+    authorize! :cross, @search
+  end
+
 protected
 
   def check_max_search_notice
