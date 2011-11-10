@@ -51,6 +51,7 @@ module SearchResults
       end
       it "should return columns ordered" do
         @query.included_columns.should == [:cross_property, :cross_value,
+                                           :cross_property, :cross_value,
                                            :count]
       end
     end
