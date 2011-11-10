@@ -1,5 +1,15 @@
 <div class="table spacing expand_width">
   <div class="row">
+    <%- result_headers.each do |proc| -%>
+        <div class="cell"><%= proc.call @search.group %></div>
+    <%- end -%>
+  </div>
+  <%- @presenter_results.each do |result| -%>
+          <%= render :partial => "searches/cross/result_cross", :locals => { :result => result}, :inline => true %>
+  <%- end -%>
+</div>
+<div class="table spacing expand_width">
+  <div class="row">
     <%- result_headers_lings_cross.each do |proc| -%>
         <div class="cell"><%= proc.call @search.group %></div>
     <%- end -%>
