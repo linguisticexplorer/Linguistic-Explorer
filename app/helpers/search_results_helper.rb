@@ -49,7 +49,7 @@ module SearchResultsHelper
 
   def search_result_attributes_for_ling_cross(entry)
     {}.tap do |attrs|
-      attrs[:class] = "search_result row"
+      attrs[:class] = "search_ling_result row"
       attrs["data-parent-value"] = entry.id
     end
   end
