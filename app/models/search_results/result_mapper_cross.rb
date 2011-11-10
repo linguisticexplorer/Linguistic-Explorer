@@ -10,9 +10,8 @@ module SearchResults
     def to_flatten_results
       @flatten_results ||= [].tap do |entry|
         result_groups.each do |parent_ids, children_ids|
-          parent           = parents.select {|parent| same_ids?(parent, parent_ids)}.flatten
-          related_children = children.select {|children| same_ids?(children, children_ids)}.flatten
-          #Rails.logger.debug "DEBUG: Child #{children_ids.inspect} => \n#{related_children.inspect}"
+          parent           = parents.select {|parent| parent.map(&:id) == parent_ids}.flatten
+          related_children = children.select {|child| child.map(&:ling_id) == children_ids}.flatten
           entry << ResultEntry.new(parent, related_children)
         end
       end
@@ -46,12 +45,8 @@ module SearchResults
     private
 
     def children_by_lings(children_ids)
-      ling_props = LingsProperty.with_ling_id(children_ids).joins(:ling, :property).includes([:ling, :property]).order("lings.name").to_a
-      ling_props.group_by {|lp| lp.ling }.keys
-    end
-
-    def same_ids?(array_objs, array_ids)
-      array_objs.map(&:id).all? { |id| array_ids.include? id}
+      ling_props = LingsProperty.with_ling_id(children_ids).joins(:ling, :property).includes([:ling, :property]).order("lings.name").to_a.group_by {|lp| lp.ling }
+      ling_props.keys.map {|ling| ling_props[ling].first}
     end
 
   end
