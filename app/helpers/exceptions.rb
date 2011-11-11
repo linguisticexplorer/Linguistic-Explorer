@@ -14,7 +14,7 @@ module Exceptions
 
   class ResultTooManyForCrossError < ResultSearchError
     def message
-      "An error occurred during the search. Please select less than #{Search::RESULTS_CROSS_THRESHOLD} Properties for Cross"
+      "An error occurred during the search. Please select less Properties for Cross"
     end
   end
 
