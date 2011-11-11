@@ -10,8 +10,8 @@ module SearchResults
     def to_flatten_results
       @flatten_results ||= [].tap do |entry|
         result_groups.each do |parent_ids, children_ids|
-          parent           = parents.select {|parent| parent.map(&:id) == parent_ids}.flatten
-          related_children = children.select {|child| child.map(&:ling_id) == children_ids}.flatten
+          parent           = parents.select {|parent| parent.map(&:id).sort == parent_ids.sort }.flatten
+          related_children = children.select {|child| child.map(&:ling_id).sort == children_ids.sort }.flatten
           entry << ResultEntry.new(parent, related_children)
         end
       end

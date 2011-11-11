@@ -4,7 +4,7 @@ describe SearchCross do
 
   describe "Same ids-parents" do
     before do
-      @presenter = SearchCross.new([1,2,3])
+      @presenter = SearchCross.new([2,3,1])
     end
 
     it "should return true is parents are same of ids" do

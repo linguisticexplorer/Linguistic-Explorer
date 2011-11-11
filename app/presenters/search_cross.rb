@@ -13,7 +13,7 @@ class SearchCross
     end
 
     def are_parent_ids?(parent)
-      parent.map(&:id) == parent_ids
+      parent.map(&:id).sort == parent_ids.sort
     end
 
   end
