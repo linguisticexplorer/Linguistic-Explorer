@@ -29,6 +29,7 @@ module SearchResults
 
     def type
       return :cross if is_cross_search?
+      return :compare if is_compare_search?
       :default
     end
 
@@ -44,6 +45,10 @@ module SearchResults
 
     def is_cross_search?
       @query.is_cross_search?
+    end
+
+    def is_compare_search?
+      @query.is_compare_search?
     end
 
     def assert_is_valid_cross

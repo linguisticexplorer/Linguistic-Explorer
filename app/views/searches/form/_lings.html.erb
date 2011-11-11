@@ -12,5 +12,15 @@
       :label => keyword_label,
       :id => search_text_id(keyword_label),
       :name => search_text_field_name(:ling_keywords, depth) %>
-  <% end %>
+
+    <div class="selection_row row">
+      <div class="cell label">Selection</div>
+      <div class="cell field">
+        <%= f.label "group", "Compare", :for => "search_group_depth_#{depth}" %>
+        <%= f.radio_button "ling_set", "Compare",
+          :id => "search_group_depth_#{depth}",
+          :name => "search[ling_set][#{depth}]" %>
+        </div>
+    </div>
+    <% end %>
 <%- end -%>

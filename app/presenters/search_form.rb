@@ -1,7 +1,7 @@
 module SearchForm
 
   attr_accessor :lings,         :properties,          :lings_props,
-                :property_set,  :lings_property_set,
+                :ling_set, :property_set,  :lings_property_set,
                 :ling_keywords, :property_keywords,   :example_keywords,
                 :example_fields
 

@@ -105,6 +105,10 @@ module SearchResults
       category_ids_by_cross_grouping(:property_set).any?
     end
 
+    def is_compare_search?
+      category_ids_by_compare_grouping(:ling_set).any?
+    end
+
     def depth_of_cross_search
       return nil if !is_cross_search?
       return Depth::PARENT if category_ids_by_cross_grouping_and_depth(0).any?
@@ -151,6 +155,10 @@ module SearchResults
       category_cross_pairs ||= [] if self[grouping].nil?
       category_cross_pairs ||= self[grouping].group_by { |k, v| v }["cross"] || []
       category_cross_pairs.map { |c| c.first }.map(&:to_i)
+    end
+
+    def category_ids_by_compare_grouping(grouping)
+      category_compare_pairs ||= []
     end
 
     def category_present?(key, depth)
