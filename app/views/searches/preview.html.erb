@@ -10,11 +10,17 @@
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
   <%= render :partial => 'searches/save_search_form' %>
-
+      <%- if @search.default? -%>
         <div id="results_table">
         <%= render :partial => 'searches/results' %>
         </div>
-
+      <%- else -%>
+        <%- if @search.cross? -%>
+        <div id="results_table">
+        <%= render :partial => 'searches/cross/results_cross' %>
+        </div>
+        <%- end -%>
+      <%- end -%>
   <%- else -%>
     <div class="notice">Your search query returned no results.</div>
   <%- end -%>

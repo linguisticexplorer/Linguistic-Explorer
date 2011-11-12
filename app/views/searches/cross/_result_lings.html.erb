@@ -1,24 +1,37 @@
-<div class="table spacing expand_width">
-  <div class="row">
-    <%- result_headers.each do |proc| -%>
-        <div class="cell"><%= proc.call @search.group %></div>
-    <%- end -%>
-  </div>
-  <%- @presenter_results.each do |result| -%>
-          <%= render :partial => "searches/cross/result_cross", :locals => { :result => result}, :inline => true %>
-  <%- end -%>
+<%
+   page_heading "Search"
+   add_body_classes "full_width"
+%>
+<div id="titleHeader">
+  <h2 class="red_grad"><%= @search.group.name %> Cross Results</h2>
 </div>
-<div class="table spacing expand_width">
-  <div class="row">
-    <%- result_headers_lings_cross.each do |proc| -%>
-        <div class="cell"><%= proc.call @search.group %></div>
-    <%- end -%>
-  </div>
-  <%- if @search.cross? %>
-      <%- @presenter_results.each do |result| -%>
-          <%- result.child.each do |ling| -%>
-            <%= render :partial => "searches/cross/result_ling", :locals => { :result => ling }, :inline => true %>
-           <%- end -%>
-      <%- end -%>
+<div id="search_results" class="padded_left padded_right">
+  <%- if @search.results.any? -%>
+      <div class="table spacing expand_width">
+        <div class="row">
+          <%- result_headers.each do |proc| -%>
+              <div class="cell"><%= proc.call @search.group %></div>
+          <%- end -%>
+        </div>
+        <%- @presenter_results.each do |result| -%>
+            <%= render :partial => "searches/cross/result_cross", :locals => { :result => result}, :inline => true %>
+        <%- end -%>
+      </div>
+      <div class="table spacing expand_width">
+        <div class="row">
+          <%- result_headers_lings_cross.each do |proc| -%>
+              <div class="cell"><%= proc.call @search.group %></div>
+          <%- end -%>
+        </div>
+        <%- if @search.cross? %>
+            <%- @presenter_results.each do |result| -%>
+                <%- result.child.each do |ling| -%>
+                    <%= render :partial => "searches/cross/result_ling", :locals => { :result => ling }, :inline => true %>
+                <%- end -%>
+            <%- end -%>
+        <%- end -%>
+      </div>
+  <%- else -%>
+      <div class="notice">Your search query returned no results.</div>
   <%- end -%>
 </div>
