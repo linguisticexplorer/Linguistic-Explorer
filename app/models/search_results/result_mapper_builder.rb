@@ -89,7 +89,7 @@ module SearchResults
           groups[prop_id] = compare_property_value vals_by_prop_ids[prop_id]
         end
         groups["type"]="compare"
-      end.sort_by {|group| group.length }
+      end
     end
 
     private
