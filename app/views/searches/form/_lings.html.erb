@@ -18,8 +18,8 @@
       <div class="cell field">
         <%= f.label "group", "Compare", :for => "search_group_depth_#{depth}" %>
         <%= f.radio_button "ling_set", "Compare",
-          :id => "search_group_depth_#{depth}",
-          :name => "search[ling_set][#{depth}]" %>
+          :id => search_compare_id(depth),
+          :name => search_compare_field_name(:ling_set ,depth) %>
         </div>
     </div>
     <% end %>

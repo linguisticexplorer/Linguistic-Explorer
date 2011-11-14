@@ -79,7 +79,7 @@ module SearchResults
     end
 
     def selected_properties_to_cross(depth)
-      selected_property_ids(category_ids_by_cross_grouping_and_depth(depth).first)
+      selected_property_ids(category_ids_by_cross_depth(depth).first)
     end
 
     def has_depth?
@@ -106,16 +106,22 @@ module SearchResults
     end
 
     def is_compare_search?
-      category_ids_by_compare_grouping(:ling_set).any?
+      depth_by_compare_grouping(:ling_set).any?
     end
 
     def depth_of_cross_search
-      return nil if !is_cross_search?
-      return Depth::PARENT if category_ids_by_cross_grouping_and_depth(0).any?
-      Depth::CHILD
+      if is_cross_search?
+        category_ids_by_cross_depth(0).any? ? Depth::PARENT : Depth::CHILD
+      end
     end
 
-    def category_ids_by_cross_grouping_and_depth(depth)
+    def depth_of_compare_search
+      if is_compare_search?
+        depth_by_compare_grouping(:ling_set)
+      end
+    end
+
+    def category_ids_by_cross_depth(depth)
       group_prop_category_ids(depth).select { |c|
         category_ids_by_cross_grouping(:property_set).include?(c)
       }
@@ -157,7 +163,8 @@ module SearchResults
       category_cross_pairs.map { |c| c.first }.map(&:to_i)
     end
 
-    def category_ids_by_compare_grouping(grouping)
+    def depth_by_compare_grouping(grouping)
+      # {}
       category_compare_pairs ||= []
     end
 

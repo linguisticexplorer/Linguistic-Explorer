@@ -64,4 +64,63 @@ module SearchResults
 
   end
 
+  class CrossGroupsBuilder < GroupsBuilder
+      def build_result_groups
+
+        vals = LingsProperty.with_id(vals_ids_for_cross)
+        vals_by_prop_ids = vals_by_property_id(vals)
+
+        prop_values = [].tap do |p|
+          vals_by_prop_ids.keys.each do |prop_id|
+            p << vals_by_prop_ids[prop_id].map(&:property_value).uniq
+          end
+        end
+
+        first_prop = prop_values.first
+        rest_props = prop_values.drop(1)
+
+        combinations = first_prop.product(*rest_props)
+
+        combinations.each do |c|
+          c.map! do |prop_value|
+            LingsProperty.find_by_property_value(prop_value)
+          end
+        end
+
+        {}.tap do |groups|
+          combinations.map do |comb_parents|
+            comb_parent_ids = comb_parents.map {|p| p.id.to_i}
+            groups[comb_parent_ids] = lings_ids_in_combination(vals, comb_parents)
+          end
+        end
+      end
+
+      private
+
+      def depth_for_cross
+        @result.depth_for_cross
+      end
+
+      def vals_ids_for_cross
+        is_parent?(depth_for_cross) ? parent_ids : child_ids
+      end
+
+      def vals_by_ling_id(vals)
+        vals.group_by { |v| v.ling_id }
+      end
+
+      def lings_ids_in_combination(vals, combination)
+        lings_ids = vals_by_ling_id(vals)
+
+        lings_ids.select do |ling|
+          combination.map {|lp| lp.property_value.to_s}.
+              all? { |value| ling_with_combination?(lings_ids[ling], value) }
+        end.keys
+      end
+
+      def ling_with_combination?(ling_props, value)
+        ling_props.select { |lp| lp.property_value == value}.any?
+      end
+    end
+
 end

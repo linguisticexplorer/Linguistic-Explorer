@@ -41,6 +41,10 @@ module SearchResults
       @query.depth_of_cross_search
     end
 
+    def depth_for_compare
+      @query.depth_of_compare_search
+    end
+
     private
 
     def is_cross_search?

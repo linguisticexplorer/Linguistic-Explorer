@@ -24,6 +24,14 @@ module SearchFormsHelper
     "search[#{method.to_s}][#{scope.to_s.underscorize}]"
   end
 
+  def search_compare_id(depth)
+    "search_group_depth_#{depth.to_s}"
+  end
+
+  def search_compare_field_name(method, depth)
+    "search[#{method.to_s}][#{depth.to_s}]"
+  end
+
   def search_field_name(method, scope)
     "search[#{method.to_s}][#{scope.to_s.underscorize}][]"
   end
