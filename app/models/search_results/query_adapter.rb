@@ -165,6 +165,7 @@ module SearchResults
 
     def depth_by_compare_grouping(grouping)
       # {"0"=>"compare"} --> [0]
+      return [] if self[grouping].nil?
       self[grouping].select {|k,v| v=="compare"}.keys
     end
 
