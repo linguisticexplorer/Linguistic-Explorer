@@ -14,10 +14,14 @@
         <div id="results_table">
         <%= render :partial => 'searches/results' %>
         </div>
-      <%- else -%>
-        <%- if @search.cross? -%>
+      <%- elsif @search.cross? -%>
         <div id="results_table">
-        <%= render :partial => 'searches/cross/results_cross' %>
+        <%= render :partial => 'searches/cross/results' %>
+        </div>
+      <%- else -%>
+        <%- if @search.compare? -%>
+        <div id="results_table">
+        <%= render :partial => 'searches/compare/results' %>
         </div>
         <%- end -%>
       <%- end -%>
