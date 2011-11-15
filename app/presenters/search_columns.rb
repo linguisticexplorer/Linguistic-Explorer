@@ -11,20 +11,33 @@ module SearchColumns
       :cross_property, :cross_value, :count
   ]
 
+  COMPARE_PARENT_COLUMNS = [
+    :compare_property, :common_values
+  ]
+
+  COMPARE_CHILD_COLUMNS = [
+    :compare_property, :ling_value
+  ]
+
+  COMPARE_COLUMNS = COMPARE_PARENT_COLUMNS | COMPARE_CHILD_COLUMNS
+
   COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   HEADERS = {
-    :ling_0         => lambda { |g| g.ling0_name },
-    :property_0     => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
-    :value_0        => lambda { |g| "#{g.ling0_name} Values" },
-    :example_0      => lambda { |g| "#{g.ling0_name} Examples" },
-    :ling_1         => lambda { |g| g.ling1_name },
-    :property_1     => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
-    :value_1        => lambda { |g| "#{g.ling1_name} Values" },
-    :example_1      => lambda { |g| "#{g.ling1_name} Examples" },
-    :count          => lambda { |g| "Count"},
-    :cross_property => lambda { |g| "Property Name"},
-    :cross_value    => lambda { |g| "Property Value" }
+    :ling_0           => lambda { |g| g.ling0_name },
+    :property_0       => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
+    :value_0          => lambda { |g| "#{g.ling0_name} Values" },
+    :example_0        => lambda { |g| "#{g.ling0_name} Examples" },
+    :ling_1           => lambda { |g| g.ling1_name },
+    :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
+    :value_1          => lambda { |g| "#{g.ling1_name} Values" },
+    :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
+    :count            => lambda { |g| "Count"},
+    :cross_property   => lambda { |g| "Property Name"},
+    :cross_value      => lambda { |g| "Property Value" },
+    :compare_property => lambda { |g| "Property Name" },
+    :common_values    => lambda { |g| "Common Value"},
+    :ling_value       => lambda { |g| "#{g.ling0_name} Value"}
   }
 
   def columns_to_include

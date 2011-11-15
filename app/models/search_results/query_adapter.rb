@@ -92,6 +92,7 @@ module SearchResults
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
       return scale SearchColumns::CROSS_COLUMNS if is_cross_search?
+      return SearchColumns::COMPARE_COLUMNS if is_compare_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
