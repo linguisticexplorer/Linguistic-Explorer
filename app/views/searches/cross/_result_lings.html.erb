@@ -14,7 +14,7 @@
           <%- end -%>
         </div>
         <%- @presenter_results.each do |result| -%>
-            <%= render :partial => "searches/cross/result_cross", :locals => { :result => result}, :inline => true %>
+            <%= render :partial => "searches/cross/result", :locals => { :result => result}, :inline => true %>
         <%- end -%>
       </div>
       <div class="table spacing expand_width">
