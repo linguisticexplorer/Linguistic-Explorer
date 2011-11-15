@@ -24,13 +24,17 @@ module SearchResults
 
   def default?
     results if @result.nil?
-    return true unless self.result_groups.key?("type")
-    self.result_groups["type"] ==  "default"
+    self.result_groups.key?("type").nil?
   end
 
   def cross?
     results if @result.nil?
     self.result_groups["type"] == "cross"
+  end
+
+  def compare?
+    results if @result.nil?
+    self.result_groups["type"] == "compare"
   end
 
   private

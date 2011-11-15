@@ -86,7 +86,8 @@ module SearchResults
 
       {}.tap do |groups|
         vals_by_prop_ids.keys.each do |prop_id|
-          groups[prop_id] = compare_property_value vals_by_prop_ids[prop_id]
+          props = vals_by_prop_ids[prop_id]
+          groups[props.first.id] = compare_property_value props
         end
         groups["type"]="compare"
       end
@@ -188,7 +189,6 @@ module SearchResults
           related_children  = child_filtered_results.select { |child| child.parent_ling_id == parent.ling_id }
           groups[parent.id.to_i] = related_children.map(&:id).map(&:to_i)
         end
-        groups["type"]="default"
       end
     end
 
