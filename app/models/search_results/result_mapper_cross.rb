@@ -1,11 +1,6 @@
 module SearchResults
 
-  class ResultMapperCross
-    attr_reader :result_groups
-
-    def initialize(results)
-      @result_groups = results
-    end
+  class ResultMapperCross < ResultMapper
 
     def to_flatten_results
       @flatten_results ||= [].tap do |entry|
@@ -34,32 +29,11 @@ module SearchResults
       end
     end
 
-    def all_child_ids
-      result_groups.values
-    end
-
-    def parent_ids
-      result_groups.keys
-    end
-
     private
 
     def children_by_lings(children_ids)
       ling_props = LingsProperty.with_ling_id(children_ids).joins(:ling, :property).includes([:ling, :property]).order("lings.name").to_a.group_by {|lp| lp.ling }
       ling_props.keys.map {|ling| ling_props[ling].first}
-    end
-
-  end
-
-  class ResultEntry
-    attr_reader :parent
-
-    def initialize(parent, child=nil)
-      @parent, @child = parent, child
-    end
-
-    def child
-      @child
     end
 
   end

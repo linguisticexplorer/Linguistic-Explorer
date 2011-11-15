@@ -1,12 +1,6 @@
 module SearchResults
 
-  class ResultMapperDefault
-
-    attr_reader :result_groups
-
-    def initialize(results)
-      @result_groups = results
-    end
+  class ResultMapperDefault < ResultMapper
 
     def to_flatten_results
       @flatten_results ||= [].tap do |entry|
@@ -42,22 +36,6 @@ module SearchResults
       result_groups.values.flatten.uniq.compact
     end
 
-    def parent_ids
-      result_groups.keys
-    end
-
   end
 
-  class ResultEntry
-    attr_reader :parent
-
-    def initialize(parent, child=nil)
-      @parent, @child = parent, child
-    end
-
-    def child
-      @child
-    end
-
-  end
 end
