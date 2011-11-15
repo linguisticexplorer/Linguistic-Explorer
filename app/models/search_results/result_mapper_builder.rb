@@ -106,7 +106,7 @@ module SearchResults
     def compare_property_value(vals)
       prop_values = vals.map(&:property_value).uniq
 
-      prop_values.count == 1 ? vals.first.map(&:id) : vals.map(&:id)
+      prop_values.count == 1 ? [vals.map(&:id).first] : vals.map(&:id)
     end
   end
 
