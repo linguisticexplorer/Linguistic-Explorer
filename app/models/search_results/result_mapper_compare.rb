@@ -9,7 +9,7 @@ module SearchResults
           related_children  = children.select {|child| child.map(&:id).sort == children_ids.sort }.flatten
           entry << ResultEntry.new(parent, related_children)
         end
-      end
+      end.sort_by {|result| result.child.size}
     end
 
     def parents
