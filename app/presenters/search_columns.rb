@@ -32,12 +32,14 @@ module SearchColumns
     :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
     :value_1          => lambda { |g| "#{g.ling1_name} Values" },
     :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
+    # Cross Search
     :count            => lambda { |g| "Count"},
     :cross_property   => lambda { |g| "Property Name"},
     :cross_value      => lambda { |g| "Property Value" },
+    # Compare Search
     :compare_property => lambda { |g| "Property Name" },
     :common_values    => lambda { |g| "Common Value"},
-    :ling_value       => lambda { |g| "#{g.ling0_name} Value"}
+    :ling_value       => lambda { |v| "#{v.ling.name} Value"}
   }
 
   def columns_to_include
@@ -53,6 +55,14 @@ module SearchColumns
   def result_headers_lings_cross
     header_keys = cross_columns
     header_keys.map{ |k| HEADERS[k] }
+  end
+
+  def common_compare_columns
+    COMPARE_PARENT_COLUMNS.map {|k| HEADERS[k]}
+  end
+
+  def diff_compare_columns
+    COMPARE_CHILD_COLUMNS.map {|k| HEADERS[k]}
   end
 
   def result_rows
