@@ -1,68 +1,62 @@
 module SearchColumns
   PARENT_COLUMNS = [
-    :ling_0, :property_0, :value_0, :example_0
+      :ling_0, :property_0, :value_0, :example_0
   ]
 
   CHILD_COLUMNS = [
-    :ling_1, :property_1, :value_1, :example_1
+      :ling_1, :property_1, :value_1, :example_1
   ]
 
   CROSS_COLUMNS = [
       :cross_property, :cross_value, :count
   ]
 
-  COMPARE_PARENT_COLUMNS = [
-    :compare_property, :common_values
+  COMPARE_COMMON_COLUMNS = [
+      :compare_property, :common_values
   ]
 
-  COMPARE_CHILD_COLUMNS = [
-    :compare_property, :ling_value
+  COMPARE_DIFF_COLUMNS = [
+      :compare_property, :ling_value
   ]
-
-  COMPARE_COLUMNS = COMPARE_PARENT_COLUMNS | COMPARE_CHILD_COLUMNS
 
   COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   HEADERS = {
-    :ling_0           => lambda { |g| g.ling0_name },
-    :property_0       => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
-    :value_0          => lambda { |g| "#{g.ling0_name} Values" },
-    :example_0        => lambda { |g| "#{g.ling0_name} Examples" },
-    :ling_1           => lambda { |g| g.ling1_name },
-    :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
-    :value_1          => lambda { |g| "#{g.ling1_name} Values" },
-    :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
-    # Cross Search
-    :count            => lambda { |g| "Count"},
-    :cross_property   => lambda { |g| "Property Name"},
-    :cross_value      => lambda { |g| "Property Value" },
-    # Compare Search
-    :compare_property => lambda { |g| "Property Name" },
-    :common_values    => lambda { |g| "Common Value"},
-    :ling_value       => lambda { |v| "#{v.ling.name} Value"}
+      :ling_0           => lambda { |g| g.ling0_name },
+      :property_0       => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
+      :value_0          => lambda { |g| "#{g.ling0_name} Values" },
+      :example_0        => lambda { |g| "#{g.ling0_name} Examples" },
+      :ling_1           => lambda { |g| g.ling1_name },
+      :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
+      :value_1          => lambda { |g| "#{g.ling1_name} Values" },
+      :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
+      # Cross Search
+      :count            => lambda { |g| "Count"},
+      :cross_property   => lambda { |g| "Property Name"},
+      :cross_value      => lambda { |g| "Property Value" },
+      # Compare Search
+      :compare_property => lambda { |g| "Property Name" },
+      :common_values    => lambda { |g| "Common Value"},
+      :ling_value       => lambda { |v| "#{v.ling.name} Value"}
   }
 
   def columns_to_include
     @columns_to_include ||= @search.included_columns
   end
 
-  def result_headers
-    header_keys = columns_to_include
-    header_keys -= child_columns unless @search.group.has_depth?
+  def result_headers(entry=nil)
+    header_keys ||= result_headers_cross(entry) if @search.cross?
+    header_keys ||= result_headers_compare(entry) if @search.compare?
+    if @search.default?
+      header_keys ||= columns_to_include
+      header_keys -= child_columns unless @search.group.has_depth?
+    end
     header_keys.map{ |k| HEADERS[k] }
   end
 
   def result_headers_lings_cross
-    header_keys = cross_columns
+    header_keys = cross_lings_columns
     header_keys.map{ |k| HEADERS[k] }
-  end
-
-  def common_compare_columns
-    COMPARE_PARENT_COLUMNS.map {|k| HEADERS[k]}
-  end
-
-  def diff_compare_columns
-    COMPARE_CHILD_COLUMNS.map {|k| HEADERS[k]}
   end
 
   def result_rows
@@ -77,12 +71,29 @@ module SearchColumns
     @child_columns ||= columns_to_include & CHILD_COLUMNS
   end
 
-  def cross_columns
-    if @search.depth_of_cross_search == Depth::PARENT
-      [PARENT_COLUMNS.first]
-    else
-      [CHILD_COLUMNS.first]
-    end
+  def cross_lings_columns
+    @search.depth_of_cross_search == Depth::PARENT ? [PARENT_COLUMNS.first] : [CHILD_COLUMNS.first]
+  end
+
+  private
+
+  # This method will scale the number of columns based of Property choosen
+  def scale_cross_columns
+    name, value, count = CROSS_COLUMNS
+    props = @search.results.first.parent
+    [].tap do |columns_to_show|
+      props.each {|p| columns_to_show << [name, value] }
+      columns_to_show << count
+    end.flatten
+  end
+
+  def result_headers_compare(entry)
+    # If is one LingsProperty object then is a Common Property
+    entry.size>1 ? COMPARE_DIFF_COLUMNS : COMPARE_COMMON_COLUMNS
+  end
+
+  def result_headers_cross(entry=nil)
+    scale_cross_columns if entry.nil?
   end
 
 end

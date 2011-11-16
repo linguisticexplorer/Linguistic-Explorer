@@ -7,7 +7,7 @@
     <div class="table spacing expand_width">
       <div class="row">
         <%- value_for_header = common_results.first.child -%>
-        <%- common_compare_columns.each do |proc| -%>
+        <%- result_headers(value_for_header).each do |proc| -%>
             <div class="cell"><%= proc.call value_for_header %></div>
         <%- end -%>
       </div>
@@ -20,9 +20,11 @@
 <%- if diff_results.any? -%>
     <div class="table spacing expand_width">
       <div class="row">
-        <%- value_for_header = diff_results.first.child.first -%>
-        <%- diff_compare_columns.each do |proc| -%>
-            <div class="cell"><%= proc.call value_for_header %></div>
+        <%- value_for_header = diff_results.first.child -%>
+        <%- diff_headers = result_headers(value_for_header) -%>
+        <div class="cell"><%= diff_headers.first.call value_for_header %></div>
+        <%- value_for_header.each do |value| -%>
+            <div class="cell"><%= diff_headers.drop(1).first.call value %></div>
         <%- end -%>
       </div>
       <%- diff_results.each do |result| -%>
