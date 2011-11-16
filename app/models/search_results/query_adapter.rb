@@ -90,23 +90,30 @@ module SearchResults
     end
 
     def included_columns
+      Rails.logger.debug "DEBUG: Call!"
       # {"ling_0"=>"1", "ling_1"=>"1", "prop_0"=>"1", "value_0"=>"1"}
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
-      return scale SearchColumns::CROSS_COLUMNS, :cross if is_cross_search?
-      return scale SearchColumns::COMPARE_COLUMNS, :compare if is_compare_search?
+      #return scale SearchColumns::CROSS_COLUMNS, :cross if is_cross_search?
+      #return scale SearchColumns::COMPARE_COLUMNS, :compare if is_compare_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
     end
 
     def is_depth_1_interesting?
+      return depth_of_cross_search==Depth::CHILD if is_cross_search?
+      return depth_of_compare_search==Depth::CHILD if is_compare_search?
       (included_columns & SearchColumns::CHILD_COLUMNS).any?
     end
 
     def is_cross_search?
       category_ids_by_cross_grouping(:property_set).any?
+    end
+
+    def is_special_search?
+      is_cross_search? || is_compare_search?
     end
 
     def is_compare_search?
@@ -134,14 +141,22 @@ module SearchResults
     private
 
     def is_valid?
-      return true unless is_cross_search?
+      return true unless is_special_search?
 
-      sel_props = selected_properties_to_cross(depth_of_cross_search)
+      if is_cross_search?
+        sel_props = selected_properties_to_cross(depth_of_cross_search)
+        # Raise an Exception if there are less properties than required
+        raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
+        # Avoid Cartesian Product with too many properties
+        raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold
+      elsif is_compare_search?
+        sel_lings = selected_lings_to_cross(depth_of_compare_search)
+        raise Exceptions::ResultAtLeastTwoForCompareError if sel_lings.size < 2 || lings.nil?
+      end
+    end
 
-      # Raise an Exception if there are less properties than required
-      raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
-      # Avoid Cartesian Product with too many properties
-      raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold
+    def selected_lings_to_cross(depth)
+      lings[depth.to_s] || []
     end
 
     def dynamic_threshold
@@ -151,36 +166,6 @@ module SearchResults
 
     def lings_property_in_group_number
       LingsProperty.in_group(@group).all.count
-    end
-
-    # Columns number for special search can vary dinamically
-    # based on the number of entity choosen
-    def scale(columns, type)
-      case type
-        when :cross
-          scale_cross columns
-        when :compare
-          scale_compare columns
-        else
-          # Do nothing!
-          columns
-      end
-    end
-
-
-    # This method will scale the number of columns based of Property choosen
-    def scale_cross(columns)
-      name, value, count = columns
-      key = properties.keys.first
-      props_size = properties[key].size
-      [].tap do |columns_to_show|
-        props_size.times {|i| columns_to_show << [name, value] }
-        columns_to_show << count
-      end.flatten
-    end
-
-    def scale_compare(columns)
-      return true
     end
 
     def ling_extractor
@@ -227,12 +212,11 @@ module SearchResults
       end
 
       index_ordered = hash_params.invert.keys.sort
-      included_ordered = []
-      index_ordered.each do |index_col|
-        included_ordered << hash_params.key(index_col)
+      [].tap do |included|
+        index_ordered.each do |index_col|
+          included << hash_params.key(index_col)
+        end
       end
-
-      return included_ordered
     end
 
     def positions_hash(array)

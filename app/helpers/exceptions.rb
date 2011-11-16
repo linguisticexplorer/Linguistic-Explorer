@@ -23,4 +23,10 @@ module Exceptions
       "An error occurred during the search. Please select at least 2 Properties for Cross"
     end
   end
+
+  class ResultAtLeastTwoForCompareError < ResultSearchError
+    def message
+      "An error occurred during the search. Please select at least 2 Lings for Compare"
+    end
+  end
 end
