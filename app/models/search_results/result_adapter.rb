@@ -7,8 +7,6 @@ module SearchResults
     def initialize(query, results)
       @query = query
       @results = results
-
-      assert_is_valid_cross if is_cross_search?
     end
 
     def any?
