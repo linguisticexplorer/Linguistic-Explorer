@@ -1,11 +1,14 @@
 module SearchResults
 
   class QueryAdapter
+
     attr_reader :group
 
     def initialize(group, params)
       @group  = group
       @params = (params || {}).symbolize_keys
+
+      is_valid?
     end
 
     def [](key)
@@ -91,8 +94,8 @@ module SearchResults
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
-      return scale SearchColumns::CROSS_COLUMNS if is_cross_search?
-      return SearchColumns::COMPARE_COLUMNS if is_compare_search?
+      return scale SearchColumns::CROSS_COLUMNS, :cross if is_cross_search?
+      return scale SearchColumns::COMPARE_COLUMNS, :compare if is_compare_search?
       return SearchColumns::COLUMNS if included.nil?
 
       order_columns SearchColumns::COLUMNS, included
@@ -130,10 +133,43 @@ module SearchResults
 
     private
 
-    # Columns number for Cross search can vary from the number
-    # of property chosen: this method will scale the number of
-    # columns
-    def scale(columns)
+    def is_valid?
+      return true unless is_cross_search?
+
+      sel_props = selected_properties_to_cross(depth_of_cross_search)
+
+      # Raise an Exception if there are less properties than required
+      raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
+      # Avoid Cartesian Product with too many properties
+      raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold
+    end
+
+    def dynamic_threshold
+      # Two Properties for too many lps
+      lings_property_in_group_number > 100000 ? 2 : Search::RESULTS_CROSS_THRESHOLD
+    end
+
+    def lings_property_in_group_number
+      LingsProperty.in_group(@group).all.count
+    end
+
+    # Columns number for special search can vary dinamically
+    # based on the number of entity choosen
+    def scale(columns, type)
+      case type
+        when :cross
+          scale_cross columns
+        when :compare
+          scale_compare columns
+        else
+          # Do nothing!
+          columns
+      end
+    end
+
+
+    # This method will scale the number of columns based of Property choosen
+    def scale_cross(columns)
       name, value, count = columns
       key = properties.keys.first
       props_size = properties[key].size
@@ -141,6 +177,10 @@ module SearchResults
         props_size.times {|i| columns_to_show << [name, value] }
         columns_to_show << count
       end.flatten
+    end
+
+    def scale_compare(columns)
+      return true
     end
 
     def ling_extractor
@@ -240,6 +280,5 @@ module SearchResults
 
   class PropertyExtractor < ParamExtractor
   end
-
 
 end

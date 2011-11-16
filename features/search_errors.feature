@@ -38,3 +38,12 @@ Feature: Errors that happen during the Search
     Then I should be on the Syntactic Structures search page
     And I should see "An error occurred during the search"
     And I should see "Please select at least"
+
+  Scenario: Visitor try to cross-search with no properties, redirect to the Search page with notice
+    When I go to the Syntactic Structures search page
+    And I select "English" from "Languages"
+    And I choose "Cross" within "#grammar_properties"
+    And I press "Show results"
+    Then I should be on the Syntactic Structures search page
+    And I should see "An error occurred during the search"
+    And I should see "Please select at least"
