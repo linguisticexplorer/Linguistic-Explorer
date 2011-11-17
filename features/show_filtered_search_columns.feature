@@ -299,3 +299,22 @@ Feature: Show filtered search columns
     And I should not see "Sentences" within "#search_results"
     And I should not see "Properties" within "#search_results"
     And I should not see "Examples" within "#search_results"
+
+  Scenario: Visitor makes a Special Search, but choose just Speaker column
+    When I check "Speakers" within "#show_parent"
+    And I uncheck "Sentences" within "#show_child"
+    And I uncheck "Properties" within "#show_parent"
+    And I uncheck "Properties" within "#show_child"
+    And I uncheck "Value" within "#show_parent"
+    And I uncheck "Value" within "#show_child"
+    And I uncheck "Examples" within "#show_parent"
+    And I uncheck "Examples" within "#show_child"
+    And I select "Property 3" from "Linguistic Properties"
+    And I select "Property 6" from "Linguistic Properties"
+    And I choose "Cross" within "#linguistic_properties"
+    Then I press "Show results"
+    Then I should see 1 search result rows
+    And I should not see "Speakers" within "#search_results"
+    And I should not see "Sentences" within "#search_results"
+    And I should not see "Properties" within "#search_results"
+    And I should not see "Examples" within "#search_results"
