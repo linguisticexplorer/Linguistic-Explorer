@@ -90,16 +90,11 @@ module SearchResults
     end
 
     def included_columns
-      Rails.logger.debug "DEBUG: Call!"
       # {"ling_0"=>"1", "ling_1"=>"1", "prop_0"=>"1", "value_0"=>"1"}
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
 
-      #return scale SearchColumns::CROSS_COLUMNS, :cross if is_cross_search?
-      #return scale SearchColumns::COMPARE_COLUMNS, :compare if is_compare_search?
-      return SearchColumns::COLUMNS if included.nil?
-
-      order_columns SearchColumns::COLUMNS, included
+      included.nil? ? SearchColumns::COLUMNS : order_columns(SearchColumns::COLUMNS, included)
     end
 
     def is_depth_1_interesting?
