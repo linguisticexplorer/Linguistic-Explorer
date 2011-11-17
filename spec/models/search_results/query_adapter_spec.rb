@@ -44,27 +44,6 @@ module SearchResults
         @query.is_depth_1_interesting?.should be_true
       end
     end
-    describe "included_columns_fro_cross_search" do
-     before(:each) do
-        params = { :property_set=>{"1"=>"cross"}, :properties=>{"1"=>["1","2"]}}
-        @query = QueryAdapter.new(@group, params)
-      end
-      it "should return columns ordered" do
-        @query.included_columns.should == [:cross_property, :cross_value,
-                                           :cross_property, :cross_value,
-                                           :count]
-      end
-    end
-
-    describe "is cross search?" do
-      before(:each) do
-        params = { :property_set => {"1" => "all", "2" => "cross"}}
-        @query = QueryAdapter.new(@group, params)
-      end
-      it "should assert that is a cross search" do
-        @query.is_cross_search?.should be_true
-      end
-    end
 
     describe "is not cross search?" do
       before(:each) do
@@ -73,6 +52,16 @@ module SearchResults
       end
       it "should assert that is not a cross search" do
         @query.is_cross_search?.should be_false
+      end
+    end
+
+    describe "is not compare search?" do
+      before(:each) do
+        params = { :property_set => {"1" => "all", "2" => "any"}}
+        @query = QueryAdapter.new(@group, params)
+      end
+      it "should assert that is not a cross search" do
+        @query.is_compare_search?.should be_false
       end
     end
 
