@@ -24,7 +24,7 @@ module SearchResults
 
   def default?
     results if @result.nil?
-    self.result_groups.key?("type").nil?
+    !self.result_groups.key?("type")
   end
 
   def cross?
