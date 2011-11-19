@@ -4,6 +4,9 @@
 </div>
 <%- common_results = results_in_common_compare_search(@search.results) -%>
 <%- if common_results.any? -%>
+    <div id="tableCommonHeader">
+	    <h3 class="red_grad">Properties in Common: <%= get_lings(@search.results) -%></h3>
+    </div>
     <div class="table spacing expand_width">
       <div class="row">
         <%- result_headers(value_for_header(common_results)).each do |proc| -%>
@@ -17,6 +20,9 @@
 <%- end -%>
 <%- diff_results = results_diff_compare_search(@search.results) -%>
 <%- if diff_results.any? -%>
+    <div id="tableNotCommonHeader">
+	    <h3 class="red_grad">Properties not in Common</h3>
+    </div>
     <div class="table spacing expand_width">
       <div class="row">
         <%- values_for_header = value_for_header(diff_results) -%>

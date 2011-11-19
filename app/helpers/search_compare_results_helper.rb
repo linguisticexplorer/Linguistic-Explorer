@@ -1,5 +1,9 @@
 module SearchCompareResultsHelper
 
+  def table_heading(text)
+    content_tag(:h3,  text )
+  end
+
   def results_in_common_compare_search(results)
     results.select {|result| result.common? }
   end
@@ -21,6 +25,10 @@ module SearchCompareResultsHelper
     result = results.first
     return result.child if result.common?
     result.lings
+  end
+
+  def get_lings(results)
+    results.first.lings.map(&:name).join(" , ")
   end
 
   private
