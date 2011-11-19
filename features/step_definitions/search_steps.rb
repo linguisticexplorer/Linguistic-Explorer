@@ -121,7 +121,8 @@ Then /^I should see the following Cross search results:$/ do |table|
       end
     end
 
-    with_scope(%Q|[data-parent-value="#{lps.inject(0){|sum, lp| sum + lp.id}}"]|) do
+    calculated_div_id = lps.inject(0){|sum, lp| sum + lp.id}
+    with_scope(%Q|[data-parent-value="#{calculated_div_id}"]|) do
       props.each do |prop|
         page.should have_content(prop.name)
       end
@@ -181,6 +182,14 @@ end
 
 Then /^I should see (\d+) search result rows?$/ do |count|
   page.should have_css("div.search_result.row", :count => count.to_i)
+end
+
+Then /^I should see (\d+) properties in common?$/ do |count|
+  page.should have_css("div.search_common_result.row", :count => count.to_i)
+end
+
+Then /^I should see (\d+) properties not in common?$/ do |count|
+  page.should have_css("div.search_diff_result.row", :count => count.to_i)
 end
 
 Then /^I should see (\d+) ling rows?$/ do |count|
