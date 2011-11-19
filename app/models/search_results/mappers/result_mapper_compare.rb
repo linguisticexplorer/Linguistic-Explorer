@@ -25,7 +25,8 @@ module SearchResults
           result_groups.each do |parent_id, children_ids|
             parent            = parents.select {|parent| parent.id.to_i == parent_id.to_i}
             related_children = children.select {|child| are_same_ids?(child, children_ids) }.first
-
+            # It's necessary to insert lings too because of pagination it is not
+            # easy to predict which value will be in or out in a particular page
             entry << ResultEntryCompare.new(parent, related_children, lings)
           end
         end.sort { |first, second| first.child.size <=> second.child.size }
@@ -56,10 +57,10 @@ module SearchResults
 
       def map_ids_with_children(children_ids)
         if children_ids.include?(nil)
-                   map_ids_with_lps(children_ids, retrieve_children_by_ids(children_ids))
-                 else
-                   retrieve_children_by_ids(children_ids.sort!).sort_by(&:id)
-                 end
+          map_ids_with_lps(children_ids, retrieve_children_by_ids(children_ids))
+        else
+          retrieve_children_by_ids(children_ids.sort!).sort_by(&:id)
+        end
       end
 
       def map_ids_with_lps(ids, lps)
