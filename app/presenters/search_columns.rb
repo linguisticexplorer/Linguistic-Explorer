@@ -37,7 +37,7 @@ module SearchColumns
       # Compare Search
       :compare_property => lambda { |g| "Property Name" },
       :common_values    => lambda { |g| "Common Value"},
-      :ling_value       => lambda { |v| "#{v.ling.name} Value"}
+      :ling_value       => lambda { |v| v ? "#{v.name} Value" : ""}
   }
 
   def columns_to_include
@@ -88,7 +88,7 @@ module SearchColumns
   end
 
   def result_headers_compare(entry)
-    # If is one LingsProperty object then is a Common Property
+    # If it is one LingsProperty object then is a Common Property
     entry.size>1 ? COMPARE_DIFF_COLUMNS : COMPARE_COMMON_COLUMNS
   end
 

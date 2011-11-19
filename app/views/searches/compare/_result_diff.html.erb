@@ -2,6 +2,6 @@
 <%= content_tag :div, search_result_attributes_for_compare(result) do %>
     <div class="cell"><%= row_methods[:compare_property].call(*parent)%></div>
     <%- children.each do |child| -%>
-        <div class="cell"><%= row_methods[:ling_value].call(child) %></div>
+        <div class="cell"><%= compare_diff_value(child) %></div>
     <% end %>
 <% end %>
