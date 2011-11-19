@@ -133,25 +133,33 @@ module SearchResults
       }
     end
 
+    def selected_ling_ids_to_compare(depth)
+      lings[depth.to_s] || []
+    end
+
     private
 
     def is_valid?
       return true unless is_special_search?
 
       if is_cross_search?
-        sel_props = selected_properties_to_cross(depth_of_cross_search)
+        validate_cross
+      elsif is_compare_search?
+        validate_compare
+      end
+    end
+
+    def validate_cross
+      sel_props = selected_properties_to_cross(depth_of_cross_search)
         # Raise an Exception if there are less properties than required
         raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
         # Avoid Cartesian Product with too many properties
         raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold
-      elsif is_compare_search?
-        sel_lings = selected_lings_to_cross(depth_of_compare_search)
-        raise Exceptions::ResultAtLeastTwoForCompareError if sel_lings.size < 2 || lings.nil?
-      end
     end
 
-    def selected_lings_to_cross(depth)
-      lings[depth.to_s] || []
+    def validate_compare
+      sel_lings = selected_ling_ids_to_compare(depth_of_compare_search)
+      raise Exceptions::ResultAtLeastTwoForCompareError if sel_lings.size < 2 || lings.nil?
     end
 
     def dynamic_threshold

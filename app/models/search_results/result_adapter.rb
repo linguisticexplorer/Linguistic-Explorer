@@ -43,6 +43,10 @@ module SearchResults
       @query.depth_of_compare_search
     end
 
+    def chosen_lings
+      @query.selected_ling_ids_to_compare(depth_for_compare)
+    end
+
     private
 
     def is_cross_search?
