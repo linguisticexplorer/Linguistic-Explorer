@@ -151,24 +151,26 @@ module SearchResults
 
     def validate_cross
       sel_props = selected_properties_to_cross(depth_of_cross_search)
-        # Raise an Exception if there are less properties than required
-        raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
-        # Avoid Cartesian Product with too many properties
-        raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold
+      # Raise an Exception if there are less properties than required
+      raise Exceptions::ResultAtLeastTwoForCrossError if sel_props.size < 2 || properties.nil?
+      # Avoid Cartesian Product with too many properties
+      raise Exceptions::ResultTooManyForCrossError if sel_props.size > dynamic_threshold(Search::RESULTS_CROSS_THRESHOLD)
     end
 
     def validate_compare
       sel_lings = selected_ling_ids_to_compare(depth_of_compare_search)
       raise Exceptions::ResultAtLeastTwoForCompareError if sel_lings.size < 2 || lings.nil?
+      raise Exceptions::ResultTooManyForCompareError if sel_lings.size > dynamic_threshold(10)
+
     end
 
-    def dynamic_threshold
+    def dynamic_threshold(threshold)
       # Two Properties for too many lps
-      lings_property_in_group_number > 100000 ? 2 : Search::RESULTS_CROSS_THRESHOLD
+      lings_property_in_group_number > 100000 ? 2 : threshold
     end
 
     def lings_property_in_group_number
-      LingsProperty.in_group(@group).all.count
+      LingsProperty.in_group(@group).count
     end
 
     def ling_extractor

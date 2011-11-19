@@ -29,4 +29,10 @@ module Exceptions
       "An error occurred during the search. Please select at least 2 Lings for Compare"
     end
   end
+
+  class ResultTooManyForCompareError < ResultSearchError
+    def message
+      "An error occurred during the search. Please select less Lings for Compare"
+    end
+  end
 end
