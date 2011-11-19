@@ -20,7 +20,7 @@ module SearchResults
     private
 
     def remove_type_from_result
-      @result.select {|k,v| !/type/.match(k.to_s)}
+      @result.reject {|k,v| /type/.match(k.to_s)}
     end
 
     def strategy_mapper
