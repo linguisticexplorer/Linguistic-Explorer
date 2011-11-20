@@ -196,6 +196,10 @@ Then /^I should see (\d+) ling rows?$/ do |count|
   page.should have_css("div.search_ling_result.row", :count => count.to_i)
 end
 
+Then /^I should not see properties in common?$/ do
+  page.should_not have_css("div.search_common_result.row")
+end
+
 Then /^I should see no search result rows?$/ do
   page.should_not have_css("div.search_result.row")
 end

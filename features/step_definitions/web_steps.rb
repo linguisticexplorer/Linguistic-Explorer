@@ -120,6 +120,16 @@ Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
   end
 end
 
+Then /^(?:|I )should see "([^"]*)" in common?$/ do |text|
+  with_scope("div.search_common_result.row") do
+    if page.respond_to? :should
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
 Then /^(?:|I )should see \/([^\/]*)\/(?: within "([^"]*)")?$/ do |regexp, selector|
   regexp = Regexp.new(regexp)
   with_scope(selector) do
