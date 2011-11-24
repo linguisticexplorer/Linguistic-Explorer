@@ -12,14 +12,18 @@ module SearchResults
     results.each { |r| yield r }
   end
 
-  def results
+  def results(pagination=true)
     @results ||= begin
       ensure_result_groups!
       Rails.logger.debug "Step 4 => #{self.class} - Rendering"
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
     #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
-    @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
+    if pagination
+      @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
+    else
+      @results
+    end
   end
 
   def default?
@@ -48,7 +52,7 @@ module SearchResults
 
   def parent_and_child_lings_property_ids
     ids = [self.parent_ids, self.child_ids].compact
-
+    # Cache for saved searches
     return result_adapter(ids) if ids.any?
     #Rails.logger.debug "Step 3 => #{self.class}"
     result_adapter(filter_lings_property_ids_from_query)
