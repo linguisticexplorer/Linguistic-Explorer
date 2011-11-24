@@ -25,7 +25,7 @@ module SearchFormsHelper
   end
 
   def search_compare_id(depth)
-    "search_group_depth_#{depth.to_s}"
+    "search_group_depth_#{depth.to_s}_compare"
   end
 
   def search_compare_field_name(method, depth)
