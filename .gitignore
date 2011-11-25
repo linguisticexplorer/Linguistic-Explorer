@@ -6,6 +6,7 @@ tmp/*
 *.DS_Store
 *.swp
 *.out
+coverage.data
 .idea/*
 config/database.yml
 .rvmrc

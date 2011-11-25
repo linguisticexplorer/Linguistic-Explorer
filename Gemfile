@@ -41,7 +41,7 @@ gem 'newrelic_rpm'
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
-# Optimization query
+# Optimizator query
 gem 'slim_scrooge'
 
 # Nice CLI progress bar for ruby
@@ -59,6 +59,8 @@ group :development, :test, :pg_test do
   gem 'rspec', "2.5.0"
   gem 'rspec-rails', "2.5.0"
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
+
+  gem 'cover_me', '>= 1.2.0'
 
   gem 'ruby-debug19'
   gem 'factory_girl_rails', "1.1"
