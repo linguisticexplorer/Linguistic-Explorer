@@ -37,7 +37,7 @@ module SearchColumns
       # Compare Search
       :compare_property => lambda { |g| "Property Name" },
       :common_values    => lambda { |g| "Common Value"},
-      :ling_value       => lambda { |v| v ? "#{v.name} Value" : ""}
+      :ling_value       => lambda { |v| v ? "#{v.name} Value" : ""},
   }
 
   def columns_to_include

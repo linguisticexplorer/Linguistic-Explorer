@@ -1,19 +1,19 @@
 class SearchCross
 
-    def initialize(parent_ids)
-      @parent_ids = parent_ids
+    def initialize(lings_ids)
+      @ling_ids = lings_ids
     end
 
     def filter_lings_row(search)
-      search.results.select {|result| are_parent_ids?(result.parent) }
+      search.results.select {|result| are_same_ling_ids?(result.child) }
     end
 
-    def parent_ids
-      @parent_ids.collect {|id| id.to_i}
+    def ling_ids
+      @ling_ids.collect {|id| id.to_i}
     end
 
-    def are_parent_ids?(parent)
-      parent.map(&:id).sort == parent_ids.sort
+    def are_same_ling_ids?(lings)
+      lings.map(&:id).sort == ling_ids.sort
     end
 
   end

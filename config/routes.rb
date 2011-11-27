@@ -12,7 +12,7 @@ LinguisticExplorer::Application.routes.draw do
     resources :searches do
       collection do
         get 'preview'
-        get 'cross_lings'
+        get 'lings_in_selected_row'
       end
     end
 

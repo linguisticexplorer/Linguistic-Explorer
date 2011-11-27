@@ -22,10 +22,10 @@ module SearchResultsHelper
       :value_1          => lambda { |v| v.value  },
       :example_0        => lambda { |v| v.examples.map(&:name).join(", ") },
       :example_1        => lambda { |v| v.examples.map(&:name).join(", ") },
-      # Cross Search
+      # Cross & Implication Search
       :cross_property   => lambda { |v| link_to_property(v.property) },
       :cross_value      => lambda { |v| v.value },
-      :count            => lambda { |parent, v| link_to_cross_lings(parent, v) },
+      :count            => lambda { |v| link_to_cross_lings(v) },
       # Compare Search
       :compare_property => lambda { |v| link_to_property(v.property) },
       :common_values    => lambda { |v| v.value },

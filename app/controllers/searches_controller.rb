@@ -74,7 +74,7 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
-  def cross_lings
+  def lings_in_selected_row
     @search = Search.new do |s|
       s.creator = current_user
       s.group   = current_group
@@ -83,7 +83,7 @@ class SearchesController < GroupDataController
     end
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
-
+    Rails.logger.debug "DEBUG: Lings Page #{@presenter_results.inspect}"
     authorize! :cross, @search
   end
 

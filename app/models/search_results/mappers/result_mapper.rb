@@ -17,12 +17,18 @@ module SearchResults
         result_groups.keys
       end
 
+      private
+
       def self.is_parent?(depth)
         depth == Depth::PARENT
       end
 
       def self.vals_by_property_id(vals)
         vals.group_by { |v| v.property_id }
+      end
+
+      def self.vals_by_ling_id(vals)
+        vals.group_by { |v| v.ling_id }
       end
 
       class ResultEntry

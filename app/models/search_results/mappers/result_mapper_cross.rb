@@ -28,7 +28,7 @@ module SearchResults
         {}.tap do |groups|
           combinations.map do |comb_parents|
             comb_parent_ids = comb_parents.map {|p| p.id.to_i}
-            groups[comb_parent_ids] = lings_ids_in_combination(vals, comb_parents)
+            groups[comb_parent_ids] = lings_ids_in_combination(vals, comb_parents).map(&:id)
           end
           groups["type"]="cross"
         end
@@ -38,7 +38,7 @@ module SearchResults
         @flatten_results ||= [].tap do |entry|
           result_groups.each do |parent_ids, children_ids|
             parent           = parents.select {|parent| parent.map(&:id).sort == parent_ids.sort }.flatten
-            related_children = children.select {|child| child.map(&:ling_id).sort == children_ids.sort }.flatten
+            related_children = children.select {|child| child.map(&:id).sort == children_ids.sort }.flatten
             entry << ResultEntry.new(parent, related_children)
           end
         end
@@ -64,8 +64,7 @@ module SearchResults
       private
 
       def children_by_lings(children_ids)
-        ling_props = LingsProperty.with_ling_id(children_ids).joins(:ling, :property).includes([:ling, :property]).order("lings.name").to_a.group_by {|lp| lp.ling }
-        ling_props.keys.map {|ling| ling_props[ling].first}
+        LingsProperty.with_id(children_ids).joins(:ling, :property).includes([:ling, :property]).to_a
       end
 
       def self.depth_for_cross(result)
@@ -76,17 +75,13 @@ module SearchResults
         is_parent?(depth_for_cross(result)) ? result.parent : result.child
       end
 
-      def self.vals_by_ling_id(vals)
-        vals.group_by { |v| v.ling_id }
-      end
-
       def self.lings_ids_in_combination(vals, combination)
         lings_ids = vals_by_ling_id(vals)
 
         lings_ids.select do |ling|
           combination.map {|lp| lp.property_value.to_s}.
               all? { |value| ling_with_combination?(lings_ids[ling], value) }
-        end.keys
+        end.values.map(&:first)
       end
 
       def self.ling_with_combination?(ling_props, value)

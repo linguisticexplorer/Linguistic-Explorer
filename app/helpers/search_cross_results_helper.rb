@@ -1,8 +1,8 @@
 module SearchCrossResultsHelper
 
-  def link_to_cross_lings(parent, lings)
+  def link_to_cross_lings(lings)
     return lings.count if lings.empty?
-    link_to lings.count, :action => "cross_lings", :search => @search.query, :cross_ids => parent.map(&:id)
+    link_to lings.count, :action => "lings_in_selected_row", :search => @search.query, :cross_ids => lings.map(&:id)
   end
 
   def search_result_attributes_for_cross(entry)
