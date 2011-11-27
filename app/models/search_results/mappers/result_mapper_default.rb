@@ -45,12 +45,7 @@ module SearchResults
 
       def children
         @children ||= begin
-          if all_child_ids.present?
-            LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).joins(:ling).
-                order("lings.parent_id, lings.name").to_a
-          else
-            []
-          end
+          all_child_ids.present? ? retrieve_children : []
         end
       end
 
@@ -59,6 +54,11 @@ module SearchResults
       end
 
       private
+
+      def retrieve_children
+        LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).joins(:ling).
+                order("lings.parent_id, lings.name").to_a
+      end
 
       def self.filter_results_by_columns(parent_results, child_results, columns)
         filter = ColumnsFilter.new(columns)
