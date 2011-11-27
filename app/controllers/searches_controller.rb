@@ -83,7 +83,6 @@ class SearchesController < GroupDataController
     end
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
-    Rails.logger.debug "DEBUG: Lings Page #{@presenter_results.inspect}"
     authorize! :cross, @search
   end
 
