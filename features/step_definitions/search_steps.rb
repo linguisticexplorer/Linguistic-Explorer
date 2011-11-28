@@ -121,7 +121,7 @@ Then /^I should see the following Cross search results:$/ do |table|
       end
     end
 
-    calculated_div_id = lps.inject(0){|sum, lp| sum + lp.id}
+    calculated_div_id = lps.inject("p") {|memo, lp| "#{memo}-#{lp.prop_name.hash - lp.property_value.hash}" }
     with_scope(%Q|[data-parent-value="#{calculated_div_id}"]|) do
       props.each do |prop|
         page.should have_content(prop.name)
