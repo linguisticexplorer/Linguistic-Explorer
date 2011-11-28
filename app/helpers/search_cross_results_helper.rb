@@ -8,8 +8,8 @@ module SearchCrossResultsHelper
   def search_result_attributes_for_cross(entry)
     {}.tap do |attrs|
       attrs[:class] = "search_result row"
-      attrs["data-parent-value"] = entry.parent.inject(0) {|sum, lp| sum + lp.id}
-      attrs["data-child-value"] = "#{attrs["data-parent-value"]}-#{entry.child.count}"
+      attrs["data-parent-value"] = entry.parent.inject("p") {|memo, lp| "#{memo}-#{lp.prop_name.hash - lp.property_value.hash}" }
+      attrs["data-child-value"] = "c-#{entry.child.count}-#{attrs["data-parent-value"]}"
     end
   end
 
