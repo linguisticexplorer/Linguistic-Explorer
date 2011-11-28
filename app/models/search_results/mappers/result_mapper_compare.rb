@@ -21,7 +21,7 @@ module SearchResults
 
       def to_flatten_results
         @flatten_results ||= [].tap do |entry|
-          lings = Ling.find(result_groups.delete("ling_ids")).to_a.sort {|l1, l2| l1.id <=> l2.id}
+          lings = get_ordered_lings_by_id(result_groups)
           result_groups.each do |parent_id, children_ids|
             parent            = parents.select {|parent| parent.id.to_i == parent_id.to_i}
             related_children = children.select {|child| are_same_ids?(child, children_ids) }.first
@@ -45,7 +45,15 @@ module SearchResults
         end
       end
 
+      def all_child_ids
+        result_groups.values
+      end
+
       private
+
+      def get_ordered_lings_by_id(groups)
+        Ling.find(groups.delete("ling_ids")).to_a.sort {|l1, l2| l1.id <=> l2.id}
+      end
 
       def are_same_ids?(child, children_ids)
         map_to_ids(child) == children_ids

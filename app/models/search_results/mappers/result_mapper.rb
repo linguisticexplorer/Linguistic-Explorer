@@ -10,7 +10,7 @@ module SearchResults
       end
 
       def all_child_ids
-        result_groups.values
+        result_groups.values.flatten.uniq.compact
       end
 
       def parent_ids
@@ -18,6 +18,10 @@ module SearchResults
       end
 
       private
+
+      def pre_loading_data
+        parents && children
+      end
 
       def self.is_parent?(depth)
         depth == Depth::PARENT

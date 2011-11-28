@@ -26,9 +26,10 @@ module SearchResults
 
       def to_flatten_results
         @flatten_results ||= [].tap do |entry|
+          pre_loading_data
           result_groups.each do |parent_id, child_ids|
-            parent           = parents.detect { |parent| parent.id.to_i == parent_id.to_i }
-            related_children = children.select { |child| child_ids.include? child.id.to_i }
+            parent = parents[parent_id.to_i]
+            related_children = child_ids.map {|id| children[id.to_i]}
             if related_children.any?
               related_children.each { |child| entry << ResultEntry.new(parent, child) }
             else
@@ -39,8 +40,8 @@ module SearchResults
       end
 
       def parents
-        @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property, :examples, :examples_lings_properties]).
-            joins(:ling).order("lings.parent_id, lings.name").to_a
+        @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property, :examples, :examples_lings_properties]).index_by(&:id)
+            #joins(:ling).order("lings.parent_id, lings.name").to_a
       end
 
       def children
@@ -49,15 +50,11 @@ module SearchResults
         end
       end
 
-      def all_child_ids
-        result_groups.values.flatten.uniq.compact
-      end
-
       private
 
       def retrieve_children
-        LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).joins(:ling).
-                order("lings.parent_id, lings.name").to_a
+        LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).index_by(&:id)
+            #joins(:ling).order("lings.parent_id, lings.name").to_a
       end
 
       def self.filter_results_by_columns(parent_results, child_results, columns)

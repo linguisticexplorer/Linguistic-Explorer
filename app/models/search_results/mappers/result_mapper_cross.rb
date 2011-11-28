@@ -36,36 +36,25 @@ module SearchResults
 
       def to_flatten_results
         @flatten_results ||= [].tap do |entry|
+          pre_loading_data
           result_groups.each do |parent_ids, children_ids|
-            parent           = parents.select {|parent| parent.map(&:id).sort == parent_ids.sort }.flatten
-            related_children = children.select {|child| child.map(&:id).sort == children_ids.sort }.flatten
+            parent = parent_ids.map {|id| parents[id]}
+            related_children = children_ids.map {|id| children[id]}
             entry << ResultEntry.new(parent, related_children)
           end
         end
+        @flatten_results.sort_by {|entry| [-entry.child.size, *(entry.parent.map(&:prop_name))]}
       end
 
       def parents
-        @parents ||= [].tap do |parent|
-          parent_ids.each do |parent_id|
-            parent << LingsProperty.with_id(parent_id).joins(:property).includes([:property]).order("properties.name")
-          end
-        end
+        @parents ||= LingsProperty.with_id(parent_ids.flatten).includes(:property).index_by(&:id)
       end
 
       def children
-        @children ||= [].tap do |child|
-          all_child_ids.each do |children_ids|
-            lings = children_by_lings(children_ids)
-            child << lings if lings.any?
-          end
-        end
+        @children ||= LingsProperty.with_id(all_child_ids).joins(:ling).index_by(&:id)
       end
 
       private
-
-      def children_by_lings(children_ids)
-        LingsProperty.with_id(children_ids).joins(:ling, :property).includes([:ling, :property]).to_a
-      end
 
       def self.depth_for_cross(result)
         result.depth_for_cross
