@@ -24,6 +24,14 @@ module SearchFormsHelper
     "search[#{method.to_s}][#{scope.to_s.underscorize}]"
   end
 
+  def advanced_search_id(type)
+    "search_group_impl_#{type.to_s}"
+  end
+
+  def advanced_search_field_name(method, type)
+    "search[#{method.to_s}][#{type.to_s}]"
+  end
+
   def search_compare_id(depth)
     "search_group_depth_#{depth.to_s}_compare"
   end

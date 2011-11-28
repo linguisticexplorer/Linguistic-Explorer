@@ -19,6 +19,7 @@ module SearchResults
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
     #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
+
     if pagination
       @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
     else
@@ -39,6 +40,11 @@ module SearchResults
   def compare?
     results if @result.nil?
     self.result_groups["type"] == "compare"
+  end
+
+  def implication?
+    results if @result.nil?
+    ["implication_both", "implication_ante", "implication_cons"].include? self.result_groups["type"]
   end
 
   private

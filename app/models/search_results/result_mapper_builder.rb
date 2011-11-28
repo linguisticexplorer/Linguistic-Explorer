@@ -10,6 +10,7 @@ module SearchResults
     end
 
     def self.build_result_groups(result_adapter)
+      Rails.logger.debug "Step 3 => #{self.class} - Building Groups"
       strategy_class_builder(result_adapter.type).build_result_groups(result_adapter)
     end
 

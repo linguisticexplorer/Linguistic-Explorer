@@ -30,7 +30,7 @@ module SearchColumns
       :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
       :value_1          => lambda { |g| "#{g.ling1_name} Values" },
       :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
-      # Cross Search
+      # Cross & Implication Search
       :count            => lambda { |g| "Count"},
       :cross_property   => lambda { |g| "Property Name"},
       :cross_value      => lambda { |g| "Property Value" },
@@ -45,7 +45,7 @@ module SearchColumns
   end
 
   def result_headers(entry=nil)
-    header_keys ||= result_headers_cross(entry) if @search.cross?
+    header_keys ||= result_headers_cross(entry) if @search.cross? || @search.implication?
     header_keys ||= result_headers_compare(entry) if @search.compare?
     if @search.default?
       header_keys ||= columns_to_include
@@ -72,6 +72,7 @@ module SearchColumns
   end
 
   def cross_lings_columns
+    @search.implication? ? [PARENT_COLUMNS.first] :
     @search.depth_of_cross_search == Depth::PARENT ? [PARENT_COLUMNS.first] : [CHILD_COLUMNS.first]
   end
 

@@ -4,5 +4,5 @@
       <div class="cell"><%= row_methods[:cross_property].call(*prop)%></div>
       <div class="cell"><%= row_methods[:cross_value].call(*prop)%></div>
    <%- end -%>
-      <div class="cell"><%= row_methods[:count].call(parent, child) %></div>
+      <div class="cell"><%= row_methods[:count].call(child) %></div>
    <% end %>

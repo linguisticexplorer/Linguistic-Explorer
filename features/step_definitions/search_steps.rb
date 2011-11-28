@@ -105,6 +105,11 @@ Then /^I should see the following search results:$/ do |table|
   end
 end
 
+
+Then /^I should see the following Implication search results:$/ do |table|
+  Then "I should see the following Cross search results:", table
+end
+
 Then /^I should see the following Cross search results:$/ do |table|
   table.hashes.each do |row|
     prop_cols = row.keys.select {|col| /Name/.match(col)}

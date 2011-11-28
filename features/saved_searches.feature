@@ -154,3 +154,19 @@ Feature: Save searches
     And I press "Show results"
     Then I should not see "Save search results"
 
+  Scenario: No save option for Compare Search
+    When I go to the Syntactic Structures search page
+    And I select "Speaker 1" from "Speakers"
+    And I select "Speaker 2" from "Speakers"
+    And I choose "Compare" within "#speakers"
+    And I press "Show results"
+    Then I should not see "Save search results"
+
+  Scenario: No save option for Universal Implication Search
+    When I go to the Syntactic Structures search page
+    And I select "Property 1" from "Demographic Properties"
+    And I select "Property 2" from "Demographic Properties"
+    And I choose "Both" within "#advanced_set"
+    And I press "Show results"
+    Then I should not see "Save search results"
+

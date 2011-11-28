@@ -26,6 +26,7 @@ module SearchResults
     end
 
     def type
+      return :implication_both if is_impl_both?
       return :cross if is_cross_search?
       return :compare if is_compare_search?
       :default
@@ -55,6 +56,10 @@ module SearchResults
 
     def is_compare_search?
       @query.is_compare_search?
+    end
+
+    def is_impl_both?
+      @query.is_both_implication_search?
     end
 
   end
