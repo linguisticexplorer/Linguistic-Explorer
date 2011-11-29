@@ -70,8 +70,8 @@ Feature: Show simple search columns
     | Lings         | Property     | depth    |
     | Speaker 1     | Property 1   | parent   |
     | Speaker 2     | Property 2   | parent   |
-    | Sentence 1     | Property 3  | child    |
-    | Sentence 2     | Property 4  | child    |
+    | Sentence 1    | Property 3  | child    |
+    | Sentence 2    | Property 4  | child    |
     And I should not see "Value" within "#search_results"
     And I should not see "PropVal" within "#search_results"
 
