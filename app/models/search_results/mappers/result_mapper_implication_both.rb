@@ -5,13 +5,9 @@ module SearchResults
 
       def self.build_result_groups(result)
 
-        parent_results  = LingsProperty.select_ids.with_id(result.parent)
-        parent_groups = find_implications(parent_results)
+        vals  = LingsProperty.select_ids.with_id(result.parent |result.child)
+        final_groups = find_implications(vals)
 
-        child_results = LingsProperty.select_ids.with_id(result.child)
-        child_groups = find_implications(child_results)
-
-        final_groups = parent_groups.merge(child_groups) {|key, old_val, new_val| new_val | old_val }
         final_groups["type"]="implication_both"
         final_groups.reject {|k,v| v.empty?}
       end
