@@ -14,7 +14,7 @@ module SearchForm
   end
 
   def lings_prop_options(category)
-    results = group_lings_props_in_category(category).map { |lp|
+    group_lings_props_in_category(category).map { |lp|
         ["#{lp.prop_name}: #{lp.value}", lp.property_value] }
   end
 
@@ -33,11 +33,11 @@ module SearchForm
   protected
 
   def group_lings_at_depth(depth)
-    results = group_lings(depth)
+    group_lings(depth)
   end
 
   def group_properties_in_category(category)
-    results = group_properties(category)
+    group_properties(category)
   end
 
   def group_lings_props_in_category(category)
