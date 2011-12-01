@@ -11,7 +11,9 @@ module SearchResults
 
     def self.build_result_groups(result_adapter)
       Rails.logger.debug "Step 3 => #{self.class} - Building Groups"
-      strategy_class_builder(result_adapter.type).build_result_groups(result_adapter)
+      kind_of_search = result_adapter.type
+      groups = strategy_class_builder(kind_of_search).build_result_groups(result_adapter)
+      add_type_to_groups(groups, kind_of_search)
     end
 
     def to_flatten_results
@@ -19,6 +21,11 @@ module SearchResults
     end
 
     private
+
+    def self.add_type_to_groups(groups, type)
+      groups["type"] = type.to_s unless type.eql?(:default)
+      return groups
+    end
 
     def remove_type_from_result
       @result.reject {|k,v| /type/.match(k.to_s)}
@@ -30,10 +37,6 @@ module SearchResults
 
     def strategy_mapper_class
       "SearchResults::Mappers::ResultMapper#{strategy_mapper.to_s.camelize}".constantize
-    end
-
-    def self.strategy_builder(result_type)
-      result_type || :default
     end
 
     def self.strategy_class_builder(result_type)

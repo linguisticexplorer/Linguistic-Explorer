@@ -8,7 +8,6 @@ module SearchResults
         vals  = LingsProperty.select_ids.with_id(result.parent |result.child)
         final_groups = find_implications(vals)
 
-        final_groups["type"]="implication_both"
         final_groups.reject {|k,v| v.empty?}
       end
 
@@ -21,7 +20,7 @@ module SearchResults
       def self.val_ids_mapped(vals)
         [].tap do |ids|
           vals.each_value {|value| ids << value.map(&:id) }
-        end.uniq.flatten
+        end.flatten.uniq
       end
 
       def self.prop_values_in(vals)

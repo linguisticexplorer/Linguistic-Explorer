@@ -14,7 +14,6 @@ module SearchResults
             # Ordered property values by lings grouped by LingsProperty:
             groups[props.first.id] = compare_property_value props, ling_ids
           end
-          groups["type"]="compare"
           groups["ling_ids"]=ling_ids
         end
       end

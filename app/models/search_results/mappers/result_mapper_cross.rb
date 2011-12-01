@@ -30,7 +30,6 @@ module SearchResults
             comb_parent_ids = comb_parents.map {|p| p.id.to_i}
             groups[comb_parent_ids] = lings_ids_in_combination(vals, comb_parents).map(&:id)
           end
-          groups["type"]="cross"
         end
       end
 
