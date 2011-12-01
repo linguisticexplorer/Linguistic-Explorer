@@ -10,7 +10,7 @@
       end
 
       def is_implication_search?
-        is_both_implication_search?
+        is_both_implication_search? || is_antecedent_implication_search? || is_consequent_implication_search?
       end
 
       def is_compare_search?
@@ -18,7 +18,23 @@
       end
 
       def is_both_implication_search?
-        self[:advanced_set].present? && self[:advanced_set][:impl]=="both"
+        is_advanced_search? && advanced_set(:impl)=="both"
+      end
+
+      def is_antecedent_implication_search?
+        is_advanced_search? && advanced_set(:impl)=="ante"
+      end
+
+      def is_consequent_implication_search?
+        is_advanced_search? && advanced_set(:impl)=="cons"
+      end
+
+      def is_advanced_search?
+        self[:advanced_set].present?
+      end
+
+      def advanced_set(type)
+        self[:advanced_set][type]
       end
 
       def depth_of_cross_search

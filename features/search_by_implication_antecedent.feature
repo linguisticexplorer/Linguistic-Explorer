@@ -1,4 +1,4 @@
-Feature: Search with Implication Both
+Feature: Search with Implication Antecedent
 
   Background:
     Given I am a visitor
@@ -31,9 +31,49 @@ Feature: Search with Implication Both
     | Property 7    | Sentence 3  | no        | Linguistic  | 1     |
     | Property 8    | Sentence 2  | no        | Linguistic  | 1     |
 
-  Scenario: Visitor searches Implication Both with all Properties and Lings
+  Scenario: Visitor searches Implication Antecedent with Languages Constraints
     When I go to the Syntactic Structures search page
-    And I choose "Both" within "#advanced_set"
+    And I select "Speaker 1" from "Lings"
+    And I choose "Antecedent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 2      | no               | Property 1      | yes              |   1   |
+    | Property 2      | no               | Property 3      | no               |   1   |
+    | Property 3      | no               | Property 1      | yes              |   1   |
+    | Property 3      | no               | Property 2      | no               |   1   |
+    And I follow "Next"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 5      | yes              | Property 6      | yes              |   1   |
+    | Property 5      | yes              | Property 7      | no               |   1   |
+    | Property 6      | yes              | Property 5      | yes              |   1   |
+    | Property 6      | yes              | Property 7      | no               |   1   |
+
+  Scenario: Visitor searches Implication Antecedent with Properties Constraints
+    When I go to the Syntactic Structures search page
+    And I select "Property 3" from "Demographic Properties"
+    And I choose "Antecedent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 3      | no               | Property 1      | yes              |   1   |
+    | Property 3      | no               | Property 2      | no               |   1   |
+    | Property 3      | yes              | Property 2      | yes              |   1   |
+    | Property 3      | yes              | Property 4      | no               |   1   |
+    And I follow "Next"
+
+  Scenario: Visitor searches a combination by Implication Antecedent expecting no results
+   When I go to the Syntactic Structures search page
+    And I select "Property 3" from "Demographic Properties"
+    And I select "Property 8" from "Linguistic Properties"
+    And I choose "Antecedent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see no search result rows
+
+  Scenario: Visitor searches Implication Antecedent with all Properties and Lings: should be the same as Implication Both
+    When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
     And I press "Show results"
     And I should not see "Speaker 1"
     And I should not see "Sentence 1"
@@ -65,79 +105,3 @@ Feature: Search with Implication Both
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
     | Property 8      | no               | Property 7      | yes              |   1   |
-
-  # Using a Constraint in Linguistic as a trick to filter them
-  Scenario: Visitor searches Implication Both with all Demographic Properties
-    When I go to the Syntactic Structures search page
-    And I select "Property 7" from "Linguistic Properties"
-    And I choose "Both" within "#advanced_set"
-    And I press "Show results"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 2      | yes              | Property 4      | no               |   2   |
-    | Property 4      | no               | Property 2      | yes              |   2   |
-    | Property 2      | no               | Property 1      | yes              |   1   |
-    | Property 2      | no               | Property 3      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 3      | no               | Property 1      | yes              |   1   |
-    | Property 3      | no               | Property 2      | no               |   1   |
-    | Property 3      | yes              | Property 2      | yes              |   1   |
-    | Property 3      | yes              | Property 4      | no               |   1   |
-
-  # Using a Constraint in Demographic as a trick to filter them
-  Scenario: Visitor searches Implication Both with all Linguistic Properties
-    When I go to the Syntactic Structures search page
-    And I select "Property 2" from "Demographic Properties"
-    And I choose "Both" within "#advanced_set"
-    And I press "Show results"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 5      | yes              | Property 6      | yes              |   1   |
-    | Property 5      | yes              | Property 7      | no               |   1   |
-    | Property 6      | yes              | Property 5      | yes              |   1   |
-    | Property 6      | yes              | Property 7      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 7      | yes              | Property 5      | no               |   1   |
-    | Property 7      | yes              | Property 8      | no               |   1   |
-    | Property 8      | no               | Property 5      | no               |   1   |
-    | Property 8      | no               | Property 7      | yes              |   1   |
-
-
-  Scenario: Visitor searches Implication Both for Properties and Languages with Constraints
-    When I go to the Syntactic Structures search page
-    And I select "Speaker 2" from "Lings"
-    And I select "Speaker 3" from "Lings"
-    And I choose "Both" within "#advanced_set"
-    And I press "Show results"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 2      | yes              | Property 4      | no               |   2   |
-    | Property 4      | no               | Property 2      | yes              |   2   |
-    | Property 1      | yes              | Property 2      | yes              |   1   |
-    | Property 1      | yes              | Property 4      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 3      | yes              | Property 2      | yes              |   1   |
-    | Property 3      | yes              | Property 4      | no               |   1   |
-    | Property 7      | no               | Property 5      | no               |   1   |
-    | Property 7      | yes              | Property 5      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
-    | Property 7      | yes              | Property 8      | no               |   1   |
-    | Property 8      | no               | Property 5      | no               |   1   |
-    | Property 8      | no               | Property 7      | yes              |   1   |
-
-
-  Scenario: Visitor searches a combination by Implication Both expecting no results
-   When I go to the Syntactic Structures search page
-    And I select "Property 1" from "Demographic Properties"
-    And I select "Property 8" from "Linguistic Properties"
-    And I choose "Both" within "#advanced_set"
-    And I press "Show results"
-    Then I should see no search result rows
