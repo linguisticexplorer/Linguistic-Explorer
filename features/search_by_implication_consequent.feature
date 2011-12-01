@@ -58,7 +58,7 @@ Feature: Search with Implication Consequent
     | Property 8      | no               | Property 5      | no               |   1   |
     | Property 8      | no               | Property 7      | yes              |   1   |
 
-  Scenario: Visitor searches Implication Antecedent with all Properties and Lings: should be the same as Implication Both
+  Scenario: Visitor searches Implication Consequent with all Properties and Lings: should be the same as Implication Both
     When I go to the Syntactic Structures search page
     And I choose "Consequent" within "#advanced_set"
     And I press "Show results"
