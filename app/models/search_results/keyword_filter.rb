@@ -94,18 +94,24 @@ module SearchResults
       @query[query_key][category_id.to_s]
     end
 
+    def map_selected_vals_id(selected_vals)
+      selected_vals == Filter::NO_DEPTH_1_RESULT ? [] : selected_vals.map(&:id)
+    end
+
     def vals_at(depth)
       vals          = @filter.vals_at(depth)
       category_ids  = @query.group_prop_category_ids(depth)
 
-      category_ids.collect do |category_id|
+      collected_ids = category_ids.collect do |category_id|
         if keyword(category_id).present?
-          select_vals_by_keyword(vals, keyword(category_id))
+          map_selected_vals_id(select_vals_by_keyword(vals, keyword(category_id)))
         else
           raise Exceptions::ResultTooBigError if vals.size > Search::RESULTS_FLATTEN_THRESHOLD
-          vals
+          vals.map(&:id)
         end
       end.flatten
+
+      LingsProperty.with_id(collected_ids)
     end
 
   end
