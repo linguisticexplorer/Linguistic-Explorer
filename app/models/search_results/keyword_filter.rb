@@ -95,7 +95,7 @@ module SearchResults
     end
 
     def map_selected_vals_id(selected_vals)
-      selected_vals == Filter::NO_DEPTH_1_RESULT ? [] : selected_vals.map(&:id)
+      selected_vals == Filter::NO_DEPTH_1_RESULT ? [-1] : selected_vals.map(&:id)
     end
 
     def vals_at(depth)
@@ -107,11 +107,12 @@ module SearchResults
           map_selected_vals_id(select_vals_by_keyword(vals, keyword(category_id)))
         else
           raise Exceptions::ResultTooBigError if vals.size > Search::RESULTS_FLATTEN_THRESHOLD
-          vals.map(&:id)
+          map_selected_vals_id(vals)
         end
       end.flatten
 
-      LingsProperty.with_id(collected_ids)
+      return collected_ids if collected_ids == Filter::NO_DEPTH_1_RESULT
+      LingsProperty.with_id(collected_ids).select_ids
     end
 
   end
