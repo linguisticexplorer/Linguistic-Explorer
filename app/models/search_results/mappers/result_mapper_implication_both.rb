@@ -22,7 +22,7 @@ module SearchResults
         end
 
         result_groups = child_groups.merge parent_groups
-        #Rails.logger.debug "DEBUG: Parent #{result.parent.size} - Child #{result.child.size}"
+
         result_groups.reject {|k,v| v.empty?}
       end
 
@@ -32,7 +32,7 @@ module SearchResults
         group = LingsProperty.with_id(result.parent).first.group
         ling_props_size = LingsProperty.in_group(group).count
         if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
-          if result.parent.size > 2000 || result.child.size > 2000 # Circa 7 proprietà a testa per sandDutch
+          if result.parent.size > 2000 || result.child.size > 2000
             raise Exceptions::ResultTooManyForImplicationError
           end
         end
