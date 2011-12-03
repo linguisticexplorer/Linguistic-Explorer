@@ -5,34 +5,73 @@ module SearchResults
 
       def self.build_result_groups(result)
 
-        vals  = LingsProperty.select_ids.with_id(result.parent |result.child)
-        final_groups = find_implications(vals)
+        if too_many_for_implication?(result)
+          raise Exceptions::ResultTooManyForImplicationError
+        end
+        parent_vals  = lings_properties_in result.parent
+        parent_groups = {}
+        if parent_vals.any?
+          parent_groups = find_implications(parent_vals)
+        end
 
-        final_groups.reject {|k,v| v.empty?}
+        child_vals = lings_properties_in result.child
+
+        child_groups = {}
+        if child_vals.any?
+          child_groups = find_implications(child_vals)
+        end
+
+        result_groups = child_groups.merge parent_groups
+        #Rails.logger.debug "DEBUG: Parent #{result.parent.size} - Child #{result.child.size}"
+        result_groups.reject {|k,v| v.empty?}
       end
 
       private
 
-      def self.lings_subset(vals, ling_ids)
-        vals_by_ling_id(vals).select {|k,v| ling_ids.include?(k)}
+      def self.too_many_for_implication?(result)
+        group = LingsProperty.with_id(result.parent).first.group
+        ling_props_size = LingsProperty.in_group(group).count
+        if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
+          if result.parent.size > 2000 || result.child.size > 2000 # Circa 7 proprietà a testa per sandDutch
+            raise Exceptions::ResultTooManyForImplicationError
+          end
+        end
+        false
       end
 
-      def self.val_ids_mapped(vals)
-        [].tap do |ids|
-          vals.each_value {|value| ids << value.map(&:id) }
-        end.flatten.uniq
+      def self.lings_properties_in(ids)
+        LingsProperty.with_id(ids)
+      end
+
+      def self.lings_subset(vals, ling_ids)
+        vals_by_ling_id(vals).select {|k,v| ling_ids.include?(k)}
       end
 
       def self.prop_values_in(vals)
         vals.keys.uniq
       end
 
+      def self.prop_values_in_subset(val_ids)
+        LingsProperty.with_id(val_ids).select("DISTINCT(property_value)").map(&:property_value).uniq
+      end
+
+      def self.common_values_in_subset(ling_ids, prop_values_filtered=nil)
+        result = LingsProperty.select_ids.where(:ling_id => ling_ids).group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
+        result = result.where(:property_value => prop_values_filtered) unless prop_values_filtered.nil?
+
+        LingsProperty.with_ling_id(ling_ids).where("property_value" => result.map(&:property_value)).group_by(&:property_value)
+      end
+
       def self.vals_by_prop_values(val_ids)
-        LingsProperty.with_id(val_ids).group_by(&:property_value)
+          LingsProperty.with_id(val_ids).group_by(&:property_value)
       end
 
       def self.filter_ling_ids(vals_by_prop_value, prop_value)
-       vals_by_prop_value[prop_value].map(&:ling_id)
+        vals_by_prop_value[prop_value].map(&:ling_id)
+      end
+
+      def self.get_group(vals)
+        vals.first.group
       end
 
       # Algorithm:
@@ -50,12 +89,10 @@ module SearchResults
           prop_values_in(cache_by_prop_value).each do |prop_value|
             subset_ling_ids = filter_ling_ids(cache_by_prop_value, prop_value)
 
-            subset_vals_by_ling_id = lings_subset(vals, subset_ling_ids)
+            common_props = common_values_in_subset(subset_ling_ids, prop_values_in(cache_by_prop_value))
 
-            subset_val_ids = val_ids_mapped(subset_vals_by_ling_id)
-            vals_by_prop_value = vals_by_prop_values(subset_val_ids).reject {|k,v| k==prop_value}
-
-            common_props = vals_by_prop_value.reject {|k,v| v.size != subset_vals_by_ling_id.keys.size }
+            # Don't forget to remove the property_value within common_props
+            common_props = common_props.reject {|pv| pv==prop_value}
 
             common_props.each_value do |props|
               parent_id = [cache_by_prop_value[prop_value],props].map(&:first).map(&:id)
