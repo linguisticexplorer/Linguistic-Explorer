@@ -35,4 +35,10 @@ module Exceptions
       "An error occurred during the search. Please select less Lings for Compare"
     end
   end
+
+  class ResultTooManyForImplicationError < ResultSearchError
+    def message
+      "An error occurred during the search. Please select less Properties for Implication"
+    end
+  end
 end
