@@ -46,13 +46,13 @@ module SearchResults
       end
 
       def self.too_many_for_implication?(result)
-        ids = result.parent | result.child
-        vals = LingsProperty.with_id(vals).select_ids
-        return false if vals.empty?
+        ids = result.parent || result.child
+        return false if ids.empty?
+        vals = [LingsProperty.with_id(ids).first]
         group = get_group(vals)
         ling_props_size = LingsProperty.in_group(group).count
-        if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
-          if result.parent.size > 2000 || result.child.size > 2000
+        if result.parent.size > 2000 || result.child.size > 2000
+          if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
             raise Exceptions::ResultTooManyForImplicationError
           end
         end
