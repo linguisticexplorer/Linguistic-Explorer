@@ -30,6 +30,12 @@ module SearchResults
       it "should say depth 1 is interesting for implication" do
         @result.depth_for_implication.should == [1]
       end
+      it "should say depth 0 is not interesting for implication" do
+        @result.depth_for_implication.should_not == [0]
+      end
+      it "should say implication depth selected is not empty" do
+        @result.depth_for_implication.should_not == []
+      end
     end
 
     describe "should contain results" do

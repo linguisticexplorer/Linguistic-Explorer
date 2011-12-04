@@ -43,14 +43,10 @@
 
       def depth_of_implication
         selected_depths ||= filter_depth_for_impl included_columns(true)
-
         depths = []
         depths << 0 if selected_depths.include?(:depth_0)
         depths << 1 if selected_depths.include?(:depth_1)
-      end
-
-      def filter_depth_for_impl(columns_array)
-        columns_array.select {|column| /depth/.match(column.to_s)}
+        depths
       end
 
       def depth_of_cross_search
@@ -76,6 +72,10 @@
       end
 
       private
+
+      def filter_depth_for_impl(columns_array)
+        columns_array.select {|column| /depth/.match(column.to_s)}
+      end
 
       def is_special_search_valid?
         if is_cross_search?
