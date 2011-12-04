@@ -49,7 +49,7 @@ module SearchResults
     end
 
     def depth_for_implication
-      @query.depth_of_implication
+      @query.depth_of_implication || []
     end
 
     private
