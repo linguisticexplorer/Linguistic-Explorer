@@ -18,15 +18,19 @@
       end
 
       def is_both_implication_search?
-        is_advanced_search? && advanced_set(:impl)=="both"
+        is_advanced_search? && advanced_set_impl=="both"
       end
 
       def is_antecedent_implication_search?
-        is_advanced_search? && advanced_set(:impl)=="ante"
+        is_advanced_search? && advanced_set_impl=="ante"
       end
 
       def is_consequent_implication_search?
-        is_advanced_search? && advanced_set(:impl)=="cons"
+        is_advanced_search? && advanced_set_impl=="cons"
+      end
+
+      def advanced_set_impl
+        self[:advanced_set]["impl"]
       end
 
       def is_advanced_search?
@@ -35,6 +39,18 @@
 
       def advanced_set(type)
         self[:advanced_set][type]
+      end
+
+      def depth_of_implication
+        selected_depths ||= filter_depth_for_impl included_columns(true)
+
+        depths = []
+        depths << 0 if selected_depths.include?(:depth_0)
+        depths << 1 if selected_depths.include?(:depth_1)
+      end
+
+      def filter_depth_for_impl(columns_array)
+        columns_array.select {|column| /depth/.match(column.to_s)}
       end
 
       def depth_of_cross_search

@@ -74,7 +74,11 @@ class SearchComparison
   private
 
   def included_columns
-    @included_columns ||= @include.dup.symbolize_keys.keys
+    @included_columns ||= filter_default_columns @include.dup.symbolize_keys.keys
+  end
+
+  def filter_default_columns(params_array)
+    params_array.reject {|column| column.to_s =~ /depth_/}
   end
 
   def parent_attrs

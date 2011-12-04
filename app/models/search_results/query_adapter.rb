@@ -91,10 +91,12 @@ module SearchResults
       @group.has_depth?
     end
 
-    def included_columns
+    def included_columns(impl=false)
       # {"ling_0"=>"1", "ling_1"=>"1", "prop_0"=>"1", "value_0"=>"1"}
       # show all columns if parameters not present
       included ||= @params[:include] && @params[:include].symbolize_keys.keys
+
+      return included if impl
 
       included.nil? ? SearchColumns::COLUMNS : order_columns(SearchColumns::COLUMNS, included)
     end
@@ -135,9 +137,10 @@ module SearchResults
     end
 
     def order_columns(fixed_array, params_array)
+      params_array = filter_default_columns params_array
+
       hash_fixed = positions_hash fixed_array
       hash_params = positions_hash params_array
-
       hash_params.each do |key, value|
         if value != hash_fixed[key]
           old = hash_params.key(hash_fixed[key])
@@ -160,6 +163,10 @@ module SearchResults
         hash[key] = array.index(key)
       end
       return hash
+    end
+
+    def filter_default_columns(params_array)
+      params_array.reject {|column| column.to_s =~ /depth_/}
     end
 
   end

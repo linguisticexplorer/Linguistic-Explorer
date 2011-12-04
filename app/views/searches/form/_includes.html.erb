@@ -29,6 +29,13 @@
       <%= label_tag     included_column_name(resource_name, :example_1), "Examples" %>
       <%= check_box_tag included_column_name(resource_name, :example_1), "1", true %>
     </div>
+    <br />
+    <div id="show_child">
+      <%= label_tag     included_implication_depth(resource_name, :depth_0), current_group.ling0_name %>
+      <%= check_box_tag included_implication_depth(resource_name, :depth_0), "1", true %>
+      <%= label_tag     included_implication_depth(resource_name, :depth_1), current_group.ling1_name %>
+      <%= check_box_tag included_implication_depth(resource_name, :depth_1), "1", true %>
+    </div>
   <% end %>
 
 <% end %>

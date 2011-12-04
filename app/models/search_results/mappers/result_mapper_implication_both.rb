@@ -8,19 +8,24 @@ module SearchResults
         if too_many_for_implication?(result)
           raise Exceptions::ResultTooManyForImplicationError
         end
-        parent_vals  = lings_properties_in result.parent
+
         parent_groups = {}
-        if parent_vals.any?
-          parent_groups = find_implications(parent_vals)
-        end
-
-        child_vals = lings_properties_in result.child
-
         child_groups = {}
-        if child_vals.any?
-          child_groups = find_implications(child_vals)
+
+        if is_parent_interesting? result
+          parent_vals  = lings_properties_in result.parent
+
+          if parent_vals.any?
+            parent_groups = find_implications(parent_vals)
+          end
         end
 
+        if is_child_interesting? result
+          child_vals = lings_properties_in result.child
+          if child_vals.any?
+            child_groups = find_implications(child_vals)
+          end
+        end
         result_groups = child_groups.merge parent_groups
 
         result_groups.reject {|k,v| v.empty?}
@@ -28,8 +33,23 @@ module SearchResults
 
       private
 
+      def self.is_parent_interesting?(result_adapter)
+        get_depth(result_adapter).include?(0)
+      end
+
+      def self.is_child_interesting?(result_adapter)
+        get_depth(result_adapter).include?(1)
+      end
+
+      def self.get_depth(result_adapter)
+        result_adapter.depth_for_implication
+      end
+
       def self.too_many_for_implication?(result)
-        group = LingsProperty.with_id(result.parent).first.group
+        ids = result.parent | result.child
+        vals = LingsProperty.with_id(vals).select_ids
+        return false if vals.empty?
+        group = get_group(vals)
         ling_props_size = LingsProperty.in_group(group).count
         if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
           if result.parent.size > 2000 || result.child.size > 2000
@@ -63,7 +83,7 @@ module SearchResults
       end
 
       def self.vals_by_prop_values(val_ids)
-          LingsProperty.with_id(val_ids).group_by(&:property_value)
+        LingsProperty.with_id(val_ids).group_by(&:property_value)
       end
 
       def self.filter_ling_ids(vals_by_prop_value, prop_value)

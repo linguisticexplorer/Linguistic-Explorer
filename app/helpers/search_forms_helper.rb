@@ -60,4 +60,8 @@ module SearchFormsHelper
     # search[include][ling_0]
     "#{resource_name}[include][#{method}]"
   end
+
+  def included_implication_depth(resource_name, depth)
+    "#{resource_name}[include][#{depth}]"
+  end
 end
