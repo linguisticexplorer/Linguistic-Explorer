@@ -20,14 +20,18 @@ module SearchResults
 
     describe "Included Columns" do
       before(:each) do
-        params = { :include => {"value_1"=>"1", "ling_0"=>"1"}}
+        params = { :include => {"value_1"=>"1", "ling_0"=>"1", "depth_1"=>"1"}}
         @query = QueryAdapter.new(@group, params)
         @result = ResultAdapter.new(@query, [[1], [1]])
       end
       it "should return columns ordered" do
         @result.columns.should == [:ling_0, :value_1]
       end
+      it "should say depth 1 is interesting for implication" do
+        @result.depth_for_implication.should == [1]
+      end
     end
+
     describe "should contain results" do
       before(:each) do
         params = { :include => {"value_1"=>"1", "ling_0"=>"1"}}
@@ -57,6 +61,36 @@ module SearchResults
       end
       it "should return no child result" do
         @result.child == []
+      end
+    end
+
+    describe "should be an implication both search result" do
+      before(:each) do
+        @query = QueryAdapter.new(@group, {:advanced_set => {"impl" => "both"}})
+        @result = ResultAdapter.new(@query, [])
+      end
+      it "should be a implication both result" do
+        @result.type.should == :implication_both
+      end
+    end
+
+    describe "should be an implication antecedent search result" do
+      before(:each) do
+        @query = QueryAdapter.new(@group, {:advanced_set => {"impl" => "ante"}})
+        @result = ResultAdapter.new(@query, [])
+      end
+      it "should be a implication antecedent result" do
+        @result.type.should == :implication_ante
+      end
+    end
+
+    describe "should be an implication consequent search result" do
+      before(:each) do
+        @query = QueryAdapter.new(@group, {:advanced_set => {"impl" => "cons"}})
+        @result = ResultAdapter.new(@query, [])
+      end
+      it "should be a implication consequent result" do
+        @result.type.should == :implication_cons
       end
     end
   end
