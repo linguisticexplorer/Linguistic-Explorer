@@ -58,6 +58,25 @@ Feature: Search with Implication Consequent
     | Property 8      | no               | Property 5      | no               |   1   |
     | Property 8      | no               | Property 7      | yes              |   1   |
 
+  Scenario: Visitor searches Implication Consequent with Languages Constraints on Demographic, showing Linguistics
+    When I go to the Syntactic Structures search page
+    And I uncheck "Ling" within "#show_impl"
+    And I select "Speaker 2" from "Lings"
+    And I select "Speaker 3" from "Lings"
+    And I choose "Consequent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 5      | yes              | Property 7      | no               |   1   |
+    | Property 6      | yes              | Property 7      | no               |   1   |
+    | Property 7      | yes              | Property 5      | no               |   1   |
+    | Property 7      | yes              | Property 8      | no               |   1   |
+    And I follow "Next"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 8      | no               | Property 5      | no               |   1   |
+    | Property 8      | no               | Property 7      | yes              |   1   |
+
   Scenario: Visitor searches Implication Consequent with all Properties and Lings: should be the same as Implication Both
     When I go to the Syntactic Structures search page
     And I choose "Consequent" within "#advanced_set"
@@ -92,3 +111,30 @@ Feature: Search with Implication Consequent
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
     | Property 8      | no               | Property 7      | yes              |   1   |
+
+  Scenario: Visitor searches Implication Consequent with all Properties and Lings: should be the same as Implication Both, showing Linguistics
+    When I go to the Syntactic Structures search page
+    And I uncheck "Ling" within "#show_impl"
+    And I choose "Consequent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 5      | yes              | Property 6      | yes              |   1   |
+    | Property 5      | yes              | Property 7      | no               |   1   |
+    | Property 6      | yes              | Property 5      | yes              |   1   |
+    | Property 6      | yes              | Property 7      | no               |   1   |
+    And I follow "Next"
+    Then I should see the following Implication search results:
+    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    | Property 7      | yes              | Property 5      | no               |   1   |
+    | Property 7      | yes              | Property 8      | no               |   1   |
+    | Property 8      | no               | Property 5      | no               |   1   |
+    | Property 8      | no               | Property 7      | yes              |   1   |
+
+  Scenario: Visitor searches and uncheck both depths for Implication Consequent expecting no results
+   When I go to the Syntactic Structures search page
+    And I uncheck "Ling" within "#show_impl"
+    And I uncheck "Linglet" within "#show_impl"
+    And I choose "Consequent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see no search result rows
