@@ -11,8 +11,8 @@ module SearchResults
       end
 
       def self.find_antecedents(ids)
-        prop_values_selected_in_all = LingsProperty.select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size+1]).count
-        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size+1]).count
+        prop_values_selected_in_all = LingsProperty.select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
+        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
         prop_values_antecedents = intersect prop_values_selected_in_all, prop_values_selected_in_ids
 
         LingsProperty.select_ids.where(:property_value => prop_values_antecedents.keys).group_by(&:property_value)
