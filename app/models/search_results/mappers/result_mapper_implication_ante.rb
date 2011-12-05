@@ -18,10 +18,8 @@ module SearchResults
 
           prop_values_in(cache_by_prop_value).each do |prop_value|
             subset_ling_ids = filter_ling_ids(group, prop_value)
-            common_props = common_values_in_subset(subset_ling_ids)
+            common_props = common_values_in_subset(subset_ling_ids).reject {|pv| pv==prop_value}
 
-            # Don't forget to remove the property_value within common_props
-            common_props = common_props.reject {|pv| pv==prop_value}
             common_props.each_value do |props|
               parent_id = [cache_by_prop_value[prop_value],props].map(&:first).map(&:id)
               groups[parent_id] = props.map(&:id)
