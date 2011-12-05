@@ -11,8 +11,15 @@ module SearchResults
       end
 
       def self.find_antecedents(ids)
-        prop_values_selected = LingsProperty.select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size+1]).map(&:property_value)
-        LingsProperty.select_ids.where(:property_value => prop_values_selected).group_by(&:property_value)
+        prop_values_selected_in_all = LingsProperty.select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size+1]).count
+        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size+1]).count
+        prop_values_antecedents = intersect prop_values_selected_in_all, prop_values_selected_in_ids
+
+        LingsProperty.select_ids.where(:property_value => prop_values_antecedents.keys).group_by(&:property_value)
+      end
+
+      def self.intersect(prop_values_all, prop_values_subset)
+        prop_values_subset.reject {|pv, size| prop_values_subset[pv] != prop_values_all[pv] }
       end
 
       def self.equals_or_included(big_set, small_set)
@@ -35,7 +42,6 @@ module SearchResults
             subset_ling_ids = filter_ling_ids(group, prop_value)
 
             antecedents = find_antecedents(subset_ling_ids).reject {|pv, lps| pv==prop_value }
-            antecedents = antecedents.select { |pv, lps| equals_or_included(subset_ling_ids, lps.map(&:ling_id))}
 
             antecedents.each_value do |prop|
               parent_id = [prop,cache_by_prop_value[prop_value]].map(&:first).map(&:id)
