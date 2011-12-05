@@ -51,6 +51,7 @@ function implication_on(){
 }
 
 // Function triggered by selecting a Cross radio button
+// TODO: disable Value Pairs boxes
 function cross_on(radio_element){
 //    console.log("cross_on =>" + radio_element.id);
     hide_includes();
