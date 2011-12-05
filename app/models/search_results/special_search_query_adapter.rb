@@ -10,7 +10,8 @@
       end
 
       def is_implication_search?
-        is_both_implication_search? || is_antecedent_implication_search? || is_consequent_implication_search?
+        is_both_implication_search? || is_antecedent_implication_search? ||
+            is_consequent_implication_search?
       end
 
       def is_compare_search?
@@ -43,6 +44,7 @@
 
       def depth_of_implication
         selected_depths ||= filter_depth_for_impl included_columns(true)
+        return [0,1] if selected_depths.empty?
         depths = []
         depths << 0 if selected_depths.include?(:depth_0)
         depths << 1 if selected_depths.include?(:depth_1)
