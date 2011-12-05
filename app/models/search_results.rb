@@ -44,7 +44,6 @@ module SearchResults
 
   def implication?
     results if @result.nil?
-    Rails.logger.debug "DEBUG: #{kinds_of_implication.include? self.result_groups["type"]}"
     kinds_of_implication.include? self.result_groups["type"]
   end
 
