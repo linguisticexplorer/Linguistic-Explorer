@@ -1,3 +1,4 @@
+<%= javascript_include_tag 'search_form' %>
 <%= table_form_for search, :html => {:method => "get"} do |f| %>
     <div class="table center expand_width">
       <div class="row">
@@ -22,7 +23,7 @@
         </div>
         <div class="cell">
           <%= f.submit "Show results", :name => nil %>
-          <input class="nudge" type="reset" value="Reset">
+          <input class="nudge" type='reset' value='Reset'>
         </div>
 
       </div>

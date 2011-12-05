@@ -31,9 +31,9 @@
     </div>
     <br />
     <div id="show_impl">
-      <%= label_tag     included_implication_depth(resource_name, :depth_0), current_group.ling0_name %>
+      <%= label_tag     included_implication_depth(resource_name, :depth_0), "Implication on #{current_group.ling0_name}" %>
       <%= check_box_tag included_implication_depth(resource_name, :depth_0), "1", true %>
-      <%= label_tag     included_implication_depth(resource_name, :depth_1), current_group.ling1_name %>
+      <%= label_tag     included_implication_depth(resource_name, :depth_1), "Implication on #{current_group.ling1_name}" %>
       <%= check_box_tag included_implication_depth(resource_name, :depth_1), "1", true %>
     </div>
   <% end %>
