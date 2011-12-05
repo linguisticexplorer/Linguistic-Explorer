@@ -78,10 +78,15 @@ module SearchResults
       @query.is_consequent_implication_search?
     end
 
+    def is_impl_double?
+      @query.is_double_implication_search?
+    end
+
     def kind_of_implication
       return :implication_both if is_impl_both?
       return :implication_ante if is_impl_ante?
       return :implication_cons if is_impl_cons?
+      return :implication_double if is_impl_double?
     end
 
   end

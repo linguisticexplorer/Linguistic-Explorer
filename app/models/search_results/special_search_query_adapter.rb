@@ -11,7 +11,7 @@
 
       def is_implication_search?
         is_both_implication_search? || is_antecedent_implication_search? ||
-            is_consequent_implication_search?
+            is_consequent_implication_search? || is_double_implication_search?
       end
 
       def is_compare_search?
@@ -30,6 +30,10 @@
         is_advanced_search? && advanced_set_impl=="cons"
       end
 
+      def is_double_implication_search?
+        is_advanced_search? && advanced_set_impl=="double"
+      end
+
       def advanced_set_impl
         self[:advanced_set]["impl"]
       end
@@ -44,7 +48,7 @@
 
       def depth_of_implication
         selected_depths ||= filter_depth_for_impl included_columns(true)
-        return [0,1] if selected_depths.empty?
+        return [0] if selected_depths.empty? && !has_depth?
         depths = []
         depths << 0 if selected_depths.include?(:depth_0)
         depths << 1 if selected_depths.include?(:depth_1)
