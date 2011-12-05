@@ -101,6 +101,6 @@ function enable(element){
 }
 
 function disable_except(elements_regexp, except){
-    $(elements_regexp).not(except).attr("disabled", true);
+    disable($(elements_regexp).not(except));
 }
 
