@@ -6,6 +6,10 @@
         <%= f.radio_button "advanced_set", "both", :checked => false,
           :id => advanced_search_id(:both),
           :name => advanced_search_field_name(:advanced_set, :impl) %>
+        <%= f.label "Implication", "Double", :for => "search_group_impl_double" %>
+        <%= f.radio_button "advanced_set", "double", :checked => false,
+          :id => advanced_search_id(:double),
+          :name => advanced_search_field_name(:advanced_set, :impl) %>
         <%= f.label "Implication", "Antecedent", :for => "search_group_impl_ante" %>
         <%= f.radio_button "advanced_set", "ante", :checked => false,
           :id => advanced_search_id(:ante),

@@ -44,7 +44,8 @@ module SearchResults
 
   def implication?
     results if @result.nil?
-    ["implication_both", "implication_ante", "implication_cons"].include? self.result_groups["type"]
+    Rails.logger.debug "DEBUG: #{kinds_of_implication.include? self.result_groups["type"]}"
+    kinds_of_implication.include? self.result_groups["type"]
   end
 
   private
@@ -78,6 +79,10 @@ module SearchResults
 
   def result_adapter(result_ids)
     @result_adapter ||= ResultAdapter.new(query_adapter, result_ids)
+  end
+
+  def kinds_of_implication
+    ["implication_both", "implication_ante", "implication_cons", "implication_double"]
   end
 
 end
