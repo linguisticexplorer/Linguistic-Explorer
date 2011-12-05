@@ -51,7 +51,7 @@ module SearchResults
         vals = [LingsProperty.with_id(ids).first]
         group = get_group(vals)
         ling_props_size = LingsProperty.in_group(group).count
-        if result.parent.size > 2000 || result.child.size > 2000
+        if result.parent.size > 3000 || result.child.size > 3000
           if ling_props_size > Search::RESULTS_FLATTEN_THRESHOLD
             raise Exceptions::ResultTooManyForImplicationError
           end
