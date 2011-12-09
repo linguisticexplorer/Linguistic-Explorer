@@ -34,11 +34,11 @@ module SearchResults
       private
 
       def self.is_parent_interesting?(result_adapter)
-        get_depth(result_adapter).include?(0)
+        get_depth(result_adapter).include?(Depth::PARENT)
       end
 
       def self.is_child_interesting?(result_adapter)
-        get_depth(result_adapter).include?(1)
+        get_depth(result_adapter).include?(Depth::CHILD)
       end
 
       def self.get_depth(result_adapter)
