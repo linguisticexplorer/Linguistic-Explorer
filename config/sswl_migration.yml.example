@@ -1,0 +1,8 @@
+---
+host: ssh.server.address
+username: ssh_username
+password: ssh_password
+dbuser: db_username
+dbpassword: db_password
+db: database_name
+localPath: local/absolute/path/where/save/dump
