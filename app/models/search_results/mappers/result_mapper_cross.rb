@@ -42,7 +42,7 @@ module SearchResults
             entry << ResultEntry.new(parent, related_children)
           end
         end
-        @flatten_results.sort_by {|entry| [-entry.child.size, *(entry.parent.map(&:prop_name))]}
+        flatten_results_sorted_by_count_and_names
       end
 
       def parents
@@ -54,6 +54,10 @@ module SearchResults
       end
 
       private
+
+      def flatten_results_sorted_by_count_and_names
+        @flatten_results.sort_by {|entry| [-entry.child.size, *(entry.parent.map(&:prop_name))]}
+      end
 
       def self.depth_for_cross(result)
         result.depth_for_cross
