@@ -88,7 +88,7 @@ module SswlData
       CSV.open(new_path_for_csv(:group), "wb") do |csv|
         csv << @headers[:group]
         time = Time.new
-        name = "SSWL_convertion"
+        name = "SSWL_Data"
         csv << ["0",name,"public","0","Language","not-present","Property",
                 "Category","Value","Example","Example Value","gloss, words, translation, comment"]
 
