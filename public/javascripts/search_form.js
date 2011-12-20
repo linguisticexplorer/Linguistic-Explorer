@@ -2,7 +2,7 @@
 $(function() {
     hide_div('#show_impl');
 //    console.log("OnLoad end");
-
+    // TODO: check javascript capabilities on submit
     // Function to reset the form to the initial state
     $("input:reset").click( function() {
        reset_form();
@@ -18,6 +18,10 @@ $(function() {
 
     $('input[id$=_compare]:radio').click( function() {
       compare_on(this);
+    });
+
+    $("input[id^=search_group_clust]:radio").click( function() {
+      clustering_on();
     });
 });
 
@@ -37,6 +41,7 @@ function reset_form(){
     show_includes();
     hide_div('#show_impl');
     enable("input[id^=search_group_impl]:radio");
+    enable("input[id^=search_group_clust]:radio");
     enable('input[id$=_cross]:radio');
     enable('input[id$=_compare]:radio');
 }
@@ -48,17 +53,29 @@ function implication_on(){
     hide_includes();
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
+    disable("input[id^=search_group_clust]:radio");
+}
+
+function clustering_on(){
+//    console.log("clustering_on");
+    hide_includes();
+    disable('input[id$=_cross]:radio');
+    disable('input[id$=_compare]:radio');
+    disable("input[id^=search_group_impl]:radio");
 }
 
 // Function triggered by selecting a Cross radio button
-// TODO: disable Value Pairs boxes
 function cross_on(radio_element){
-//    console.log("cross_on =>" + radio_element.id);
+    console.log("cross_on =>" + radio_element.id);
     hide_includes();
     hide_div('#show_impl');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
-    disable_except('input[id$=_cross]:radio', radio_element)
+    disable("input[id^=search_group_clust]:radio");
+
+    // TODO: disable Value Pairs boxes
+    disable("input[id=category_0_value_pairs_options]");
+    disable_except('input[id$=_cross]:radio', radio_element);
 }
 
 // Function triggered by selecting a Compare radio button
@@ -68,6 +85,7 @@ function compare_on(radio_element){
     hide_div('#show_impl');
     disable('input[id$=_cross]:radio');
     disable("input[id^=search_group_impl]:radio");
+    disable("input[id^=search_group_clust]:radio");
 
     var is_depth_1 = new RegExp("1_compare$");
     if(is_depth_1.test(radio_element.id))

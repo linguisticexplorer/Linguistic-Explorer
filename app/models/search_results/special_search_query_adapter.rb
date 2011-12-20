@@ -6,7 +6,7 @@
       end
 
       def is_special_search?
-        is_cross_search? || is_compare_search? || is_implication_search?
+        is_cross_search? || is_compare_search? || is_implication_search? || is_clustering?
       end
 
       def is_implication_search?
@@ -34,8 +34,16 @@
         is_advanced_search? && advanced_set_impl=="double"
       end
 
+      def is_clustering?
+        is_advanced_search? && advanced_set_clustering=="hamming"
+      end
+
       def advanced_set_impl
         self[:advanced_set]["impl"]
+      end
+
+      def advanced_set_clustering
+        self[:advanced_set]["clustering"]
       end
 
       def is_advanced_search?

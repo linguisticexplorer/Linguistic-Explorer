@@ -27,6 +27,7 @@ module SearchResults
 
     def type
       return kind_of_implication if is_implication?
+      return :clustering_hamming if is_clustering?
       return :cross if is_cross_search?
       return :compare if is_compare_search?
       :default
@@ -80,6 +81,10 @@ module SearchResults
 
     def is_impl_double?
       @query.is_double_implication_search?
+    end
+
+    def is_clustering?
+      @query.is_clustering?
     end
 
     def kind_of_implication
