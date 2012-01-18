@@ -29,7 +29,7 @@
       <div class="clustering_search row">
         <div class="cell label">Clustering</div>
         <div class="cell field">
-          <%= f.label "Clustering", "Hamming", :for => "search_group_clust_hamming" %>
+          <%= f.label "Clustering", "Similarity Tree", :for => "search_group_clust_hamming" %>
           <%= f.radio_button "advanced_set", "hamming", :checked => false,
                              :id => advanced_search_id(:clust_hamming),
                              :name => advanced_search_field_name(:advanced_set, :clustering) %>
