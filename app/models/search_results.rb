@@ -47,6 +47,11 @@ module SearchResults
     kinds_of_implication.include? self.result_groups["type"]
   end
 
+  def clustering?
+    results if @result.nil?
+    self.result_groups["type"] == "clustering_hamming"
+  end
+
   private
 
   def ensure_result_groups!

@@ -25,7 +25,7 @@ module SearchFormsHelper
   end
 
   def advanced_search_id(type)
-    "search_group_impl_#{type.to_s}"
+    "search_group_#{type.to_s}"
   end
 
   def advanced_search_field_name(method, type)

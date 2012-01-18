@@ -17,6 +17,8 @@
             <%= render :partial => 'searches/cross/results' %>
         <%- elsif @search.compare? -%>
             <%= render :partial => 'searches/compare/results' %>
+        <%- elsif @search.clustering? -%>
+            <%= render :partial => 'searches/clustering/results' %>
         <%- end -%>
       </div>
   <%- else -%>
