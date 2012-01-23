@@ -265,7 +265,6 @@ if (!d3) { throw "d3 wasn't included!"};
     }
 
     if (!options.skipLengthLabels) {
-      console.log("skipLengthLabels = true");
       vis.selectAll('g.inner.node')
         .append("svg:text")
           .attr("dx", -6)
