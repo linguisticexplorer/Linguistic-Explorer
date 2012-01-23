@@ -17,12 +17,20 @@ module Accessors
       @distance = 0.1
     end
 
+    def distance=(value)
+      @distance = value==0 ? 0.1 : value
+    end
+
     def key
       if @left.is_a? Cluster
         return @left.key
       else
         @left.name.to_sym
       end
+    end
+
+    def name
+      @name =~ /\,/ ? @name.gsub(/,/, "-") : @name
     end
 
     def to_s
@@ -36,7 +44,7 @@ module Accessors
 
     def to_newick
       return "#{@left.name}:#{@distance}" if @size == 1
-      "(#{@left.to_newick}, #{@right.to_newick})"
+      "(#{@left.to_newick}, #{@right.to_newick}):#{@distance}"
     end
 
   end

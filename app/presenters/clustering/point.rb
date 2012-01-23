@@ -10,7 +10,11 @@ module Accessors
     end
 
     def to_s
-      "{\"name\": \"#{@name}\" ,\"coords\": \"#{@coords.inspect}\" }"
+      "{\"name\": \'#{name}\' ,\"coords\": \"#{@coords.inspect}\" }"
+    end
+
+    def name
+      @name =~ /\,/ ? @name.gsub(/,/, "-") : @name
     end
 
     def clustering_type?
