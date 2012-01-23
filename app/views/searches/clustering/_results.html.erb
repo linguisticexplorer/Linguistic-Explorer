@@ -1,9 +1,18 @@
-<%= javascript_include_tag 'clusterfck' %>
-<%= javascript_include_tag 'd3.min' %>
-<%= javascript_include_tag 'd3.layout.min' %>
-<%= javascript_include_tag 'd3.phylogram' %>
-<%= javascript_include_tag 'similarity-tree' %>
-<%= stylesheet_link_tag 'clustering' %>
-<%= javascript_include_tag 'newick' %>
-<div class='gallery' id='chart'> </div>
-<a href="#" id="download_plot">Generate image</a>
+<div class="table spacing expand_width">
+  <div id="similarity_tree">
+    <% rendering = @search.results.shift %>
+    <% path_to_file = @search.results.first %>
+    <% if rendering == :legacy %>
+        <%= image_tag path_to_file, :alt => "Cluster tree", :class => 'clustering' %>
+    <% else %>
+        <img src='/images/loading_phylogram.gif' class='loading_phylogram'/>
+        <%= javascript_include_tag 'd3.min' %>
+        <%= javascript_include_tag 'd3.layout.min' %>
+        <%= javascript_include_tag 'd3.phylogram' %>
+        <%= javascript_include_tag 'newick' %>
+        <div class='gallery' id='phylogram'> </div>
+        <div class='gallery' id='radialtree'></div>
+        <div id="download"></div>
+    <% end %>
+  </div>
+</div>

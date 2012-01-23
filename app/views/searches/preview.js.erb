@@ -2,5 +2,33 @@
 var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
 var cross_page = "<%= escape_javascript(render("searches/cross/results")) if @search.cross? || @search.implication? -%>"
 var compare_page = "<%= escape_javascript(render("searches/compare/results")) if @search.compare? -%>"
-jQuery("#results_table").html(default_page + cross_page + compare_page);
+$("#results_table").html(default_page + cross_page + compare_page);
+<% else %>
+// Data is computed in Newick format and processed by d3.phylogram javascript library
+<% dendogram_type = @search.results.first -%>
+var newick_string = "<%= @search.results.last -%>"
+var newick = Newick.parse(newick_string)
+var newickNodes = []
+function buildNewickNodes(node, callback) {
+    newickNodes.push(node)
+    if (node.branchset) {
+        for (var i=0; i < node.branchset.length; i++) {
+            buildNewickNodes(node.branchset[i])
+        }
+    }
+}
+buildNewickNodes(newick)
+    <% if dendogram_type == :d3_phylogram -%>
+        d3.phylogram.build('#phylogram', newick, {
+            width: 1100,
+            height: 650
+        });
+    <% else %>
+        d3.phylogram.buildRadial('#radialtree', newick, {
+            width: 1100
+        });
+    <% end %>
+jQuery(".loading_phylogram").remove();
+var download_link = '<a href="#" id="download_plot">Download image</a>'
+jQuery("#download").html(download_link);
 <% end %>
