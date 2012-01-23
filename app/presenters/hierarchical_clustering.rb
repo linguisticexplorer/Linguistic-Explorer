@@ -98,8 +98,8 @@ class HierarchicalClustering
   private
 
   def to_newick
-    return "()" if @clusters.empty?
-    @clusters.values.first.to_newick
+    return "();" if @clusters.empty?
+    "#{@clusters.values.first.to_newick};"
   end
 
   def populate_distance_matrix
