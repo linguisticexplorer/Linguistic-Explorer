@@ -16,7 +16,7 @@ buildNewickNodes(newick);
     <% if dendogram_type == :d3_phylogram -%>
         d3.phylogram.build('#phylogram', newick, {
             width: 1100,
-            height: 650
+            height:1500
         });
     <% else %>
         d3.phylogram.buildRadial('#radialtree', newick, {
