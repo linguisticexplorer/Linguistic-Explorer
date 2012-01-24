@@ -16,7 +16,7 @@ module SearchResults
         end
 
         def extract_hamming_matrix_from(data)
-          data.reject { |k, v| /prop_ids/.match(k.to_s) }
+          data.reject { |k, v| k.is_a? Symbol }
         end
 
         def initialize(data)
