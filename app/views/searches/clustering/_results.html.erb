@@ -13,8 +13,10 @@
         <%= javascript_include_tag 'd3.layout.min' %>
         <%= javascript_include_tag 'd3.phylogram' %>
         <%= javascript_include_tag 'newick' %>
-        <div class='gallery' id='phylogram'> </div>
-        <div class='gallery' id='radialtree'></div>
+        <%= javascript_include_tag 'Base64' %>
+        <%= javascript_include_tag 'downloadify.min' %>
+        <%= javascript_include_tag 'swfobject' %>
+        <div class='gallery' id='tree'> </div>
         <div id="download"></div>
     <% end %>
   </div>
