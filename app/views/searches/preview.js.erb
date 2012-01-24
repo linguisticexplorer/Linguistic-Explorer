@@ -25,7 +25,7 @@ buildNewickNodes(newick);
     <% end %>
 jQuery(".loading_phylogram").remove();
 var download_link = '<a href="#" id="download_plot">Download image</a>';
-jQuery("#download").html(download_link);
+//jQuery("#download").html(download_link);
 <% else -%>
 // Ajax Paging
 var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
