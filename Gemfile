@@ -50,6 +50,15 @@ gem "progressbar"
 # Will remove prototype in favor of jQuery
 gem 'jquery-rails', '>= 0.2.6'
 
+# It forces to use a specific version of Rake
+gem 'rake', '0.9.2.2'
+
+# Pure Ruby library to use R language from Ruby code
+# it needs that R interpreter is installed and R_HOME is configured
+# see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
+# more documentation
+gem 'rinruby'
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
