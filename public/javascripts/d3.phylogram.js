@@ -94,7 +94,7 @@ if (!d3) { throw "d3 wasn't included!"};
           'L' + dst;
       })
       .projection(function(d) {
-        var r = d.y, a = (d.x - 90) / 180 * Math.PI;
+        var r = d.y, a = (d.x - 135) / 180 * Math.PI;
         return [r * Math.cos(a), r * Math.sin(a)];
       })
   }
@@ -317,7 +317,7 @@ if (!d3) { throw "d3 wasn't included!"};
       diagonal: d3.phylogram.radialRightAngleDiagonal()
     })
     vis.selectAll('g.node')
-      .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + d.y + ")"; })
+      .attr("transform", function(d) { return "rotate(" + (d.x - 135) + ")translate(" + d.y + ")"; })
 
     if (!options.skipLabels) {
       vis.selectAll('g.leaf.node text')

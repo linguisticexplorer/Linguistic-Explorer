@@ -1,6 +1,8 @@
 /* On DOM loaded */
 $(function() {
     hide_div('#show_impl');
+
+    enable_similarity_radial_tree();
 //    console.log("OnLoad end");
     // TODO: check javascript capabilities on submit
     // Function to reset the form to the initial state
@@ -121,5 +123,12 @@ function enable(element){
 
 function disable_except(elements_regexp, except){
     disable($(elements_regexp).not(except));
+}
+
+function enable_similarity_radial_tree(){
+    var label = '<label for="search_group_clust_hamming">Radial Tree</label>';
+    var radio = '<input id="search_group_clust_hamming" name="search[advanced_set][clustering]" type="radio" value="hamming_r">';
+    console.log($("#clustering"));
+    $("#clustering").append(label + radio );
 }
 

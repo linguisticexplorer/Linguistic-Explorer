@@ -1,23 +1,18 @@
-<% if !@search.clustering?%>
-var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
-var cross_page = "<%= escape_javascript(render("searches/cross/results")) if @search.cross? || @search.implication? -%>"
-var compare_page = "<%= escape_javascript(render("searches/compare/results")) if @search.compare? -%>"
-$("#results_table").html(default_page + cross_page + compare_page);
-<% else %>
+<% if @search.clustering? -%>
 // Data is computed in Newick format and processed by d3.phylogram javascript library
 <% dendogram_type = @search.results.first -%>
 var newick_string = "<%= @search.results.last -%>"
-var newick = Newick.parse(newick_string)
-var newickNodes = []
+var newick = Newick.parse(newick_string);
+var newickNodes = [];
 function buildNewickNodes(node, callback) {
-    newickNodes.push(node)
+    newickNodes.push(node);
     if (node.branchset) {
         for (var i=0; i < node.branchset.length; i++) {
-            buildNewickNodes(node.branchset[i])
+            buildNewickNodes(node.branchset[i]);
         }
     }
 }
-buildNewickNodes(newick)
+buildNewickNodes(newick);
     <% if dendogram_type == :d3_phylogram -%>
         d3.phylogram.build('#phylogram', newick, {
             width: 1100,
@@ -29,6 +24,12 @@ buildNewickNodes(newick)
         });
     <% end %>
 jQuery(".loading_phylogram").remove();
-var download_link = '<a href="#" id="download_plot">Download image</a>'
+var download_link = '<a href="#" id="download_plot">Download image</a>';
 jQuery("#download").html(download_link);
+<% else -%>
+// Ajax Paging
+var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
+var cross_page = "<%= escape_javascript(render("searches/cross/results")) if @search.cross? || @search.implication? -%>"
+var compare_page = "<%= escape_javascript(render("searches/compare/results")) if @search.compare? -%>"
+jQuery("#results_table").html(default_page + cross_page + compare_page);
 <% end %>
