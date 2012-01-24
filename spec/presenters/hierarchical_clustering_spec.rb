@@ -258,17 +258,17 @@ describe HierarchicalClustering do
         @clusterer = HierarchicalClustering.new({"one" => [0, 0, 0, 0, 0], "two" => [1,1,1,1,1], "three" => [0,2,2,2,2]}, :newick)
       end
       it "compute cluster with euclidean distance" do
-        expected_string = "((one:2.23606797749979, two:2.23606797749979), three:3.118033988749895)"
+        expected_string = "((one:2.23606797749979, two:2.23606797749979):3.118033988749895, three:3.118033988749895):0.1;"
         @clusterer.cluster(:euclidean).to_s.should == expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        expected_string = "((one:5, two:5), three:6)"
+        expected_string = "((one:5, two:5):6, three:6):0.1"
         @clusterer.cluster(:manhattan).to_s.should == expected_string
       end
 
       it "compute cluster with max distance" do
-        expected_string = "((one:1, two:1), three:1)"
+        expected_string = "((one:1, two:1):1, three:1):0.1"
         @clusterer.cluster(:max).to_s.should == expected_string
       end
     end
@@ -278,17 +278,17 @@ describe HierarchicalClustering do
         @clusterer = HierarchicalClustering.new({"one" => [0,0], "two" => [1,1], "three" => [0,2]}, :newick)
       end
       it "compute cluster with euclidean distance" do
-        expected_string = "((one:1.4142135623730951, two:1.4142135623730951), three:1.7071067811865475)"
+        expected_string = "((one:1.4142135623730951, two:1.4142135623730951):1.7071067811865475, three:1.7071067811865475):0.1;"
         @clusterer.cluster(:euclidean).to_s.should == expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        expected_string = "((one:2, two:2), three:2)"
+        expected_string = "((one:2, two:2):2, three:2):0.1;"
         @clusterer.cluster(:manhattan).to_s.should == expected_string
       end
 
       it "compute cluster with max distance" do
-        expected_string = "((one:1, two:1), three:1)"
+        expected_string = "((one:1, two:1):1, three:1):0.1;"
         @clusterer.cluster(:max).to_s.should == expected_string
       end
     end

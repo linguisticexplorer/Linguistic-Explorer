@@ -21,3 +21,4 @@ spec/csv/good/*.csv
 config/import.yml
 doc/data/*
 doc/TODO
+public/similarity_tree_images/*.png
