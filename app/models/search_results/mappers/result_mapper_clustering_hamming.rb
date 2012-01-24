@@ -27,20 +27,21 @@ module SearchResults
             row[ling_id] = props_row
           end
           row[:prop_ids] = prop_ids
+          row[:javascript] = result.javascript? ? true : false
+          row[:radial] = result.radial? ? true : false
         end
       end
 
       def to_flatten_results
         matrix_to_cluster = map_ling_names result_groups
         @flatten_result ||= []
-        # if legacy_browser?
-        #plotter = Plotter::LegacyPlotter.new(matrix_to_cluster)
-        #@flatten_result << :legacy
-        # else
-        plotter = Plotter::D3jsPlotter.new(matrix_to_cluster)
-        # @flatten_result << radial_tree? ? :d3_radial_tree : :d3_phylogram
-        @flatten_result << :d3js
-        # end
+        if legacy_browser? result_groups
+          plotter = Plotter::LegacyPlotter.new(@matrix_to_cluster)
+          @flatten_result << :legacy
+        else
+          plotter = Plotter::D3jsPlotter.new(matrix_to_cluster)
+          @flatten_result << radial_tree?(result_groups) ? :d3_radial_tree : :d3_phylogram
+        end
         plotter.plot_it!
         @flatten_result << [plotter.path_to_img]
       end
@@ -54,6 +55,14 @@ module SearchResults
       end
 
       private
+
+      def legacy_browser?(data)
+        data[:javascript]
+      end
+
+      def radial_tree?(data)
+        data[:radial]
+      end
 
       # This method will create a new Hash ad map for each id this ling name
       # E.g.
