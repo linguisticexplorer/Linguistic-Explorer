@@ -86,6 +86,13 @@ class SearchesController < GroupDataController
     authorize! :cross, @search
   end
 
+  def download_tree
+    path_from_public = params[:filename]
+    filename_base = path_from_public.gsub(/\/.*\/tree/, "tree")
+    filename = Rails.root.join("public", "similarity_tree_images", filename_base)
+    send_file filename, :type => 'image/jpeg'
+  end
+
 protected
 
   def check_max_search_notice

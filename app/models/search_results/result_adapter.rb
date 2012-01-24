@@ -33,6 +33,14 @@ module SearchResults
       :default
     end
 
+    def is_radial?
+      @query.is_radial_tree?
+    end
+
+    def javascript_enabled?
+      @query.is_javascript_enabled?
+    end
+
     def columns
       @query.included_columns
     end

@@ -38,8 +38,12 @@
         is_advanced_search? && advanced_set_clustering=~/hamming/
       end
 
+      def is_radial_tree?
+        is_advanced_search? && advanced_set_clustering=="hamming_r"
+      end
+
       def is_javascript_enabled?
-        is_advanced_search? && javascript_hidden_field==1
+        is_advanced_search? && javascript_hidden_field=="1"
       end
 
       def javascript_hidden_field

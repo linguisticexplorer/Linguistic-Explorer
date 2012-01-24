@@ -1,9 +1,12 @@
 <div class="table spacing expand_width">
   <div id="similarity_tree">
-    <% rendering = @search.results.shift %>
-    <% path_to_file = @search.results.first %>
+    <% rendering = @search.results.first %>
     <% if rendering == :legacy %>
-        <%= image_tag path_to_file, :alt => "Cluster tree", :class => 'clustering' %>
+        <% path_to_file = @search.results.last %>
+        <div id="download">
+          <%= link_to "Download",  :action => "download_tree", :filename => path_to_file %>
+        </div>
+        <%= image_tag path_to_file, :alt => "Similarity tree", :class => 'clustering' %>
     <% else %>
         <img src='/images/loading_phylogram.gif' class='loading_phylogram'/>
         <%= javascript_include_tag 'd3.min' %>

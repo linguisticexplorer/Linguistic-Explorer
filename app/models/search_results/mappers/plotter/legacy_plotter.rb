@@ -56,13 +56,13 @@ module SearchResults
           cols_number = @hamming_matrix.values.first.size
 
           # rinruby has problems with assign matrix too big
-          raise Exceptions::ResultTooManyForLegacyClustering if cols_number > 40
+          raise Exceptions::ResultTooManyForLegacyClustering if rows_number * cols_number > 1600
 
           Matrix.build(rows_number, cols_number) { |row, col| @hamming_matrix.values[row][col] }
         end
 
         def extract_hamming_matrix_from(data)
-          data.reject { |k, v| /prop_ids/.match(k.to_s) }
+          data.reject { |k, v| k.is_a? Symbol }
         end
 
         def calculate_filename(data)
