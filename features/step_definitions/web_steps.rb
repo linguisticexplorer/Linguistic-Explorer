@@ -127,6 +127,14 @@ Then /^(?:|I )should see "([^"]*)"(?: within "([^"]*)")?$/ do |text, selector|
   end
 end
 
+Then /^I should see the "([^"]*)" draw$/ do |selector|
+  if page.respond_to? :should
+    page.should have_selector("\##{selector.underscore}")
+  else
+    assert page.has_selector?("\##{selector.underscore}")
+  end
+end
+
 Then /^(?:|I )should see "([^"]*)" in common?$/ do |text|
   with_scope("div.search_common_result.row") do
     if page.respond_to? :should
@@ -240,4 +248,5 @@ end
 Then /^show me the page$/ do
   save_and_open_page
 end
+
 
