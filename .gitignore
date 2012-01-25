@@ -11,9 +11,9 @@ coverage.data
 config/database.yml
 .rvmrc
 spec/csv/bad/bad_creator_id/*.csv
-spec/csv/bad/bad_creator_id/import.yml
+spec/csv/bad/bad_creator_id/*.yml
 spec/csv/bad/bad_foreign_key/*.csv
-spec/csv/bad/bad_foreign_key/import.yml
+spec/csv/bad/bad_foreign_key/*.yml
 spec/csv/bad/no_id/*.csv
 spec/csv/bad/no_id/import.yml
 spec/csv/good/import.yml
@@ -21,4 +21,3 @@ spec/csv/good/*.csv
 config/import.yml
 doc/data/*
 doc/TODO
-public/similarity_tree_images/*.png
