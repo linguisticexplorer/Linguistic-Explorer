@@ -93,6 +93,7 @@ class SearchesController < GroupDataController
       s.query = params[:search]
       s.offset = params[:page]
     end
+
     @json = GeoMapping.new(@search).get_json
     authorize! :mapping, @search
   end
