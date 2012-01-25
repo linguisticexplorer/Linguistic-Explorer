@@ -33,7 +33,6 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double Both
     When I go to the Syntactic Structures search page
-    And show me the page
     And I choose Implication "Double" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
