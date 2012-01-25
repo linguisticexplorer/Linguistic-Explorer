@@ -23,5 +23,4 @@ Feature: Search By Similarity Tree (R language)
     When I go to the Syntactic Structures search page
     And I choose "Tree" within "#advanced_set"
     And I press "Show results"
-    And show me the page
     Then I should see the "SimilarityTree" draw
