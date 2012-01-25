@@ -97,6 +97,13 @@ When /^(?:|I )choose "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
   end
 end
 
+When /^(?:|I )choose Implication "([^"]*)"(?: within "([^"]*)")?$/ do |field, selector|
+  field = "search_group_impl_#{field.downcase}"
+  with_scope(selector) do
+    choose(field)
+  end
+end
+
 When /^(?:|I )attach the file "([^"]*)" to "([^"]*)"(?: within "([^"]*)")?$/ do |path, field, selector|
   with_scope(selector) do
     attach_file(field, path)
