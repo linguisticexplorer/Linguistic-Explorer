@@ -7,6 +7,8 @@ class Ling < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
+  acts_as_gmappable :process_geocoding => false, :lat => :get_latitude, :lng => :get_longitude
+
   validates_presence_of :name, :depth
   validates_numericality_of :depth
   validates_uniqueness_of :name, :scope => :group_id
@@ -32,6 +34,18 @@ class Ling < ActiveRecord::Base
 
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
+
+  def gmaps4rails_title
+    self.name
+  end
+
+  def get_latitude
+    get_latlong.split(/,/).first
+  end
+
+  def get_longitude
+    get_latlong.split(/,/).last
+  end
 
   def grouped_name
     group.ling_name_for_depth(self.depth || 0)
@@ -79,5 +93,17 @@ class Ling < ActiveRecord::Base
     else
       nil
     end
+  end
+
+  private
+  def get_latlong
+    property = Property.in_group(group).where(:name => 'latlong')
+    if property.any?
+      property_id = property.first.id
+      lings_has_latlong = LingsProperty.in_group(group).where(:property_id => property_id, :ling_id => self.id)
+      return lings_has_latlong.first.value if lings_has_latlong.any?
+    end
+    return ""
+    #Rails.logger.debug "******DEBUG: latlong: #{latlong}"
   end
 end

@@ -13,7 +13,7 @@ LinguisticExplorer::Application.routes.draw do
       collection do
         get 'preview'
         get 'lings_in_selected_row'
-        get 'download_tree'
+        get 'geomapping'
       end
     end
 

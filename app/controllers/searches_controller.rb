@@ -50,8 +50,8 @@ class SearchesController < GroupDataController
       format.html
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
-        :type => "text/csv; charset=utf-8; header=present",
-        :filename => "terraling-#{@search.name}.csv" }
+                  :type => "text/csv; charset=utf-8; header=present",
+                  :filename => "terraling-#{@search.name}.csv" }
     end
   end
 
@@ -86,6 +86,17 @@ class SearchesController < GroupDataController
     authorize! :cross, @search
   end
 
+  def  geomapping
+    @search = Search.new do |s|
+      s.creator = current_user
+      s.group = current_group
+      s.query = params[:search]
+      s.offset = params[:page]
+    end
+    @json = GeoMapping.new(@search).get_json
+    authorize! :mapping, @search
+  end
+
   def download_tree
     path_from_public = params[:filename]
     filename_base = path_from_public.gsub(/\/.*\/tree/, "tree")
@@ -93,7 +104,7 @@ class SearchesController < GroupDataController
     send_file filename, :type => 'image/jpeg'
   end
 
-protected
+  protected
 
   def check_max_search_notice
     return unless user_signed_in? || flash[:notice]

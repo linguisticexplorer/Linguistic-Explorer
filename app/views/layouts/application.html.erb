@@ -6,6 +6,7 @@
 
     <%= javascript_include_tag :defaults %>
     <%= csrf_meta_tag %>
+    <%= yield :head %>
   </head>
   <body class="<%= body_classes %>">
     <%= render :partial => 'layouts/header' %>
@@ -23,6 +24,7 @@
     </div>
 
     <div id="footer" class="container">
+      <%= yield :scripts %>
       <p>&copy; 2011 terraling.com. 10 Washington Place, New York, NY 10003 . <a href="mailto:support@terraling.com">support AT terraling.com</a>. All Rights Reserved</p>
     </div>
 
