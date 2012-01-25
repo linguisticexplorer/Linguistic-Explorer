@@ -20,6 +20,9 @@ module SearchResults
 
             require "rinruby"
 
+            ### setting up R
+            R.echo(false)
+
             ### Copy data to R
             copy_data_to_R_environment
 
