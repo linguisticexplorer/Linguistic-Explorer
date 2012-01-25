@@ -37,7 +37,7 @@ class Search < ActiveRecord::Base
   end
 
   def mappable?
-    (default? || cross? || compare?) && (!implication?) && (! clustering?)
+    (default? || cross? || compare?) && (!implication?) && (!clustering?)
   end
 
   private
