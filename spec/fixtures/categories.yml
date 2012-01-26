@@ -14,3 +14,7 @@ exclusive1:
   name: delvedeep
   group: exclusive
   depth: 1
+geomap_cat:
+  name: geographic
+  group: geomap
+  depth: 0

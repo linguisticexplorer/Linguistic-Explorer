@@ -21,3 +21,15 @@ exclusive:
   lings_property_name: Value
   example_name:        Example
   examples_lings_property_name:     EVal
+
+geomap:
+  name: Geographic Group
+  depth_maximum:       1
+  privacy:             public
+  ling0_name:          Ling0
+  ling1_name:          Ling1
+  property_name:       Property
+  category_name:       Category
+  lings_property_name: Value
+  example_name:        Example
+  examples_lings_property_name:     EVal

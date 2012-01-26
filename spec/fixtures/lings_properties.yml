@@ -23,3 +23,13 @@ level1:
   property: level1
   value: dinkdinkdink
   group: inclusive
+american_prop_lang:
+  ling: american_lang
+  property: property4geomapping
+  value: yes
+  group: geomap
+african_prop_lang:
+  ling: american_lang
+  property: property4geomapping_copy
+  value: no
+  group: geomap

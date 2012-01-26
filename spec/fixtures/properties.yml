@@ -14,3 +14,11 @@ exclusive0:
   name: exclusivity
   group: exclusive
   category: exclusive0
+property4geomapping:
+  name: latlong
+  group: geomap
+  category: geomap0
+property4geomapping_copy:
+  name: latlong_1
+  group: geomap
+  category: geomap0

@@ -29,3 +29,11 @@ level1child:
   group: inclusive
   depth: 1
   parent_id: level0
+american_lang:
+  name: ling_1
+  group: geomap
+  depth: 0
+african_lang:
+  name: ling_2
+  group: geomap
+  depth: 0
