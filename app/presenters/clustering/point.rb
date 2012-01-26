@@ -27,7 +27,7 @@ module Accessors
 
     def ==(point)
       same = true
-      return same if @name == point.name
+      same = false unless @name == point.name
       point.coords.each_index do |i|
         same &= @coords[i] == point.coords[i]
       end
