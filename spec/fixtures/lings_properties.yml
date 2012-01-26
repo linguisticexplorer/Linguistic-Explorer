@@ -25,11 +25,21 @@ level1:
   group: inclusive
 american_prop_lang:
   ling: american_lang
-  property: property4geomapping
+  property: latlong
   value: yes
   group: geomap
-african_prop_lang:
+american_prop_lang_support:
   ling: american_lang
-  property: property4geomapping_copy
+  property: latlong_support
   value: no
+  group: geomap
+african_prop_lang:
+  ling: african_lang
+  property: latlong
+  value: maybe
+  group: geomap
+african_prop_lang_support:
+  ling: african_lang
+  property: latlong_support
+  value: not yet set
   group: geomap

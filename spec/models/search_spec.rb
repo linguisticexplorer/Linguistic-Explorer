@@ -122,4 +122,71 @@ describe Search do
       end
     end
   end
+
+  describe "search type" do
+    before(:each) do
+      @ling_1 = lings(:american_lang)
+      @ling_2 = lings(:african_lang)
+      @property = properties(:latlong)
+      @property_support = properties(:latlong_support)
+      @cat = categories(:geomap_cat).id
+    end
+
+    it "should be default search" do
+      create_default_search.default?.should be_true
+    end
+
+    it "should be cross search" do
+      create_cross_search.cross?.should be_true
+    end
+
+    it "should be compare search" do
+      create_compare_search.compare?.should be_true
+    end
+
+    it "should not be default search" do
+      create_cross_search.default?.should be_false
+    end
+
+    it "should not be cross search" do
+          create_compare_search.cross?.should be_false
+    end
+
+    it "should be a mapable search" do
+      create_compare_search.mappable?.should be_true
+    end
+  end
+
+  def process_search(query)
+    Search.new do |s|
+      s.creator = nil
+      s.group = groups(:geomap)
+      s.query = query
+    end
+  end
+
+  def create_mock_query(ling_depth, category_id, search_type)
+    { "ling_keywords"=>{ ling_depth =>""}, "property_keywords"=>{category_id=>""}, "example_keywords"=>{ ling_depth =>""}, "lings_property_set" => {category_id => "any"}, "property_set"=>{category_id=>search_type}}
+  end
+
+  def create_compare_search
+    query = create_mock_query(@ling_1.depth.to_s, "#{@cat}", "any")
+    query["ling_set"] = { @ling_1.depth.to_s => "compare" }
+    query["lings"] = { @ling_1.depth.to_s => [ @ling_1.id.to_s, @ling_2.id.to_s]}
+    process_search(query)
+  end
+
+  def create_cross_search
+    query = create_mock_query(@ling_1.depth.to_s, "#{@cat}", "cross")
+    query["properties"] = {"#{@cat}" => ["#{@property.id}", "#{@property_support.id}"]}
+    query["lings"] = {@ling_1.depth.to_s => [@ling_1.id.to_s]}
+    process_search(query)
+  end
+
+  def create_default_search
+    query = create_mock_query(@ling_1.depth.to_s, "#{@cat}", "any")
+    query["lings"] = {@ling_1.depth.to_s => [@ling_1.id.to_s]}
+    query["include"] = {"ling_0" => "1"}
+    process_search(query)
+  end
 end

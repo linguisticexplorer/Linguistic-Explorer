@@ -28,7 +28,9 @@ module SearchResults
             # easy to predict which value will be in or out in a particular page
             entry << ResultEntryCompare.new(parent, related_children, lings)
           end
-        end.sort { |first, second| first.child.size <=> second.child.size }
+        end
+        return @flatten_results if @flatten_results.size == 1
+        @flatten_results.sort { |first, second| first.child.size <=> second.child.size }
       end
 
       def parents
