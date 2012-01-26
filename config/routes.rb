@@ -14,10 +14,11 @@ LinguisticExplorer::Application.routes.draw do
         get 'preview'
         get 'lings_in_selected_row'
         get 'geomapping'
+        get 'download_tree'
       end
     end
 
-    resources :search_comparisons, :only => [:new, :create]
+    resources :search_comparisons, :only => [:new, :create, :preview]
 
     resources :lings do
       member do

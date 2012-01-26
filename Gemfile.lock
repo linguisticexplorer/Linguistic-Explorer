@@ -10,6 +10,12 @@ GIT
   specs:
     validates_existence (0.5.6)
 
+GIT
+  remote: git://github.com/dej611/forum_monster.git
+  revision: 3ec22845c7cd1afb5d3177dac436c79ec427cec0
+  specs:
+    forum_monster (1.0.3)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -220,6 +226,7 @@ DEPENDENCIES
   database_cleaner (= 0.6.7)
   devise (= 1.1.7)
   factory_girl_rails (= 1.1)
+  forum_monster!
   gmaps4rails
   jquery-rails (>= 0.2.6)
   json (= 1.5.1)

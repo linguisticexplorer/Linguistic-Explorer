@@ -86,7 +86,7 @@ class SearchesController < GroupDataController
     authorize! :cross, @search
   end
 
-  def  geomapping
+  def geomapping
     @search = Search.new do |s|
       s.creator = current_user
       s.group = current_group

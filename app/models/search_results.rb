@@ -53,7 +53,7 @@ module SearchResults
   end
 
   def mappable?
-    (default? || cross? || compare?) && (!implication?) && (!clustering?)
+    (default? || cross? || compare?) && (!implication?) && (!clustering?) && (!self.search_comparison)
   end
 
   private

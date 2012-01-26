@@ -10,11 +10,9 @@
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
       <%= render :partial => 'searches/save_search_form' %>
-      <%- if @search.mappable? -%>
-          <div id="mapping">
-            <%= link_to "Mapping", :action => "geomapping", :search => @search.query %>
-          </div>
-      <%- end -%>
+      <div id="mapping">
+        <%= link_to "Mapping", :action => "geomapping", :search => @search.query if @search.mappable?%>
+      </div>
       <div id="results_table">
         <%- if @search.default? -%>
             <%= render :partial => 'searches/results' %>
@@ -27,6 +25,6 @@
         <%- end -%>
       </div>
   <%- else -%>
-  <div class="notice">Your search query returned no results.</div>
+      <div class="notice">Your search query returned no results.</div>
   <%- end -%>
 </div>

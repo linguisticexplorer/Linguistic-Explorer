@@ -82,6 +82,7 @@ group :development, :test, :pg_test do
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
   gem 'gmaps4rails'
+  gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 end
 
 group :pg_test do

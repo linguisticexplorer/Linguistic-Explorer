@@ -1,15 +1,18 @@
 module SearchResults
   module Comparisons
+    attr_reader :search_comparison
 
     def result_rows=(result_rows)
       self.result_groups = result_rows.group_by { |row| row.parent_id }
       self.result_groups.values.map! { |row| row.map! { |r| r.child_id }.compact! }
+      @search_comparison = true
     end
 
     def result_rows(parent_attr_names, child_attr_names = [])
       [].tap do |rows|
         self.results.each do |result|
           parent, child = result.parent, result.child
+          next unless parent
           parent_map = parent.column_map(parent_attr_names)
           if child.nil?
             rows << ResultRow.new(parent_map)

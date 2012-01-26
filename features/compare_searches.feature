@@ -22,6 +22,7 @@ Feature: Compare searches
     When I select "union" from "Perform"
     And I select "First search" from "of"
     And I select "Second search" from "with"
+    And show me the page
     And I press "Go"
     Then I should see 3 search result rows
     Then I should see the following grouped search results:
