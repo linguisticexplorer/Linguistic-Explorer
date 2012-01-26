@@ -36,9 +36,7 @@ class Search < ActiveRecord::Base
     user.id.present? && user == creator && Ability.new(user).can?(:read, group)
   end
 
-  def mappable?
-    (default? || cross? || compare?) && (!implication?) && (!clustering?)
-  end
+
 
   private
 

@@ -52,6 +52,10 @@ module SearchResults
     self.result_groups["type"] == "clustering_hamming"
   end
 
+  def mappable?
+    (default? || cross? || compare?) && (!implication?) && (!clustering?)
+  end
+
   private
 
   def ensure_result_groups!
