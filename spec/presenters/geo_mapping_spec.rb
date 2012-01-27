@@ -16,7 +16,7 @@ describe GeoMapping do
       @search = do_search(query)
     end
     it "should be json string" do
-      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/darkgreen_Marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
+      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
       GeoMapping.new(@search).get_json.should match(json)
     end
   end
@@ -32,7 +32,7 @@ describe GeoMapping do
       @search = do_search(query)
     end
     it "should be json string" do
-      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/darkgreen_Marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
+      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
       GeoMapping.new(@search).get_json.should match(json)
     end
   end
@@ -46,8 +46,8 @@ describe GeoMapping do
       @search = do_search(query)
     end
     it "should be json string" do
-      json1 = "[{\"title\": \"ling_1\", \"picture\": \"/images/darkgreen_Marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"},\n"
-      json2 = "{\"title\": \"ling_2\", \"picture\": \"/images/darkgreen_Marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_2\", \"lat\": \"lingproperty_2\"}]"
+      json1 = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"},\n"
+      json2 = "{\"title\": \"ling_2\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_2\", \"lat\": \"lingproperty_2\"}]"
       GeoMapping.new(@search).get_json.should match(json1+json2)
     end
   end

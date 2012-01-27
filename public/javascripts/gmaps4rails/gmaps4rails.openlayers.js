@@ -57,7 +57,7 @@
       }
       if (args.marker_picture === "") {
         style_mark.graphicHeight = 30;
-        style_mark.externalGraphic = "http://openlayers.org/dev/img/marker-blue.png";
+        style_mark.externalGraphic = "http://openlayers.org/dev/img/markers-blue.png";
       } else {
         style_mark.graphicWidth = args.marker_width;
         style_mark.graphicHeight = args.marker_height;

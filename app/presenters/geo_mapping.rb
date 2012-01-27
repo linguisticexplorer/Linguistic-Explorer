@@ -13,9 +13,9 @@ class GeoMapping
   		if ling_list.any?
   			json = json + lings.to_gmaps4rails do |ling, marker|
   				marker.picture({
-						:picture => "/images/darkgreen_Marker#{marker_number}.png",
-						:width 	=> "20",
-						:height 	=> "34"
+						:picture => "/images/markers/marker#{marker_number}.png",
+						:width 	=> "32",
+						:height 	=> "37"
 				})
   			end
   		end
@@ -42,7 +42,6 @@ class GeoMapping
   	for ling in result.lings
   		store_id(@lings_hash["1"], ling.id)
   	end
-  	Rails.logger.debug "****DEBUG: geomapping compare #{@lings_hash}"
   end
   
   def cross_search
@@ -53,8 +52,7 @@ class GeoMapping
   			store_id(@lings_hash["#{marker_list}"], lingsProperty.ling_id)
   		end
   		marker_list = marker_list + 1
-  	end  	
-  	Rails.logger.debug "****DEBUG: geomapping cross #{@lings_hash}"
+  	end
   end
   
   def default_search
@@ -65,8 +63,7 @@ class GeoMapping
   		if result.child != nil
   			store_id(@lings_hash["2"], result.child.ling_id)
   		end
-  	end 
-  	Rails.logger.debug "****DEBUG: geomapping default #{@lings_hash}" 
+  	end
   end
   def store_id(array, id) 
   	if ! array.include?(id)

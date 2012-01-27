@@ -8484,7 +8484,7 @@ jQuery.fn.extend({
 				timers = jQuery.timers,
 				data = jQuery._data( this );
 
-			// clear marker counters if we know they won't be
+			// clear markers counters if we know they won't be
 			if ( !gotoEnd ) {
 				jQuery._unmark( true, this );
 			}

@@ -8274,14 +8274,14 @@ function Datepicker() {
 	this._datepickerShowing = false; // True if the popup picker is showing , false if not
 	this._inDialog = false; // True if showing within a "dialog", false if not
 	this._mainDivId = 'ui-datepicker-div'; // The ID of the main datepicker division
-	this._inlineClass = 'ui-datepicker-inline'; // The name of the inline marker class
-	this._appendClass = 'ui-datepicker-append'; // The name of the append marker class
-	this._triggerClass = 'ui-datepicker-trigger'; // The name of the trigger marker class
-	this._dialogClass = 'ui-datepicker-dialog'; // The name of the dialog marker class
-	this._disableClass = 'ui-datepicker-disabled'; // The name of the disabled covering marker class
-	this._unselectableClass = 'ui-datepicker-unselectable'; // The name of the unselectable cell marker class
-	this._currentClass = 'ui-datepicker-current-day'; // The name of the current day marker class
-	this._dayOverClass = 'ui-datepicker-days-cell-over'; // The name of the day hover marker class
+	this._inlineClass = 'ui-datepicker-inline'; // The name of the inline markers class
+	this._appendClass = 'ui-datepicker-append'; // The name of the append markers class
+	this._triggerClass = 'ui-datepicker-trigger'; // The name of the trigger markers class
+	this._dialogClass = 'ui-datepicker-dialog'; // The name of the dialog markers class
+	this._disableClass = 'ui-datepicker-disabled'; // The name of the disabled covering markers class
+	this._unselectableClass = 'ui-datepicker-unselectable'; // The name of the unselectable cell markers class
+	this._currentClass = 'ui-datepicker-current-day'; // The name of the current day markers class
+	this._dayOverClass = 'ui-datepicker-days-cell-over'; // The name of the day hover markers class
 	this.regional = []; // Available regional settings, indexed by language code
 	this.regional[''] = { // Default regional settings
 		closeText: 'Done', // Display text for close link
