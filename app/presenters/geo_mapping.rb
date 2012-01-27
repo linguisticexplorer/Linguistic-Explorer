@@ -8,12 +8,13 @@ class GeoMapping
   
   def get_json
   	json = ''
-  	get_lings_hash.each do |marker_number, ling_list|
+  	get_lings_hash.each do |row_number, ling_list|
   		lings = Ling.where(:id => ling_list).to_a
   		if ling_list.any?
   			json = json + lings.to_gmaps4rails do |ling, marker|
+          marker.infowindow info_window(ling, row_number)
   				marker.picture({
-						:picture => "/images/markers/marker#{marker_number}.png",
+						:picture => "/images/markers/marker#{row_number}.png",
 						:width 	=> "32",
 						:height 	=> "37"
 				})
@@ -24,6 +25,15 @@ class GeoMapping
   end
   
   private
+
+  def info_window(ling, row_number)
+    if @search.cross?
+      "#{ling.name} <br /> Row number: #{row_number}"
+    else
+      ling.name
+    end
+  end
+
   def get_lings_hash
   	if @search.default?
   		default_search
