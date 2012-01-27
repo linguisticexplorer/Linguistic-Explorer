@@ -7,7 +7,7 @@ tmp/*
 *.swp
 *.out
 coverage.data
-coveraga/app/*
+coverage/*
 .idea/*
 config/database.yml
 .rvmrc
