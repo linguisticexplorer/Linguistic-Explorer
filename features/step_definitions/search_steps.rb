@@ -210,5 +210,5 @@ Then /^I should see no search result rows?$/ do
 end
 
 Then /^I should see a map?/ do
-  #page.should have_css("div.map_canvas")
+  page.should have_css("div.map_container")
 end
