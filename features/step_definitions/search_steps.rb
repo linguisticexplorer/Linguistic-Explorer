@@ -212,3 +212,7 @@ end
 Then /^I should see a map?/ do
   page.should have_css("div.map_container")
 end
+
+Then /^I should not see a map?/ do
+  page.should_not have_css("div.map_container")
+end
