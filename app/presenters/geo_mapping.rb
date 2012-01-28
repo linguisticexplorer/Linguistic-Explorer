@@ -9,9 +9,8 @@ class GeoMapping
   def get_json
     json = ''
     @lings_hash.each do |row_number, ling_list|
-      #lings = Ling.where(:id => ling_list).to_a
       if ling_list.any?
-        json = json + ling_list.to_gmaps4rails do |ling, marker|
+        json = ling_list.to_gmaps4rails do |ling, marker|
           marker.infowindow info_window_for ling
           marker.title rollover_information(ling)
           marker.picture({
@@ -80,7 +79,7 @@ class GeoMapping
   def rollover_information(ling)
     title = @titles_hash[ling.id]
     return title if title.is_a? String
-    title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("").gsub(/, $/, "")
+    title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("<br />").gsub(/, $/, "")
   end
 
   def link_to_ling(ling)

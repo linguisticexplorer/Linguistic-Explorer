@@ -94,7 +94,8 @@ class SearchesController < GroupDataController
       s.offset = params[:page]
     end
 
-    @json = GeoMapping.new(@search).get_json
+    @json = check_retrieved_json(GeoMapping.new(@search).get_json)
+
     authorize! :mapping, @search
   end
 
@@ -118,6 +119,14 @@ class SearchesController < GroupDataController
   def rescue_from_result_error(exception)
     flash[:notice] = exception.message
     redirect_to :action => :new
+  end
+
+  def check_retrieved_json(json)
+    if json == "[]"
+      flash[:notice] = "Sorry, no geographical data for your lings selection"
+      json=''
+    end
+    json
   end
 
 end
