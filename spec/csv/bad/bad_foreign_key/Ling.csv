@@ -1,5 +1,0 @@
-id,name,depth,parent_id,group_id,creator_id
-982794069,Parent 0,0,,-1,73
-982794070,Parent 1,0,,-1,73
-982794071,Child 0,1,982794069,-1,73
-982794072,Child 1,1,982794070,-1,73

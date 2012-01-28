@@ -1,3 +1,0 @@
-id,name,email,access_level,password
-,Bob Admin,bobadmin@example.com,admin,password_admin
-,Bob User,bobuser@example.com,user,password_user

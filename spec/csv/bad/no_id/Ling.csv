@@ -1,5 +1,0 @@
-id,name,depth,parent_id,group_id,creator_id
-,Parent 0,0,,499372918,73
-,Parent 1,0,,499372918,73
-,Child 0,1,982794069,499372918,73
-,Child 1,1,982794070,499372918,73
