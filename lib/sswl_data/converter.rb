@@ -40,8 +40,7 @@ module SswlData
 
       reset = "\r\e[0K"
       start = Time.now
-      #sanitize_csv :user
-      #exit(1)
+
       print "converting users..."
 
       # SSWL
@@ -53,25 +52,11 @@ module SswlData
       #
       # ==> User.csv <==
       # id,name,email,access_level,password
+      user_ids = {}
       csv_for_each :user do |row|
 
         # Generator of a random password
-        char_array =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten;
-        password  =  (0..8).map{ char_array[rand(char_array.length)]  }.join;
-
-        first_name = row["first_name"]
-        first_name = first_name.gsub(/\s/, '') if first_name =~ /\s/
-        last_name =  row["last_name"]
-        last_name = last_name.gsub(/\s/, '') if last_name =~ /\s/
-        email = row["email"].present? ? row["email"] : "#{first_name}@#{last_name}.com"
-        # cache user id
-        user_ids[row["id"]] ||= {
-            "id" => "#{row["id"]}",
-            "name" => "#{row["first_name"]} #{row["last_name"]}",
-            "email" => "#{email}",
-            "access_level" => row["user_type"] == "admin" ? "Admin" : "Member",
-            "password" => password
-        }
+        validate_user_in(row, user_ids)
       end
 
       write_csv :user, user_ids
@@ -107,15 +92,11 @@ module SswlData
       #
       # ==> Membership.csv <==
       # id,member_id,group_id,level,creator_id
+      member_ids = {}
       csv_for_each :user do |row|
 
         # cache member id
-        member_ids[row["id"]] ||= {
-            "id" => "#{row["id"]}",
-            "member_id" => "#{row["id"]}",
-            "group_id" => "0",
-            "level" => row["user_type"] == "admin" ? "admin" : "member"
-        }
+        validate_membership_in(row, member_ids)
       end
 
       write_csv :membership, member_ids
@@ -133,16 +114,11 @@ module SswlData
       #
       # ==> Ling.csv <==
       # id,name,parent_id,depth,group_id,creator_id
-
+      ling_ids = {}
       csv_for_each :ling do |row|
 
         # cache ling id
-        ling_ids[row["language"]] ||= {
-            "id" => "#{row["id"]}",
-            "name" => "#{row["language"]}",
-            "group_id" => "0",
-            "depth" => "0"
-        }
+        validate_ling_in(row, ling_ids)
 
       end
 
@@ -176,16 +152,11 @@ module SswlData
       # id,name,ling_id,group_id,creator_id
       #
       counter = 0
+      example_ids = {}
       csv_for_each :example do |row|
 
         # cache example id
-        example_ids[row["id"]] ||= {
-            "id" => "#{row["id"]}",
-            "name" => "Example_#{counter}",
-            "group_id" => "0",
-            "ling_id" => "#{ling_ids["#{row["language"]}"]["id"]}"
-        }
-        counter +=1
+        validate_example_in(counter, example_ids, ling_ids, row)
       end
 
       write_csv :example, example_ids
@@ -203,19 +174,9 @@ module SswlData
       # ==> Property.csv <==
       # id,name,description,category_id,group_id,creator_id
       max_id = 0
+      property_ids = {}
       csv_for_each :property do |row|
-        max_id = Integer(row["id"]) unless max_id > Integer(row["id"])
-
-        #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
-        #puts "DEBUG: #{description}"
-        # cache property id
-        property_ids[row["property"]] ||= {
-            "id" => "#{row["id"]}",
-            "name" => "#{row["property"]}",
-            "group_id" => "0",
-            "category_id" => "0",
-            #"description" => description
-        }
+        max_id = validate_property_in(max_id, property_ids, row)
 
       end
 
@@ -233,29 +194,12 @@ module SswlData
       # ==> LingsProperty.csv <==
       # id,ling_id,property_id,value,group_id,creator_id
       #
+      lings_property_ids = {}
       csv_for_each :lings_property do |row|
 
-        max_id +=1 if property_ids[row["property"]].nil?
+        max_id = update_property_in(max_id, property_ids, row)
 
-        # Some properties are splitted in more files
-        property_ids[row["property"]] ||= {
-            "id" => "#{max_id}",
-            "name" => "#{row["property"]}",
-            "group_id" => "0",
-            "category_id" => "0"
-        }
-
-        lings_prop_id = "#{row["language"]}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
-
-        # cache lings_property id
-        lings_property_ids[lings_prop_id] ||= {
-            "id" => "#{row["id"]}",
-            "value" => "#{row["value"]}",
-            "group_id" => "0",
-            "category_id" => "0",
-            "property_id" => "#{property_ids[row["property"]]["id"]}",
-            "ling_id" => "#{ling_ids[row["language"]]["id"]}"
-        }
+        validate_ling_prop_in(ling_ids, property_ids, row, lings_property_ids)
       end
 
       write_csv :property, property_ids
@@ -331,18 +275,11 @@ module SswlData
       # id, storable_id, storable_type, key, value, group_id
       #
       print "\nconverting stored_values..."
-
+      stored_value_ids = {}
       csv_for_each :stored_value do |row|
         next unless property_ids[row["property"]].nil?
 
-        stored_value_ids[row["id"]] ||={
-            "id" => "#{row["id"]}",
-            "key" => "#{row["property"]}",
-            "value" => "#{row["property"]}:#{row["value"]}",
-            "group_id" => "0",
-            "storable_type" => "Example",
-            "storable_id" => "#{row["example_object_id"]}"
-        }
+        validate_stored_value_in(row, stored_value_ids)
       end
 
       write_csv :stored_value, stored_value_ids
@@ -362,6 +299,107 @@ module SswlData
 
       elapsed = seconds_fraction_to_time(Time.now - start)
       puts "Time for converting: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
+    end
+
+    def validate_stored_value_in(row, stored_value_ids)
+      stored_value_ids[row["id"]] ||={
+          "id" => "#{row["id"]}",
+          "key" => "#{row["property"]}",
+          "value" => "#{row["property"]}:#{row["value"]}",
+          "group_id" => "0",
+          "storable_type" => "Example",
+          "storable_id" => "#{row["example_object_id"]}"
+      }
+    end
+
+    def validate_ling_prop_in(ling_ids, property_ids, row, lings_property_ids)
+      lings_prop_id = "#{row["language"]}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
+
+      # cache lings_property id
+      lings_property_ids[lings_prop_id] ||= {
+          "id" => "#{row["id"]}",
+          "value" => "#{row["value"]}",
+          "group_id" => "0",
+          "category_id" => "0",
+          "property_id" => "#{property_ids[row["property"]]["id"]}",
+          "ling_id" => "#{ling_ids[row["language"]]["id"]}"
+      }
+    end
+
+    def update_property_in(max_id, property_ids, row)
+      max_id +=1 if property_ids[row["property"]].nil?
+
+      # Some properties are splitted in more files
+      property_ids[row["property"]] ||= {
+          "id" => "#{max_id}",
+          "name" => "#{row["property"]}",
+          "group_id" => "0",
+          "category_id" => "0"
+      }
+      max_id
+    end
+
+    def validate_property_in(max_id, property_ids, row)
+      max_id = Integer(row["id"]) unless max_id > Integer(row["id"])
+
+      #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
+      #puts "DEBUG: #{description}"
+      # cache property id
+      property_ids[row["property"]] ||= {
+          "id" => "#{row["id"]}",
+          "name" => "#{row["property"]}",
+          "group_id" => "0",
+          "category_id" => "0",
+          #"description" => description
+      }
+      max_id
+    end
+
+    def validate_example_in(counter, example_ids, ling_ids, row)
+      example_ids[row["id"]] ||= {
+          "id" => "#{row["id"]}",
+          "name" => "Example_#{counter}",
+          "group_id" => "0",
+          "ling_id" => "#{ling_ids["#{row["language"]}"]["id"]}"
+      }
+      counter +=1
+    end
+
+    def validate_ling_in(row, ling_ids)
+      ling_ids[row["language"]] ||= {
+          "id" => "#{row["id"]}",
+          "name" => "#{row["language"]}",
+          "group_id" => "0",
+          "depth" => "0"
+      }
+    end
+
+    def validate_membership_in(row, member_ids)
+      member_ids[row["id"]] ||= {
+          "id" => "#{row["id"]}",
+          "member_id" => "#{row["id"]}",
+          "group_id" => "0",
+          "level" => row["user_type"] == "admin" ? "admin" : "member"
+      }
+    end
+
+    def validate_user_in(row, user_ids)
+      char_array = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten;
+      password = (0..8).map { char_array[rand(char_array.length)] }.join;
+
+      first_name = row["first_name"]
+      first_name = first_name.gsub(/\s/, '') if first_name =~ /\s/
+      last_name = row["last_name"]
+      last_name = last_name.gsub(/\s/, '') if last_name =~ /\s/
+      email = row["email"].present? ? row["email"] : "#{first_name}@#{last_name}.com"
+      # cache user id
+      user_ids[row["id"]] = {
+          "id" => "#{row["id"]}",
+          "name" => "#{row["first_name"]} #{row["last_name"]}",
+          "email" => "#{email}",
+          "access_level" => row["user_type"] == "admin" ? "Admin" : "Member",
+          "password" => password
+      }
     end
 
     private

@@ -1,6 +1,6 @@
-namespace :sswl_data do
+namespace :sswl do
 
-  usage = "Usage: rake sswl_data:convert CONVERT_CONFIG=/path/to/config.yml"
+  usage = "Usage: rake sswl:convert CONVERT_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Convert SSWL .csvs to Terraling data
@@ -14,7 +14,7 @@ namespace :sswl_data do
     invoke_converter config
   end
 
-  usage = "Usage: rake sswl_data:dump DUMP_CONFIG=/path/to/config.yml"
+  usage = "Usage: rake sswl:dump DUMP_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Dump in csv files SSWL data from the server
@@ -109,7 +109,7 @@ namespace :sswl_data do
 
   end
 
-  usage = "Usage: rake sswl_data:migrateToTerraling DUMP_CONFIG=/path/to/config.yml"
+  usage = "Usage: rake sswl:migrateToTerraling DUMP_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Dump and convert SSWL data to Terraling data
@@ -118,7 +118,7 @@ namespace :sswl_data do
   task :migrateToTerraling => :environment do
     raise "Must specify a config file.\n\n#{usage}" unless ENV['DUMP_CONFIG'].present?
 
-    Rake::Task["sswl_data:dump"].invoke
+    Rake::Task["sswl:dump"].invoke
 
     config = YAML.load_file(ENV['DUMP_CONFIG'])
 
@@ -127,7 +127,8 @@ namespace :sswl_data do
     config = YAML.load_file("#{localPath}convert.yml")
 
     invoke_converter config
-
+    puts "Data has been converted in Terraling format and stored in:"
+    puts "\t#{localPath}terraling/"
     puts "Completed"
   end
 
