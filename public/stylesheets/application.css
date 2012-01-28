@@ -243,6 +243,7 @@ img.loading_phylogram {
     color: #C30; }
     .apple_pagination a:hover, .apple_pagination a:focus {
       text-decoration: underline; }
+
 #mapping {
     font-family: "Times New Roman",Times,serif;
     font-size:   20px;
@@ -251,5 +252,5 @@ img.loading_phylogram {
     background-size:100% 100%;
     border-bottom: 1px solid #C30;
     line-height:1.25em;
-    text-align: center
+    text-align: center;
 }
