@@ -8,7 +8,7 @@
   <h2 class="red_grad"><%= @search.group.name %> Results</h2>
 </div>
 <div id="mapping">
-  <%= link_to "Mapping", :action => "geomapping", :search => @search.query if @search.mappable?%>
+  <%= link_to "Map it!", :action => "geomapping", :search => @search.query if @search.mappable?%>
 </div>
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
