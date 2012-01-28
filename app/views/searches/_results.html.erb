@@ -8,14 +8,9 @@
         <div class="cell"><%= proc.call @search.group %></div>
     <%- end -%>
   </div>
-  <%- if @search.search_comparison -%>
-      <%- @search.results(false).each do |result| -%>
-          <%= render :partial => "searches/result", :locals => { :result => result}, :inline => true %>
-      <%- end -%>
-  <%- else -%>
-      <%- @search.results.each do |result| -%>
-          <%= render :partial => "searches/result", :locals => { :result => result}, :inline => true %>
-      <%- end -%>
+  <%- pagination_enable = !@search.search_comparison -%>
+  <%- @search.results(pagination_enable).each do |result| -%>
+      <%= render :partial => "searches/result", :locals => { :result => result}, :inline => true %>
   <%- end -%>
 </div>
 <div class="apple_pagination">
