@@ -93,13 +93,11 @@ class Ling < ActiveRecord::Base
 
   private
   def get_latlong
-    property = Property.in_group(group).where(:name => 'latlong')
-    if property.any?
-      property_id = property.first.id
-      lings_has_latlong = LingsProperty.in_group(group).where(:property_id => property_id, :ling_id => self.id)
-      return lings_has_latlong.first.value if lings_has_latlong.any?
+    property = Property.in_group(group).where(:name => 'latlong').first
+    if property.present?
+      lings_has_latlong = LingsProperty.in_group(group).where(:property_id => property.id, :ling_id => self.id).first
+      return lings_has_latlong.value unless lings_has_latlong.nil?
     end
     return ""
-    #Rails.logger.debug "******DEBUG: latlong: #{latlong}"
   end
 end
