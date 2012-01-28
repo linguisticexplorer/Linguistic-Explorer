@@ -123,7 +123,7 @@ class SearchesController < GroupDataController
 
   def check_retrieved_json(json)
     if json == "[]"
-      flash[:notice] = "Sorry, no geographical data for your lings selection"
+      flash[:notice] = "Sorry, no geographical data to show on the map!"
       json=''
     end
     json
