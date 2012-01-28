@@ -35,10 +35,6 @@ class Ling < ActiveRecord::Base
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
 
-  def gmaps4rails_title
-    self.name
-  end
-
   def get_latitude
     get_latlong.split(/,/).first
   end
