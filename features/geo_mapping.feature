@@ -2,27 +2,21 @@ Feature: Geo Mapping
 
   Background:
     Given I am a visitor
-    And the group "Syntactic Structures" with the following ling names:
-      | ling0_name  | ling1_name |
-      | Speakers    | Sentences  |
+    And the group "Syntactic Structures"
+    And the group has a maximum depth of 0
     And the following "Syntactic Structures" lings:
       | name        | parent      | depth |
       | Speaker 1   |             | 0     |
       | Speaker 2   |             | 0     |
       | Speaker 3   |             | 0     |
-      | Sentence 1  | Speaker 1   | 1     |
-      | Sentence 2  | Speaker 2   | 1     |
-      | Sentence 3  | Speaker 3   | 1     |
     And the following "Syntactic Structures" properties:
       | property name | ling name   | prop val  | category    | depth |
       | Property 1    | Speaker 1   | Eastern   | Demographic | 0     |
       | Property 1    | Speaker 3   | Eastern   | Demographic | 0     |
       | Property 2    | Speaker 1   | Western   | Demographic | 0     |
       | Property 2    | Speaker 2   | Western   | Demographic | 0     |
-      | Property 3    | Sentence 1  | verb      | Linguistic  | 1     |
-      | Property 3    | Sentence 3  | noun      | Linguistic  | 1     |
-      | Property 4    | Sentence 1  | noun      | Linguistic  | 1     |
-      | Property 4    | Sentence 2  | noun      | Linguistic  | 1     |
+      | latlong       | Speaker 1   | 1,1       | Demographic | 0     |
+      | latlong       | Speaker 2   | 2,2       | Demographic | 0     |
 
   Scenario: Visitor search and the map link is in the results page
     When I go to the Syntactic Structures search page
@@ -43,10 +37,19 @@ Feature: Geo Mapping
   Scenario: Visitor search with no results and no Map it! link in the results page
     When I go to the Syntactic Structures search page
     And I select "Property 1" from "Demographic Properties"
-    And I select "Speaker 2" from "Speakers"
+    And I select "Speaker 2" from "Ling"
     And I press "Show results"
     Then I should see no search result rows
     Then I should not see "Map it!"
+
+  Scenario: Visitor search with results but lings haven't any geographical data to show
+    When I go to the Syntactic Structures search page
+    And I select "Speaker 3" from "Ling"
+    And I press "Show results"
+    And I should see "Map it!"
+    Then I follow "Map it!"
+    And I should not see a map
+    And I should see "Sorry, no geographical data to show on the map!"
 
   Scenario: Visitor search cross properties and the map link is in the results page
     When I go to the Syntactic Structures search page
@@ -68,17 +71,17 @@ Feature: Geo Mapping
 
   Scenario: Visitor search to compare lings and the map link is in the results page
     When I go to the Syntactic Structures search page
-    And I select "Speaker 1" from "Speakers"
-    And I select "Speaker 2" from "Speakers"
-    And I choose "Compare" within "#speakers"
+    And I select "Speaker 1" from "Ling"
+    And I select "Speaker 2" from "Ling"
+    And I choose "Compare" within "#ling"
     And I press "Show results"
     Then I should see "Map it!"
 
   Scenario: Visitor search to compare lings and go to the map
     When I go to the Syntactic Structures search page
-    And I select "Speaker 1" from "Speakers"
-    And I select "Speaker 2" from "Speakers"
-    And I choose "Compare" within "#speakers"
+    And I select "Speaker 1" from "Ling"
+    And I select "Speaker 2" from "Ling"
+    And I choose "Compare" within "#ling"
     And I press "Show results"
     Then I should see "Map it!"
     Then I follow "Map it!"
