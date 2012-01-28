@@ -10,14 +10,18 @@
       </h2>
     </div>
     <div id="intro">
-      <p>TerraLing is a searchable database that allows users to discover which properties (morphological, syntactic,
-        and semantic) characterize a language, as well as how these properties relate across languages. This system is
-        designed to be free to the public and open-ended. Anyone can use the database to perform queries.</p>
-      <p>Visit the list of <%= link_to "public groups", groups_path %> to begin searching or <%= link_to 'sign up for an account', new_user_registration_path %>
-        to get access more groups and search features.</p>
-      <p>TerraLing is the next generation of the <%= link_to "Linguistic Explorer", "http://linguisticexplorer.org/" %> project.
-        To learn more about the objectives of TerraLing, please visit <a href="http://linguistics.as.nyu.edu/object/linguistics.events.database_workshop">the original workshop site</a>. <!-- or watch our <a href="#TB_inline?height=315&width=504&inlineId=video&modal=false" class="thickbox">tutorial video.</a> --></p>
+      <p>TerraLing is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+        characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
+        Anyone can use the database to perform queries. Linguistic researchers can put up their own data using the open-ended framework we provide.</p>
+      <p>The data of each project is held in a database called a group. Visit the list of <%= link_to "public groups", groups_path %> to begin searching.
+        <%= link_to 'Sign up for an account', new_user_registration_path %> to get access more groups and search features.</p>
       <p>To read about updates and post questions, please visit <a href="http://groups.google.com/group/sswllinguistics">our Google Group</a>.</p>
+      <p>TerraLing is the next generation of the <%= link_to "Linguistic Explorer", "http://linguisticexplorer.org/" %> project. The linguistic leads have
+        been Chris Collins, Hilda Koopman. and Richard Kayne.
+        The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+        Kozyra.
+        The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), and Marco Liberati.
+        The system architect is Dennis Shasha.</p>
     </div>
   </div>
 <%- else -%>
