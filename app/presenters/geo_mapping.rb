@@ -12,7 +12,8 @@ class GeoMapping
   		lings = Ling.where(:id => ling_list).to_a
   		if ling_list.any?
   			json = json + lings.to_gmaps4rails do |ling, marker|
-          marker.infowindow info_window(ling, row_number)
+          marker.infowindow info_window_for ling
+          marker.sidebar "foo"
   				marker.picture({
 						:picture => "/images/markers/marker#{row_number}.png",
 						:width 	=> "32",
@@ -26,12 +27,8 @@ class GeoMapping
   
   private
 
-  def info_window(ling, row_number)
-    if @search.cross?
-      "#{ling.name} <br /> Row number: #{row_number}"
-    else
+  def info_window_for(ling)
       ling.name
-    end
   end
 
   def get_lings_hash
