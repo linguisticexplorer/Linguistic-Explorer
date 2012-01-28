@@ -8,9 +8,9 @@ class GeoMapping
 
   def get_json
     json = ''
-    @lings_hash.each do |row_number, ling_list|
-      if ling_list.any?
-        json = ling_list.to_gmaps4rails do |ling, marker|
+    @lings_hash.each do |row_number, lings_list|
+      if lings_list.any?
+        json << lings_list.to_gmaps4rails do |ling, marker|
           marker.infowindow info_window_for ling
           marker.title rollover_information(ling)
           marker.picture({
@@ -28,7 +28,8 @@ class GeoMapping
 
   def info_window_for(ling)
     return link_to_ling ling if ling.name == rollover_information(ling)
-    "#{link_to_ling ling}<br /><p>#{rollover_information(ling)}</p>".html_safe
+    extra_info = rollover_information(ling).gsub(/, /,',<br />')
+    "#{link_to_ling ling}<br /><p>#{extra_info}</p>".html_safe
   end
 
   def create_lings_hash(search)
@@ -40,7 +41,7 @@ class GeoMapping
     elsif search.cross?
       lings_in_cross_search(search_results)
     end
-    @lings_hash.map {|k,v| v = v.uniq}
+    @lings_hash.map {|k,v| v.uniq! }
   end
 
 
@@ -79,11 +80,11 @@ class GeoMapping
   def rollover_information(ling)
     title = @titles_hash[ling.id]
     return title if title.is_a? String
-    title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("<br />").gsub(/, $/, "")
+    title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("").gsub(/, $/, "")
   end
 
   def link_to_ling(ling)
-      "<a href='/groups/#{ling.group.to_param}/lings/#{ling.to_param}'>#{ling.name}</a>".html_safe
-    end
+    "<a href='/groups/#{ling.group.to_param}/lings/#{ling.to_param}'>#{ling.name}</a>".html_safe
+  end
 
 end
