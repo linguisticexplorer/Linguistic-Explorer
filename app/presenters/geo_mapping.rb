@@ -13,7 +13,7 @@ class GeoMapping
       if ling_list.any?
         json = json + ling_list.to_gmaps4rails do |ling, marker|
           marker.infowindow info_window_for ling
-          marker.title title_for(ling)
+          marker.title rollover_information(ling)
           marker.picture({
                              :picture => "/images/markers/marker#{row_number}.png",
                              :width 	=> "32",
@@ -28,7 +28,8 @@ class GeoMapping
   private
 
   def info_window_for(ling)
-    ling.name
+    return link_to_ling ling if ling.name == rollover_information(ling)
+    "#{link_to_ling ling}<br /><p>#{rollover_information(ling)}</p>".html_safe
   end
 
   def create_lings_hash(search)
@@ -76,10 +77,14 @@ class GeoMapping
     end
   end
 
-  def title_for(ling)
+  def rollover_information(ling)
     title = @titles_hash[ling.id]
     return title if title.is_a? String
     title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("").gsub(/, $/, "")
   end
+
+  def link_to_ling(ling)
+      "<a href='/groups/#{ling.group.to_param}/lings/#{ling.to_param}'>#{ling.name}</a>".html_safe
+    end
 
 end
