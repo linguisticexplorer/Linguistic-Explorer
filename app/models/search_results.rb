@@ -53,10 +53,18 @@ module SearchResults
   end
 
   def mappable?
-    (default? || cross? || compare?) && (!implication?) && (!clustering?) && (!self.search_comparison)
+    results.any? && mappable_kind? && !non_mappable_kind?
   end
 
   private
+
+  def mappable_kind?
+    (default? || cross? || compare?)
+  end
+
+  def non_mappable_kind?
+    (implication?) || (clustering?) || self.search_comparison
+  end
 
   def ensure_result_groups!
     Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
