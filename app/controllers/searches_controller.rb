@@ -15,12 +15,7 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    @search = Search.new do |s|
-      s.creator = current_user
-      s.group   = current_group
-      s.query   = params[:search]
-      s.offset  = params[:page]
-    end
+    @search = perform_search
 
     #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
     authorize! :search, @search
@@ -75,24 +70,14 @@ class SearchesController < GroupDataController
   end
 
   def lings_in_selected_row
-    @search = Search.new do |s|
-      s.creator = current_user
-      s.group   = current_group
-      s.query   = params[:search]
-      s.offset  = params[:page]
-    end
+    @search = perform_search
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
     authorize! :cross, @search
   end
 
   def geomapping
-    @search = Search.new do |s|
-      s.creator = current_user
-      s.group = current_group
-      s.query = params[:search]
-      s.offset = params[:page]
-    end
+    @search = perform_search
 
     @json = check_retrieved_json(GeoMapping.new(@search).get_json)
 
@@ -127,6 +112,15 @@ class SearchesController < GroupDataController
       json=''
     end
     json
+  end
+
+  def perform_search
+    Search.new do |s|
+      s.creator = current_user
+      s.group = current_group
+      s.query = params[:search]
+      s.offset = params[:page]
+    end
   end
 
 end
