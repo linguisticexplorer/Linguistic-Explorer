@@ -55,8 +55,7 @@ module SswlData
       user_ids = {}
       csv_for_each :user do |row|
 
-        # Generator of a random password
-        validate_user_in(row, user_ids)
+        convert_user_in(row, user_ids)
       end
 
       write_csv :user, user_ids
@@ -96,7 +95,7 @@ module SswlData
       csv_for_each :user do |row|
 
         # cache member id
-        validate_membership_in(row, member_ids)
+        convert_membership_in(row, member_ids)
       end
 
       write_csv :membership, member_ids
@@ -118,7 +117,7 @@ module SswlData
       csv_for_each :ling do |row|
 
         # cache ling id
-        validate_ling_in(row, ling_ids)
+        convert_ling_in(row, ling_ids)
 
       end
 
@@ -156,7 +155,7 @@ module SswlData
       csv_for_each :example do |row|
 
         # cache example id
-        validate_example_in(counter, example_ids, ling_ids, row)
+        counter = convert_example_in(row, example_ids, ling_ids, counter)
       end
 
       write_csv :example, example_ids
@@ -176,7 +175,7 @@ module SswlData
       max_id = 0
       property_ids = {}
       csv_for_each :property do |row|
-        max_id = validate_property_in(max_id, property_ids, row)
+        max_id = convert_property_in(row, property_ids, max_id)
 
       end
 
@@ -197,9 +196,9 @@ module SswlData
       lings_property_ids = {}
       csv_for_each :lings_property do |row|
 
-        max_id = update_property_in(max_id, property_ids, row)
+        max_id = update_property_in(row, property_ids, max_id)
 
-        validate_ling_prop_in(ling_ids, property_ids, row, lings_property_ids)
+        convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids )
       end
 
       write_csv :property, property_ids
@@ -279,7 +278,7 @@ module SswlData
       csv_for_each :stored_value do |row|
         next unless property_ids[row["property"]].nil?
 
-        validate_stored_value_in(row, stored_value_ids)
+        convert_stored_value_in(row, stored_value_ids)
       end
 
       write_csv :stored_value, stored_value_ids
@@ -301,7 +300,7 @@ module SswlData
       puts "Time for converting: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
     end
 
-    def validate_stored_value_in(row, stored_value_ids)
+    def self.convert_stored_value_in(row, stored_value_ids)
       stored_value_ids[row["id"]] ||={
           "id" => "#{row["id"]}",
           "key" => "#{row["property"]}",
@@ -312,7 +311,7 @@ module SswlData
       }
     end
 
-    def validate_ling_prop_in(ling_ids, property_ids, row, lings_property_ids)
+    def self.convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids)
       lings_prop_id = "#{row["language"]}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
 
       # cache lings_property id
@@ -326,7 +325,7 @@ module SswlData
       }
     end
 
-    def update_property_in(max_id, property_ids, row)
+    def self.update_property_in(row, property_ids, max_id)
       max_id +=1 if property_ids[row["property"]].nil?
 
       # Some properties are splitted in more files
@@ -339,8 +338,8 @@ module SswlData
       max_id
     end
 
-    def validate_property_in(max_id, property_ids, row)
-      max_id = Integer(row["id"]) unless max_id > Integer(row["id"])
+    def self.convert_property_in(row, property_ids, max_id)
+      max_id = row["id"].to_i unless max_id > row["id"].to_i
 
       #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
       #puts "DEBUG: #{description}"
@@ -355,17 +354,17 @@ module SswlData
       max_id
     end
 
-    def validate_example_in(counter, example_ids, ling_ids, row)
+    def self.convert_example_in(row, example_ids, ling_ids, counter)
       example_ids[row["id"]] ||= {
           "id" => "#{row["id"]}",
           "name" => "Example_#{counter}",
           "group_id" => "0",
           "ling_id" => "#{ling_ids["#{row["language"]}"]["id"]}"
       }
-      counter +=1
+      counter+=1
     end
 
-    def validate_ling_in(row, ling_ids)
+    def self.convert_ling_in(row, ling_ids)
       ling_ids[row["language"]] ||= {
           "id" => "#{row["id"]}",
           "name" => "#{row["language"]}",
@@ -374,7 +373,7 @@ module SswlData
       }
     end
 
-    def validate_membership_in(row, member_ids)
+    def self.convert_membership_in(row, member_ids)
       member_ids[row["id"]] ||= {
           "id" => "#{row["id"]}",
           "member_id" => "#{row["id"]}",
@@ -383,7 +382,8 @@ module SswlData
       }
     end
 
-    def validate_user_in(row, user_ids)
+    def self.convert_user_in(row, user_ids)
+      # Generator of a random password
       char_array = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten;
       password = (0..8).map { char_array[rand(char_array.length)] }.join;
 
