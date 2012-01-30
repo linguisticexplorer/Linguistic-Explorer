@@ -37,7 +37,7 @@ module SswlData
       end
 
       it "should convert the access level to the right format" do
-        row_converted("id")["access_level"].should == "Admin"
+        row_converted("id")["access_level"].should == "admin"
       end
 
     end
