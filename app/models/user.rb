@@ -26,7 +26,7 @@ class User < ActiveRecord::Base
   attr_accessible :name, :password, :password_confirmation, :remember_me
 
   def admin?
-    ADMIN == self.access_level
+    ADMIN == access_level
   end
 
   def administrated_groups
@@ -47,5 +47,9 @@ class User < ActiveRecord::Base
 
   def fake_password
 
+  end
+
+  def access_level
+    self.access_level.downcase
   end
 end
