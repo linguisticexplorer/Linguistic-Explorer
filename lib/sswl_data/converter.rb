@@ -397,7 +397,7 @@ module SswlData
           "id" => "#{row["id"]}",
           "name" => "#{row["first_name"]} #{row["last_name"]}",
           "email" => "#{email}",
-          "access_level" => row["user_type"] == "admin" ? "admin" : "member",
+          "access_level" => row["user_type"] == "admin" ? "admin" : "user",
           "password" => password
       }
     end
