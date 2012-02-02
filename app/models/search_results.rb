@@ -59,11 +59,11 @@ module SearchResults
   private
 
   def mappable_kind?
-    (default? || cross? || compare?)
+    default? || cross? || compare? || implication?
   end
 
   def non_mappable_kind?
-    (implication?) || (clustering?) || self.search_comparison
+    (clustering?) || self.search_comparison
   end
 
   def ensure_result_groups!

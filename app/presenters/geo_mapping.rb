@@ -11,8 +11,8 @@ class GeoMapping
     @lings_hash.each do |row_number, lings_list|
       if lings_list.any?
         json << lings_list.to_gmaps4rails do |ling, marker|
-          marker.infowindow info_window_for ling
-          marker.title rollover_information(ling)
+          marker.infowindow info_window_for ling, row_number
+          marker.title rollover_information(ling, row_number)
           marker.picture({
                              :picture => "/images/markers/marker#{row_number}.png",
                              :width 	=> "32",
@@ -26,10 +26,13 @@ class GeoMapping
 
   private
 
-  def info_window_for(ling)
-    return link_to_ling ling if ling.name == rollover_information(ling)
-    extra_info = rollover_information(ling).gsub(/, /,',<br />')
-    "#{link_to_ling ling}<br /><p>#{extra_info}</p>".html_safe
+  def info_window_for(ling, list)
+    return link_to_ling ling if ling.name == rollover_information(ling, list)
+    group_info = rollover_information(ling, list)
+    separator = ' => '
+    separator = ',<br />' unless is_implication?
+    group_info = group_info.gsub(/, /,separator)
+    "#{link_to_ling ling}<br /><p>#{group_info}</p>".html_safe
   end
 
   def create_lings_hash(search)
@@ -40,6 +43,8 @@ class GeoMapping
       lings_in_compare_search(search_results)
     elsif search.cross?
       lings_in_cross_search(search_results)
+    else
+      lings_in_implication_search(search_results)
     end
     @lings_hash.map {|k,v| v.uniq! }
   end
@@ -60,7 +65,17 @@ class GeoMapping
       @lings_hash["#{marker_list}"] = []
       result.child.each {|lp| @lings_hash["#{marker_list}"] << lp.ling }
       result.child.each {|lp| @titles_hash[lp.ling_id] = result.parent}
-      marker_list = marker_list + 1
+      marker_list += 1
+    end
+  end
+
+  def lings_in_implication_search(search_results)
+    marker_list = 1
+    search_results.each do |result|
+      @lings_hash["#{marker_list}"] = []
+      result.child.each {|lp| @lings_hash["#{marker_list}"] << lp.ling }
+      result.child.each {|lp| @titles_hash["#{lp.ling_id}:#{marker_list}"] = result.parent}
+      marker_list += 1
     end
   end
 
@@ -77,14 +92,22 @@ class GeoMapping
     end
   end
 
-  def rollover_information(ling)
-    title = @titles_hash[ling.id]
+  def rollover_information(ling, list)
+    if !is_implication?
+      title = @titles_hash[ling.id]
+    else
+      title = @titles_hash["#{ling.id}:#{list}"]
+    end
     return title if title.is_a? String
     title.map {|lp| "#{lp.property.name} : #{lp.value} , "}.join("").gsub(/, $/, "")
   end
 
   def link_to_ling(ling)
     "<a href='/groups/#{ling.group.to_param}/lings/#{ling.to_param}'>#{ling.name}</a>".html_safe
+  end
+
+  def is_implication?
+    @titles_hash.keys.first.is_a? String
   end
 
 end

@@ -87,11 +87,25 @@ Feature: Geo Mapping
     Then I follow "Map it!"
     Then I should see a map
 
-  Scenario: Visitor search to implication and not see the Map it! link
+  Scenario: Visitor search to implication and the map link is in the results page
     When I go to the Syntactic Structures search page
     And I choose "Both" within "#advanced_set"
     And I press "Show results"
-    Then I should not see "Map it!"
+    Then I should see "Map it!"
+
+  Scenario: Visitor search to implication and the map link is in the results page
+    When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
+    And I press "Show results"
+    Then I should see "Map it!"
+
+  Scenario: Visitor search to implication and go to the map
+    When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
+    And I press "Show results"
+    Then I should see "Map it!"
+    Then I follow "Map it!"
+    Then I should see a map
 
   Scenario: Visitor search for similarity tree and not see the Map it! link
     When I go to the Syntactic Structures search page
