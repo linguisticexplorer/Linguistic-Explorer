@@ -55,7 +55,7 @@ module SswlData
       user_ids = {}
       csv_for_each :user do |row|
 
-        convert_user_in(row, user_ids)
+        Converter.convert_user_in(row, user_ids)
       end
 
       write_csv :user, user_ids
@@ -95,7 +95,7 @@ module SswlData
       csv_for_each :user do |row|
 
         # cache member id
-        convert_membership_in(row, member_ids)
+        Converter.convert_membership_in(row, member_ids)
       end
 
       write_csv :membership, member_ids
@@ -117,7 +117,7 @@ module SswlData
       csv_for_each :ling do |row|
 
         # cache ling id
-        convert_ling_in(row, ling_ids)
+        Converter.convert_ling_in(row, ling_ids)
 
       end
 
@@ -155,7 +155,7 @@ module SswlData
       csv_for_each :example do |row|
 
         # cache example id
-        counter = convert_example_in(row, example_ids, ling_ids, counter)
+        counter = Converter.convert_example_in(row, example_ids, ling_ids, counter)
       end
 
       write_csv :example, example_ids
@@ -175,7 +175,7 @@ module SswlData
       max_id = 0
       property_ids = {}
       csv_for_each :property do |row|
-        max_id = convert_property_in(row, property_ids, max_id)
+        max_id = Converter.convert_property_in(row, property_ids, max_id)
 
       end
 
@@ -196,9 +196,9 @@ module SswlData
       lings_property_ids = {}
       csv_for_each :lings_property do |row|
 
-        max_id = update_property_in(row, property_ids, max_id)
+        max_id = Converter.update_property_in(row, property_ids, max_id)
 
-        convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids )
+        Converter.convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids )
       end
 
       write_csv :property, property_ids
@@ -278,7 +278,7 @@ module SswlData
       csv_for_each :stored_value do |row|
         next unless property_ids[row["property"]].nil?
 
-        convert_stored_value_in(row, stored_value_ids)
+        Converter.convert_stored_value_in(row, stored_value_ids)
       end
 
       write_csv :stored_value, stored_value_ids
