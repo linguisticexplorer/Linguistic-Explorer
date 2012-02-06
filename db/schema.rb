@@ -109,7 +109,9 @@ ActiveRecord::Schema.define(:version => 20120202180323) do
 
   add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"
   add_index "lings_properties", ["ling_id", "property_id"], :name => "index_lings_properties_on_ling_id_and_property_id"
+  add_index "lings_properties", ["ling_id", "property_value"], :name => "i_prop_val", :length => {"ling_id"=>nil, "property_value"=>10}
   add_index "lings_properties", ["property_value"], :name => "index_lings_properties_on_property_value"
+  add_index "lings_properties", ["value"], :name => "index_lings_properties_on_value"
 
   create_table "memberships", :force => true do |t|
     t.integer  "member_id"
