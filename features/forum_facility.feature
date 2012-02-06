@@ -172,6 +172,7 @@ Feature: Forum facility
     And I fill in "Body" with "Reply to previous post"
     And I press "Submit"
     Then I should see "Reply to previous post"
+    Then I should see "Post was successfully created"
 
   Scenario: Members should be able to quote a post
     Given I am signed in as "bob@dole.com"
@@ -189,7 +190,7 @@ Feature: Forum facility
     And I should see "Quote"
     Then I follow "Quote"
     And I press "Submit"
-    Then I should see "[quote]This topic is open to every member of Terraling[/quote]"
+    Then I should see "Post was successfully created"
 
   Scenario: Visitors should only read Posts
     When I follow "Forums"
