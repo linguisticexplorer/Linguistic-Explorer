@@ -41,8 +41,15 @@ gem 'newrelic_rpm'
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
+
+# If having problem with new migrations?
+# * Disable slim_scrooge here
+# * Deploy on server with "cap deploy:migrations"
+# * Restore slim_scrooge here
+# * Deploy again on server with "cap deploy"
+
 # Optimizator query
-#gem 'slim_scrooge'
+gem 'slim_scrooge'
 
 # Nice CLI progress bar for ruby
 gem "progressbar"
