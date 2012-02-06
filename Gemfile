@@ -42,7 +42,7 @@ gem 'newrelic_rpm'
 gem 'will_paginate', '~> 3.0'
 
 # Optimizator query
-gem 'slim_scrooge'
+#gem 'slim_scrooge'
 
 # Nice CLI progress bar for ruby
 gem "progressbar"
