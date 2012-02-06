@@ -81,4 +81,32 @@ FactoryGirl.define do
   factory :stored_value do |f|
 
   end
+
+end
+
+FactoryGirl.define do
+  factory :forum_group do |f|
+    f.position 0
+  end
+end
+
+FactoryGirl.define do
+  factory :forum do |f|
+    f.description "Generic Forum"
+    f.position 0
+  end
+end
+
+FactoryGirl.define do
+  factory :topic do |f|
+    f.body "Bla bla"
+    f.association :user, :factory => :user
+  end
+end
+
+FactoryGirl.define do
+  factory :post do |f|
+    f.body "Blah blah blah"
+    f.association :user, :factory => :user
+  end
 end

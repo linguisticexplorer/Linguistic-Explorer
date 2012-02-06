@@ -27,3 +27,6 @@ Feature: Linguistic Explorer Home Page
   Scenario: Visitor haven't any saved searches
     When I go to my group searches page
     Then I should see "You are not authorized"
+
+  Scenario: Visitor can visit forums
+    Then I should see "Forums"

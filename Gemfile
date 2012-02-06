@@ -59,7 +59,12 @@ gem 'rake', '0.9.2.2'
 # more documentation
 gem 'rinruby'
 
+# Geomapping gem
 gem 'gmaps4rails'
+
+# Forum gem
+gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
+gem 'bb-ruby'
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
@@ -83,8 +88,6 @@ group :development, :test, :pg_test do
   gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
-
-  #gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 end
 
 group :pg_test do

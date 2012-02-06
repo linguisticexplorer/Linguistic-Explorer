@@ -62,3 +62,9 @@ Feature: Permissions testing for non-logged-in users
     Then I should be on the access denied page
     When I go to the memberships page for Secret Club
     Then I should be on the access denied page
+
+  Scenario: Visitors should not able to create a new forum
+    When I should see "TerraLing"
+    Then I should see "Forums" within "#group_nav_bar"
+    Then I follow "Forums"
+    And I should not see "New Forum Group"

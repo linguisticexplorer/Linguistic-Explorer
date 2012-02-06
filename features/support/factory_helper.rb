@@ -27,3 +27,15 @@ def find_or_create_lings_property(opts = {})
   value     = opts[:value]
   group.lings_properties.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value) || ling.add_property(value, property)
 end
+
+def create_forum_group(opts={})
+  Factory(:forum_group, opts)
+end
+
+def create_forum(opts={})
+  Factory(:forum, opts)
+end
+
+def create_topic(opts={})
+  Factory(:topic, opts)
+end

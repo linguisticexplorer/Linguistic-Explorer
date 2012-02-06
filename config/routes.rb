@@ -1,4 +1,12 @@
 LinguisticExplorer::Application.routes.draw do
+  resources :forum_groups, :except => [:index, :show]
+  resources :forums, :except => :index do
+    resources :topics, :shallow => true, :except => :index do
+      resources :posts, :shallow => true, :except => [:index, :show]
+    end
+    root :to => 'forum_groups#index', :via => :get
+  end
+
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
 

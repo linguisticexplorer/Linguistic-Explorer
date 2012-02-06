@@ -10,6 +10,13 @@ describe Ability do
           ability.should be_able_to(:manage, klass )
         end
       end
+
+      it "should be able to manage every object in the forum" do
+        ability = Ability.new(Factory(:user, :access_level => "admin"))
+        [ ForumGroup, Forum, Topic, Post ].each do |klass|
+          ability.should be_able_to(:manage, klass )
+        end
+      end
     end
 
     describe "Visitors" do
@@ -49,6 +56,49 @@ describe Ability do
         @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
         @visitor.should_not be_able_to(:create, Factory(:search, :group => @group))
       end
+
+      describe "within Forum" do
+        before do
+          @forum_group_secret = Factory(:forum_group, :title => "Secret Group", :state => false)
+          @forum_group_public = Factory(:forum_group, :title => "Public Group", :state => true)
+        end
+        it "should not be able to see secret forum group" do
+          @visitor.should_not be_able_to(:read, @forum_group_secret)
+        end
+
+        it "should be able to see public forum group" do
+          @visitor.should be_able_to(:read, @forum_group_public)
+        end
+
+        it "should not be able to see secret forum in a public group" do
+          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          @visitor.should_not be_able_to(:read, forum)
+        end
+
+        it "should not be able to see public forum in a secret group" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          @visitor.should_not be_able_to(:read, forum)
+        end
+
+        it "should not be able to see a topic in a secret forum" do
+          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          @visitor.should_not be_able_to(:read, topic)
+        end
+
+        it "should not be able to see a topic in a secret forum group" do
+          forum = Factory(:forum, :title => "Secret Forum", :state => true, :forum_group => @forum_group_secret)
+          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          @visitor.should_not be_able_to(:read, topic)
+        end
+
+        it "should be able to see a topic in a public forum" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          @visitor.should be_able_to(:read, topic)
+        end
+
+      end
     end
 
     describe "Logged in Users" do
@@ -63,6 +113,73 @@ describe Ability do
 
       it "should not be able to manage other users" do
         @logged.should_not be_able_to(:manage, Factory(:user, :name => "otherguy", :email => "other@example.com"))
+      end
+
+      describe "within Forum" do
+        before do
+          @forum_group_secret = Factory(:forum_group, :title => "Secret Group", :state => false)
+          @forum_group_public = Factory(:forum_group, :title => "Public Group", :state => true)
+        end
+
+        it "should not be able to see secret forum group" do
+          @logged.should_not be_able_to(:read, @forum_group_secret)
+        end
+
+        it "should be able to see public forum group" do
+          @logged.should be_able_to(:read, @forum_group_public)
+        end
+
+        it "should not be able to see secret forum in a public group" do
+          forum = Factory(:forum, :title => "Public Forum", :state => false, :forum_group => @forum_group_public)
+          @logged.should_not be_able_to(:read, forum)
+        end
+
+        it "should not be able to see public forum in a secret group" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          @logged.should_not be_able_to(:read, forum)
+        end
+
+        it "should not be able to see a topic in a secret forum" do
+          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should_not be_able_to(:read, topic)
+        end
+
+        it "should not be able to see a topic in a secret forum group" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should_not be_able_to(:read, topic)
+        end
+
+        it "should be able to see a topic in a public forum" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should be_able_to(:read, topic)
+        end
+
+        it "should be able to reply to a post in a public forum" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should be_able_to(:create, topic.posts.new)
+        end
+
+        it "should be able to update his own post in a public forum" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should be_able_to(:update, topic.posts.first)
+        end
+
+        it "should be able to destroy his own post in a public forum" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          @logged.should be_able_to(:destroy, topic.posts.first)
+        end
+
+        it "should not be able to update a post in a locked topic" do
+          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = Factory(:topic, :title => "Free topic", :locked => true, :user => @user, :forum => forum)
+          @logged.should_not be_able_to(:update, topic.posts.first)
+        end
       end
     end
 
@@ -144,7 +261,7 @@ describe Ability do
           end
         end
 
-    end
+      end
 
       describe "with a private group that they are not a member of" do
         before do
@@ -166,7 +283,7 @@ describe Ability do
         end
 
         [ :read, :update, :create, :destroy ].each do |action|
-          it "should not be able to :{action} the group" do
+          it "should not be able to :#{action} the group" do
             @admin.should_not be_able_to(action, @other_group)
           end
 

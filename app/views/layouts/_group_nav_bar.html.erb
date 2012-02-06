@@ -13,12 +13,16 @@
     <%= link_to current_group.example_name, [current_group, :examples] %>
     <%= link_to current_group.examples_lings_property_name, [current_group, :examples_lings_properties] %>
     <%= link_to "Members", [current_group, :memberships] %>
+    <%= link_to "Forums", forums_path %>
   <% elsif @groups %>
     <%= form_tag({:controller => "groups", :action => "index"}, :method => "get") do %>
       <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>
       <%= submit_tag("Go") %>
+      <%= link_to "Forums", forums_path %>
     <% end %>
   <% else %>
     <%= link_to "Select a group", groups_path %>
+    <%= link_to "Forums", forums_path %>
   <% end %>
+
 </div>

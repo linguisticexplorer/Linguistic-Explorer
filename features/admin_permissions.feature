@@ -86,3 +86,9 @@ Feature: Permissions testing for site admins
     Then I should be on the example values page for Secret Club
     And  I follow "Members"
     Then I should be on the memberships page for Secret Club
+
+  Scenario: Admins should be able to manage forum groups
+    Then I should see "Forums" within "#group_nav_bar"
+    Then I follow "Forums"
+    And I should see "New Forum Group"
+

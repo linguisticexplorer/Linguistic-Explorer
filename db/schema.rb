@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110516062215) do
+ActiveRecord::Schema.define(:version => 20120202180323) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -46,6 +46,26 @@ ActiveRecord::Schema.define(:version => 20110516062215) do
   end
 
   add_index "examples_lings_properties", ["group_id"], :name => "index_examples_lings_properties_on_group_id"
+
+  create_table "forum_groups", :force => true do |t|
+    t.string   "title"
+    t.boolean  "state",      :default => true
+    t.integer  "position",   :default => 0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "forums", :force => true do |t|
+    t.string   "title"
+    t.text     "description"
+    t.boolean  "state",          :default => true
+    t.integer  "topics_count",   :default => 0
+    t.integer  "posts_count",    :default => 0
+    t.integer  "position",       :default => 0
+    t.integer  "forum_group_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -102,6 +122,15 @@ ActiveRecord::Schema.define(:version => 20110516062215) do
 
   add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
 
+  create_table "posts", :force => true do |t|
+    t.text     "body"
+    t.integer  "forum_id"
+    t.integer  "topic_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "properties", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -138,6 +167,18 @@ ActiveRecord::Schema.define(:version => 20110516062215) do
 
   add_index "stored_values", ["group_id"], :name => "index_stored_values_on_group_id"
 
+  create_table "topics", :force => true do |t|
+    t.string   "title"
+    t.integer  "hits",        :default => 0
+    t.boolean  "sticky",      :default => false
+    t.boolean  "locked",      :default => false
+    t.integer  "posts_count"
+    t.integer  "forum_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
     t.string   "encrypted_password",   :limit => 128, :default => "", :null => false
@@ -154,6 +195,8 @@ ActiveRecord::Schema.define(:version => 20110516062215) do
     t.datetime "updated_at"
     t.string   "name"
     t.string   "access_level"
+    t.integer  "topics_count",                        :default => 0
+    t.integer  "posts_count",                         :default => 0
   end
 
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true

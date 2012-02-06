@@ -2,8 +2,8 @@ class User < ActiveRecord::Base
   include CSVAttributes
 
   ACCESS_LEVELS = [
-    ADMIN = "admin",
-    USER  = "user"
+      ADMIN = "admin",
+      USER  = "user"
   ]
 
   CSV_ATTRIBUTES = %w[ id name email access_level password ]
@@ -21,6 +21,8 @@ class User < ActiveRecord::Base
   has_many :memberships, :foreign_key => :member_id, :dependent => :destroy
   has_many :searches, :foreign_key=> :creator_id, :dependent => :destroy
   has_many :groups, :through => :memberships
+  has_many :topics, :dependent => :destroy
+  has_many :posts, :dependent => :destroy
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :name, :password, :password_confirmation, :remember_me
