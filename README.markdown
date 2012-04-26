@@ -34,20 +34,20 @@ How to
 
 * Download it!
 
-  `$ git clone git@github.com:linguisticexplorer/Linguistic-Explorer.git`
+  `$ git clone git://github.com/linguisticexplorer/Linguistic-Explorer.git`
 
 * Bundle it!
 
-  `$ cd Linguistic-Explorer
-   $ bundle install`
+  `$ cd Linguistic-Explorer`
+  `$ bundle install`
 
 * Configure it!
 
- `$ cp db/database.yml.example db/database.yml`
+ `$ cp config/database.yml.example config/database.yml`
 
   Edit your MySQL account data for development and test environment:
 
- `$ vim db/database.yml`
+ `$ vim config/database.yml`
 
   Create tables and seed them
 
@@ -61,7 +61,7 @@ How to
 
 Download seed data from here:
 
-  `$ git clone git@github.com:dej611/terraling_seed.git`
+  `$ git clone git://github.com/dej611/terraling_seed.git`
 
 Copy seed data to the doc/data in Terraling:
 
