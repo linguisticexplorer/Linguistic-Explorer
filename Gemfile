@@ -42,14 +42,14 @@ gem 'newrelic_rpm'
 gem 'will_paginate', '~> 3.0'
 
 
-# If having problem with new migrations?
+# Having problem with new migrations?
 # * Disable slim_scrooge here
 # * Deploy on server with "cap deploy:migrations"
 # * Restore slim_scrooge here
 # * Deploy again on server with "cap deploy"
-
+# Removed slim_scrooge by now
 # Optimizator query
-gem 'slim_scrooge'
+#gem 'slim_scrooge'
 
 # Nice CLI progress bar for ruby
 gem "progressbar"
@@ -92,7 +92,8 @@ group :development, :test, :pg_test do
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"
   gem "database_cleaner", "0.6.7"
-  gem "cucumber-rails", "0.4.0" # '0.4.0.beta.1'
+  # Due to the new name resolution approach of the bundler gem it has the require option
+  gem "cucumber-rails", "0.4.0", :require => false # '0.4.0.beta.1'
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
 end
