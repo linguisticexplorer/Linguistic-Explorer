@@ -39,6 +39,7 @@ How to
 * Bundle it!
 
   `$ cd Linguistic-Explorer`
+
   `$ bundle install`
 
 * Configure it!
