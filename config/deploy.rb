@@ -1,3 +1,4 @@
+require "rvm/capistrano"
 $: << File.join(File.dirname(__FILE__), "..", "lib")
 
 # require profile scripts
