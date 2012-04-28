@@ -13,11 +13,24 @@
         <%= javascript_include_tag 'd3.layout.min' %>
         <%= javascript_include_tag 'd3.phylogram' %>
         <%= javascript_include_tag 'newick' %>
-        <%= javascript_include_tag 'Base64' %>
-        <%= javascript_include_tag 'downloadify.min' %>
-        <%= javascript_include_tag 'swfobject' %>
+        <%= javascript_include_tag 'clustering' %>
         <div class='gallery' id='tree'> </div>
         <div id="download"></div>
+        <script>
+            // Data is computed in Newick format and processed by d3.phylogram javascript library
+            <% dendogram_type = @search.results.first -%>
+
+            var newick_string = "<%= @search.results.last -%>"
+            var newick = Newick.parse(newick_string);
+
+            buildNewickNodes(newick);
+
+            <%="phylogram(newick);" if dendogram_type == :d3_phylogram -%>
+            <%="radial_tree(newick);" if dendogram_type == :d3_radial_tree -%>
+
+            jQuery(".loading_phylogram").remove();
+            //create_download_link();
+        </script>
     <% end %>
   </div>
 </div>
