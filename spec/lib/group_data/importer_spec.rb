@@ -28,7 +28,7 @@ module GroupData
         File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
 
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
-        @importer = Importer.import(@config)
+        @importer = Importer.import(@config, false)
         @current_group = Group.find_by_name(@group.name)
       end
 

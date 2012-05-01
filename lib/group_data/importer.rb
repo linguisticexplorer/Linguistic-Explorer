@@ -37,8 +37,8 @@ module GroupData
   class Importer
 
     class << self
-      def import(config)
-        importer = new(config)
+      def import(config, verbose = true)
+        importer = new(config, verbose)
         importer.import!
         importer
       end
@@ -59,9 +59,10 @@ module GroupData
     lazy_init_cache :groups, :user_ids, :ling_ids, :category_ids, :property_ids, :example_ids, :lings_property_ids
 
     # accepts path to yaml file containing paths to csvs
-    def initialize(config)
+    def initialize(config, verbose)
       @config = config
       @config.symbolize_keys!
+      @verbose = verbose
     end
 
     def import!
@@ -72,7 +73,7 @@ module GroupData
       logger.info "processing #{csv_size(:user)} users"
       #puts "processing users"
 
-      print "processing users..."
+      print_to_console "processing users..."
 
       csv_for_each :user do |row|
         user = User.find_or_initialize_by_email(row["email"])
@@ -84,10 +85,10 @@ module GroupData
         # cache user id
         user_ids[row["id"]] = user.id
       end
-      print "#{reset}processing users...[OK]"
+      print_to_console "#{reset}processing users...[OK]"
 
       logger.info "processing #{csv_size(:group)} groups"
-      print "\nprocessing groups..."
+      print_to_console "\nprocessing groups..."
       #puts "processing groups"
 
       # This function will change the header
@@ -102,12 +103,12 @@ module GroupData
         # cache group id
         groups[row["id"]] = group
       end
-      print "#{reset}processing groups...[OK]"
+      print_to_console "#{reset}processing groups...[OK]"
 
       logger.info "processing #{csv_size(:membership)} memberships"
       #puts "processing memberships"
 
-      print "\nprocessing memberships..."
+      print_to_console "\nprocessing memberships..."
 
       csv_for_each :membership do |row|
         group       = groups[row["group_id"]]
@@ -118,12 +119,12 @@ module GroupData
         save_model_with_attributes(membership, row)
 
       end
-      print "#{reset}processing memberships...[OK]"
+      print_to_console "#{reset}processing memberships...[OK]"
 
       logger.info "processing #{csv_size(:ling)} lings"
       #puts "processing lings"
 
-      print "\nprocessing lings..."
+      print_to_console "\nprocessing lings..."
 
       csv_for_each :ling do |row|
         group     = groups[row["group_id"]]
@@ -135,12 +136,12 @@ module GroupData
         # cache ling id
         ling_ids[row["id"]] = ling.id
       end
-      print "#{reset}processing lings...[OK]"
+      print_to_console "#{reset}processing lings...[OK]"
 
       logger.info "processing #{csv_size(:ling)} parent/child ling associations"
       #puts "parent/child ling associations"
 
-      print "\nprocessing ling associations..."
+      print_to_console "\nprocessing ling associations..."
 
       csv_for_each :ling do |row|
         next if row["parent_id"].blank?
@@ -150,12 +151,12 @@ module GroupData
         child.save!
 
       end
-      print "#{reset}processing ling associations...[OK]"
+      print_to_console "#{reset}processing ling associations...[OK]"
 
       logger.info "processing #{csv_size(:category)} categories"
       #puts "processing categories"
 
-      print "\nprocessing categories..."
+      print_to_console "\nprocessing categories..."
 
       csv_for_each :category do |row|
         group     = groups[row["group_id"]]
@@ -167,12 +168,12 @@ module GroupData
         # cache category id
         category_ids[row["id"]] = category.id
       end
-      print "#{reset}processing categories...[OK]"
+      print_to_console "#{reset}processing categories...[OK]"
 
       logger.info "processing #{csv_size(:property)} properties"
       #puts "processing properties"
 
-      print "\nprocessing properties..."
+      print_to_console "\nprocessing properties..."
 
       csv_for_each :property do |row|
         group    = groups[row["group_id"]]
@@ -186,12 +187,12 @@ module GroupData
         # cache property id
         property_ids[row["id"]] = property.id
       end
-      print "#{reset}processing properties...[OK]"
+      print_to_console "#{reset}processing properties...[OK]"
 
       logger.info "processing #{csv_size(:example)} examples"
       #puts "processing examples"
 
-      print "\nprocessing examples..."
+      print_to_console "\nprocessing examples..."
       Example.transaction do
         csv_for_each :example do |row|
           group    = groups[row["group_id"]]
@@ -207,13 +208,13 @@ module GroupData
         end
       end
 
-      print "#{reset}processing examples...[OK]"
+      print_to_console "#{reset}processing examples...[OK]"
 
       total = csv_size(:lings_property)
       logger.info "processing #{total} lings_property"
 
-      print "\nprocessing lings_property..."
-      print " will take about #{total/6000} minutes for #{total} rows" unless total<100000
+      print_to_console "\nprocessing lings_property..."
+      print_to_console " will take about #{total/6000} minutes for #{total} rows" unless total<100000
 
       LingsProperty.transaction do
         csv_for_each :lings_property do |row|
@@ -233,10 +234,10 @@ module GroupData
         end
       end
 
-      print "#{reset}processing lings_property...[OK]"
+      print_to_console "#{reset}processing lings_property...[OK]"
 
       logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
-      print "\nprocessing examples_lings_property..."
+      print_to_console "\nprocessing examples_lings_property..."
 
       ExamplesLingsProperty.transaction do
         csv_for_each :examples_lings_property do |row|
@@ -253,10 +254,10 @@ module GroupData
 
       end
 
-      print "#{reset}processing examples_lings_property...[OK]"
+      print_to_console "#{reset}processing examples_lings_property...[OK]"
 
       logger.info "processing #{csv_size(:stored_value)} stored value"
-      print "\nprocessing stored_values..."
+      print_to_console "\nprocessing stored_values..."
 
       StoredValue.transaction do
         csv_for_each :stored_value do |row|
@@ -271,14 +272,18 @@ module GroupData
 
         end
       end
-      print "#{reset}processing stored_values...[OK]\n"
+      print_to_console "#{reset}processing stored_values...[OK]\n"
 
       elapsed = seconds_fraction_to_time(Time.now - start)
-      puts "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}"
+      print_to_console "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}\n"
 
     end
 
     private
+
+    def print_to_console(string)
+      print string if @verbose
+    end
 
     def seconds_fraction_to_time(time_difference)
       hours = (time_difference / 3600).to_i

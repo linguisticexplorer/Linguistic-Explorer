@@ -29,7 +29,7 @@ module GroupData
         File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
 
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
-        @validator = Validator.load(@config)
+        @validator = Validator.load(@config, false)
         @validator.validate!
       end
 
@@ -94,7 +94,7 @@ module GroupData
         load_config "no_id"
 
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "bad" , "no_id", "import.yml"))
-        @validator = Validator.load(@config)
+        @validator = Validator.load(@config, false)
         begin
           @validator.validate!
         rescue SystemExit
@@ -191,7 +191,7 @@ module GroupData
         load_config "bad_foreign_key"
 
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "bad" , "bad_foreign_key", "import.yml"))
-        @validator = Validator.load(@config)
+        @validator = Validator.load(@config, false)
         begin
           @validator.validate!
         rescue SystemExit
@@ -275,7 +275,7 @@ module GroupData
         load_config "bad_creator_id"
 
         @config   = YAML.load_file(Rails.root.join("spec", "csv", "bad" , "bad_creator_id", "import.yml"))
-        @validator = Validator.load(@config)
+        @validator = Validator.load(@config, false)
         begin
           @validator.validate!
         rescue SystemExit
