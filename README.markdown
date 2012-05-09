@@ -67,3 +67,8 @@ Download seed data from here:
 Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/doc/data`
+  
+  License
+============
+This project is under the MIT License.
+Please have a look to the LICENSE file.
