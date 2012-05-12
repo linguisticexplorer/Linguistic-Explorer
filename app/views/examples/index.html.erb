@@ -2,38 +2,46 @@
 
 <h1>Listing <%= current_group.example_name.pluralize %></h1>
 
+<div class="apple_pagination">
+  <!-- render page links in the view: -->
+  <%= will_paginate @examples %>
+</div>
+
 <table>
   <tr>
     <th>Name</th>
     <th><%= current_group.ling0_name %></th>
     <th><%= current_group.ling1_name %></th>
     <% current_group.example_storable_keys.each do |key| %>
-      <th><%= key.humanize %></th>
+        <th><%= key.humanize %></th>
     <% end %>
     <th></th>
     <th></th>
   </tr>
 
-<% @examples.each do |example| %>
-  <tr>
-    <td><%= link_to example.name, [current_group, example] %></td>
-    <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
-    <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
-    <% current_group.example_storable_keys.each do |key| %>
-      <td><%= example.stored_value(key) %></td>
-    <% end %>
-    <td><% if can? :edit, example %>
-      <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
-    <% end %></td>
-    <td><% if can? :destroy, example %>
-      <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
-    <% end %></td>
-  </tr>
-<% end %>
+  <% @examples.each do |example| %>
+      <tr>
+        <td><%= link_to example.name, [current_group, example] %></td>
+        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
+        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
+        <% current_group.example_storable_keys.each do |key| %>
+            <td><%= example.stored_value(key) %></td>
+        <% end %>
+        <td><% if can? :edit, example %>
+              <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
+          <% end %></td>
+        <td><% if can? :destroy, example %>
+              <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
+          <% end %></td>
+      </tr>
+  <% end %>
 </table>
-
+<div class="apple_pagination">
+  <!-- render page links in the view: -->
+  <%= will_paginate @examples %>
+</div>
 <br />
 
 <% if can? :create, Example.new{|e| e.group = current_group } %>
-  <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+    <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
 <% end %>
