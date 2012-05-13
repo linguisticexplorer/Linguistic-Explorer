@@ -1,4 +1,9 @@
 class GroupsController < ApplicationController
+
+  # To add paginate method in Array class
+  # https://github.com/mislav/will_paginate/wiki/Backwards-incompatibility
+  require 'will_paginate/array'
+
   def index
     if params[:group_id]
       begin
