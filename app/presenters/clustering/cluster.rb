@@ -22,11 +22,8 @@ module Accessors
     end
 
     def key
-      if @left.is_a? Cluster
-        return @left.key
-      else
-        @left.name.to_sym
-      end
+      return @left.key if @left.is_a? Cluster
+      @left.name.to_sym
     end
 
     def name
