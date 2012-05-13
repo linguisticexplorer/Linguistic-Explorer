@@ -1,6 +1,6 @@
 <div class="property <%= property.name.gsub(" ", "") %>">
   <%= property.name %>: <br />
-  <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :locals => { :property => property } %>
+  <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
   <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
   <%= text_field_tag "values[#{property.id}][_new]" %>
  </div>

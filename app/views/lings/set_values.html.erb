@@ -7,7 +7,7 @@
 <br /><br />
 <%= form_tag(submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
   To add a new value to the set of options, fill in "Add new".
-  <%= render :partial => "lings/mass_assignment/category", :collection => @categories %>
+  <%= render :partial => "lings/mass_assignment/category", :collection => @categories, :inline => true %>
   <%= submit_tag("Submit") %>
 <% end %>
 <br />
