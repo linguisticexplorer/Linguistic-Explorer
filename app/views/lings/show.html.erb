@@ -1,5 +1,13 @@
 <% page_heading @ling.grouped_name %>
 
+<% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+<% end %>
+<% if can? :edit, @ling %>
+    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+<% end %>
+<%= link_to 'Back', group_lings_path(current_group) %>
+<br /><br />
 <p>
   <b>Type:</b> <br />
   <%= current_group.ling_name_for_depth(@ling.depth) %> <br />
@@ -66,7 +74,7 @@
 <br />
 
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-  <%= link_to "Mass assign", set_values_group_ling_path(current_group, @ling) %> |
+  <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
 <% end %>
 <% if can? :edit, @ling %>
   <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
