@@ -2,6 +2,10 @@
 
 <h1>Listing <%= current_group.example_name.pluralize %></h1>
 
+<% if can? :create, Example.new{|e| e.group = current_group } %>
+    <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+<% end %>
+
 <div class="apple_pagination">
   <!-- render page links in the view: -->
   <%= will_paginate @examples %>

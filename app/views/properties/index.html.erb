@@ -1,6 +1,9 @@
 <% page_heading current_group.property_name.pluralize %>
 
 <h1>Listing <%= current_group.property_name.pluralize %></h1>
+<% if can? :create, Property.new{|p| p.group = current_group} %>
+    <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group) %>
+<% end %>
 <div class="apple_pagination">
 <!-- render page links in the view: -->
 <%= will_paginate @properties %>
