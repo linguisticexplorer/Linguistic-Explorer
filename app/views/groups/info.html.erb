@@ -9,9 +9,18 @@
     <%- if @group.description.present? -%>
       <p><%= @group.description %></p>
     <% end %>
+
+    <p>
+      <% if can? :update, @group %>
+          <%= link_to 'Edit', edit_group_path(@group) %> |
+      <% end %>
+      <%= link_to 'Back', current_group %> |
+      <%= link_to 'Search this group', [:new, current_group, :search] %>
+    </p>
+
     <p>
       <%- @group.info_attribute_names.each do |attr_name| -%>
-        <span class="strong"><%= attr_name.titleize %>:</span> <%= @group.send(attr_name) %> <br />
+        <span class="strong"><%= attr_name.titleize %>:   </span> <%= @group.send(attr_name) %> <br />
       <%- end -%>
     </p>
 

@@ -20,6 +20,12 @@ pre {
   font-size: 11px;
 }
 
+.strong {
+  font-weight:bold;
+  color: #C30;
+
+}
+
 a           { color: #CC3300; text-decoration:none; }
 a:visited   { color: #AC250E; }
 a:hover     { color: #CC3300; text-decoration:underline; }
