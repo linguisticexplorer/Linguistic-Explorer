@@ -1,5 +1,6 @@
 class Group < ActiveRecord::Base
   include CSVAttributes
+  include GroupStats
 
   PRIVACY = [
     PRIVATE = 'private',

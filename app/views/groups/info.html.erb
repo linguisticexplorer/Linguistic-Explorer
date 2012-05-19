@@ -20,6 +20,7 @@
 
     <p>
       <%- @group.info_attribute_names.each do |attr_name| -%>
+
         <span class="strong"><%= attr_name.titleize %>:   </span> <%= @group.send(attr_name) %> <br />
       <%- end -%>
     </p>
@@ -31,8 +32,16 @@
       <%= link_to 'Back', current_group %> |
       <%= link_to 'Search this group', [:new, current_group, :search] %>
     </p>
+
+    <div id="stats_title">
+      <h2>Stats for <%= @group.name %></h2>
+    </div>
+
+    <div id="numbers">
+      <p>
+        <span class="strong"><%=@group.ling0_name.pluralize %>: </span> <%=@group.lings_in_group %><br />
+        <span class="strong"><%=@group.property_name.pluralize %>: </span> <%=@group.props_in_group %><br />
+      </p>
+    </div>
   </div>
 </div>
-
-
-
