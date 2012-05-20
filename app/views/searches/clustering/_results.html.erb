@@ -9,8 +9,7 @@
         <%= image_tag path_to_file, :alt => "Similarity tree", :class => 'clustering' %>
     <% else %>
         <img src='/images/loading_phylogram.gif' class='loading_phylogram'/>
-        <%= javascript_include_tag 'd3.min' %>
-        <%= javascript_include_tag 'd3.layout.min' %>
+        <%= javascript_include_tag 'd3.v2.min' %>
         <%= javascript_include_tag 'd3.phylogram' %>
         <%= javascript_include_tag 'newick' %>
         <%= javascript_include_tag 'clustering' %>
