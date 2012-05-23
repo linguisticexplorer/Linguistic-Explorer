@@ -24,8 +24,8 @@ Feature: Using the mass lings-property value setting form
   Scenario: Signed in members can get to the ling mass setting form
     Then I should see "English"
     When I follow "English"
-    Then I should see "Mass assign"
-    When I follow "Mass assign"
+    Then I should see "Edit Values"
+    When I follow "Edit Values"
     Then I should be on the mass assignment page for "English"
 
   Scenario: The page lists category-divided checkbox lists for LingsProperties and available values
