@@ -2,7 +2,7 @@
 # The data can then be loaded with the rake db:seed (or created alongside the db with db:setup).
 require 'csv'
 
-config = YAML.load_file((Rails.root.join("db", "seed", "import.yml")))
+config = YAML.load_file((Rails.root.join("db", "seed", "seed.yml")))
 GroupData::Importer.import(config)
 
 puts "Creating Admin User..."
