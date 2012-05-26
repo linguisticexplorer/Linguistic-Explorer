@@ -3,6 +3,11 @@
 require 'csv'
 
 config = YAML.load_file((Rails.root.join("db", "seed", "seed.yml")))
+
+config.each do |key, value|
+  config[key] = Rails.root.join("db", "seed", value)
+end
+
 GroupData::Importer.import(config)
 
 puts "Creating Admin User..."
