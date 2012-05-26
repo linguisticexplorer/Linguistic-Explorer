@@ -21,16 +21,14 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Similarity Tree Search;
 
-#### Install
+## Install
 
-Requirements
-============
+#### Requirements
 * Ruby 1.9.x
 * MySQL 5.5.x
 * [R server](http://cran.r-project.org/doc/FAQ/R-FAQ.html#How-can-R-be-installed_003f)
 
-How to
-======
+#### How to
 
 * Download it!
 
@@ -68,7 +66,7 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
-  License
-============
+## License
 This project is under the MIT License.
-Please have a look to the LICENSE file.
+
+Please have a look to the [LICENSE file](https://github.com/linguisticexplorer/Linguistic-Explorer/blob/master/LICENSE).
