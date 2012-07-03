@@ -95,7 +95,7 @@ Then /^I should see the following search results:$/ do |table|
     end
     example = Example.find_by_name_and_ling_id(row["Example"], ling.id) if row["Example"]
     depth = (row["depth"] || "parent").downcase
-
+    
     with_scope(%Q|[data-#{depth}-value="#{lp.id}"]|) do
       page.should have_content(ling.name)     if ling
       page.should have_content(prop.name)     if prop

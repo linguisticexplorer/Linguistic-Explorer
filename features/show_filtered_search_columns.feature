@@ -58,12 +58,6 @@ Feature: Show filtered search columns
     And I select "Speaker 1" from "Speakers"
     Then I press "Show results"
     Then I should see 2 search result rows
-    Then I should see the following search results:
-    | Lings         | depth    |
-    | Speaker 1     | parent   |
-    | Sentence 1    | child    |
-    | Speaker 1     | parent   |
-    | Sentence 3    | child    |
     And I should not see "Sentences" within "#search_results"
     And I should not see "Property" within "#search_results"
     And I should not see "Properties" within "#search_results"
