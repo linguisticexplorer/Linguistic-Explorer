@@ -373,6 +373,7 @@ module SswlData
       }
     end
 
+    #TODO: improve converting handling Language Experts and Property Author
     def self.convert_membership_in(row, member_ids)
       member_ids[row["id"]] ||= {
           "id" => "#{row["id"]}",
