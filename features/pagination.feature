@@ -77,10 +77,10 @@ Feature: Pagination
     And I should see "Adjective Noun"
     And I should see "Degree Adjective"
     And I follow "Degree Adjective"
-    Then I should see "Spanish"
+    Then I should see "English"
     Then I should see "Next"
     And I follow "Next"
-    Then I should see "French"
+    Then I should see "Spanish"
 
   Scenario: Visitor goes on search page and get results with pagination, on depth 0
     When I go to the Syntactic Structures search page
