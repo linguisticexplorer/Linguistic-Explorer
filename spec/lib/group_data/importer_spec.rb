@@ -41,7 +41,7 @@ module GroupData
       end
 
       it "should parse example fields" do
-        @current_group.example_storable_keys.should == ["text", "words", "gloss"]
+        @current_group.example_storable_keys.should == [ "description", "words", "gloss"]
       end
 
       it "should cache groups" do

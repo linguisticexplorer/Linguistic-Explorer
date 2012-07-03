@@ -136,7 +136,7 @@ module SearchResults
     def select_vals_by_keyword(vals, keyword, depth)
       example_attribute = @query[:example_fields][depth.to_s].to_sym
       keyword_scope = case example_attribute
-                        when :text
+                        when :description
                           search_scope_name_by_keyword(keyword)
                         else
                           # keyword search by stored value key/pair

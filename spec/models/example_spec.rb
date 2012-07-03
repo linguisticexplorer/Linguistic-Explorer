@@ -58,16 +58,16 @@ describe Example do
     describe "#stored_value" do
       it "should default available but unset keys to an empty string" do
         example = examples(:valueless)
-        example.storable_keys.should include "text"
-        example.stored_value(:text).should == ""
+        example.storable_keys.should include "description"
+        example.stored_value(:description).should == ""
       end
 
       it "should return the value of in the associated StoredValue record if there is one" do
         example = examples(:inclusive)
-        example.storable_keys.should include "text"
-        StoredValue.find_by_group_id_and_key(example.group.id, "text").should be_nil
-        StoredValue.create(:storable => example, :key => "text", :value => "awesome")
-        example.reload.stored_value(:text).should == "awesome"
+        example.storable_keys.should include "description"
+        StoredValue.find_by_group_id_and_key(example.group.id, "description").should be_nil
+        StoredValue.create(:storable => example, :key => "description", :value => "awesome")
+        example.reload.stored_value(:description).should == "awesome"
       end
 
       it "should return nil if the key is invalid" do
@@ -84,9 +84,9 @@ describe Example do
         example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
           e.group = group
         end
-        example.storable_keys.should include "text"
-        example.store_value!(:text, "foo")
-        example.reload.stored_value(:text).should == "foo"
+        example.storable_keys.should include "description"
+        example.store_value!(:description, "foo")
+        example.reload.stored_value(:description).should == "foo"
       end
 
       it "should have be able to update the value" do
@@ -95,12 +95,12 @@ describe Example do
         example = Example.create(:ling_id => ling.id, :name => 'has-text') do |e|
           e.group = group
         end
-        example.storable_keys.should include "text"
-        example.store_value!(:text, "foo")
-        example.reload.stored_value(:text).should == "foo"
+        example.storable_keys.should include "description"
+        example.store_value!(:description, "foo")
+        example.reload.stored_value(:description).should == "foo"
 
-        example.store_value!(:text, "bar")
-        example.reload.stored_value(:text).should == "bar"
+        example.store_value!(:description, "bar")
+        example.reload.stored_value(:description).should == "bar"
       end
 
       it "should have be able to store a value for a key supplied by the group" do

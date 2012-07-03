@@ -7,7 +7,7 @@ class Group < ActiveRecord::Base
     PUBLIC  = 'public'
   ]
   MAXIMUM_ASSIGNABLE_DEPTH = 1
-  DEFAULT_EXAMPLE_KEYS = ["text"]
+  DEFAULT_EXAMPLE_KEYS = ["description"]
   DEFAULT_LING_KEYS = ["description"]
 
   INFO_ATTRIBUTES = %w[privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ling_fields]

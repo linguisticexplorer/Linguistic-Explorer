@@ -137,7 +137,7 @@ describe ExamplesController do
     describe "with valid params and valid stored_values" do
       it "assigns a newly created example to @example" do
         lambda {
-          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
           assigns(:example).should_not be_new_record
           assigns(:example).should be_valid
           assigns(:example).name.should == 'Javanese'
@@ -146,8 +146,8 @@ describe ExamplesController do
 
       it "creates and associates passed stored values" do
         lambda {
-          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:text => "foo"}, :group_id => groups(:inclusive).id
-          assigns(:example).stored_value(:text).should == 'foo'
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
+          assigns(:example).stored_value(:description).should == 'foo'
         }.should change(StoredValue, :count).by(1)
       end
 
@@ -212,17 +212,17 @@ describe ExamplesController do
 
         @example.should_receive(:update_attributes).with({'name' => new_name}).and_return(true)
 
-        put :update, :id => @example.id, :example => {'name' => new_name}, :stored_values => {:text => "foo"}, :group_id => @example.group.id
+        put :update, :id => @example.id, :example => {'name' => new_name}, :stored_values => {:description => "foo"}, :group_id => @example.group.id
       end
 
       it "creates or updates passed stored values" do
         example = examples(:onceuponatime)
-        #test creation of a new value of key 'text'
-        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:text => "foo"}
-        example.reload.stored_value(:text).should == 'foo'
-        #now update 'text' value to be 'bar'
-        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:text => "bar"}
-        example.reload.stored_value(:text).should == 'bar'
+        #test creation of a new value of key 'description'
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:description => "foo"}
+        example.reload.stored_value(:description).should == 'foo'
+        #now update 'description' value to be 'bar'
+        put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:description => "bar"}
+        example.reload.stored_value(:description).should == 'bar'
       end
 
       it "assigns the requested example as @example" do
