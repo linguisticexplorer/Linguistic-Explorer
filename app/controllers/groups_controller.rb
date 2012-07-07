@@ -28,7 +28,7 @@ class GroupsController < ApplicationController
   end
 
   def info
-    @group = Group.find(params[:id])
+    @group = Group.find(params[:id]).loadInfos
     authorize! :show, @group
   end
 

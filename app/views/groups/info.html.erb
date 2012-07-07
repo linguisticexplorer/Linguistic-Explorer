@@ -7,7 +7,7 @@
   </div>
   <div id="intro">
     <%- if @group.description.present? -%>
-      <p><%= @group.description %></p>
+        <p><%= @group.description %></p>
     <% end %>
 
     <p>
@@ -21,27 +21,36 @@
     <p>
       <%- @group.info_attribute_names.each do |attr_name| -%>
 
-        <span class="strong"><%= attr_name.titleize %>:   </span> <%= @group.send(attr_name) %> <br />
+          <span class="strong"><%= attr_name.titleize %>:   </span> <%= @group.send(attr_name) %> <br />
       <%- end -%>
     </p>
 
     <p>
       <% if can? :update, @group %>
-        <%= link_to 'Edit', edit_group_path(@group) %> |
+          <%= link_to 'Edit', edit_group_path(@group) %> |
       <% end %>
       <%= link_to 'Back', current_group %> |
       <%= link_to 'Search this group', [:new, current_group, :search] %>
     </p>
-
-    <div id="stats_title">
-      <h2>Stats for <%= @group.name %></h2>
-    </div>
-
+    <br />
     <div id="numbers">
-      <p>
-        <span class="strong"><%=@group.ling0_name.pluralize %>: </span> <%=@group.lings_in_group %><br />
-        <span class="strong"><%=@group.property_name.pluralize %>: </span> <%=@group.props_in_group %><br />
-      </p>
+      <div id="stats_title">
+        <h2>Numbers for <%= @group.name %></h2>
+      </div>
+
+      <table>
+        <tr>
+          <td><span class="strong"><%=@group.ling0_name.pluralize %>: </span> <%=@group.lings_in_group %></td>
+          <td><span class="strong"><%=@group.property_name.pluralize %>: </span> <%=@group.props_in_group %></td>
+          <td><span class="strong">Contributors : </span> <%=@group.members_in_group %></td>
+        </tr>
+        <tr>
+          <td><span class="strong"><%=@group.example_name.pluralize %> Class: </span> <%=@group.examples_in_group %></td>
+          <td><span class="strong"><%=@group.lings_property_name.pluralize %>: </span> <%=@group.ling_props_in_group %></td>
+          <td></td>
+        </tr>
+      </table>
+      <%= render :partial => 'groups/info/stats' %>
     </div>
   </div>
 </div>

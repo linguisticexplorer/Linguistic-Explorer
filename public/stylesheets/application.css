@@ -23,7 +23,6 @@ pre {
 .strong {
   font-weight:bold;
   color: #C30;
-
 }
 
 a           { color: #CC3300; text-decoration:none; }
@@ -148,6 +147,16 @@ body.full_width #main h2 {
   color: #BAB86C;
   margin: 15px 0 0 0;
   padding: 0 0 15px 0;
+}
+
+/* Group Stats */
+
+#numbers h2 {
+    font-size: 2.2em;
+    font-family: Garamond,"Times New Roman",serif;
+    color: #C30;
+    border-bottom: 1px solid #C30;
+    line-height:1.25em;
 }
 
 /* footer */
