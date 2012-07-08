@@ -1,3 +1,4 @@
+# Do not add Gemfile.lock here
 .bundle
 *.sqlite3
 log/*
@@ -22,5 +23,4 @@ db/seed/*
 doc/TODO
 public/similarity_tree_images/*.png
 history.
-Gemfile.lock
 *.html
