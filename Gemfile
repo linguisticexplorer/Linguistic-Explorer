@@ -101,6 +101,7 @@ group :development, :test, :pg_test do
   gem "cucumber-rails", "0.4.0", :require => false # '0.4.0.beta.1'
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
+  gem 'brakeman'
 end
 
 group :pg_test do
