@@ -82,4 +82,21 @@ describe LingsProperty do
       end
     end
   end
+
+  describe "Getters" do
+    before(:each) do
+      @ling  = lings(:american_lang)
+      @prop  = properties(:latlong)
+      @group = groups(:geomap)
+      @lings_property = LingsProperty.create!(:ling => @ling, :property => @prop, :value => "foo", :group => @group)
+    end
+
+    it "should retrieve the ling name capitalized" do
+      @lings_property.ling_name == "#{@ling.name.capitalize}"
+    end
+
+    it "should have a description" do
+      @lings_property.description == "#{@ling.name.capitalize} - #{@prop.name} : foo"
+    end
+  end
 end

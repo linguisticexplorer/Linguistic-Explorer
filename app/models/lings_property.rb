@@ -43,7 +43,9 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def ling_name
-    ling.name
+    # If a Ling has a symbol at the beginning don't capitalize
+    return ling.name if(ling.name =~/^(\\|=)/) 
+    ling.name.capitalize
   end
 
   def parent_name
@@ -75,6 +77,11 @@ class LingsProperty < ActiveRecord::Base
     end
   end
 
+  def description
+    return "#{ling_name} - #{prop_name} : #{value}"if(ling.present? && property.present?)
+    property_value ? "#{property_value}" : ''
+  end
+
   private
 
   def association_depth_match
@@ -89,4 +96,5 @@ class LingsProperty < ActiveRecord::Base
     self.property_value = "#{property_id}:#{value}"
     true
   end
+
 end

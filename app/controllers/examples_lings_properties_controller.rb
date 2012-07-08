@@ -16,7 +16,7 @@ class ExamplesLingsPropertiesController < GroupDataController
     authorize! :create, @examples_lings_property
 
     @examples = current_group.examples
-    @lings_properties = current_group.lings_properties
+    @lings_properties = current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
   end
 
   def create

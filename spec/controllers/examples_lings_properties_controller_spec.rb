@@ -64,7 +64,7 @@ describe ExamplesLingsPropertiesController do
       it "lings_properties in the current group to @lings_properties" do
         @group = groups(:inclusive)
         get :new, :group_id => groups(:inclusive).id
-        assigns(:lings_properties).should == @group.lings_properties
+        assigns(:lings_properties).should == @group.lings_properties.sort_by(&:description)
       end
     end
   end

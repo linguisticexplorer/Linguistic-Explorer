@@ -18,7 +18,7 @@
 
   <div class="field">
     <%= f.label current_group.lings_property_name %><br />
-    <%= f.collection_select :lings_property_id, @lings_properties, :id, :property_value, :prompt => 'Select a ' + current_group.lings_property_name %>
+    <%= f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name %>
   </div>
 
   <div class="actions">
