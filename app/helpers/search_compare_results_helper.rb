@@ -18,7 +18,7 @@ module SearchCompareResultsHelper
   end
 
   def compare_diff_value(child)
-    child ? row_methods[:ling_value].call(child) : ""
+    child.present? ? row_methods[:ling_value].call(child) : ""
   end
 
   def value_for_header(results)
@@ -29,6 +29,12 @@ module SearchCompareResultsHelper
 
   def get_lings(results)
     results.first.lings.map(&:name).join(" , ")
+  end
+
+  def sort_by_ling(children, lings)
+    [].tap do |sorted|
+      lings.each { |ling| sorted << find_child_by_ling(children, ling) }
+    end
   end
 
   private
@@ -47,5 +53,13 @@ module SearchCompareResultsHelper
       attrs["data-diff-parent-value"] = entry.parent.first.id
       attrs["data-diff-child-value"] = entry.child.compact.inject(0) {|sum, lp| sum + lp.id}
     end
+  end
+
+  def find_child_by_ling(children, ling)
+    children.each do |c|
+      next if c.nil?
+      return c if c.ling_id == ling.id
+    end
+    return nil
   end
 end
