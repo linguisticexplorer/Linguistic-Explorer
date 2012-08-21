@@ -14,12 +14,12 @@ describe PropertiesController do
 
       Group.should_receive(:properties).and_return @group.properties
 
-      get :index, :group_id => @group.id
+      get :index, { :group_id => @group.id, :plain => true }
     end
 
     describe "assigns" do
       it "@properties should contain properties for the group" do
-        get :index, :group_id => groups(:inclusive).id
+        get :index, { :group_id => groups(:inclusive).id, :plain => true }
 
         assigns(:properties).should include properties(:level0)
         assigns(:properties).should_not include properties(:exclusive0)

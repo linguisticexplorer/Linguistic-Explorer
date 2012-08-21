@@ -17,13 +17,6 @@
       <%=@group.ling0_name.pluralize %> Completeness: <span id='perc'>90%</span>
     </p>
 </div>
-<style>
-.bar p {
-    color: white;
-    font-size: 12px;
-    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
-}
-</style>
   <script type="text/javascript">
 
   var lings_data = <%=@group.lings_with_all_property_quotas.values.map {|value| [value, @group.lings_in_group - value]} %>,

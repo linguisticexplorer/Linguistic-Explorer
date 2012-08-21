@@ -14,23 +14,23 @@ describe LingsController do
 
       Group.should_receive(:lings).and_return @group.lings
 
-      get :depth, :group_id => @group.id, :depth => 0
+      get :depth, { :group_id => @group.id, :depth => 0, :plain => true }
     end
 
     it "@depth should be the passed depth value" do
       depth_test_no = 0
-      get :depth, :group_id => groups(:inclusive).id, :depth => depth_test_no
+      get :depth, { :group_id => groups(:inclusive).id, :depth => depth_test_no, :plain => true }
       assigns(:depth).should == depth_test_no
     end
 
     it "@lings should be an array of lings for the passed depth (0)" do
-      get :depth, :group_id => groups(:inclusive).id, :depth => 0
+      get :depth, { :group_id => groups(:inclusive).id, :depth => 0, :plain => true }
       assigns(:lings).should include lings(:level0)
       assigns(:lings).should_not include lings(:level1)
     end
 
     it "@lings should be an array of lings for the passed depth (1)" do
-      get :depth, :group_id => groups(:inclusive).id, :depth => 1
+      get :depth, { :group_id => groups(:inclusive).id, :depth => 1, :plain => true }
       assigns(:lings).should_not include lings(:level0)
       assigns(:lings).should include lings(:level1)
     end
@@ -44,12 +44,12 @@ describe LingsController do
       Group.should_receive(:depths).and_return @group.depths
       Group.should_receive(:lings).exactly(@group.depths.size).times.and_return @group.lings
 
-      get :index, :group_id => @group.id
+      get :index, { :group_id => @group.id, :plain => true }
     end
 
     it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
         @group = groups(:inclusive)
-        get :index, :group_id => @group.id
+        get :index, { :group_id => @group.id, :plain => true }
 
         assigns(:lings_by_depth).size.should == @group.depths.count
         assigns(:lings_by_depth)[0].should include lings(:level0)
@@ -57,7 +57,7 @@ describe LingsController do
       end
 
       it "@lings_by_depth should be an array with current_group.depth_maximum + 1 member subarrays" do
-        get :index, :group_id => groups(:inclusive).id
+        get :index, { :group_id => groups(:inclusive).id, :plain => true }
         assigns(:lings_by_depth).size.should == groups(:inclusive).depth_maximum + 1
       end
     end

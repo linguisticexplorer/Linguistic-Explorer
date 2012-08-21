@@ -2,6 +2,8 @@ class PropertiesController < GroupDataController
   def index
     # Added Eager Loading
     @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
+    @properties.map { |prop| prop.get_infos } unless params[:plain]
+    @properties
   end
 
   def show

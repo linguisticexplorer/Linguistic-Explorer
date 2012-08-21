@@ -18,6 +18,7 @@
     <th></th>
     <th></th>
     <th></th>
+    <th>Completeness</th>
   </tr>
   <% lings.each do |ling| %>
     <tr>
@@ -37,6 +38,12 @@
       <td><% if can? :destroy, ling %>
         <%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %>
       <% end %></td>
+      <td>
+        <% percentage = "#{ling.info}%" %>
+        <div class="progress progress-striped progress-danger" style='width: 200px; margin: 10px 20px 5px 30px;'>
+          <div class="bar" style="width: <%=ling.info %>%;"><p style='text-align: center;' id='nbrs'><%=ling.info %>%</p></div>
+       </div>
+      </td>
     </tr>
   <% end %>
 </table>

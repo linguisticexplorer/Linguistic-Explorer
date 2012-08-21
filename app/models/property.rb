@@ -34,4 +34,21 @@ class Property < ActiveRecord::Base
   def group_association_match
     errors.add(:category, "#{group.category_name.humanize} must belong to the same group as this #{group.property_name}") if group && category && category.group != group
   end
+
+  attr_reader :info
+
+  def get_infos
+    lings_in_prop
+    self
+  end
+
+  private
+
+  def lings_in_group
+    @lings_total ||= Ling.in_group(group).count(:id)
+  end
+
+  def lings_in_prop
+    @info ||= LingsProperty.in_group(group).where(:property_id => self.id).count(:id) * 100 / lings_in_group
+  end
 end

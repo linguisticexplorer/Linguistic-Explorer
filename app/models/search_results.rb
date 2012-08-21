@@ -67,7 +67,7 @@ module SearchResults
   end
 
   def ensure_result_groups!
-    Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
+    #Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
     return true unless self.result_groups.nil?
     return true unless self.query.present? || self.parent_ids.present?
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)

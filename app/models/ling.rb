@@ -43,6 +43,13 @@ class Ling < ActiveRecord::Base
     get_latlong.split(/,/).last
   end
 
+  attr_reader :info
+
+  def get_infos
+    props_in_ling
+    self
+  end
+
   def grouped_name
     group.ling_name_for_depth(self.depth || 0)
   end
@@ -92,6 +99,7 @@ class Ling < ActiveRecord::Base
   end
 
   private
+
   def get_latlong
     property = Property.in_group(group).where(:name => 'latlong').first
     if property.present?
@@ -99,5 +107,14 @@ class Ling < ActiveRecord::Base
       return lings_has_latlong.value unless lings_has_latlong.nil?
     end
     return ""
+  end
+
+  def props_in_group
+    @props_total ||= Property.in_group(group).at_depth(depth).count(:id)
+  end
+
+  def props_in_ling
+    @info ||= LingsProperty.in_group(group).where(:ling_id => self.id).count(:id) * 100 / props_in_group
+    @info = 100 if @info > 100
   end
 end

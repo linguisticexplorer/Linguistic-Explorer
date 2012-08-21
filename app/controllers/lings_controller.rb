@@ -4,12 +4,14 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
     @lings = current_group.lings.at_depth(@depth).paginate(:page => params[:page], :order => "name")
+    return load_stats(@lings, params[:plain], 0)
   end
 
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
       current_group.lings.at_depth(depth).paginate(:page => params[:page])
     end
+    return load_stats(@lings_by_depth, params[:plain], 1)
   end
 
   def show
@@ -22,6 +24,8 @@ class LingsController < GroupDataController
     @depth = @ling.depth
     @categories = current_group.categories.at_depth(@depth)
     @preexisting_values = @ling.lings_properties
+
+    # authorize! :update, @ling
   end
 
   def submit_values
@@ -132,5 +136,24 @@ class LingsController < GroupDataController
     @ling.destroy
 
     redirect_to(group_lings_depth_url(current_group, @depth))
+  end
+
+  private
+  def load_stats(lings, plain, depth)
+    unless plain
+      lings.each do |ling|
+        # If it is a multilanguage group map each subling otherwise map just the ling
+         if depth > 0
+          ling.map { |ling_at_depth| load_infos(ling_at_depth) }
+        else
+          load_infos(ling)
+        end
+      end
+    end
+    lings
+  end
+
+  def load_infos(ling)
+    ling.get_infos
   end
 end
