@@ -15,7 +15,7 @@ module SearchResults
   def results(pagination=true)
     @results ||= begin
       ensure_result_groups!
-      Rails.logger.debug "Step 4 => #{self.class} - Rendering"
+      #Rails.logger.debug "Step 4 => #{self.class} - Rendering"
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
     #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
