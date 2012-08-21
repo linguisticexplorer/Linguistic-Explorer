@@ -66,6 +66,12 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
+## Contribute
+
+We are looking for some help in this project. Want to help us?
+
+Fork this repo, pick one issue from the list and pull the fix back!
+  
 ## License
 This project is under the MIT License.
 
