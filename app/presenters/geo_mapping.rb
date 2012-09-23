@@ -15,8 +15,8 @@ class GeoMapping
           marker.title rollover_information(ling, row_number)
           marker.picture({
                              :picture => "/images/markers/marker#{row_number}.png",
-                             :width 	=> "32",
-                             :height 	=> "37"
+                             :width 	=> 32,
+                             :height 	=> 37
                          })
         end
       end
