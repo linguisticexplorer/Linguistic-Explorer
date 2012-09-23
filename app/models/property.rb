@@ -50,5 +50,6 @@ class Property < ActiveRecord::Base
 
   def lings_in_prop
     @info ||= LingsProperty.in_group(group).where(:property_id => self.id).count(:id) * 100 / lings_in_group
+    @info = 100 if @info > 100
   end
 end
