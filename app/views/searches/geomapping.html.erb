@@ -6,6 +6,13 @@
 	<h2 class="red_grad"><%= @search.group.name %> Lings in the Selection</h2>
 </div>
 <div class="padded_left padded_right">
- <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
+  <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
+  <div id="legend-container" style="display: block;">
+    <div id="legend-btn"> Legend </div>
+    <div id="legend-content" style="display: none">
+      <!-- Search type here -->
+      <!-- Display here a list of marker categories with aggregate results -->
+    </div>
+  </div>
 </div>
-
+<!-- Put here some JS code to enable click on Legend button -->
