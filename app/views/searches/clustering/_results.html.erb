@@ -3,8 +3,8 @@
     <% rendering = @search.results.first %>
     <% if rendering == :legacy %>
         <% path_to_file = @search.results.last %>
-        <div id="download">
-          <%= link_to "Download",  :action => "download_tree", :filename => path_to_file %>
+        <div id="download_div">
+          <%=link_to "Download", { :action => "download_tree" , :filename => path_to_file }, :class => "btn btn-danger", :id => 'download' %>
         </div>
         <%= image_tag path_to_file, :alt => "Similarity tree", :class => 'clustering' %>
     <% else %>
@@ -13,8 +13,15 @@
         <%= javascript_include_tag 'd3.phylogram' %>
         <%= javascript_include_tag 'newick' %>
         <%= javascript_include_tag 'clustering' %>
+        <%= javascript_include_tag 'rgbcolor.js' %> 
+        <%= javascript_include_tag "canvg.js" %>
+        <div id="download_div">
+          <a id="download" class="btn btn-danger">
+            Download
+          </a>
+        </div>
         <div class='gallery' id='tree'> </div>
-        <div id="download"></div>
+        <canvas id="canvas" ></canvas>
         <script>
             // Data is computed in Newick format and processed by d3.phylogram javascript library
             <% dendogram_type = @search.results.first -%>
@@ -28,7 +35,6 @@
             <%="radial_tree(newick);" if dendogram_type == :d3_radial_tree -%>
 
             jQuery(".loading_phylogram").remove();
-            //create_download_link();
         </script>
     <% end %>
   </div>

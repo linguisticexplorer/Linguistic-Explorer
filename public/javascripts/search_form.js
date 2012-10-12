@@ -128,7 +128,7 @@ function disable_except(elements_regexp, except){
 function enable_similarity_radial_tree(){
     var label = '<label for="search_group_clust_hamming">Radial Tree</label>';
     var radio = '<input id="search_group_clust_hamming" name="search[advanced_set][clustering]" type="radio" value="hamming_r">';
-    console.log($("#clustering"));
+    // console.log($("#clustering"));
     $("#clustering").append(label + radio );
 }
 
