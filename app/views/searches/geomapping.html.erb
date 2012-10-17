@@ -9,10 +9,32 @@
   <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
   <div id="legend-container" style="display: block;">
     <div id="legend-btn"> Legend </div>
-    <div id="legend-content" style="display: none">
+    <div id="legend-content">
+      <p>Hello</p>
       <!-- Search type here -->
       <!-- Display here a list of marker categories with aggregate results -->
     </div>
   </div>
 </div>
 <!-- Put here some JS code to enable click on Legend button -->
+<script type="text/javascript">
+var openLegend;
+
+$(window).ready(function(){
+  // Hide the Legend Window at startup
+  $('#legend-content').hide();
+
+  // On click check the state of the Legend Window
+  // and show or hide in case
+  $('#legend-btn').click(function(){
+    $(this).attr('class', 'active');
+    if(!openLegend){
+      $('#legend-content').show();
+    } else {
+      $('#legend-content').hide();
+    }
+    openLegend = !(openLegend);
+  });
+
+});
+</script>
