@@ -4,7 +4,7 @@
     <% if rendering == :legacy %>
         <% path_to_file = @search.results.last %>
         <div id="download_div">
-          <%=link_to "Download", { :action => "download_tree" , :filename => path_to_file }, :class => "btn btn-danger", :id => 'download' %>
+          <%=link_to "Download", path_to_file, :class => "btn btn-danger", :id => 'download' %>
         </div>
         <%= image_tag path_to_file, :alt => "Similarity tree", :class => 'clustering' %>
     <% else %>
