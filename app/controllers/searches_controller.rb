@@ -84,20 +84,6 @@ class SearchesController < GroupDataController
     authorize! :mapping, @search
   end
 
-  def download_tree
-    @search = perform_search
-
-    path_from_public = params[:filename]
-    filename_filtered = path_from_public.gsub(/\/.*\/tree/, "tree")
-    basename = File.expand_path(File.join(File.dirname(__FILE__), '../../public/similarity_tree_images'))
-    filename = File.expand_path(File.join(basename, filename_filtered))
-    # Check if the directory of the file is the proper one
-    raise if basename != File.expand_path(File.join(File.dirname(filename), '../../public/similarity_tree_images'))
-    authorize! :download_tree, @search
-    Rails.logger.debug "[DEBUG] Received a request for #{filename_filtered}: Authorized!"
-    send_file filename, :type => 'image/jpeg'
-  end
-
   protected
 
   def check_max_search_notice
