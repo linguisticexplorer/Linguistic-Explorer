@@ -78,8 +78,10 @@ class SearchesController < GroupDataController
 
   def geomapping
     @search = perform_search
-
-    @json = check_retrieved_json(GeoMapping.new(@search).get_json)
+    
+    geoMapping = GeoMapping.new(@search)
+    @json = check_retrieved_json(geoMapping.get_json)
+    @summary = geoMapping.get_legend
 
     authorize! :mapping, @search
   end
