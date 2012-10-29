@@ -14,6 +14,10 @@
   height: 600px;
 }
 
+.gmaps4rails_map img {
+  max-width: none;
+}
+
 #legend-container {
   position: absolute;
   top: 170px;
