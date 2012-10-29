@@ -7,13 +7,16 @@
 </div>
 <div class="padded_left padded_right">
   <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
-  <div id="legend-container" style="display: block;">
+  <div id="legend-container" style="display: block">
     <div id="legend-btn"> Legend </div>
-    <div id="legend-content">
+    <%= stylesheet_link_tag  %
+    <div id="legend-content" class="popover bottom">
       <!-- Search type here -->
-      <h3><%=@summary[:title] %></h3>
-      <p>Lings: <%=@summary[:lings] %><p/>
+      <h3 class="popover-title"><%=@summary[:title] %></h3>
+      <div class="popover-content">
+        <p>Lings: <%=@summary[:lings] %><p/>
       <!-- Display here a list of marker categories with aggregate results -->
+      </div>
     </div>
   </div>
 </div>
@@ -28,11 +31,14 @@ $(window).ready(function(){
   // On click check the state of the Legend Window
   // and show or hide in case
   $('#legend-btn').click(function(){
-    $(this).attr('class', 'active');
+    $(this).addClass('active');
     if(!openLegend){
-      $('#legend-content').show();
+      var leftPos = $(this).offset().left- $('#legend-content').width()/2;
+      var topPos = $(this).offset().top;
+      $('#legend-content').fadeIn('slow').offset({top: topPos + 25, left: leftPos - 50});
     } else {
-      $('#legend-content').hide();
+      $('#legend-content').fadeOut('slow');
+      $(this).removeClass('active');
     }
     openLegend = !(openLegend);
   });
