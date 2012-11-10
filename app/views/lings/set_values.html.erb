@@ -11,5 +11,12 @@
   <%= submit_tag("Submit") %>
 <% end %>
 <br />
+<script>
+$(function(){
+  $('.collapse').click(function (){
+    console.log(this);
+  });
+});
+</script>
 <%= link_to "Go to #{@ling.name} page", [current_group, @ling] %> |
 <%= link_to "Back to #{@ling.grouped_name} page", group_lings_depth_path(current_group, @depth) %>

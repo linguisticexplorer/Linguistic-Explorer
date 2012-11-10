@@ -1,7 +1,15 @@
-<div class="property <%= property.name.gsub(" ", "") %>">
-  <%= property.name %>: <br />
+<div class="accordion-group">
+  <div class="accordion-heading" >
+  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#<%=category.name.gsub(' ', '') %>" href="#<%=property.name.gsub(" ", "")%>">
+  	  <%= property.name %>
+  	</a>
+  </div>
+  <div id="<%= property.name.gsub(" ", "").gsub("_", "") %>" class="accordion-body collapse">
+  	<div class="accordion-inner">
   <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
   <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
   <%= text_field_tag "values[#{property.id}][_new]" %>
- </div>
+    </div>
+  </div>
+</div>
 <br />
