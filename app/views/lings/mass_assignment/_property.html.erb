@@ -4,7 +4,7 @@
       <b><%= property.name %></b>
   	</a>
   </div>
-  <div id="<%= property.name.gsub(" ", "")%>" class="accordion-body in collapse" style="height: auto;">
+  <div id="<%= property.name.gsub(" ", "")%>" class="accordion-body collapse" style="height: auto;">
   	<div class="accordion-inner">
   <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
   <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
