@@ -78,24 +78,12 @@ class SearchesController < GroupDataController
 
   def geomapping
     @search = perform_search
-
-    @json = check_retrieved_json(GeoMapping.new(@search).get_json)
+    
+    geoMapping = GeoMapping.new(@search)
+    @json = check_retrieved_json(geoMapping.get_json)
+    @summary = geoMapping.get_legend
 
     authorize! :mapping, @search
-  end
-
-  def download_tree
-    @search = perform_search
-
-    path_from_public = params[:filename]
-    filename_filtered = path_from_public.gsub(/\/.*\/tree/, "tree")
-    basename = File.expand_path(File.join(File.dirname(__FILE__), '../../public/similarity_tree_images'))
-    filename = File.expand_path(File.join(basename, filename_filtered))
-    # Check if the directory of the file is the proper one
-    raise if basename != File.expand_path(File.join(File.dirname(filename), '../../public/similarity_tree_images'))
-    authorize! :download_tree, @search
-    Rails.logger.debug "[DEBUG] Received a request for #{filename_filtered}: Authorized!"
-    send_file filename, :type => 'image/jpeg'
   end
 
   protected

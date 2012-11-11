@@ -38,7 +38,6 @@ class Ability
       # turn on all searches advanced features
       can :search, Search,        :group => { :privacy => Group::PUBLIC }
       can :cross, Search,         :group => { :privacy => Group::PUBLIC }
-      can :download_tree, Search, :group => { :privacy => Group::PUBLIC }
       can :mapping, Search,       :group => { :privacy => Group::PUBLIC }
 
       # turn on forum capabilities

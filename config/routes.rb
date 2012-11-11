@@ -22,7 +22,6 @@ LinguisticExplorer::Application.routes.draw do
         get 'preview'
         get 'lings_in_selected_row'
         get 'geomapping'
-        get 'download_tree'
       end
     end
 

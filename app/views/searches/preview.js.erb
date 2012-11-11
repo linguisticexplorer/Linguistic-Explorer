@@ -1,8 +1,9 @@
 <% unless @search.clustering? -%>
-
-// Ajax Paging
-var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
-var cross_page = "<%= escape_javascript(render("searches/cross/results")) if @search.cross? || @search.implication? -%>"
-var compare_page = "<%= escape_javascript(render("searches/compare/results")) if @search.compare? -%>"
-jQuery("#results_table").html(default_page + cross_page + compare_page);
+$(function(){
+  // Ajax Paging
+  var default_page = "<%= escape_javascript(render("searches/results")) if @search.default?-%>"
+  var cross_page = "<%= escape_javascript(render("searches/cross/results")) if @search.cross? || @search.implication? -%>"
+  var compare_page = "<%= escape_javascript(render("searches/compare/results")) if @search.compare? -%>"
+  $("#results_table").html(default_page + cross_page + compare_page);
+});
 <% end %>

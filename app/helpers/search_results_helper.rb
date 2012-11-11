@@ -45,4 +45,11 @@ module SearchResultsHelper
     user_signed_in? && search.new_record? && search.default? && !current_user.reached_max_search_limit?(current_group)
   end
 
+  def search_result_type(search)
+    return 'Regular Search' if search.default?
+    return 'Cross Search' if search.cross?
+    return 'Compare Search' if search.compare?
+    return 'Implication Search' if search.implication?
+  end
+
 end

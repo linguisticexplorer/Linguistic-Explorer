@@ -3,7 +3,12 @@ class GeoMapping
   def initialize(search)
     @lings_hash = {}
     @titles_hash = {}
+    @search_type = ''
     create_lings_hash(search)
+  end
+
+  def get_legend
+    {title: @search_type, lings: @titles_hash.keys.size }
   end
 
   def get_json
@@ -38,12 +43,16 @@ class GeoMapping
   def create_lings_hash(search)
     search_results = search.results(false)
     if search.default?
+      @search_type = 'Regular Search'
       lings_in_default_search(search_results)
     elsif search.compare?
+      @search_type = 'Compare Search'
       lings_in_compare_search(search_results)
     elsif search.cross?
+      @search_type = 'Cross Search'
       lings_in_cross_search(search_results)
     else
+      @search_type = 'Implication Search'
       lings_in_implication_search(search_results)
     end
     @lings_hash.map {|k,v| v.uniq! }
