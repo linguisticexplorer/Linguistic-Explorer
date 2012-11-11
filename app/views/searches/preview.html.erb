@@ -8,7 +8,6 @@
 <div id="mapping">
   <%= link_to "Map it!", :action => "geomapping", :search => @search.query if @search.mappable?%>
 </div>
-<%= javascript_include_tag 'pagination' %>
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
       <%= render :partial => 'searches/save_search_form' %>
