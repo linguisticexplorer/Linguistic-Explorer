@@ -1,16 +1,12 @@
-<h1>Listing <%= current_group.ling_name_for_depth(depth).pluralize %></h1>
-<% if can? :create, Ling.new{|l| l.group = current_group} %>
-    <%= link_to "New #{current_group.ling_name_for_depth(depth)}", new_group_ling_path(current_group, :depth => depth) %>
-<% end %>
 <div class="apple_pagination">
 <!-- render page links in the view: -->
-<%= will_paginate lings %>
+<%= will_paginate @lings %>
 </div>
 <table>
   <tr>
     <th>Name</th>
     <% if current_group.has_depth? %>
-      <th><%= current_group.ling_name_for_depth(depth - 1) %></th>
+      <th><%= current_group.ling_name_for_depth(@depth - 1) %></th>
     <% end %>
     <% current_group.ling_storable_keys.each do |key| %>
       <th><%= key.humanize %></th>
@@ -20,7 +16,7 @@
     <th></th>
     <th>Completeness</th>
   </tr>
-  <% lings.each do |ling| %>
+  <% @lings.each do |ling| %>
     <tr>
       <td><%= link_to ling.name, [current_group, ling] %></td>
       <% if current_group.has_depth? %>
@@ -49,8 +45,6 @@
 </table>
 <div class="apple_pagination">
 <!-- render page links in the view: -->
-<%= will_paginate lings %>
+<%= will_paginate @lings %>
 </div>
-<% if can? :create, Ling.new{|l| l.group = current_group} %>
-  <%= link_to "New #{current_group.ling_name_for_depth(depth)}", new_group_ling_path(current_group, :depth => depth) %>
-<% end %>
+

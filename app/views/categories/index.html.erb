@@ -5,37 +5,8 @@
 <% if can? :create, Category.new{|c| c.group = current_group} %>
     <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group) %>
 <% end %>
-
-<div class="apple_pagination">
-<!-- render page links in the view: -->
-<%= will_paginate @categories %>
-</div>
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Depth</th>
-    <th></th>
-    <th></th>
-  </tr>
-
-<% @categories.each do |category| %>
-  <tr>
-    <td><%= link_to category.name, [current_group, category] %></td>
-    <td><%= category.depth %></td>
-    <td><% if can? :edit, category%>
-      <%= link_to 'Edit', edit_group_category_path(current_group, category) %>
-    <% end %></td>
-    <td><% if can? :destroy, category%>
-      <%= link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete %>
-    <% end %></td>
-  </tr>
-<% end %>
-</table>
-
-<br />
-<div class="apple_pagination">
-<!-- render page links in the view: -->
-<%= will_paginate @categories %>
+<div id='pagination_table'>
+  <%= render :partial => "index_partial" %>
 </div>
 <% if can? :create, Category.new{|c| c.group = current_group} %>
   <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group) %>
