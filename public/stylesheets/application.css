@@ -219,14 +219,6 @@ img.loading {
    color: #C30;
 }
 
-img.loading_phylogram {
-    width: 100px;
-    height: 100px;
-}
-.loading_phylogram {
-    text-align: center;
-}
-
 /* For more paginating styles: http://mislav.uniqpath.com/will_paginate/ */
 /* Pagination Apple-style */
 .apple_pagination {
