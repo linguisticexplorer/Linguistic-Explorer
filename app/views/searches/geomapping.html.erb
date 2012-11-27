@@ -8,9 +8,8 @@
 <div class="padded_left padded_right">
   <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
     <div id="legend-container" style="display: block">
-      <div id="legend-btn"> Legend </div>
-      <%= stylesheet_link_tag  %>
-      <div id="legend-content" class="popover bottom">
+      <div id="legend-btn" style="cursor: pointer;"> Legend </div>
+      <div id="legend-content" class="popover bottom" role="button">
         <!-- Search type here -->
         <h3 class="popover-title"><%=@summary[:title] %></h3>
         <div class="popover-content">
