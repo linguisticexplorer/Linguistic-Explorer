@@ -8,7 +8,11 @@ class GeoMapping
   end
 
   def get_legend
-    {title: @search_type, lings: @titles_hash.keys.size }
+    {
+      title: @search_type,
+      lings: @titles_hash.keys.size,
+      rows: get_rich_legend
+    }
   end
 
   def get_json
@@ -30,6 +34,29 @@ class GeoMapping
   end
 
   private
+
+  def get_rich_legend
+    [].tap do |row|
+      @lings_hash.each do |number, list|
+        if list.any?
+          row << {
+            id: "id_#{number}",
+            icon: "/images/markers/marker#{number}.png",
+            size: list.size,
+            content: get_legend_content(number, list)
+          }
+        end
+      end
+    end  
+  end
+
+  def get_legend_content(row, list)
+    if @search_type =~ /Regular|Compare/
+      return 'all' # also for Compare
+    else
+      return rollover_information(list[0], row) # for Cross and Implication use rollover info!!
+    end
+  end
 
   def info_window_for(ling, list)
     return link_to_ling ling if ling.name == rollover_information(ling, list)

@@ -3,18 +3,31 @@
 	add_body_classes "full_width"
 %>
 <div id="titleHeader">
-	<h2 class="red_grad"><%= @search.group.name %> Lings in the Selection</h2>
+	<h2 class="red_grad"><%= @search.group.ling_name_for_depth(0).pluralize %> in the Selection</h2>
 </div>
 <div class="padded_left padded_right">
   <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
     <div id="legend-container" style="display: block">
       <div id="legend-btn" style="cursor: pointer;"> Legend </div>
-      <div id="legend-content" class="popover bottom" role="button">
+      <div id="legend-content" class="popover bottom" role="button" style="display: none;">
         <!-- Search type here -->
         <h3 class="popover-title"><%=@summary[:title] %></h3>
-        <div class="popover-content">
-          <p>Lings: <%=@summary[:lings] %><p/>
+        <div class="popover-content" style="overflow-y: auto; height: 200px;">
         <!-- Display here a list of marker categories with aggregate results -->
+        <table class="table">
+          <thead>
+            <tr><td></td><td>Total</td><td>Content</td></tr>
+          </thead>
+          <tbody>
+          <% @summary[:rows].each do |row| %>
+              <tr id="<%=row[:id] %>">
+                <td><img id="<%=row[:id] %>_img" src="<%=row[:icon] %>" /></td>
+                <td><%=row[:size] %></td>
+                <td><%=row[:content] %></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
         </div>
       </div>
     </div>
@@ -23,9 +36,7 @@
 <script type="text/javascript">
 var openLegend;
 
-$(window).ready(function(){
-  // Hide the Legend Window at startup
-  $('#legend-content').hide();
+$(function(){
 
   // On click check the state of the Legend Window
   // and show or hide in case
@@ -40,6 +51,14 @@ $(window).ready(function(){
       $(this).removeClass('active');
     }
     openLegend = !(openLegend);
+  });
+
+  $("[id^=id_]").click(function(){
+    var isHidden = !$(this).hasClass("success");
+    // if it's fresh, add class info and hide its markers
+    $(this).toggleClass("success", isHidden);
+    $('#'+this.id+'_img').attr("style", isHidden ? "opacity: 0.5;" : "");
+    console.log(Gmaps4Rails);
   });
 
 });
