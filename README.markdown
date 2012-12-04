@@ -21,6 +21,8 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Similarity Tree Search;
 
+* Geomapping of all the searches above! (and now with filter ;) )
+
 ## Install
 
 #### Requirements
