@@ -7,7 +7,7 @@
 </div>
 <div class="padded_left padded_right">
   <%= gmaps("markers" => { "data" => @json, "options" => {"do_clustering" => false, "randomize" => true} }) unless @json.empty? %>
-    <div id="legend-container" style="display: block">
+    <div id="legend-container" style="display: none">
       <div id="legend-btn" style="cursor: pointer;"> Legend </div>
       <div id="legend-content" class="popover bottom" role="button" style="display: none;">
         <!-- Search type here -->
@@ -33,33 +33,51 @@
     </div>
 </div>
 <!-- Put here some JS code to enable click on Legend button -->
-<script type="text/javascript">
-var openLegend;
+<% content_for :scripts do%>
+  <script type="text/javascript">
+  Gmaps.map.callback = function(){
+    var openLegend;
 
-$(function(){
+    $(function(){
+      $('#legend-container').show();
+      // On click check the state of the Legend Window
+      // and show or hide in case
+      $('#legend-btn').click(function(){
+        $(this).addClass('active');
+        if(!openLegend){
+          var leftPos = $(this).offset().left - $('#legend-content').width()/2;
+          var topPos = $(this).offset().top;
+          $('#legend-content').fadeIn('slow').offset({top: topPos + 25, left: leftPos - 50});
+        } else {
+          $('#legend-content').fadeOut('slow');
+          $(this).removeClass('active');
+        }
+        openLegend = !(openLegend);
+      });
 
-  // On click check the state of the Legend Window
-  // and show or hide in case
-  $('#legend-btn').click(function(){
-    $(this).addClass('active');
-    if(!openLegend){
-      var leftPos = $(this).offset().left - $('#legend-content').width()/2;
-      var topPos = $(this).offset().top;
-      $('#legend-content').fadeIn('slow').offset({top: topPos + 25, left: leftPos - 50});
-    } else {
-      $('#legend-content').fadeOut('slow');
-      $(this).removeClass('active');
-    }
-    openLegend = !(openLegend);
-  });
+      $("[id^=id_]").click(function(){
+        var isHidden = !$(this).hasClass("success");
+        // if it's fresh, add class info and hide its markers
+        $(this).toggleClass("success", isHidden);
+        var ghosted = "opacity: 0.5; filter: alpha(opacity = 50);";
+        var regular = "";
+        $('#'+this.id+'_img').attr("style", isHidden ? ghosted : regular);
+        toggleMarkerGroup(this.id.replace(/id_/, ''), !isHidden);
+      });
 
-  $("[id^=id_]").click(function(){
-    var isHidden = !$(this).hasClass("success");
-    // if it's fresh, add class info and hide its markers
-    $(this).toggleClass("success", isHidden);
-    $('#'+this.id+'_img').attr("style", isHidden ? "opacity: 0.5;" : "");
-    console.log(Gmaps4Rails);
-  });
+      function toggleMarkerGroup(id, toggle){
+        var i, markers = Gmaps.map.markers;
+        var expr1 = /\/images\/markers\//;
+        var expr2 = /.png/;
+        for(i=0; i<markers.length; i++){
+          var img_id = markers[i].picture.replace(expr1, '').replace(expr2, '');
+          if(img_id === "marker"+id){
+            markers[i].serviceObject.setVisible(toggle);
+          }
+        }
+      }
 
-});
-</script>
+    });
+  }
+  </script>
+<% end %>
