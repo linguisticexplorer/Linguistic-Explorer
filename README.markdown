@@ -76,3 +76,8 @@ Fork this repo, pick one issue from the list and pull the fix back!
 This project is under the MIT License.
 
 Please have a look to the [LICENSE file](https://github.com/linguisticexplorer/Linguistic-Explorer/blob/master/LICENSE).
+
+### Markers license
+Icons used for the Geomapping feature are under the [Creative Commons Attribution-Share Alike 3.0 Unported license (CC BY SA 3.0)] (http://creativecommons.org/licenses/by-sa/3.0/)
+Thanks to the [Maps Icons Collection] (http://mapicons.nicolasmollet.com/) project for the icons.
+![Maps Icons Collection Logo](http://mapicons.nicolasmollet.com/wp-content/uploads/2011/03/miclogo-88x31.gif)
