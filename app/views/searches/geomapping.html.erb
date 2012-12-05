@@ -67,11 +67,8 @@
 
       function toggleMarkerGroup(id, toggle){
         var i, markers = Gmaps.map.markers;
-        var expr1 = /\/images\/markers\//;
-        var expr2 = /.png/;
         for(i=0; i<markers.length; i++){
-          var img_id = markers[i].picture.replace(expr1, '').replace(expr2, '');
-          if(img_id === "marker"+id){
+          if(markers[i].id === id){
             markers[i].serviceObject.setVisible(toggle);
           }
         }
