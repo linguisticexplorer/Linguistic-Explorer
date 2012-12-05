@@ -23,7 +23,7 @@ class GeoMapping
           marker.infowindow info_window_for ling, row_number
           marker.title rollover_information(ling, row_number)
           marker.picture({
-                             :picture => "/images/markers/marker#{row_number}.png",
+                             :picture => get_marker_url(row_number.to_i),
                              :width 	=> 32,
                              :height 	=> 37
                          })
@@ -34,6 +34,37 @@ class GeoMapping
   end
 
   private
+  
+  # See: http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+  def get_marker_url(number)
+    hex_value = ""
+    # use golden ratio
+    golden_ratio_conjugate = 0.618033988749895
+    h = number * golden_ratio_conjugate * 1000 # use random start value
+    h += golden_ratio_conjugate
+    h %= 1
+    hsv_to_rgb(h, 0.5, 0.95).each { |component| hex_value << component.to_s(16) }
+    "http://thydzik.com/thydzikGoogleMap/markerlink.php?text=#{number}&color=#{hex_value}"
+  end
+
+  # Thanks to:
+  # http://martin.ankerl.com/2009/12/09/how-to-create-random-colors-programmatically/
+  # HSV values in [0..1[
+  # returns [r, g, b] values from 0 to 255
+  def hsv_to_rgb(h, s, v)
+    h_i = (h*6).to_i
+    f = h*6 - h_i
+    p = v * (1 - s)
+    q = v * (1 - f*s)
+    t = v * (1 - (1 - f) * s)
+    r, g, b = v, t, p if h_i==0
+    r, g, b = q, v, p if h_i==1
+    r, g, b = p, v, t if h_i==2
+    r, g, b = p, q, v if h_i==3
+    r, g, b = t, p, v if h_i==4
+    r, g, b = v, p, q if h_i==5
+    [(r*256).to_i, (g*256).to_i, (b*256).to_i]
+  end
 
   def get_rich_legend
     [].tap do |row|
@@ -41,7 +72,7 @@ class GeoMapping
         if list.any?
           row << {
             id: "id_#{number}",
-            icon: "/images/markers/marker#{number}.png",
+            icon: get_marker_url(number.to_i),
             size: list.size,
             content: get_legend_content(number, list)
           }
