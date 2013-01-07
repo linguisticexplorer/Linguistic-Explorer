@@ -1,7 +1,7 @@
 Linguistic Explorer: Terraling
 ====
 
-http://linguisticexplorer.org
+![http://linguisticexplorer.org](http://linguisticexplorer.org/images/lexplorer_logo4.png)
 
 http://www.terraling.com
 
