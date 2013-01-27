@@ -9,11 +9,8 @@ module Accessors
       @left = c1
       @right = c2
       @name = c2 ? "#{c1.name}-#{c2.name}" : "#{c1.name}"
-      if c1.is_a? Point
-        @size = 1
-      else
-        @size = c2 ? c1.size + c2.size : c1.size
-      end
+      @size = (c1.is_a? Point) ? 1 : c2 ? c1.size + c2.size : c1.size
+
       @distance = 0.1
     end
 
