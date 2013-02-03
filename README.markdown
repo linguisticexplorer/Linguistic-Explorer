@@ -7,21 +7,23 @@ http://www.terraling.com
 
 Terraling is a Ruby on Rails web application to let you store and browse your linguistic data and now it has new features like the following:
 
-* Cross Search;
+* [Regular Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Regular-search);
 
-* Compare Search;
+* [Cross Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Cross-search);
 
-* Universal Implication Both Search;
+* [Compare Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Compare-search);
 
-* Universal Implication Antecedent Search;
+* [Universal Implication Both Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Both-Implication);
 
-* Universal Implication Consequent Search;
+* [Universal Implication Antecedent Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Antecedent-Implication);
 
-* Universal Implication Double Both Search;
+* [Universal Implication Consequent Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Consequent-Implication);
 
-* Geomapping of all the searches above and filter results by category/row;
+* [Universal Implication Double Both Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Double-Both-Implication);
 
-* Similarity Tree Search;
+* [Geomapping] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Geomapping-feature) of all the searches above and filter results by category/row;
+
+* [Similarity Tree Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Similarity-tree);
 
 ## Install
 
