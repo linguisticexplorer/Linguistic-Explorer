@@ -2,9 +2,15 @@ require 'spec_helper'
 
 describe Example do
   describe "one-liners" do
-    it_should_validate_presence_of :group
-    it_should_belong_to :ling, :group, :creator
-    it_should_have_many :examples_lings_properties, :lings_properties
+    it { should validate_presence_of :group }
+    it { should belong_to :ling }
+    it { should belong_to :group }
+    it { should belong_to :creator }
+    it { should have_many :examples_lings_properties }
+    it { should have_many :lings_properties }
+    # it_should_validate_presence_of :group
+    # it_should_belong_to :ling, :group, :creator
+    # it_should_have_many :examples_lings_properties, :lings_properties
   end
 
   describe "should be createable" do
@@ -42,7 +48,8 @@ describe Example do
   end
 
   describe "StoredValues" do
-    it_should_have_many :stored_values
+    # it_should_have_many :stored_values
+    it { should have_many :stored_values }
 
     describe "#storable_keys" do
       it "should return the associated group's example_storable_keys value if group is present" do

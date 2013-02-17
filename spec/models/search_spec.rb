@@ -13,7 +13,11 @@ describe Search do
       end
     end
 
-    it_should_validate_presence_of :group, :creator, :name
+    # it_should_validate_presence_of :group, :creator, :name
+
+    it { should validate_presence_of :group }
+    it { should validate_presence_of :creator }
+    it { should validate_presence_of :name }
 
     it "should validate user within max search limit" do
       Search.stub!(:reached_max_limit?).and_return(true)
@@ -26,7 +30,7 @@ describe Search do
     before(:each) do
       builder = SearchResults::SearchFilterBuilder
       builder.stub!(:new).and_return(mock(builder, :filtered_parent_and_child_ids => [[], []]))
-      @search = Factory(:search)
+      @search = FactoryGirl.create(:search)
     end
 
     it "should serialize query params" do
@@ -99,14 +103,14 @@ describe Search do
 
     describe "search is new_record" do
       before(:each) do
-        @creator = User.last || Factory(:user, :email => "bob-searcher@example.com")
+        @creator = User.last || FactoryGirl.create(:user, :email => "bob-searcher@example.com")
         @search.creator = @creator
         @ability = mock(Ability, :can? => true)
         Ability.stub!(:new).and_return(@ability)
       end
 
       it "should be false if user is not creator" do
-        @search.is_manageable_by?(Factory(:user)).should be_false
+        @search.is_manageable_by?(FactoryGirl.create(:user)).should be_false
       end
 
       describe "user is creator" do

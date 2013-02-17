@@ -6,8 +6,14 @@ describe User do
   end
 
   describe "one-liners" do
-    it_should_validate_presence_of :name, :email, :access_level
-    it_should_have_many :memberships, :groups, :searches
+    # it_should_validate_presence_of :name, :email, :access_level
+    # it_should_have_many :memberships, :groups, :searches
+    it { should validate_presence_of :name }
+    it { should validate_presence_of :email }
+    it { should validate_presence_of :access_level }
+    it { should have_many :memberships }
+    it { should have_many :groups }
+    it { should have_many :searches }
   end
 
   describe "createable with combinations" do
@@ -22,15 +28,15 @@ describe User do
 
   describe "#admin?" do
     it "should be truthy only if the user has access_level of admin" do
-      Factory(:user, :email => "one@example.com", :access_level => "admin").admin?.should be_true
-      Factory(:user, :email => "two@example.com", :access_level => "not").admin?.should_not be_true
+      FactoryGirl.create(:user, :email => "one@example.com", :access_level => "admin").admin?.should be_true
+      FactoryGirl.create(:user, :email => "two@example.com", :access_level => "not").admin?.should_not be_true
     end
   end
 
   describe "#administrated_groups" do
     it "should return the set of groups for which a user is an admin" do
-      user = Factory(:user, :email => "one@example.com", :access_level => "user")
-      group = Factory(:group)
+      user = FactoryGirl.create(:user, :email => "one@example.com", :access_level => "user")
+      group = FactoryGirl.create(:group)
 
       Membership.create(:level => "admin", :group => group, :member => user)
       user.administrated_groups.should include(group)
@@ -51,13 +57,13 @@ describe User do
 
   describe "member_of?" do
     before(:each) do
-      @group_1 = Factory(:group, :name => "Group 1")
-      @group_2 = Factory(:group, :name => "Group 2")
+      @group_1 = FactoryGirl.create(:group, :name => "Group 1")
+      @group_2 = FactoryGirl.create(:group, :name => "Group 2")
       @user.groups << @group_1
       @user.groups << @group_2
     end
     it "should return false if group_id not in group_ids" do
-      @user.member_of?(Factory(:group)).should be_false
+      @user.member_of?(FactoryGirl.create(:group)).should be_false
     end
     it "should return true if group_id in group_ids" do
       @user.member_of?(@group_1).should be_true

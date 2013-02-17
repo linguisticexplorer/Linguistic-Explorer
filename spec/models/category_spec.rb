@@ -2,13 +2,20 @@ require 'spec_helper'
 
 describe Category do
   describe "one-liners" do
-    it_should_validate_presence_of :depth, :group, :name
-    it_should_validate_uniqueness_of :name, :scope => :group_id
-    it_should_validate_numericality_of :depth
-    it_should_have_many :properties
-    it_should_belong_to :group, :creator
+    it { should validate_presence_of :depth }
+    it { should validate_presence_of :group }
+    it { should validate_presence_of :name }
+    it { should validate_uniqueness_of(:name).scoped_to(:group_id) }
+    it { should validate_numericality_of :depth }
+    it { should have_many :properties }
+    it { should belong_to :group }
+    it { should belong_to :creator }
+    # it_should_validate_presence_of :depth, :group, :name
+    # it_should_validate_uniqueness_of :name, :scope => :group_id
+    # it_should_validate_numericality_of :depth
+    # it_should_have_many :properties
+    # it_should_belong_to :group, :creator
 
-#    should_validate_existence_of :group, :creator
   end
 
   describe "createable with combinations" do
@@ -16,7 +23,7 @@ describe Category do
       it "should allow depth of 0" do
         lambda do
           Category.create(:name => 'demos') do |cat|
-            cat.group = Factory(:group, :depth_maximum => 1)
+            cat.group = FactoryGirl.create(:group, :depth_maximum => 1)
             cat.depth = 0
           end
         end.should change(Category, :count).by(1)
@@ -25,7 +32,7 @@ describe Category do
       it "should allow depth of 1" do
         lambda do
           Category.create(:name => 'linguistic') do |cat|
-            cat.group = Factory(:group, :depth_maximum => 1)
+            cat.group = FactoryGirl.create(:group, :depth_maximum => 1)
             cat.depth = 1
           end
         end.should change(Category, :count).by(1)
@@ -36,7 +43,7 @@ describe Category do
       it "should allow depth of 0" do
         lambda do
           Category.create(:name => 'demos') do |cat|
-            cat.group = Factory(:group, :depth_maximum => 0)
+            cat.group = FactoryGirl.create(:group, :depth_maximum => 0)
             cat.depth = 0
           end
         end.should change(Category, :count).by(1)
@@ -45,7 +52,7 @@ describe Category do
       it "should not allow depth of 1" do
         lambda do
           Category.create(:name => 'linguistic') do |cat|
-            cat.group = Factory(:group, :depth_maximum => 0)
+            cat.group = FactoryGirl.create(:group, :depth_maximum => 0)
             cat.depth = 1
           end
         end.should change(Category, :count).by(0)

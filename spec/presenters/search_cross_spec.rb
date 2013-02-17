@@ -40,7 +40,7 @@ describe SearchCross do
   def create_objects(max)
     [].tap do |lp|
       (1..max).each do |id|
-        lp << Factory(:group, :name => "object_#{id}", :id=>id)
+        lp << FactoryGirl.create(:group, :name => "object_#{id}", :id=>id)
       end
     end
   end

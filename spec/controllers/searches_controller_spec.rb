@@ -45,7 +45,7 @@ describe SearchesController do
 
   describe "#show" do
     it "should load search through current_group" do
-      @search = Factory(:search)
+      @search = FactoryGirl.create(:search)
       @group = @search.group
       @searches = @group.searches
       Group.stub(:find).and_return @group
@@ -59,7 +59,7 @@ describe SearchesController do
 
     it "should authorize :search on search" do
       @group = groups(:inclusive)
-      @search = Factory(:search, :group => @group)
+      @search = FactoryGirl.create(:search, :group => @group)
       Search.stub(:new).and_return @search
 
       @ability.should_receive(:can?).with(:search, @search).and_return true
@@ -72,13 +72,13 @@ describe SearchesController do
     describe "when logged in" do
       before do
         sign_out :user
-        @user = Factory(:user, :email => "ohyeah@a.com")
+        @user = FactoryGirl.create(:user, :email => "ohyeah@a.com")
         sign_in @user
       end
 
       it "should authorize :update on @searches" do
         @group = groups(:inclusive)
-        @sc = Factory(:search, :group => @group)
+        @sc = FactoryGirl.create(:search, :group => @group)
         @searches = @group.searches
         Group.stub(:searches).and_return Search
         Search.stub(:by).and_return @searches
@@ -89,7 +89,7 @@ describe SearchesController do
       end
 
       it "should load searches through current_group" do
-        @search = Factory(:search)
+        @search = FactoryGirl.create(:search)
         @group = @search.group
         @searches = @group.searches
         @searches.stub(:by).and_return @searches
@@ -107,7 +107,7 @@ describe SearchesController do
   describe "#destroy" do
     it "should authorize destroy on @search" do
       @group = groups(:inclusive)
-      @search = Factory(:search, :group => @group)
+      @search = FactoryGirl.create(:search, :group => @group)
       Search.stub(:find).and_return @search
 
       @ability.should_receive(:can?).with(:destroy, @search).and_return true
@@ -116,10 +116,10 @@ describe SearchesController do
     end
 
     it "should load @search through current_group" do
-      @search = Factory(:search)
+      @search = FactoryGirl.create(:search)
       @group = @search.group
 
-      @group.should_receive(:searches).and_return Search.where(:group => @group)
+      @group.should_receive(:searches).and_return Search.where(:group_id => @group.id)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @search.id

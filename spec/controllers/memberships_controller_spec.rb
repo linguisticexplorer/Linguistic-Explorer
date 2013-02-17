@@ -20,7 +20,7 @@ describe MembershipsController do
     describe "assigns" do
       it "@memberships should contain memberships for the passed group" do
         @group = groups(:inclusive)
-        membership = Factory(:membership, :group => @group)
+        membership = FactoryGirl.create(:membership, :group => @group)
 
         get :index, :group_id => @group.id
 
@@ -33,7 +33,7 @@ describe MembershipsController do
     describe "assigns" do
       it "@membership should match the passed id" do
         @group = groups(:inclusive)
-        membership = Factory(:membership, :group => @group)
+        membership = FactoryGirl.create(:membership, :group => @group)
 
         get :show, :id => membership.id, :group_id => @group.id
 
@@ -43,7 +43,7 @@ describe MembershipsController do
 
     it "@membership should be load through current_group" do
       @group = groups(:inclusive)
-      @membership = Factory(:membership, :group => @group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
 
       Group.stub(:find).and_return(Group)
       Group.should_receive(:memberships).and_return @group.memberships
@@ -56,7 +56,7 @@ describe MembershipsController do
   describe "new" do
     it "should authorize :create on @membership" do
       @group = groups(:inclusive)
-      @membership = Factory(:membership, :group => @group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:create, @membership).and_return(true)
 
@@ -81,7 +81,7 @@ describe MembershipsController do
   describe "edit" do
     it "should authorize :update on @membership" do
       @group = groups(:inclusive)
-      @membership = Factory(:membership, :group => @group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @membership).and_return(true)
 
@@ -93,7 +93,7 @@ describe MembershipsController do
 
     it "loads the requested membership through current group" do
       @group = groups(:inclusive)
-      @membership = Factory(:membership, :group => @group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
       Group.stub(:find).and_return Group
 
       Group.should_receive(:memberships).and_return @group.memberships
@@ -104,7 +104,7 @@ describe MembershipsController do
     describe "assigns" do
       it "the requested membership to @membership" do
         @group = groups(:inclusive)
-        @membership = Factory(:membership, :group => @group)
+        @membership = FactoryGirl.create(:membership, :group => @group)
 
         get :edit, :id => @membership.id, :group_id => @group.id
 
@@ -113,7 +113,7 @@ describe MembershipsController do
 
       it "all users to @users" do
         @group = groups(:inclusive)
-        @membership = Factory(:membership, :group => @group)
+        @membership = FactoryGirl.create(:membership, :group => @group)
 
         get :edit, :id => @membership.id, :group_id => @group.id
 
@@ -125,8 +125,8 @@ describe MembershipsController do
   describe "create" do
     it "should authorize :create on the membership" do
       @group = groups(:inclusive)
-      @user = Factory(:user)
-      @membership = Factory(:membership, :group => @group, :member => @user)
+      @user = FactoryGirl.create(:user)
+      @membership = FactoryGirl.create(:membership, :group => @group, :member => @user)
 
       @ability.should_receive(:can?).ordered.with(:create, @membership).and_return(true)
 
@@ -138,7 +138,7 @@ describe MembershipsController do
     describe "with valid params" do
       it "assigns a newly created membership to @membership" do
         lambda {
-          post :create, :membership => {'level' => 'member', :member_id => Factory(:user).id}, :group_id => groups(:inclusive).id
+          post :create, :membership => {'level' => 'member', :member_id => FactoryGirl.create(:user).id}, :group_id => groups(:inclusive).id
           assigns(:membership).should_not be_new_record
           assigns(:membership).should be_valid
           assigns(:membership).level.should == 'member'
@@ -147,13 +147,13 @@ describe MembershipsController do
       end
 
       it "redirects to the created membership" do
-        post :create, :membership => {'level' => 'member', :member_id => Factory(:user).id}, :group_id => groups(:inclusive).id
+        post :create, :membership => {'level' => 'member', :member_id => FactoryGirl.create(:user).id}, :group_id => groups(:inclusive).id
         response.should redirect_to(group_membership_url(assigns(:group), assigns(:membership)))
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
-        group_admin = Factory(:user, :access_level => 'user', :name => 'admin', :email => 'a@dmin.com')
+        user = FactoryGirl.create(:user)
+        group_admin = FactoryGirl.create(:user, :access_level => 'user', :name => 'admin', :email => 'a@dmin.com')
         Membership.create(:member => group_admin, :group => groups(:inclusive), :level => "admin")
         sign_in group_admin
         post :create, :membership => {'level' => 'member', :member_id => user.id}, :group_id => groups(:inclusive).id
@@ -161,7 +161,7 @@ describe MembershipsController do
       end
 
       it "should set the group to current group" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         @group = groups(:inclusive)
 
         post :create, :membership => {'level' => 'member', :member_id => user.id}, :group_id => @group.id
@@ -173,7 +173,7 @@ describe MembershipsController do
 
      describe "with invalid params" do
       def do_invalid_create
-        post :create, :membership => { 'level' => '', :member_id => Factory(:user).id }, :group_id => groups(:inclusive).id
+        post :create, :membership => { 'level' => '', :member_id => FactoryGirl.create(:user).id }, :group_id => groups(:inclusive).id
       end
 
       it "does not save a new membership" do
@@ -193,8 +193,8 @@ describe MembershipsController do
 
   describe "update" do
     it "should authorize :update on the passed membership" do
-      @group = Factory(:group)
-      @membership = Factory(:membership, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @membership).and_return(true)
 
@@ -204,7 +204,7 @@ describe MembershipsController do
     end
 
     it "loads the requested membership through current group" do
-      @membership = Factory(:membership)
+      @membership = FactoryGirl.create(:membership)
       @group = @membership.group
       @mems = @group.memberships
       Group.stub(:find).and_return @group
@@ -218,26 +218,26 @@ describe MembershipsController do
 
     describe "with valid params" do
       it "calls update on the requested membership" do
-        @membership = Factory(:membership)
+        @membership = FactoryGirl.create(:membership)
         @group = @membership.group
         @group.stub(:memberships).and_return Membership
-        Membership.stub(:find).with(@membership.id).and_return @membership
+        Membership.stub(:find).with(@membership.id.to_s).and_return @membership
         Group.stub(:find).and_return @group
-
+        
         @membership.should_receive(:update_attributes).with({'level' => ''}).and_return true
 
         put :update, :id => @membership.id, :membership => {'level' => ''}, :group_id => @group.id
       end
 
       it "assigns the requested membership as @membership" do
-        membership = Factory(:membership, :group => groups(:inclusive))
+        membership = FactoryGirl.create(:membership, :group => groups(:inclusive))
         put :update, :id => membership, :group_id => groups(:inclusive).id
         assigns(:membership).should == membership
       end
 
       it "redirects to the membership" do
         @group = groups(:inclusive)
-        membership = Factory(:membership, :group => @group)
+        membership = FactoryGirl.create(:membership, :group => @group)
 
         put :update, :id => membership, :group_id => @group.id
 
@@ -247,13 +247,13 @@ describe MembershipsController do
 
     describe "with invalid params" do
       it "assigns the membership as @membership" do
-        @membership = Factory(:membership, :group => groups(:inclusive))
+        @membership = FactoryGirl.create(:membership, :group => groups(:inclusive))
         put :update, :id => @membership, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
         assigns(:membership).should == @membership
       end
 
       it "re-renders the 'edit' template" do
-        @membership = Factory(:membership, :group => groups(:inclusive))
+        @membership = FactoryGirl.create(:membership, :group => groups(:inclusive))
         put :update, :id => @membership, :membership => {'level' => ''}, :group_id => groups(:inclusive).id
         response.should render_template("edit")
       end
@@ -266,7 +266,7 @@ describe MembershipsController do
     end
 
     it "should authorize :destroy on the passed membership" do
-      @membership = Factory(:membership)
+      @membership = FactoryGirl.create(:membership)
       @group = @membership.group
 
       @ability.should_receive(:can?).ordered.with(:destroy, @membership).and_return(true)
@@ -276,17 +276,17 @@ describe MembershipsController do
     end
 
     it "loads the membership through current group" do
-      @membership = Factory(:membership)
+      @membership = FactoryGirl.create(:membership)
       @group = @membership.group
 
-      @group.should_receive(:memberships).and_return Membership.where(:group => @group)
+      @group.should_receive(:memberships).and_return Membership.where(:group_id => @group)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @membership.id
     end
 
     it "calls destroy on the requested membership" do
-      @membership = Factory(:membership)
+      @membership = FactoryGirl.create(:membership)
       @group = @membership.group
       @group.stub(:memberships).and_return Membership
 
@@ -299,7 +299,7 @@ describe MembershipsController do
 
     it "redirects to the memberships list" do
       @group = groups(:inclusive)
-      @membership = Factory(:membership, :group => @group)
+      @membership = FactoryGirl.create(:membership, :group => @group)
 
       delete :destroy, :id => @membership.id, :group_id => @group.id
 

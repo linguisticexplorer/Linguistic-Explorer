@@ -50,7 +50,8 @@ describe ExamplesController do
 
   describe "new" do
     it "should authorize :create on @example" do
-      @group = Factory(:group)
+      # let(:group) { FactoryGirl.create(:group) }
+      @group = FactoryGirl.create(:group)
       @example = Example.new
 
       @ability.should_receive(:can?).ordered.with(:create, @example).and_return(true)
@@ -124,8 +125,8 @@ describe ExamplesController do
 
   describe "create" do
     it "should authorize :create on the example with params" do
-      @group = Factory(:group)
-      @example = Factory(:example, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @example = FactoryGirl.create(:example, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:create, @example).and_return(true)
 
@@ -157,7 +158,7 @@ describe ExamplesController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
 
@@ -179,8 +180,8 @@ describe ExamplesController do
 
   describe "update" do
     it "should authorize :update on the passed example" do
-      @group = Factory(:group)
-      @example = Factory(:example, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @example = FactoryGirl.create(:example, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @example).and_return(true)
 
@@ -207,7 +208,7 @@ describe ExamplesController do
         new_name = "foobard"
         @group = @example.group
         @group.stub(:examples).and_return Example
-        Example.stub(:find).with(@example.id).and_return(@example)
+        Example.stub(:find).with(@example.id.to_s).and_return(@example)
         Group.stub(:find).and_return @group
 
         @example.should_receive(:update_attributes).with({'name' => new_name}).and_return(true)
@@ -256,7 +257,7 @@ describe ExamplesController do
       @example = examples(:onceuponatime)
       @group = @example.group
 
-      @group.should_receive(:examples).and_return Example.where(:group => @group)
+      @group.should_receive(:examples).and_return Example.where(:group_id => @group.id)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @example.id

@@ -33,7 +33,7 @@ describe CategoriesController do
 
   describe "new" do
     it "should authorize :create on @category" do
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @category = Category.new
 
       @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
@@ -91,8 +91,8 @@ describe CategoriesController do
 
   describe "create" do
     it "should authorize :create on the passed category params" do
-      @group = Factory(:group)
-      @category = Factory(:category, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @category = FactoryGirl.create(:category, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
 
@@ -119,7 +119,7 @@ describe CategoriesController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
@@ -153,8 +153,8 @@ describe CategoriesController do
 
   describe "update" do
     it "should authorize :update on the passed category" do
-      @group = Factory(:group)
-      @category = Factory(:category, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @category = FactoryGirl.create(:category, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @category).and_return(true)
 
@@ -190,7 +190,7 @@ describe CategoriesController do
         @category = categories(:inclusive0)
         @group = @category.group
         @group.stub(:categories).and_return Category
-        Category.stub(:find).with(@category.id).and_return(@category)
+        Category.stub(:find).with(@category.id.to_s).and_return(@category)
         Group.stub(:find).and_return @group
 
         @category.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
@@ -239,7 +239,7 @@ describe CategoriesController do
       @category = categories(:inclusive0)
       @group = @category.group
 
-      @group.should_receive(:categories).and_return Category.where(:group => @group)
+      @group.should_receive(:categories).and_return Category.where(:group_id => @group.id)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @category.id

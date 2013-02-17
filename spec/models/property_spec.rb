@@ -2,11 +2,19 @@ require 'spec_helper'
 
 describe Property do
   describe "one-liners" do
-    it_should_validate_presence_of :name, :category, :group
-    it_should_validate_uniqueness_of :name, :scope => :group_id
+    it { should validate_presence_of :name }
+    it { should validate_presence_of :category }
+    it { should validate_presence_of :group }
+    it { should validate_uniqueness_of(:name).scoped_to(:group_id) }
+    it { should belong_to :group}
+    it { should belong_to :creator }
+    it { should belong_to :category }
+    it { should have_many :lings_properties }
+    # it_should_validate_presence_of :name, :category, :group
+    # it_should_validate_uniqueness_of :name, :scope => :group_id
 
-    it_should_belong_to :group, :creator, :category
-    it_should_have_many :lings_properties
+    # it_should_belong_to :group, :creator, :category
+    # it_should_have_many :lings_properties
   end
 
   describe "should be createable" do

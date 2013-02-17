@@ -2,10 +2,21 @@ require 'spec_helper'
 
 describe Group do
   describe "one-liners" do
-    it_should_validate_presence_of :name
-    it_should_validate_uniqueness_of :name
-    it_should_validate_numericality_of :depth_maximum, :<= => Group::MAXIMUM_ASSIGNABLE_DEPTH
-    it_should_have_many :lings, :properties, :lings_properties, :examples_lings_properties, :examples, :categories, :memberships, :members, :searches
+    it { should validate_presence_of :name }
+    it { should validate_uniqueness_of :name }
+    it { should validate_numericality_of(:depth_maximum, :<= => Group::MAXIMUM_ASSIGNABLE_DEPTH) }
+    it { should have_many :lings }
+    it { should have_many :lings_properties }
+    it { should have_many :examples_lings_properties }
+    it { should have_many :examples }
+    it { should have_many :categories }
+    it { should have_many :memberships }
+    it { should have_many :members }
+    it { should have_many :searches }
+    # it_should_validate_presence_of :name
+    # it_should_validate_uniqueness_of :name
+    # it_should_validate_numericality_of :depth_maximum, :<= => Group::MAXIMUM_ASSIGNABLE_DEPTH
+    # it_should_have_many :lings, :properties, :lings_properties, :examples_lings_properties, :examples, :categories, :memberships, :members, :searches
   end
 
   describe "should be createable" do
@@ -48,11 +59,11 @@ describe Group do
 
   describe "#depths" do
     it "should return an array [0] to a no depth group" do
-      Factory(:group, :depth_maximum => 0).depths.should == [ 0 ]
+      FactoryGirl.create(:group, :depth_maximum => 0).depths.should == [ 0 ]
     end
 
     it "should return an array of the available depths to the group" do
-      Factory(:group, :depth_maximum => 1).depths.should == [0, 1]
+      FactoryGirl.create(:group, :depth_maximum => 1).depths.should == [0, 1]
     end
   end
 
@@ -63,19 +74,19 @@ describe Group do
 
     describe "should return an array of strings created from example_fields" do
       it "that has only default keys if the field is empty" do
-        Factory(:group, :example_fields => "").example_storable_keys.should == ['description']
+        FactoryGirl.create(:group, :example_fields => "").example_storable_keys.should == ['description']
       end
 
       it "should ignore duplicates" do
-        Factory(:group, :example_fields => "description, foo, foo").example_storable_keys.should == ["description", "foo"]
+        FactoryGirl.create(:group, :example_fields => "description, foo, foo").example_storable_keys.should == ["description", "foo"]
       end
 
       it "that splits on commas if fields has any" do
-        Factory(:group, :example_fields => "foo,bar").example_storable_keys.should == [ "description", "foo", "bar"]
+        FactoryGirl.create(:group, :example_fields => "foo,bar").example_storable_keys.should == [ "description", "foo", "bar"]
       end
 
       it "that strips leading and trailing whitespace from all values" do
-        Factory(:group, :example_fields => " foo , bar ").example_storable_keys.should == [ "description", "foo", "bar"]
+        FactoryGirl.create(:group, :example_fields => " foo , bar ").example_storable_keys.should == [ "description", "foo", "bar"]
       end
     end
   end
@@ -87,19 +98,19 @@ describe Group do
 
     describe "should return an array of strings created from example_fields" do
       it "that has only default keys if the field is empty" do
-        Factory(:group, :ling_fields => "").ling_storable_keys.should == ['description']
+        FactoryGirl.create(:group, :ling_fields => "").ling_storable_keys.should == ['description']
       end
 
       it "should ignore duplicates" do
-        Factory(:group, :ling_fields => "description, foo, foo").ling_storable_keys.should == ["description", "foo"]
+        FactoryGirl.create(:group, :ling_fields => "description, foo, foo").ling_storable_keys.should == ["description", "foo"]
       end
 
       it "that splits on commas if fields has any" do
-        Factory(:group, :ling_fields => "foo,bar").ling_storable_keys.should == ["description", "foo", "bar"]
+        FactoryGirl.create(:group, :ling_fields => "foo,bar").ling_storable_keys.should == ["description", "foo", "bar"]
       end
 
       it "that strips leading and trailing whitespace from all values" do
-        Factory(:group, :ling_fields => " foo , bar ").ling_storable_keys.should == ["description", "foo", "bar"]
+        FactoryGirl.create(:group, :ling_fields => " foo , bar ").ling_storable_keys.should == ["description", "foo", "bar"]
       end
     end
   end

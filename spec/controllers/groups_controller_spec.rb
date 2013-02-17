@@ -11,7 +11,7 @@ describe GroupsController do
     describe "without a group_id parameter" do
       it "@groups should contain accessible groups for signed in user" do
         @controller.stub!(:user_signed_in?).and_return(true)
-        @group = Factory(:group)
+        @group = FactoryGirl.create(:group)
         Group.should_receive(:accessible_by).with(@ability).and_return( [@group] )
         get :index
         assigns(:groups).should include @group
@@ -19,7 +19,7 @@ describe GroupsController do
 
       it "@groups should contain accessible groups" do
         @controller.stub!(:user_signed_in?).and_return(false)
-        @group = Factory(:group)
+        @group = FactoryGirl.create(:group)
         Group.should_receive(:public).and_return( [@group] )
         get :index
         assigns(:groups).should include @group
@@ -29,7 +29,7 @@ describe GroupsController do
     describe "with a group_id parameter" do
       it "should authorize :show on group" do
         @ability = Ability.new(nil)
-        @group = Factory(:group)
+        @group = FactoryGirl.create(:group)
         @ability.should_receive(:can?).with(:show, @group).and_return true
         @controller.stub(:current_ability).and_return(@ability)
         Group.stub(:find).and_return(@group)
@@ -53,7 +53,7 @@ describe GroupsController do
   describe "show" do
     it "should authorize :show on group" do
       @ability = Ability.new(nil)
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:show, @group).and_return true
       @controller.stub(:current_ability).and_return(@ability)
       Group.stub(:find).and_return(@group)
@@ -71,7 +71,7 @@ describe GroupsController do
   describe "info" do
     it "should authorize :show on group" do
       @ability = Ability.new(nil)
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:show, @group).and_return true
       @controller.stub(:current_ability).and_return(@ability)
       Group.stub(:find).and_return(@group)
@@ -92,7 +92,7 @@ describe GroupsController do
     end
 
     it "should authorize :create on group" do
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability = Ability.new(nil)
       Group.should_receive(:new).and_return(@group)
       @ability.should_receive(:can?).with(:create, @group).and_return true
@@ -111,7 +111,7 @@ describe GroupsController do
   describe "edit" do
     it "should authorize :update on group" do
       @ability = Ability.new(nil)
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:update, @group).and_return true
       @controller.stub(:current_ability).and_return(@ability)
       Group.stub(:find).and_return(@group)
@@ -133,7 +133,7 @@ describe GroupsController do
 
     it "should authorize :create on group" do
       @ability = Ability.new(nil)
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:create, @group).and_return true
       @controller.stub(:current_ability).and_return(@ability)
       Group.stub(:new).and_return(@group)
@@ -144,7 +144,7 @@ describe GroupsController do
     describe "with valid params" do
       it "assigns a newly created group to @group" do
         group_params = {'name' => 'TheBestTheBestTheBest'}
-        @group = Factory(:group)
+        @group = FactoryGirl.create(:group)
         Group.should_receive(:new).with(group_params).and_return(@group)
         do_create_with_params(group_params)
       end
@@ -185,7 +185,7 @@ describe GroupsController do
 
     it "should authorize :update on the passed group" do
       params = {'name' => 'lamegroup'}
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:update, @group).and_return(true)
       Group.stub(:find).and_return(@group)
       do_update_on_group_with_params(@group, params)
@@ -233,7 +233,7 @@ describe GroupsController do
 
   describe "destroy" do
     it "should authorize :destroy on the passed group" do
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @ability.should_receive(:can?).with(:destroy, @group).and_return(true)
       Group.stub(:find).and_return(@group)
       delete :destroy, :id => @group.id

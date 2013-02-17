@@ -233,7 +233,7 @@ describe LingsController do
 
     it "should authorize :create on @ling" do
       @ling = Ling.new
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
 
       @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
 
@@ -343,8 +343,8 @@ describe LingsController do
     end
 
     it "should authorize :update on the passed ling" do
-      @group = Factory(:group)
-      @ling = Factory(:ling, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @ling = FactoryGirl.create(:ling, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
 
@@ -356,8 +356,8 @@ describe LingsController do
 
   describe "create" do
     it "should authorize :create on the passed ling params" do
-      @group = Factory(:group)
-      @ling = Factory(:ling, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @ling = FactoryGirl.create(:ling, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
 
@@ -393,7 +393,7 @@ describe LingsController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
 
@@ -452,8 +452,8 @@ describe LingsController do
 
   describe "update" do
     it "should authorize :update on the passed ling" do
-      @group = Factory(:group)
-      @ling = Factory(:ling, :group => @group)
+      @group = FactoryGirl.create(:group)
+      @ling = FactoryGirl.create(:ling, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
 
@@ -554,7 +554,7 @@ describe LingsController do
 
     it "should authorize :destroy on the passed ling" do
       @group = groups(:inclusive)
-      @ling = Factory(:ling, :name => "thosewhoareabouttodie", :group => @group)
+      @ling = FactoryGirl.create(:ling, :name => "thosewhoareabouttodie", :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
 
@@ -565,7 +565,7 @@ describe LingsController do
       @ling = lings(:english)
       @group = @ling.group
 
-      @group.should_receive(:lings).and_return Ling.where(:group => @group)
+      @group.should_receive(:lings).and_return Ling.where(:group_id => @group.id)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @ling.id

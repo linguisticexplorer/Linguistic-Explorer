@@ -5,14 +5,14 @@ describe Ability do
   describe "::" do
     describe "Site Admins" do
       it "should be able to manage every object" do
-        ability = Ability.new(Factory(:user, :access_level => "admin"))
+        ability = Ability.new(FactoryGirl.create(:user, :access_level => "admin"))
         [ User, Ling, Property, Category, LingsProperty, Example, ExamplesLingsProperty, Group, Membership, Search ].each do |klass|
           ability.should be_able_to(:manage, klass )
         end
       end
 
       it "should be able to manage every object in the forum" do
-        ability = Ability.new(Factory(:user, :access_level => "admin"))
+        ability = Ability.new(FactoryGirl.create(:user, :access_level => "admin"))
         [ ForumGroup, Forum, Topic, Post ].each do |klass|
           ability.should be_able_to(:manage, klass )
         end
@@ -31,36 +31,36 @@ describe Ability do
       end
 
       it "should not be able to read private groups" do
-        @group = Factory(:group, :name => "privy", :privacy => Group::PRIVATE)
+        @group = FactoryGirl.create(:group, :name => "privy", :privacy => Group::PRIVATE)
         @visitor.should_not be_able_to(:read, @group)
       end
 
       it "should not be able to see private group data" do
-        @group = Factory(:group, :name => "privy", :privacy => Group::PRIVATE)
+        @group = FactoryGirl.create(:group, :name => "privy", :privacy => Group::PRIVATE)
         [ :ling, :category ].each do |model|
-          instance = Factory(model, :group => @group)
+          instance = FactoryGirl.create(model, :group => @group)
           instance.group.private?.should be_true
           @visitor.should_not be_able_to(:read, instance)
         end
       end
 
       it "should be able to view public groups and their data" do
-        @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
+        @group = FactoryGirl.create(:group, :name => "pubs", :privacy => Group::PUBLIC)
         @group.private?.should be_false
         @visitor.should be_able_to(:read, @group)
-        @visitor.should be_able_to(:read, Factory(:ling, :group => @group))
-        @visitor.should be_able_to(:read, Factory(:category, :group => @group))
+        @visitor.should be_able_to(:read, FactoryGirl.create(:ling, :group => @group))
+        @visitor.should be_able_to(:read, FactoryGirl.create(:category, :group => @group))
       end
 
       it "should not be able to save searches, even on visible groups" do
-        @group = Factory(:group, :name => "pubs", :privacy => Group::PUBLIC)
-        @visitor.should_not be_able_to(:create, Factory(:search, :group => @group))
+        @group = FactoryGirl.create(:group, :name => "pubs", :privacy => Group::PUBLIC)
+        @visitor.should_not be_able_to(:create, FactoryGirl.create(:search, :group => @group))
       end
 
       describe "within Forum" do
         before do
-          @forum_group_secret = Factory(:forum_group, :title => "Secret Group", :state => false)
-          @forum_group_public = Factory(:forum_group, :title => "Public Group", :state => true)
+          @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
+          @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
         end
         it "should not be able to see secret forum group" do
           @visitor.should_not be_able_to(:read, @forum_group_secret)
@@ -71,30 +71,30 @@ describe Ability do
         end
 
         it "should not be able to see secret forum in a public group" do
-          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
           @visitor.should_not be_able_to(:read, forum)
         end
 
         it "should not be able to see public forum in a secret group" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
           @visitor.should_not be_able_to(:read, forum)
         end
 
         it "should not be able to see a topic in a secret forum" do
-          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
           @visitor.should_not be_able_to(:read, topic)
         end
 
         it "should not be able to see a topic in a secret forum group" do
-          forum = Factory(:forum, :title => "Secret Forum", :state => true, :forum_group => @forum_group_secret)
-          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => true, :forum_group => @forum_group_secret)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
           @visitor.should_not be_able_to(:read, topic)
         end
 
         it "should be able to see a topic in a public forum" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
           @visitor.should be_able_to(:read, topic)
         end
 
@@ -103,7 +103,7 @@ describe Ability do
 
     describe "Logged in Users" do
       before do
-        @user = Factory(:user, :access_level => "user")
+        @user = FactoryGirl.create(:user, :access_level => "user")
         @logged = Ability.new(@user)
       end
 
@@ -112,13 +112,13 @@ describe Ability do
       end
 
       it "should not be able to manage other users" do
-        @logged.should_not be_able_to(:manage, Factory(:user, :name => "otherguy", :email => "other@example.com"))
+        @logged.should_not be_able_to(:manage, FactoryGirl.create(:user, :name => "otherguy", :email => "other@example.com"))
       end
 
       describe "within Forum" do
         before do
-          @forum_group_secret = Factory(:forum_group, :title => "Secret Group", :state => false)
-          @forum_group_public = Factory(:forum_group, :title => "Public Group", :state => true)
+          @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
+          @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
         end
 
         it "should not be able to see secret forum group" do
@@ -130,54 +130,54 @@ describe Ability do
         end
 
         it "should not be able to see secret forum in a public group" do
-          forum = Factory(:forum, :title => "Public Forum", :state => false, :forum_group => @forum_group_public)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => false, :forum_group => @forum_group_public)
           @logged.should_not be_able_to(:read, forum)
         end
 
         it "should not be able to see public forum in a secret group" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
           @logged.should_not be_able_to(:read, forum)
         end
 
         it "should not be able to see a topic in a secret forum" do
-          forum = Factory(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should_not be_able_to(:read, topic)
         end
 
         it "should not be able to see a topic in a secret forum group" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should_not be_able_to(:read, topic)
         end
 
         it "should be able to see a topic in a public forum" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should be_able_to(:read, topic)
         end
 
         it "should be able to reply to a post in a public forum" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should be_able_to(:create, topic.posts.new)
         end
 
         it "should be able to update his own post in a public forum" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should be_able_to(:update, topic.posts.first)
         end
 
         it "should be able to destroy his own post in a public forum" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
           @logged.should be_able_to(:destroy, topic.posts.first)
         end
 
         it "should not be able to update a post in a locked topic" do
-          forum = Factory(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = Factory(:topic, :title => "Free topic", :locked => true, :user => @user, :forum => forum)
+          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+          topic = FactoryGirl.create(:topic, :title => "Free topic", :locked => true, :user => @user, :forum => forum)
           @logged.should_not be_able_to(:update, topic.posts.first)
         end
       end
@@ -187,13 +187,13 @@ describe Ability do
       Group::PRIVACY.each do |privacy|
         describe "on a #{privacy} group they administrate" do
           before do
-            @group = Factory(:group, :privacy => privacy)
+            @group = FactoryGirl.create(:group, :privacy => privacy)
             if Group::PRIVATE == privacy
               @group.private?.should be_true
             elsif Group::PUBLIC == privacy
               @group.private?.should be_false
             end
-            @user  = Factory(:user)
+            @user  = FactoryGirl.create(:user)
             Membership.create(:group => @group, :member => @user, :level => Membership::ADMIN)
             @user.reload
             @admin = Ability.new(@user)
@@ -214,19 +214,19 @@ describe Ability do
           end
 
           it "should be able to manage their own searches" do
-            @admin.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+            @admin.should be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
           end
         end
       end
 
       describe "looking at another public group" do
         before do
-          group  = Factory(:group)
-          @user   = Factory(:user)
+          group  = FactoryGirl.create(:group)
+          @user   = FactoryGirl.create(:user)
           Membership.create(:group => group, :member => @user, :level => Membership::ADMIN)
           @user.reload
           @admin = Ability.new(@user)
-          @other_group = Factory(:group, :name => "openness", :privacy => Group::PUBLIC)
+          @other_group = FactoryGirl.create(:group, :name => "openness", :privacy => Group::PUBLIC)
           @other_group.private?.should be_false
         end
 
@@ -235,7 +235,7 @@ describe Ability do
         end
 
         it "should be able to manage their own searches on the group" do
-          @admin.should be_able_to(:manage, Factory(:search, :group => @other_group, :creator => @user))
+          @admin.should be_able_to(:manage, FactoryGirl.create(:search, :group => @other_group, :creator => @user))
         end
 
         [ Ling, Category, Example, Membership ].each do |klass| # LingsProperty, ExamplesLingsProperty, Property removed due to creation difficulty
@@ -265,12 +265,12 @@ describe Ability do
 
       describe "with a private group that they are not a member of" do
         before do
-          group  = Factory(:group)
-          user   = Factory(:user)
+          group  = FactoryGirl.create(:group)
+          user   = FactoryGirl.create(:user)
           Membership.create(:group => group, :member => user, :level => Membership::ADMIN)
           user.reload
           @admin = Ability.new(user)
-          @other_group = Factory(:group, :name => "haters", :privacy => Group::PRIVATE)
+          @other_group = FactoryGirl.create(:group, :name => "haters", :privacy => Group::PRIVATE)
           @other_group.private?.should be_true
         end
 
@@ -304,13 +304,13 @@ describe Ability do
       Group::PRIVACY.each do |privacy|
         describe "on a #{privacy} group they are a member of" do
           before do
-            @group = Factory(:group, :privacy => privacy)
+            @group = FactoryGirl.create(:group, :privacy => privacy)
             if Group::PRIVATE == privacy
               @group.private?.should be_true
             elsif Group::PUBLIC == privacy
               @group.private?.should be_false
             end
-            @user = Factory(:user)
+            @user = FactoryGirl.create(:user)
             @membership = Membership.create(:group => @group, :member => @user, :level => Membership::MEMBER)
             @user.reload
             @member = Ability.new(@user)
@@ -324,11 +324,11 @@ describe Ability do
           end
 
           it "should be able to manage their own searches" do
-            @member.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+            @member.should be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
           end
 
           it "should not be able to manage the searches of others" do
-            @member.should_not be_able_to(:manage, Factory(:search, :group => @group, :creator => Factory(:user, :email => "foonique@bar.com")))
+            @member.should_not be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => FactoryGirl.create(:user, :email => "foonique@bar.com")))
           end
 
           [ ExamplesLingsProperty, LingsProperty, Example ].each do |klass|
@@ -366,20 +366,20 @@ describe Ability do
 
     describe "Non-Groupmembers" do
       before do
-        @user = Factory(:user)
+        @user = FactoryGirl.create(:user)
         @nonmember = Ability.new(@user)
       end
 
       it "should be able to manage their own searches on public groups" do
         @group = groups(:inclusive)
         @group.privacy.should == Group::PUBLIC
-        @nonmember.should be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+        @nonmember.should be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
       end
 
       it "should not be able to search on private groups" do
         @group = groups(:exclusive)
         @group.privacy.should == Group::PRIVATE
-        @nonmember.should_not be_able_to(:manage, Factory(:search, :group => @group, :creator => @user))
+        @nonmember.should_not be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
       end
 
       it "should only be able to read public group data" do

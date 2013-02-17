@@ -7,9 +7,13 @@ describe StoredValue do
   end
 
   describe "one-liners" do
-    it_should_validate_presence_of :key, :value, :storable
-    it_should_belong_to :storable
-    should_validate_existence_of :storable
+    # it_should_validate_presence_of :key, :value, :storable
+    # it_should_belong_to :storable
+    it { should validate_presence_of :key }
+    it { should validate_presence_of :value }
+    it { should validate_presence_of :storable }
+    it { should belong_to :storable }
+    it { should validate_existence_of :storable }
   end
 
   it "should validate that its key is among the 'storable values' list for its storable" do

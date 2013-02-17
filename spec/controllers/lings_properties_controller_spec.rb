@@ -62,7 +62,7 @@ describe LingsPropertiesController do
     end
 
     it "loads the lings_property through current group" do
-      @group.should_receive(:lings_properties).and_return LingsProperty.where(:group => @group)
+      @group.should_receive(:lings_properties).and_return LingsProperty.where(:group_id => @group.id)
       Group.stub(:find).and_return @group
 
       do_destroy_on_lings_property(@lp)

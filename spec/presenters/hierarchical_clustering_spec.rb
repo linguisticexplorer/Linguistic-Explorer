@@ -37,15 +37,15 @@ describe HierarchicalClustering do
 
     describe "calculate distance with null points: " do
       it "should raise an Error by euclidean formula" do
-        expect { @clusterer.euclidean([0,0], nil) }.should raise_error(ArgumentError)
+        expect { @clusterer.euclidean([0,0], nil) }.to raise_error(ArgumentError)
       end
 
       it "should raise an Error by manhattan formula" do
-        expect { @clusterer.manhattan([0,0], nil) }.should raise_error(ArgumentError)
+        expect { @clusterer.manhattan([0,0], nil) }.to raise_error(ArgumentError)
       end
 
       it "should raise an Error by max formula" do
-        expect { @clusterer.max([0,0], nil) }.should raise_error(ArgumentError)
+        expect { @clusterer.max([0,0], nil) }.to raise_error(ArgumentError)
       end
     end
 

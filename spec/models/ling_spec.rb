@@ -2,12 +2,24 @@ require 'spec_helper'
 
 describe Ling do
   describe "one-liners" do
-    it_should_validate_presence_of :name, :depth, :group
-    it_should_validate_uniqueness_of :name, :scope => :group_id
-    it_should_validate_numericality_of :depth
+    it { should validate_presence_of :name }
+    it { should validate_presence_of :depth }
+    it { should validate_presence_of :group }
+    it { should validate_uniqueness_of(:name).scoped_to(:group_id) }
+    it { should validate_numericality_of :depth }
+    it { should have_many :examples }
+    it { should have_many :children }
+    it { should have_many :lings_properties }
+    it { should have_many :children }
+    it { should belong_to :parent }
+    it { should belong_to :group }
+    it { should belong_to :creator }
+    # it_should_validate_presence_of :name, :depth, :group
+    # it_should_validate_uniqueness_of :name, :scope => :group_id
+    # it_should_validate_numericality_of :depth
 
-    it_should_have_many :examples, :children, :lings_properties, :children
-    it_should_belong_to :parent, :group, :creator
+    # it_should_have_many :examples, :children, :lings_properties, :children
+    # it_should_belong_to :parent, :group, :creator
   end
 
   describe "createable with combinations" do
@@ -47,7 +59,7 @@ describe Ling do
     end
 
     it "should not allow ling creation of a depth greater than the group maximum" do
-      group = Factory(:group, :depth_maximum => 0)
+      group = FactoryGirl.create(:group, :depth_maximum => 0)
       group.depth_maximum.should == 0
       parent = Ling.create(:name => 'level0') do |ling|
         ling.depth = 0
@@ -76,7 +88,7 @@ describe Ling do
     end
 
     it "should use the depth 0 type name from its parent group if it is missing depth" do
-      group = Factory(:group, :ling1_name => "", :depth_maximum => 0)
+      group = FactoryGirl.create(:group, :ling1_name => "", :depth_maximum => 0)
       Ling.create(:name => "baz") do |ling|
         ling.depth = nil
         ling.group = group
@@ -111,7 +123,8 @@ describe Ling do
   end
 
   describe "StoredValues" do
-    it_should_have_many :stored_values
+    # it_should_have_many :stored_values
+    it { should have_many :stored_values }
 
     describe "#storable_keys" do
       it "should return the associated group's ling_storable_keys value if group is present" do

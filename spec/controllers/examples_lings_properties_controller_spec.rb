@@ -39,7 +39,7 @@ describe ExamplesLingsPropertiesController do
 
   describe "new" do
     it "should authorize :create on @examples_lings_property" do
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @elp = Example.new
 
       @ability.should_receive(:can?).ordered.with(:create, @elp).and_return(true)
@@ -73,7 +73,7 @@ describe ExamplesLingsPropertiesController do
     it "should authorize :create on the examples_lings_property with params" do
       @group = groups(:inclusive)
       @lp = lings_properties(:level0)
-      @example = Factory(:example, :ling => @lp.ling, :group => @group)
+      @example = FactoryGirl.create(:example, :ling => @lp.ling, :group => @group)
 
       @elp = ExamplesLingsProperty.new do |elp|
         elp.group = @group
@@ -113,7 +113,7 @@ describe ExamplesLingsPropertiesController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         example = examples(:inclusive)
         lings_property = lings_properties(:inclusive)
@@ -127,7 +127,7 @@ describe ExamplesLingsPropertiesController do
       it "should set the group to current group" do
         @group = groups(:inclusive)
         @lp = lings_properties(:level0)
-        @example = Factory(:example, :ling => @lp.ling, :group => @group)
+        @example = FactoryGirl.create(:example, :ling => @lp.ling, :group => @group)
 
         post :create, :examples_lings_property => {'example_id' => @example.id, 'lings_property_id' => @lp.id}, :group_id => @group.id
 
@@ -192,7 +192,7 @@ describe ExamplesLingsPropertiesController do
     end
 
     it "loads the examples_lings_property through current group" do
-      @group.should_receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group => @group)
+      @group.should_receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group_id => @group.id)
       Group.stub(:find).and_return @group
 
       do_destroy_on_examples_lings_property(@elp)

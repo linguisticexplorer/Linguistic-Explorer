@@ -63,7 +63,7 @@ describe PropertiesController do
 
   describe "new" do
     it "should authorize :create on @property" do
-      @group = Factory(:group)
+      @group = FactoryGirl.create(:group)
       @property = Property.new
 
       @ability.should_receive(:can?).ordered.with(:create, @property).and_return(true)
@@ -141,7 +141,7 @@ describe PropertiesController do
     it "should authorize :create on the property with params" do
       @property = properties(:level0)
       @group = @property.group
-      @category = Factory(:category, :group => @group)
+      @category = FactoryGirl.create(:category, :group => @group)
 
       @ability.should_receive(:can?).ordered.with(:create, @property).and_return(true)
 
@@ -172,7 +172,7 @@ describe PropertiesController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = Factory(:user)
+        user = FactoryGirl.create(:user)
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         do_valid_create
@@ -181,7 +181,7 @@ describe PropertiesController do
 
       it "should set the group to current group" do
         @group = groups(:inclusive)
-        @category = Factory(:category, :group => @group)
+        @category = FactoryGirl.create(:category, :group => @group)
 
         post :create, :property => {'name' => 'FROMSPACE', :description => "lots of junk", :category_id => @category.id}, :group_id => @group.id
 
@@ -254,7 +254,7 @@ describe PropertiesController do
         new_name = "foobard"
         @group = @property.group
         @group.stub(:properties).and_return Property
-        Property.stub(:find).with(@property.id).and_return @property
+        Property.stub(:find).and_return @property
         Group.stub(:find).and_return @group
 
         @property.should_receive(:update_attributes).with({'name' => new_name}).and_return true
@@ -320,7 +320,7 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
 
-      @group.should_receive(:properties).and_return Property.where(:group => @group)
+      @group.should_receive(:properties).and_return Property.where(:group_id => @group.id)
 
       Group.stub(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @property.id
