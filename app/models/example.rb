@@ -8,15 +8,16 @@ class Example < ActiveRecord::Base
   end
 
   belongs_to :ling
-  has_many :stored_values, :as => :storable, :dependent => :destroy
+  has_many :stored_values, :as => :storable , :dependent => :destroy
   has_many :examples_lings_properties, :dependent => :destroy
   has_many :lings_properties, :through => :examples_lings_properties
 
-  validates_existence_of :ling, :allow_nil => true
+  # validates_existence_of :ling, :allow_nil => true
+  validates :ling, :existence => { :allow_nil => true }
   validate :group_association_match
 
   default_scope includes(:stored_values)
-  scope :in_group, lambda { |group| where(:group => group) }
+  scope :in_group, lambda { |group| where(:group_id => group) }
 
   def grouped_name
     (group ? group.example_name : "Example")

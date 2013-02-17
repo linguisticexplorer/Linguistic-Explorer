@@ -7,9 +7,11 @@ class Category < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  validates_presence_of :name, :depth
-  validates_uniqueness_of :name, :scope => :group_id
-  validates_numericality_of :depth
+  # validates_presence_of :name, :depth
+  # validates_uniqueness_of :name, :scope => :group_id
+  # validates_numericality_of :depth
+  validates :name, :presence => true, :uniqueness => {:scope => :group_id}
+  validates :depth, :presence => true, :numericality => true
   validate :depth_for_group
 
   attr_protected :depth

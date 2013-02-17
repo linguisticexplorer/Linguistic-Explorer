@@ -7,9 +7,12 @@ class LingsProperty < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  validates_presence_of :value, :property, :ling
-  validates_existence_of :ling, :property
-  validates_uniqueness_of :value, :scope => [:ling_id, :property_id]
+  # validates_presence_of :value, :property, :ling
+  # validates_existence_of :ling, :property
+  # validates_uniqueness_of :value, :scope => [:ling_id, :property_id]
+  validates :ling, :presence => true, :existence => true
+  validates :property, :presence => true, :existence => true
+  validates :value, :presence => true, :uniqueness => { :scope => [:ling_id, :property_id] }
   validate :association_depth_match
   validate :group_association_match
 

@@ -7,9 +7,11 @@ class ExamplesLingsProperty < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  validates_presence_of :example, :lings_property
-  validates_existence_of :example, :lings_property
-  validates_uniqueness_of :example_id, :scope => :lings_property_id
+  # validates_presence_of :example, :lings_property
+  # validates_existence_of :example, :lings_property
+  validates :example, :lings_property, :presence => true, :existence => true
+  validates :example_id, :uniqueness => { :scope => :lings_property_id }
+  # validates_uniqueness_of :example_id, :scope => :lings_property_id
   validate :associated_ling_match
   validate :group_association_match
 

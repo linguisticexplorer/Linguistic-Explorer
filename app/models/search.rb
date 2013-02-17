@@ -20,7 +20,7 @@ class Search < ActiveRecord::Base
 
   json_accessor :query, :result_groups
 
-  scope :by, lambda { |creator| where(:creator => creator) }
+  scope :by, lambda { |creator| where(:creator_id => creator.id) }
 
   attr_accessor :parent_ids, :child_ids, :offset
 
