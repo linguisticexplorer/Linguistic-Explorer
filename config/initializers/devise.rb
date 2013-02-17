@@ -43,7 +43,10 @@ Devise.setup do |config|
   # from others authentication tools as :clearance_sha1, :authlogic_sha512 (then
   # you should set stretches above to 20 for default behavior) and :restful_authentication_sha1
   # (then you should set stretches to 10, and copy REST_AUTH_SITE_KEY to pepper)
-  config.encryptor = :bcrypt
+  # NOTE:
+  # bcrypt algorithm is used as default algorithm now, setting this will show up a warning
+  # by default!
+  # config.encryptor = :bcrypt
 
   # Setup a pepper to generate the encrypted password.
   config.pepper = "6f960c6e932db4818b9d08b333b1a5d466a74d7b21a0d1c47566a17fbc7b12dc2e0448797d9522528016c6afa380e664408d029fc1db12dff3fbb344a6afec4e"
@@ -62,7 +65,7 @@ Devise.setup do |config|
   config.remember_for = 2.weeks
 
   # If true, a valid remember token can be re-used between multiple browsers.
-  config.remember_across_browsers = true
+  # config.remember_across_browsers = true
 
   # If true, extends the user's remember period when remembered via cookie.
   config.extend_remember_period = false
