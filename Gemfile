@@ -38,8 +38,8 @@ gem 'devise'
 gem 'json', '1.7.6'
 
 gem 'validation_reflection', "1.0.0"
-gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
-# gem "validates_existence", ">= 0.4"
+# gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
+gem "validates_existence", ">= 0.4"
 
 gem 'cancan'
 
@@ -87,7 +87,7 @@ gem 'bb-ruby'
 # # Bundle gems for the local environment. Make sure to
 # # put test-only gems in this group so their generators
 # # and rake tasks are available in development mode:
-group :development, :test, :pg_test do
+group :development, :test do
 
   # Use mongrel as the web server
   # gem 'mongrel', "1.2.0"
@@ -96,7 +96,8 @@ group :development, :test, :pg_test do
 
   gem 'rspec', "2.12.0"
   gem 'rspec-rails', "2.12.0"
-  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
+  # gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
+  gem "shoulda-matchers"
 
   gem 'cover_me', '>= 1.2.0'
 

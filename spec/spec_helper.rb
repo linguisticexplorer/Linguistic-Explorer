@@ -2,7 +2,7 @@
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
-require 'validates_existence/rspec_macros'
+# require 'validates_existence/rspec_macros'
 require 'database_cleaner'
 require 'cover_me'
 
@@ -33,7 +33,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   # include validates_existence helpers
-  config.include(ValidatesExistence::RspecMacros)
+  # config.include(ValidatesExistence::RspecMacros)
 
   # include spec helpers in controllers
   config.include Devise::TestHelpers, :type => :controller
@@ -42,6 +42,9 @@ RSpec.configure do |config|
   config.global_fixtures = :all
 
   config.before(:suite) do
+    FactoryGirl.reload
+    # cleans the log file, make it readable and control its size
+    File.open("#{Rails.root}/log/test.log", "w") {|file| file.truncate(0) }
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
