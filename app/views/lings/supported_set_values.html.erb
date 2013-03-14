@@ -1,0 +1,23 @@
+<% page_heading @ling.grouped_name %>
+
+<h1>Edit <%= current_group.lings_property_name.pluralize %> for <%= @ling.name %></h1>
+
+<%= link_to "Go to #{@ling.name} page", [current_group, @ling] %> |
+<%= link_to "Back to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth) %>
+<br /><br />
+<div id="supported-entry-container" class="container-fluid">
+  <div class="row-fluid">
+    <div id="property-selector" class="span4">
+      <%= render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true %>
+    </div>
+    <div id="property-description" class="span4">
+      <%= render partial: "lings/mass_assignment/property", object: @property %>
+    </div>
+    <div id="property-setter" class="span4">
+      <%= render partial: "lings/mass_assignment/value", object: @property %>
+    </div>
+  </div>
+</div>
+<br />
+<%= link_to "Go to #{@ling.name} page", [current_group, @ling] %> |
+<%= link_to "Back to #{@ling.grouped_name} page", group_lings_depth_path(current_group, @depth) %>

@@ -1,4 +1,26 @@
-<div id="<%=category.name.gsub(' ', '') %>" class="accordion">
-  <h2><%= category.name %></h2>
-  <%= render :partial => "lings/mass_assignment/property", :collection => category.properties, :inline => true, :locals => { :category => category }  %>
+<div class="fluid-container">
+  <div id="cat-title" class="fluid-row">
+    <h2>Select Property</h2>
+  </div>
+  <div id="cat-select" class="fluid-row">
+    <h5> Category </h5>
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <select id="category-select" name="category-id">
+        <% category.each do |category| %>
+          <option value="<%= category.id %>"> <%= category.name %> </option>
+        <% end %>
+      <%= submit_tag("Select", class: "btn") %>
+    <%end %>
+  </div>
+  <div id="cat-prop" class="fluid-row">
+    <h5> Property </h5>
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <select id="prop-select" name="prop-id" multiple="multiple">
+        <% @property.category.properties.each do |prop|%>
+          <option value="<%=prop.id%>"> <%= prop.name %></option>
+        <% end %>
+      </select>
+      <%= submit_tag("Edit", class: "btn", style:"display:block;") %>
+    <% end %>
+  </div>
 </div>

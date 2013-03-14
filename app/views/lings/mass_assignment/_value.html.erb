@@ -1,4 +1,40 @@
-<div class="value <%= value.gsub(" ", "") %>">
-  <%= check_box_tag "values[#{property.id}][#{value}]", value, @preexisting_values.select{|lp| lp.property == property && lp.value == value}.first %>
-  <%= label_tag "values[#{property.id}][#{value}]", value %>
+<div class="fluid-container">
+  <div id="value-title" class="fluid-row">
+    <h2>Values</h2>
+  </div>
+  <div id="value-select" class="fluid-row">
+    <h4>Select Value</h4>
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <% @property.available_values.each do |value| %>
+        <label class="radio">
+        <% if @exists && @ling_property.value == value %> 
+          <input type="radio" id="value[#{value}]" name="value_choice" value=value checked>
+        <% else %>
+          <input type="radio" id="value[#{value}]" name="value_choice" value=value>
+        <% end %>
+          <%= value %> </label>
+      <% end %>
+        <label class="radio">
+          <input type="radio" id="value[_new]" name="value_choice" value="new">
+          <input type="text" placeholder="Other Value">
+        </label>
+    <% end %>
+  </div>
+  <div id="value-sureness" class="fluid-row">
+    <h4>How sure are you?</h4>
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <label class="radio">
+        <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" checked>
+        Certain
+      </label>
+      <label class="radio">
+        <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit" checked>
+        Revisit
+      </label>
+      <label class="radio">
+        <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help" checked>
+        Need Help
+      </label>
+    <% end %>
+  </div>
 </div>
