@@ -14,7 +14,10 @@
       <%= render partial: "lings/mass_assignment/property", object: @property %>
     </div>
     <div id="property-setter" class="span4">
+    <%= form_tag(submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
       <%= render partial: "lings/mass_assignment/value", object: @property %>
+      <%= submit_tag("Submit", class: "btn") %>
+    <% end %>
     </div>
   </div>
 </div>

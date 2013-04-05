@@ -1,14 +1,14 @@
 <div class="accordion-group">
   <div class="accordion-heading" >
-  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#<%=category.name.gsub(' ', '') %>" href="#<%= property.name.gsub(" ", "")%>">
-      <b><%= property.name %></b>
+  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#<%=category.name.gsub(' ', '') %>" href="#<%= old_property.name.gsub(" ", "")%>">
+      <b><%= old_property.name %></b>
   	</a>
   </div>
-  <div id="<%= property.name.gsub(" ", "")%>" class="accordion-body collapse">
+  <div id="<%= old_property.name.gsub(" ", "")%>" class="accordion-body collapse">
   	<div class="accordion-inner">
-  <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
-  <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
-  <%= text_field_tag "values[#{property.id}][_new]" %>
+  <%= render :partial => "lings/mass_assignment/old_value", :collection => old_property.available_values, :inline => true , :locals => { :old_property => old_property } %>
+  <%= label_tag "values[#{old_property.id}][_new]", "Add new" %>:
+  <%= text_field_tag "values[#{old_property.id}][_new]" %>
     </div>
   </div>
 </div>

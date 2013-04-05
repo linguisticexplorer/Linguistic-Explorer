@@ -5,9 +5,9 @@
   <div id="cat-select" class="fluid-row">
     <h5> Category </h5>
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
-      <select id="category-select" name="category-id">
+      <select id="category-select" name="category_id">
         <% category.each do |category| %>
-          <option value="<%= category.id %>"> <%= category.name %> </option>
+          <option value="<%= category.id %>" <%= "selected" if category.id == @category.id %>> <%= category.name %> </option>
         <% end %>
       <%= submit_tag("Select", class: "btn") %>
     <%end %>
@@ -15,7 +15,7 @@
   <div id="cat-prop" class="fluid-row">
     <h5> Property </h5>
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
-      <select id="prop-select" name="prop-id" multiple="multiple">
+      <select id="prop-select" name="prop_id" multiple="multiple">
         <% @property.category.properties.each do |prop|%>
           <option value="<%=prop.id%>"> <%= prop.name %></option>
         <% end %>

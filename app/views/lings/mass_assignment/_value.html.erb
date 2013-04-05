@@ -4,37 +4,34 @@
   </div>
   <div id="value-select" class="fluid-row">
     <h4>Select Value</h4>
-    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
       <% @property.available_values.each do |value| %>
-        <label class="radio">
-        <% if @exists && @ling_property.value == value %> 
-          <input type="radio" id="value[#{value}]" name="value_choice" value=value checked>
-        <% else %>
-          <input type="radio" id="value[#{value}]" name="value_choice" value=value>
-        <% end %>
-          <%= value %> </label>
+        <div class="row-fluid">
+          <div class="span1">
+            <%= check_box_tag "values[#{@property.id}][#{value}]", value, @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first %>
+          </div>
+          <div class="span11">
+            <%= label_tag "values[#{@property.id}][#{value}]", value %>
+          </div>
+        </div>
       <% end %>
         <label class="radio">
           <input type="radio" id="value[_new]" name="value_choice" value="new">
           <input type="text" placeholder="Other Value">
         </label>
-    <% end %>
   </div>
-  <div id="value-sureness" class="fluid-row">
+  <div id="value-sureness" name="value-sureness" class="fluid-row">
     <h4>How sure are you?</h4>
-    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
-      <label class="radio">
-        <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" checked>
-        Certain
-      </label>
-      <label class="radio">
-        <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit" checked>
-        Revisit
-      </label>
-      <label class="radio">
-        <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help" checked>
-        Need Help
-      </label>
-    <% end %>
+    <label class="radio">
+      <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" <% "checked" if @ling_properties.select {|lp| lp.sureness == "certain"} %>>
+      Certain
+    </label>
+    <label class="radio">
+      <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit"><% "checked" if @ling_properties.select {|lp| lp.sureness == "revisit"} %>
+      Revisit
+    </label>
+    <label class="radio">
+      <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help"><% "checked" if @ling_properties.select {|lp| lp.sureness == "need_help"} %>
+      Need Help
+    </label>
   </div>
 </div>
