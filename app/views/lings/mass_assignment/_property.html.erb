@@ -24,17 +24,36 @@
   <div id="prop-example" class="fluid-row">
     <h4> Examples </h4>
     <div id="prop-active-example">
-      <% if @examples %>
+      <% if @example %>
         <p>
-          <%= @ling_property.examples[0] %>
+          <%= render partial: "examples/show", object: @example %>
         </p>
       <% else %>
         <p>
-          No examples set
+          No example selected
         </p>
       <% end %>
     </div>
-    <a href=# class="btn btn-primary">Add New Example</a>
+  </div>
+  <div id="prop-example-selector" class="fluid-row">
+    <div class="span8">
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <select id="example-select" name="example_id">
+      <% if !@examples.empty? %>
+        <% @examples.each do |example| %>
+          <option value=<%= example.id %>> <%= example.name %> </option>
+        <% end %>
+      <% else %>
+        <option> No examples available </option>
+      <% end %>
+      </select>
+    </div>
+    <div class="span4">
+      <%= submit_tag("Select", class: "btn" , style:"display:block;width:100px;") %>
+    </div>
+    <% end %>
+    <a href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary" style="color:white;margin-top:-10px;">Create New Example</a>
+    <a href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success" style="color:white;margin-top:-10px;">Assign Existing Example</a>
   </div>
 </div>
 

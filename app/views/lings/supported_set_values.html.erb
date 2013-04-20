@@ -1,3 +1,6 @@
+<% content_for :head do -%>
+  <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css" rel="stylesheet">
+<% end -%>
 <% page_heading @ling.grouped_name %>
 
 <h1>Edit <%= current_group.lings_property_name.pluralize %> for <%= @ling.name %></h1>
@@ -14,7 +17,7 @@
       <%= render partial: "lings/mass_assignment/property", object: @property %>
     </div>
     <div id="property-setter" class="span4">
-    <%= form_tag(submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
+    <%= form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
       <%= render partial: "lings/mass_assignment/value", object: @property %>
       <%= submit_tag("Submit", class: "btn") %>
     <% end %>

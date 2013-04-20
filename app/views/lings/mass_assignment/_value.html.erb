@@ -2,9 +2,10 @@
   <div id="value-title" class="fluid-row">
     <h2>Values</h2>
   </div>
-  <div id="value-select" class="fluid-row">
+<%= hidden_field_tag :property_id, @property.id %>
+ <div id="value-select" class="fluid-row">
     <h4>Select Value</h4>
-      <% @property.available_values.each do |value| %>
+      <% @property.available_values.sort.each do |value| %>
         <div class="row-fluid">
           <div class="span1">
             <%= check_box_tag "values[#{@property.id}][#{value}]", value, @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first %>
@@ -14,23 +15,21 @@
           </div>
         </div>
       <% end %>
-        <label class="radio">
-          <input type="radio" id="value[_new]" name="value_choice" value="new">
-          <input type="text" placeholder="Other Value">
-        </label>
+    <%= label_tag "values[#{@property.id}][_new]", "Add new:" %>
+    <%= text_field_tag "values[#{@property.id}][_new]" %>
   </div>
-  <div id="value-sureness" name="value-sureness" class="fluid-row">
+  <div id="value-sureness" name="value_sureness" class="fluid-row">
     <h4>How sure are you?</h4>
     <label class="radio">
-      <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" <% "checked" if @ling_properties.select {|lp| lp.sureness == "certain"} %>>
+      <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" <%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any? %>>
       Certain
     </label>
     <label class="radio">
-      <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit"><% "checked" if @ling_properties.select {|lp| lp.sureness == "revisit"} %>
+      <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit"<%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any? %>>
       Revisit
     </label>
     <label class="radio">
-      <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help"><% "checked" if @ling_properties.select {|lp| lp.sureness == "need_help"} %>
+      <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help"<%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any? %>>
       Need Help
     </label>
   </div>
