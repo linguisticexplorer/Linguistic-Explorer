@@ -12,4 +12,3 @@ gemfile:
 branches:
   only:
     - master
-    - devel
