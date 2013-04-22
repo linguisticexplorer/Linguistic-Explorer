@@ -78,15 +78,11 @@ gem 'gmaps4rails'
 gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
-group :development do
-  gem 'ruby-debug19'
-end
-
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :test, :development do
-
+  gem 'ruby-debug19'
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
 
