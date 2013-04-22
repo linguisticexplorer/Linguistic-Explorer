@@ -3,7 +3,7 @@ bundler_args: --without development
 before_script: ./config/travis_build.sh
 script:
   - RAILS_ENV=test bundle exec rake db:migrate
-  - bundle exec rake --trace
+  - RAILS_ENV=test bundle exec rake --trace
 rvm:
   - 1.9.2
   - 1.9.3
