@@ -54,6 +54,7 @@ module SearchResults
     end
 
     def chosen_lings
+      Rails.logger.debug "Result DEBUG: #{@query.selected_ling_ids_to_compare(depth_for_compare)}"
       @query.selected_ling_ids_to_compare(depth_for_compare)
     end
 

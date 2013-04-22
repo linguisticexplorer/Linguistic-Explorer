@@ -10,12 +10,18 @@ require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 require 'cucumber/rails'
 require "cucumber/rspec/doubles"
 
-# require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
-# Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
-# order to ease the transition to Capybara we set the default here. If you'd
-# prefer to use XPath just remove this line and adjust any selectors in your
-# steps to use the XPath syntax.
+# Lets you click links with onclick javascript handlers without using @culerity or @javascript
+# require 'cucumber/rails/capybara_javascript_emulation'
+
+# Capybara does not try to guess what kind of selector you are going to give it, and will always use CSS by default.
+# If you want to use XPath, you'll need to do:
+# Capybara.default_selector = :xpath
 Capybara.default_selector = :css
+
+# The default for Capybara.match is :smart.
+# To emulate the behaviour in Capybara 2.0.x, set Capybara.match to :one.
+# To emulate the behaviour in Capybara 1.x, set Capybara.match to :prefer_exact.
+# Capybara.match = :prefer_exact
 
 # If you set this to false, any error raised from within your app will bubble
 # up to your step definition and out to cucumber unless you catch it somewhere

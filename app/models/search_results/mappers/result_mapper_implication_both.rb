@@ -76,10 +76,13 @@ module SearchResults
       end
 
       def self.common_values_in_subset(ling_ids, prop_values_filtered=nil)
-        result = LingsProperty.select_ids.where(:ling_id => ling_ids).group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
-        result = result.where(:property_value => prop_values_filtered) unless prop_values_filtered.nil?
-
-        LingsProperty.with_ling_id(ling_ids).where("property_value" => result.map(&:property_value)).group_by(&:property_value)
+        # result = LingsProperty.select_ids.where(:ling_id => ling_ids).group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
+        # result = result.where(:property_value => prop_values_filtered) unless prop_values_filtered.nil?
+        # LingsProperty.with_ling_id(ling_ids).where("property_value" => result.map(&:property_value)).group_by(&:property_value)
+        # Squeel Syntax
+        result = LingsProperty.select_ids.where{ (:ling_id == my{ling_ids} )}.group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
+        result = result.where{ (:property_value == my{prop_values_filtered} )} unless prop_values_filtered.nil?
+        LingsProperty.with_ling_id(ling_ids).where{ ("property_value" == my{result.map(&:property_value)} )}.group_by(&:property_value)
       end
 
       def self.vals_by_prop_values(val_ids)

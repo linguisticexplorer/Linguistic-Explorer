@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 #source 'http://gems.github.com'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -30,14 +30,14 @@ gem 'rvm-capistrano'
 # # gem 'aws-s3', :require => 'aws/s3'
 # gem "meta_where", '1.0.1'
 # Squeel will work with Rails >= 3.1.3 due to a Rails issue
-# gem "squeel"
+gem "squeel"
 
 # # for Users and authentication
 gem 'devise'
 
 gem 'json', '1.7.6'
 
-gem 'validation_reflection', "1.0.0"
+gem 'validation_reflection', "1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
 # gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
 gem "validates_existence", ">= 0.4"
 
@@ -81,7 +81,7 @@ gem 'rinruby'
 gem 'gmaps4rails'
 
 # # Forum gem
-# gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
+gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
 # # Bundle gems for the local environment. Make sure to
@@ -95,7 +95,7 @@ group :development, :test do
   gem "thin"
 
   gem 'rspec', "2.12.0"
-  gem 'rspec-rails', "2.12.0"
+  gem 'rspec-rails', "~>2.0"
   # gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
   gem "shoulda-matchers"
 
@@ -106,8 +106,9 @@ group :development, :test do
   gem "cucumber"
   gem "database_cleaner"
   # Due to the new name resolution approach of the bundler gem it has the require option
-  gem "cucumber-rails", "0.4.0", :require => false # '0.4.0.beta.1'
-  gem 'capybara'
+  # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
+  gem 'cucumber-rails', :require => false
+  gem 'capybara', '1.1.4'
   gem 'launchy'
   gem 'brakeman'
 end

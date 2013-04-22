@@ -9,6 +9,15 @@ module SearchResults
     def initialize(group, params)
       @group  = group
       @params = (params || {}).symbolize_keys
+      
+      # due a rails 3.2 bug we have to clean multiselect
+      # results from blank first-value in array
+      @params.each do |k,v|
+        case v
+        when Array then v.reject!(&:blank?)
+        when Hash then clean_select_multiple_params(v)
+        end
+      end
 
       is_valid?
     end
@@ -108,6 +117,14 @@ module SearchResults
     end
 
     private
+
+    def clean_select_multiple_params(hash)
+      hash.each do |k,v|
+        case v
+        when Array then v.reject!(&:blank?)
+        end
+      end
+    end
 
     def is_valid?
       return true unless is_special_search?

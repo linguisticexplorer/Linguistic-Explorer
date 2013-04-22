@@ -13,7 +13,9 @@ module SearchResults
 
         prop_values_antecedents = intersect prop_values_selected_in_all, prop_values_selected_in_ids
 
-        LingsProperty.select_ids.where(:property_value => prop_values_antecedents.keys).group_by(&:property_value)
+        # LingsProperty.select_ids.where(:property_value => prop_values_antecedents.keys).group_by(&:property_value)
+        # Squeel Syntax
+        LingsProperty.select_ids.where{ (:property_value == my{prop_values_antecedents.keys} )}.group_by(&:property_value)
       end
 
       def self.find_implications(vals)

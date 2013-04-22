@@ -306,6 +306,7 @@ Feature: Show filtered search columns
     And I select "Property 3" from "Linguistic Properties"
     And I select "Property 6" from "Linguistic Properties"
     And I choose "Cross" within "#linguistic_properties"
+    And show me the page
     Then I press "Show results"
     Then I should see 1 search result rows
     And I should not see "Speakers" within "#search_results"

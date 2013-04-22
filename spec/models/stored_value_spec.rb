@@ -13,7 +13,8 @@ describe StoredValue do
     it { should validate_presence_of :value }
     it { should validate_presence_of :storable }
     it { should belong_to :storable }
-    it { should validate_existence_of :storable }
+    # Removed at the moment because the standard gem doesn't offer this method...
+    # should_validate_existence_of :storable
   end
 
   it "should validate that its key is among the 'storable values' list for its storable" do

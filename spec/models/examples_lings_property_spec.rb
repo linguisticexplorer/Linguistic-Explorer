@@ -33,11 +33,11 @@ describe ExamplesLingsProperty do
 
       ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
         elp.group = group
-      end.should have(1).errors
+      end.should have(2).errors
 
       ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
         elp.group = misgroup
-      end.should have(1).errors
+      end.should have(2).errors
 
       ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propIN.id) do |elp|
         elp.group = misgroup

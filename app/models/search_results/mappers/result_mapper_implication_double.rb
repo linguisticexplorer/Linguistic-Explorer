@@ -11,7 +11,9 @@ module SearchResults
         prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) = ?", ids.size]).count
         prop_values_double = intersect prop_values_selected_in_all, prop_values_selected_in_ids
 
-        LingsProperty.select_ids.where(:property_value => prop_values_double.keys).group_by(&:property_value)
+        # LingsProperty.select_ids.where(:property_value => prop_values_double.keys).group_by(&:property_value)
+        # Squeel Syntax
+        LingsProperty.select_ids.where{ (:property_value == my{prop_values_antecedents.keys} )}.group_by(&:property_value)
       end
 
       def self.intersect(prop_values_all, prop_values_subset)

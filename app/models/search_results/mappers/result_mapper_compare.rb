@@ -53,6 +53,7 @@ module SearchResults
       private
 
       def get_ordered_lings_by_id(groups)
+        Rails.logger.debug "DEBUG: #{groups.inspect}"
         Ling.find(groups.delete("ling_ids")).to_a.sort {|l1, l2| l1.id <=> l2.id}
       end
 

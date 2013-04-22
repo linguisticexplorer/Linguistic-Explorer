@@ -39,6 +39,11 @@ module LinguisticExplorer
       g.fixture_replacement :factory_girl
     end
 
+    # Set Devise to respond to JSON
+    # config.to_prepare do
+    #   DeviseController.respond_to :html, :json
+    # end 
+
     # Configure the default encoding used in templates for Ruby 1.9.
     config.encoding = "utf-8"
 
@@ -46,6 +51,12 @@ module LinguisticExplorer
     config.filter_parameters += [:password]
 
     require "settings"
+    
+    # While the Squeel DSL is the preferred way to access advanced query functionality,
+    # you can still enable methods on symbols to access ARel predications in a similar manner to MetaWhere:
+    Squeel.configure do |config|
+      config.load_core_extensions :symbol
+    end
 
     Settings.configure do |s|
       s.in_preview          = false

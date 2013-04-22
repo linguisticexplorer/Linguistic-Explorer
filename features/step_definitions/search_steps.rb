@@ -1,10 +1,10 @@
 Given /^I have a saved group search "([^\"]*)"$/ do |search_name|
-  Factory(:search, :name => search_name, :creator => @user, :group => @group)
+  FactoryGirl.create(:search, :name => search_name, :creator => @user, :group => @group)
 end
 
 Given /^I have (\d+) saved group searches$/ do |num|
   num.to_i.times do |i|
-    Factory(:search, :name => "My search #{i + 1}", :creator => @user, :group => @group)
+    FactoryGirl.create(:search, :name => "My search #{i + 1}", :creator => @user, :group => @group)
   end
 end
 
@@ -50,7 +50,7 @@ Given /^the following results for the group search "([^\"]*)":$/ do |search_name
     }).id
   end
 
-  Factory(:search,
+  FactoryGirl.create(:search,
           :name => search_name,
           :parent_ids => parent_ids,
           :child_ids => child_ids,
@@ -66,7 +66,7 @@ end
 Given /^the following example stored values$/ do |table|
   table.hashes.each do |attrs|
     example = Example.find_by_name(attrs['example'])
-    Factory(:stored_value, :key => attrs['key'], :value => attrs['value'], :storable => example)
+    FactoryGirl.create(:stored_value, :key => attrs['key'], :value => attrs['value'], :storable => example)
   end
 end
 
@@ -107,7 +107,7 @@ end
 
 
 Then /^I should see the following Implication search results:$/ do |table|
-  Then "I should see the following Cross search results:", table
+  step "I should see the following Cross search results:", table
 end
 
 Then /^I should see the following Cross search results:$/ do |table|

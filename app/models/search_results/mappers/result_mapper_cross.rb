@@ -8,6 +8,8 @@ module SearchResults
         vals = LingsProperty.with_id(vals_ids_for_cross(result))
         vals_by_prop_ids = vals_by_property_id(vals)
 
+        p "FIRST: #{result.inspect} - #{vals}"
+
         prop_values = [].tap do |p|
           vals_by_prop_ids.keys.each do |prop_id|
             p << vals_by_prop_ids[prop_id].map(&:property_value).uniq
@@ -16,6 +18,8 @@ module SearchResults
 
         first_prop = prop_values.first
         rest_props = prop_values.drop(1)
+
+        p "SECOND: #{first_prop.inspect} + #{vals_by_prop_ids.inspect} = #{prop_values.inspect}"
 
         combinations = first_prop.product(*rest_props)
 

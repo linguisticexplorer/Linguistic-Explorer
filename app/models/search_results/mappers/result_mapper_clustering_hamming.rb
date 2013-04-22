@@ -52,7 +52,7 @@ module SearchResults
       end
 
       def parents
-        @parents ||= Ling.where(:id => parent_ids).index_by(&:id)
+        @parents ||= Ling.where{ (:id == my{parent_ids})}.index_by(&:id)
       end
 
       private

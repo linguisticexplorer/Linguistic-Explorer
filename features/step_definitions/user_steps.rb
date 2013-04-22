@@ -8,7 +8,7 @@ Given /^I am signed in as a ([^ ]+) of (.*)/ do |membership_level, group|
   level = (Membership::ADMIN == membership_level ? membership_level : Membership::MEMBER )
 
   @user = create_user(:email => email, :password => password)
-  @group = Group.find_by_name(group) || Factory(:group, :name => group)
+  @group = Group.find_by_name(group) || FactoryGirl.create(:group, :name => group)
   Membership.create!(:member => @user, :group => @group, :level => level)
 
   visit path_to("the home page")

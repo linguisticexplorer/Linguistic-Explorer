@@ -92,7 +92,7 @@ class LingsProperty < ActiveRecord::Base
   end
 
   def group_association_match
-    errors[:base] << "#{ling.grouped_name.humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group)
+    errors[:base] << "#{ling.grouped_name.humanize} and #{group.property_name} must belong to the same group as this #{group.lings_property_name}" if (ling && property) && (ling.group != property.group || ling.group != group) && group.present?
   end
 
   def set_property_value

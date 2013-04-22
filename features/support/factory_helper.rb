@@ -1,6 +1,6 @@
 def create_user(opts = {})
   raise "You must manually specify an email for a new user because emails must be unique" unless opts[:email]
-  Factory(:user, opts)
+  FactoryGirl.create(:user, opts)
 end
 
 def find_or_create_ling(opts = {})
@@ -17,7 +17,7 @@ end
 
 def find_or_create_groupable_resource(resource_name, opts)
   group = opts[:group]
-  group.send(resource_name.to_s.pluralize).find_by_name(opts[:name]) || Factory(resource_name, opts)
+  group.send(resource_name.to_s.pluralize).find_by_name(opts[:name]) || FactoryGirl.create(resource_name, opts)
 end
 
 def find_or_create_lings_property(opts = {})
@@ -29,13 +29,13 @@ def find_or_create_lings_property(opts = {})
 end
 
 def create_forum_group(opts={})
-  Factory(:forum_group, opts)
+  FactoryGirl.create(:forum_group, opts)
 end
 
 def create_forum(opts={})
-  Factory(:forum, opts)
+  FactoryGirl.create(:forum, opts)
 end
 
 def create_topic(opts={})
-  Factory(:topic, opts)
+  FactoryGirl.create(:topic, opts)
 end

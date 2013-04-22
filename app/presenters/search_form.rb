@@ -19,11 +19,11 @@ module SearchForm
   end
 
   def example_field_options
-    @group.example_storable_keys.map { |ef| ["#{ef.titleize} Contains", ef.downcase ] }
+    group.example_storable_keys.map { |ef| ["#{ef.titleize} Contains", ef.downcase ] }
   end
 
   def property_categories
-    @property_categories ||= Category.in_group(@group).order(:depth, :name)
+    @property_categories ||= Category.in_group(group).order(:depth, :name)
   end
 
   def has_ling_children?
@@ -45,11 +45,11 @@ module SearchForm
   end
 
   def group_lings(depth)
-    @group_lings = Ling.in_group(@group).order(:name).where(:depth => depth.to_i)
+    @group_lings = Ling.in_group(group).order(:name).at_depth(depth.to_i) #.where(:depth => depth.to_i)
   end
 
   def group_properties(category)
-    @group_properties = Property.in_group(@group).order_by_name.where(:category => category)
+    @group_properties = Property.in_group(group).order_by_name.where(:category_id => category.id)
   end
 
   def group_lings_props(category)
@@ -58,7 +58,7 @@ module SearchForm
     order_string = "properties.`name`"
     where_string = "properties.`category_id`= ?"
     @group_lings_props = LingsProperty.
-          in_group(@group).
+          in_group(group).
         # This particular select query will dramatic improve performance for a big set of data
           select(select_string).
           joins(:property).

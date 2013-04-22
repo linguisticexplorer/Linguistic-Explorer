@@ -27,10 +27,12 @@ Feature: Search Examples
 
   Scenario: Visitor chooses parent ling examples
     When I go to the Syntactic Structures search page
+    #And show me the page
     And I select "Speaker 1" from "Speakers"
     And I check "Examples" within "#show_parent"
     And I uncheck "Examples" within "#show_child"
     And I press "Show results"
+    #And show me the page
     Then I should see the following search results:
     | Lings         | Example     | depth   |
     | Speaker 1     | Example 1   | parent  |

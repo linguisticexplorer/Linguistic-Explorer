@@ -64,14 +64,19 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
+      # result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
+      # Squeel Syntax
+      result = LingsProperty.select_ids.where{ (:id == my{vals}) } & search_scope_name_by_keyword(keyword)
 
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
     def search_scope_name_by_keyword(keyword)
+      # model_class.in_group(group).unscoped.
+      #     where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+      # Squeel Syntax
       model_class.in_group(group).unscoped.
-          where({:name.matches => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+          where{ (:name =~  "#{keyword}%") || ( :name =~ "%#{keyword}%")}
     end
 
   end
@@ -143,13 +148,19 @@ module SearchResults
                           search_scope_value_by_stored_value_key_pair(keyword, example_attribute)
                       end
 
-      LingsProperty.select_ids.where(:id => vals) & keyword_scope
+      # LingsProperty.select_ids.where(:id => vals) & keyword_scope
+      # Squeel Syntax
+      LingsProperty.select_ids.where{ (:id == my{vals}) } & keyword_scope
     end
 
     def search_scope_value_by_stored_value_key_pair(keyword, key)
-      model_class.unscoped.where(:group_id => group.id) &
+      # model_class.unscoped.where(:group_id => group.id) &
+      #   StoredValue.unscoped.with_key(key).
+      #   where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
+      #  Squeel Syntax
+      model_calss.unscoped.where{ :group == my{group.id} } &
         StoredValue.unscoped.with_key(key).
-        where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
+        where { (:value =~ "#{keyword}%") || (:value =~ "%#{keyword}%")}
     end
 
   end

@@ -40,6 +40,7 @@ Feature: Permissions testing for site admins
     When I select "Syntactic Structures" from "group_id"
     And  I press "Go"
     Then I should see "Syntactic Structures"
+    # When I follow "Search" within "#group_nav_bar"
     When I follow "Search"
     Then I should be on the search page for Syntactic Structures
     And  I go to the lings page for Syntactic Structures
@@ -68,7 +69,8 @@ Feature: Permissions testing for site admins
   Scenario: Admins view pages for all group data in a private group
     When I select "Secret Club" from "group_id"
     And  I press "Go"
-    And  I follow "Search"
+    # And  I follow "Search"
+    And I follow "Search" within "#group_nav_bar"
     Then I should be on the search page for Secret Club
     And  I go to the lings page for Secret Club
     Then I should be on the lings page for Secret Club

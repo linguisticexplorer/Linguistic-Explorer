@@ -17,7 +17,7 @@ class Example < ActiveRecord::Base
   validate :group_association_match
 
   default_scope includes(:stored_values)
-  scope :in_group, lambda { |group| where(:group_id => group) }
+  scope :in_group, lambda { |group| where(:group_id => group.id) }
 
   def grouped_name
     (group ? group.example_name : "Example")
