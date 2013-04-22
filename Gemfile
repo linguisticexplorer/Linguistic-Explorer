@@ -78,11 +78,14 @@ gem 'gmaps4rails'
 gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
+group :development do
+  gem 'ruby-debug19'
+end
+
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
-group :development, :test, :pg_test do
-  gem 'ruby-debug19'
+group :test, :development do
 
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
@@ -93,7 +96,6 @@ group :development, :test, :pg_test do
 
   gem 'cover_me', '>= 1.2.0'
 
-  gem 'ruby-debug19'
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"
   gem "database_cleaner", "0.6.7"
@@ -102,8 +104,4 @@ group :development, :test, :pg_test do
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
   gem 'brakeman'
-end
-
-group :pg_test do
-  #gem 'pg'
 end

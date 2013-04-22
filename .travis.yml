@@ -1,0 +1,13 @@
+language: ruby
+bundler_args: --without development
+before_script: ./config/travis_build.sh
+script: "bundle exec rake"
+rvm:
+  - 1.9.2
+  - 1.9.3
+gemfile:
+  - Gemfile
+branches:
+  only:
+    - master
+    - devel
