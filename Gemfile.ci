@@ -79,7 +79,7 @@ gem 'gmaps4rails'
 gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
-group :development
+group :development do
   gem 'ruby-debug19'
 end
 
