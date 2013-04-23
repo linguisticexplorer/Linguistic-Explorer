@@ -64,7 +64,7 @@ GEM
       terminal-table (~> 1.4)
     builder (2.1.2)
     cancan (1.6.4)
-    capistrano (2.14.2)
+    capistrano (2.15.1)
       highline
       net-scp (>= 1.0.0)
       net-sftp (>= 2.0.0)
@@ -114,7 +114,7 @@ GEM
       railties (>= 3.0.0)
     fastercsv (1.5.5)
     fastthread (1.0.7)
-    ffi (1.7.0)
+    ffi (1.8.1)
     gem_plugin (0.2.3)
     gherkin (2.4.21)
       json (>= 1.4.6)
