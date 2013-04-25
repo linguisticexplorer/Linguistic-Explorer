@@ -1,13 +1,15 @@
 language: ruby
-bundler_args: --without development --path vendor/bundle
-before_script: ./config/travis_build.sh
-script:
+bundler_args: --development
+before_script:
+  - cp config/database.yml.travisCI config/database.yml
+  - mysql -e 'create database le_test;'
   - RAILS_ENV=test bundle exec rake db:migrate
   - bundle exec rake db:test:prepare
-  - bundle exec rake
+  - gem list
+script:
+  - bundle exec rake --trace
 rvm:
   - 1.9.2
-  - 1.9.3
 gemfile:
   - Gemfile.ci
 branches:
