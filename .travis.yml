@@ -1,11 +1,11 @@
 language: ruby
-bundler_args: --development
+bundler_args: --without development
 before_script:
   - cp config/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
   - RAILS_ENV=test bundle exec rake db:migrate
   - bundle exec rake db:test:prepare
-  - gem list
+  - gem list | grep 
 script:
   - bundle exec rake --trace
 rvm:
