@@ -64,7 +64,9 @@ Feature: Show filtered search columns
     And I should not see "Value" within "#search_results"
     And I should not see "PropVal" within "#search_results"
     And I should not see "Examples" within "#search_results"
-
+  
+  # Why also this one?
+  @devOnly
   Scenario: Choose one Sentence, show Speakers and Sentences only
     When I check "Speakers" within "#show_parent"
     And I check "Sentences" within "#show_child"

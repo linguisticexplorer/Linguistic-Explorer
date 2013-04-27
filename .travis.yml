@@ -7,11 +7,13 @@ before_script:
   - RAILS_ENV=test bundle exec rake db:migrate
   - RAILS_ENV=test bundle exec rake db:test:prepare
 script:
-  - RAILS_ENV=test bundle exec rake --trace
+  - RAILS_ENV=test bundle exec rake
 rvm:
   - 1.9.2
+  - 1.9.3
 gemfile:
   - Gemfile
 branches:
   only:
     - master
+    - devel
