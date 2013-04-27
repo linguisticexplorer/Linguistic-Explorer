@@ -70,6 +70,16 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
+## Test it
+
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=master)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+
+To test yourself the app write in the console
+
+  `$rake`
+  
+It should run both rspec and cucumber tests.
+  
 ## Contribute
 
 We are looking for some help in this project. Want to help us?
