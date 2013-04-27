@@ -79,6 +79,7 @@ Copy seed data to the doc/data in Terraling:
 [![Code Climate](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer.png)](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer)
 
 ### Development
+
 [![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=devel)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
 
 ## Test it
