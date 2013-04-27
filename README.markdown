@@ -70,11 +70,18 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
-## Test it
+## Branches Status
+
+### Master
 
 [![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=master)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
 [![Dependency Status](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer.png)](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer)
 [![Code Climate](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer.png)](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer)
+
+### Development
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=devel)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+
+## Test it
 
 To test yourself the app write in the console
 
