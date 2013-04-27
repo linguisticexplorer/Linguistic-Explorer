@@ -73,6 +73,7 @@ Copy seed data to the doc/data in Terraling:
 ## Test it
 
 [![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=master)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+[![Dependency Status](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer.png)](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer)
 
 To test yourself the app write in the console
 
