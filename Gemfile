@@ -32,7 +32,7 @@ gem "meta_where", '1.0.1'
 # for Users and authentication
 gem 'devise', '1.1.7'
 
-gem 'json', '1.5.1'
+gem 'json', '1.7.7'
 
 gem 'validation_reflection', "1.0.0"
 gem 'validates_existence', "0.5.6", :git => 'https://github.com/bosh/validates_existence.git'
