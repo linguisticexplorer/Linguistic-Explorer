@@ -1,10 +1,9 @@
-source 'http://rubygems.org'
-#source 'http://gems.github.com'
+source 'https://rubygems.org'
 
 gem 'rails', '3.0.17'
 
 # Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+# gem 'rails', :git => 'https://github.com/rails/rails.git'
 
 gem 'mysql2', '~> 0.2.7'
 
@@ -36,7 +35,7 @@ gem 'devise', '1.1.7'
 gem 'json', '1.5.1'
 
 gem 'validation_reflection', "1.0.0"
-gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
+gem 'validates_existence', "0.5.6", :git => 'https://github.com/bosh/validates_existence.git'
 
 gem 'cancan', "1.6.4"
 
@@ -65,30 +64,36 @@ gem 'jquery-rails', '>= 0.2.6'
 # It forces to use a specific version of Rake
 gem 'rake', '0.9.2.2'
 
-# Pure Ruby library to use R language from Ruby code
-# it needs that R interpreter is installed and R_HOME is configured
-# see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
-# more documentation
-gem 'rinruby'
-
 # Geomapping gem
 gem 'gmaps4rails'
 
 # Forum gem
-gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
+gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
+
+group :development do
+  gem 'ruby-debug19'
+end
+
+# Pure Ruby library to use R language from Ruby code
+# it needs that R interpreter is installed and R_HOME is configured
+# see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
+# more documentation
+# Grouped because of Travis-CI
+group :production, :development do
+  gem 'rinruby'
+end
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :test, :development do
-  gem 'ruby-debug19'
   # Use mongrel as the web server
   gem 'mongrel', "1.2.0.pre2"
 
   gem 'rspec', "2.5.0"
   gem 'rspec-rails', "2.5.0"
-  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
+  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'cover_me', '>= 1.2.0'
 

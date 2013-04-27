@@ -1,5 +1,5 @@
 language: ruby
-bundler_args: --without development
+bundler_args: --without development production
 before_script:
   - bundle check
   - cp config/database.yml.travisCI config/database.yml
@@ -11,7 +11,7 @@ script:
 rvm:
   - 1.9.2
 gemfile:
-  - Gemfile.ci
+  - Gemfile
 branches:
   only:
     - master
