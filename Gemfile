@@ -35,7 +35,7 @@ gem "squeel"
 gem 'devise'
 
 
-gem 'json', '1.7.6'
+gem 'json', '1.7.7'
 
 gem 'validation_reflection', "1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
 # gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
