@@ -1,10 +1,9 @@
-source 'http://rubygems.org'
-#source 'http://gems.github.com'
+source 'https://rubygems.org'
 
 gem 'rails', '3.2.12'
 
 # Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
+# gem 'rails', :git => 'https://github.com/rails/rails.git'
 
 gem 'mysql2', '0.3.11'
 
@@ -34,6 +33,7 @@ gem "squeel"
 
 # # for Users and authentication
 gem 'devise'
+
 
 gem 'json', '1.7.6'
 
@@ -71,40 +71,45 @@ gem "jquery-rails"
 # gem 'rake', '0.9.2.2'
 gem "rake", "10.0.3"
 
-# # Pure Ruby library to use R language from Ruby code
-# # it needs that R interpreter is installed and R_HOME is configured
-# # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
-# # more documentation
-gem 'rinruby'
-
-# # Geomapping gem
+# Geomapping gem
 gem 'gmaps4rails'
 
-# # Forum gem
-gem 'forum_monster', :git => 'git://github.com/dej611/forum_monster.git'
+# Forum gem
+gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
-# # Bundle gems for the local environment. Make sure to
-# # put test-only gems in this group so their generators
-# # and rake tasks are available in development mode:
-group :development, :test do
+group :development do
+  gem 'ruby-debug19'
+end
 
+# Pure Ruby library to use R language from Ruby code
+# it needs that R interpreter is installed and R_HOME is configured
+# see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
+# more documentation
+# Grouped because of Travis-CI
+group :production, :development do
+  gem 'rinruby'
+end
+
+# Bundle gems for the local environment. Make sure to
+# put test-only gems in this group so their generators
+# and rake tasks are available in development mode:
+group :test, :development do
   # Use mongrel as the web server
   # gem 'mongrel', "1.2.0"
   # Use Thin as web server
   gem "thin"
 
-  gem 'rspec', "2.12.0"
-  gem 'rspec-rails', "~>2.0"
-  # gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'git://github.com/bosh/rspec_rails3_validation_expectations.git'
-  gem "shoulda-matchers"
+  gem 'rspec', "2.5.0"
+  gem 'rspec-rails', "2.5.0"
+  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'cover_me', '>= 1.2.0'
 
-  gem 'ruby-debug19'
-  gem 'factory_girl_rails'
-  gem "cucumber"
-  gem "database_cleaner"
+  gem 'factory_girl_rails', "1.1"
+  gem "cucumber", "1.0.0"
+  gem "database_cleaner", "0.6.7"
+  
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
   gem 'cucumber-rails', :require => false
@@ -112,7 +117,3 @@ group :development, :test do
   gem 'launchy'
   gem 'brakeman'
 end
-
-# group :pg_test do
-#   #gem 'pg'
-# end

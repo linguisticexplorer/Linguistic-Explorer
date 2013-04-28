@@ -24,3 +24,4 @@ doc/TODO
 public/similarity_tree_images/*.png
 history.
 *.html
+Gemfile.lock

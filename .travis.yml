@@ -1,0 +1,19 @@
+language: ruby
+bundler_args: --without development production
+before_script:
+  - bundle check
+  - cp config/database.yml.travisCI config/database.yml
+  - mysql -e 'create database le_test;'
+  - RAILS_ENV=test bundle exec rake db:migrate
+  - RAILS_ENV=test bundle exec rake db:test:prepare
+script:
+  - RAILS_ENV=test bundle exec rake
+rvm:
+  - 1.9.2
+  - 1.9.3
+gemfile:
+  - Gemfile
+branches:
+  only:
+    - master
+    - devel
