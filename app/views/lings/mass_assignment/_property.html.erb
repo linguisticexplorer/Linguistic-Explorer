@@ -1,15 +1,60 @@
-<div class="accordion-group">
-  <div class="accordion-heading" >
-  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#<%=category.name.gsub(' ', '') %>" href="#<%= property.name.gsub(" ", "")%>">
-      <b><%= property.name %></b>
-  	</a>
+<div class="fluid-container">
+  <div id="prop-title" class="fluid-row">
+    <h2>Property Description</h2>
   </div>
-  <div id="<%= property.name.gsub(" ", "")%>" class="accordion-body collapse">
-  	<div class="accordion-inner">
-  <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
-  <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
-  <%= text_field_tag "values[#{property.id}][_new]" %>
+
+  <div id="prop-name" class="fluid-row">
+    <h4> Property Name </h4>
+    <p>
+      <%= property.name %>
+    </p>
+  </div>
+  
+  <div id="prop-descrip" class="fluid-row">
+    <h4> Property Description </h4>
+    <p>
+      <% if property.description %>
+        <%= property.description %>
+      <% else %>
+        no property description available
+      <% end %>
+    </p>
+  </div>
+
+  <div id="prop-example" class="fluid-row">
+    <h4> Examples </h4>
+    <div id="prop-active-example">
+      <% if @example %>
+        <p>
+          <%= render partial: "examples/show", object: @example %>
+        </p>
+      <% else %>
+        <p>
+          No example selected
+        </p>
+      <% end %>
     </div>
   </div>
+  <div id="prop-example-selector" class="fluid-row">
+    <div class="span8">
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <select id="example-select" name="example_id">
+      <% if !@examples.empty? %>
+        <% @examples.each do |example| %>
+          <option value=<%= example.id %>> <%= example.name %> </option>
+        <% end %>
+      <% else %>
+        <option> No examples available </option>
+      <% end %>
+      </select>
+    </div>
+    <div class="span4">
+      <%= submit_tag("Select", class: "btn" , style:"display:block;width:100px;") %>
+    </div>
+    <% end %>
+    <a href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary" style="color:white;margin-top:-10px;">Create New Example</a>
+    <a href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success" style="color:white;margin-top:-10px;">Assign Existing Example</a>
+  </div>
 </div>
-<br />
+
+

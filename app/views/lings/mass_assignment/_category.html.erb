@@ -1,4 +1,53 @@
-<div id="<%=category.name.gsub(' ', '') %>" class="accordion">
-  <h2><%= category.name %></h2>
-  <%= render :partial => "lings/mass_assignment/property", :collection => category.properties, :inline => true, :locals => { :category => category }  %>
+<div class="fluid-container">
+  <div id="cat-title" class="fluid-row">
+    <h2>Select Property</h2>
+  </div>
+  <h5> Category </h5>
+  <div id="cat-select" class="fluid-row">
+    <div class="span8">
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+      <select id="category-select" name="category_id">
+        <% category.each do |category| %>
+          <option value="<%= category.id %>" <%= "selected" if category.id == @category.id %>> <%= category.name %> </option>
+        <% end %>
+      </select>
+    </div>
+    <div class="span4">
+      <%= submit_tag("Select", class: "btn", style: "display:block; margin-top:10px;width:120px;") %>
+    </div>
+    <%end %>
+  </div>
+  <div id="cat-prop" class="fluid-row">
+    <div class="span8">
+      <h5> Property </h5>
+      <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+        <select id="prop-select" name="prop_id" multiple="multiple">
+          <% @category.properties.each do |prop|%>
+            <option style= "color:
+            <% if @preexisting_values.any? %>
+              <% lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0] %>
+              <% if lp %>
+                <% if lp.sureness != "revisit" && lp.sureness != "need_help" %>
+                  green;
+                <% else %>
+                  orange;
+                <% end %>
+              <% else %>
+                red;
+              <% end %>
+            <% else %>
+              red;
+            <% end %>
+            " value="<%=prop.id%>" <%= "selected" if prop.id == @property.id %>> <%= prop.name %></option>
+          <% end %>
+        </select>
+      </div>
+      <div class ="span4">
+        <%= submit_tag("Select", class: "btn cat-btn", style:"display:block; margin-top:60px; width:120px;") %>
+        <%= submit_tag("Next", class: "btn btn-primary cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
+        <%= submit_tag("Next Unset", class: "btn btn-danger cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
+        <%= submit_tag("Next Uncertain", class: "btn btn-warning cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
+      </div>
+      <% end %>
+  </div>
 </div>

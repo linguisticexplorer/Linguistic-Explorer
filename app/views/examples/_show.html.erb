@@ -1,0 +1,17 @@
+  <strong>Name:</strong> <br />
+  <%= @example.name %> <br />
+
+  <% if @example.ling %>
+    <strong><%= @example.ling.grouped_name %>:</strong> <br />
+    <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
+  <% end %>
+
+  <% @example.storable_keys.each do |key| %>
+    <strong><%= key.humanize %></strong>: <br />
+    <%= @example.stored_value(key) %> <br />
+  <% end %>
+
+  <strong>Created by:</strong> <br />
+  <%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
+
+

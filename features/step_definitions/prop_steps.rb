@@ -47,6 +47,15 @@ Given /^the following lings and properties:$/ do |table|
   end
 end
 
+Given /^the following "([^"]*)" definitions for properties$/ do |group_name, table|
+  group = Group.find_by_name(group_name)
+  raise "Group #{group_name} does not exist! Did you remember to create it first?" if group.nil?
+  table.hashes.each do |attrs|
+    property = group.properties.find_by_name(attrs['property name'])
+    property.description = attrs['definition']
+  end
+end
+
 Then /^the select menu for "([^\"]*)" should contain the following:$/ do |label, table|
   table.hashes.each do |hash|
     with_scope("##{label.underscorize}") do

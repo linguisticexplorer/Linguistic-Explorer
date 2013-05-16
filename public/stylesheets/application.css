@@ -275,3 +275,37 @@ img.loading {
   width: auto;
   height: auto;
 }
+
+#category-select {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
+#prop-select {
+  height: 240px;
+}
+
+#prop-name {
+  height: 60px;
+}
+
+#prop-descrip {
+  height: 100px;
+  overflow: auto;
+}
+
+#prop-example {
+  height: 240px;
+}
+
+#prop-active-example {
+  height: 160px;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 10px;
+  overflow: auto ;
+}
+
+#prop-example-selector {
+  margin-top: -40px;
+}
