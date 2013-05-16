@@ -7,7 +7,8 @@ before_script:
   - RAILS_ENV=test bundle exec rake db:migrate
   - RAILS_ENV=test bundle exec rake db:test:prepare
 script:
-  - RAILS_ENV=test bundle exec rake
+  - RAILS_ENV=test bundle exec rspec
+  - RAILS_ENV=test bundle exec cucumber --profile travis
 rvm:
   - 1.9.2
   - 1.9.3
