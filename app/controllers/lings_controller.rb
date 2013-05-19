@@ -11,13 +11,14 @@ class LingsController < GroupDataController
     @lings_by_depth = current_group.depths.collect do |depth|
       current_group.lings.at_depth(depth).paginate(:page => params[:page])
     end
-    return load_statedit
-    @ling = current_group.lings.find(params[:id])
-    @depth = @ling.depth
+    return load_stats(@lings_by_depth, params[:plain], 1)
+    # return load_statedit
+    # @ling = current_group.lings.find(params[:id])
+    # @depth = @ling.depth
 
-    authorize! :update, @ling
+    # authorize! :update, @ling
 
-    @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
+    # @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
   end
 
   def show
@@ -125,7 +126,7 @@ class LingsController < GroupDataController
     fresh_values.each{ |fresh| fresh.save }
     stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) }
 
-    redirect_to supported_set_values_group_ling_path(current_group, @ling)
+    redirect_to set_values_group_ling_path(current_group, @ling)
   end
 
   def supported_submit_values
@@ -244,13 +245,15 @@ class LingsController < GroupDataController
   end
 
   private
+
   def load_stats(lings, plain, depth)
     unless plain
       lings.each do |ling|
-        # If it is a multilanguage group map each subling otherwise map just the ling
+        # If it is a multilanguage group map each subling
          if depth > 0
           ling.map { |ling_at_depth| load_infos(ling_at_depth) }
          else
+        # otherwise map just the ling
           load_infos(ling)
          end
       end
