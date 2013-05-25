@@ -105,4 +105,3 @@ Feature: Data entry supported by surrounding language context
     When I follow "Subject Object"
     Then I should see "Subject Object definition text"
     And I should not see "Adjective Noun definition text"
-
