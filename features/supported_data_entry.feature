@@ -33,16 +33,17 @@ Feature: Data entry supported by surrounding language context
     And I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
 
 #navigate to the Property Assignment in Context page
-  @wip
   Scenario: Signed in members can get to the Property Assignment in Context Page
     Then I should see "English"
     When I follow "English"
-    Then I should see "Edit Properties in Context"
-    When I follow "Edit Properties in Context"
-    Then I should be on Property with Context for "English" Page
+    Then show me the page
+    Then I should see "Supported Edit Values"
+    When I follow "Supported Edit Values"
+    Then I should be on the Property Assignment with Context for "English" Page
 
 #when you arrive at the page it will be pointing to the current (in focus) property
 #thus the system picks up where you left off
+  @wip
   Scenario: The page has a notion of a current property
     When I am on the Property Assignment with Context for "English" Page
     Then I should see "Property of Adjective Noun"
