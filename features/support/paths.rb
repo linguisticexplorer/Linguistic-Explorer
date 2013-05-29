@@ -48,6 +48,11 @@ module NavigationHelpers
         set_values_group_ling_path(group, ling)
       when /my group searches page/
         group_searches_path(Group.last)
+      # New Supported Edit
+      when /the Property Assignment with Context for "(.*)" Page/
+        ling = Ling.find_by_name($1)
+        group = ling.group
+        supported_set_values_group_ling_path(group, ling) 
 
     # Add more mappings here.
     # Here is an example that pulls values out of the Regexp:

@@ -30,6 +30,8 @@ LinguisticExplorer::Application.routes.draw do
     resources :lings do
       member do
         get 'set_values'
+        get 'supported_set_values'
+        post 'supported_submit_values'
         post 'submit_values'
       end
     end

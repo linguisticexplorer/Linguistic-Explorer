@@ -94,7 +94,7 @@ It should run both rspec and cucumber tests.
 
 We are looking for some help in this project. Want to help us?
 
-Fork this repo, pick one issue from the list and pull the fix back!
+[[How To Contribute]]
   
 ## License
 This project is under the MIT License.

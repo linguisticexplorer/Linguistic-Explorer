@@ -2,6 +2,7 @@
 
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
     <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling) %> |
 <% end %>
 <% if can? :edit, @ling %>
     <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
@@ -75,6 +76,9 @@
 
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
   <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+<% end %>
+<% if can? :edit, @ling %>
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling) %> |
 <% end %>
 <% if can? :edit, @ling %>
   <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
