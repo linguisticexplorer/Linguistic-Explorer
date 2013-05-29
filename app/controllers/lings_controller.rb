@@ -76,7 +76,7 @@ class LingsController < GroupDataController
     if @exists
       @examples = []
       @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
-      @example = Example.find(params[:example_id]) if params[:example_id]
+      @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples[0]) || nil
     end
 
     # authorize! :update, @ling

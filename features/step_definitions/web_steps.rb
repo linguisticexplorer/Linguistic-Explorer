@@ -245,6 +245,10 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   end
 end
 
+Then /^I should see "([^"]*)" button/ do |name|
+  find_button(name).should_not be_nil
+end
+
 Then /^show me the page$/ do
   save_and_open_page
 end

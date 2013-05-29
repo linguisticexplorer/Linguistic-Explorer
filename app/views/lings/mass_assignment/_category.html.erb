@@ -3,24 +3,24 @@
     <h2>Select Property</h2>
   </div>
   <h5> Category </h5>
-  <div id="cat-select" class="fluid-row">
-    <div class="span8">
+  <div id="cat-select" class="fluid-row" style="height:50px;">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+    <div class="span7">
       <select id="category-select" name="category_id">
         <% category.each do |category| %>
           <option value="<%= category.id %>" <%= "selected" if category.id == @category.id %>> <%= category.name %> </option>
         <% end %>
       </select>
     </div>
-    <div class="span4">
+    <div class="span3 offset1">
       <%= submit_tag("Select", class: "btn", style: "display:block; margin-top:10px;width:120px;") %>
     </div>
     <%end %>
   </div>
+  <h5> Property </h5>
   <div id="cat-prop" class="fluid-row">
-    <div class="span8">
-      <h5> Property </h5>
-      <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+    <div class="span7">
         <select id="prop-select" name="prop_id" multiple="multiple">
           <% @category.properties.each do |prop|%>
             <option style= "color:
@@ -42,7 +42,7 @@
           <% end %>
         </select>
       </div>
-      <div class ="span4">
+      <div id="select-col" class ="span3 offset1">
         <%= submit_tag("Select", class: "btn cat-btn", style:"display:block; margin-top:60px; width:120px;") %>
         <%= submit_tag("Next", class: "btn btn-primary cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
         <%= submit_tag("Next Unset", class: "btn btn-danger cat-btn", style:"display:block; margin-top:10px; width:120px;") %>

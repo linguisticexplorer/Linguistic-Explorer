@@ -10,6 +10,7 @@ Given /^the following "([^"]*)" examples for properties$/ do |group_name, table|
       opts[:name] = attrs["example name"]
     end
     example = Example.create(exam_attrs)
+    example.store_value!("description", attrs["description"])
     lings_prop = prop.lings_properties.find_by_ling_id(ling.id)
     elp_attrs = {}.tap do |opts|
       opts[:group] = group
@@ -17,6 +18,7 @@ Given /^the following "([^"]*)" examples for properties$/ do |group_name, table|
       opts[:example] = example
     end
     example_lings_prop = ExamplesLingsProperty.create(elp_attrs)
+    example_lings_prop.save!
   end   
 end
 
