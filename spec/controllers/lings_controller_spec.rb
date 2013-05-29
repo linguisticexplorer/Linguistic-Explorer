@@ -224,6 +224,12 @@ describe LingsController do
       post :submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id.to_s => {lp.value => lp.value, :_new => ""}}
       response.should redirect_to set_values_group_ling_path(lp.group, lp.ling)
     end
+
+    it "should redirect to supported_set_values" do
+      lp = lings_properties(:level0)
+      post :supported_submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id.to_s => {lp.value => lp.value, :_new => ""}}
+      response.should redirect_to supported_set_values_group_ling_path(lp.group, lp.ling)
+    end
   end
 
   describe "new" do

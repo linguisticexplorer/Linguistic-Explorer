@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202180323) do
+ActiveRecord::Schema.define(:version => 20130405191647) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -106,6 +106,7 @@ ActiveRecord::Schema.define(:version => 20120202180323) do
     t.integer  "group_id"
     t.integer  "creator_id"
     t.string   "property_value"
+    t.string   "sureness"
   end
 
   add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"

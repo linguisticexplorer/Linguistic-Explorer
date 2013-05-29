@@ -1,13 +1,13 @@
 <% page_heading current_group.examples_lings_property_name %>
 <p>
   <b><%= current_group.examples_lings_property_name %>:</b> <br />
-  <%= link_to @examples_lings_property.example.name, group_example_path(current_group, @examples_lings_property.example) %> <br />
+  <%= link_to examples_lings_property.example.name, group_example_path(current_group, examples_lings_property.example) %> <br />
 
   <b><%= current_group.lings_property_name %>:</b> <br />
-  <%= link_to @examples_lings_property.lings_property.name, group_lings_property_path(current_group, @examples_lings_property.lings_property) %> <br />
+  <%= link_to examples_lings_property.lings_property.name, group_lings_property_path(current_group, examples_lings_property.lings_property) %> <br />
 
   <b>Created by:</b> <br />
-  <%= @examples_lings_property.creator ? @examples_lings_property.creator.name : "Unknown user" %> <br />
+  <%= examples_lings_property.creator ? examples_lings_property.creator.name : "Unknown user" %> <br />
 </p>
 
 <%= link_to 'Back', group_examples_lings_properties_path(current_group) %>

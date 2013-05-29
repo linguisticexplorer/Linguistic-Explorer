@@ -12,6 +12,13 @@ class LingsController < GroupDataController
       current_group.lings.at_depth(depth).paginate(:page => params[:page])
     end
     return load_stats(@lings_by_depth, params[:plain], 1)
+    # return load_statedit
+    # @ling = current_group.lings.find(params[:id])
+    # @depth = @ling.depth
+
+    # authorize! :update, @ling
+
+    # @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
   end
 
   def show
@@ -24,6 +31,53 @@ class LingsController < GroupDataController
     @depth = @ling.depth
     @categories = current_group.categories.at_depth(@depth)
     @preexisting_values = @ling.lings_properties
+
+    # authorize! :update, @ling
+  end
+  
+  def supported_set_values
+    @ling = current_group.lings.find(params[:id])
+    @depth = @ling.depth
+    @categories = current_group.categories.at_depth(@depth)
+    session[:category_id] = params[:category_id] if params[:category_id]
+    @category = session[:category_id] ? Category.find(session[:category_id]) : @categories[0] 
+    @preexisting_values = @ling.lings_properties.select {|lp| @category.properties.map{|prop| prop.id }.include? lp.property_id}
+    @exists = true
+    if params[:prop_id]
+      if params[:commit] == "Select"
+        session[:prop_id] = params[:prop_id] if params[:prop_id]
+      else
+        pos = @category.properties.map(&:id).index(params[:prop_id].to_i) + 1
+        search_space = @category.properties[pos, @category.properties.length] + @category.properties[0,pos]
+        if params[:commit] == "Next"
+          session[:prop_id] = search_space[0].id
+        elsif params[:commit] == "Next Unset"
+          unset_space = @preexisting_values.map(&:property_id)
+          unset_search_space = search_space.reject{|prop| unset_space.include? prop.id}
+          session[:prop_id] = unset_search_space.any? ? unset_search_space[0].id : params[:prop_id]
+        elsif params[:commit] == "Next Uncertain"
+          uncertain_space = @preexisting_values.select{|lp| lp.sureness == "revisit" || lp.sureness == "need_help"}.map(&:property_id)
+          uncertain_search_space = search_space.select{|prop| uncertain_space.include? prop.id}
+          session[:prop_id] = uncertain_search_space.any? ? uncertain_search_space[0].id : params[:prop_id]
+        end
+      end
+    end
+    if session[:prop_id]
+      @ling_properties = @preexisting_values.select {|lp| lp.property_id == session[:prop_id].to_i} if @preexisting_values.any?
+      @property = Property.find(session[:prop_id])
+      @exists = false if @ling_properties.nil?
+    elsif @preexisting_values.length > 0
+      @property = Property.find(@preexisting_values[0].property_id)
+      @ling_properties = @preexisting_values.select {|lp| lp.property_id == @property.id}
+    else 
+      @property = Property.find(@category.properties[0])
+      @exists = false
+    end
+    if @exists
+      @examples = []
+      @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
+      @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples[0]) || nil
+    end
 
     # authorize! :update, @ling
   end
@@ -47,7 +101,9 @@ class LingsController < GroupDataController
           lp.group = current_group
           lp.property = property
           lp.value = new_text
+          lp.sureness = params[:value_sureness]
         end
+        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
         fresh_values << fresh
       end
 
@@ -58,7 +114,9 @@ class LingsController < GroupDataController
           lp.group = current_group
           lp.property = property
           lp.value = value
+          lp.sureness = params[:value_sureness]
         end
+        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
         fresh_values << fresh
       end
     end
@@ -69,6 +127,53 @@ class LingsController < GroupDataController
     stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) }
 
     redirect_to set_values_group_ling_path(current_group, @ling)
+  end
+
+  def supported_submit_values
+    @ling = current_group.lings.find(params[:id])
+    stale_values = @ling.lings_properties.find(:all, conditions: {property_id: params[:property_id]})
+
+    collection_authorize! :manage, stale_values if stale_values
+
+    fresh_values = []
+    values = params.delete(:values) || []
+    values.each do |prop_id, prop_values|
+      property = current_group.properties.find(prop_id)
+
+      new_text = prop_values.delete("_new")
+      if !(new_text.blank?)
+        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, new_text)
+        fresh ||= LingsProperty.new do |lp|
+          lp.ling  = @ling
+          lp.group = current_group
+          lp.property = property
+          lp.value = new_text
+          lp.sureness = params[:value_sureness]
+        end
+        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
+        fresh_values << fresh
+      end
+
+      prop_values.each do |value, flag|
+        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, value)
+        fresh ||= LingsProperty.new do |lp|
+          lp.ling  = @ling
+          lp.group = current_group
+          lp.property = property
+          lp.value = value
+          lp.sureness = params[:value_sureness]
+        end
+        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
+        fresh_values << fresh
+      end
+    end
+
+    collection_authorize! :create, fresh_values
+
+    fresh_values.each{ |fresh| fresh.save}
+    stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) } if stale_values
+
+    redirect_to supported_set_values_group_ling_path(current_group, @ling)
   end
 
   def new
@@ -91,6 +196,7 @@ class LingsController < GroupDataController
 
     @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
   end
+
 
   def create
     @ling = Ling.new(params[:ling]) do |ling|
@@ -139,15 +245,17 @@ class LingsController < GroupDataController
   end
 
   private
+
   def load_stats(lings, plain, depth)
     unless plain
       lings.each do |ling|
-        # If it is a multilanguage group map each subling otherwise map just the ling
+        # If it is a multilanguage group map each subling
          if depth > 0
           ling.map { |ling_at_depth| load_infos(ling_at_depth) }
-        else
+         else
+        # otherwise map just the ling
           load_infos(ling)
-        end
+         end
       end
     end
     lings
