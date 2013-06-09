@@ -17,7 +17,7 @@ Given /^the following "([^\"]*)" properties:$/ do |group_name, table|
       opts[:category]  = Category.find_by_name(cat_name) ||
         Factory(:category, :name => cat_name, :group => group, :depth => attrs['depth'])
       opts[:group]     = group
-      opts[:group]     = group
+      # opts[:group]     = group
     end
     property = Property.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
 
