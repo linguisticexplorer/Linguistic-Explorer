@@ -94,7 +94,7 @@ It should run both rspec and cucumber tests.
 
 We are looking for some help in this project. Want to help us?
 
-[[How To Contribute]]
+[How To Contribute](https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/How-To-Contribute)
   
 ## License
 This project is under the MIT License.
