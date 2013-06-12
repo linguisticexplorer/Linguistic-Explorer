@@ -9,38 +9,54 @@
 <% end %>
 <%= link_to 'Back', group_lings_path(current_group) %>
 <br /><br />
+<table class="show-table description-table table table-bordered table-hover table-striped">
 <p>
-  <b>Type:</b> <br />
-  <%= current_group.ling_name_for_depth(@ling.depth) %> <br />
+  <tr>
+    <td><b>Type:</b></td> 
+    <td><%= current_group.ling_name_for_depth(@ling.depth) %></td>
+  </tr>
 
-  <b>Name:</b> <br />
-  <%= @ling.name %> <br />
+  <tr>
+    <td><b>Name:</b></td> 
+    <td><%= @ling.name %> </td>
+  </tr>
 
   <% @ling.storable_keys.each do |key| %>
-    <b><%= key.humanize %></b>: <br />
-    <%= @ling.stored_value(key) %> <br />
+    <tr>
+      <td><b><%= key.humanize %>:</b></td> 
+      <td><%= @ling.stored_value(key) %></td>
+    </tr>
   <% end %>
 
   <% if @ling.depth == 1 && @ling.parent %>
-    <b><%= current_group.ling0_name %>:</b> <br />
-    <%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> <br />
+    <tr>
+      <td><b><%= current_group.ling0_name %>:</b></td> 
+      <td><%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> </td>
+    </tr>
   <% elsif @ling.depth == 0 && !@ling.children.empty?%>
-    <b><%= current_group.ling1_name.pluralize %>:</b> <br />
-    <% @ling.children.each do |child| %>
-      <%= link_to child.name, group_ling_path(current_group, child) %> <br />
-    <% end %>
+    <tr>
+    <td><b><%= current_group.ling1_name.pluralize %>:</b></td> 
+    <td><% @ling.children.each do |child| %>
+      <%= link_to child.name, group_ling_path(current_group, child) %> </br>
+    <% end %></td>
+    </tr>
   <% end %>
 
   <% if !@ling.examples.empty? %>
-    <b><%= current_group.example_name.pluralize %>:</b> <br />
-    <% @ling.examples.each do |example| %>
-      <%= link_to example.id, group_example_path(current_group, example) %> <br />
-    <% end %>
+  <tr>
+    <td><b><%= current_group.example_name.pluralize %>:</b></td> 
+    <td><% @ling.examples.each do |example| %>
+      <%= link_to example.id, group_example_path(current_group, example) %></br>
+    <% end %></td>
+  </tr>
   <% end %>
 
-  <b>Created by:</b> <br />
-  <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
+  <tr>
+    <td><b>Created by:</b></td> 
+    <td><%= @ling.creator ? @ling.creator.name : "Unknown user" %> </td>
+  </tr>
 </p>
+</table>
 
 <br />
 
@@ -50,7 +66,7 @@
     <!-- render page links in the view: -->
     <%= will_paginate @values %>
   </div>
-  <table>
+  <table class="show-table table table-bordered table-striped table-hover">
     <thead>
       <th><%= current_group.property_name %></th>
       <th><%= current_group.lings_property_name %></th>

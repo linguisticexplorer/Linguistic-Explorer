@@ -2,7 +2,7 @@
 <!-- render page links in the view: -->
 <%= will_paginate lings %>
 </div>
-<table>
+<table class="show-table table table-bordered table-striped table-hover">
   <tr>
     <th>Name</th>
     <% if current_group.has_depth? %>
@@ -27,13 +27,13 @@
         <td><%= ling.stored_value(key) %></td>
       <% end %>
       <td><% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-        <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, ling) %> |
+        <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, ling) %> 
       <% end %> </td>
       <td><% if can? :edit, ling %>
-        <%= link_to 'Supported Edit', supported_set_values_group_ling_path(current_group, ling) %> |
+        <%= link_to 'Supported Edit', supported_set_values_group_ling_path(current_group, ling) %> 
       <% end %> </td>
       <td><% if can? :edit, ling %>
-        <%= link_to 'Edit', edit_group_ling_path(current_group, ling) %> |
+        <%= link_to 'Edit', edit_group_ling_path(current_group, ling) %> 
       <% end %> </td>
       <td><% if can? :destroy, ling %>
         <%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %>

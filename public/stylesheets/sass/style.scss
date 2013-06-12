@@ -1,11 +1,18 @@
 $highlight-color: #57068C;
 
-.show-page {
-  td {
+.show-table {
+  td, th {
+    text-align: center;
+  }
+  &.description-table {
+    width: 40em;
   }
   td:first-child {
     width: 10em;
     font-weight: bold;
     color: $highlight-color;
+    a {
+      color: lighten($highlight-color, 20%);
+    }
   }
 }

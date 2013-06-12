@@ -1,15 +1,25 @@
 <% page_heading current_group.property_name %>
 
-<p>
-  <b>Name:</b> <br />
-  <%= @property.name %> <br />
-  <b><%= current_group.category_name %>:</b> <br />
-  <%= link_to @property.category.name, [current_group, @property.category] %> <br />
-  <b>Description:</b> <br />
-  <%= @property.description %> <br />
-  <b>Created by:</b> <br />
-  <%= @property.creator ? @property.creator.name : "Unknown user" %> <br />
-</p>
+<table class="show-table description-table table table-bordered table-striped table-hover">
+  <p>
+    <tr>
+      <td>Name:</td>
+      <td><%= @property.name %></td> 
+    </tr>
+    <tr>
+      <td><%= current_group.category_name %>:</td>
+      <td><%= link_to @property.category.name, [current_group, @property.category] %></td> 
+    </tr>
+    <tr>
+      <td>Description:</td>
+      <td><%= @property.description %></td> 
+    </tr>
+    <tr>
+      <td>Created by:</td>
+      <td><%= @property.creator ? @property.creator.name : "Unknown user" %></td> 
+    </tr>
+  </p>
+</table>
 
 <br />
 
@@ -19,7 +29,7 @@
     <!-- render page links in the view: -->
     <%= will_paginate @values %>
   </div>
-  <table>
+  <table class="show-table table table-bordered table-striped table-hover">
     <thead>
       <th><%= current_group.ling_name_for_depth(@property.depth) %></th>
       <th><%= current_group.lings_property_name %></th>

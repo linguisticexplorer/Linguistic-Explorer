@@ -1,4 +1,10 @@
-.show-page td:first-child {
+.show-table td, .show-table th {
+  text-align: center; }
+.show-table.description-table {
+  width: 40em; }
+.show-table td:first-child {
   width: 10em;
   font-weight: bold;
   color: #57068c; }
+  .show-table td:first-child a {
+    color: #940aee; }
