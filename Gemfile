@@ -75,6 +75,9 @@ group :development do
   gem 'ruby-debug19'
 end
 
+#sass support
+gem 'sass'
+
 # Pure Ruby library to use R language from Ruby code
 # it needs that R interpreter is installed and R_HOME is configured
 # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for

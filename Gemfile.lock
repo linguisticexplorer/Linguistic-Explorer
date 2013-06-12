@@ -280,6 +280,7 @@ DEPENDENCIES
   rspec_rails3_validation_expectations (= 0.0.2)!
   ruby-debug19
   rvm-capistrano
+  sass
   validates_existence (= 0.5.6)!
   validation_reflection (= 1.0.0)
   will_paginate (~> 3.0)
