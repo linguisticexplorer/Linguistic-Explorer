@@ -1,3 +1,11 @@
-body {
-  background-color: blue;
+$highlight-color: #57068C;
+
+.show-page {
+  td {
+  }
+  td:first-child {
+    width: 10em;
+    font-weight: bold;
+    color: $highlight-color;
+  }
 }

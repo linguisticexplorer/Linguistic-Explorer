@@ -8,8 +8,12 @@ html>body{
   line-height:1.5em;
 }
 
+html * {
+  font-family: 'Open Sans', sans-serif;
+}
+
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size:   13px;
   line-height: 18px;
 }

@@ -1,2 +1,4 @@
-body {
-  background-color: blue; }
+.show-page td:first-child {
+  width: 10em;
+  font-weight: bold;
+  color: #57068c; }
