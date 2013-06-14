@@ -14,3 +14,8 @@
   #header div {
     background: inherit;
     border: none; }
+  #header li, #header a {
+    text-decoration: none;
+    text-shadow: none;
+    color: #cdb380;
+    font-weight: bold; }

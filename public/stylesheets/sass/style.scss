@@ -27,5 +27,11 @@ $link-color: #CDB380;
     background: inherit;
     border: none;
   }
+  li, a {
+    text-decoration: none;
+    text-shadow: none;
+    color: $link-color;
+    font-weight: bold;
+  }
 }
 
