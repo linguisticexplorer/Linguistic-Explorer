@@ -1,13 +1,4 @@
-<div id="user_nav">
-  <div class='right'>
-    <% if user_signed_in? %>
-      Signed in as <%= current_user.email %>
-      <%= link_to "(Sign out)", destroy_user_session_path %>
-    <% else %>
-      <%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %>
-    <% end %>
-  </div>
+<li id="user_nav">
   <%= render :partial => 'layouts/group_nav_bar' %>
-  <%= render :partial => 'layouts/admin_bar' if current_user && current_user.admin? %>
-  <%= render :partial => 'layouts/group_admin_bar' if current_user && @group && (current_user.admin? || current_user.administrated_groups.include?(@group)) %>
-</div>
+  <%= render :partial => 'layouts/status_bar' if current_user && current_user.admin? %>
+</li>

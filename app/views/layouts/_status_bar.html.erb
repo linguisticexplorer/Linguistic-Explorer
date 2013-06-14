@@ -1,0 +1,13 @@
+<% if user_signed_in? %>
+  <li class="pull-right"> 
+    Signed in as <%= current_user.email %>
+    <% if current_user && current_user.admin? %>
+      <br />Site Admin
+    <% elsif current_user && @group && (current_user.admin? || current_user.administrated_groups.include?(@group)) %>
+      <br />Group Admin
+    <% end %>
+  </li>
+  <li class="pull-right"><%= link_to "(Sign out)", destroy_user_session_path %></li>
+<% else %>
+  <li class="pull-right"><%= link_to "Sign up", new_user_registration_path %> or <%= link_to "sign in", new_user_session_path %></li>
+<% end %>

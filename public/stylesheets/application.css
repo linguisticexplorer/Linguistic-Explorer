@@ -50,19 +50,6 @@ div.field, div.actions {
 }
 
 /* header */
-#header {
-  color: white;
-  padding:1em;
-}
-#header h2 {
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-weight:bold;
-  font-size:150%;
-  text-shadow: #111 2px 2px;
-}
-#header h2 a {
-  color:#ccc;
-}
 
 #user_nav {
   color:#ccc;

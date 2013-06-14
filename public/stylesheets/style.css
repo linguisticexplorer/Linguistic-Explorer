@@ -5,6 +5,12 @@
 .show-table td:first-child {
   width: 10em;
   font-weight: bold;
-  color: #57068c; }
+  color: #e8ddcb; }
   .show-table td:first-child a {
-    color: #940aee; }
+    color: #cdb380; }
+
+#header {
+  background: #031634; }
+  #header div {
+    background: inherit;
+    border: none; }
