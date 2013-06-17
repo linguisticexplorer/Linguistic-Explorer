@@ -1,7 +1,7 @@
-<div id="header" class="navbar">
+<div id="header" class="navbar navbar-static-top navbar-inverse">
   <div class="navbar-inner">
-    <%= link_to 'TerraLing', root_url, :class => "brand" %>
     <ul class="nav">
+      <%= link_to 'TerraLing', root_url, :class => "brand" %>
       <%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
     </ul>
   </div>

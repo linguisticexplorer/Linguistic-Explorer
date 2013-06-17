@@ -29,21 +29,10 @@ $link-color: #FFFFFF;
     padding: 0px 0px;
     li {
       padding: 0px 0px;
-      color: white;
-      .nav-status {
-        color: $highlight-color;
-        text-align: center;
-        display: block;
-      }
     }
   }
   .navbar-inner {
-    padding: 5px 10px;
-  }
-  .buttons {
-    height: 80%;
-    float: right;
-  }
+  padding: 5px 5px;}
 }
 
 

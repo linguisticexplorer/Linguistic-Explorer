@@ -7,15 +7,23 @@
   font-weight: bold;
   color: #e8ddcb; }
   .show-table td:first-child a {
-    color: #cdb380; }
+    color: white; }
 
 #header {
-  background: #031634; }
+  background: black; }
   #header div {
     background: inherit;
-    border: none; }
-  #header li, #header a {
-    text-decoration: none;
-    text-shadow: none;
-    color: #cdb380;
-    font-weight: bold; }
+    border: none;
+    padding: 0px 0px; }
+    #header div li {
+      padding: 0px 0px;
+      color: white; }
+      #header div li .nav-status {
+        color: #e8ddcb;
+        text-align: center;
+        display: block; }
+  #header .navbar-inner {
+    padding: 5px 10px; }
+  #header .buttons {
+    height: 80%;
+    float: right; }

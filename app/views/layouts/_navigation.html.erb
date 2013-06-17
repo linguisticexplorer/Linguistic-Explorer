@@ -1,4 +1,2 @@
-<li id="user_nav">
-  <%= render :partial => 'layouts/group_nav_bar' %>
-  <%= render :partial => 'layouts/status_bar' if current_user && current_user.admin? %>
-</li>
+<%= render :partial => 'layouts/group_nav_bar' %>
+<%= render :partial => 'layouts/status_bar' if current_user && current_user.admin? %>
