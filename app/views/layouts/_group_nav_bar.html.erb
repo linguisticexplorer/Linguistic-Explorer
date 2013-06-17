@@ -15,8 +15,8 @@
   <li><%= link_to "Forums", forums_path %></li>
 <% elsif @groups %>
   <%= form_tag({:controller => "groups", :action => "index"}, :method => "get", :class => "navbar-search") do %>
-    <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>
-    <%= submit_tag("Go") %>
+    <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id"  }) %>
+    <%= submit_tag("Go", :class => "btn") %>
   <% end %>
   <li><%= link_to "Forums", forums_path %></li>
 <% else %>

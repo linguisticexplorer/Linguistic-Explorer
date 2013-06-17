@@ -7,10 +7,12 @@
   font-weight: bold;
   color: #e8ddcb; }
   .show-table td:first-child a {
-    color: white; }
+    color: #dddddd; }
 
 #header {
   background: black; }
+  #header .brand {
+    color: white; }
   #header div {
     background: inherit;
     border: none;
@@ -23,7 +25,27 @@
         text-align: center;
         display: block; }
   #header .navbar-inner {
-    padding: 5px 10px; }
+    padding: 5px 20px; }
+    #header .navbar-inner .navbar-search {
+      margin-top: 2px; }
+      #header .navbar-inner .navbar-search select {
+        padding: 4px 14px;
+        padding-bottom: 0px;
+        margin-top: 3px;
+        color: #ffffff;
+        background-color: #515151;
+        border-color: #111111; }
+      #header .navbar-inner .navbar-search input {
+        margin-top: -6px;
+        color: #ffffff;
+        background: #515151;
+        border-color: #111111; }
   #header .buttons {
-    height: 80%;
-    float: right; }
+    margin-left: 10px; }
+    #header .buttons a {
+      background: #515151;
+      border-color: #111111;
+      color: #ffffff;
+      height: 80%;
+      margin-top: 2px;
+      padding: 7px 15px; }
