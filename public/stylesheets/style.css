@@ -5,9 +5,9 @@
 .show-table td:first-child {
   width: 10em;
   font-weight: bold;
-  color: #e8ddcb; }
+  color: #0088cc; }
   .show-table td:first-child a {
-    color: #dddddd; }
+    color: #005580; }
 
 #header {
   background: black; }
@@ -21,7 +21,7 @@
       padding: 0px 0px;
       color: white; }
       #header div li .nav-status {
-        color: #e8ddcb;
+        color: #0088cc;
         text-align: center;
         display: block; }
   #header .navbar-inner {

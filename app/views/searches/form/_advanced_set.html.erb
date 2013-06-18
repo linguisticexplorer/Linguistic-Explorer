@@ -1,39 +1,44 @@
-<%= content_tag :fieldset, :id => "advanced_set", :class => "table" do %>
+<%= content_tag :fieldset, :id => "advanced_set" do %>
     <div class="advanced_set">
-      <div class="implication_search row">
-        <div class="cell label">Universal Implication</div>
-        <div class="cell field">
-          <%= f.label "Implication", "Both", :for => "search_group_impl_both" %>
-          <%= f.radio_button "advanced_set", "both", :checked => false,
-                             :id => advanced_search_id(:impl_both),
-                             :name => advanced_search_field_name(:advanced_set, :impl) %>
-          <%= f.label "Implication", "Antecedent", :for => "search_group_impl_ante" %>
-          <%= f.radio_button "advanced_set", "ante", :checked => false,
-                             :id => advanced_search_id(:impl_ante),
-                             :name => advanced_search_field_name(:advanced_set, :impl) %>
-          <%= f.label "Implication", "Consequent", :for => "search_group_impl_cons" %>
-          <%= f.radio_button "advanced_set", "cons", :checked => false,
-                             :id => advanced_search_id(:impl_cons),
-                             :name => advanced_search_field_name(:advanced_set, :impl) %>
+      <div class="implication_search control-group">
+        <div class="control-label label">Universal Implication</div>
+        <div class="controls field">
+          <label name="Implication" for="search_group_impl_both">
+            <%= f.radio_button "advanced_set", "both", :checked => false,
+                               :id => advanced_search_id(:impl_both),
+                               :name => advanced_search_field_name(:advanced_set, :impl) %> Both
+          </label>
+          <label for="search_group_impl_ante" name="Implication">
+              <%= f.radio_button "advanced_set", "ante", :checked => false,
+                               :id => advanced_search_id(:impl_ante),
+                               :name => advanced_search_field_name(:advanced_set, :impl) %> Antecedent
+          </label>
+          <label for="search_group_impl_cons" name="Implication">
+            <%= f.radio_button "advanced_set", "cons", :checked => false,
+                               :id => advanced_search_id(:impl_cons),
+                               :name => advanced_search_field_name(:advanced_set, :impl) %> Consequent
+          </label>
         </div>
       </div>
-      <div class="implication_search row">
-        <div class="cell label">Universal Implication Double</div>
-        <div class="cell field">
-          <%= f.label "Implication", "Both", :for => "search_group_impl_double" %>
-          <%= f.radio_button "advanced_set", "double", :checked => false,
-                             :id => advanced_search_id(:impl_double),
-                             :name => advanced_search_field_name(:advanced_set, :impl) %>
+      <div class="implication_search control-group">
+        <div class="control-label label">Universal Implication Double</div>
+        <div class="controls field">
+          <label name="Both" for="search_group_impl_double">
+            <%= f.radio_button "advanced_set", "double", :checked => false,
+                               :id => advanced_search_id(:impl_double),
+                               :name => advanced_search_field_name(:advanced_set, :impl) %> Implication
+          </label>
         </div>
       </div>
-      <div class="clustering_search row">
-        <div class="cell label">Similarity</div>
-        <div class="cell field" id="clustering">
-        <%= f.label "Clustering", "Tree", :for => "search_group_clust_hamming" %>
-        <%= f.radio_button "advanced_set", "hamming", :checked => false,
-                           :id => advanced_search_id(:clust_hamming),
-                           :name => advanced_search_field_name(:advanced_set, :clustering) %>
+      <div class="clustering_search control-group">
+        <div class="control-label label">Similarity</div>
+        <div class="controls field" id="clustering">
+          <label name="Tree" for="search_group_clust_hamming">
+            <%= f.radio_button "advanced_set", "hamming", :checked => false,
+                               :id => advanced_search_id(:clust_hamming),
+                               :name => advanced_search_field_name(:advanced_set, :clustering) %> Clustering
+          </label>
+        </div>
       </div>
-    </div>
     </div>
 <% end %>

@@ -1,41 +1,48 @@
 <%- resource_name ||= :search -%>
 <%= content_tag :fieldset, :id => "show_columns" do %>
   <div id="show_parent">
-    <%= label_tag     included_column_name(resource_name, :ling_0), current_group.ling0_name.pluralize %>
-    <%= check_box_tag included_column_name(resource_name, :ling_0), "1", true %>
+    <label name="<%= included_column_name(resource_name, :ling_0) %>", class="checkbox inline">
+      <%= check_box_tag(included_column_name(resource_name, :ling_0), "1", true, :class => "controls") %> <%= current_group.ling0_name.pluralize%>
+    </label>
+    <label name="<%= included_column_name(resource_name, :property_0) %>", class="checkbox inline">
+      <%= check_box_tag included_column_name(resource_name, :property_0), "1", true %> <%= current_group.property_name.pluralize %>
+    </label>
+    <label name="<%= included_column_name(resource_name, :value_0) %>", class="checkbox inline">
+      <%= check_box_tag included_column_name(resource_name, :value_0), "1", true %> <%= current_group.lings_property_name.pluralize %>
+    </label>
 
-    <%= label_tag     included_column_name(resource_name, :property_0), current_group.property_name.pluralize %>
-    <%= check_box_tag included_column_name(resource_name, :property_0), "1", true %>
-
-    <%= label_tag     included_column_name(resource_name, :value_0), current_group.lings_property_name.pluralize %>
-    <%= check_box_tag included_column_name(resource_name, :value_0), "1", true %>
-
-    <%= label_tag     included_column_name(resource_name, :example_0), "Examples" %>
-    <%= check_box_tag included_column_name(resource_name, :example_0), "1", true %>
+    <label name="<%= included_column_name(resource_name, :example_0) %>", class="checkbox inline">
+      <%= check_box_tag included_column_name(resource_name, :example_0), "1", true %> Examples
+    </label>
   </div>
 
   <% if current_group.has_depth? %>
     <br />
     <div id="show_child">
-      <%= label_tag     included_column_name(resource_name, :ling_1), current_group.ling1_name.pluralize %>
-      <%= check_box_tag included_column_name(resource_name, :ling_1), "1", true %>
+      <label name="<%= included_column_name(resource_name, :ling_1) %>", class="checkbox inline">
+        <%= check_box_tag included_column_name(resource_name, :ling_1), "1", true %> <%= current_group.ling1_name.pluralize %>
+      </label>
 
-      <%= label_tag     included_column_name(resource_name, :property_1), current_group.property_name.pluralize %>
-      <%= check_box_tag included_column_name(resource_name, :property_1), "1", true %>
+      <label name="<%= included_column_name(resource_name, :property_1) %>", class="checkbox inline">
+        <%= check_box_tag included_column_name(resource_name, :property_1), "1", true %> <%= current_group.property_name.pluralize  %>
+      </label>
 
-      <%= label_tag     included_column_name(resource_name, :value_1), current_group.lings_property_name.pluralize %>
-      <%= check_box_tag included_column_name(resource_name, :value_1), "1", true %>
+      <label name="<%= included_column_name(resource_name, :value_1) %>", class="checkbox inline">
+        <%= check_box_tag included_column_name(resource_name, :value_1), "1", true %> <%= current_group.lings_property_name.pluralize  %>
+      </label>
 
-      <%= label_tag     included_column_name(resource_name, :example_1), "Examples" %>
-      <%= check_box_tag included_column_name(resource_name, :example_1), "1", true %>
+      <label name="<%= included_column_name(resource_name, :value_1) %>", class="checkbox inline">
+        <%= check_box_tag included_column_name(resource_name, :example_1), "1", true %> Examples
+      </label>
     </div>
     <br />
     <div id="show_impl">
-      <%= label_tag     included_implication_depth(resource_name, :depth_0), "Implication on #{current_group.ling0_name}" %>
-      <%= check_box_tag included_implication_depth(resource_name, :depth_0), "1", true %>
-      <%= label_tag     included_implication_depth(resource_name, :depth_1), "Implication on #{current_group.ling1_name}" %>
-      <%= check_box_tag included_implication_depth(resource_name, :depth_1), "1", true %>
+      <label name="<%= included_column_name(resource_name, :depth_0) %>", class="checkbox inline">
+        <%= check_box_tag included_implication_depth(resource_name, :depth_0), "1", true %> <%= "Implication on #{current_group.ling0_name}" %>
+      </label>
+      <label name="<%= included_column_name(resource_name, :depth_1) %>", class="checkbox inline">
+        <%= check_box_tag included_implication_depth(resource_name, :depth_1), "1", true %> <%= "Implication on #{current_group.ling1_name}" %>
+      <label>
     </div>
   <% end %>
-
 <% end %>
