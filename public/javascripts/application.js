@@ -171,7 +171,7 @@ function disable_except(elements_regexp, except){
 }
 
 function enable_similarity_radial_tree(){
-    var label = '<label for="search_group_clust_hamming">' +
+    var label = '<label for="search_group_clust_hamming" class="radio inline">'  +
     '<input id="search_group_clust_hamming" name="search[advanced_set][clustering]" type="radio" value="hamming_r">' +
     ' Radial Tree' +
     '</label>';

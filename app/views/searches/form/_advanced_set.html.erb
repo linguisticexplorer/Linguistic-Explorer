@@ -1,43 +1,43 @@
 <%= content_tag :fieldset, :id => "advanced_set" do %>
     <div class="advanced_set">
       <div class="implication_search control-group">
-        <div class="control-label label">Universal Implication</div>
-        <div class="controls field">
-          <label name="Implication" for="search_group_impl_both">
+        <%= label_tag "univ-impl", "Universal Implication", :class => "control-label label" %>
+        <div name="univ-impl" class="controls field">
+          <%= label_tag advanced_search_id(:impl_both), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "both", :checked => false,
                                :id => advanced_search_id(:impl_both),
                                :name => advanced_search_field_name(:advanced_set, :impl) %> Both
-          </label>
-          <label for="search_group_impl_ante" name="Implication">
+          <% end %>
+          <%= label_tag advanced_search_id(:impl_ante), :class => "radio inline" do %>
               <%= f.radio_button "advanced_set", "ante", :checked => false,
                                :id => advanced_search_id(:impl_ante),
                                :name => advanced_search_field_name(:advanced_set, :impl) %> Antecedent
-          </label>
-          <label for="search_group_impl_cons" name="Implication">
+          <% end %>
+          <%= label_tag advanced_search_id(:impl_cons), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "cons", :checked => false,
                                :id => advanced_search_id(:impl_cons),
                                :name => advanced_search_field_name(:advanced_set, :impl) %> Consequent
-          </label>
+          <% end %>
         </div>
       </div>
       <div class="implication_search control-group">
-        <div class="control-label label">Universal Implication Double</div>
-        <div class="controls field">
-          <label name="Both" for="search_group_impl_double">
+        <%= label_tag "univ-impl-doub", "Universal Implication<br />Double".html_safe, :class => "control-label label" %> 
+        <div name="univ-impl-doub" class="controls field">
+          <%= label_tag advanced_search_id(:impl_double), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "double", :checked => false,
                                :id => advanced_search_id(:impl_double),
                                :name => advanced_search_field_name(:advanced_set, :impl) %> Implication
-          </label>
+          <% end %>
         </div>
       </div>
       <div class="clustering_search control-group">
-        <div class="control-label label">Similarity</div>
-        <div class="controls field" id="clustering">
-          <label name="Tree" for="search_group_clust_hamming">
+        <%= label_tag "similarity", "Similarity", :class => "control-label label" %> 
+        <div name="similarity" class="controls field" id="clustering">
+          <%= label_tag advanced_search_id(:clust_hamming), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "hamming", :checked => false,
                                :id => advanced_search_id(:clust_hamming),
                                :name => advanced_search_field_name(:advanced_set, :clustering) %> Clustering
-          </label>
+          <% end %>
         </div>
       </div>
     </div>

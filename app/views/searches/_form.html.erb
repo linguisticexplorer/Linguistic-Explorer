@@ -21,8 +21,13 @@
 
 		</div>
 		<div class="span7">
-			<%= f.submit "Show results", :name => nil, :class => "btn" %>
-			<input class="nudge btn" type='reset' value='Reset'>
+      <div class="control-group">
+        <label class="control-label" for=""></label>
+        <div class="controls">
+          <%= f.submit "Show results", :name => nil, :class => "btn inline" %>
+          <input class="nudge btn inline" type='reset' value='Reset'>
+        </div>
+      </div>
 		</div>
 
 	</div>
@@ -32,10 +37,10 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span7">
+		<div class="span2">
 			<h3>Constraints</h3>
 		</div>
-		<div class="span2">
+		<div class="span7">
 			<%= render :partial => 'searches/form/lings', :locals => { :f => f }, :inline => true %>
 			<%= render :partial => 'searches/form/properties', :locals => { :f => f }, :inline => true %>
 			<%= render :partial => 'searches/form/lings_properties', :locals => { :f => f }, :inline => true %>
@@ -43,10 +48,9 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="span7">
-
-		</div>
 		<div class="span2">
+		</div>
+		<div class="span7">
 			<input type="hidden" name="search[javascript]" value="0" id="hidden_javascript">
 			<%= f.submit "Show results", :name => nil %>
 			<input class="nudge" type="reset" value="Reset">
