@@ -1,5 +1,5 @@
 <%= form_for search, :html => {:method => "get", :onsubmit =>
-	"this.hidden_javascript.value=1;return true;", :class => "form-horizontal" } do |f| %>
+  "this.hidden_javascript.value=1;return true;", :class => "form-horizontal", :id => "search-form" } do |f| %>
 	<div class="row">
 		<div class="span2">
 			<h3>Display</h3>
@@ -18,21 +18,6 @@
 	</div>
 	<div class="row">
 		<div class="span2">
-
-		</div>
-		<div class="span7">
-      <div class="control-group">
-        <label class="control-label" for=""></label>
-        <div class="controls">
-          <%= f.submit "Show results", :name => nil, :class => "btn inline" %>
-          <input class="nudge btn inline" type='reset' value='Reset'>
-        </div>
-      </div>
-		</div>
-
-	</div>
-	<div class="row">
-		<div class="span2">
 			&nbsp;
 		</div>
 	</div>
@@ -45,15 +30,14 @@
 			<%= render :partial => 'searches/form/properties', :locals => { :f => f }, :inline => true %>
 			<%= render :partial => 'searches/form/lings_properties', :locals => { :f => f }, :inline => true %>
 			<%= render :partial => 'searches/form/examples', :locals => { :f => f }, :inline => true %>
+      <div class="control-group">
+        <label class="control-label" for=""></label>
+        <div class="controls">
+          <input type="hidden" name="search[javascript]" value="0" id="hidden_javascript">
+          <%= f.submit "Show results", :name => nil %>
+          <input class="nudge" type="reset" value="Reset">
+        </div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="span2">
-		</div>
-		<div class="span7">
-			<input type="hidden" name="search[javascript]" value="0" id="hidden_javascript">
-			<%= f.submit "Show results", :name => nil %>
-			<input class="nudge" type="reset" value="Reset">
 		</div>
 	</div>
 <% end %>
