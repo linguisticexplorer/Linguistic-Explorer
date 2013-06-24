@@ -82,3 +82,20 @@ $link-color: #005580;
   }
 }
 
+.form-horizontal {
+  .text-adjust {
+		color: $highlight-color;
+		padding: 4px;
+	}
+	.italic {
+		font-style: italic;
+		color: darken($highlight-color, 10);
+	}
+}
+a.btn {
+	color: #333333;
+}
+
+a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse {
+	color: #ffffff;
+}

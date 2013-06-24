@@ -5,5 +5,5 @@
     <%= render :partial => "index_partial" %>
 </div>
 <% if can? :create, Group.new %>
-  <%= link_to 'New Group', new_group_path %>
+  <%= link_to 'New Group', new_group_path, :class => "btn" %>
 <% end %>

@@ -2,11 +2,11 @@
 
 <h1>Listing Memberships</h1>
 <% if can? :create, Membership.new{|m| m.group = current_group} %>
-    <%= link_to "New Membership", new_group_membership_path(current_group) %>
+  <%= link_to "New Membership", new_group_membership_path(current_group), :class => "btn" %>
 <% end %>
 <div id='pagination_table'>
     <%= render :partial => "index_partial" %>
 </div>
 <% if can? :create, Membership.new{|m| m.group = current_group} %>
-  <%= link_to "New Membership", new_group_membership_path(current_group) %>
+  <%= link_to "New Membership", new_group_membership_path(current_group), :class => "btn" %>
 <% end %>
