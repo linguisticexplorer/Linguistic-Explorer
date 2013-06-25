@@ -6,16 +6,20 @@
   <tr>
     <th><%= current_group.example_name %></th>
     <th><%= current_group.lings_property_name %></th>
+    <% if can? :destroy, @examples_lings_properties %>
     <th></th>
+    <% end %>
   </tr>
 
 <% @examples_lings_properties.each do |examples_lings_property| %>
   <tr>
-    <td><%= link_to examples_lings_property.example.name, [current_group, examples_lings_property.example] %><td>
+    <td><%= link_to examples_lings_property.example.name, [current_group, examples_lings_property.example] %></td>
     <td><%= link_to examples_lings_property.lings_property.property_value, [current_group, examples_lings_property.lings_property] %></td>
-    <td><% if can? :destroy, examples_lings_property %>
+    <% if can? :destroy, examples_lings_property %>
+    <td>
       <%= link_to 'Destroy', [current_group, examples_lings_property], :confirm => 'Are you sure?', :method => :delete %>
-    <% end %></td>
+      </td>
+    <% end %>
   </tr>
 <% end %>
 </table>

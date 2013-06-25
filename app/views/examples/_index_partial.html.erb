@@ -11,8 +11,12 @@
     <% current_group.example_storable_keys.each do |key| %>
         <th><%= key.humanize %></th>
     <% end %>
+    <% if can? :edit, @examples %>
     <th></th>
+    <% end %>
+    <% if can? :destroy, @examples %>
     <th></th>
+    <% end %>
   </tr>
 
   <% @examples.each do |example| %>
@@ -23,12 +27,14 @@
         <% current_group.example_storable_keys.each do |key| %>
             <td><%= example.stored_value(key) %></td>
         <% end %>
-        <td><% if can? :edit, example %>
+        <% if can? :edit, example %>
+        <td>
               <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
-          <% end %></td>
-        <td><% if can? :destroy, example %>
+        </td>  <% end %>
+        <% if can? :destroy, example %>
+        <td>
               <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
-          <% end %></td>
+          </td><% end %>
       </tr>
   <% end %>
 </table>

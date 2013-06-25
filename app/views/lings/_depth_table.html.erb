@@ -11,10 +11,13 @@
     <% current_group.ling_storable_keys.each do |key| %>
       <th><%= key.humanize %></th>
     <% end %>
-    <th></th>
-    <th></th>
-    <th></th>
-    <th></th>
+    <% if can? :edit, lings%> 
+      <th></th>
+      <th></th>
+    <% end %>
+    <% if can? :destroy, lings%> 
+      <th></th>
+    <% end %>
     <th>Completeness</th>
   </tr>
   <% lings.each do |ling| %>
@@ -26,18 +29,24 @@
       <% current_group.ling_storable_keys.each do |key| %>
         <td><%= ling.stored_value(key) %></td>
       <% end %>
-      <td><% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+      <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+<td>
         <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, ling) %> 
-      <% end %> </td>
-      <td><% if can? :edit, ling %>
+</td>
+      <% end %> 
+     <% if can? :edit, ling %> 
+     <td>
         <%= link_to 'Supported Edit', supported_set_values_group_ling_path(current_group, ling) %> 
-      <% end %> </td>
-      <td><% if can? :edit, ling %>
+      </td>
+      <td>
         <%= link_to 'Edit', edit_group_ling_path(current_group, ling) %> 
-      <% end %> </td>
-      <td><% if can? :destroy, ling %>
+      </td>
+      <% end %>
+      <% if can? :destroy, ling %>
+      <td>
         <%= link_to 'Destroy', [current_group, ling], :confirm => 'Are you sure?', :method => :delete %>
-      <% end %></td>
+      </td>
+      <% end %>
       <td>
         <center>
           <% percentage = "#{ling.info}%" %>

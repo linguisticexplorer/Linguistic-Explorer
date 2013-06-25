@@ -6,22 +6,28 @@
   <tr>
     <th>Member</th>
     <th>Level</th>
+    <% if can? :edit, @memberships %>
     <th></th>
+    <% end %>
+    <% if can? :destroy, @memberships %>
     <th></th>
+    <% end %>
   </tr>
 
 <% @memberships.each do |membership| %>
   <tr>
     <td><%= membership.member.name %></td>
     <td><%= membership.level %></td>
-    <td><% if can? :edit, membership %>
+    <% if can? :edit, membership %>
+    <td>
       <%= link_to 'Edit', edit_group_membership_path(current_group, membership) %>
-    <% end %></td>
-  <td>
-    <% if can? :destroy, membership %>
-      <%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %>
+    </td>
     <% end %>
-  </td>
+    <% if can? :destroy, membership %>
+      <td>
+      <%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %>
+     </td>
+    <% end %>
   </tr>
 <% end %>
 </table>
