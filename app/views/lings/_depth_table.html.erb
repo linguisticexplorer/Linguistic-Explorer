@@ -11,6 +11,9 @@
     <% current_group.ling_storable_keys.each do |key| %>
       <th><%= key.humanize %></th>
     <% end %>
+    <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
+      <th></th>
+    <% end %>
     <% if can? :edit, lings%> 
       <th></th>
       <th></th>
