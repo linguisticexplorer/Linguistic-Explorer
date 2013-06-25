@@ -59,8 +59,11 @@
 .form-horizontal .text-adjust {
   color: #0088cc;
   padding: 4px; }
-.form-horizontal .italic {
-  font-style: italic;
+
+.italic {
+  font-style: italic; }
+
+.blue {
   color: #006699; }
 
 a.btn {

@@ -33,6 +33,10 @@ pre {
   color:#CCCCCC;
 }
 
+.ten {
+  font-size: 10px;
+}
+
 a           { color: #CC3300; text-decoration:none; }
 a:visited   { color: #AC250E; }
 a:hover     { color: #CC3300; text-decoration:underline; }

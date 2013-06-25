@@ -95,11 +95,13 @@ function reset_form(){
     show_delete();
 }
 
+name = "";
 /* Function triggered by selecting an Implication radio button */
 function implication_on(){
 //    console.log("implication_on");
     show_div('#show_impl');
-    hide_includes();
+    hide_includes();    
+    name = "Universal Implication";
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_clust]:radio");
@@ -108,6 +110,7 @@ function implication_on(){
 function clustering_on(){
 //    console.log("clustering_on");
     hide_includes();
+    name = "Similarity";
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
@@ -118,6 +121,7 @@ function clustering_on(){
 function cross_on(radio_element){
     hide_includes();
     hide_div('#show_impl');
+    name = "Constraints Cross On";
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
     disable("input[id^=search_group_clust]:radio");
@@ -132,6 +136,7 @@ function compare_on(radio_element){
 //    console.log("compare_on =>"+ radio_element.id);
     hide_includes();
     hide_div('#show_impl');
+    name = "Constraints Compare On";
     disable('input[id$=_cross]:radio');
     disable("input[id^=search_group_impl]:radio");
     disable("input[id^=search_group_clust]:radio");
@@ -173,6 +178,8 @@ function disable(element){
   //console.log("disable "+element);
   $(element).attr("disabled", true);
   $(element).parent().addClass("gray");
+  $(element).parent().parent().children(".blue").remove();
+  $(element).parent().parent().append("<div class='italic blue ten'>Disabled by " + name + " settings</div>");
 }
 
 /* Function to enable an element */
@@ -180,9 +187,11 @@ function enable(element){
 //  console.log("enable "+element);
   $(element).attr("disabled", false);
   $(element).parent().removeClass("gray");
+  $(element).parent().parent().children(".blue").remove();
 }
 
 function disable_except(elements_regexp, except){
+    name = "Constraints";
     disable($(elements_regexp).not(except));
 }
 

@@ -87,10 +87,12 @@ $link-color: #005580;
 		color: $highlight-color;
 		padding: 4px;
 	}
-	.italic {
-		font-style: italic;
-		color: darken($highlight-color, 10);
-	}
+}
+.italic {
+  font-style: italic;
+}
+.blue {
+  color: darken($highlight-color, 10);
 }
 a.btn {
 	color: #333333;
