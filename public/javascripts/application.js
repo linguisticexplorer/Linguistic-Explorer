@@ -92,6 +92,7 @@ function reset_form(){
     enable("input[id^=search_group_clust]:radio");
     enable('input[id$=_cross]:radio');
     enable('input[id$=_compare]:radio');
+    show_delete();
 }
 
 /* Function triggered by selecting an Implication radio button */
@@ -110,6 +111,7 @@ function clustering_on(){
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
+    display_delete();
 }
 
 // Function triggered by selecting a Cross radio button
@@ -140,6 +142,18 @@ function compare_on(radio_element){
     else
     { disable('input[id$=1_compare]:radio'); }
 
+}
+
+/* Function to hide divs of display section of the search */
+function display_delete(){
+  hide_div('#display');
+  hide_div('#display_text');
+}
+
+/* Function to show hidden divs of display section of the search */
+function show_delete(){
+  show_div('#display');
+  show_div('#display_text');
 }
 
 /* Function to group the hiding of includes div */
@@ -173,8 +187,8 @@ function disable_except(elements_regexp, except){
 }
 
 function enable_similarity_radial_tree(){
-    var label = '<label for="search_group_clust_hamming" class="radio inline">'  +
-    '<input id="search_group_clust_hamming" name="search[advanced_set][clustering]" type="radio" value="hamming_r">' +
+    var label = '<label for="search_group_clust_hamming1" class="radio inline">'  +
+    '<input id="search_group_clust_hamming1" name="search[advanced_set][clustering]" type="radio" value="hamming_r">' +
     ' Radial Tree' +
     '</label>';
     // console.log($("#clustering"));
