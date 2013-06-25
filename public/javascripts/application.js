@@ -156,14 +156,16 @@ function show_includes(){
 
 /* Function to disable an element */
 function disable(element){
-//  console.log("disable "+element);
+  //console.log("disable "+element);
   $(element).attr("disabled", true);
+  $(element).parent().addClass("gray");
 }
 
 /* Function to enable an element */
 function enable(element){
 //  console.log("enable "+element);
   $(element).attr("disabled", false);
+  $(element).parent().removeClass("gray");
 }
 
 function disable_except(elements_regexp, except){
