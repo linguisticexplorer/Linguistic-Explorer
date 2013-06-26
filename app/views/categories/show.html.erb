@@ -1,7 +1,7 @@
 <% page_heading current_group.category_name %>
+<h1><%= current_group.category_name %></h1>
 
 <table class="show-table description-table table table-bordered table-striped table-hover">
-<p>
   <tr>
     <td><b>Name:</td></b></td> 
     <td><%= @category.name %></td> 
@@ -18,8 +18,7 @@
     <td><b>Created by:</b></td> 
     <td><%= @category.creator ? @category.creator.name : "Unknown user" %></td> 
   </tr>
-</p>
-
+</table>
 <% if can? :edit, @category%>
   <%= link_to 'Edit', edit_group_category_path(current_group, @category) %> |
 <% end %>

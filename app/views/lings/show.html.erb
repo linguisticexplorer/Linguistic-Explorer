@@ -1,4 +1,5 @@
 <% page_heading @ling.grouped_name %>
+<h1><%= @ling.grouped_name %></h1>
 
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
     <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |

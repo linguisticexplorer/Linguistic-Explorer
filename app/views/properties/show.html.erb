@@ -1,4 +1,7 @@
 <% page_heading current_group.property_name %>
+<h1><%= current_group.property_name %></h1>
+
+<%= link_to 'Back', group_properties_path(current_group) %>
 
 <table class="show-table description-table table table-bordered table-striped table-hover">
   <p>
