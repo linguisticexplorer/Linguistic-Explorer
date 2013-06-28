@@ -15,8 +15,12 @@
     <th>Examples</th>
     <th>MaxDepth</th>
     <th>Privacy</th>
-    <th></th>
-    <th></th>
+    <% if can? :update, @groups %>
+      <th></th>
+    <% end %>
+    <% if can? :destroy, @groups %>
+      <th></th>
+    <% end %>
   </tr>
 
 <% @groups.each do |group| %>
@@ -32,12 +36,12 @@
     <td><%= link_to group.example_name, group_examples_path(group) %></td>
     <td><%= group.depth_maximum %></td>
     <td><%= group.privacy %></td>
-    <td><% if can? :update, @group %>
-      <%= link_to 'Edit', edit_group_path(group) %>
-    <% end %></td>
-    <td><% if can? :destroy, @group %>
-      <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %>
-    <% end %></td>
+    <% if can? :update, @group %>
+     <td> <%= link_to 'Edit', edit_group_path(group) %></td >
+    <% end %>
+    <% if can? :destroy, @group %>
+     <td> <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td >
+    <% end %>
   </tr>
 <% end %>
 </table>
