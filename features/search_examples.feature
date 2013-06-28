@@ -85,6 +85,7 @@ Feature: Search Examples
     And I should not see "Example 3"
     And I should not see "Example 4"
 
+  @wip
   Scenario: Keyword search on example stored values
     Given the group example fields "origin, era"
     And the following example stored values
@@ -96,7 +97,8 @@ Feature: Search Examples
     When I go to the Syntactic Structures search page
     And I check "Examples" within "#show_parent"
     And I check "Examples" within "#show_child"
-    And I select "Era Contains" from "Speaker Example Attribute"
+    Then show me the page
+    When I select "Era Contains" from "Speaker Example Attribute"
     And I fill in "Example Keyword" with "gold"
     And I press "Show results"
     Then I should see the following search results:

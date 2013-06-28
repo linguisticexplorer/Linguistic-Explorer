@@ -16,7 +16,7 @@ Feature: Permissions testing for site admins
       | Ling0      | Ling1      |
     And the group "Secret Club" has a maximum depth of 1
     When I go to the home page
-    When I follow "sign in"
+    When I follow "Sign in"
     Then I should be on the login page
     When I fill in "Email" with "a@min.com"
     And  I fill in "Password" with "hunter2"

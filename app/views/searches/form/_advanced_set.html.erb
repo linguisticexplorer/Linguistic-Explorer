@@ -26,7 +26,7 @@
           <%= label_tag advanced_search_id(:impl_double), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "double", :checked => false,
                                :id => advanced_search_id(:impl_double),
-                               :name => advanced_search_field_name(:advanced_set, :impl) %> Implication
+                               :name => advanced_search_field_name(:advanced_set, :impl) %> Both
           <% end %>
         </div>
       </div>
@@ -36,7 +36,7 @@
           <%= label_tag advanced_search_id(:clust_hamming), :class => "radio inline" do %>
             <%= f.radio_button "advanced_set", "hamming", :checked => false,
                                :id => advanced_search_id(:clust_hamming),
-                               :name => advanced_search_field_name(:advanced_set, :clustering) %> Clustering
+                               :name => advanced_search_field_name(:advanced_set, :clustering) %> Tree
           <% end %>
         </div>
       </div>
