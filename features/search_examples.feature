@@ -97,8 +97,7 @@ Feature: Search Examples
     When I go to the Syntactic Structures search page
     And I check "Examples" within "#show_parent"
     And I check "Examples" within "#show_child"
-    Then show me the page
-    When I select "Era Contains" from "Speaker Example Attribute"
+    And I select "Era Contains" from "Speaker Example Attribute"
     And I fill in "Example Keyword" with "gold"
     And I press "Show results"
     Then I should see the following search results:
