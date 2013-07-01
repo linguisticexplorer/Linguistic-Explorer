@@ -8,8 +8,12 @@ html>body{
   line-height:1.5em;
 }
 
+html * {
+  font-family: 'Open Sans', sans-serif;
+}
+
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size:   13px;
   line-height: 18px;
 }
@@ -23,6 +27,14 @@ pre {
 .strong {
   font-weight:bold;
   color: #C30;
+}
+
+.gray {
+  color:#CCCCCC;
+}
+
+.ten {
+  font-size: 10px;
 }
 
 a           { color: #CC3300; text-decoration:none; }
@@ -46,19 +58,6 @@ div.field, div.actions {
 }
 
 /* header */
-#header {
-  color: white;
-  padding:1em;
-}
-#header h2 {
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-weight:bold;
-  font-size:150%;
-  text-shadow: #111 2px 2px;
-}
-#header h2 a {
-  color:#ccc;
-}
 
 #user_nav {
   color:#ccc;
@@ -125,8 +124,6 @@ body.full_width #main h2 {
 #intro p+p {margin-top:20px;}
 
 #messages{ text-align:center; }
-#messages .alert{  border: 1px solid #C30; }
-#messages .notice{ border: 1px solid #DD0; }
 #messages p{
   background-color:#DDD;
   padding-bottom: 5px;
@@ -219,14 +216,6 @@ img.loading {
    color: #C30;
 }
 
-img.loading_phylogram {
-    width: 100px;
-    height: 100px;
-}
-.loading_phylogram {
-    text-align: center;
-}
-
 /* For more paginating styles: http://mislav.uniqpath.com/will_paginate/ */
 /* Pagination Apple-style */
 .apple_pagination {
@@ -274,4 +263,46 @@ img.loading_phylogram {
   color: white;
   font-size: 12px;
   text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.25);
+}
+
+#download_div {
+  position: absolute;
+  top: 210px;
+  right: 8px;
+  width: auto;
+  height: auto;
+}
+
+#category-select {
+  margin-top: 10px;
+  margin-right: 5px;
+}
+
+#prop-select {
+  height: 240px;
+}
+
+#prop-name {
+  height: 60px;
+}
+
+#prop-descrip {
+  height: 100px;
+  overflow: auto;
+}
+
+#prop-example {
+  height: 240px;
+}
+
+#prop-active-example {
+  height: 160px;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 10px;
+  overflow: auto ;
+}
+
+#prop-example-selector {
+  margin-top: -40px;
 }

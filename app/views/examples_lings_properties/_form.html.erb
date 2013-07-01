@@ -1,4 +1,4 @@
-<%= form_for([current_group, @examples_lings_property]) do |f| %>
+<%= form_for([current_group, @examples_lings_property], :html => {:class => "form-horizontal"}) do |f| %>
   <% if @examples_lings_property.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@examples_lings_property.errors.count, "error") %> prohibited this <%= current_group.examples_lings_property_name %> from being saved:</h2>
@@ -11,17 +11,23 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label current_group.example_name %><br />
-    <%= f.collection_select :example_id, @examples, :id, :name, :prompt => 'Select a ' + current_group.example_name %>
+  <div class="control-group">
+    <%= f.label current_group.example_name, :class => "control-label" %>
+    <div class="controls">
+      <%= f.collection_select :example_id, @examples, :id, :name, :prompt => 'Select a ' + current_group.example_name %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label current_group.lings_property_name %><br />
-    <%= f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name %>
+  <div class="control-group">
+    <%= f.label current_group.lings_property_name, :class => "control-label" %>
+    <div class="controls">
+      <%= f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit :class => "btn" %>
+    </div>
   </div>
 <% end %>

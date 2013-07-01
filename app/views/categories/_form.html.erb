@@ -1,4 +1,4 @@
-<%= form_for([current_group, @category]) do |f| %>
+<%= form_for([current_group, @category], :html => {:class => "form-horizontal"}) do |f| %>
   <% if @category.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@category.errors.count, "error") %> prohibited this <%= current_group.category_name %> from being saved:</h2>
@@ -11,22 +11,30 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+  <div class="control-group">
+    <%= label_tag :name, "Name", :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :description %><br />
-    <%= f.text_area :description %>
+  <div class="control-group">
+    <%= label_tag :description, "Description", :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_area :description %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :depth %><br />
-    <%= f.collection_select :depth, current_group.depths.to_a, :to_s, :to_s %>
+  <div class="control-group">
+    <%= label_tag :depth, "Depth", :class => "control-label" %>
+    <div class="controls">
+      <%= f.collection_select :depth, current_group.depths.to_a, :to_s, :to_s %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit :class => "btn"%>
+    </div>
   </div>
 <% end %>

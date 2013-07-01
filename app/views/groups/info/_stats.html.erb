@@ -44,10 +44,6 @@ $(window).ready(function(){
     callback(quota*10);
   }
 
-  function checkLingButtonActive(){
-    return ;
-  }
-
   function replaceLabel(newQuota){
     $('#slider_label').text(active+' Completeness: ').append($('<span>').text(newQuota+'%'));
   }
@@ -66,7 +62,7 @@ $(window).ready(function(){
     active = $(this).text();
 
     $('#lings').attr('class', 'btn btn-danger');
-    if(!last_quota) last_quota = 90;
+    if(!isFinite(last_quota)) last_quota = 90;
     getQuotaToDisplay(last_quota / 10, replaceLabel);
   });
 

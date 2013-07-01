@@ -149,7 +149,7 @@ describe Search do
     end
 
     it "should not be cross search" do
-          create_compare_search.cross?.should be_false
+      create_compare_search.cross?.should be_false
     end
 
     it "should be a mapable search" do

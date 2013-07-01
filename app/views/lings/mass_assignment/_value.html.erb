@@ -1,4 +1,39 @@
-<div class="value <%= value.gsub(" ", "") %>">
-  <%= check_box_tag "values[#{property.id}][#{value}]", value, @preexisting_values.select{|lp| lp.property == property && lp.value == value}.first %>
-  <%= label_tag "values[#{property.id}][#{value}]", value %>
+<div class="fluid-container">
+  <div id="value-title" class="fluid-row">
+    <h2>Values</h2>
+  </div>
+<%= hidden_field_tag :property_id, @property.id %>
+ <div id="value-select" class="fluid-row">
+    <h4>Select Value</h4>
+      <div style="max-height:200px;*height:150px;overflow-y:auto;">
+        <% @property.available_values.sort.each do |value| %>
+          <div class="row-fluid">
+            <div class="span1">
+              <%= radio_button_tag "values[#{@property.id}][#{value}]", value,
+                               @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first %>
+            </div>
+            <div class="span11">
+              <%= label_tag "values[#{@property.id}][#{value}]", value %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <h5>or Add a New one</h5>
+    <%= text_field_tag "values[#{@property.id}][_new]" %>
+  </div>
+  <div id="value-sureness" name="value_sureness" class="fluid-row">
+    <h4>How sure are you?</h4>
+    <label class="radio">
+      <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" <%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any? %>>
+      Certain
+    </label>
+    <label class="radio">
+      <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit"<%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any? %>>
+      Revisit
+    </label>
+    <label class="radio">
+      <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help"<%= "checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any? %>>
+      Need Help
+    </label>
+  </div>
 </div>

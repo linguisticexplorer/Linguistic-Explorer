@@ -20,7 +20,6 @@ function radial_tree(newick){
   d3.phylogram.buildRadial('#tree', newick, {
         width: 1100
     });
-  downloadCanvas();
 }
 
 var png_image;
@@ -38,5 +37,5 @@ function downloadCanvas(){
     var canvas = document.getElementById('canvas');
     png_image = canvas.toDataURL("image/png");
   }
-  d3.select('#download').attr("href", png_image);
+  d3.select('#download').classed("disabled", false).attr("disabled", null).attr("href", png_image);
 }

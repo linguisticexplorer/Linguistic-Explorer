@@ -9,12 +9,20 @@ config.each do |key, value|
 end
 
 GroupData::Importer.import(config)
+# Default admin data
+username = 'admin'
+password = 'password'
+email = 'a@dmin.com'
 
 puts "Creating Admin User..."
 # create a toy admin account
-User.create(:name => "admin", :password => "password", :password_confirmation => "password" ) do |u|
+User.create(:name => username, :password => password, :password_confirmation => password ) do |u|
   u.access_level = User::ADMIN
-  u.email = "a@dmin.com"
+  u.email = email
 end
+
+puts "Username: '#{username}'"
+puts "Password: '#{password}'"
+puts "Email: '#{email}'"
 
 puts "Seeding complete!"

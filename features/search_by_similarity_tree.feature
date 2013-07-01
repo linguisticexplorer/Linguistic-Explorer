@@ -18,7 +18,7 @@ Feature: Search By Similarity Tree (R language)
       | Degree Adjective  | German      | yes         | Grammar  | 0     |
       | Degree Adjective  | Spanish     | no          | Grammar  | 0     |
 
-
+  @devOnly
   Scenario: Visitor searches Similarity Tree with all Properties and Lings
     When I go to the Syntactic Structures search page
     And I choose "Tree" within "#advanced_set"

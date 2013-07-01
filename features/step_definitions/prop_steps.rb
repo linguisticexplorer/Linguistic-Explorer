@@ -17,13 +17,14 @@ Given /^the following "([^\"]*)" properties:$/ do |group_name, table|
       opts[:category]  = Category.find_by_name(cat_name) ||
         Factory(:category, :name => cat_name, :group => group, :depth => attrs['depth'])
       opts[:group]     = group
+      # opts[:group]     = group
     end
     property = Property.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
 
     ling = group.lings.find_by_name(attrs["ling name"])
     raise "Ling #{attrs['ling name']} does not exist! Did you remember to create it first?" if ling.nil?
 
-    ling.add_property(attrs["prop val"], property)
+    ling.add_property_sureness(attrs["prop val"], attrs['surety'], property)
   end
 end
 
@@ -44,6 +45,16 @@ Given /^the following lings and properties:$/ do |table|
 
     prop = group.properties.find_by_name(prop_attrs[:name]) || Factory(:property, prop_attrs)
     ling.add_property(attrs['prop val'], prop)
+  end
+end
+
+Given /^the following "([^"]*)" definitions for properties$/ do |group_name, table|
+  group = Group.find_by_name(group_name)
+  raise "Group #{group_name} does not exist! Did you remember to create it first?" if group.nil?
+  table.hashes.each do |attrs|
+    property = group.properties.find_by_name(attrs['property name'])
+    property.description = attrs['definition']
+    property.save!
   end
 end
 

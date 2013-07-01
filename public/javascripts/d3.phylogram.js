@@ -259,7 +259,7 @@ if (!d3) { throw "d3 wasn't included!"};
         .attr("dy", 3)
         .attr("text-anchor", "start")
         .attr('font-family', 'Helvetica Neue, Helvetica, sans-serif')
-        .attr('font-size', '10px')
+        .attr('font-size', '12px')
         .attr('fill', 'black')
         .text(function(d) { return d.data.name + ' ('+d.data.length+')'; });
     }
@@ -279,7 +279,7 @@ if (!d3) { throw "d3 wasn't included!"};
         .attr("dy", 3)
         .attr("text-anchor", "start")
         .attr('font-family', 'Helvetica Neue, Helvetica, sans-serif')
-        .attr('font-size', '10px')
+        .attr('font-size', '12px')
         .attr('fill', 'black')
         .text(function(d) { return d.data.name; });
     }
@@ -326,7 +326,7 @@ if (!d3) { throw "d3 wasn't included!"};
         .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
         .attr("transform", function(d) { return d.x < 180 ? null : "rotate(180)"; })
         .attr('font-family', 'Helvetica Neue, Helvetica, sans-serif')
-        .attr('font-size', '10px')
+        .attr('font-size', '12px')
         .attr('fill', 'black')
         .text(function(d) { return d.data.name; });
 
