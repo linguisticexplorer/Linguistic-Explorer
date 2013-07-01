@@ -118,7 +118,6 @@ Feature: Compare searches
     And I press "Go"
     Then I should see no search result rows
 
-  @wip
   Scenario: Comparison based on included columns: properties and values
     When I uncheck "Speakers" within "#show_parent"
     And I uncheck "Sentences" within "#show_child"
@@ -132,7 +131,6 @@ Feature: Compare searches
     And I should see "Property 2"
     And I should see "parent val 2"
     And I should see "Property 12"
-    And show me the page
     And I should see "child val 2"
     And I should not see "Lings" within "#search_results"
     And I should not see "Example" within "#search_results"
