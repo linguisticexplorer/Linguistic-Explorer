@@ -22,7 +22,7 @@ Feature: Permissions testing for site admins
     And  I fill in "Password" with "hunter2"
     And  I press "Sign In"
     Then I should be on the home page
-    And  I should see "Signed in as a@min.com"
+    And  I should see "a@min.com"
     And  I should see "Signed in successfully"
     And  I should see "site admin" within "#site_admin_bar"
 

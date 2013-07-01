@@ -3,7 +3,8 @@ Feature: Registration
   Scenario: Vistor Registers
     Given I am a visitor
     When I go to the home page
-    Then I should see "Sign Up"
+    Then show me the page
+    And I should see "Sign Up"
     When I follow "Sign Up"
     And  I should be on the registration page
     When I fill in "Email" with "foo@bar.com"
