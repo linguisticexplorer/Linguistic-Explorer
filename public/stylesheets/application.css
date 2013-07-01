@@ -124,8 +124,6 @@ body.full_width #main h2 {
 #intro p+p {margin-top:20px;}
 
 #messages{ text-align:center; }
-#messages .alert{  border: 1px solid #C30; }
-#messages .notice{ border: 1px solid #DD0; }
 #messages p{
   background-color:#DDD;
   padding-bottom: 5px;

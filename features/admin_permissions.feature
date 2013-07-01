@@ -24,7 +24,7 @@ Feature: Permissions testing for site admins
     Then I should be on the home page
     And  I should see "a@min.com"
     And  I should see "Signed in successfully"
-    And  I should see "site admin" within "#site_admin_bar"
+    And  I should see "Site Admin" within "#userInfo"
 
   Scenario: Admins should see all groups in the drop down
     Then I should see "Syntactic Structures" within "#group_id"
@@ -33,8 +33,7 @@ Feature: Permissions testing for site admins
   Scenario: Admins should be able to view a public group and see its group admin panel
     When I select "Syntactic Structures" from "group_id"
     And  I press "Go"
-    Then I should see "Syntactic Structures" within "#group_nav_bar"
-    Then I should see "group admin" within "#group_admin_bar"
+    Then I should see "Syntactic Structures" within ".nav"
 
   Scenario: Admins view pages for all group data in a public group
     When I select "Syntactic Structures" from "group_id"
@@ -63,7 +62,6 @@ Feature: Permissions testing for site admins
   Scenario: Admins should be able to view a private group and see its group admin bar
     When I select "Secret Club" from "group_id"
     And  I press "Go"
-    Then I should see "group admin" within "#group_admin_bar"
 
   Scenario: Admins view pages for all group data in a private group
     When I select "Secret Club" from "group_id"
@@ -88,7 +86,7 @@ Feature: Permissions testing for site admins
     Then I should be on the memberships page for Secret Club
 
   Scenario: Admins should be able to manage forum groups
-    Then I should see "Forums" within "#group_nav_bar"
+    Then I should see "Forums" within ".navbar-inner"
     Then I follow "Forums"
     And I should see "New Forum Group"
 

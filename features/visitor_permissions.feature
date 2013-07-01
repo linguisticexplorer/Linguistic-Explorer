@@ -11,10 +11,10 @@ Feature: Permissions testing for non-logged-in users
 
   Scenario: Visitors should be able to choose a public group to enter
     Then I should be on the group Syntactic Structures
-    Then I should see "Syntactic Structures" within "#group_nav_bar"
+    Then I should see "Syntactic Structures" within ".nav"
 
   Scenario: The standard user should be able to view pages for all group data in a public group
-    Then I should see "Syntactic Structures" within "#group_nav_bar"
+    Then I should see "Syntactic Structures" within ".nav"
     And  I should not see "Group Admin Panel"
     When I follow "Syntactic Structures"
     Then I should be on the group Syntactic Structures
@@ -65,6 +65,6 @@ Feature: Permissions testing for non-logged-in users
 
   Scenario: Visitors should not able to create a new forum
     When I should see "TerraLing"
-    Then I should see "Forums" within "#group_nav_bar"
+    Then I should see "Forums" within ".nav"
     Then I follow "Forums"
     And I should not see "New Forum Group"

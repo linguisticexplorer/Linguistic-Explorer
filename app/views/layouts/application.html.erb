@@ -17,10 +17,14 @@
     <div id="main" class="container">
       <div id="messages">
         <% unless alert.blank? %>
-          <p class="alert"><%= alert %></p>
+          <div class="alert">
+            <%= alert %>
+          </div>
         <% end %>
         <% unless notice.blank? %>
-          <p class="notice"><%= notice %></p>
+          <div class="alert alert-success">
+            <%= notice %>
+          </div>
       <% end %>
       </div>
       <%= yield %>

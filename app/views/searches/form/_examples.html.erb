@@ -3,7 +3,7 @@
   <%- keyword_label = "#{example_label} Keywords" -%>
   <%= content_tag :fieldset, :id => example_label.underscorize, :class => "table" do %>
     <div class="control-group">
-      <%= f.label :example_fields, example_label + " Attribute", :class => "control-label, hidden_label example_fields_label" %>
+      <%= f.label :example_fields, example_label + " Attribute", :class => "control-label hidden_label example_fields_label" %>
       <div class="controls">
         <%= f.select :example_fields, @search.example_field_options, {},
           :name => search_text_field_name(:example_fields, depth),
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="control-group">
-      <%= f.label :example_keywords, keyword_label, :class => "control-label" %>
+      <%= label_tag search_text_id(keyword_label), keyword_label, :class => "control-label" %>
       <div class="controls">
         <%= f.text_field :example_keywords,
           :id => search_text_id(keyword_label),

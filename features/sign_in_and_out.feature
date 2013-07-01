@@ -19,7 +19,7 @@ Feature: Signing in and out
     And  I fill in "Password" with "hunter2"
     And  I press "Sign In"
     Then I should be on the home page
-    And  I should see "Signed in as bob@dole.com"
+    And  I should see "bob@dole.com"
     And  I should see "Signed in successfully"
 
   Scenario: The standard user is signed in and then signs out
@@ -36,7 +36,7 @@ Feature: Signing in and out
     And  I fill in "Password" with "idontknow!"
     And  I press "Sign In"
     Then I should be on the login page
-    And  I should not see "Signed in as bob@dole.com"
+    And  I should not see "bob@dole.com"
     And  I should see "Invalid email or password"
 
   Scenario: The administrator is signed in and then signs out
