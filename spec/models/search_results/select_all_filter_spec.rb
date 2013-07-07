@@ -11,7 +11,7 @@ module SearchResults
           val_3 = mock_model(LingsProperty, :ling_id => 2, :property_id => 2)
         ]
 
-        strategy = SelectAllPropertyStrategy.new(mock(SelectAllFilter))
+        strategy = SelectAllPropertyStrategy.new(double(SelectAllFilter))
         strategy.collect_all_from_vals(vals, [1,2,3]).should be_empty
         strategy.collect_all_from_vals(vals, [1,2]).should == [val_1, val_2]
         strategy.collect_all_from_vals(vals, [2]).should == [val_1, val_2, val_3]

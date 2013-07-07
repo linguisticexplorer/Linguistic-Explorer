@@ -104,7 +104,7 @@ describe Ling do
 
     it "should create a new lings property if it does not exist" do
       lings_property = mock_model(LingsProperty)
-      @ling.lings_properties.stub!(:exists?).and_return(false)
+      @ling.lings_properties.stub(:exists?).and_return(false)
       @ling.lings_properties.should_receive(:create).with({
         :property_id => @property.id,
         :value => "new_value"

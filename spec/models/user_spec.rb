@@ -45,13 +45,13 @@ describe User do
 
   describe "reached_max_search_limit?" do
     it "should return reached max limit for search by group" do
-      group = mock(Group)
+      group = double(Group)
       Search.should_receive(:reached_max_limit?).with(@user, group).and_return(true)
       @user.reached_max_search_limit?(group).should be_true
     end
     it "should return reached max limit for search by group" do
-      Search.stub!(:reached_max_limit?).and_return(false)
-      @user.reached_max_search_limit?(mock(Group)).should be_false
+      Search.stub(:reached_max_limit?).and_return(false)
+      @user.reached_max_search_limit?(double(Group)).should be_false
     end
   end
 
@@ -69,7 +69,7 @@ describe User do
       @user.member_of?(@group_1).should be_true
     end
     it "should return false if not a group" do
-      @user.member_of?(mock(Object, :id => @group_1.id)).should be_false
+      @user.member_of?(double(Object, :id => @group_1.id)).should be_false
     end
   end
 end
