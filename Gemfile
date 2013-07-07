@@ -29,7 +29,7 @@ gem 'rvm-capistrano'
 # # gem 'aws-s3', :require => 'aws/s3'
 # gem "meta_where", '1.0.1'
 # Squeel will work with Rails >= 3.1.3 due to a Rails issue
-gem "squeel"
+gem "squeel", "~> 0.9.3"
 
 # # for Users and authentication
 gem 'devise'
@@ -41,7 +41,7 @@ gem 'validation_reflection', "~> 1.0.0", :git => 'git://github.com/electronicbit
 # gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
 gem "validates_existence", "~> 0.8.0"
 
-gem 'cancan'
+gem 'cancan', '~> 1.6.10'
 
 # gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
 gem "nokogiri", "~> 1.5.6"
@@ -108,12 +108,12 @@ group :test, :development do
   gem 'cover_me', '>= 1.2.0'
 
   gem 'factory_girl_rails', "~> 1.1"
-  gem "cucumber", "~> 1.0.0"
+  gem "cucumber", "~> 1.1.0"
   gem "database_cleaner", "~> 0.7.0"
   
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
-  gem 'cucumber-rails', :require => false
+  gem 'cucumber-rails', "~> 1.1.1", :require => false
   gem 'capybara', '~> 1.1.4'
   gem 'launchy'
   gem 'brakeman'
