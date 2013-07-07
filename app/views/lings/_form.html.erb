@@ -1,4 +1,4 @@
-<%= form_for([current_group, @ling]) do |f| %>
+<%= form_for([current_group, @ling], :html => {:class => "form-horizontal"}) do |f| %>
   <%= hidden_field_tag :group_id, current_group.id %>
   <% if @ling.errors.any? %>
     <div id="error_explanation">
@@ -14,26 +14,34 @@
 
   <%= f.hidden_field :depth %>
 
-  <div class="field">
-    <%= f.label :name %><br />
-    <%= f.text_field :name %>
+  <div class="control-group">
+    <%= label_tag :name, "Name", :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :name %>
+    </div>
   </div>
 
   <% if @parents && !@parents.empty? %>
-    <div class="field">
-      <%= f.label current_group.ling_name_for_depth(@depth) %><br />
-      <%= f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"' %>
+    <div class="control-group">
+      <%= label_tag current_group.ling_name_for_depth(@depth), current_group.ling_name_for_depth(@depth), :class => "control-label" %>
+      <div class="controls">
+        <%= f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"' %>
+      </div>
     </div>
   <% end %>
 
   <% @ling.storable_keys.each do |key| %>
-    <div class="field">
-      <%= label :stored_values, key %><br />
-      <%= text_field :stored_values, key, :value => @ling.stored_value(key) %>
+    <div class="control-group">
+      <%= label_tag :stored_values, key.capitalize(), :class => "control-label" %>
+      <div class="controls">
+        <%= text_field :stored_values, key.capitalize(), :value => @ling.stored_value(key) %>
+      </div>
     </div>
   <% end %>
 
-  <div class="actions">
-    <%= f.submit("Create " + current_group.ling_name_for_depth(@depth)) %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit("Create" + current_group.ling_name_for_depth(@depth), :class => "btn") %>
+    </div>
   </div>
 <% end %>

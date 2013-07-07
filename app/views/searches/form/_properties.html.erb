@@ -2,32 +2,44 @@
   <%- prop_label = search_prop_label(category) -%>
   <%- keyword_label = "#{category.name} Keywords" -%>
   <%= content_tag :fieldset, :id => prop_label.underscorize, :class => "table" do %>
-    <%= f.select :properties, @search.property_options(category), {},
-      :name => search_field_name(:properties, category.id),
-      :multiple => true,
-      :label => prop_label,
-      :id => search_options_id(prop_label)
-    %>
-    <%= f.text_field :property_keywords,
-      :id => search_text_id(keyword_label),
-      :label => keyword_label,
-      :name => search_text_field_name(:property_keywords, category.id) %>
+    <div class="control-group">
+      <%= label_tag search_options_id(prop_label), prop_label, :class => "control-label" %>
+      <div class="controls">
+        <%= f.select :properties, @search.property_options(category), {},
+          :name => search_field_name(:properties, category.id),
+          :multiple => true,
+          :id => search_options_id(prop_label)
+        %>
+      </div>
+    </div>
+    <div class="control-group">
+      <%= label_tag search_text_id(keyword_label), keyword_label, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :property_keywords,
+          :id => search_text_id(keyword_label),
+          :label => keyword_label,
+          :name => search_text_field_name(:property_keywords, category.id) %>
+      </div>
+    </div>
 
-    <div class="selection_row row">
-      <div class="cell label">Selection</div>
-      <div class="cell field">
-        <%= f.label "group", "Any", :for => categorized_set_id(category.name, "any") %>
-        <%= f.radio_button "property_set", "any", :checked => true,
-          :id => categorized_set_id(category.name, "any"),
-          :name => categorized_field_name(:property, category.id) %>
-        <%= f.label "property_set", "All", :for => categorized_set_id(category.name, "all") %>
-        <%= f.radio_button "property_set", "all",
-          :id => categorized_set_id(category.name, "all"),
-          :name => categorized_field_name(:property, category.id) %>
-        <%= f.label "property_set", "Cross", :for => categorized_set_id(category.name, "cross") %>
-        <%= f.radio_button "property_set", "cross",
-          :id => categorized_set_id(category.name, "cross"),
-          :name => categorized_field_name(:property, category.id) %>
+    <div class="control-group">
+      <%= label_tag "props-select", "Selection", :class => "control-label" %>
+      <div class="controls field" name="props-select">
+        <%= label_tag categorized_set_id(category.name, "any"), :class => "radio inline" do %>
+          <%= f.radio_button "property_set", "any", :checked => true,
+            :id => categorized_set_id(category.name, "any"),
+            :name => categorized_field_name(:property, category.id) %> Any
+        <% end %>
+        <%= label_tag categorized_set_id(category.name, "all"), :class => "radio inline" do %>
+          <%= f.radio_button "property_set", "all",
+            :id => categorized_set_id(category.name, "all"),
+            :name => categorized_field_name(:property, category.id) %> All
+        <% end %>
+        <%= label_tag categorized_set_id(category.name, "cross"), :class => "radio inline" do %>
+          <%= f.radio_button "property_set", "cross",
+            :id => categorized_set_id(category.name, "cross"),
+            :name => categorized_field_name(:property, category.id) %> Cross
+        <% end %>
       </div>
     </div>
   <% end %>

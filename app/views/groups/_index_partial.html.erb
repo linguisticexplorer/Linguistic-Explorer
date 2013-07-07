@@ -1,0 +1,53 @@
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @groups %>
+</div>
+<table class="show-table table table-bordered table-striped table-hover">
+  <tr>
+    <th></th>
+    <th>Search</th>
+    <th>Ling0</th>
+    <th>Ling1</th>
+    <th>Properties</th>
+    <th>Categories</th>
+    <th>Values</th>
+    <th>Example Values</th>
+    <th>Examples</th>
+    <th>MaxDepth</th>
+    <th>Privacy</th>
+    <% if can? :update, @groups %>
+      <th></th>
+    <% end %>
+    <% if can? :destroy, @groups %>
+      <th></th>
+    <% end %>
+  </tr>
+
+<% @groups.each do |group| %>
+  <tr>
+    <td><%= link_to group.name, group %></td>
+    <td><%= link_to 'Search', new_group_search_path(group) %></td>
+    <td><%= link_to group.ling0_name, group_lings_path(group) %></td>
+    <td><%= link_to group.ling1_name, group_lings_path(group) %></td>
+    <td><%= link_to group.property_name, group_properties_path(group) %></td>
+    <td><%= link_to group.category_name, group_categories_path(group) %></td>
+    <td><%= link_to group.lings_property_name, group_lings_properties_path(group) %></td>
+    <td><%= link_to group.examples_lings_property_name, group_examples_lings_properties_path(group) %></td>
+    <td><%= link_to group.example_name, group_examples_path(group) %></td>
+    <td><%= group.depth_maximum %></td>
+    <td><%= group.privacy %></td>
+    <% if can? :update, @group %>
+     <td> <%= link_to 'Edit', edit_group_path(group) %></td >
+    <% end %>
+    <% if can? :destroy, @group %>
+     <td> <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td >
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @groups %>
+</div>

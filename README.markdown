@@ -1,25 +1,29 @@
 Linguistic Explorer: Terraling
 ====
 
-http://linguisticexplorer.org
+![http://linguisticexplorer.org](http://linguisticexplorer.org/images/lexplorer_logo4.png)
 
 http://www.terraling.com
 
 Terraling is a Ruby on Rails web application to let you store and browse your linguistic data and now it has new features like the following:
 
-* Cross Search;
+* [Regular Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Regular-search);
 
-* Compare Search;
+* [Cross Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Cross-search);
 
-* Universal Implication Both Search;
+* [Compare Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Compare-search);
 
-* Universal Implication Antecedent Search;
+* [Universal Implication Both Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Both-Implication);
 
-* Universal Implication Consequent Search;
+* [Universal Implication Antecedent Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Antecedent-Implication);
 
-* Universal Implication Double Both Search;
+* [Universal Implication Consequent Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Consequent-Implication);
 
-* Similarity Tree Search;
+* [Universal Implication Double Both Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Double-Both-Implication);
+
+* [Geomapping] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Geomapping-feature) of all the searches above and filter results by category/row;
+
+* [Similarity Tree Search] (https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/Similarity-tree);
 
 ## Install
 
@@ -66,11 +70,31 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
+## Branches Status
+
+### Master
+
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=master)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+[![Dependency Status](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer.png)](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer)
+[![Code Climate](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer.png)](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer)
+
+### Development
+
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=devel)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+
+## Test it
+
+To test yourself the app write in the console
+
+  `$rake`
+  
+It should run both rspec and cucumber tests.
+  
 ## Contribute
 
 We are looking for some help in this project. Want to help us?
 
-Fork this repo, pick one issue from the list and pull the fix back!
+[How To Contribute](https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/How-To-Contribute)
   
 ## License
 This project is under the MIT License.

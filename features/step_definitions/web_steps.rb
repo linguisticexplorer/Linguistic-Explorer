@@ -6,23 +6,23 @@
 
 
 require 'uri'
-require 'cgi'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+  require 'cgi'
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-module WithinHelpers
+  module WithinHelpers
   def with_scope(locator)
     locator ? within(locator) { yield } : yield
   end
-end
-World(WithinHelpers)
+  end
+  World(WithinHelpers)
 
-Given /^(?:|I )am on (.+)$/ do |page_name|
+  Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
-end
+  end
 
-When /^(?:|I )go to (.+)$/ do |page_name|
+  When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
-end
+  end
 
 When /^(?:|I )press "([^"]*)"(?: within "([^"]*)")?$/ do |button, selector|
   with_scope(selector) do
@@ -31,25 +31,25 @@ When /^(?:|I )press "([^"]*)"(?: within "([^"]*)")?$/ do |button, selector|
 end
 
 When /^(?:|I )return to "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector| # Simple replacement of "return to" for "follow", seen below
-  with_scope(selector) do
-    click_link(link)
-  end
+with_scope(selector) do
+  click_link(link)
+end
 end
 
 When /^(?:|I )follow "([^"]*)"(?: within "([^"]*)")?$/ do |link, selector|
-  with_scope(selector) do
-    click_link(link)
-  end
+with_scope(selector) do
+  click_link(link)
+end
 end
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
-  with_scope(selector) do
-    fill_in(field, :with => value)
-  end
+with_scope(selector) do
+  fill_in(field, :with => value)
+end
 end
 
 When /^(?:|I )fill in "([^"]*)" for "([^"]*)"(?: within "([^"]*)")?$/ do |value, field, selector|
-  with_scope(selector) do
+with_scope(selector) do
     fill_in(field, :with => value)
   end
 end
@@ -243,6 +243,10 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   else
     assert_equal expected_params, actual_params
   end
+end
+
+Then /^I should see "([^"]*)" button/ do |name|
+  find_button(name).should_not be_nil
 end
 
 Then /^show me the page$/ do

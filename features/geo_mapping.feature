@@ -106,7 +106,8 @@ Feature: Geo Mapping
     Then I should see "Map it!"
     Then I follow "Map it!"
     Then I should see a map
-
+  
+  @devOnly
   Scenario: Visitor search for similarity tree and not see the Map it! link
     When I go to the Syntactic Structures search page
     And I choose "Tree" within "#advanced_set"

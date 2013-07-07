@@ -18,12 +18,17 @@
       <%= link_to 'Search this group', [:new, current_group, :search] %>
     </p>
 
-    <p>
-      <%- @group.info_attribute_names.each do |attr_name| -%>
+    <div class="whitebox">
+      <table class="show-table description-table table table-bordered table-hover table-striped full-width">
+        <%- @group.info_attribute_names.each do |attr_name| -%>
+          <tr>
 
-          <span class="strong"><%= attr_name.titleize %>:   </span> <%= @group.send(attr_name) %> <br />
-      <%- end -%>
-    </p>
+            <td><b><%= attr_name.titleize %></b></td>
+            <td><%= @group.send(attr_name) %></td>
+          </tr>
+        <%- end -%>
+      </table>
+    </div>
 
     <p>
       <% if can? :update, @group %>

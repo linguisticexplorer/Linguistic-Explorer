@@ -2,7 +2,7 @@ class Search < ActiveRecord::Base
   MAX_SEARCH_LIMIT = 25
 
   # Thresholds
-  RESULTS_CROSS_THRESHOLD = 4
+  RESULTS_CROSS_THRESHOLD = 6
   RESULTS_FLATTEN_THRESHOLD = 100000
 
   include Groupable

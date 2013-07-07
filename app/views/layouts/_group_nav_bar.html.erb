@@ -1,28 +1,25 @@
-<div id="group_nav_bar">
-  <% if @group && !@group.new_record? %>
-    <%= link_to current_group.name, current_group, :class => "group" %>
-    <%= link_to 'Search', [:new, current_group, :search] %>
-    <%= link_to 'History', [current_group, :searches] if user_signed_in? %>
-    <%= link_to current_group.ling0_name, group_lings_depth_path(current_group, Depth::PARENT) %>
-    <% if @group.has_depth? %>
-      <%= link_to current_group.ling1_name, group_lings_depth_path(current_group, Depth::CHILD) %>
-    <% end %>
-    <%= link_to current_group.property_name, [current_group, :properties] %>
-    <%= link_to current_group.category_name, [current_group, :categories] %>
-    <%= link_to current_group.lings_property_name, [current_group, :lings_properties] %>
-    <%= link_to current_group.example_name, [current_group, :examples] %>
-    <%= link_to current_group.examples_lings_property_name, [current_group, :examples_lings_properties] %>
-    <%= link_to "Members", [current_group, :memberships] %>
-    <%= link_to "Forums", forums_path %>
-  <% elsif @groups %>
-    <%= form_tag({:controller => "groups", :action => "index"}, :method => "get") do %>
-      <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id" } ) %>
-      <%= submit_tag("Go") %>
-      <%= link_to "Forums", forums_path %>
-    <% end %>
-  <% else %>
-    <%= link_to "Select a group", groups_path %>
-    <%= link_to "Forums", forums_path %>
+<% if @group && !@group.new_record? %>
+  <li><%= link_to current_group.name, current_group, :class => "group" %></li>
+  <li><%= link_to 'Search', [:new, current_group, :search] %></li>
+  <li><%= link_to 'History', [current_group, :searches] if user_signed_in? %></li>
+  <li><%= link_to current_group.ling0_name, group_lings_depth_path(current_group, Depth::PARENT) %></li>
+  <% if @group.has_depth? %>
+    <li><%= link_to current_group.ling1_name, group_lings_depth_path(current_group, Depth::CHILD) %></li>
   <% end %>
-
-</div>
+  <li><%= link_to current_group.property_name, [current_group, :properties] %></li>
+  <li><%= link_to current_group.category_name, [current_group, :categories] %></li>
+  <li><%= link_to current_group.lings_property_name, [current_group, :lings_properties] %></li>
+  <li><%= link_to current_group.example_name, [current_group, :examples] %></li>
+  <li><%= link_to current_group.examples_lings_property_name, [current_group, :examples_lings_properties] %></li>
+  <li><%= link_to "Members", [current_group, :memberships] %></li>
+  <li><%= link_to "Forums", forums_path %></li>
+<% elsif @groups %>
+  <%= form_tag({:controller => "groups", :action => "index"}, :method => "get", :class => "navbar-search") do %>
+    <%= collection_select("", :id, @groups, :id, :name, {:prompt => "Select a Group"}, { :name => :group_id, :id => "group_id"  }) %>
+    <%= submit_tag("Go", :class => "btn") %>
+  <% end %>
+  <li><%= link_to "Forums", forums_path %></li>
+<% else %>
+  <li><%= link_to "Select a group", groups_path %></li>
+  <li><%= link_to "Forums", forums_path %></li>
+<% end %>

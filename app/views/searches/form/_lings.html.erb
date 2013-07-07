@@ -1,26 +1,35 @@
 <%- current_group.depths.each do |depth| -%>
   <%- ling_label  = search_ling_label(@search, depth) -%>
   <%- keyword_label = "#{ling_label.singularize} Keywords" -%>
-  <%= content_tag :fieldset, :id => ling_label.underscorize, :class => "table" do %>
-    <%= f.select :lings, @search.ling_options(depth), {},
-      :name => search_field_name(:lings, depth),
-      :multiple => true,
-      :label => ling_label,
-      :id => search_options_id(ling_label)
-    %>
-    <%= f.text_field :ling_keywords,
-      :label => keyword_label,
-      :id => search_text_id(keyword_label),
-      :name => search_text_field_name(:ling_keywords, depth) %>
-
-    <div class="selection_row row">
-      <div class="cell label">Selection</div>
-      <div class="cell field">
-        <%= f.label "group", "Compare", :for => "search_group_depth_#{depth}_compare" %>
-        <%= f.radio_button "ling_set", "compare",
-          :id => search_compare_id(depth),
-          :name => search_compare_field_name(:ling_set ,depth) %>
-        </div>
+  <%= content_tag :fieldset, :id => ling_label.underscorize do %>
+    <div class="control-group">
+      <%= label_tag search_options_id(ling_label), ling_label, :class => "control-label" %>
+      <div class="controls">
+        <%= f.select :lings, @search.ling_options(depth), {},
+          :name => search_field_name(:lings, depth),
+          :multiple => true,
+          :id => search_options_id(ling_label)
+        %>
+      </div>
     </div>
-    <% end %>
+    <div class="control-group">
+      <%= label_tag search_text_id(keyword_label), keyword_label, :class => "control-label" %>
+      <div class="controls">
+        <%= f.text_field :ling_keywords,
+          :id => search_text_id(keyword_label),
+          :name => search_text_field_name(:ling_keywords, depth) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= label_tag "lings-select", "Selection", :class => "control-label" %>
+      <div name="lings-select" class="controls field">
+        <%= label_tag search_compare_id(depth), :class => "radio inline" do %>
+          <%= f.radio_button "ling_set", "compare",
+            :id => search_compare_id(depth),
+            :name => search_compare_field_name(:ling_set ,depth) %>Compare
+        <% end %>
+      </div>
+    </div>
+  <% end %>
 <%- end -%>

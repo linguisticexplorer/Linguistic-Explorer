@@ -1,22 +1,33 @@
 <% page_heading current_group.example_name %>
+<h1><%= current_group.example_name %></h1>
 
-<p>
-  <b>Name:</b> <br />
-  <%= @example.name %> <br />
+<table class="show-table description-table table table-bordered table-striped table-hover">
+  <p>
+    <tr>
+      <td>Name:</td>
+      <td><%= @example.name %> </td>
+    </tr>
 
-  <% if @example.ling %>
-    <b><%= @example.ling.grouped_name %>:</b> <br />
-    <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
-  <% end %>
+    <% if @example.ling %>
+      <tr>
+        <td><%= @example.ling.grouped_name %>:</td>
+        <td><%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> </td>
+      </tr>
+    <% end %>
 
-  <% @example.storable_keys.each do |key| %>
-    <b><%= key.humanize %></b>: <br />
-    <%= @example.stored_value(key) %> <br />
-  <% end %>
+    <% @example.storable_keys.each do |key| %>
+      <tr>
+        <td><%= key.humanize %>:</td>
+        <td><%= @example.stored_value(key) %> </td>
+      </tr>
+    <% end %>
 
-  <b>Created by:</b> <br />
-  <%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
-</p>
+    <tr>
+      <td>Created by:</td>
+      <td><%= @example.creator ? @example.creator.name : "Unknown user" %> </td>
+    </tr>
+  </p>
+</table>
 
 <% if can? :edit, @example%>
   <%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |

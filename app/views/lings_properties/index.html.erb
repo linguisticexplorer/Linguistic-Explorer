@@ -1,32 +1,7 @@
 <% page_heading current_group.lings_property_name.pluralize %>
 
 <h1>Listing <%= current_group.lings_property_name.pluralize %></h1>
-
-<div class="apple_pagination">
-<!-- render page links in the view: -->
-<%= will_paginate @lings_properties %>
+<div id="pagination_table">
+<%= render :partial => 'lings_properties/index_partial' %>
 </div>
-<table>
-  <tr>
-    <th>Ling</th>
-    <th><%= current_group.property_name %></th>
-    <th><%= current_group.lings_property_name %></th>
-    <th></th>
-  </tr>
 
-<% @lings_properties.each do |lings_property| %>
-  <tr>
-    <td><%= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling) %></td>
-    <td><%= link_to lings_property.property.name, group_property_path(current_group, lings_property.property) %><td>
-    <td><%= link_to lings_property.value, [current_group, lings_property] %></td>
-    <td><% if can? :destroy, lings_property %>
-      <%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete %>
-    <% end %></td>
-  </tr>
-<% end %>
-</table>
-
-<div class="apple_pagination">
-<!-- render page links in the view: -->
-<%= will_paginate @lings_properties %>
-</div>

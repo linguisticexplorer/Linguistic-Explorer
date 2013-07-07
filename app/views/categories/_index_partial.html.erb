@@ -1,0 +1,39 @@
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @categories %>
+</div>
+<table class="show-table table table-bordered table-striped table-hover">
+  <tr>
+    <th>Name</th>
+    <th>Depth</th>
+    <% if can? :edit, @categories %>
+    <th></th>
+    <% end %>
+    <% if can? :destroy, @categories %>
+    <th></th>
+    <% end %>
+  </tr>
+
+<% @categories.each do |category| %>
+  <tr>
+    <td><%= link_to category.name, [current_group, category] %></td>
+    <td><%= category.depth %></td>
+    <% if can? :edit, category%>
+    <td>
+      <%= link_to 'Edit', edit_group_category_path(current_group, category) %>
+    </td>
+    <% end %>
+    <% if can? :destroy, category%>
+    <td>
+      <%= link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete %>
+    </td>
+    <% end %>
+  </tr>
+<% end %>
+</table>
+
+<br />
+<div class="apple_pagination">
+<!-- render page links in the view: -->
+<%= will_paginate @categories %>
+</div>

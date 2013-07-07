@@ -1,0 +1,4 @@
+$(function(){
+  var newPage = "<%= escape_javascript(render("properties/index_partial")) -%>"
+  $("#pagination_table").html(newPage);
+});
