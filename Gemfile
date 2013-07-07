@@ -1,11 +1,11 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '~> 3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'https://github.com/rails/rails.git'
 
-gem 'mysql2', '0.3.11'
+gem 'mysql2', '~> 0.3.11'
 
 # # Use unicorn as the web server
 # # gem 'unicorn'
@@ -35,21 +35,21 @@ gem "squeel"
 gem 'devise'
 
 
-gem 'json', '1.7.7'
+gem 'json', '~> 1.7.7'
 
-gem 'validation_reflection', "1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
+gem 'validation_reflection', "~> 1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
 # gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'
-gem "validates_existence", ">= 0.4"
+gem "validates_existence", "~> 0.8.0"
 
 gem 'cancan'
 
 # gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
-gem "nokogiri", "1.5.6"
+gem "nokogiri", "~> 1.5.6"
 
 gem "newrelic_rpm"
 
 # # for easy pagination
-gem 'will_paginate', '3.0.0'
+gem 'will_paginate', '~> 3.0.3'
 
 
 # # Having problem with new migrations?
@@ -69,7 +69,7 @@ gem "jquery-rails"
 
 # # It forces to use a specific version of Rake
 # gem 'rake', '0.9.2.2'
-gem "rake", "10.0.3"
+gem "rake", "~> 10.0.3"
 
 # Geomapping gem
 gem 'gmaps4rails'
@@ -100,20 +100,21 @@ group :test, :development do
   # Use Thin as web server
   gem "thin"
 
-  gem 'rspec', "2.5.0"
-  gem 'rspec-rails', "2.5.0"
+  # gem 'rspec', "2.5.0"
+  gem 'rspec-rails', "~> 2.0"
+  gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'cover_me', '>= 1.2.0'
 
-  gem 'factory_girl_rails', "1.1"
-  gem "cucumber", "1.0.0"
-  gem "database_cleaner", "0.6.7"
+  gem 'factory_girl_rails', "~> 1.1"
+  gem "cucumber", "~> 1.0.0"
+  gem "database_cleaner", "~> 0.7.0"
   
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
   gem 'cucumber-rails', :require => false
-  gem 'capybara', '1.1.4'
+  gem 'capybara', '~> 1.1.4'
   gem 'launchy'
   gem 'brakeman'
 end
