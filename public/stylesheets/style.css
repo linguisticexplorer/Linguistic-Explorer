@@ -8,6 +8,12 @@
   color: #0088cc; }
   .show-table td:first-child a {
     color: #005580; }
+.show-table td.small-comment {
+  width: 30%; }
+.show-table td.medium-comment {
+  width: 40%; }
+.show-table td.align-left {
+  text-align: left; }
 
 #header {
   background: black; }

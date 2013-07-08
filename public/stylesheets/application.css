@@ -140,7 +140,7 @@ body.full_width #main h2 {
 
 #title h2 {
   font-size: 2.2em;
-  font-family: Garamond,"Times New Roman",serif;
+  font-family: Helvetica,Verdana,Arial,sans-serif;
   color: #BAB86C;
   margin: 15px 0 0 0;
   padding: 0 0 15px 0;
@@ -150,7 +150,7 @@ body.full_width #main h2 {
 
 #numbers h2 {
     font-size: 2.2em;
-    font-family: Garamond,"Times New Roman",serif;
+    font-family: Helvetica,Verdana,Arial,sans-serif;
     color: #C30;
     border-bottom: 1px solid #C30;
     line-height:1.25em;

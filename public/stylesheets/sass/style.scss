@@ -19,7 +19,17 @@ $link-color: #005580;
       color: $link-color;
     }
   }
+  td.small-comment {
+    width:30%;
+  }
+  td.medium-comment {
+    width:40%;
+  }
+  td.align-left {
+    text-align:left;
+  }
 }
+
 
 #header {
   background: $navbar-color;

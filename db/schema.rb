@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130405191647) do
+ActiveRecord::Schema.define(:version => 20130708100847) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20130405191647) do
     t.string   "privacy",                      :default => "public"
     t.text     "example_fields"
     t.text     "ling_fields"
+    t.string   "display_style"
   end
 
   create_table "lings", :force => true do |t|

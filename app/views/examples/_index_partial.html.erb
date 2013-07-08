@@ -8,8 +8,19 @@
     <th>Name</th>
     <th><%= current_group.ling0_name %></th>
     <th><%= current_group.ling1_name %></th>
-    <% current_group.example_storable_keys.each do |key| %>
-        <th><%= key.humanize %></th>
+    <% if @group.display_style == "linguistic" %>
+      <% current_group.example_storable_keys.each do |key| %>
+          <% if key == "comment" %>
+            <th>Values</th>
+            <th><%= key.humanize %></th>
+          <% elsif key == "description" %>
+            <th><%= key.humanize %></th>
+          <% end %>
+      <% end %>
+    <% else %>
+      <% current_group.example_storable_keys.each do |key| %>
+          <th><%= key.humanize %></th>
+      <% end %>
     <% end %>
     <% if can? :edit, @examples %>
     <th></th>
@@ -24,8 +35,25 @@
         <td><%= link_to example.name, [current_group, example] %></td>
         <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
         <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
-        <% current_group.example_storable_keys.each do |key| %>
-            <td><%= example.stored_value(key) %></td>
+        <% if @group.display_style == "linguistic" %>
+          <% current_group.example_storable_keys.each do |key| %>
+              <% if key == "description" %>
+                <td><%= example.stored_value(key) %></td>
+                <td class='align-left'>
+              <% elsif key == "comment" %>
+                </td><td class='small-comment'><%= example.stored_value(key) %></td>
+              <% else %>
+                <%= example.stored_value(key) %><br />
+              <% end %>
+          <% end %>
+        <% else %>
+          <% current_group.example_storable_keys.each do |key| %>
+              <% if key == "comment" %>
+                <td class='small-comment'><%= example.stored_value(key) %></td>
+              <% else %>
+                <td><%= example.stored_value(key) %></td>
+              <% end %>
+          <% end %>
         <% end %>
         <% if can? :edit, example %>
         <td>
