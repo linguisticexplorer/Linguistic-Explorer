@@ -22,9 +22,6 @@
           <th><%= key.humanize %></th>
       <% end %>
     <% end %>
-    <% if can? :edit, @examples %>
-    <th></th>
-    <% end %>
     <% if can? :destroy, @examples %>
     <th></th>
     <% end %>
@@ -55,14 +52,11 @@
               <% end %>
           <% end %>
         <% end %>
-        <% if can? :edit, example %>
-        <td>
-              <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
-        </td>  <% end %>
         <% if can? :destroy, example %>
-        <td>
-              <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
-          </td><% end %>
+          <td>
+          <%= link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete %>
+          </td>
+        <% end %>
       </tr>
   <% end %>
 </table>

@@ -4,5 +4,7 @@
 
 <%= render 'form' %>
 
-<%= link_to 'Show', [current_group, @property] %> |
-<%= link_to 'Back', group_properties_path(current_group) %>
+<br />
+<%= link_to group_properties_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>

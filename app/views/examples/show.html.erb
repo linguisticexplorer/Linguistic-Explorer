@@ -29,7 +29,10 @@
   </p>
 </table>
 
+<br />
+<%= link_to group_examples_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :edit, @example%>
-  <%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |
+  <%= link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn" %>
 <% end %>
-<%= link_to 'Back', group_examples_path(current_group) %>
