@@ -24,14 +24,18 @@
           <tr>
 
             <td><b><%= attr_name.titleize %></b></td>
-            <td><%= @group.send(attr_name) %></td>
+            <% if @group.send(attr_name).is_a? String %>
+              <td><%= @group.send(attr_name).capitalize %></td>
+            <% else %>
+              <td><%= @group.send(attr_name) %></td>
+            <% end %>
           </tr>
         <%- end -%>
       </table>
     </div>
 
     <p>
-      <% if can? :update, @group %>
+      <% if can? :edit, @group %>
           <%= link_to 'Edit', edit_group_path(@group) %> |
       <% end %>
       <%= link_to 'Back', current_group %> |

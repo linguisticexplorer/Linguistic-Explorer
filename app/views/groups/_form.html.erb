@@ -95,8 +95,26 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :display_style, "Display Style", :class => "control-label" %>
+      <div class="controls">
+        <%= label_tag :style0, :class => "radio" do %>
+          <%= f.radio_button :display_style, "table",
+            :id => :style0,
+            :checked => true %>Table style, eg:
+            <%= display_style_example(0) %> 
+        <% end %>
+        <%= label_tag :style1, :class => "radio" do %>
+          <%= f.radio_button :display_style, "linguistic",
+            :id => :style1 %>Linguistic style, eg:
+             <%= display_style_example(1) %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <div class="controls">
         <%= f.submit :class => "btn" %>
       </div>
     </div>
+
 <% end %>

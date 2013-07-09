@@ -1,14 +1,16 @@
 <% page_heading @ling.grouped_name %>
-<h1><%= @ling.grouped_name %></h1>
+<h1><%= @ling.grouped_name %> <%= @ling.name %></h1>
 
+<%= link_to group_lings_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
-    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
 <% end %>
 <% if can? :edit, @ling %>
-    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
-<%= link_to 'Back', group_lings_path(current_group) %>
 <br /><br />
 <table class="show-table description-table table table-bordered table-hover table-striped">
 <p>
@@ -85,13 +87,13 @@
 
 <br />
 
+<%= link_to group_lings_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-  <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
 <% end %>
 <% if can? :edit, @ling %>
-    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
-<% if can? :edit, @ling %>
-  <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
-<% end %>
-<%= link_to 'Back', group_lings_path(current_group) %>

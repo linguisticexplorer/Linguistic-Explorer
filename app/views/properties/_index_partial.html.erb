@@ -6,29 +6,16 @@
   <tr>
     <th>Name</th>
     <th><%= current_group.category_name %></th>
-    <% if can? :edit, @properties %>
-    <th></th>
-    <% end %>
-    <% if can? :destroy, @properties %>
-    <th></th>
-    <% end %>
     <th>Completeness</th>
+    <% if can? :destroy, @properties %>
+      <th></th>
+    <% end %>
   </tr>
 
 <% @properties.each do |property| %>
   <tr>
     <td><%= link_to property.name, [current_group, property] %></td>
     <td><%= link_to property.category.name, group_category_path(current_group, property.category) %></td>
-    <% if can? :edit, property %>
-    <td>
-      <%= link_to 'Edit', edit_group_property_path(current_group, property) %>
-    </td>
-    <% end %>
-    <% if can? :destroy, property %>
-    <td>
-      <%= link_to 'Destroy', [current_group, property], :confirm => 'Are you sure?', :method => :delete %>
-    </td>
-    <% end %>
     <td>
         <% percentage = "#{property.info}%" %>
       <center> 
@@ -37,6 +24,11 @@
         </div>
       </center>
     </td>
+    <% if can? :destroy, property %>
+    <td>
+      <%= link_to 'Destroy', [current_group, property], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete %>
+    </td>
+    <% end %>
   </tr>
 <% end %>
 </table>

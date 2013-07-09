@@ -78,6 +78,9 @@ end
 #sass support
 gem 'sass'
 
+#iconv for utf-8 to latin1 conversion
+gem 'iconv'
+
 # Pure Ruby library to use R language from Ruby code
 # it needs that R interpreter is installed and R_HOME is configured
 # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for

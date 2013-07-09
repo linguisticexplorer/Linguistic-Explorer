@@ -13,6 +13,7 @@
     <th>Values</th>
     <th>Example Values</th>
     <th>Examples</th>
+    <th>Display style</th>
     <th>MaxDepth</th>
     <th>Privacy</th>
     <% if can? :update, @groups %>
@@ -34,8 +35,9 @@
     <td><%= link_to group.lings_property_name, group_lings_properties_path(group) %></td>
     <td><%= link_to group.examples_lings_property_name, group_examples_lings_properties_path(group) %></td>
     <td><%= link_to group.example_name, group_examples_path(group) %></td>
+    <td><%= group.display_style.capitalize %></td>
     <td><%= group.depth_maximum %></td>
-    <td><%= group.privacy %></td>
+    <td><%= group.privacy.capitalize %></td>
     <% if can? :update, @group %>
      <td> <%= link_to 'Edit', edit_group_path(group) %></td >
     <% end %>

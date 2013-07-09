@@ -1,8 +1,14 @@
 <% page_heading current_group.property_name %>
+
 <h1><%= current_group.property_name %></h1>
 
-<%= link_to 'Back', group_properties_path(current_group) %>
-
+<%= link_to group_properties_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<% if can? :edit, @property %>
+  <%= link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn" %>
+<% end %>
+<br /><br />
 <table class="show-table description-table table table-bordered table-striped table-hover">
   <p>
     <tr>
@@ -56,7 +62,9 @@
 
 <br />
 
+<%= link_to group_properties_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :edit, @property %>
-  <%= link_to 'Edit', edit_group_property_path(current_group, @property) %> |
+  <%= link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn" %>
 <% end %>
-<%= link_to 'Back', group_properties_path(current_group) %>
