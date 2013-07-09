@@ -76,7 +76,9 @@ module ApplicationHelper
     example.group.example_storable_keys.each do |key|
       case display_mode
       when "linguistic"
-        result += example.stored_value(key) + "<br />"
+        if key != "description" and key != "comment"
+          result += example.stored_value(key) + "<br />" if !example.stored_value(key).empty?
+        end
       # when in default table mode
       else
         result += key.humanize + ": " + example.stored_value(key) + "<br />"

@@ -8,10 +8,10 @@
   color: #0088cc; }
   .show-table td:first-child a {
     color: #005580; }
-.show-table td.small-comment {
+.show-table td.small-col {
+  width: 25%; }
+.show-table td.medium-col {
   width: 30%; }
-.show-table td.medium-comment {
-  width: 40%; }
 .show-table td.align-left {
   text-align: left; }
 
@@ -75,7 +75,7 @@
 a.btn {
   color: #333333; }
 
-a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse {
+a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-primary {
   color: #ffffff; }
 
 .whitebox {

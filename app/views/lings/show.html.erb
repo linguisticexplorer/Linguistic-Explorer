@@ -72,8 +72,13 @@
         <tr>
           <td><%=	link_to value.property.name, [current_group, value.property] %></td>
           <td><%= link_to value.value, [current_group, value] %></td>
-          <% elp = ExamplesLingsProperty.find_by_lings_property_id(value.id) %>
-          <td><%= display_example(elp.example.id, current_group.display_style) if elp %></td>
+          <% elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id) %>
+          <td>
+            <% elps.each do |elp| %>
+              <% example = elp.example %>
+              <%= link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp %>
+            <% end %>
+          </td>
           <td><%=	(value.creator ? value.creator.name : "") %></td>
         </tr>
       <% end %>
