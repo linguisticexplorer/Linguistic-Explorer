@@ -20,12 +20,12 @@
     <td><%= membership.level %></td>
     <% if can? :edit, membership %>
     <td>
-      <%= link_to 'Edit', edit_group_membership_path(current_group, membership) %>
+      <%= link_to 'Edit', edit_group_membership_path(current_group, membership), :class => 'btn btn-small' %>
     </td>
     <% end %>
     <% if can? :destroy, membership %>
       <td>
-      <%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete %>
+      <%= link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger btn-small' %>
      </td>
     <% end %>
   </tr>
