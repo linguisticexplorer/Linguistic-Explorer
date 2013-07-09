@@ -83,7 +83,7 @@ ActiveRecord::Schema.define(:version => 20130708100847) do
     t.string   "privacy",                      :default => "public"
     t.text     "example_fields"
     t.text     "ling_fields"
-    t.string   "display_style"
+    t.string   "display_style",                :default => "table"
   end
 
   create_table "lings", :force => true do |t|

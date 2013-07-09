@@ -1,4 +1,4 @@
-desc "This task creates a csv file of languages and their properties"
+desc "This task creates a csv file of all languages and their properties"
 task :make_csv => :environment do
 	def get_value(x,y)
 			x.each do |prop|
