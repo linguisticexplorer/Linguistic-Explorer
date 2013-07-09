@@ -1,6 +1,13 @@
 <% page_heading current_group.example_name %>
 <h1><%= current_group.example_name %></h1>
-
+<%= link_to group_examples_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<% if can? :edit, @example%>
+  <%= link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn" %>
+<% end %>
+<br />
+<br />
 <table class="show-table description-table table table-bordered table-striped table-hover">
   <p>
     <tr>

@@ -45,15 +45,6 @@
     </tr>
   <% end %>
 
-  <% if !@ling.examples.empty? %>
-  <tr>
-    <td><b><%= current_group.example_name.pluralize %>:</b></td> 
-    <td><% @ling.examples.each do |example| %>
-      <%= link_to example.id, group_example_path(current_group, example) %></br>
-    <% end %></td>
-  </tr>
-  <% end %>
-
   <tr>
     <td><b>Created by:</b></td> 
     <td><%= @ling.creator ? @ling.creator.name : "Unknown user" %> </td>
@@ -73,13 +64,21 @@
     <thead>
       <th><%= current_group.property_name %></th>
       <th><%= current_group.lings_property_name %></th>
+      <th><%= current_group.example_name.pluralize %></th>
       <th> Creator </th>
     </thead>
     <tbody>
       <% @values.each do |value| %>
         <tr>
           <td><%=	link_to value.property.name, [current_group, value.property] %></td>
-          <td><%=	link_to value.value, [current_group, value] %></td>
+          <td><%= link_to value.value, [current_group, value] %></td>
+          <% elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id) %>
+          <td>
+            <% elps.each do |elp| %>
+              <% example = elp.example %>
+              <%= link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp %>
+            <% end %>
+          </td>
           <td><%=	(value.creator ? value.creator.name : "") %></td>
         </tr>
       <% end %>

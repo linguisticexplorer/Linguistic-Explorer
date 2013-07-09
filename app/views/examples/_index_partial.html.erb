@@ -35,10 +35,10 @@
         <% if @group.display_style == "linguistic" %>
           <% current_group.example_storable_keys.each do |key| %>
               <% if key == "description" %>
-                <td><%= example.stored_value(key) %></td>
-                <td class='align-left'>
+                <td class="small-col"><%= example.stored_value(key) %></td>
+                <td class='align-left small-col'>
               <% elsif key == "comment" %>
-                </td><td class='small-comment'><%= example.stored_value(key) %></td>
+                </td><td class='small-col'><%= example.stored_value(key) %></td>
               <% else %>
                 <%= example.stored_value(key) %><br />
               <% end %>
@@ -46,7 +46,7 @@
         <% else %>
           <% current_group.example_storable_keys.each do |key| %>
               <% if key == "comment" %>
-                <td class='small-comment'><%= example.stored_value(key) %></td>
+                <td class='small-col'><%= example.stored_value(key) %></td>
               <% else %>
                 <td><%= example.stored_value(key) %></td>
               <% end %>
