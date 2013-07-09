@@ -1,6 +1,6 @@
 <%- if display_save_search_form?(@search) -%>
   <%= content_tag :fieldset do %>
-    <h5>Save search results</h5>
+    <h4>Save search results</h4>
     <%= form_for [:group, @search], :html => {:class => "form-horizontal"} do |f| %>
       <% if @search.errors.any? %>
         <div id="error_explanation">

@@ -1,14 +1,16 @@
-<% page_heading "Search"
-   add_body_classes "full_width"%>
+<% page_heading "Search" %>
 <div id="titleHeader">
-  <h2 class="red_grad"><%= @search.group.name %> Results</h2>
+  <h2 class="red_grad"><%= @search.group.name %> Search Results</h2>
 </div>
-<div id="mapping">
-  <%= link_to "Map it!", :action => "geomapping", :search => @search.query if @search.mappable?%>
-</div>
+<% if @search.results.any? %>
+  <div id="search_interaction" class="padded border margin span4">
+    <%= render :partial => 'searches/save_search_form' %>
+    <hr />
+    <%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+  </div>
+<% end %>
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
-      <%= render :partial => 'searches/save_search_form' %>
       <div id="results_table">
         <%- if @search.default? -%>
             <%= render :partial => 'searches/results' %>

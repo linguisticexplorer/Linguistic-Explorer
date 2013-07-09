@@ -73,9 +73,6 @@
   color: #006699; }
 
 a.btn {
-  color: #333333; }
-
-a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse {
   color: #ffffff; }
 
 .whitebox {
@@ -88,5 +85,5 @@ a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse {
 body.full_width #main h2 {
   margin-top: 0; }
 
-a.btn.btn-inverse i.icon-white.icon-arrow-left {
+a.btn i.icon-white {
   margin-top: 2px; }

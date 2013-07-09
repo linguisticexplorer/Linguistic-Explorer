@@ -1,36 +1,37 @@
 <%
-  page_heading "Search"
-  add_body_classes "full_width"
+  page_heading "Search History"
 %>
 
 <h2><%= current_group.name %> Search History</h2>
-<div id="searches" class="table spacing margin">
+<table id="searches" class="show-table table table-bordered table-striped table-hover">
   <%- if @searches.any? -%>
     <%- @searches.each do |search| -%>
-      <div class="row">
-        <div class="cell">
+      <tr>
+        <td>
           <%= search.name %>
-        </div>
-        <div class="cell">
-          <%= link_to "Results", [current_group, search] %>
-        </div>
-        <div class="cell">
-          <%= link_to "Download CSV", group_search_path(current_group, search, :format => :csv) %>
-        </div>
-        <div class="cell">
-          <%= link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete %>
-        </div>
-      </div>
+        </td>
+        <td>
+          <%= link_to "Show results", [current_group, search], :class => "btn" %>
+        </td>
+        <td>
+          <%= link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn" %>
+        </td>
+        <td>
+          <%= link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-small" %>
+        </td>
+      </tr>
     <%- end -%>
   <%- else -%>
-    <div class="center">
+    <tr class="center">
+      <td>
       No saved searches for <%= current_group.name %>
-    </div>
+      </td>
+    </tr>
   <%- end -%>
-</div>
+</table>
 
 <%- if @search_comparison.enough_to_compare? -%>
-  <div id="search_comparisons" class="padded border margin">
+  <div id="search_comparisons" class="padded border margin span5">
     <h3>Search comparisons</h3>
     <%= render :partial => 'search_comparisons/new' %>
   </div>
