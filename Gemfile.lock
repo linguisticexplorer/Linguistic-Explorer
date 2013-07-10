@@ -32,6 +32,7 @@ GEM
       rack-cache (~> 1.2)
       rack-test (~> 0.6.1)
       sprockets (~> 2.2.1)
+    active_record_query_trace (1.2)
     activemodel (3.2.13)
       activesupport (= 3.2.13)
       builder (~> 3.0.0)
@@ -259,6 +260,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_record_query_trace
   bb-ruby
   brakeman
   cancan (~> 1.6.10)

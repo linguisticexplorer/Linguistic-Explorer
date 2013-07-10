@@ -55,7 +55,7 @@ module LinguisticExplorer
     # While the Squeel DSL is the preferred way to access advanced query functionality,
     # you can still enable methods on symbols to access ARel predications in a similar manner to MetaWhere:
     Squeel.configure do |config|
-      config.load_core_extensions :symbol
+      config.load_core_extensions :hash, :symbol
     end
 
     Settings.configure do |s|

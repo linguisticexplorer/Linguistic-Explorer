@@ -110,6 +110,8 @@ group :test, :development do
   gem 'factory_girl_rails', "~> 1.1"
   gem "cucumber", "~> 1.1.0"
   gem "database_cleaner", "~> 0.7.0"
+
+  gem "active_record_query_trace"
   
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'

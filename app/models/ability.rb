@@ -53,7 +53,7 @@ class Ability
       can :create, Topic unless user.new_record?
 
       can :manage, SearchComparison do |sc|
-        sc.searches.all?{|s| s.is_manageable_by?(user)}
+        sc.searches.all? {|s| s.is_manageable_by?(user)}
       end
     end
   end

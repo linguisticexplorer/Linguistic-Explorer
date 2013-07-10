@@ -38,5 +38,9 @@ LinguisticExplorer::Application.configure do
   ActiveRecord::Base.instance_eval do
     def per_page; 4; end
   end
+
   DEFAULT_PER_PAGE = ActiveRecord::Base.per_page
+
+  # Trace Query triggers
+  ActiveRecordQueryTrace.enabled = true
 end
