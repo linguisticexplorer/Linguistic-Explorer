@@ -33,6 +33,10 @@ class ExamplesController < GroupDataController
 
     if @example.save
       params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
+      if @example.name == ""
+        @example.name = "Example_" + @example.id.to_s
+        @example.save!
+      end
       redirect_to([current_group, @example],
                   :notice => (current_group.example_name + ' was successfully created.'))
     else
