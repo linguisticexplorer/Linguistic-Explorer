@@ -7,13 +7,14 @@
   <tr>
     <th>Name</th>
     <th><%= current_group.ling0_name %></th>
-    <th><%= current_group.ling1_name %></th>
+    <% if current_group.ling1_name != "not-present" %>
+      <th><%= current_group.ling1_name %></th>
+    <% end %>
+    <th>Property</th>
     <% if @group.display_style == "linguistic" %>
       <% current_group.example_storable_keys.each do |key| %>
           <% if key == "comment" %>
-            <th>Values</th>
-            <th><%= key.humanize %></th>
-          <% elsif key == "description" %>
+            <th></th>
             <th><%= key.humanize %></th>
           <% end %>
       <% end %>
@@ -30,30 +31,39 @@
   <% @examples.each do |example| %>
       <tr>
         <td><%= link_to example.name, [current_group, example] %></td>
-        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
-        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
+        <% if example.ling && example.ling.depth == 0 %>
+         <td class='tiny-col'><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) %></td>
+        <% end %>
+        <% if example.ling && example.ling.depth == 1 %>
+          <td class='tiny-col'><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) %></td>
+        <% end %>
+        <% elp = ExamplesLingsProperty.find_by_example_id(example.id) %>
+        <td>
+          <% if elp %>
+          <%= link_to elp.lings_property.property.name, group_property_path(current_group, elp.lings_property.property) %><br>
+          <%= elp.lings_property.value %>
+          <% end %>
+          </td>
         <% if @group.display_style == "linguistic" %>
+        <td class = "align-left">
           <% current_group.example_storable_keys.each do |key| %>
-              <% if key == "description" %>
-                <td class="small-col"><%= example.stored_value(key) %></td>
-                <td class='align-left small-col'>
-              <% elsif key == "comment" %>
-                </td><td class='small-col'><%= example.stored_value(key) %></td>
-              <% else %>
-                <%= example.stored_value(key) %><br />
+              <% if key == "comment" %>
+                </td><td class='small-col align-left'><%= example.stored_value(key) %></td>
+              <% elsif key != "description" %>
+                <p><%= example.stored_value(key) %></p>
               <% end %>
           <% end %>
         <% else %>
           <% current_group.example_storable_keys.each do |key| %>
               <% if key == "comment" %>
-                <td class='small-col'><%= example.stored_value(key) %></td>
+                <td class='small-col align-left'><%= example.stored_value(key) %></td>
               <% else %>
-                <td><%= example.stored_value(key) %></td>
+                <td class='align-left'><%= example.stored_value(key) %></td>
               <% end %>
           <% end %>
         <% end %>
         <% if can? :destroy, example %>
-          <td>
+          <td class="middle">
           <%= link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete %>
           </td>
         <% end %>

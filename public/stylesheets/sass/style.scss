@@ -19,6 +19,11 @@ $link-color: #005580;
       color: $link-color;
     }
   }
+
+  td.tiny-col {
+    width:10%;
+  }
+
   td.small-col {
     width:25%;
   }
@@ -27,6 +32,12 @@ $link-color: #005580;
   }
   td.align-left {
     text-align:left;
+  }
+  td.text-left {
+    text-align:left;
+  }
+  td.middle {
+    vertical-align: middle;
   }
 }
 
@@ -121,13 +132,9 @@ a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-pri
 }
 
 body.full_width #main h2 {
-
   margin-top: 0;
-
 }
 
 a.btn.btn-inverse i.icon-white.icon-arrow-left {
-
   margin-top: 2px;
-
 }

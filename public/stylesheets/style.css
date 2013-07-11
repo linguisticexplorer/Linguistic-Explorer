@@ -8,12 +8,18 @@
   color: #0088cc; }
   .show-table td:first-child a {
     color: #005580; }
+.show-table td.tiny-col {
+  width: 10%; }
 .show-table td.small-col {
   width: 25%; }
 .show-table td.medium-col {
   width: 30%; }
 .show-table td.align-left {
   text-align: left; }
+.show-table td.text-left {
+  text-align: left; }
+.show-table td.middle {
+  vertical-align: middle; }
 
 #header {
   background: black; }
@@ -88,5 +94,5 @@ a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-pri
 body.full_width #main h2 {
   margin-top: 0; }
 
-a.btn i.icon-white {
+a.btn.btn-inverse i.icon-white.icon-arrow-left {
   margin-top: 2px; }
