@@ -45,6 +45,9 @@ gem 'newrelic_rpm'
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
+# new styles
+gem 'will_paginate-bootstrap'
+
 
 # Having problem with new migrations?
 # * Disable slim_scrooge here
