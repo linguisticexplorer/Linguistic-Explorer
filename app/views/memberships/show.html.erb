@@ -1,16 +1,25 @@
 <% page_heading "Membership" %>
+
+<table class="show-table description-table table table-bordered table-hover table-striped">
 <p>
-  <b>Member:</b> <br />
-  <%= @membership.member.name %> <br />
+	<tr>
+    	<td><b>Member:</b></td> 
+  		<td><%= @membership.member.name %> </td>
+	</tr>
 
-  <b>Level:</b> <br />
-  <%= @membership.level %> <br />
+	<tr>
+    	<td><b>Level:</b></td> 
+  		<td><%= @membership.level %> </td>
+	</tr>
 
-  <b>Created by:</b> <br />
-  <%= @membership.creator ? @membership.creator.name : "Unknown user" %> <br />
+	<tr>
+    	<td><b>Created by:</b></td> 
+  		<td><%= @membership.creator ? @membership.creator.name : "Unknown user" %> </td>
+	</tr>
 </p>
+</table>
 
-<% if can? :edit, @membership %>
-  <%= link_to 'Edit', edit_group_membership_path(current_group, @membership) %> |
+<br />
+<%= link_to edit_group_membership_path(current_group, @membership), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
 <% end %>
-<%= link_to 'Back', group_memberships_path(current_group) %>
