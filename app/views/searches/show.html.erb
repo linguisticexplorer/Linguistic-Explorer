@@ -1,1 +1,5 @@
+<div id="search_interaction" class="padded border margin span4">   
+	<%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+</div>
+
 <%= render :partial => 'searches/results' %>
