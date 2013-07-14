@@ -1,6 +1,26 @@
 <% page_heading current_group.examples_lings_property_name %>
-<h1><%= current_group.examples_lings_property_name %></h1>
-<p>
+<h3><%= current_group.examples_lings_property_name %></h3>
+
+<%= link_to 'Back', group_examples_lings_properties_path(current_group) %>
+
+<table class="show-table description-table table table-bordered table-striped table-hover">
+  <p>
+    <tr>
+      <td><%= current_group.examples_lings_property_name %>:</td>
+      <td><%= link_to examples_lings_property.example.name, group_example_path(current_group, examples_lings_property.example) %></td> 
+    </tr>
+    <tr>
+      <td><%= current_group.lings_property_name %>:</td>
+      <td><%= link_to examples_lings_property.lings_property.name, group_lings_property_path(current_group, examples_lings_property.lings_property) %></td> 
+    </tr>
+    <tr>
+      <td>Created by:</td>
+      <td><%= examples_lings_property.creator ? examples_lings_property.creator.name : "Unknown user" %></td> 
+    </tr>
+  </p>
+</table>
+
+<p><!-- 
   <b><%= current_group.examples_lings_property_name %>:</b> <br />
   <%= link_to examples_lings_property.example.name, group_example_path(current_group, examples_lings_property.example) %> <br />
 
@@ -9,6 +29,6 @@
 
   <b>Created by:</b> <br />
   <%= examples_lings_property.creator ? examples_lings_property.creator.name : "Unknown user" %> <br />
-</p>
+</p> -->
 
 <%= link_to 'Back', group_examples_lings_properties_path(current_group) %>
