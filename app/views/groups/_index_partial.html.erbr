@@ -29,7 +29,7 @@
     <td><%= link_to group.name, group %></td>
     <td><%= link_to 'Search', new_group_search_path(group) %></td>
     <td><%= link_to group.ling0_name, group_lings_path(group) %></td>
-    <td><%= link_to group.ling1_name, group_lings_path(group) if group.ling1_name != "not-present" %></td>
+    <td><%= link_to group.ling1_name, group_lings_path(group) %></td>
     <td><%= link_to group.property_name, group_properties_path(group) %></td>
     <td><%= link_to group.category_name, group_categories_path(group) %></td>
     <td><%= link_to group.lings_property_name, group_lings_properties_path(group) %></td>
@@ -39,10 +39,10 @@
     <td><%= group.depth_maximum %></td>
     <td><%= group.privacy.capitalize %></td>
     <% if can? :update, @group %>
-     <td> <%= link_to 'Edit', edit_group_path(group), :class => "btn btn-small" %></td >
+     <td> <%= link_to 'Edit', edit_group_path(group) %></td >
     <% end %>
     <% if can? :destroy, @group %>
-     <td> <%= link_to 'Destroy', group, :class => "btn btn-small btn-danger", :confirm => 'Are you sure?', :method => :delete %></td >
+     <td> <%= link_to 'Destroy', group, :confirm => 'Are you sure?', :method => :delete %></td >
     <% end %>
   </tr>
 <% end %>

@@ -45,6 +45,9 @@ gem 'newrelic_rpm'
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
+# new styles
+gem 'will_paginate-bootstrap'
+
 
 # Having problem with new migrations?
 # * Disable slim_scrooge here
@@ -77,6 +80,9 @@ end
 
 #sass support
 gem 'sass'
+
+#experimental
+gem "alphabetical_paginate", "~> 0.1.2"
 
 #iconv for utf-8 to latin1 conversion
 gem 'iconv'
