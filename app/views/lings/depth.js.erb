@@ -1,4 +1,15 @@
 $(function(){
-  var newPage = "<%= escape_javascript(render({:partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} })) -%>"
+  var newPage = "<%= escape_javascript(render({:partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} })) -%>";
   $("#pagination_table").html(newPage);
+});
+
+$( document ).ready(function() {
+  console.log(dict);
+  $("#auto-lang").typeahead({
+     source: items,
+     updater:function (item){
+        window.location.href = "/groups/" + group + "/lings/" + dict[item]; 
+     }
+  });
+  console.log( "ready!" );
 });
