@@ -5,11 +5,10 @@
   <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
 <% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
     <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
 <% end %>
 <% if can? :edit, @ling %>
-    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
+   <%= link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
 <br /><br />
 <table class="show-table description-table table table-bordered table-hover table-striped">

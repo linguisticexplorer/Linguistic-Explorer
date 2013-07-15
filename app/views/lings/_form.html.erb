@@ -34,7 +34,7 @@
     <div class="control-group">
       <%= label_tag :stored_values, key.capitalize(), :class => "control-label" %>
       <div class="controls">
-        <%= text_field :stored_values, key.capitalize(), :value => @ling.stored_value(key) %>
+         <%= text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10%>
       </div>
     </div>
   <% end %>
