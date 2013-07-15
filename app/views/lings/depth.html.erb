@@ -3,6 +3,7 @@
 <% if can? :create, Ling.new{|l| l.group = current_group} %>
   <%= link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn" %>
 <% end %>
+<input type="text" id="auto-land" autocomplete="off">
 <div id="pagination_table">
   <%= render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} %>
 </div>
