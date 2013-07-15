@@ -47,10 +47,11 @@
         <% if @group.display_style == "linguistic" %>
         <td class = "align-left">
           <% current_group.example_storable_keys.each do |key| %>
+             <% val = example.stored_value(key) %>
               <% if key == "comment" %>
-                </td><td class='small-col align-left'><%= example.stored_value(key) %></td>
+                </td><td class='small-col align-left'><%= example.stored_value(key) if val != "None"%></td>
               <% elsif key != "description" %>
-                <p><%= example.stored_value(key) %></p>
+                <p><%= example.stored_value(key) if val != "None" %></p>
               <% end %>
           <% end %>
         <% else %>
