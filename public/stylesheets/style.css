@@ -96,3 +96,9 @@ body.full_width #main h2 {
 
 a.btn.btn-inverse i.icon-white.icon-arrow-left {
   margin-top: 2px; }
+
+input.autocomplete {
+  height: 40px;
+  position: relative;
+  top: 2px;
+  right: 44px; }
