@@ -1,7 +1,6 @@
 <% page_heading @ling.grouped_name %>
 <h1><%= @ling.grouped_name %> <%= @ling.name %></h1>
-
-<%= link_to group_lings_path(current_group), :class => "btn btn-inverse" do %>
+<%= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do %>
   <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
 <% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
@@ -90,8 +89,7 @@
 </div>
 
 <br />
-
-<%= link_to group_lings_path(current_group), :class => "btn btn-inverse" do %>
+<%= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do %>
   <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
 <% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>

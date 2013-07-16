@@ -20,7 +20,7 @@
 
 <% @memberships.each do |membership| %>
   <tr>
-    <td><%= membership.member.name %></td>
+    <td><%= link_to membership.member.name, [current_group, membership] %></td>
     <td><%= membership.level %></td>
     <% if can? :edit, membership %>
     <td>

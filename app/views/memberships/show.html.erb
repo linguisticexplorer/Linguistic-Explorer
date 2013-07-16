@@ -22,4 +22,5 @@
 <br />
 <%= link_to edit_group_membership_path(current_group, @membership), :class => "btn btn-inverse" do %>
   <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
-<% end %>
+<% end %>&nbsp;
+<%= link_to 'Edit', edit_group_membership_path(current_group, @membership), :class => 'btn' %>
