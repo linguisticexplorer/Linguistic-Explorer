@@ -4,12 +4,10 @@ $(function(){
 });
 
 $( document ).ready(function() {
-  console.log(dict);
-  $("#auto-lang").typeahead({
+  $("#auto_lang").typeahead({
      source: items,
      updater:function (item){
         window.location.href = "/groups/" + group + "/lings/" + dict[item]; 
      }
   });
-  console.log( "ready!" );
 });

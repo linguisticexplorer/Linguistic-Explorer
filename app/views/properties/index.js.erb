@@ -2,3 +2,12 @@ $(function(){
   var newPage = "<%= escape_javascript(render("properties/index_partial")) -%>"
   $("#pagination_table").html(newPage);
 });
+
+$( document ).ready(function() {
+  $("#auto_prop").typeahead({
+     source: items,
+     updater:function (item){
+        window.location.href = "/groups/" + group + "/properties/" + dict[item]; 
+     }
+  });
+});

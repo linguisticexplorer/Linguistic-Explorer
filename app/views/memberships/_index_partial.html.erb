@@ -1,4 +1,8 @@
 <div class="apple_pagination">
+ <div class="margin span5">
+   <input type="text" id="auto_memb" autocomplete="off" placeholder="Type to search memberships" class="input-block-level autocomplete" />
+  </div>
+
 <!-- render page links in the view: -->
 <%= will_paginate @memberships, renderer: BootstrapPagination::Rails %>
 </div>

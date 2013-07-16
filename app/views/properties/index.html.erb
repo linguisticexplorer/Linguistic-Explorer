@@ -1,3 +1,8 @@
+<%= javascript_tag "var items = #{ @all_props.map{|x| x.name}
+.to_json },
+   group = #{ current_group.to_param },
+   dict = #{ (Hash[@all_props.map {|x| [x.name, x.id]}]).to_json };" %>
+
 <% page_heading current_group.property_name.pluralize %>
 
 <h1>Listing <%= current_group.property_name.pluralize %></h1>
