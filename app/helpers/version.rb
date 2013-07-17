@@ -1,6 +1,6 @@
 module Version
 
-	  TARGET = "#{Rails.root}/app/helpers/v"
+	  TARGET = "#{Rails.root}/VERSION.txt"
 
 	  def self.get
 	  	File.open(TARGET, "r") do |f|

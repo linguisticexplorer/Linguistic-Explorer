@@ -2,7 +2,7 @@ require "#{Rails.root}/app/helpers/version"
 
 namespace :version do 
 
-	desc "Sete specific version"
+	desc "Set specific version"
 	task :set do 
 		version = ARGV.last
 		Version.set(version)
