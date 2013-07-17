@@ -82,7 +82,7 @@ end
 gem 'sass'
 
 #experimental
-gem "alphabetical_paginate", "~> 0.1.2"
+gem "alphabetical_paginate"
 
 #iconv for utf-8 to latin1 conversion
 gem 'iconv'

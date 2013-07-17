@@ -4,7 +4,7 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
     @all_lings = current_group.lings.at_depth(@depth)
-    @lings = @all_lings.paginate(:page => params[:page], :order => "name")
+    @lings, @params = @all_lings.to_a.alpha_paginate(params[:letter]){|x| x.name}
     return load_stats(@lings, params[:plain], 0)
   end
 

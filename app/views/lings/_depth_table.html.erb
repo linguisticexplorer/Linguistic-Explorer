@@ -4,7 +4,7 @@
   </div>
 
 <!-- render page links in the view: -->
-<%= will_paginate lings, renderer: BootstrapPagination::Rails %>
+<%= alphabetical_paginate @params %>
 </div>
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
@@ -47,6 +47,5 @@
 </table>
 <div class="apple_pagination">
 <!-- render page links in the view: -->
-<%= will_paginate lings, renderer: BootstrapPagination::Rails %>
 </div>
 
