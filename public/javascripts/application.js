@@ -4,21 +4,30 @@
 $(function() {
   // PAGINATION CODE
 	// Text and image while loading
-    var img = "<img src='/images/loader.gif' class='loading'/>"
-
+    var img = "<img src='/images/loader.gif' class='loading'/>",
+    once = false;
     // Manage the AJAX pagination and changing the URL
-    $(".pagination a").on("click", function(e) {
+     $(document).on("click", ".apple_pagination.will-paginate .pagination a", function(e) {
         //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
-        jQuery.getScript(this.href);
-        jQuery(".pagination").html(img);
+        $(".pagination").html(img);
+        $.get(this.href, function(result) {
+          $(".pagination").html($(".pagination", result)[0]);
+          $("#pagination_table").html($("#pagination_table", result));
+        });
         history.pushState(null, document.title, this.href);
         e.preventDefault();
     });
     
-    // Let navigate the browser throught the AJAX history
     $(window).bind("popstate", function() {
-        $.getScript(location.href);
+      if (once) {
         $(".pagination").html(img);
+        $.get(location.href, function(result) {
+            $(".pagination").html($(".pagination", result));
+            $("#pagination_table").html($("#pagination_table", result));
+      });
+    } else {
+      once = true;
+    }
     });
 
     // SEARCH PAGE CODE

@@ -54,7 +54,7 @@
 
 <div class="values">
   <h3><%= current_group.lings_property_name.pluralize %></h3>
-  <div class="apple_pagination">
+  <div class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
     <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
   </div>

@@ -1,7 +1,16 @@
 <%= javascript_tag "var items = #{ @all_lings.map{|x| x.name}
 .to_json },
    group = #{ current_group.to_param },
-   dict = #{ (Hash[@all_lings.map {|x| [x.name, x.id]}]).to_json };" %>
+   dict = #{ (Hash[@all_lings.map {|x| [x.name, x.id]}]).to_json };
+    $(function () {
+    $('#auto_lang').typeahead({
+      source: items,
+      updater:function (item){
+          window.location.href = '/groups/' + group + '/lings/' + dict[item]; 
+        }
+      });
+    }); 
+" %>
 
 <% page_heading current_group.ling_name_for_depth(@depth) %>
 

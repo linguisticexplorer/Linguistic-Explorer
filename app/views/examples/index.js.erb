@@ -1,4 +1,6 @@
+console.log("hello!");
 $(function(){
-  var newPage = "<%= escape_javascript(render("index_partial")) -%>"
-  $("#pagination_table").html(newPage);
+  var newPage = "<%= escape_javascript(render("lings_properties/index_partial")) -%>"
+  console.log("asd");
+  $(".apple_pagination.will-paginate .pagination").css("height", "50px");
 });
