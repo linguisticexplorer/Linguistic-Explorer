@@ -9,6 +9,11 @@
 <% if can? :create, Ling.new{|l| l.group = current_group} %>
   <%= link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn" %>
 <% end %>
+<div class="row">
+  <div class="margin span5">
+   <input type="text" id="auto_lang" autocomplete="off" placeholder="Type to search <%= current_group.ling_name_for_depth(@depth).pluralize.downcase %>" class="input-block-level autocomplete" />
+  </div>
+</div>
 <div id="pagination_table">
     <%= render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} %>
 </div>
