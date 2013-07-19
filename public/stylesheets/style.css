@@ -103,7 +103,7 @@ input.autocomplete {
   right: 30px; }
 
 ul.typeahead.dropdown-menu {
-  width: 34.75%; }
+  width: inherit; }
 
 .will-paginate .pagination {
   height: 35px; }

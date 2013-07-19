@@ -1,5 +1,16 @@
-<div id="search_interaction" class="padded border margin span4">   
+<%
+  page_heading @search.name + " Saved Search" 
+%>
+<h1><%= @search.name %> Saved Search</h1>
+<div class="row">
+  <div id="search_interaction" class="padded border margin span4">   
 	<%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+  </div>
 </div>
-
-<%= render :partial => 'searches/results' %>
+<div id="search_results" class="padded_left padded_right">
+  <div id="results_table">
+    <div id="pagination_table">
+      <%= render :partial => 'searches/results' %>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,18 @@
 <%= javascript_tag "var items = #{ @all_members.map{|x| x.member.name}
 .to_json },
    group = #{ current_group.to_param },
-   dict = #{ (Hash[@all_members.map {|x| [x.member.name, x.id]}]).to_json };" %>
+   dict = #{ (Hash[@all_members.map {|x| [x.member.name, x.id]}]).to_json };
+
+  $(function() {
+  $('#auto_memb').typeahead({
+     source: items,
+     updater:function (item){
+        window.location.href = '/groups/' + group + '/memberships/' + dict[item]; 
+     }
+  });
+});
+
+" %>
 
 <% page_heading "Members" %>
 
@@ -9,6 +20,11 @@
 <% if can? :create, Membership.new{|m| m.group = current_group} %>
   <%= link_to "New Membership", new_group_membership_path(current_group), :class => "btn" %>
 <% end %>
+<div class="row">
+  <div class="margin span5">
+   <input type="text" id="auto_memb" autocomplete="off" placeholder="Type to search memberships" class="input-block-level autocomplete" />
+  </div>
+</div>
 <div id='pagination_table'>
     <%= render :partial => "index_partial" %>
 </div>

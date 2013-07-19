@@ -9,7 +9,7 @@ class PropertiesController < GroupDataController
 
   def show
     @property = current_group.properties.find(params[:id])
-    @values = @property.lings_properties.includes(:ling).paginate(:page => params[:page]).order("lings_properties.value DESC, lings.name ASC")
+    @values, @params = @property.lings_properties.includes(:ling).to_a.alpha_paginate(params[:letter]){|x| x.ling.name}
   end
 
   def new

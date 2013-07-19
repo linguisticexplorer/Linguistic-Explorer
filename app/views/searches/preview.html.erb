@@ -1,26 +1,28 @@
 <% page_heading "Search" %>
-<div id="titleHeader">
-  <h2 class="red_grad"><%= @search.group.name %> Search Results</h2>
-</div>
+  <h1><%= @search.group.name %> Search Results</h1>
 <% if @search.results.any? %>
-  <div id="search_interaction" class="padded border margin span4">
-    <%= render :partial => 'searches/save_search_form' %>
-    <hr />
-    <%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+  <div class="row">
+    <div id="search_interaction" class="padded border margin span4">
+      <%= render :partial => 'searches/save_search_form' %>
+      <hr />
+      <%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+    </div>
   </div>
 <% end %>
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
       <div id="results_table">
-        <%- if @search.default? -%>
-            <%= render :partial => 'searches/results' %>
-        <%- elsif @search.cross? || @search.implication? -%>
-            <%= render :partial => 'searches/cross/results' %>
-        <%- elsif @search.compare? -%>
-            <%= render :partial => 'searches/compare/results' %>
-        <%- elsif @search.clustering? -%>
-            <%= render :partial => 'searches/clustering/results' %>
-        <%- end -%>
+        <div id="pagination_table">
+          <%- if @search.default? -%>
+              <%= render :partial => 'searches/results' %>
+          <%- elsif @search.cross? || @search.implication? -%>
+              <%= render :partial => 'searches/cross/results' %>
+          <%- elsif @search.compare? -%>
+              <%= render :partial => 'searches/compare/results' %>
+          <%- elsif @search.clustering? -%>
+              <%= render :partial => 'searches/clustering/results' %>
+          <%- end -%>
+        </div>
       </div>
   <%- else -%>
       <div class="notice">Your search query returned no results.</div>
