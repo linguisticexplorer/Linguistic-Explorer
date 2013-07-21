@@ -12,7 +12,7 @@ class SearchCSV
       csv << result_headers.map { |header| header.call(@search.group) }
 
       # data rows
-      @search.results.each do |result|
+      @search.results(false).each do |result|
         csv << parent_data(result.parent) + child_data(result.child)
       end
     end
