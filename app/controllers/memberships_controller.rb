@@ -1,7 +1,10 @@
 class MembershipsController < GroupDataController
   def index
-    @all_members = current_group.memberships
-    @memberships, @params = @all_members.includes(:member).alpha_paginate(params[:letter]){|x| x.member.name}
+    @all_members = Hash.new
+    current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
+      @all_members[memb.member.name] = memb.id
+    end
+    @memberships, @params = current_group.memberships.includes(:member).alpha_paginate(params[:letter]){|x| x.member.name}
   end
 
   def show

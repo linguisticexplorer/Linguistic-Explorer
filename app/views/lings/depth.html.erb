@@ -6,9 +6,9 @@
       items.push(key);
     }); 
     $(function () {
-    $('#auto_lang').typeahead({
-      source: items,
-      updater:function (item){
+      $('#auto_lang').typeahead({
+        source: items,
+        updater:function (item){
           window.location.href = '/groups/' + group + '/lings/' + dict[item]; 
         }
       });
