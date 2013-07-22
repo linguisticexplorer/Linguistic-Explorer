@@ -19,8 +19,8 @@ spec/csv/bad/bad_foreign_key/*
 spec/csv/bad/no_id/*
 spec/csv/good/import.yml
 spec/csv/good/*.csv
-db/seed/*
 doc/TODO
 public/similarity_tree_images/*.png
 history.
 *.html
+db/seed/*
