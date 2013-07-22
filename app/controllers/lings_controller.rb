@@ -3,8 +3,11 @@ class LingsController < GroupDataController
 
   def depth
     @depth = params[:depth].to_i
-    @all_lings = current_group.lings.at_depth(@depth)
-    @lings, @params = @all_lings.to_a.alpha_paginate(params[:letter]){|x| x.name}
+    @all_lings = Hash.new
+    current_group.lings.at_depth(@depth).find_each do |ling| 
+      @all_lings[ling.name] = ling.id
+    end
+    @lings, @params = current_group.lings.at_depth(@depth).to_a.alpha_paginate(params[:letter]){|x| x.name}
     return load_stats(@lings, params[:plain], 0)
   end
 
