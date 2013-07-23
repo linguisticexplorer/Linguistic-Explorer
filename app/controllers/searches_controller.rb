@@ -19,7 +19,7 @@ class SearchesController < GroupDataController
 
     #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
     authorize! :search, @search
-
+    
     # @search.get_results!
   end
 
@@ -39,10 +39,15 @@ class SearchesController < GroupDataController
 
   def show
     @search = current_group.searches.find(params[:id])
+    if(params[:page])
+      @search.offset = params[:page]
+    end
+    
     authorize! :search, @search
 
     respond_with(@search) do |format|
       format.html
+      format.js
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
