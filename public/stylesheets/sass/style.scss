@@ -36,6 +36,9 @@ $link-color: #005580;
   td.text-left {
     text-align:left;
   }
+  td.text-justify {
+    text-align:justify;
+  }
   td.middle {
     vertical-align: middle;
   }
@@ -155,3 +158,6 @@ ul.typeahead.dropdown-menu {
   }
 }
 
+div.text-justify {
+  text-align: justify;
+}

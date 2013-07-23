@@ -23,10 +23,12 @@
   </tr>
 
   <% @ling.storable_keys.each do |key| %>
-    <tr>
-      <td><b><%= key.humanize %>:</b></td> 
-      <td><%= @ling.stored_value(key) %></td>
-    </tr>
+    <% if @ling.stored_value(key) != "" %>
+      <tr>
+        <td><b><%= key.humanize %>:</b></td> 
+        <td><%= @ling.stored_value(key) %></td>
+      </tr>
+    <% end %>
   <% end %>
 
   <% if @ling.depth == 1 && @ling.parent %>

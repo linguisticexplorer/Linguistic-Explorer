@@ -18,6 +18,8 @@
   text-align: left; }
 .show-table td.text-left {
   text-align: left; }
+.show-table td.text-justify {
+  text-align: justify; }
 .show-table td.middle {
   vertical-align: middle; }
 
@@ -107,3 +109,6 @@ ul.typeahead.dropdown-menu {
 
 .will-paginate .pagination {
   height: 35px; }
+
+div.text-justify {
+  text-align: justify; }

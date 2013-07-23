@@ -23,10 +23,12 @@
     <% end %>
 
     <% @example.storable_keys.each do |key| %>
-      <tr>
-        <td><%= key.humanize %>:</td>
-        <td><%= @example.stored_value(key) %> </td>
-      </tr>
+      <% if @example.stored_value(key) != "" %>
+        <tr>
+          <td><%= key.humanize %>:</td>
+          <td class="text-justify"><%= @example.stored_value(key) %> </td>
+        </tr>
+      <% end %>
     <% end %>
 
     <tr>
