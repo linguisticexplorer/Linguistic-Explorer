@@ -29,7 +29,6 @@
 <div id="pagination_table">
   <%= render :partial => 'properties/index_partial' %>
 </div>
-</div>
 <% if can? :create, Property.new{|p| p.group = current_group} %>
   <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn" %>
 <% end %>
