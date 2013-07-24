@@ -1,0 +1,17 @@
+var group = <%= current_group.to_param %>,
+    dict = <%= @all_props.to_json.html_safe %>,
+    items = [];
+
+$.each(dict, function(key,val) {
+  items.push(key);
+});
+
+$(function() {
+  $('#auto_prop').typeahead({
+    source: items,
+    updater:function (item){
+      window.location.href = '/groups/' + group + '/properties/' + dict[item]; 
+    }
+  });
+});
+

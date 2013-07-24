@@ -1,20 +1,5 @@
-<%= javascript_tag "
-    var group = #{ current_group.to_param },
-    dict = #{ @all_members.to_json },
-    items = [];
-    $.each(dict, function(key, val){
-      items.push(key);
-    });
-    $(function() {
-      $('#auto_memb').typeahead({
-        source: items,
-        updater:function (item){
-          window.location.href = '/groups/' + group + '/memberships/' + dict[item]; 
-        }
-      });
-    });
-" %>
-
+<%= javascript_tag "$.getScript(location.href);" %>
+    
 <% page_heading "Members" %>
 
 <h1>Listing Memberships</h1>

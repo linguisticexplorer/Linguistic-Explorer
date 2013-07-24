@@ -2,7 +2,8 @@
 // This file is automatically included by javascript_include_tag :defaults
 /* On DOM loaded */
 $(function() {
-  // PAGINATION CODE
+    //$.getScript(location.href).fail(function() { console.log("nope")});
+    // PAGINATION CODE
 	// Text and image while loading
     var img = "<img src='/images/loader.gif' class='loading'/>",
     once = false;
