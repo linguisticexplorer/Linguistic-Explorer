@@ -2,7 +2,8 @@
   <div id="cat-title" class="fluid-row">
     <h2>Select Property</h2>
   </div>
-  <h5> Category </h5>
+  <% if category.count > 1 %>
+  <h4> Category </h4>
   <div id="cat-select" class="fluid-row" style="height:50px;">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
     <div class="span7">
@@ -17,37 +18,36 @@
     </div>
     <%end %>
   </div>
-  <h5> Property </h5>
+  <% end %>
+  <h4> Property </h4>
   <div id="cat-prop" class="fluid-row">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
-    <div class="span7">
-        <select id="prop-select" name="prop_id" multiple="multiple">
-          <% @category.properties.each do |prop|%>
-            <option style= "color:
-            <% if @preexisting_values.any? %>
-              <% lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0] %>
-              <% if lp %>
-                <% if lp.sureness != "revisit" && lp.sureness != "need_help" %>
-                  green;
-                <% else %>
-                  orange;
-                <% end %>
+      <select id="prop-select" name="prop_id" multiple="multiple">
+        <% @category.properties.each do |prop|%>
+          <option style= "color:
+          <% if @preexisting_values.any? %>
+            <% lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0] %>
+            <% if lp %>
+              <% if lp.sureness != "revisit" && lp.sureness != "need_help" %>
+                green;
               <% else %>
-                red;
+                orange;
               <% end %>
             <% else %>
               red;
             <% end %>
-            " value="<%=prop.id%>" <%= "selected" if prop.id == @property.id %>> <%= prop.name %></option>
+          <% else %>
+            red;
           <% end %>
-        </select>
-      </div>
-      <div id="select-col" class ="span3 offset1">
-        <%= submit_tag("Select", class: "btn cat-btn", style:"display:block; margin-top:60px; width:120px;") %>
-        <%= submit_tag("Next", class: "btn btn-primary cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
-        <%= submit_tag("Next Unset", class: "btn btn-danger cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
-        <%= submit_tag("Next Uncertain", class: "btn btn-warning cat-btn", style:"display:block; margin-top:10px; width:120px;") %>
-      </div>
-      <% end %>
-  </div>
+          " value="<%=prop.id%>" <%= "selected" if prop.id == @property.id %>> <%= prop.name %></option>
+        <% end %>
+      </select>
+    </div>
+    <div id="select-col" class ="row-fluid">
+      <%= submit_tag("Select", class: "btn btn-block cat-btn") %>
+      <%= submit_tag("Next", class: "btn btn-primary btn-block cat-btn") %>
+      <%= submit_tag("Next Unset", class: "btn btn-danger btn-block cat-btn") %>
+      <%= submit_tag("Next Uncertain", class: "btn btn-warning btn-block cat-btn") %>
+    </div>
+    <% end %>
 </div>

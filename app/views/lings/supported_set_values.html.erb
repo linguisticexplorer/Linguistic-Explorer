@@ -12,17 +12,16 @@
 <br /><br />
 <div id="supported-entry-container" class="container-fluid">
   <div class="row-fluid">
-    <div id="property-selector" class="span4">
-      <%= render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true %>
-    </div>
-    <div id="property-description" class="span4">
+    <div id="property-description" class="span4 set-col">
       <%= render partial: "lings/mass_assignment/property", object: @property %>
     </div>
-    <div id="property-setter" class="span4">
-    <%= form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
+    <div id="property-setter" class="span4 set-col">
       <%= render partial: "lings/mass_assignment/value", object: @property %>
-      <%= submit_tag("Submit", class: "btn") %>
-    <% end %>
+      <div class="row-fluid">
+      </div>
+    </div>
+    <div id="property-selector" class="span4 set-col">
+      <%= render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true %>
     </div>
   </div>
 </div>

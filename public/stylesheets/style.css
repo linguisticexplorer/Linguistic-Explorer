@@ -107,3 +107,45 @@ ul.typeahead.dropdown-menu {
 
 .will-paginate .pagination {
   height: 35px; }
+
+#property-selector select {
+  width: 100%; }
+
+#supported-entry-container .set-col {
+  padding: 5px 10px; }
+
+#category-select {
+  margin-top: 10px;
+  margin-right: 5px; }
+
+#prop-select {
+  height: 300px; }
+
+#prop-name {
+  height: 60px; }
+
+#prop-descrip {
+  height: 300px;
+  overflow: auto; }
+
+#prop-example {
+  height: 150px; }
+
+#prop-active-example {
+  height: 100px;
+  border-style: solid;
+  border-width: 1px;
+  margin-bottom: 10px;
+  overflow: auto; }
+
+#prop-example-selector select {
+  width: 100%; }
+
+.cat-btn btn {
+  display: block;
+  margin-top: 10px; }
+  .cat-btn btn:first {
+    margin-top: 0px; }
+
+#cat-prop form {
+  margin: 0px; }
