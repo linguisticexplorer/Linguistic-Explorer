@@ -49,18 +49,18 @@ class LingsController < GroupDataController
       if params[:commit] == "Select"
         session[:prop_id] = params[:prop_id] if params[:prop_id]
       else
-        pos = @properties.map(&:id).index(params[:prop_id].to_i) + 1
+        pos = @properties.map(&:id).index(session[:prop_id].to_i) + 1
         search_space = @properties[pos, @properties.length] + @properties[0,pos]
         if params[:commit] == "Next"
-          session[:prop_id] = search_space[0].id
+            session[:prop_id] = search_space[0].id
         elsif params[:commit] == "Next Unset"
           unset_space = @preexisting_values.map(&:property_id)
           unset_search_space = search_space.reject{|prop| unset_space.include? prop.id}
-          session[:prop_id] = unset_search_space.any? ? unset_search_space[0].id : params[:prop_id]
+          session[:prop_id] = unset_search_space.any? ? unset_search_space[0].id : session[:prop_id]
         elsif params[:commit] == "Next Uncertain"
           uncertain_space = @preexisting_values.select{|lp| lp.sureness == "revisit" || lp.sureness == "need_help"}.map(&:property_id)
           uncertain_search_space = search_space.select{|prop| uncertain_space.include? prop.id}
-          session[:prop_id] = uncertain_search_space.any? ? uncertain_search_space[0].id : params[:prop_id]
+          session[:prop_id] = uncertain_search_space.any? ? uncertain_search_space[0].id : session[:prop_id]
         end
       end
     end

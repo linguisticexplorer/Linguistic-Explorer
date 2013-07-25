@@ -23,7 +23,13 @@ $(function() {
     var data = $.get(url, function(resp) {
       $("#property-description .fluid-container").html($("#property-description .fluid-container", resp).html());
       $("#property-setter .fluid-container").html($("#property-setter .fluid-container", resp).html());
+      $("#prop-select").find(":selected").prop("selected", false);
+      var currentPropId = $("#prop-name").data("prop_id");
+      var newOption = $("#prop-select option[value=" + currentPropId + "]");
+      newOption.prop("selected", true);
     });
+    window.history.pushState(null, document.title, url);
+
   };
 
   $(window).on("click", "#cat-prop option", function(e) {
@@ -34,10 +40,13 @@ $(function() {
   $(window).on("click", "#property-selector .btn", function(e) {
     e.preventDefault();
     var val = e.target.value;
+    console.log("value");
+    console.log(val);
     if (/commit/.test(location.href)) {
       var url = location.href.replace(/commit=[^&]+/, "commit=" + val); 
     } else {
       var prop_id = $('#prop-select').val()[0];
+      console.log("property");
       console.log(prop_id);
       if (/\?.+/.test(location.href)) {
         var url = location.href + "&prop_id=" + prop_id + "&commit=" + val;  
@@ -48,6 +57,6 @@ $(function() {
       }
     }
     console.log(url);
-    reload(newURL(url));
+    reload(url);
   });
 });

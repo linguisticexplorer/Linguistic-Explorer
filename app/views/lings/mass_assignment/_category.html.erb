@@ -23,8 +23,8 @@
   <div id="cat-prop" class="fluid-row">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
       <select id="prop-select" name="prop_id" multiple="multiple">
-        <% @category.properties.each do |prop|%>
-          <option style= "color:
+        <% @properties.each do |prop|%>
+          <option id="prop-<%= prop.id %>" style= "color:
           <% if @preexisting_values.any? %>
             <% lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0] %>
             <% if lp %>
