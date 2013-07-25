@@ -43,6 +43,11 @@ $(window).ready(function(){
     changeProgressBarWidth(new_width, new_label);
     callback(quota*10);
   }
+  
+  function resetSlider(){
+    last_quota = 90;
+    $('#slider').slider("value", last_quota);
+  }
 
   function replaceLabel(newQuota){
     $('#slider_label').text(active+' Completeness: ').append($('<span>').text(newQuota+'%'));
@@ -53,7 +58,8 @@ $(window).ready(function(){
     active = $(this).text();
 
     $('#props').attr('class', 'btn btn-danger');
-    if(!last_quota) last_quota = 90;
+    if(!isFinite(last_quota)) resetSlider();
+    
     getQuotaToDisplay(last_quota / 10, replaceLabel);
   });
 
@@ -62,7 +68,8 @@ $(window).ready(function(){
     active = $(this).text();
 
     $('#lings').attr('class', 'btn btn-danger');
-    if(!isFinite(last_quota)) last_quota = 90;
+    if(!isFinite(last_quota)) resetSlider();
+    
     getQuotaToDisplay(last_quota / 10, replaceLabel);
   });
 
