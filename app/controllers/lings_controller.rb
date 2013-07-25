@@ -42,14 +42,15 @@ class LingsController < GroupDataController
     @categories = current_group.categories.at_depth(@depth)
     session[:category_id] = params[:category_id] if params[:category_id]
     @category = session[:category_id] ? Category.find(session[:category_id]) : @categories[0] 
-    @preexisting_values = @ling.lings_properties.select {|lp| @category.properties.map{|prop| prop.id }.include? lp.property_id}
+    @properties = @category.properties.order('name')
+    @preexisting_values = @ling.lings_properties.select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
     @exists = true
     if params[:prop_id]
       if params[:commit] == "Select"
         session[:prop_id] = params[:prop_id] if params[:prop_id]
       else
-        pos = @category.properties.map(&:id).index(params[:prop_id].to_i) + 1
-        search_space = @category.properties[pos, @category.properties.length] + @category.properties[0,pos]
+        pos = @properties.map(&:id).index(params[:prop_id].to_i) + 1
+        search_space = @properties[pos, @properties.length] + @properties[0,pos]
         if params[:commit] == "Next"
           session[:prop_id] = search_space[0].id
         elsif params[:commit] == "Next Unset"
@@ -71,7 +72,7 @@ class LingsController < GroupDataController
       @property = Property.find(@preexisting_values[0].property_id)
       @ling_properties = @preexisting_values.select {|lp| lp.property_id == @property.id}
     else 
-      @property = Property.find(@category.properties[0])
+      @property = Property.find(@properties[0])
       @exists = false
     end
     if @exists

@@ -1,8 +1,8 @@
+<div id="value-title" class="fluid-row">
+  <h2>Values</h2>
+</div>
 <div class="fluid-container">
   <%= form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
-    <div id="value-title" class="fluid-row">
-      <h2>Values</h2>
-    </div>
   <%= hidden_field_tag :property_id, @property.id %>
    <div id="value-select" class="fluid-row">
       <h4>Select Value</h4>
