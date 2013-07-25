@@ -2,26 +2,24 @@
   <h2>Values</h2>
 </div>
 <div class="fluid-container">
-  <%= form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post") do %>
+  <%= form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post",
+               :remote => true, 'data-type' => 'json') do %>
   <%= hidden_field_tag :property_id, @property.id %>
    <div id="value-select" class="fluid-row">
       <h4>Select Value</h4>
         <div style="max-height:200px;*height:150px;overflow-y:auto;">
           <% @property.available_values.sort.reverse.each do |value| %>
-            <div class="row-fluid">
-              <div class="span1">
-                <%= radio_button_tag "values[#{@property.id}][#{value}]", value,
-                                 @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first %>
-              </div>
-              <div class="span11">
-                <%= label_tag "values[#{@property.id}][#{value}]", value %>
-              </div>
-            </div>
+            <%= label_tag "values[#{@property.id}][#{value}]", :class => "radio" do %>
+              <%= radio_button_tag "values[#{@property.id}]",
+                                    value,
+                                    @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first %>
+              <%= value %>
+            <% end %>
           <% end %>
         </div>
       <% if current_user.admin? || current_user.administrated_groups.include?(@group) %>
-      <h5>or Add a New one</h5>
-      <%= text_field_tag "values[#{@property.id}][_new]" %>
+        <h5>or Add a New one</h5>
+        <%= text_field_tag "values[#{@property.id}][_new]" %>
       <% end %>
     </div>
     <div id="value-sureness" name="value_sureness" class="fluid-row">
@@ -44,7 +42,7 @@
 
   <div id="prop-example" class="fluid-row">
     <h4> Examples </h4>
-    <div id="prop-active-example">
+    <div id="prop-active-example" class="content-box">
       <% if @example %>
         <p>
           <%= render partial: "examples/show", object: @example %>
@@ -75,10 +73,10 @@
     <% end %>
     <div class="row-fluid">
       <div class="span6">
-        <a href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary" style="color:white;margin-top:-10px;">Create New Example</a>
+        <a href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary btn-block">Create Example</a>
       </div>
       <div class="span6">
-        <a href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success" style="color:white;margin-top:-10px;">Assign Existing Example</a>
+        <a href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success btn-block">Assign Example</a>
       </div>
     </div>
   </div>

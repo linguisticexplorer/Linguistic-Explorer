@@ -19,7 +19,7 @@
     <%end %>
   </div>
   <% end %>
-  <h4> Property </h4>
+  <h4> Properties </h4>
   <div id="cat-prop" class="fluid-row">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
       <select id="prop-select" name="prop_id" multiple="multiple">
@@ -44,7 +44,6 @@
       </select>
     </div>
     <div id="select-col" class ="row-fluid">
-      <%= submit_tag("Select", class: "btn btn-block cat-btn") %>
       <%= submit_tag("Next", class: "btn btn-primary btn-block cat-btn") %>
       <%= submit_tag("Next Unset", class: "btn btn-danger btn-block cat-btn") %>
       <%= submit_tag("Next Uncertain", class: "btn btn-warning btn-block cat-btn") %>

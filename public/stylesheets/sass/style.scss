@@ -155,65 +155,85 @@ ul.typeahead.dropdown-menu {
   }
 }
 
-#property-selector{
-  select {
-    width: 100%;
-  }
+
+#value-sureness {
+  margin-bottom: 10px;
 }
 
 #supported-entry-container {
   .set-col {
     padding: 5px 10px;
   }
-}
+  #property-description {
+    #prop-descrip {
+      height: 340px;
+      overflow: auto;
+    }
+    #prop-name {
+      height: 60px;
+    }
+    #prop-relations {
+      .content-box {
+        height: 130px;
+        b {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+  #property-selector{
+    select {
+      width: 100%;
+    }
+    #prop-select {
+      height: 300px;
+    }
+    #category-select {
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+    .cat-btn btn {
+      display: block;
+      margin-top: 10px;
 
-#category-select {
-  margin-top: 10px;
-  margin-right: 5px;
-}
-
-#prop-select {
-  height: 300px;
-}
-
-#prop-name {
-  height: 60px;
-}
-
-#prop-descrip {
-  height: 300px;
-  overflow: auto;
-}
-
-#prop-example {
-  height: 150px;
-}
-
-#prop-active-example {
-  height: 100px;
-  border-style: solid;
-  border-width: 1px;
-  margin-bottom: 10px;
-  overflow: auto ;
-}
-
-#prop-example-selector {
-  select {
-    width: 100%;
+      &:first {
+        margin-top: 0px;
+      }
+    }
+    #cat-prop {
+      form{
+        margin: 0px;
+      }
+    }
+  }
+  #property-setter {
+    #prop-example {
+      height: 150px;
+    }
+    #prop-example-selector {
+      select {
+        width: 100%;
+      }
+      .btn-block {
+        color: white;
+        margin-top: -10px;
+      }
+    }
+  }
+  .content-box {
+    height: 100px;
+    border-style: solid;
+    border-width: 1px;
+    margin-bottom: 10px;
+    overflow: auto ;
   }
 }
 
-.cat-btn btn {
-  display: block;
-  margin-top: 10px;
 
-  &:first {
-    margin-top: 0px;
-  }
-}
 
-#cat-prop {
-  form{
-    margin: 0px;
-  }
-}
+
+
+
+
+
+

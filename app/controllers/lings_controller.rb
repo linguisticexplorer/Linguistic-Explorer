@@ -27,15 +27,6 @@ class LingsController < GroupDataController
     @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
   end
 
-  def set_values
-    @ling = current_group.lings.find(params[:id])
-    @depth = @ling.depth
-    @categories = current_group.categories.at_depth(@depth)
-    @preexisting_values = @ling.lings_properties
-
-    # authorize! :update, @ling
-  end
-  
   def supported_set_values
     @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
@@ -84,54 +75,8 @@ class LingsController < GroupDataController
     # authorize! :update, @ling
   end
 
-  def submit_values
-    @ling = current_group.lings.find(params[:id])
-    stale_values = @ling.lings_properties
-
-    collection_authorize! :manage, stale_values
-
-    fresh_values = []
-    values = params.delete(:values) || []
-    values.each do |prop_id, prop_values|
-      property = current_group.properties.find(prop_id)
-
-      new_text = prop_values.delete("_new")
-      if !(new_text.blank?)
-        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, new_text)
-        fresh ||= LingsProperty.new do |lp|
-          lp.ling  = @ling
-          lp.group = current_group
-          lp.property = property
-          lp.value = new_text
-          lp.sureness = params[:value_sureness]
-        end
-        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
-        fresh_values << fresh
-      end
-
-      prop_values.each do |value, flag|
-        fresh = LingsProperty.find_by_ling_id_and_property_id_and_value(@ling.id, property.id, value)
-        fresh ||= LingsProperty.new do |lp|
-          lp.ling  = @ling
-          lp.group = current_group
-          lp.property = property
-          lp.value = value
-          lp.sureness = params[:value_sureness]
-        end
-        fresh.sureness = params[:value_sureness] if fresh.sureness != params[:value_sureness]
-        fresh_values << fresh
-      end
-    end
-
-    collection_authorize! :create, fresh_values
-
-    fresh_values.each{ |fresh| fresh.save }
-    stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) }
-
-    redirect_to set_values_group_ling_path(current_group, @ling)
-  end
-
   def supported_submit_values
+    raise(params)
     @ling = current_group.lings.find(params[:id])
     stale_values = @ling.lings_properties.find(:all, conditions: {property_id: params[:property_id]})
 
@@ -175,7 +120,10 @@ class LingsController < GroupDataController
     fresh_values.each{ |fresh| fresh.save}
     stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) } if stale_values
 
-    redirect_to supported_set_values_group_ling_path(current_group, @ling)
+    respond_to do |format|
+      format.html {redirect_to supported_set_values_group_ling_path(current_group, @ling)}
+      format.json {render json: {success: true}}
+    end
   end
 
   def new
