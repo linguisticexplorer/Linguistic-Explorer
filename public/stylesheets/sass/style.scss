@@ -214,9 +214,29 @@ ul.typeahead.dropdown-menu {
       select {
         width: 100%;
       }
-      .btn-block {
-        color: white;
-        margin-top: -10px;
+      form {
+        margin: 0px;
+      }
+    }
+    #save-container {
+      position: relative;
+    }
+    #save-overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      padding: 0px;
+      display: none;
+      text-align: center;
+      opacity: 1;
+      border: white 1px solid;
+      line-height: 30px;
+    }
+    #prop-example-selector, #prop-example-creator {
+      @media screen and (max-width: 768px) {
+        a, input {
+          margin-top: 10px;
+        }
       }
     }
   }

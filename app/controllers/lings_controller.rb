@@ -76,7 +76,52 @@ class LingsController < GroupDataController
   end
 
   def supported_submit_values
-    raise(params)
+    @ling = current_group.lings.find(params[:id])
+    fresh_vals = LingsProperty.find(:all,
+                                :conditions => {ling_id: @ling.id, property_id: params[:property_id]})
+    if fresh_vals.count > 1
+      fresh_vals.each do |val|
+        val.delete
+      end
+    elsif fresh_vals.count == 1
+      fresh = fresh_vals[0]
+    end
+
+
+    authorize! :manage, fresh if fresh
+
+    prop_id = params[:property_id]
+    prop_value = params[:value] == "value_new" ? params[:new_value] : params[:value]
+    property = current_group.properties.find(prop_id)
+
+    if fresh
+      fresh.value = prop_value
+      fresh.sureness = params[:value_sureness] if params[:value_sureness]
+    else
+      raise("dsfas")
+      fresh = LingsProperty.new do |lp|
+        lp.ling  = @ling
+        lp.group = current_group
+        lp.property = property
+        lp.value = prop_value
+        lp.sureness = params[:value_sureness] if params[:value_sureness]
+      end
+    end
+
+    authorize! :create, fresh
+
+    respond_to do |format|
+      if fresh.save!
+        format.html {redirect_to supported_set_values_group_ling_path(current_group, @ling)}
+        format.json {render json: {success: true}}
+      else
+        format.html {redirect_to supported_set_values_group_ling_path(current_group, @ling)}
+        format.json {render json: {success: false}}
+      end
+    end
+  end
+
+  def supported_submit_values_multiple
     @ling = current_group.lings.find(params[:id])
     stale_values = @ling.lings_properties.find(:all, conditions: {property_id: params[:property_id]})
 

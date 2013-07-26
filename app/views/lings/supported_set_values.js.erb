@@ -1,5 +1,8 @@
 $(function() {
   console.log("it works");
+
+  var img = "<img src='/images/loader.gif' class='loading'/>"
+
   var newURL = function(id) {
     var url = location.href
     if (/prop_id=/.test(location.href)) {
@@ -17,7 +20,6 @@ $(function() {
   };
 
   var reload = function(url) {
-    var img = "<img src='/images/loader.gif' class='loading'/>"
     $("#property-description .fluid-container").html(img);
     $("#property-setter .fluid-container").html(img);
     var data = $.get(url, function(resp) {
@@ -59,4 +61,29 @@ $(function() {
     console.log(url);
     reload(url);
   });
+
+  $(window).on("click", "#save-btn", function(e) {
+    e.preventDefault();
+    var form = $("#value-form");
+    var saveOverlay = $('#save-overlay')
+    saveOverlay.css("display", "block");
+    saveOverlay.css("background-color", "white");
+    saveOverlay.html(img);
+    $.post(form.attr("action"), form.serialize(), function(data, textStatus) {
+      saveOverlay.css("background-color", "");
+      if (data.success == true) {
+        saveOverlay.toggleClass("alert alert-success");
+        saveOverlay.html("Save Successful")
+      } else {
+        saveOverlay.toggleClass("alert alert-error");
+        saveOverlay.html("Save Unsuccessful")
+      }
+      setTimeout(function() {
+        saveOverlay.animate({opacity: 0}, 500, function() {
+          saveOverlay.removeAttr("style");
+          saveOverlay.html("");
+        });
+      }, 700);
+      }, 'json');
+  })
 });
