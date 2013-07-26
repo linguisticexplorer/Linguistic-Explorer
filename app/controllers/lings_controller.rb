@@ -1,14 +1,18 @@
 class LingsController < GroupDataController
   helper :groups
-
+ 
   def depth
     @depth = params[:depth].to_i
-    @all_lings = Hash.new
-    current_group.lings.at_depth(@depth).find_each(:batch_size => 500) do |ling| 
-      @all_lings[ling.name] = ling.id
-    end
     @lings, @params = current_group.lings.at_depth(@depth).to_a.alpha_paginate(params[:letter]){|x| x.name}
     return load_stats(@lings, params[:plain], 0)
+  end
+ 
+  def dict
+    @all_lings = Hash.new
+    current_group.lings.at_depth(params[:depth]).find_each(:batch_size => 500) do |ling| 
+      @all_lings[ling.name] = ling.id
+    end
+    render :json => @all_lings.to_json.html_safe
   end
 
   def index

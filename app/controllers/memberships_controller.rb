@@ -1,10 +1,14 @@
 class MembershipsController < GroupDataController
   def index
+    @memberships, @params = current_group.memberships.includes(:member).alpha_paginate(params[:letter]){|x| x.member.name}
+  end
+  
+  def dict
     @all_members = Hash.new
     current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
       @all_members[memb.member.name] = memb.id
     end
-    @memberships, @params = current_group.memberships.includes(:member).alpha_paginate(params[:letter]){|x| x.member.name}
+    render :json => @all_members.to_json.html_safe
   end
 
   def show

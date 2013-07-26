@@ -11,6 +11,9 @@ LinguisticExplorer::Application.routes.draw do
   root        :to => 'home#index'
 
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
+  match "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
+  match "/groups/:group_id/properties/dict" => "properties#dict"
+  match "/groups/:group_id/memberships/dict" => "memberships#dict"
 
   resources :groups do
     member do

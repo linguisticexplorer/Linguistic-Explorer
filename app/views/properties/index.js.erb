@@ -1,10 +1,13 @@
 var group = <%= current_group.to_param %>,
-    dict = <%= @all_props.to_json.html_safe %>,
-    items = [];
+     dict, items = [];
 
-$.each(dict, function(key,val) {
-  items.push(key);
-});
+    $.get(location.href + "/dict", function(data) {
+      dict = data;
+      $.each(dict, function(key, val) {
+        items.push(key);
+      });    
+    });
+
 
 $(function() {
   $('#auto_prop').typeahead({
