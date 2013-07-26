@@ -1,16 +1,15 @@
-<%= javascript_tag "
-
+<script>
   $.getScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js').done( function() {
 
-    var examples = $('#group_example_fields').val().split(\", \");
+    var examples = $('#group_example_fields').val().split(", ");
 
     function makeElement (text) {
 
-      return '<div class=\"input-prepend input-append\"><button class=\"handle btn\"><i class=\"icon-resize-vertical\"></i></button><input value=' + text + ' type=\"text\" class=\"span2\"><button class=\"delete-button btn btn-danger\"><i class=\"icon-white icon-remove\"></i></button></div>'
+      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
 
     };
     
-    if (examples != \"\") {
+    if (examples != "") {
       $.each(examples, function(i, val) {
         $('#order').append(makeElement(val));
       });
@@ -48,7 +47,8 @@
     });
 
   });
-" %>
+</script>
+
 <%= form_for(@group, :html => {:class => "form-horizontal"}) do |f| %>
     <% if @group.errors.any? %>
         <div id="error_explanation">

@@ -238,6 +238,7 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.37)
+    use_tinymce (0.0.15)
     validation_reflection (1.0.0)
     warden (1.0.6)
       rack (>= 1.0)
@@ -287,6 +288,7 @@ DEPENDENCIES
   ruby-debug19
   rvm-capistrano
   sass
+  use_tinymce
   validates_existence (= 0.5.6)!
   validation_reflection (= 1.0.0)
   will_paginate (~> 3.0)
