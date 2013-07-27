@@ -6,7 +6,6 @@ $(function() {
 	// Text and image while loading
     // TODO: Make this check somehow to see if a .js.erb file exists
     // Alterntaively, create one for every view, but not recommended
-    $.getScript(location.href);
     
     var img = "<img src='/images/loader.gif' class='loading'/>",
     once = false;

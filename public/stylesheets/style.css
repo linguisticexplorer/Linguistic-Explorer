@@ -142,6 +142,10 @@ ul.typeahead.dropdown-menu {
   width: 100%; }
 #supported-entry-container #property-setter #prop-example-selector form {
   margin: 0px; }
+#supported-entry-container #property-setter #prop-example-selector .span8 {
+  margin-left: 0px; }
+#supported-entry-container #property-setter #prop-example-selector .span4 {
+  margin-right: 0px; }
 #supported-entry-container #property-setter #save-container {
   position: relative; }
 #supported-entry-container #property-setter #save-overlay {
@@ -163,3 +167,6 @@ ul.typeahead.dropdown-menu {
   border-width: 1px;
   margin-bottom: 10px;
   overflow: auto; }
+#supported-entry-container #loader {
+  display: block;
+  margin: 0 auto; }

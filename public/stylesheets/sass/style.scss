@@ -217,6 +217,12 @@ ul.typeahead.dropdown-menu {
       form {
         margin: 0px;
       }
+      .span8 {
+        margin-left: 0px;
+      }
+      .span4 {
+        margin-right: 0px;
+      }
     }
     #save-container {
       position: relative;
@@ -246,6 +252,10 @@ ul.typeahead.dropdown-menu {
     border-width: 1px;
     margin-bottom: 10px;
     overflow: auto ;
+  }
+  #loader {
+    display: block;
+    margin: 0 auto;
   }
 }
 

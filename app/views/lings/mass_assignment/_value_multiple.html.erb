@@ -61,8 +61,8 @@
     </div>
   </div>
   <div id="prop-example-selector" class="fluid-row">
-    <div class="span8">
     <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
+    <div class="span8">
       <select id="example-select" name="example_id">
       <% if !@examples.empty? %>
         <% @examples.each do |example| %>
@@ -74,7 +74,7 @@
       </select>
     </div>
     <div class="span4 offset 1">
-      <%= submit_tag("Select", class: "btn" , style:"display:block;width:100px;") %>
+      <%= submit_tag("Select", class: "btn btn-block", id: "example-select-btn") %>
     </div>
     <% end %>
   </div>

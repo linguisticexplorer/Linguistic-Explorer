@@ -10,7 +10,7 @@ class LingsController < GroupDataController
 
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
-      current_group.lings.at_depth(depth).paginate(:page => params[:page])
+      current_group.lings.at_depth(depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
     end
     return load_stats(@lings_by_depth, params[:plain], 1)
     # return load_statedit
@@ -32,7 +32,7 @@ class LingsController < GroupDataController
     @depth = @ling.depth
     @categories = current_group.categories.at_depth(@depth)
     session[:category_id] = params[:category_id] if params[:category_id]
-    @category = session[:category_id] ? Category.find(session[:category_id]) : @categories[0] 
+    @category = session[:category_id] ? Category.find(session[:category_id]) : @categories.first
     @properties = @category.properties.order('name')
     @preexisting_values = @ling.lings_properties.select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
     @exists = true
@@ -43,15 +43,15 @@ class LingsController < GroupDataController
         pos = @properties.map(&:id).index(session[:prop_id].to_i) + 1
         search_space = @properties[pos, @properties.length] + @properties[0,pos]
         if params[:commit] == "Next"
-            session[:prop_id] = search_space[0].id
+            session[:prop_id] = search_space.first.id
         elsif params[:commit] == "Next Unset"
           unset_space = @preexisting_values.map(&:property_id)
           unset_search_space = search_space.reject{|prop| unset_space.include? prop.id}
-          session[:prop_id] = unset_search_space.any? ? unset_search_space[0].id : session[:prop_id]
+          session[:prop_id] = unset_search_space.any? ? unset_search_space.first.id : session[:prop_id]
         elsif params[:commit] == "Next Uncertain"
           uncertain_space = @preexisting_values.select{|lp| lp.sureness == "revisit" || lp.sureness == "need_help"}.map(&:property_id)
           uncertain_search_space = search_space.select{|prop| uncertain_space.include? prop.id}
-          session[:prop_id] = uncertain_search_space.any? ? uncertain_search_space[0].id : session[:prop_id]
+          session[:prop_id] = uncertain_search_space.any? ? uncertain_search_space.first.id : session[:prop_id]
         end
       end
     end
@@ -60,16 +60,16 @@ class LingsController < GroupDataController
       @property = Property.find(session[:prop_id])
       @exists = false if @ling_properties.nil?
     elsif @preexisting_values.length > 0
-      @property = Property.find(@preexisting_values[0].property_id)
+      @property = Property.find(@preexisting_values.first.property_id)
       @ling_properties = @preexisting_values.select {|lp| lp.property_id == @property.id}
     else 
-      @property = Property.find(@properties[0])
+      @property = Property.find(@properties.first)
       @exists = false
     end
     if @exists
       @examples = []
       @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
-      @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples[0]) || nil
+      @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
 
     # authorize! :update, @ling
@@ -259,4 +259,5 @@ class LingsController < GroupDataController
   def load_infos(ling)
     ling.get_infos
   end
+
 end

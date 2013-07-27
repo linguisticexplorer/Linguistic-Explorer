@@ -32,7 +32,7 @@ LinguisticExplorer::Application.routes.draw do
         get 'set_values'
         get 'supported_set_values'
         post 'supported_submit_values'
-        post 'submit_values'
+        post 'supported_submit_values_multiple'
       end
     end
 

@@ -2,7 +2,8 @@
   <h2>Property Description</h2>
 </div>
 <div class="fluid-container">
-  <div id="prop-name" class="fluid-row" data-prop_id=<%= session[:prop_id] || 0 %>>
+  <div id="prop-name" class="fluid-row" data-prop_id=<%= @property.id || 0 %>, data-ling_id=<%= @ling.id || 0 %>, 
+    data-lp_id=<%= @ling_properties[0].id if @ling_properties && @ling_properties.any? %> >
     <h4> Property Name </h4>
     <p>
       <%= property.name %>

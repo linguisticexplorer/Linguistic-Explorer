@@ -8,13 +8,15 @@ class ExamplesController < GroupDataController
   end
 
   def new
+    @ling = Ling.find(params[:ling_id]) if params[:ling_id]
+    @property = Property.find(params[:prop_id]) if params[:prop_id]
+    @lp = LingsProperty.find(params[:lp_id]) if params[:lp_id]
     @example = Example.new do |e|
       e.group = current_group
       e.creator = current_user
     end
     authorize! :create, @example
 
-    @lings = get_lings
   end
 
   def edit
