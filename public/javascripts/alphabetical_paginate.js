@@ -1,6 +1,6 @@
 $(function() {
     var once = false,
-    img = "<img src='/images/loader.gif' class='loading'/>"
+    img = "<img src='/images/loader.gif' class='loading'/>";
     
     $(document).on("click", ".pagination#alpha a", function(e) {
         var url = location.href,
