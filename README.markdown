@@ -86,7 +86,7 @@ Copy seed data to the doc/data in Terraling:
 
 To test yourself the app write in the console
 
-  `$rake`
+  `$ rake`
   
 It should run both rspec and cucumber tests.
   
