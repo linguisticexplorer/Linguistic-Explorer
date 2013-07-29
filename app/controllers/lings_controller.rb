@@ -10,7 +10,7 @@ class LingsController < GroupDataController
  
   def dict
     @all_lings = Hash.new
-    current_group.lings.at_depth(Ling.find(params[:id]).depth).find_each(:batch_size => 500) do |ling| 
+    current_group.lings.at_depth(params[:depth] || Ling.find(params[:id]).depth).find_each(:batch_size => 500) do |ling| 
       @all_lings[ling.name] = ling.id
     end
     render :json => @all_lings.to_json.html_safe
