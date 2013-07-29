@@ -6,7 +6,7 @@ class PropertiesController < GroupDataController
   end
 
   def dict
-    @all_props =  Hash.new
+    @all_props = Hash.new
     current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
       @all_props[prop.name] = prop.id
     end
@@ -14,8 +14,11 @@ class PropertiesController < GroupDataController
   end
 
   def show
+    @depth = params[:depth].to_i
     @property = current_group.properties.find(params[:id])
-    @values, @params = @property.lings_properties.includes(:ling).to_a.alpha_paginate(params[:letter]){|x| x.ling.name}
+    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
+    lings_id = lings.all.map(&:id)
+    @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
   end
 
   def new
