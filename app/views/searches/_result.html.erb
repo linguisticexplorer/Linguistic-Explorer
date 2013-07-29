@@ -1,9 +1,9 @@
 <%- parent, child = result.parent, result.child -%>
-<%= content_tag :div, search_result_attributes(result) do %>
+<%= content_tag :tr, search_result_attributes(result) do %>
     <%- parent_columns.each do |col| -%>
-      <div class="cell"><%= row_methods[col].call(parent) %></div>
+      <td><%= row_methods[col].call(parent) %></td>
     <%- end -%>
     <%- child_columns.each do |col| -%>
-      <div class="cell"><%= row_methods[col].call(child) unless child.nil? %></div>
+      <td><%= row_methods[col].call(child) unless child.nil? %></td>
     <%- end -%>
 <% end %>
