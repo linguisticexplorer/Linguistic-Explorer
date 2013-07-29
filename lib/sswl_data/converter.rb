@@ -227,7 +227,7 @@ module SswlData
         # Check if the row is the referrer to the property
         # and cache it
         cache_properties[row["example_object_id"]] ||= {
-            "lang" => "#{row["language"]}",
+            "lang" => "#{Converter.decode(row["language"])}",
             "value" => row["value"],
             "name" => row["property"]
         }
@@ -255,7 +255,7 @@ module SswlData
             "group_id" => "0",
             "example_id" => "#{row["example_object_id"]}",
             "lings_property_id" => "#{lings_prop_id}",
-            "ling_id" => "#{ling_ids[row["language"]]["id"]}"
+            "ling_id" => "#{ling_ids[Converter.decode(row["language"])]["id"]}"
         }
       end
 
@@ -312,7 +312,7 @@ module SswlData
     end
 
     def self.convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids)
-      lings_prop_id = "#{row["language"]}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
+      lings_prop_id = "#{decode(row["language"])}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
 
       # cache lings_property id
       lings_property_ids[lings_prop_id] ||= {
@@ -321,7 +321,7 @@ module SswlData
           "group_id" => "0",
           "category_id" => "0",
           "property_id" => "#{property_ids[row["property"]]["id"]}",
-          "ling_id" => "#{ling_ids[row["language"]]["id"]}"
+          "ling_id" => "#{ling_ids[decode(row["language"])]["id"]}"
       }
     end
 
@@ -359,15 +359,15 @@ module SswlData
           "id" => "#{row["id"]}",
           "name" => "Example_#{counter}",
           "group_id" => "0",
-          "ling_id" => "#{ling_ids["#{row["language"]}"]["id"]}"
+          "ling_id" => "#{ling_ids["#{decode(row["language"])}"]["id"]}"
       }
       counter+=1
     end
 
     def self.convert_ling_in(row, ling_ids)
-      ling_ids[row["language"]] ||= {
+      ling_ids[decode(row["language"])] ||= {
           "id" => "#{row["id"]}",
-          "name" => "#{row["language"]}",
+          "name" => "#{decode(row["language"])}",
           "group_id" => "0",
           "depth" => "0"
       }
@@ -423,6 +423,10 @@ module SswlData
           File.open(file, "w") {|file| file.puts new_text}
         end
       end
+    end
+
+    def self.decode(string)
+      string.nil? ? string : string.encode("cp1252").force_encoding("UTF-8")
     end
 
     def csv_for_each(key)
