@@ -24,8 +24,8 @@
   <div id="prop-relations" class="fluid-row">
     <h4>Property in other <%= current_group.ling_name_for_depth(@depth).pluralize.downcase %></h4>
     <div class="content-box">
-      <% property.lings_properties.includes(:ling).each do |lp| %>
-        <b><%= lp.ling.name %></b>: <%= lp.value %><br />
+      <% @relations.each do |lp| %>
+        <b><%= lp[0] %></b>: <%= lp[1] %><br />
       <% end %>
     </div>
   </div>

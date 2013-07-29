@@ -79,13 +79,18 @@ class LingsController < GroupDataController
       @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
       @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
+    @relations = []
+    @property.lings_properties.includes(:ling).find_each(:batch_size => 500) do |lp|
+      @relations << [lp.ling.name, lp.value]
+    end
+    @relations.sort{|x,y| x[0] <=> y[0]}
 
     # authorize! :update, @ling
   end
 
   def supported_submit_values
     @ling = current_group.lings.find(params[:id])
-    fresh_vals = LingsProperty.find(:all,
+    fresh_vals.count = LingsProperty.find(:all,
                                 :conditions => {ling_id: @ling.id, property_id: params[:property_id]})
     if fresh_vals.count > 1
       fresh_vals.each do |val|
@@ -106,7 +111,6 @@ class LingsController < GroupDataController
       fresh.value = prop_value
       fresh.sureness = params[:value_sureness] if params[:value_sureness]
     else
-      raise("dsfas")
       fresh = LingsProperty.new do |lp|
         lp.ling  = @ling
         lp.group = current_group

@@ -1,7 +1,6 @@
 $(function() {
-  console.log("it works");
 
-  var img = "<img id='loader' src='/images/loader.gif' class='loading'/>"
+  var img = "<img id='loader' src='/images/loader.gif' class='loading'/>";
   var getData = function() {
     var data = $("#prop-name");
     return {lingId: data.data("ling_id"),
@@ -10,7 +9,7 @@ $(function() {
   };
 
   var newURL = function(id) {
-    var url = location.href
+    var url = location.href;
     if (/prop_id=/.test(location.href)) {
       url = url.replace(/id=[0-9]+/, "id=" + id);   
       url = url.replace(/commit=[^\&]+/, "commit=" + "Select");   
