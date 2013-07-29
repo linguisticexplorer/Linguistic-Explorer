@@ -13,10 +13,5 @@ var group = <%= current_group.to_param %>,
             window.location.href = '/groups/' + group + '/properties/' + dict[item]; 
           }
         });
+        $('#auto_prop').attr("placeholder", "Start typing to search through properties").removeAttr('disabled');
     });
-
-
-$(function() {
-  $('#auto_prop').attr("placeholder", "Start typing to search through properties").removeAttr('disabled');
-});
-
