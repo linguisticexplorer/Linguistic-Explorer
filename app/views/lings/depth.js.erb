@@ -1,0 +1,18 @@
+var group = <%= current_group.to_param %>,
+    dict, items = [];
+
+    $.get(location.href + "/dict", function(data) {
+      dict = data;
+      $.each(dict, function(key, val) {
+        items.push(key);
+      });    
+    });
+
+$(function () {
+  $('#auto_lang').typeahead({
+    source: items,
+    updater:function (item){
+      window.location.href = '/groups/' + group + '/lings/' + dict[item]; 
+    }
+  });
+}); 

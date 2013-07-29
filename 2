@@ -19,20 +19,18 @@
       <td><%= current_group.category_name %>:</td>
       <td><%= link_to @property.category.name, [current_group, @property.category] %></td> 
     </tr>
+    <% if @property.description != nil %>
+      <tr>
+        <td>Description:</td>
+        <td><%= @property.description %></td> 
+      </tr>
+    <% end %>
+    <tr>
       <td>Created by:</td>
       <td><%= @property.creator ? @property.creator.name : "Unknown user" %></td> 
     </tr>
   </p>
 </table>
-
-<% if @property.description != nil && @property.description != "" %>
-  <div class="row">
-    <h3>Description</h3>
-    <div class="span11 text-justify">
-      <%= @property.description.html_safe %> 
-    </div>
-  </div>
-<% end %>
 
 <br />
 

@@ -1,16 +1,4 @@
-<%= javascript_tag "var items = #{ @all_props.map{|x| x.name}
-.to_json },
-   group = #{ current_group.to_param },
-   dict = #{ (Hash[@all_props.map {|x| [x.name, x.id]}]).to_json };
-$(function() {
-  $('#auto_prop').typeahead({
-     source: items,
-     updater:function (item){
-        window.location.href = '/groups/' + group + '/properties/' + dict[item]; 
-     }
-  });
-});
-" %>
+<%= javascript_tag "$.getScript(location.href);" %>
 
 <% page_heading current_group.property_name.pluralize %>
 
@@ -25,7 +13,6 @@ $(function() {
 </div>
 <div id="pagination_table">
   <%= render :partial => 'properties/index_partial' %>
-</div>
 </div>
 <% if can? :create, Property.new{|p| p.group = current_group} %>
   <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn" %>

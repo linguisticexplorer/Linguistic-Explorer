@@ -1,11 +1,17 @@
 <% page_heading "Edit Group" %>
 
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
-
 <h1>Editing group</h1>
+
+<%= link_to groups_path, :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<%= link_to 'Show', @group, :class => "btn" %> 
+<br /><br />
 
 <%= render 'form' %>
 
-<%= link_to 'Show', @group %> |
-<%= link_to 'Back', groups_path %>
+<br />
+<%= link_to groups_path, :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<%= link_to 'Show', @group, :class => "btn" %> 

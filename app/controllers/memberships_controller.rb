@@ -3,6 +3,14 @@ class MembershipsController < GroupDataController
     @all_members = current_group.memberships
     @memberships, @params = @all_members.includes(:member).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
   end
+  
+  def dict
+    @all_members = Hash.new
+    current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
+      @all_members[memb.member.name] = memb.id
+    end
+    render :json => @all_members.to_json.html_safe
+  end
 
   def show
     @membership = current_group.memberships.find(params[:id])

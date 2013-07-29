@@ -52,18 +52,18 @@ module ApplicationHelper
     when 1
       result += "<tr>
         <th>Ling</th>
-        <th>Description</th>
+        <th class='small-col'>Description</th>
         <th>Values</th>
-        <th class='medium-comment'>Comment</th>
+        <th class='medium-col'>Comment</th>
         </tr>
         <tr>
         <td>Afrikaans</td>
-        <td>Test example of Afrikaans language</td>
+        <td class='small-col'>Test example of Afrikaans language</td>
         <td class='align-left'>
         Die studente lees
         <br />the student.PL read
         <br />The students are reading </td>
-        <td class='medium-comment'>This is the required order in main clauses, which are necessarily V2. It is also the order found in unmodified embedded clauses (i.e. dat die studente lees). Where modifiers are present, main and embedded clauses differ, though (Die studente lees gretig v</td>
+        <td class='medium-col'>This is the required order in main clauses, which are necessarily V2. It is also the order found in unmodified embedded clauses (i.e. dat die studente lees). Where modifiers are present, main and embedded clauses differ, though (Die studente lees gretig v</td>
         </tr>"
     end
     return (result + "</table>").html_safe

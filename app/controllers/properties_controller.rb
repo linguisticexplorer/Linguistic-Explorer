@@ -1,10 +1,16 @@
 class PropertiesController < GroupDataController
   def index
-    # Added Eager Loading
-    @all_props = current_group.properties.includes(:category)
-    @properties = @all_props.paginate(:page => params[:page], :order =>"name")
+    @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
     @properties.map { |prop| prop.get_infos } unless params[:plain]
     @properties
+  end
+
+  def dict
+    @all_props =  Hash.new
+    current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
+      @all_props[prop.name] = prop.id
+    end
+    render :json => @all_props.to_json.html_safe
   end
 
   def show

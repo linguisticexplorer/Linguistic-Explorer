@@ -1,54 +1,21 @@
-<script>
-  $.getScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js').done( function() {
+<%= javascript_tag "
 
-    var examples = $('#group_example_fields').val().split(", ");
+  $.getScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
 
-    function makeElement (text) {
+  $(function() {
 
-      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
+    var examples = $('#group_example_fields').val().split(', ');
 
-    };
-    
-    if (examples != "") {
-      $.each(examples, function(i, val) {
-        $('#order').append(makeElement(val));
-      });
-    }
-    else {
-      $('#order').append(makeElement('text'));
-    }
-
-    $('#order').sortable({handle:'.handle', cancel: ''}).disableSelection().bind('DOMSubtreeModified change', function (event,ui){
-      var values = $('#order div input').map(function () { return $(this).val(); }).get().join(', ');
-      if (values) {
-        $('#group_example_fields').val(values);
-      }
-      else {
-        $('#group_example_fields').val('text')
-      }
-      
+    $.each(examples, function(i, val) {
+      $('#order').append('<li>' + val + '</li>');
     });
-    
-    $('.delete-button').live('click', function (e) {
-      e.preventDefault(); 
 
-      if(confirm('Are you sure you want delete the element?')) {
-        $(this).parent().remove();
-      } 
+    $('#order').sortable().disableSelection();
 
-    }); 
-
-    $('#append-button').bind('click', function () {
-      var text = $('#append').val();
-      if(text) {
-        $('#order').append(makeElement(text));
-        $('#append').val('');
-      };
-    });
+    console.log(examples);
 
   });
-</script>
-
+" %>
 <%= form_for(@group, :html => {:class => "form-horizontal"}) do |f| %>
     <% if @group.errors.any? %>
         <div id="error_explanation">
@@ -125,18 +92,12 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label" %>
-      <div class="controls" id="row-fix">
-        <div class="row">
-          <div id="order" class="span4"></div>
-        </div>
+      <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)", :class => "control-label" %>
+      <div class="controls">
         <%= f.hidden_field :example_fields %>
-          <div id="add" class="input-append span4">
-            <input class="span2" id="append" type="text" placeholder="Type to add field">
-            <button class="btn btn-success" type="button" id="append-button"><i class="icon-plus icon-white"></i></button>
-          </div>
-        </div>
+        <ul id="order"></ul>
       </div>
+    </div>
 
     <div class="control-group">
       <%= f.label :depth_maximum, "Depth Maximum", :class => "control-label" %>

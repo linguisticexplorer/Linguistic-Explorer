@@ -2,7 +2,8 @@
 // This file is automatically included by javascript_include_tag :defaults
 /* On DOM loaded */
 $(function() {
-  // PAGINATION CODE
+
+    // PAGINATION CODE
 	// Text and image while loading
     // TODO: Make this check somehow to see if a .js.erb file exists
     // Alterntaively, create one for every view, but not recommended
