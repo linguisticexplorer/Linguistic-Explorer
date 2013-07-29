@@ -1,5 +1,7 @@
 .show-table td, .show-table th {
   text-align: center; }
+.show-table.ling-table {
+  width: 100%; }
 .show-table.description-table {
   width: 40em; }
 .show-table td:first-child {
@@ -103,9 +105,6 @@ input.autocomplete {
   height: 40px;
   position: relative;
   right: 30px; }
-
-ul.typeahead.dropdown-menu {
-  width: inherit; }
 
 .control-group .typeahead.dropdown-menu {
   width: inherit; }
@@ -217,3 +216,17 @@ input.autocomplete {
   height: auto;
   position: static;
   right: 0; }
+
+input.autocomplete.big {
+  height: 40px;
+  position: relative;
+  right: 30px; }
+
+#search_name {
+  width: 70%; }
+  @media screen and (max-width: 979px) and (min-width: 768px) {
+    #search_name {
+      width: 40%; } }
+
+fieldset {
+  width: 100%; }

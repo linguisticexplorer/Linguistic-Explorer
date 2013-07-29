@@ -13,7 +13,7 @@
 <br /><br />
 <div class = "row-fluid">
   <div class="span6">
-<table class="show-table description-table table table-bordered table-hover table-striped">
+<table class="show-table table table-bordered table-hover table-striped ling-table">
 <p>
   <tr>
     <td><b>Type:</b></td> 
@@ -55,18 +55,19 @@
 </p>
 </table>
   </div>
-  <div class="span6 border" style="padding:5px 15px;">
+  <div class="span6 border" style="padding:5px 15px 20px 15px;">
   <h3>Analysis</h3>
-    <h5>Compare properties <%= @ling.name %> to</h5>
+    <h5>Compare <%= @ling.name %> properties to</h5>
     <div class="row-fluid">
+      <div class="span12">
         <input type="text" id="auto_compare" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query" disabled />
+      </div>
     </div>
 </div>
-
+</div>
 <br />
 
 <div class="values" id="pagination_table">
-  <h3><%= current_group.lings_property_name.pluralize %></h3>
   <div class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
     <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
