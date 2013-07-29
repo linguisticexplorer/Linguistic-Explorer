@@ -1,3 +1,5 @@
+<%= javascript_tag "$.getScript('/javascripts/typeahead.js');" %>
+
 <%= form_for([current_group, @example], :html => {:class => "form-horizontal"}) do |f| %>
 
   <% if @example.errors.any? %>
@@ -22,7 +24,23 @@
   <div class="control-group">
     <%= f.label current_group.ling0_name, :class => "control-label" %>
     <div class="controls">
-      <%#<%= f.collection_select :ling_id, @lings[:depth_0] + @lings[:depth_1], :id, :name, :prompt => 'Select one or this for "None"' %>%>
+      <%= text_field_tag "ling_id", "", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete", :autocomplete => "off", :disabled => "true" %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label current_group.ling0_name, :class => "control-label" %>
+    <div class="controls">
+      <%= text_field_tag "prop_id", "", :id => "auto_prop", :placeholder => "Loading...", :class => "input-block-level autocomplete", :autocomplete => "off", :disabled => "true" %>
+    </div>
+  </div>
+
+  <div class="control-group">
+    <%= f.label "%s-Property" % current_group.ling0_name, :class => "control-label" %>
+    <div class="controls">
+      <div id="lp-status" class="alert">
+        Not Found (Enter Ling and Property Name)
+      </div>
     </div>
   </div>
 

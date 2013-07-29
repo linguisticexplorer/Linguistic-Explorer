@@ -1,7 +1,7 @@
 class MembershipsController < GroupDataController
   def index
     @all_members = current_group.memberships
-    @memberships, @params = @all_members.includes(:member).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
+    @memberships, @params = @all_members.includes(:member).to_a.alpha_paginate(params[:letter]){|membership| membership.member.name}
   end
   
   def dict

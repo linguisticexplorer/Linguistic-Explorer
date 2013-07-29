@@ -21,6 +21,9 @@ class ExamplesController < GroupDataController
 
   def edit
     @example = current_group.examples.find(params[:id])
+    @ling = Ling.find(params[:ling_id]) if params[:ling_id]
+    @property = Property.find(params[:prop_id]) if params[:prop_id]
+    @lp = LingsProperty.find(params[:lp_id]) if params[:lp_id]
     authorize! :update, @example
 
     @lings = get_lings

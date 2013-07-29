@@ -107,6 +107,9 @@ input.autocomplete {
 ul.typeahead.dropdown-menu {
   width: inherit; }
 
+.control-group .typeahead.dropdown-menu {
+  width: inherit; }
+
 .will-paginate .pagination {
   height: 35px; }
 
@@ -202,3 +205,15 @@ div.text-justify {
 #row-fix {
   position: relative;
   left: -30px; }
+
+form #lp-status {
+  margin: 0px;
+  height: inherit;
+  width: 313px; }
+form input {
+  width: 350px; }
+
+input.autocomplete {
+  height: auto;
+  position: static;
+  right: 0; }
