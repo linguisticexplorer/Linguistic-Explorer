@@ -7,7 +7,6 @@ var group = <%= current_group.to_param %>,
         items.push(key);
       });    
     }).done( function() {
-        $('ul.typeahead').width($(this).parent.width()); 
         $('#auto_lang').typeahead({
           source: items,
           updater:function (item){

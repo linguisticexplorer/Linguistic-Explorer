@@ -106,7 +106,7 @@ input.autocomplete {
   position: relative;
   right: 30px; }
 
-.control-group .typeahead.dropdown-menu {
+ul.typeahead.dropdown-menu {
   width: inherit; }
 
 .will-paginate .pagination {
@@ -230,3 +230,6 @@ input.autocomplete.big {
 
 fieldset {
   width: 100%; }
+
+div.relative {
+  position: relative; }
