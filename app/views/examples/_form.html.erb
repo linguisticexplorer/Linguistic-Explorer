@@ -26,6 +26,15 @@
     </div>
   </div>
 
+  <div class="control-group">
+    <%= f.label "%s-Property" % current_group.ling0_name, :class => "control-label" %>
+    <div class="controls">
+      <div id="lp-status" class="alert">
+        Not Found (Enter Ling and Property Name)
+      </div>
+    </div>
+  </div>
+
   <% @example.storable_keys.each do |key| %>
     <div class="control-group">
       <%= label :stored_values, key, :class => "control-label" %>
