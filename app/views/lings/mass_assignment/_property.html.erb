@@ -1,9 +1,9 @@
+<div id="prop-title" class="fluid-row">
+  <h2>Property Description</h2>
+</div>
 <div class="fluid-container">
-  <div id="prop-title" class="fluid-row">
-    <h2>Property Description</h2>
-  </div>
-
-  <div id="prop-name" class="fluid-row">
+  <div id="prop-name" class="fluid-row" data-prop_id=<%= @property.id || 0 %>, data-ling_id=<%= @ling.id || 0 %>, 
+    data-lp_id=<%= @ling_properties[0].id if @ling_properties && @ling_properties.any? %> >
     <h4> Property Name </h4>
     <p>
       <%= property.name %>
@@ -21,39 +21,13 @@
     </p>
   </div>
 
-  <div id="prop-example" class="fluid-row">
-    <h4> Examples </h4>
-    <div id="prop-active-example">
-      <% if @example %>
-        <p>
-          <%= render partial: "examples/show", object: @example %>
-        </p>
-      <% else %>
-        <p>
-          No example selected
-        </p>
+  <div id="prop-relations" class="fluid-row">
+    <h4>Property in other <%= current_group.ling_name_for_depth(@depth).pluralize.downcase %></h4>
+    <div class="content-box">
+      <% @relations.each do |lp| %>
+        <b><%= lp[0] %></b>: <%= lp[1] %><br />
       <% end %>
     </div>
-  </div>
-  <div id="prop-example-selector" class="fluid-row">
-    <div class="span8">
-    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
-      <select id="example-select" name="example_id">
-      <% if !@examples.empty? %>
-        <% @examples.each do |example| %>
-          <option value=<%= example.id %>> <%= example.name %> </option>
-        <% end %>
-      <% else %>
-        <option> No examples available </option>
-      <% end %>
-      </select>
-    </div>
-    <div class="span4">
-      <%= submit_tag("Select", class: "btn" , style:"display:block;width:100px;") %>
-    </div>
-    <% end %>
-    <a href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary" style="color:white;margin-top:-10px;">Create New Example</a>
-    <a href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success" style="color:white;margin-top:-10px;">Assign Existing Example</a>
   </div>
 </div>
 

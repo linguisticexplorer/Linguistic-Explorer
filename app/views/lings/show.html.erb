@@ -1,3 +1,4 @@
+<%= javascript_tag "$.getScript(location.href);" %>
 <% page_heading @ling.grouped_name %>
 <h1><%= @ling.grouped_name %> <%= @ling.name %></h1>
 <%= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do %>
@@ -52,6 +53,16 @@
 </p>
 </table>
 
+<div class="row">
+  <h3>Analysis</h3>
+  <div>
+    <h4>Compare to</h4>
+      <div class="margin span5">
+        <input type="text" id="auto_compare" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query" disabled />
+      </div>
+  </div>
+</div>
+
 <br />
 
 <div class="values" id="pagination_table">
@@ -95,9 +106,7 @@
   <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
 <% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
     <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
-<% end %>
-<% if can? :edit, @ling %>
+<% end %> <% if can? :edit, @ling %>
     <%= link_to 'Edit', edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>

@@ -1,4 +1,0 @@
-<div id="<%=old_category.name.gsub(' ', '') %>" class="accordion">
-  <h2><%= old_category.name %></h2>
-  <%= render :partial => "lings/mass_assignment/old_property", :collection => old_category.properties, :inline => true, :locals => { :category => old_category }  %>
-</div>
