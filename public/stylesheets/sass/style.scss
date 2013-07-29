@@ -151,6 +151,9 @@ input.autocomplete {
 ul.typeahead.dropdown-menu {
   width:inherit;
 }
+.control-group .typeahead.dropdown-menu {
+  width:inherit;
+}
 
 .will-paginate {
   .pagination {
@@ -271,7 +274,8 @@ div.text-justify {
 }
 
 .olex {
-  margin-top:8px; list-style-position:inside
+  margin-top:8px; 
+  list-style-position:inside;
 }
 
 .ulex {
@@ -304,4 +308,10 @@ form {
   input {
     width: 350px;
   }
+}
+
+input.autocomplete {
+  height: auto;
+  position: static;
+  right: 0;
 }

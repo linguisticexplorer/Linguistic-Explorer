@@ -13,6 +13,7 @@ LinguisticExplorer::Application.routes.draw do
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
   match "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
   match "/groups/:group_id/lings/:id/dict" => "lings#dict"
+  match "/groups/:group_id/lings/dict" => "lings#dict"
   match "/groups/:group_id/properties/dict" => "properties#dict"
   match "/groups/:group_id/memberships/dict" => "memberships#dict"
 

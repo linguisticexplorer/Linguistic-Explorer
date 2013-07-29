@@ -107,6 +107,9 @@ input.autocomplete {
 ul.typeahead.dropdown-menu {
   width: inherit; }
 
+.control-group .typeahead.dropdown-menu {
+  width: inherit; }
+
 .will-paginate .pagination {
   height: 35px; }
 
@@ -209,3 +212,8 @@ form #lp-status {
   width: 313px; }
 form input {
   width: 350px; }
+
+input.autocomplete {
+  height: auto;
+  position: static;
+  right: 0; }
