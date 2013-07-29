@@ -1,0 +1,20 @@
+var group = <%= current_group.to_param %>,
+    dict, items = [], id = <%= @ling.id %>;
+
+    $.get(location.href.replace(/\?[^\?]*$/, "") + "/dict", function(data) {
+      dict = data;
+      $.each(dict, function(key, val) {
+        items.push(key);
+      });    
+    }).done( function() {
+        $('#auto_compare').typeahead({
+          source: items,
+          updater:function (item){
+            window.location.href = '/groups/' + group + '/searches/preview?utf8=%E2%9C%93&search[include][ling_0]=1&search[include][property_0]=1&search[include][value_0]=1&search[include][example_0]=1&search[lings][0][]=' + id + '&search[lings][0][]=' + dict[item] + '&search[ling_keywords][0]=&search[property_keywords][1]=&search[property_set][1]=any&search[lings_property_set][1]=any&search[example_fields][0]=description&search[example_keywords][0]=&search[javascript]=1'; 
+          }
+        });
+    });
+    
+$(function() {
+  $('#auto_compare').attr("placeholder", "Start typing to search through languages").removeAttr('disabled');
+});

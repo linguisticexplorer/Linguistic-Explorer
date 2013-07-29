@@ -1,11 +1,11 @@
 --- 
-user: /home/ling/Documents/terraling_seed/SSWL/User.csv
-category: /home/ling/Documents/terraling_seed/SSWL/Category.csv
-example: /home/ling/Documents/terraling_seed/SSWL/Example.csv
-examples_lings_property: /home/ling/Documents/terraling_seed/SSWL/ExamplesLingsProperty.csv
-group: /home/ling/Documents/terraling_seed/SSWL/Group.csv
-ling: /home/ling/Documents/terraling_seed/SSWL/Ling.csv
-lings_property: /home/ling/Documents/terraling_seed/SSWL/LingsProperty.csv
-membership: /home/ling/Documents/terraling_seed/SSWL/Membership.csv
-property: /home/ling/Documents/terraling_seed/SSWL/Property.csv
-stored_value: /home/ling/Documents/terraling_seed/SSWL/StoredValue.csv
+user: /path/to/csv/User.csv
+category: /path/to/csv/Category.csv
+example: /path/to/csv/Example.csv
+examples_lings_property: /path/to/csv/ExamplesLingsProperty.csv
+group: /path/to/csv/Group.csv
+ling: /path/to/csv/Ling.csv
+lings_property: /path/to/csv/LingsProperty.csv
+membership: /path/to/csv/Membership.csv
+property: /path/to/csv/Property.csv
+stored_value: /path/to/csv/StoredValue.csv
