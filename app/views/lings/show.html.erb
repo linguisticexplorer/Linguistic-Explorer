@@ -83,7 +83,7 @@
       <% @values.each do |value| %>
         <tr>
           <td><%=	link_to value.property.name, [current_group, value.property] %></td>
-          <td><%= link_to value.value, [current_group, value] %></td>
+          <td><%= value.value %></td>
           <% elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id) %>
           <td>
             <% elps.each do |elp| %>
