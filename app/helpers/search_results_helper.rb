@@ -35,7 +35,7 @@ module SearchResultsHelper
 
   def search_result_attributes(entry)
     {}.tap do |attrs|
-      attrs[:class] = "search_result row"
+      attrs[:class] = "search_result"
       attrs["data-parent-value"] = entry.parent.id
       attrs["data-child-value"]  = entry.child.id unless entry.child.nil?
     end

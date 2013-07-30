@@ -13,8 +13,5 @@ var group = <%= current_group.to_param %>,
             window.location.href = '/groups/' + group + '/memberships/' + dict[item]; 
           }
         });
+        $('#auto_memb').attr("placeholder", "Start typing to search through memberships").removeAttr('disabled');
     });
-    
-$(function() {
-  $('#auto_memb').attr("placeholder", "Start typing to search through memberships").removeAttr('disabled');
-});

@@ -8,6 +8,9 @@ $link-color: #005580;
   td, th {
     text-align: center;
   }
+  &.ling-table {
+    width:100%;
+  }
   &.description-table {
     width: 40em;
   }
@@ -147,7 +150,6 @@ input.autocomplete {
   position: relative;
   right: 30px;
 }
-
 ul.typeahead.dropdown-menu {
   width:inherit;
 }
@@ -321,4 +323,26 @@ input.autocomplete {
 .search-query {
   box-sizing:border-box;
   -moz-box-sizing:border-box; /* Firefox */
+
+input.autocomplete.big {
+  height: 40px;
+  position:relative;
+  right: 30px;
+}
+
+#search_name {
+  width:70%;
+  @media screen and (max-width: 979px) and (min-width: 768px) {
+    & {
+      width: 40%;
+    }
+  }
+}
+
+fieldset {
+  width: 100%;
+}
+
+div.relative {
+  position: relative;
 }

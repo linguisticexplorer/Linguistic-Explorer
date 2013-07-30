@@ -11,7 +11,9 @@
    <%= link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
 <br /><br />
-<table class="show-table description-table table table-bordered table-hover table-striped">
+<div class = "row-fluid">
+  <div class="span6">
+<table class="show-table table table-bordered table-hover table-striped ling-table">
 <p>
   <tr>
     <td><b>Type:</b></td> 
@@ -52,21 +54,20 @@
   </tr>
 </p>
 </table>
-
-<div class="row">
-  <h3>Analysis</h3>
-  <div>
-    <h4>Compare to</h4>
-      <div class="margin span5">
+  </div>
+  <div class="span6 border" style="padding:5px 15px 20px 15px;">
+    <h3>Analysis</h3>
+    <h5>Compare <%= @ling.name %> properties to</h5>
+    <div class="row-fluid">
+      <div class="span12 relative">
         <input type="text" id="auto_compare" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query" disabled />
       </div>
-  </div>
+    </div>
 </div>
-
+</div>
 <br />
 
 <div class="values" id="pagination_table">
-  <h3><%= current_group.lings_property_name.pluralize %></h3>
   <div class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
     <%= will_paginate @values, renderer: BootstrapPagination::Rails %>

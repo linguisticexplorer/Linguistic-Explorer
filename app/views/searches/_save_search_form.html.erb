@@ -13,10 +13,14 @@
         </div>
       <% end %>
 
-      <%= f.text_field :name, :placeholder => "Enter name" %>
+      <div class="row-fluid">
+        <div class="span12 input-append">
+          <%= f.text_field :name, :placeholder => "Enter name", class: "search-input" %>
+          <%= f.submit "Save", :class => "btn" %>
+        </div>
+      </div>
       <%= f.hidden_field :query_json %>
       <%= f.hidden_field :result_groups_json %>&nbsp;
-      <%= f.submit "Save", :class => "btn" %>
     <%- end -%>
   <%- end -%>
 <%- end -%>

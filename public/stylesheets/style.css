@@ -1,5 +1,7 @@
 .show-table td, .show-table th {
   text-align: center; }
+.show-table.ling-table {
+  width: 100%; }
 .show-table.description-table {
   width: 40em; }
 .show-table td:first-child {
@@ -224,3 +226,20 @@ input.autocomplete {
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   /* Firefox */ }
+
+input.autocomplete.big {
+  height: 40px;
+  position: relative;
+  right: 30px; }
+
+#search_name {
+  width: 70%; }
+  @media screen and (max-width: 979px) and (min-width: 768px) {
+    #search_name {
+      width: 40%; } }
+
+fieldset {
+  width: 100%; }
+
+div.relative {
+  position: relative; }
