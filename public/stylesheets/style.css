@@ -101,6 +101,9 @@ body.full_width #main h2 {
 a.btn.btn-inverse i.icon-white.icon-arrow-left {
   margin-top: 2px; }
 
+a i.icon-remove.shift-down {
+  margin-top: 2px; }
+
 input.autocomplete {
   height: 40px;
   position: relative;
@@ -233,3 +236,21 @@ div.relative {
 
 div.relative ul.typeahead {
   width: 100%; }
+
+div#languages-container.hidden1 {
+  display: none; }
+
+#selected-langs {
+  overflow: auto;
+  height: 100px; }
+
+#analysis-container {
+  padding: 5px 15px 20px 15px;
+  position: relative;
+  top: -50px; }
+  @media screen and (max-width: 768px) {
+    #analysis-container {
+      top: 0px; } }
+
+#analysis {
+  padding-bottom: 14px; }

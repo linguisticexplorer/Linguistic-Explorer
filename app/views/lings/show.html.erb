@@ -13,57 +13,68 @@
 <br /><br />
 <div class = "row-fluid">
   <div class="span6">
-<table class="show-table table table-bordered table-hover table-striped ling-table">
-<p>
-  <tr>
-    <td><b>Type:</b></td> 
-    <td><%= current_group.ling_name_for_depth(@ling.depth) %></td>
-  </tr>
-
-  <tr>
-    <td><b>Name:</b></td> 
-    <td><%= @ling.name %> </td>
-  </tr>
-
-  <% @ling.storable_keys.each do |key| %>
-    <% if @ling.stored_value(key) != "" %>
+    <table class="show-table table table-bordered table-hover table-striped ling-table">
+    <p>
       <tr>
-        <td><b><%= key.humanize %>:</b></td> 
-        <td><%= @ling.stored_value(key) %></td>
+        <td><b>Type:</b></td> 
+        <td><%= current_group.ling_name_for_depth(@ling.depth) %></td>
       </tr>
-    <% end %>
-  <% end %>
 
-  <% if @ling.depth == 1 && @ling.parent %>
-    <tr>
-      <td><b><%= current_group.ling0_name %>:</b></td> 
-      <td><%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> </td>
-    </tr>
-  <% elsif @ling.depth == 0 && !@ling.children.empty?%>
-    <tr>
-    <td><b><%= current_group.ling1_name.pluralize %>:</b></td> 
-    <td><% @ling.children.each do |child| %>
-      <%= link_to child.name, group_ling_path(current_group, child) %> </br>
-    <% end %></td>
-    </tr>
-  <% end %>
+      <tr>
+        <td><b>Name:</b></td> 
+        <td><%= @ling.name %> </td>
+      </tr>
 
-  <tr>
-    <td><b>Created by:</b></td> 
-    <td><%= @ling.creator ? @ling.creator.name : "Unknown user" %> </td>
-  </tr>
-</p>
-</table>
+      <% @ling.storable_keys.each do |key| %>
+        <% if @ling.stored_value(key) != "" %>
+          <tr>
+            <td><b><%= key.humanize %>:</b></td> 
+            <td><%= @ling.stored_value(key) %></td>
+          </tr>
+        <% end %>
+      <% end %>
+
+      <% if @ling.depth == 1 && @ling.parent %>
+        <tr>
+          <td><b><%= current_group.ling0_name %>:</b></td> 
+          <td><%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> </td>
+        </tr>
+      <% elsif @ling.depth == 0 && !@ling.children.empty?%>
+        <tr>
+        <td><b><%= current_group.ling1_name.pluralize %>:</b></td> 
+        <td><% @ling.children.each do |child| %>
+          <%= link_to child.name, group_ling_path(current_group, child) %> </br>
+        <% end %></td>
+        </tr>
+      <% end %>
+
+      <tr>
+        <td><b>Created by:</b></td> 
+        <td><%= @ling.creator ? @ling.creator.name : "Unknown user" %> </td>
+      </tr>
+    </p>
+    </table>
   </div>
-  <div class="span6 border" style="padding:5px 15px 20px 15px;">
-    <h3>Analysis</h3>
-    <h5>Compare <%= @ling.name %> properties to</h5>
+  <div class="span6 border" id="analysis-container">
     <div class="row-fluid">
-      <div class="span12 relative">
+      <div class="span12 relative" id="analysis">
+        <h3>Quick Analysis</h3>
+        <h5>Add languages to compare with <%= @ling.name %></h5>
         <input type="text" id="auto_compare" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query" disabled />
       </div>
+      <div class="span5 hidden1 search-buttons" id="languages-container">
+        Selected languages (<a href="/Clear All" class="remove-langs">clear all</a>)
+        <ul id="selected-langs"></ul>
+      </div>
     </div>
-</div>
+    <div class="row-fluid relative">
+      <div class="span12 search-buttons" id="compare-buttons">
+        <a href="#" class="btn btn-primary" id="compare-langs" disabled>Compare Properties</a>&nbsp;&nbsp;
+        <a href="#" class="btn btn-primary" id="compare-tree" disabled>Similarity Tree</a>&nbsp;&nbsp;
+        <a href="#" class="btn btn-primary" id="compare-radial" disabled>Radial Similarity Tree</a>
+      </div>
+    </div>
+  </div>
 </div>
 <br />
 
