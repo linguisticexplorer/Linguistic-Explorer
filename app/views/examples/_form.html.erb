@@ -22,24 +22,24 @@
   </div>
 
   <div class="control-group">
-    <%= f.label current_group.ling0_name, :class => "control-label" %>
+    <%= label_tag "auto_ling", current_group.ling0_name, :class => "control-label" %>
     <div class="controls">
-      <%= text_field_tag "ling_id", "", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete", :autocomplete => "off", :disabled => "true" %>
+      <%= text_field_tag "ling_id", "", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete search-query", :autocomplete => "off", :disabled => "true" %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= f.label current_group.ling0_name, :class => "control-label" %>
+    <%= label_tag "auto_prop", current_group.property_name, :class => "control-label" %>
     <div class="controls">
-      <%= text_field_tag "prop_id", "", :id => "auto_prop", :placeholder => "Loading...", :class => "input-block-level autocomplete", :autocomplete => "off", :disabled => "true" %>
+      <%= text_field_tag "prop_id", "", :id => "auto_prop", :placeholder => "Loading...", :class => "search-query autocomplete", :autocomplete => "off", :disabled => "true" %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= f.label "%s-Property" % current_group.ling0_name, :class => "control-label" %>
+    <%= label_tag "lp-status", "%s-Property" % current_group.ling0_name, :class => "control-label" %>
     <div class="controls">
       <div id="lp-status" class="alert">
-        Not Found (Enter Ling and Property Name)
+        Not Found (Enter Ling and Property)
       </div>
     </div>
   </div>

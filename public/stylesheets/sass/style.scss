@@ -151,9 +151,6 @@ input.autocomplete {
 ul.typeahead.dropdown-menu {
   width:inherit;
 }
-.control-group .typeahead.dropdown-menu {
-  width:inherit;
-}
 
 .will-paginate {
   .pagination {
@@ -302,11 +299,16 @@ div.text-justify {
 form {
   #lp-status {
     margin: 0px;
-    height: inherit;
-    width: 313px;
+    height: 40px;
   }
-  input {
-    width: 350px;
+  input[type="text"], .alert {
+    width: 300px;
+    height: 30px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+  }
+  .typeahead.dropdown-menu {
+    width: 300px;
   }
 }
 
@@ -314,4 +316,9 @@ input.autocomplete {
   height: auto;
   position: static;
   right: 0;
+}
+
+.search-query {
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
 }

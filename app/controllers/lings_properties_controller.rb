@@ -16,4 +16,19 @@ class LingsPropertiesController < GroupDataController
 
     redirect_to(group_lings_properties_url(current_group))
   end
+
+  def exists
+    if params[:ling_name] && params[:prop_name]
+      ling = Ling.find(params[:ling_name])
+      prop = Property.find(params[:prop_name])
+      lp = current_group.lings_properties.find_by_ling_id_and_property_id(ling.id, prop.id)
+      if lp
+        render :json => {exists: true, value: lp.value} 
+      else
+        render :json => {exists: false}
+      end
+    else
+    render :json => {error: "Missing ling_name or prop_name in params"}
+    end
+  end
 end
