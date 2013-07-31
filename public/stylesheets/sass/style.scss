@@ -352,6 +352,18 @@ div#languages-container.hidden1 {
   height:100px;
 }
 
+#compare-buttons a{
+  margin-right: 2px;
+  @media screen and (max-width: 1210px) and (min-width: 768px), 
+  screen and (max-width: 605px) {
+    & {
+      display: block;
+      clear: both;
+      margin: 6px 0px;
+    }
+  } 
+}
+
 #analysis-container {
   padding:5px 15px 20px 15px;
   position:relative;

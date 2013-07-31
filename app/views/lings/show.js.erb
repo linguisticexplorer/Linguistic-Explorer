@@ -34,19 +34,19 @@ var group = <%= current_group.to_param %>,
 
     $(window).on('click', '#compare-langs', function(e) {
       if (! $(this).attr("disabled")) {
-        window.location.href = searchQuery();
+        window.open(searchQuery());
       }
     });
 
     $(window).on('click', '#compare-tree', function() {
       if (! $(this).attr("disabled")) {
-        window.location.href = searchQuery('&search[advanced_set][clustering]=hamming'); 
+        window.open(searchQuery('&search[advanced_set][clustering]=hamming')); 
       }
     });
     
     $(window).on('click', '#compare-radial', function() {
       if (! $(this).attr("disabled")) {
-        window.location.href = searchQuery('&search[advanced_set][clustering]=hamming_r'); 
+         window.open(searchQuery('&search[advanced_set][clustering]=hamming_r')); 
       }
     });
 
@@ -54,7 +54,7 @@ var group = <%= current_group.to_param %>,
       e.preventDefault();
     });
 
-    $.get(location.href.replace(/\?[^\?]*$/, "") + "/dict", function(data) {
+    $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
       dict = data;
       $.each(dict, function(key, val) {
         if (val !== id) {
