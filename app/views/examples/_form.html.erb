@@ -1,4 +1,4 @@
-<%= javascript_tag "$.getScript('/javascripts/typeahead.js');" %>
+<%= javascript_tag "$.getScript(location.href);" %>
 
 <%= form_for([current_group, @example], :html => {:class => "form-horizontal"}) do |f| %>
 
@@ -24,22 +24,29 @@
   <div class="control-group">
     <%= label_tag "auto_ling", current_group.ling0_name, :class => "control-label" %>
     <div class="controls">
-      <%= text_field_tag "ling_id", "", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete search-query", :autocomplete => "off", :disabled => "true" %>
+      <%= text_field_tag "ling_id", "#{@ling ? @ling.name : "" }", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete search-query
+      #{@ling ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true" %>
     </div>
   </div>
 
   <div class="control-group">
     <%= label_tag "auto_prop", current_group.property_name, :class => "control-label" %>
     <div class="controls">
-      <%= text_field_tag "prop_id", "", :id => "auto_prop", :placeholder => "Loading...", :class => "search-query autocomplete", :autocomplete => "off", :disabled => "true" %>
+      <%= text_field_tag "prop_id", "#{@property ? @property.name : "" }", :id => "auto_prop", :placeholder => "Loading...", :class => "search-query autocomplete
+      #{@property ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true" %>
     </div>
   </div>
 
   <div class="control-group">
-    <%= label_tag "lp-status", "%s-Property" % current_group.ling0_name, :class => "control-label" %>
+    <%= label_tag "lp-status", "%s-%s" % [current_group.ling0_name.capitalize, current_group.property_name.capitalize], :class => "control-label" %>
     <div class="controls">
-      <div id="lp-status" class="alert">
-        Not Found (Enter Ling and Property)
+      <%= hidden_field_tag "lp_val", (@lp && @lp.id) || "false" %>
+      <div id="lp-status" class="alert <%= "alert-success" if @lp %>">
+        <% if @lp %>
+          Value: "<%= @lp.value %>"
+        <% else %>
+          Not Found (Enter Ling and Property)
+        <% end %>
       </div>
     </div>
   </div>

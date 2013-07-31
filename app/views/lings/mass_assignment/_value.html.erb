@@ -80,10 +80,15 @@
   </div>
   <div id="prop-example-creator" class="row-fluid">
     <div class="span6">
-      <a id="example-create" href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary btn-block">Create Example</a>
+      <a id="example-create" href="/groups/<%=current_group.id%>/examples/new" class="btn btn-primary btn-block 
+        <%= @exists ? "enabled" : "disabled" %>">Create Example</a>
     </div>
     <div class="span6">
-      <a id="example-assign" href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success btn-block">Assign Example</a>
+      <a id="example-assign" href="/groups/<%=current_group.id%>/examples_lings_properties/new" class="btn btn-success btn-block 
+        <%= @exists ? "enabled" : "disabled" %>">Assign Example</a>
     </div>
   </div>
+  <% if !@exists %>
+    <span id="example-warning" class="blue italic">You must set a value before creating examples</span>
+  <% end %>
 </div>

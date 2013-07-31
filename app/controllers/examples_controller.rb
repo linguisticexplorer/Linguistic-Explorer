@@ -8,9 +8,9 @@ class ExamplesController < GroupDataController
   end
 
   def new
-    @ling = Ling.find(params[:ling_id]) if params[:ling_id]
-    @property = Property.find(params[:prop_id]) if params[:prop_id]
-    @lp = LingsProperty.find(params[:lp_id]) if params[:lp_id]
+    @ling = params[:ling_id] && Ling.find(params[:ling_id])
+    @property = params[:prop_id] && Property.find(params[:prop_id])
+    @lp = params[:lp_id] && LingsProperty.find(params[:lp_id])
     @example = Example.new do |e|
       e.group = current_group
       e.creator = current_user
@@ -34,19 +34,30 @@ class ExamplesController < GroupDataController
       example.group = current_group
       example.creator = current_user
     end
+    params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
+    @example.name = "Example_" + @example.id.to_s if @example.name == ""
+
     authorize! :create, @example
 
-    if @example.save
-      params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-      if @example.name == ""
-        @example.name = "Example_" + @example.id.to_s
-        @example.save!
+    elp = ExamplesLingsProperty.new()
+    elp.group = current_group
+    elp.lings_property = LingsProperty.find(params[:lp_val])
+    elp.example = @example
+
+    authorize! :create, elp
+
+    respond_to do |format|
+      if @example.save && elp.save
+        format.html {redirect_to([current_group, @example],
+                      :notice => (current_group.example_name + ' was successfully created.'))}
+        format.json {render json: {success: true}}
+      else
+        @format.html do 
+          @lings = get_lings
+          render :action => "new"
+        end
+        format.json {render json: {success: true}}
       end
-      redirect_to([current_group, @example],
-                  :notice => (current_group.example_name + ' was successfully created.'))
-    else
-      @lings = get_lings
-      render :action => "new"
     end
   end
 

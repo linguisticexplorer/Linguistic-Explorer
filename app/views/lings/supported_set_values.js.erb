@@ -80,22 +80,29 @@ $(function() {
     $.post(form.attr("action"), form.serialize(), function(data) {
       saveOverlay.css("background-color", "");
       if (data.success == true) {
-        saveOverlay.toggleClass("alert alert-success");
+        saveOverlay.toggleClass("alert-success");
         saveOverlay.html("Save Successful")
+        var warning = $("#example-warning");
+        if (warning.length > 0) {
+          warning.remove();
+          $("#example-create").toggleClass("disabled enabled");
+          $("#example-assign").toggleClass("disabled enabled");
+        }
       } else {
-        saveOverlay.toggleClass("alert alert-error");
+        saveOverlay.toggleClass("alert-error");
         saveOverlay.html("Save Unsuccessful")
       }
       setTimeout(function() {
         saveOverlay.animate({opacity: 0}, 500, function() {
           saveOverlay.removeAttr("style");
+          saveOverlay.removeClass("alert-success alert-error");
           saveOverlay.html("");
         });
       }, 700);
       }, 'json');
   })
 
-  $(window).on("click", "#example-create", function(e) {
+  $(window).on("click", "#example-create.enabled", function(e) {
     e.preventDefault();
     var data = getData();
     $('.modal-header').html("<h3>Create Example</h3>");
@@ -105,7 +112,7 @@ $(function() {
       });
   });
 
-  $(window).on("click", "#example-assign", function(e) {
+  $(window).on("click", "#example-assign.enabled", function(e) {
     e.preventDefault();
     var data = getData();
     $('.modal-header').html("<h3>Link Example</h3>");
@@ -113,6 +120,14 @@ $(function() {
       "&prop_id=" + data.propId + "lp_id=" + data.lpId, function() {
         $("#example-modal").modal('toggle');                      
       });
+  });
+
+  $(window).on("click", "#example-assign.disabled", function(e) {
+    e.preventDefault();
+  });
+  
+  $(window).on("click", "#example-create.disabled", function(e) {
+    e.preventDefault();
   });
 
 });
