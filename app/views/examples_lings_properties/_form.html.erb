@@ -18,16 +18,23 @@
     </div>
   </div>
 
-  <div class="control-group">
-    <%= f.label current_group.lings_property_name, :class => "control-label" %>
-    <div class="controls">
-      <%= f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name %>
+  <% if @lings_properties %>
+    <div class="control-group">
+      <%= f.label current_group.lings_property_name, :class => "control-label" %>
+      <div class="controls">
+        <%= f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name %>
+      </div>
     </div>
-  </div>
+  <% else %>
+    <%= f.hidden_field :lings_property_id, :value => params[:lp_id] %>
+  <% end %>
 
   <div class="control-group">
     <div class="controls">
-      <%= f.submit :class => "btn" %>
+      <div class="save-container">
+        <div class="save-overlay"></div>
+        <%= f.submit :class => "btn", :value => "Assign Example" %>
+      </div>
     </div>
   </div>
 <% end %>

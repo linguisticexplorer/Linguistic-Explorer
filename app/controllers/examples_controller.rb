@@ -35,7 +35,6 @@ class ExamplesController < GroupDataController
       example.creator = current_user
     end
     params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-    @example.name = "Example_" + @example.id.to_s if @example.name == ""
 
     authorize! :create, @example
 
@@ -48,6 +47,8 @@ class ExamplesController < GroupDataController
 
     respond_to do |format|
       if @example.save && elp.save
+        @example.name = "Example_" + @example.id.to_s if @example.name == ""
+        @example.save!
         format.html {redirect_to([current_group, @example],
                       :notice => (current_group.example_name + ' was successfully created.'))}
         format.json {render json: {success: true}}
@@ -56,7 +57,7 @@ class ExamplesController < GroupDataController
           @lings = get_lings
           render :action => "new"
         end
-        format.json {render json: {success: true}}
+        format.json {render json: {success: false}}
       end
     end
   end
