@@ -29,7 +29,7 @@
       
     });
     
-    $('.delete-button').live('click', function (e) {
+    $(window).on('click', '.delete-button',function (e) {
       e.preventDefault(); 
 
       if(confirm('Are you sure you want delete the element?')) {
@@ -38,7 +38,7 @@
 
     }); 
 
-    $('#append-button').bind('click', function () {
+    $(window).bind('click', '#append-button', function () {
       var text = $('#append').val();
       if(text) {
         $('#order').append(makeElement(text));

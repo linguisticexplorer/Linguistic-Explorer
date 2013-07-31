@@ -12,6 +12,10 @@ module SearchResultsHelper
     "<a href='/groups/#{current_group.to_param}/properties/#{property.to_param}'>#{h(property.name)}</a>".html_safe
   end
 
+  def link_to_examples(examples)
+    examples.map {|e| ("<a href='/groups/" + current_group.to_param  + "/examples/" + e.to_param + "'>" + e.name + "</a>")}.join(", ").html_safe
+  end
+
   def row_methods
     @row_methods ||= {
       :ling_0           => lambda { |v| link_to_ling(v.ling) },
@@ -20,8 +24,8 @@ module SearchResultsHelper
       :property_1       => lambda { |v| link_to_property(v.property) },
       :value_0          => lambda { |v| v.value  },
       :value_1          => lambda { |v| v.value  },
-      :example_0        => lambda { |v| v.examples.map(&:name).join(", ") },
-      :example_1        => lambda { |v| v.examples.map(&:name).join(", ") },
+      :example_0        => lambda { |v| link_to_examples(v.examples) },
+      :example_1        => lambda { |v| link_to_examples(v.examples) },
       # Cross & Implication Search
       :cross_property   => lambda { |v| link_to_property(v.property) },
       :cross_value      => lambda { |v| v.value },

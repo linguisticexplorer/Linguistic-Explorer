@@ -145,13 +145,14 @@ a.btn.btn-inverse i.icon-white.icon-arrow-left {
   margin-top: 2px;
 }
 
+a i.icon-remove.shift-down {
+  margin-top: 2px;
+}
+
 input.autocomplete {
   height: 40px;
   position: relative;
   right: 30px;
-}
-ul.typeahead.dropdown-menu {
-  width:inherit;
 }
 
 .will-paginate {
@@ -362,4 +363,44 @@ div.relative {
   display: inline-block;
   width: 0 auto;
   text-align: left;
+}
+
+div.relative ul.typeahead {
+  width: 100%;
+} 
+
+div#languages-container.hidden1 {
+  display:none;
+}
+
+#selected-langs {
+  overflow:auto;
+  height:100px;
+}
+
+#compare-buttons a{
+  margin-right: 2px;
+  @media screen and (max-width: 1210px) and (min-width: 768px), 
+  screen and (max-width: 605px) {
+    & {
+      display: block;
+      clear: both;
+      margin: 6px 0px;
+    }
+  } 
+}
+
+#analysis-container {
+  padding:5px 15px 20px 15px;
+  position:relative;
+  top:-50px;
+  @media screen and (max-width: 768px) {
+    & {
+      top: 0px;
+    }
+  }
+}
+
+#analysis {
+  padding-bottom:14px;
 }

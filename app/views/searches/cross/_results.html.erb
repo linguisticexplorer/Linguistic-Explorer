@@ -1,18 +1,18 @@
-<div class="apple_pagination">
+<div class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @search.results, renderer: BootstrapPagination::Rails %>
 </div>
-<div class="table spacing expand_width">
-  <div class="row">
+<table class="show-table table table-bordered table-striped table-hover search_results">
+  <tr>
     <%- result_headers.each do |proc| -%>
-        <div class="cell"><%= proc.call @search.group %></div>
+        <th><%= proc.call @search.group %></th>
     <%- end -%>
-  </div>
+  </tr>
   <%- @search.results.each do |result| -%>
      <%= render :partial => "searches/cross/result", :locals => { :result => result}, :inline => true %>
   <%- end -%>
-</div>
-<div class="apple_pagination">
+</table>
+<div class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @search.results, renderer: BootstrapPagination::Rails %>
 </div>

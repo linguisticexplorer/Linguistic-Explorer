@@ -72,7 +72,7 @@ class SearchesController < GroupDataController
   def lings_in_selected_row
     @search = perform_search
 
-    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
+    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
     authorize! :cross, @search
   end
 
