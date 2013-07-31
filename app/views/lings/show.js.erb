@@ -34,7 +34,7 @@ var group = <%= current_group.to_param %>,
 
     $(window).on('click', '#compare-langs', function(e) {
       if (! $(this).attr("disabled")) {
-        window.open(searchQuery());
+        window.open(searchQuery('&search[ling_set][0]=compare'));
       }
     });
 
