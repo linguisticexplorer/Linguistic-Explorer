@@ -3,7 +3,7 @@
 <% if @search.results.any? && !@search.clustering? %>
   <div class="row-fluid">
     <div id="search_interaction" class="padded border margin span4">
-      <%- if !@search.cross? && !@search.implication? -%>
+      <%- if !@search.cross? && !@search.implication? && !@search.compare? -%>
         <%= render :partial => 'searches/save_search_form' %>
         <hr />
       <%- end %>
