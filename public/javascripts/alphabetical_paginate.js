@@ -1,6 +1,6 @@
 $(function() {
     var once = false,
-    img = "<img src='/images/loader.gif' class='loading'/>";
+        img = "<img src='/images/loader.gif' class='loading'/>";
     
     $(document).on("click", ".pagination#alpha a", function(e) {
         var url = location.href,
@@ -10,10 +10,10 @@ $(function() {
         }
         else {
           if (/\?/.test(url)) {
-            url += "&letter=" + letter
+            url += "&letter=" + letter;
           }
           else {
-            url += "?letter=" + letter 
+            url += "?letter=" + letter;
           }
         }
         $(".pagination").html(img);

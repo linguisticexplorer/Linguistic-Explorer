@@ -118,10 +118,8 @@ input.autocomplete {
 #supported-entry-container .set-col {
   padding: 5px 10px; }
 #supported-entry-container #property-description #prop-descrip {
-  height: 340px;
+  height: 247px;
   overflow: auto; }
-#supported-entry-container #property-description #prop-name {
-  height: 60px; }
 #supported-entry-container #property-description #prop-relations .content-box {
   height: 130px; }
   #supported-entry-container #property-description #prop-relations .content-box b {
@@ -140,6 +138,9 @@ input.autocomplete {
     margin-top: 0px; }
 #supported-entry-container #property-selector #cat-prop form {
   margin: 0px; }
+@media screen and (max-width: 768px) {
+  #supported-entry-container #property-selector {
+    margin-top: 170px; } }
 #supported-entry-container #property-setter #prop-example {
   height: 150px; }
 #supported-entry-container #property-setter #prop-example-selector select {
@@ -150,18 +151,6 @@ input.autocomplete {
   margin-left: 0px; }
 #supported-entry-container #property-setter #prop-example-selector .span4 {
   margin-right: 0px; }
-#supported-entry-container #property-setter #save-container {
-  position: relative; }
-#supported-entry-container #property-setter #save-overlay {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  padding: 0px;
-  display: none;
-  text-align: center;
-  opacity: 1;
-  border: white 1px solid;
-  line-height: 30px; }
 @media screen and (max-width: 768px) {
   #supported-entry-container #property-setter #prop-example-selector a, #supported-entry-container #property-setter #prop-example-selector input, #supported-entry-container #property-setter #prop-example-creator a, #supported-entry-container #property-setter #prop-example-creator input {
     margin-top: 10px; } }
@@ -177,6 +166,19 @@ input.autocomplete {
 
 div.text-justify {
   text-align: justify; }
+
+.save-container {
+  position: relative; }
+  .save-container .save-overlay {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    padding: 0px;
+    display: none;
+    text-align: center;
+    opacity: 1;
+    border: white 1px solid;
+    line-height: 30px; }
 
 .gloss {
   padding-right: 16px;
@@ -205,17 +207,27 @@ div.text-justify {
   position: relative;
   left: -30px; }
 
-form #lp-status {
+form .alert.lp-status {
   margin: 0px;
-  height: inherit;
-  width: 313px; }
-form input {
-  width: 350px; }
+  height: 40px; }
+form input[type="text"], form .alert {
+  width: 300px;
+  height: 30px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */ }
+form .typeahead.dropdown-menu {
+  width: 300px; }
 
 input.autocomplete {
   height: auto;
   position: static;
   right: 0; }
+
+.search-query {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  /* Firefox */ }
 
 input.autocomplete.big {
   height: 40px;
@@ -233,6 +245,15 @@ fieldset {
 
 div.relative {
   position: relative; }
+
+#example-modal img {
+  display: block;
+  margin: 0 auto; }
+
+.example-display {
+  display: inline-block;
+  width: 0 auto;
+  text-align: left; }
 
 div.relative ul.typeahead {
   width: 100%; }
@@ -262,3 +283,6 @@ div#languages-container.hidden1 {
 
 #analysis {
   padding-bottom: 14px; }
+
+.dropdown b {
+  color: white; }

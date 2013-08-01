@@ -38,7 +38,7 @@ class LingsController < GroupDataController
 
   def show
     @ling = current_group.lings.find(params[:id])
-    @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
+    @values = @ling.lings_properties.joins(:property).paginate(:page => params[:page]).order("properties.name ASC")
   end
 
   def supported_set_values
@@ -72,7 +72,7 @@ class LingsController < GroupDataController
     if session[:prop_id]
       @ling_properties = @preexisting_values.select {|lp| lp.property_id == session[:prop_id].to_i} if @preexisting_values.any?
       @property = Property.find(session[:prop_id])
-      @exists = false if @ling_properties.nil?
+      @exists = false if @ling_properties.nil? or @ling_properties.empty?
     elsif @preexisting_values.length > 0
       @property = Property.find(@preexisting_values.first.property_id)
       @ling_properties = @preexisting_values.select {|lp| lp.property_id == @property.id}
@@ -80,8 +80,8 @@ class LingsController < GroupDataController
       @property = Property.find(@properties.first)
       @exists = false
     end
+    @examples = []
     if @exists
-      @examples = []
       @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
       @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
@@ -96,7 +96,7 @@ class LingsController < GroupDataController
 
   def supported_submit_values
     @ling = current_group.lings.find(params[:id])
-    fresh_vals.count = LingsProperty.find(:all,
+    fresh_vals = LingsProperty.find(:all,
                                 :conditions => {ling_id: @ling.id, property_id: params[:property_id]})
     if fresh_vals.count > 1
       fresh_vals.each do |val|

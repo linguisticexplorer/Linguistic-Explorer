@@ -171,11 +171,8 @@ input.autocomplete {
   }
   #property-description {
     #prop-descrip {
-      height: 340px;
+      height: 247px;
       overflow: auto;
-    }
-    #prop-name {
-      height: 60px;
     }
     #prop-relations {
       .content-box {
@@ -210,6 +207,11 @@ input.autocomplete {
         margin: 0px;
       }
     }
+    @media screen and (max-width: 768px) {
+      & {
+        margin-top: 170px;
+      }
+    }
   }
   #property-setter {
     #prop-example {
@@ -228,20 +230,6 @@ input.autocomplete {
       .span4 {
         margin-right: 0px;
       }
-    }
-    #save-container {
-      position: relative;
-    }
-    #save-overlay {
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      padding: 0px;
-      display: none;
-      text-align: center;
-      opacity: 1;
-      border: white 1px solid;
-      line-height: 30px;
     }
     #prop-example-selector, #prop-example-creator {
       @media screen and (max-width: 768px) {
@@ -266,6 +254,21 @@ input.autocomplete {
 
 div.text-justify {
   text-align: justify;
+}
+
+.save-container {
+  position: relative;
+    .save-overlay {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      padding: 0px;
+      display: none;
+      text-align: center;
+      opacity: 1;
+      border: white 1px solid;
+      line-height: 30px;
+    }
 }
 
 //styles for descriptions
@@ -300,13 +303,18 @@ div.text-justify {
 }
 
 form {
-  #lp-status {
+  .alert.lp-status {
     margin: 0px;
-    height: inherit;
-    width: 313px;
+    height: 40px;
   }
-  input {
-    width: 350px;
+  input[type="text"], .alert {
+    width: 300px;
+    height: 30px;
+    box-sizing:border-box;
+    -moz-box-sizing:border-box; /* Firefox */
+  }
+  .typeahead.dropdown-menu {
+    width: 300px;
   }
 }
 
@@ -314,6 +322,11 @@ input.autocomplete {
   height: auto;
   position: static;
   right: 0;
+}
+
+.search-query {
+  box-sizing:border-box;
+  -moz-box-sizing:border-box; /* Firefox */
 }
 
 input.autocomplete.big {
@@ -337,6 +350,19 @@ fieldset {
 
 div.relative {
   position: relative;
+}
+
+#example-modal {
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+.example-display {
+  display: inline-block;
+  width: 0 auto;
+  text-align: left;
 }
 
 div.relative ul.typeahead {
@@ -377,4 +403,10 @@ div#languages-container.hidden1 {
 
 #analysis {
   padding-bottom:14px;
+}
+
+.dropdown {
+  b {
+    color: white;
+  }
 }

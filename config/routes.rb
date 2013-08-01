@@ -16,6 +16,7 @@ LinguisticExplorer::Application.routes.draw do
   match "/groups/:group_id/lings/dict" => "lings#dict"
   match "/groups/:group_id/properties/dict" => "properties#dict"
   match "/groups/:group_id/memberships/dict" => "memberships#dict"
+  match "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   resources :groups do
     member do
@@ -41,7 +42,7 @@ LinguisticExplorer::Application.routes.draw do
       end
     end
 
-    resources :lings_properties, :only => [:show, :index, :destroy]
+    resources :lings_properties, :only => [:destroy]
     resources :examples_lings_properties, :except => [:edit, :update]
     resources :properties, :examples, :categories, :memberships
   end

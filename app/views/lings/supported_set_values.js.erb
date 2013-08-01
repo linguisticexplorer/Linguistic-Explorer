@@ -73,46 +73,92 @@ $(function() {
   $(window).on("click", "#save-btn", function(e) {
     e.preventDefault();
     var form = $("#value-form");
-    var saveOverlay = $('#save-overlay')
-    saveOverlay.css("display", "block");
-    saveOverlay.css("background-color", "white");
-    saveOverlay.html(img);
+    var saveOverlay = $('#save-container .save-overlay')
+    saveOverlay.css("display", "block").css("background-color", "white").html(img);
     $.post(form.attr("action"), form.serialize(), function(data) {
       saveOverlay.css("background-color", "");
       if (data.success == true) {
-        saveOverlay.toggleClass("alert alert-success");
-        saveOverlay.html("Save Successful")
+        saveOverlay.toggleClass("alert-success").html("Save Successful")
+        var warning = $("#example-warning");
+        var colSelector = $("#prop-" + getData().propId);
+        if (colSelector.length > 0) {
+          if ($("#sureness\\[revisit\\]").is(":checked") || $("#sureness\\[need_help\\]").is(":checked"))  {
+            colSelector.css("color", "orange");
+          }
+          else {
+            colSelector.css("color", "green");
+          }
+        }
+        if (warning.length > 0) {
+          warning.remove();
+          $("#example-create").toggleClass("disabled enabled");
+          $("#example-assign").toggleClass("disabled enabled");
+        }
       } else {
-        saveOverlay.toggleClass("alert alert-error");
+        saveOverlay.toggleClass("alert-error");
         saveOverlay.html("Save Unsuccessful")
       }
       setTimeout(function() {
         saveOverlay.animate({opacity: 0}, 500, function() {
           saveOverlay.removeAttr("style");
+          saveOverlay.removeClass("alert-success alert-error");
           saveOverlay.html("");
         });
       }, 700);
       }, 'json');
   })
 
-  $(window).on("click", "#example-create", function(e) {
+  $(window).on("click", "#example-create.enabled", function(e) {
     e.preventDefault();
     var data = getData();
-    $('.modal-header').html("<h3>Create Example</h3>");
+    $(".modal-body").html(img);
+    $('#modal-head-content').html("<h3>Create Example</h3>");
+    $("#example-modal").modal('toggle');                      
     $('.modal-body').load("<%= new_group_example_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
-      "&prop_id=" + data.propId + "lp_id=" + data.lpId, function() {
-        $("#example-modal").modal('toggle');                      
-      });
+      "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
   });
 
-  $(window).on("click", "#example-assign", function(e) {
+  $(window).on("click", "#example-assign.enabled", function(e) {
     e.preventDefault();
     var data = getData();
-    $('.modal-header').html("<h3>Link Example</h3>");
+    $(".modal-body").html(img);
+    $('#modal-head-content').html("<h3>Link Example</h3>");
+    $("#example-modal").modal('toggle');                      
     $('.modal-body').load("<%= new_group_examples_lings_property_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
-      "&prop_id=" + data.propId + "lp_id=" + data.lpId, function() {
-        $("#example-modal").modal('toggle');                      
-      });
+        "&lp_id=" + data.lpId);
+    });
+
+  $(window).on("click", "#example-assign.disabled", function(e) {
+    e.preventDefault();
+  });
+  
+  $(window).on("click", "#example-create.disabled", function(e) {
+    e.preventDefault();
+  });
+
+  $("#example-modal").on("click", ".btn", function(e) {
+    e.preventDefault();
+    var form =  $("#example-modal form");
+    var saveOverlay = $('#example-modal .save-overlay')
+    saveOverlay.css("display", "block").css("background-color", "white").html(img);
+    $.post(form.attr("action"), form.serialize(), function(data) {
+      saveOverlay.css("background-color", "");
+      if (data.success == true) {
+        saveOverlay.toggleClass("alert-success").html("Save Successful")
+        $("#prop-example").html(img);
+        $("#prop-example").load(location.href + " #prop-example");
+      } else {
+        saveOverlay.toggleClass("alert-error").html("Save Unsuccessful")
+      }
+      setTimeout(function() {
+        $("#example-modal").modal("hide");
+        setTimeout(function() {
+          saveOverlay.removeAttr("style");
+          saveOverlay.removeClass("alert-success alert-error");
+          saveOverlay.html("");
+        }, 1000);
+      }, 700);
+      }, 'json');
   });
 
 });
