@@ -7,8 +7,48 @@
     <div id="title">
       <h1>TerraLing</h1>
       <h2>
-        Searchable Database of the World's Languages
+        Explore the World's Languages
       </h2>
+    </div>
+    <div id="myCarousel" class="carousel slide">
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+        <li data-target="#myCarousel" data-slide-to="3"></li>
+      </ol>
+      <div class="carousel-inner">
+        <div class="item active">
+          <%= image_tag "home1.png" %>
+          <div class="carousel-caption">
+            <h4>Discover</h4>
+            <p>Explore the world's largest database of languages</p>
+          </div>
+        </div>
+        <div class="item">
+          <%= image_tag "home2.png" %>
+          <div class="carousel-caption">
+            <h4>Understand</h4>
+            <p>Browse through thousands of syntactic property values across hundreds of language</p>
+          </div>
+        </div>
+        <div class="item">
+          <%= image_tag "home3.png" %>
+          <div class="carousel-caption">
+            <h4>Analyze</h4>
+            <p>Use powerful analytics tools to understand the relationships between languages</p>
+          </div>
+        </div>
+        <div class="item">
+          <%= image_tag "home4.png" %>
+          <div class="carousel-caption">
+            <h4>Contribute</h4>
+            <p>Terraling is free and open-ended, all the data is contributed by linguistic professionals</p>
+          </div>
+        </div>
+      </div>
+      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
     </div>
     <div id="intro">
       <p>TerraLing is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
