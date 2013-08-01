@@ -1,7 +1,30 @@
+var bindTypeahead = function(id) {
+    var dict, items = [];
+    $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "groups/" + id + "/lings/dict", function(data) { 
+      dict = data;
+      $.each(dict, function(key, val) {
+        items.push(key);
+      });    
+    }).done( function() {
+        $('#auto_' + id).typeahead({
+          source: items,
+          updater:function (item){
+            window.location.href = '/groups/' + id + '/lings/' + dict[item]; 
+          }
+        });
+        $('#auto_' + id).attr("placeholder", "Start typing to search through the database").removeAttr('disabled');
+    }); 
+
+  };
+
 $(function () {
   $('#tabs a').click(function (e) {
     e.preventDefault();
     $(this).tab('show');
+    if (!$(this).data('bind')) {
+      bindTypeahead($(this).data('bind', true).data('id'));
+    }
   });
   $('#tabs a:first').tab('show');
+  bindTypeahead($('#search-tabs ul li:first a').data('bind',true).data('id'));
 })

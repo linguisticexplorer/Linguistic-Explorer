@@ -1,4 +1,3 @@
-<%= javascript_tag "$.getScript(location.href);" %>
 <% add_body_classes "map" %>
 <%- unless Settings.in_preview -%>
   <% page_heading "Home" %>
@@ -9,12 +8,13 @@
       <h2>
         Searchable Database of the World's Languages
       </h2>
+      <br />
     </div>
-    <div id="search-tabs">
+    <div id="search-tabs" style="width:80%; margin:auto;">
       <ul class="nav nav-tabs" id="tabs">
         <% Group.all.each do |x| %>
           <% name = x.name %>
-          <li><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-id="<%= x.id %>"><%= name %></a></li>
+          <li><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-bind="false" data-id="<%= x.id %>"><%= name %></a></li>
         <% end %>
       </ul>
       <div class="tab-content">
@@ -22,7 +22,7 @@
           <% name = x.name %>
           <div class="tab-pane" id=<%= name.split(" ").join("_") %>>
             <div class="row">
-              <div class="margin span5 relative">
+              <div class="margin span6">
                 <input type="text" id="auto_<%= x.id %>" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
               </div>
             </div>

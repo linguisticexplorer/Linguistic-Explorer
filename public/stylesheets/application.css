@@ -75,7 +75,11 @@ div.field, div.actions {
   color:white;
 }
 /* main layout */
-body.map { background-image: url(/images/map_bg.gif); }
+body.map { 
+  background-image: url(/images/map_bg.gif); 
+  background-repeat:no-repeat; 
+  background-position:center top; 
+}
 body.map #main {
   background-color:transparent;
   box-shadow:none;
