@@ -4,98 +4,107 @@
   <%= javascript_tag "$.getScript(location.href);" %>
   <div id="inner">
     <div id="title">
-      <h1>TerraLing</h1>
-      <h2>
+      <h1>Terraling</h1>
+      <h2 class="blue">
         Explore the World's Languages
       </h2>
       <br />
     </div>
-    <div id="search-tabs" style="width:80%; margin:auto;" class="home-lead">
-      <ul class="nav nav-tabs" id="tabs">
-        <% first = true %>
-        <% Group.all.each do |x| %>
-          <% name = x.name %>
-          <li <%= "class=active" if first %>><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-bind="false" data-id="<%= x.id %>"><%= name %></a></li>
-          <% first = false if first %>
-        <% end %>
-      </ul>
-      <div class="tab-content">
-        <% first = true %>
-        <% Group.all.each do |x| %>
-          <% name = x.name %>
-          <div class="tab-pane <%= "active" if first %>" id=<%= name.split(" ").join("_") %>>
-          <% first = false if first %>
-            <div class="row">
-              <div class="margin span6">
-                <input type="text" id="auto_<%= x.id %>" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <div id="search-tabs" style="width:80%; margin:auto;" class="home-lead">
+          <ul class="nav nav-tabs" id="tabs">
+            <li><a id="tab-descrip" href="#">Pick a data set:</a></li>
+            <% first = true %>
+            <% Group.all.each do |x| %>
+              <% name = x.name %>
+              <li <%= "class=active" if first %>><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-bind="false" data-id="<%= x.id %>"><%= name %></a></li>
+              <% first = false if first %>
+            <% end %>
+          </ul>
+          <div class="tab-content">
+            <% first = true %>
+            <% Group.all.each do |x| %>
+              <% name = x.name %>
+              <div class="tab-pane <%= "active" if first %>" id=<%= name.split(" ").join("_") %>>
+              <% first = false if first %>
+                <div class="row-fluid">
+                  <div class="margin span12">
+                    <input type="text" id="auto_<%= x.id %>" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div class="row-fluid">
+        <div id="carousel" class="carousel slide">
+          <ol class="carousel-indicators">
+            <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            <li data-target="#myCarousel" data-slide-to="1"></li>
+            <li data-target="#myCarousel" data-slide-to="2"></li>
+            <li data-target="#myCarousel" data-slide-to="3"></li>
+          </ol>
+          <div class="carousel-inner">
+            <div class="item active">
+              <%= image_tag "home1.png" %>
+              <div class="carousel-caption">
+                <h4>Discover</h4>
+                <p>Explore the world's largest database of languages</p>
+              </div>
+            </div>
+            <div class="item">
+              <%= image_tag "home2.png" %>
+              <div class="carousel-caption">
+                <h4>Understand</h4>
+                <p>Browse through thousands of syntactic property values across hundreds of language</p>
+              </div>
+            </div>
+            <div class="item">
+              <%= image_tag "home3.png" %>
+              <div class="carousel-caption">
+                <h4>Analyze</h4>
+                <p>Use powerful analytics tools to understand the relationships between languages</p>
+              </div>
+            </div>
+            <div class="item">
+              <%= image_tag "home4.png" %>
+              <div class="carousel-caption">
+                <h4>Contribute</h4>
+                <p>Terraling is free and open-ended, all the data is contributed by linguistic professionals</p>
               </div>
             </div>
           </div>
-        <% end %>
-      </div>
-    </div>
-    <br />
-    <div id="myCarousel" class="carousel slide">
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-      </ol>
-      <div class="carousel-inner">
-        <div class="item active">
-          <%= image_tag "home1.png" %>
-          <div class="carousel-caption">
-            <h4>Discover</h4>
-            <p>Explore the world's largest database of languages</p>
-          </div>
-        </div>
-        <div class="item">
-          <%= image_tag "home2.png" %>
-          <div class="carousel-caption">
-            <h4>Understand</h4>
-            <p>Browse through thousands of syntactic property values across hundreds of language</p>
-          </div>
-        </div>
-        <div class="item">
-          <%= image_tag "home3.png" %>
-          <div class="carousel-caption">
-            <h4>Analyze</h4>
-            <p>Use powerful analytics tools to understand the relationships between languages</p>
-          </div>
-        </div>
-        <div class="item">
-          <%= image_tag "home4.png" %>
-          <div class="carousel-caption">
-            <h4>Contribute</h4>
-            <p>Terraling is free and open-ended, all the data is contributed by linguistic professionals</p>
-          </div>
+          <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+          <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
         </div>
       </div>
-      <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-      <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
-    </div>
-    <div id="intro">
-      <p>TerraLing is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
-        characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
-        Anyone can use the database to perform queries. Linguistic researchers can put up their own data using the open-ended framework we provide.</p>
-      <p>The data of each project is held in a database called a group. Visit the list of <%= link_to "public groups", groups_path %> to begin searching.
-        <%= link_to 'Sign up for an account', new_user_registration_path %> to get access more groups and search features.</p>
-      <p>To read about updates and post questions, please visit <a href="http://groups.google.com/group/sswllinguistics">our Google Group</a>.</p>
-      <p>TerraLing is the next generation of the <%= link_to "Linguistic Explorer", "http://linguisticexplorer.org/" %> project. The linguistic leads have
-        been Chris Collins, Hilda Koopman and Richard Kayne.
-        The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
-        Kozyra.
-        The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), and Marco Liberati.
-        The system architect is Dennis Shasha.</p>
+      <div class="row-fluid">
+        <div id="intro">
+          <p>Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+            characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
+            Anyone can use the database to perform queries. </p>
+          <p>Linguistic researchers can put up their own data using the open-ended framework we provide.
+            Visit the list of <%= link_to "public groups", groups_path %> to begin searching.
+            <%= link_to 'Sign up for an account', new_user_registration_path %> to get access more groups and search features.</p>
+          <p>Terraling is the next generation of the <%= link_to "Linguistic Explorer", "http://linguisticexplorer.org/" %> project. The linguistic leads have
+            been Chris Collins, Hilda Koopman and Richard Kayne.
+            The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+            Kozyra.
+            The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), and Marco Liberati.
+            The system architect is Dennis Shasha.</p>
+        </div>
+      </div>
     </div>
   </div>
-<%- else -%>
-  <% page_heading "Preview" %>
+  <%- else -%>
+    <% page_heading "Preview" %>
 
-  <h2>Terraling</h2>
-  <br/>
-  <div>Coming soon, an advanced linguistics search engine from the New York University Computer Science department.</div>
-  <br/>
-  <div>Send us an email at <%= link_to support_email, "mailto:#{support_email}" %> for more information.</div>
-<%- end -%>
+    <h2>Terraling</h2>
+    <br/>
+    <div>Coming soon, an advanced linguistics search engine from the New York University Computer Science department.</div>
+    <br/>
+    <div>Send us an email at <%= link_to support_email, "mailto:#{support_email}" %> for more information.</div>
+  <%- end -%>

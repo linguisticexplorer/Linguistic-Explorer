@@ -21,12 +21,15 @@ $(function () {
   $('.carousel').carousel({
     interval: 4000
   });
-  $('#tabs a').click(function (e) {
+  $('#tabs a').not("#tabs a:first").click(function (e) {
     e.preventDefault();
     $(this).tab('show');
     if (!$(this).data('bind')) {
       bindTypeahead($(this).data('bind', true).data('id'));
     }
   });
-  bindTypeahead($('#search-tabs ul li:first a').data('bind',true).data('id'));
+  bindTypeahead($('#search-tabs ul li.active a').data('bind',true).data('id'));
+  $(window).on("click", "#tab-descrip", function(e) { 
+    e.preventDefault();
+  });
 });

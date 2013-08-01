@@ -106,7 +106,6 @@ a i.icon-remove.shift-down {
 
 input.autocomplete {
   height: 40px;
-  width: 100%;
   position: relative; }
 
 .will-paginate .pagination {
@@ -234,6 +233,12 @@ input.autocomplete.big {
   position: relative;
   right: 30px; }
 
+div.tab-content input.autocomplete.big {
+  right: 0px;
+  display: block;
+  width: 90%;
+  margin: 0 auto; }
+
 #search_name {
   width: 70%; }
   @media screen and (max-width: 979px) and (min-width: 768px) {
@@ -291,7 +296,17 @@ div#languages-container.hidden1 {
   height: 150px;
   width: 80%;
   margin: auto;
-  padding: 30px;
-  border: solid 1px black;
-  border-radius: 20px;
-  background-color: rgba(220, 220, 220, 0.4); }
+  padding: 20px;
+  border: solid 1px #cccccc;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.8); }
+
+#carousel {
+  width: 85%;
+  margin: 0 auto; }
+
+#tab-descrip:hover {
+  border: solid 1px rgba(0, 0, 0, 0);
+  background-color: rgba(0, 0, 0, 0);
+  color: #0088cc;
+  cursor: default; }
