@@ -5,7 +5,7 @@
 
     function makeElement (text) {
 
-      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
+      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"></input><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
 
     };
     
@@ -38,12 +38,19 @@
 
     }); 
 
-    $(window).bind('click', '#append-button', function () {
+    $(window).bind('click', '#append-button', function (e) {
       var text = $('#append').val();
       if(text) {
         $('#order').append(makeElement(text));
         $('#append').val('');
       };
+    });
+
+    $("#append").keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          $('#append-button').trigger('click');
+      }
     });
 
   });
@@ -132,7 +139,7 @@
         </div>
         <%= f.hidden_field :example_fields %>
           <div id="add" class="input-append span4">
-            <input class="span2" id="append" type="text" placeholder="Type to add field">
+            <input class="span2" id="append" type="text" placeholder="Type to add field" autocomplete=off></input>
             <button class="btn btn-success" type="button" id="append-button"><i class="icon-plus icon-white"></i></button>
           </div>
         </div>

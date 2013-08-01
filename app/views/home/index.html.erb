@@ -1,15 +1,40 @@
-<%= javascript_tag "$.getScript(location.href);" %>
 <% add_body_classes "map" %>
 <%- unless Settings.in_preview -%>
   <% page_heading "Home" %>
-
+  <%= javascript_tag "$.getScript(location.href);" %>
   <div id="inner">
     <div id="title">
       <h1>TerraLing</h1>
       <h2>
         Explore the World's Languages
       </h2>
+      <br />
     </div>
+    <div id="search-tabs" style="width:80%; margin:auto;" class="home-lead">
+      <ul class="nav nav-tabs" id="tabs">
+        <% first = true %>
+        <% Group.all.each do |x| %>
+          <% name = x.name %>
+          <li <%= "class=active" if first %>><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-bind="false" data-id="<%= x.id %>"><%= name %></a></li>
+          <% first = false if first %>
+        <% end %>
+      </ul>
+      <div class="tab-content">
+        <% first = true %>
+        <% Group.all.each do |x| %>
+          <% name = x.name %>
+          <div class="tab-pane <%= "active" if first %>" id=<%= name.split(" ").join("_") %>>
+          <% first = false if first %>
+            <div class="row">
+              <div class="margin span6">
+                <input type="text" id="auto_<%= x.id %>" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <br />
     <div id="myCarousel" class="carousel slide">
       <ol class="carousel-indicators">
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
