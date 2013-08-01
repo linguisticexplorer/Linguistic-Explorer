@@ -1,13 +1,33 @@
 <% add_body_classes "map" %>
 <%- unless Settings.in_preview -%>
   <% page_heading "Home" %>
-
+  <%= javascript_tag "$.getScript(location.href);" %>
   <div id="inner">
     <div id="title">
       <h1>TerraLing</h1>
       <h2>
         Searchable Database of the World's Languages
       </h2>
+    </div>
+    <div id="search-tabs">
+      <ul class="nav nav-tabs" id="tabs">
+        <% Group.all.each do |x| %>
+          <% name = x.name %>
+          <li><a href="#<%= name.split(" ").join("_") %>" data-toogle="tab" data-id="<%= x.id %>"><%= name %></a></li>
+        <% end %>
+      </ul>
+      <div class="tab-content">
+        <% Group.all.each do |x| %>
+          <% name = x.name %>
+          <div class="tab-pane" id=<%= name.split(" ").join("_") %>>
+            <div class="row">
+              <div class="margin span5 relative">
+                <input type="text" id="auto_<%= x.id %>" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
     </div>
     <div id="intro">
       <p>TerraLing is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
