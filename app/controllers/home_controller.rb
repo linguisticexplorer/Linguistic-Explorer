@@ -5,5 +5,6 @@ class HomeController < ApplicationController
     else
       Group.public
     end
+    @group = params[:group_id] && Group.find(params[:group_id]) || current_group
   end
 end

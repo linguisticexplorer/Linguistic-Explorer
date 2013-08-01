@@ -1,14 +1,24 @@
 <% if @group && !@group.new_record? %>
-  <li><%= link_to current_group.name, current_group, :class => "group" %></li>
-  <li><%= link_to 'Search', [:new, current_group, :search] %></li>
-  <li><%= link_to 'History', [current_group, :searches] if user_signed_in? %></li>
-  <li><%= link_to current_group.ling0_name, group_lings_depth_path(current_group, Depth::PARENT) %></li>
+  <li class="dropdown">
+      <%= link_to (@group.name + "<b class='caret'></b>").html_safe, @group, :class => "group dropdown-toggle",
+        :id => "group-link" %>
+      <ul class="dropdown-menu inverse" role="menu" aria-labelledby="dLabel">
+        <% Group.all.each do |group| %>
+          <% if group != @group %>
+            <li role="presentation"><%=  link_to group.name, group %> </li>
+          <% end %>
+        <% end %>
+      </ul>
+  </li>
+  <li><%= link_to 'Search', [:new, @group, :search] %></li>
+  <li><%= link_to 'History', [@group, :searches] if user_signed_in? %></li>
+  <li><%= link_to @group.ling0_name, group_lings_depth_path(@group, Depth::PARENT) %></li>
   <% if @group.has_depth? %>
-    <li><%= link_to current_group.ling1_name, group_lings_depth_path(current_group, Depth::CHILD) %></li>
+    <li><%= link_to @group.ling1_name, group_lings_depth_path(@group, Depth::CHILD) %></li>
   <% end %>
-  <li><%= link_to current_group.property_name, [current_group, :properties] %></li>
-  <%= "<li>" + link_to(current_group.category_name, [current_group, :categories]) + "</li>" if current_group.categories.count > 1 %>
-  <li><%= link_to "Members", [current_group, :memberships] %></li>
+  <li><%= link_to @group.property_name, [@group, :properties] %></li>
+  <%= "<li>" + link_to(@group.category_name, [@group, :categories]) + "</li>" if @group.categories.count > 1 %>
+  <li><%= link_to "Members", [@group, :memberships] %></li>
   <li><%= link_to "Forums", forums_path %></li>
 <% elsif @groups %>
   <%= form_tag({:controller => "groups", :action => "index"}, :method => "get", :class => "navbar-search") do %>

@@ -250,6 +250,11 @@ div.relative {
   display: block;
   margin: 0 auto; }
 
+.example-display {
+  display: inline-block;
+  width: 0 auto;
+  text-align: left; }
+
 div.relative ul.typeahead {
   width: 100%; }
 
@@ -278,3 +283,6 @@ div#languages-container.hidden1 {
 
 #analysis {
   padding-bottom: 14px; }
+
+.dropdown b {
+  color: white; }

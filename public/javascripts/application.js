@@ -318,3 +318,11 @@ function enable_similarity_radial_tree(){
     // "this" will always be "window" in a browser, even in strict mode.
     this.Newick = {}
 );
+
+$(function() {
+  $('ul.nav li.dropdown').hover(function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeIn();
+  }, function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeOut();
+  });
+});
