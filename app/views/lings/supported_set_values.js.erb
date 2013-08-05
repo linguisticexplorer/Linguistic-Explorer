@@ -152,10 +152,6 @@ $(function() {
     $("body").css("overflow", "hidden");
   });
 
-  $(window).on("click", ".close", function() {
-    $("body").css("overflow", "auto");
-  });
-
   $(window).on("click", "#example-assign.enabled", function(e) {
     e.preventDefault();
     var data = getData();
@@ -174,6 +170,10 @@ $(function() {
   
   $(window).on("click", "#example-create.disabled", function(e) {
     e.preventDefault();
+  });
+
+  $('#prop-modal, #example-modal').on('hidden', function () {
+    $("body").css("overflow", "auto");
   });
 
   $("#example-modal").on("click", ".btn", function(e) {
