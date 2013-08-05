@@ -1,11 +1,11 @@
 --- 
-user: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/User.csv
-category: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Category.csv
-example: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Example.csv
-examples_lings_property: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/ExamplesLingsProperty.csv
-group: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Group.csv
-ling: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Ling.csv
-lings_property: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/LingsProperty.csv
-membership: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Membership.csv
-property: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/Property.csv
-stored_value: /home/ling/Documents/Linguistic-Explorer/spec/csv/good/StoredValue.csv
+user: /home/og/Documents/Linguistic-Explorer/spec/csv/good/User.csv
+category: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Category.csv
+example: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Example.csv
+examples_lings_property: /home/og/Documents/Linguistic-Explorer/spec/csv/good/ExamplesLingsProperty.csv
+group: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Group.csv
+ling: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Ling.csv
+lings_property: /home/og/Documents/Linguistic-Explorer/spec/csv/good/LingsProperty.csv
+membership: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Membership.csv
+property: /home/og/Documents/Linguistic-Explorer/spec/csv/good/Property.csv
+stored_value: /home/og/Documents/Linguistic-Explorer/spec/csv/good/StoredValue.csv

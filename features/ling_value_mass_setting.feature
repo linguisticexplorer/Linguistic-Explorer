@@ -21,6 +21,7 @@ Feature: Using the mass lings-property value setting form
     And I go to the group Syntactic Structures
     And I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
 
+  @wip
   Scenario: Signed in members can get to the ling mass setting form
     Then I should see "English"
     When I follow "English"
