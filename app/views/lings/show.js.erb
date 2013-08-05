@@ -49,7 +49,9 @@ var group = <%= current_group.to_param %>,
          window.open(searchQuery('&search[advanced_set][clustering]=hamming_r')); 
       }
     });
-
+    $(window).on('click', '#map', function() {
+      window.open('/groups/' + group + '/searches/geomapping?search[example_fields][0]=description&search[example_keywords][0]=&search[include][example_0]=1&search[include][ling_0]=1&search[include][property_0]=1&search[include][value_0]=1&search[javascript]=1&search[ling_keywords][0]=&search[lings][0][]=' + id + langsParams() + '&search[lings_property_set][1]=any&search[property_keywords][1]=&search[property_set][1]=any');
+    });
     $(window).on('click', 'div.search-buttons a', function (e) {
       e.preventDefault();
     });
