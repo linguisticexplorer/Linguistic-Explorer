@@ -1,5 +1,4 @@
 $(function() {
-
   var img = "<img id='loader' src='/images/loader.gif' class='loading'/>";
   var getData = function() {
     var data = $("#prop-name");
@@ -7,6 +6,8 @@ $(function() {
             propId: data.data("prop_id"),
             lpId: data.data("lp_id")}
   };
+
+  $('#prop-descrip p a').attr( 'target', '_blank' ); 
 
   var newURL = function(id) {
     var url = location.href;
@@ -73,12 +74,12 @@ $(function() {
   $(window).on("click", "#save-btn", function(e) {
     e.preventDefault();
     var form = $("#value-form");
-    var saveOverlay = $('#save-container .save-overlay')
+    var saveOverlay = $('#save-container .save-overlay');
     saveOverlay.css("display", "block").css("background-color", "white").html(img);
     $.post(form.attr("action"), form.serialize(), function(data) {
       saveOverlay.css("background-color", "");
       if (data.success == true) {
-        saveOverlay.toggleClass("alert-success").html("Save Successful")
+        saveOverlay.toggleClass("alert-success").html("Save Successful");
         var warning = $("#example-warning");
         var colSelector = $("#prop-" + getData().propId);
         if (colSelector.length > 0) {
@@ -106,25 +107,64 @@ $(function() {
         });
       }, 700);
       }, 'json');
-  })
+  });
 
   $(window).on("click", "#example-create.enabled", function(e) {
     e.preventDefault();
     var data = getData();
-    $(".modal-body").html(img);
+    $("body").css("overflow", "hidden");
+    $("#example-tab").addClass("hidden");
+    $("#example-modal .modal-body").html(img);
     $('#modal-head-content').html("<h3>Create Example</h3>");
     $("#example-modal").modal('toggle');                      
-    $('.modal-body').load("<%= new_group_example_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
+    $('#example-modal .modal-body').load("<%= new_group_example_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
       "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
+  });
+
+  $(window).on("click", "#prop-modal", function(e) {
+    e.preventDefault();
+    $("body").css("overflow", "hidden");
+    $("#prop-tab").addClass("hidden");
+    $("#property-modal .modal-body").html($('#prop-descrip').html());
+    $("#modal-head-content-prop").html("<h3>Property Description</h3>");
+    $("#property-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#minimize-prop", function (e) {
+    $("#prop-tab").removeClass("hidden");
+    $("#property-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#minimize-example", function (e) {
+    $("#example-tab").removeClass("hidden");
+    $("#example-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#prop-tab", function (e) {
+    $(this).addClass("hidden");
+    $('#property-modal').modal("toggle");
+    $("body").css("overflow", "hidden");
+  });
+
+  $(window).on("click", "#example-tab", function (e) {
+    $(this).addClass("hidden");
+    $('#example-modal').modal("toggle");
+    $("body").css("overflow", "hidden");
+  });
+
+  $(window).on("click", ".close", function() {
+    $("body").css("overflow", "auto");
   });
 
   $(window).on("click", "#example-assign.enabled", function(e) {
     e.preventDefault();
     var data = getData();
-    $(".modal-body").html(img);
+    $("body").css("overflow", "hidden");
+    $("#example-tab").addClass("hidden");
+    $("#example-modal .modal-body").html(img);
     $('#modal-head-content').html("<h3>Link Example</h3>");
     $("#example-modal").modal('toggle');                      
-    $('.modal-body').load("<%= new_group_examples_lings_property_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
+    $('#example-modal .modal-body').load("<%= new_group_examples_lings_property_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
         "&lp_id=" + data.lpId);
     });
 

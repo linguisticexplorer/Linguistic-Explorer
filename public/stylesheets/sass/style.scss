@@ -365,6 +365,11 @@ div.relative {
   }
 }
 
+#property-modal {
+  width:900px;
+  margin-left: -450px;
+}
+
 .example-display {
   display: inline-block;
   width: 0 auto;
@@ -436,4 +441,18 @@ div#languages-container.hidden1 {
   background-color: rgba(0,0,0,0);
   color: rgb(0, 136, 204);
   cursor: default;
+}
+
+.inline {
+  display: inline;
+}
+
+.mod-tab {
+  position: fixed;
+  bottom: -3px;
+  left: 30px;
+}
+
+#prop-modal {
+  margin-bottom: 10px;
 }

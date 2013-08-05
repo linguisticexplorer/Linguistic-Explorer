@@ -4,7 +4,7 @@
 <script type="text/javascript">
   $.getScript(location.href);
 </script>
-<% page_heading @ling.grouped_name %>
+<% page_heading @ling.name + " Examples Supported Edit" %>
 
 <h1>Edit <%= current_group.lings_property_name.pluralize %> for <%= @ling.name %></h1>
 
@@ -36,8 +36,24 @@
 <div id="example-modal" class="modal hide fade">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-example" aria-hidden="true">-&nbsp;</button>
     <span id="modal-head-content"></span>
   </div>
   <div class="modal-body">
   </div>
+</div>
+
+<div id="property-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-prop" aria-hidden="true">-&nbsp;</button>
+    <span id="modal-head-content-prop"></span>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>
+
+<div class="mod-tab">
+  <a href="#" class="btn btn-info hidden" id="prop-tab"><i class="icon-white icon-chevron-up shift-down"></i> Property Description</a>
+  <a href="#" class="btn btn-info hidden" id="example-tab"><i class="icon-white icon-chevron-up shift-down"></i> Example </a>
 </div>
