@@ -121,5 +121,5 @@
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
     <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
 <% end %> <% if can? :edit, @ling %>
-    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
+    <%= link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
