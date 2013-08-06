@@ -68,6 +68,9 @@ $(function() {
     $("#prop-active-example").html(img);
     $.get(form.attr("action"), form.serialize(), function(data) {
       $("#prop-active-example").html($("#prop-active-example", data).html());
+      $("#example-change").toggleClass("disabled enabled");
+    }).fail( function() {
+      $("#prop-active-example").html("No examples available");
     });
   });
 
@@ -94,7 +97,6 @@ $(function() {
         if (warning.length > 0) {
           warning.remove();
           $("#example-create").toggleClass("disabled enabled");
-          $("#example-assign").toggleClass("disabled enabled");
         }
       } else {
         saveOverlay.toggleClass("alert-error");
@@ -153,19 +155,20 @@ $(function() {
     $("body").css("overflow", "hidden");
   });
 
-  $(window).on("click", "#example-assign.enabled", function(e) {
+  $(window).on("click", "#example-change.enabled", function(e) {
     e.preventDefault();
-    var data = getData();
+    var data = getData(),
+      ex_id = $('#example-select').find(":selected").val();
     $("body").css("overflow", "hidden");
     $("#example-tab").addClass("hidden");
     $("#example-modal .modal-body").html(img);
-    $('#modal-head-content').html("<h3>Link Example</h3>");
+    $('#modal-head-content').html("<h3>Change Example</h3>");
     $("#example-modal").modal('toggle');                      
-    $('#example-modal .modal-body').load("<%= new_group_examples_lings_property_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
-        "&lp_id=" + data.lpId);
+    $('#example-modal .modal-body').load("<%= edit_group_example_path(current_group) %>" .replace(/examples\/[0-9]+/, "examples/" + ex_id) + " form", "ling_id=" + data.lingId + 
+      "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
     });
 
-  $(window).on("click", "#example-assign.disabled", function(e) {
+  $(window).on("click", "#example-change.disabled", function(e) {
     e.preventDefault();
   });
   

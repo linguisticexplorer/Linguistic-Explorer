@@ -66,13 +66,19 @@ class ExamplesController < GroupDataController
     @example = current_group.examples.find(params[:id])
     authorize! :update, @example
 
-    if @example.update_attributes(params[:example])
-      params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-      redirect_to([current_group, @example],
-                  :notice => (current_group.example_name + ' was successfully updated.'))
-    else
-      @lings = get_lings
-      render :action => "edit"
+    respond_to do |format|
+      if @example.update_attributes(params[:example])
+        params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
+        format.html{ redirect_to([current_group, @example],
+                  :notice => (current_group.example_name + ' was successfully updated.'))}
+        format.json {render json: {success: true}}
+      else
+        @format.html do 
+          @lings = get_lings
+          render :action => "edit"
+        end
+        format.json {render json: {success: false}}
+      end
     end
   end
 
