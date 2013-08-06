@@ -73,12 +73,13 @@ $(function() {
 
   $(window).on("click", "#save-btn", function(e) {
     e.preventDefault();
-    var form = $("#value-form");
-    var saveOverlay = $('#save-container .save-overlay');
+    var form = $("#value-form"),
+      saveOverlay = $('#save-container .save-overlay');
     saveOverlay.css("display", "block").css("background-color", "white").html(img);
     $.post(form.attr("action"), form.serialize(), function(data) {
       saveOverlay.css("background-color", "");
       if (data.success == true) {
+        $("#prop-name").data("lp_id", data.id); 
         saveOverlay.toggleClass("alert-success").html("Save Successful");
         var warning = $("#example-warning");
         var colSelector = $("#prop-" + getData().propId);

@@ -131,7 +131,7 @@ class LingsController < GroupDataController
     respond_to do |format|
       if fresh.save!
         format.html {redirect_to supported_set_values_group_ling_path(current_group, @ling)}
-        format.json {render json: {success: true}}
+        format.json {render json: {success: true, id: prop_id}}
       else
         format.html {redirect_to supported_set_values_group_ling_path(current_group, @ling)}
         format.json {render json: {success: false}}
