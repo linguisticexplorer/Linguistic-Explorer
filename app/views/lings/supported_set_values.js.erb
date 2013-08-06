@@ -46,6 +46,7 @@ $(function() {
 
   $(window).on("click", "#property-selector .btn", function(e) {
     e.preventDefault();
+    $("#example-tab").addClass("hidden");
     var val = e.target.value;
     if (/commit/.test(location.href)) {
       var url = location.href.replace(/commit=[^&]+/, "commit=" + val); 
