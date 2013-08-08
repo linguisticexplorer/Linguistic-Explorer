@@ -1,14 +1,26 @@
 class PropertiesController < GroupDataController
+
+  respond_to :html, :js
+
   def index
     # Added Eager Loading
     @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
     @properties.map { |prop| prop.get_infos } unless params[:plain]
-    @properties
+
+    respond_with(@properties) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @property = current_group.properties.find(params[:id])
     @values = @property.lings_properties.includes(:ling).paginate(:page => params[:page]).order("lings_properties.value DESC, lings.name ASC")
+
+    respond_with(@values) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

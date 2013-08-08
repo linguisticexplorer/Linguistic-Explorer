@@ -1,10 +1,23 @@
 class ExamplesController < GroupDataController
+
+  respond_to :html, :js
+
   def index
     @examples = current_group.examples.includes(:group, :ling).paginate(:page => params[:page], :order => "name")
+
+    respond_with(@examples) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @example = current_group.examples.find(params[:id])
+
+    respond_with(@example) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

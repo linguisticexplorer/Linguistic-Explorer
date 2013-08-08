@@ -1,10 +1,23 @@
 class MembershipsController < GroupDataController
+
+  respond_to :html, :js
+
   def index
     @memberships = current_group.memberships.paginate(:page => params[:page], :order=>"users.name").includes(:member)
+
+    respond_with(@memberships) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @membership = current_group.memberships.find(params[:id])
+
+    respond_with(@membership) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

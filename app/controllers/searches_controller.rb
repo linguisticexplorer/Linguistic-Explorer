@@ -3,7 +3,7 @@ class SearchesController < GroupDataController
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
   rescue_from Exceptions::ResultSearchError, :with => :rescue_from_result_error
 
-  respond_to :html, :csv
+  respond_to :html, :js, :csv
 
   def new
     @search = Search.new do |s|
@@ -89,6 +89,11 @@ class SearchesController < GroupDataController
     @summary = geoMapping.get_legend
 
     authorize! :mapping, @search
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
   end
 
   protected
