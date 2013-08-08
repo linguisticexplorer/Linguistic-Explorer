@@ -36,6 +36,9 @@
 <% content_for :scripts do%>
   <script type="text/javascript">
   Gmaps.map.callback = function(){
+    Gmaps.map.map.maxZoom = 7;
+    Gmaps.map.map.minZoom = 2;
+
     var openLegend;
 
     $(function(){
