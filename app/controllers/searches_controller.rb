@@ -12,6 +12,11 @@ class SearchesController < GroupDataController
     end
 
     authorize! :search, @search
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
   end
 
   def preview
