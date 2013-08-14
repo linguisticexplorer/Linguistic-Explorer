@@ -27,6 +27,7 @@ $(function() {
   var reload = function(url) {
     $("#property-description .fluid-container").html(img);
     $("#property-setter .fluid-container").html(img);
+    $("#property-tab").addClass("hidden");
     var data = $.get(url, function(resp) {
       $("#property-description .fluid-container").html($("#property-description .fluid-container", resp).html());
       $("#property-setter .fluid-container").html($("#property-setter .fluid-container", resp).html());
@@ -46,7 +47,6 @@ $(function() {
 
   $(window).on("click", "#property-selector .btn", function(e) {
     e.preventDefault();
-    $("#example-tab").addClass("hidden");
     var val = e.target.value;
     if (/commit/.test(location.href)) {
       var url = location.href.replace(/commit=[^&]+/, "commit=" + val); 

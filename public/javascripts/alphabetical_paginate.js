@@ -6,7 +6,7 @@ $(function() {
         var url = location.href,
             letter = $(this).data("letter");
         if (/letter/.test(url)){
-          url = url.replace(/letter=?./,"letter=" + letter); 
+          url = url.replace(/letter=[^&]*/,"letter=" + letter); 
         }
         else {
           if (/\?/.test(url)) {

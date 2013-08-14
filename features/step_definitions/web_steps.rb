@@ -136,7 +136,7 @@ Then /^I should see the "([^"]*)" draw$/ do |selector|
 end
 
 Then /^(?:|I )should see "([^"]*)" in common?$/ do |text|
-  with_scope("div.search_common_result.row") do
+  with_scope("tr.search_common_result") do
     if page.respond_to? :should
       page.should have_content(text)
     else

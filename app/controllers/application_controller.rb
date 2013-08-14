@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_group
-    Group.find(1) # changed to default to first group
+    Group.first # changed to default to first group
   end
 
   def collection_authorize!(action, collection, *args)

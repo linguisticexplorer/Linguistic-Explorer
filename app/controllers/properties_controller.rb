@@ -16,7 +16,7 @@ class PropertiesController < GroupDataController
   def show
     @depth = params[:depth].to_i
     @property = current_group.properties.find(params[:id])
-    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
+    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false})
     lings_id = lings.all.map(&:id)
     @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
   end

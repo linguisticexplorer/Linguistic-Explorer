@@ -4,7 +4,7 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
     @all_lings = current_group.lings.at_depth(@depth)
-    @lings, @params = @all_lings.alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
+    @lings, @params = @all_lings.alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false})
     return load_stats(@lings, params[:plain], 0)
   end
  
@@ -24,7 +24,7 @@ class LingsController < GroupDataController
 
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
-      current_group.lings.at_depth(depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name"})
+      current_group.lings.at_depth(depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false})
     end
     return load_stats(@lings_by_depth, params[:plain], 1)
     # return load_statedit

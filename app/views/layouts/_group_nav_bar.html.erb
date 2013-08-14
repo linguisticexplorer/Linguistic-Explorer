@@ -1,5 +1,5 @@
 <% if @group && !@group.new_record? %>
-  <li class="dropdown">
+  <li class="dropdown" id="group_id">
       <%= link_to (@group.name + "<b class='caret'></b>").html_safe, @group, :class => "group dropdown-toggle",
         :id => "group-link" %>
       <ul class="dropdown-menu inverse" role="menu" aria-labelledby="dLabel">

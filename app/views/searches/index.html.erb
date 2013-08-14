@@ -11,7 +11,7 @@
           <%= search.name %>
         </td>
         <td>
-          <%= link_to "Show results", [current_group, search], :class => "btn" %>
+          <%= link_to "Show results", [current_group, search], :class => "btn", :id => "results" %>
         </td>
         <td>
           <%= link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn" %>

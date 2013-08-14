@@ -5,8 +5,7 @@
     <div id="search_interaction" class="padded border margin span4">
       <%- if !@search.cross? && !@search.implication? && !@search.compare? -%>
         <%= render :partial => 'searches/save_search_form' %>
-        <hr />
-      <%- end %>
+      <% end %>
       <%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
     </div>
   </div>

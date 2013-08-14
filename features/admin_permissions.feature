@@ -31,15 +31,13 @@ Feature: Permissions testing for site admins
     And  I should see "Secret Club" within "#group_id"
 
   Scenario: Admins should be able to view a public group and see its group admin panel
-    When I select "Syntactic Structures" from "group_id"
-    And  I press "Go"
+    When I follow "Syntactic Structures" within "#group_id"
     Then I should see "Syntactic Structures" within ".nav"
 
   Scenario: Admins view pages for all group data in a public group
-    When I select "Syntactic Structures" from "group_id"
-    And  I press "Go"
+    When I follow "Syntactic Structures" within "#group_id"
     Then I should see "Syntactic Structures"
-    When I follow "Search"
+    When I follow "Advanced Search"
     Then I should be on the search page for Syntactic Structures
     And  I go to the lings page for Syntactic Structures
     Then I should be on the lings page for Syntactic Structures
@@ -60,12 +58,10 @@ Feature: Permissions testing for site admins
     Then I should be on the memberships page for Syntactic Structures
 
   Scenario: Admins should be able to view a private group and see its group admin bar
-    When I select "Secret Club" from "group_id"
-    And  I press "Go"
+    When I follow "Secret Club" within "#group_id"
 
   Scenario: Admins view pages for all group data in a private group
-    When I select "Secret Club" from "group_id"
-    And  I press "Go"
+    When I follow "Secret Club" within "#group_id"
     And  I follow "Search"
     Then I should be on the search page for Secret Club
     And  I go to the lings page for Secret Club

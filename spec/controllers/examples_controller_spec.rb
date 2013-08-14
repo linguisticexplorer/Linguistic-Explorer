@@ -66,15 +66,6 @@ describe ExamplesController do
         assigns(:example).should be_new_record
       end
 
-      it "@lings should be a hash with two depth members" do
-        get :new, :group_id => groups(:inclusive).id
-        lings = assigns(:lings)
-        lings.should be_a Hash
-        lings[:depth_0].should include lings(:level0)
-        lings[:depth_1].should include lings(:level1)
-        lings[:depth_0].should_not include lings(:exclusive0)
-        lings[:depth_1].should_not include lings(:exclusive1)
-      end
     end
   end
 
@@ -131,7 +122,7 @@ describe ExamplesController do
 
       Example.stub(:new).and_return(@example)
       Group.stub(:find).and_return(@group)
-      post :create, :group_id => @group.id, :example => {'name' => 'Javanese'}
+      post :create, :group_id => @group.id, :example => {'name' => 'Javanese'} 
     end
 
     describe "with valid params and valid stored_values" do

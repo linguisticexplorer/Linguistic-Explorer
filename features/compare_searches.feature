@@ -142,7 +142,7 @@ Feature: Compare searches
     And I press "Go"
     Then I should see 3 search result rows
     Then I should see "Save search results"
-    When I fill in "Name" with "Third Search"
+    When I fill in "search_name" with "Third Search"
     And I press "Save"
     Then I should see "Syntactic Structures Search History"
     And I should see "Third Search"

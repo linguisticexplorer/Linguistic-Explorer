@@ -52,7 +52,7 @@ Feature: Save searches
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
     Then I should see "Save search results"
-    When I fill in "Name" with "My First Search"
+    When I fill in "search_name" with "My First Search"
     And I press "Save"
     Then I should see "Syntactic Structures Search History"
     And I should see "My First Search"
@@ -64,9 +64,9 @@ Feature: Save searches
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
     Then I should see "Save search results"
-    When I fill in "Name" with "My First Search"
+    When I fill in "search_name" with "My First Search"
     And I press "Save"
-    And I follow "Results"
+    And I follow "Show results"
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property  | child value  |
     | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
@@ -85,7 +85,7 @@ Feature: Save searches
     And I select "Speaker 1" from "Speakers"
     And I press "Show results"
     Then I should see "Save search results"
-    When I fill in "Name" with "My First Search"
+    When I fill in "search_name" with "My First Search"
     And I press "Save"
     And I follow "Download CSV"
     Then the csv should contain the following rows
@@ -114,14 +114,14 @@ Feature: Save searches
     Given I have 24 saved group searches
     When I go to the Syntactic Structures search page
     When I press "Show results"
-    And I fill in "Name" with "Search 25"
+    And I fill in "search_name" with "Search 25"
     Then I press "Save"
     And I should see "Search 25"
 
   Scenario: Error on search
     When I go to the Syntactic Structures search page
     When I press "Show results"
-    And I fill in "Name" with ""
+    And I fill in "search_name" with ""
     Then I press "Save"
     And I should see "can't be blank"
 
@@ -131,14 +131,14 @@ Feature: Save searches
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
     Then I should see "Save search results"
-    When I fill in "Name" with "My First Search"
+    When I fill in "search_name" with "My First Search"
     And I press "Save"
     Then I go to the Syntactic Structures search page
     And I select "Speaker 2" from "Speakers"
     And I select "Sentence 2" from "Sentences"
     And I press "Show results"
     Then I follow "History"
-    And I follow "Results"
+    And I follow "Show results"
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property  | child value  |
     | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
