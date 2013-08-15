@@ -34,7 +34,7 @@ Feature: Data entry supported by surrounding language context
       | Afrikaans | Adjective Noun  | ex1           | I speak Afrikaans|
       | German    | Adjective Noun  | ex2           | I speak German   |
 
-    When I am signed in as a member of Syntactic Structures
+    When I am signed in as a admin of Syntactic Structures
     And I go to the group Syntactic Structures
     And I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
 
@@ -81,7 +81,7 @@ Feature: Data entry supported by surrounding language context
     And I should see "yes"
     And I should see "no"
     And I should see "N/A"
-    And I should see "or Add a New one"
+    And I should see "" within "#new_value"
 
 #this feature is probably specific to the Terraling application
   Scenario: The page allows a user to say how certain they are
@@ -94,23 +94,23 @@ Feature: Data entry supported by surrounding language context
 #a step to find a button with a "name" needs to be written
   Scenario: The page allows the user to submit their assignment
     When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "Submit" button
+    Then I should see "Save" button
 
   Scenario: The page displays existing examples for for this property & ling
     When I am on the Property Assignment with Context for "Afrikaans" Page
     Then I should see "Examples"
     And I should see "I speak Afrikaans"
 
-  Scenario: The page allows examples to be created and associated
+  Scenario: The page allows examples to be created and changed
     When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "Create New Example" 
-    And I should see "Assign Existing Example"
+    Then I should see "Create Example" 
+    And I should see "Change Example"
 
 #User should be able to switch property
   Scenario: The page allows the user to switch to a different property
     When I am on the Property Assignment with Context for "Spanish" Page
     When I select "Subject Object" from "prop-select"
-    And I press "Select" within "#select-col"
+    Then show me the page
     Then I should see "Subject Object definition text"
     And I should not see "Adjective Noun definition text"
 

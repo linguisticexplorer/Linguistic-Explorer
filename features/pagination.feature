@@ -6,7 +6,7 @@ Feature: Pagination
     And the group has a maximum depth of 1
     And the following "Syntactic Structures" lings:
     | name        | depth |
-    | Afrikaans     | 0     |
+    | Afrikaans   | 0     |
     | Spanish     | 0     |
     | German      | 0     |
     | Italian     | 0     |
@@ -32,6 +32,9 @@ Feature: Pagination
     And I should see "Afrikaans"
     And I should see "a"
     And I should see "b"
+    And I should see "all"
+    And I follow "all"
+    And I should see "Italian"
     And I follow "s"
     And I should see "Spanish"
 

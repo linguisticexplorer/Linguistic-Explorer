@@ -21,7 +21,7 @@
         <%= label_tag "value[value_new]", :class => "radio" do %>
           <%= radio_button_tag "value",
             "value_new" %>
-          <%= text_field_tag "new_value" %>
+          <%= text_field_tag "new_value", nil, :placeholder => "or Add a New one" %>
         <% end %>
       <% end %>
     </div>

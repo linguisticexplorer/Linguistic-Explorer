@@ -5,35 +5,27 @@ Feature: Permissions testing for non-logged-in users
     And the public group "Syntactic Structures"
     And the private group "Secret Club"
     When I go to the home page
-    Then I should see "Select a Group"
-    When I select "Syntactic Structures" from "group_id"
-    And  I press "Go"
+    And I follow "Syntactic Structures" within "#group_id"
 
   Scenario: Visitors should be able to choose a public group to enter
     Then I should be on the group Syntactic Structures
-    Then I should see "Syntactic Structures" within ".nav"
+    Then I should see "Syntactic Structures" within "#group_id"
 
   Scenario: The standard user should be able to view pages for all group data in a public group
-    Then I should see "Syntactic Structures" within ".nav"
+    Then I should see "Syntactic Structures" within "#group_id"
     And  I should not see "Group Admin Panel"
     When I follow "Syntactic Structures"
     Then I should be on the group Syntactic Structures
-    And  I follow "Search"
+    And  I follow "Advanced Search"
     Then I should be on the search page for Syntactic Structures
-    When I go to the lings page for Syntactic Structures
-    Then I should be on the lings page for Syntactic Structures
+    #When I go to the lings page for Syntactic Structures
+    #Then I should be on the lings page for Syntactic Structures
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
     Then I should be on the ling0s page for Syntactic Structures
     And  I follow the "Ling" with depth "1" model link for the group "Syntactic Structures"
     Then I should be on the ling1s page for Syntactic Structures
-    And  I follow "Property"
+    And  I follow "Properties"
     Then I should be on the properties page for Syntactic Structures
-    And  I follow "Value"
-    Then I should be on the values page for Syntactic Structures
-    And  I follow "Example"
-    Then I should be on the examples page for Syntactic Structures
-    And  I follow "Example Value"
-    Then I should be on the example values page for Syntactic Structures
     And  I follow "Members"
     Then I should be on the memberships page for Syntactic Structures
 

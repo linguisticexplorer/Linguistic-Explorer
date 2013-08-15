@@ -39,21 +39,15 @@ Feature: Permissions testing for site admins
     Then I should see "Syntactic Structures"
     When I follow "Advanced Search"
     Then I should be on the search page for Syntactic Structures
-    And  I go to the lings page for Syntactic Structures
-    Then I should be on the lings page for Syntactic Structures
-    And  I follow "Ling0"
+    #And  I go to the lings page for Syntactic Structures
+    #Then I should be on the lings page for Syntactic Structures
+    And  I follow "Ling0s"
     Then I should be on the ling0s page for Syntactic Structures
-    And  I follow "Ling1"
+    And  I follow "Ling1s"
     Then I should be on the ling1s page for Syntactic Structures
-    And  I follow "Property"
+    And  I follow "Properties"
     Then I should be on the properties page for Syntactic Structures
     When I return to "Syntactic Structures"
-    And  I follow "Value"
-    Then I should be on the values page for Syntactic Structures
-    And  I follow "Example"
-    Then I should be on the examples page for Syntactic Structures
-    And  I follow "Example Value"
-    Then I should be on the example values page for Syntactic Structures
     And  I follow "Members"
     Then I should be on the memberships page for Syntactic Structures
 
@@ -64,20 +58,14 @@ Feature: Permissions testing for site admins
     When I follow "Secret Club" within "#group_id"
     And  I follow "Search"
     Then I should be on the search page for Secret Club
-    And  I go to the lings page for Secret Club
-    Then I should be on the lings page for Secret Club
+    #And  I go to the lings page for Secret Club
+    #Then I should be on the lings page for Secret Club
     And  I follow "Ling0"
     Then I should be on the ling0s page for Secret Club
     And  I follow "Ling1"
     Then I should be on the ling1s page for Secret Club
-    And  I follow "Property"
+    And  I follow "Properties"
     Then I should be on the properties page for Secret Club
-    And  I follow "Value"
-    Then I should be on the values page for Secret Club
-    And  I follow "Example"
-    Then I should be on the examples page for Secret Club
-    And  I follow "Example Value"
-    Then I should be on the example values page for Secret Club
     And  I follow "Members"
     Then I should be on the memberships page for Secret Club
 
