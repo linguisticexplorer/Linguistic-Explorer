@@ -10,7 +10,7 @@ class ExamplesController < GroupDataController
   def new
     @ling = params[:ling_id] && Ling.find(params[:ling_id])
     @property = params[:prop_id] && Property.find(params[:prop_id])
-    @lp = params[:lp_id] && LingsProperty.find(params[:lp_id])
+    @lp = params[:lp_id] && LingsProperty.find_by_id(params[:lp_id])
     @example = Example.new do |e|
       e.group = current_group
       e.creator = current_user
