@@ -30,10 +30,9 @@ Feature: Typeahead
   Scenario: Visitor goes to Ling page and searches a language
     When I follow "Lings"
     Then I should see "" within "#auto_lang"
-    When I fill in "auto_lang" with "s" within "#auto_lang"
+    When I fill in "auto_lang" with "s"
+    Then wait for "2"
     Then show me the page
     Then I should see "Spanish" within ".typeahead"
     When I follow "Spanish"
     Then I should see "Language Spanish"
-
-

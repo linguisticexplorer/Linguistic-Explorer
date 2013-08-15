@@ -122,7 +122,7 @@ describe ExamplesController do
 
       Example.stub(:new).and_return(@example)
       Group.stub(:find).and_return(@group)
-      post :create, :group_id => @group.id, :example => {'name' => 'Javanese'} 
+      post :create, :group_id => @group.id, :example => {'name' => 'Javanese', 'lp_id' => '20'} 
     end
 
     describe "with valid params and valid stored_values" do

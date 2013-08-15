@@ -253,4 +253,6 @@ Then /^show me the page$/ do
   save_and_open_page
 end
 
-
+Then /^wait for "([^"]*)"/  do |time|
+  sleep(time.to_i)
+end
