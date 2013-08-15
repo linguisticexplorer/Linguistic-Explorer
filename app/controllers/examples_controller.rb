@@ -38,15 +38,18 @@ class ExamplesController < GroupDataController
 
     authorize! :create, @example
 
-    elp = ExamplesLingsProperty.new()
-    elp.group = current_group
-    elp.lings_property = LingsProperty.find(params[:lp_val])
-    elp.example = @example
+    if params[:lp_val]
+      elp = ExamplesLingsProperty.new()
+      elp.group = current_group
+      elp.lings_property = LingsProperty.find(params[:lp_val])
+      elp.example = @example
 
-    authorize! :create, elp
+      authorize! :create, elp
+    end
+
 
     respond_to do |format|
-      if @example.save && elp.save
+      if @example.save && (params[:lp_val] && elp.save || true)
         @example.name = "Example_" + @example.id.to_s if @example.name == ""
         @example.save!
         format.html {redirect_to([current_group, @example],
