@@ -15,6 +15,7 @@ Feature: Analysis
     And the following "Syntactic Structures" properties:
     | property name     | ling name   | prop val    | category | depth |
     | Adjective Noun    | Afrikaans   | yes         | Grammar  | 0     |
+    | Adjective Noun    | Spanish     | yes         | Grammar  | 0     |
     | Adjective Degree  | Afrikaans   | yes         | Grammar  | 0     |
     | Degree Adjective  | Afrikaans   | yes         | Grammar  | 0     |
     | Degree Adjective  | German      | yes         | Grammar  | 0     |
@@ -37,3 +38,31 @@ Feature: Analysis
     Then I access the new tab
     Then I should see "Lings in the Selection"
 
+  @javascript
+  Scenario: Visitor should be able to add and delete languages of the same depth to analyse 
+    Then I should not see "Spanish" within "#selected-langs"
+    When I fill in "auto_compare" with "s"
+    Then I should see "Spanish" within ".typeahead"
+    Then I follow "Spanish" within ".typeahead"
+    Then I should see "Spanish" within "#selected-langs"
+    Then I follow "clear all" within "#languages-container"
+    Then I should not see "Spanish" within "#selected-langs"
+    When I fill in "auto_compare" with "b"
+    Then I should not see "Bellinzonese"
+
+  @selenium
+  Scenario: Visitor should be able to perform quick analysis on languages 
+    When I fill in "auto_compare" with "s"
+    Then I should see "Spanish" within ".typeahead"
+    Then I follow "Spanish" within ".typeahead"
+    Then I follow "Compare Properties" within "#compare-buttons"
+    Then I access the new tab
+    Then I should see "Properties in Common"
+    Then I access the first tab
+    Then I follow "Similarity Tree" within "#compare-buttons"
+    Then I access the new tab
+    Then I should see "Search Results"
+    Then I access the first tab
+    Then I follow "Radial Tree" within "#compare-buttons"
+    Then I access the new tab
+    Then I should see "Search Results" 

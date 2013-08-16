@@ -256,3 +256,7 @@ end
 When /^I access the new tab$/ do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
+
+When /^I access the first tab$/ do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+end

@@ -1,7 +1,7 @@
 var group = <%= current_group.to_param %>,
     dict, items = [], id = <%= @ling.id %>,
     makeButton = function() {
-      return '<a href="/Remove" class="remove-lang"><i class="icon-remove shift-down"></i></a>  ';
+      return '<a href="/Remove" class="remove-lang"><i class=\'icon-remove shift-down\'></i></a>  ';
     },
     hideList = function () {
       $('#languages-container').addClass('hidden1');
