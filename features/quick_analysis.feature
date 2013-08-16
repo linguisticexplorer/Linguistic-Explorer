@@ -1,4 +1,4 @@
-Feature: Typeahead
+Feature: Analysis
 
   Background:
     Given I am a visitor
@@ -26,34 +26,14 @@ Feature: Typeahead
     | Degree Adjective  | Bellinzonese| yes         | Grammar  | 1     |
 
     And I go to the group Syntactic Structures
-
-  @javascript
-  Scenario: Visitor searches a language from the group page and languages of all depths are available
-    Then I should see "" within "#auto_group"
-    When I fill in "auto_group" with "b"
-    Then I should see "Bellinzonese" within ".typeahead"
-    When I fill in "auto_group" with "afr"
-    Then I should see "Afrikaans" within ".typeahead"
-    When I follow "Afrikaans"
+    And I follow "Lings"
+    And I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-  @javascript
-  Scenario: Visitor goes to Ling page and searches a language and only languages with the right depth are searchable
-    When I follow "Lings"
-    Then I should see "" within "#auto_lang"
-    When I fill in "auto_lang" with "b"
-    Then I should not see "Bellinzonese"
-    When I fill in "auto_lang" with "s"
-    Then I should see "Spanish" within ".typeahead"
-    When I follow "Spanish"
-    Then I should see "Ling Spanish"
-
-  @javascript
-  Scenario: Visitor goes to Property page and searches a property
-    When I follow "Properties"
-    Then I should see "" within "#auto_prop"
-    When I fill in "auto_prop" with "degree"
-    Then I should see "Degree Adjective" within ".typeahead"
-    When I follow "Degree Adjective"
-    Then I should see "Property Degree Adjective"
+  @selenium
+  Scenario: Visitor should be able to map a language 
+    Then I should see "Map" within "#compare-buttons"
+    When I follow "Map"
+    Then I access the new tab
+    Then I should see "Lings in the Selection"
 

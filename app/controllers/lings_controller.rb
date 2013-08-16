@@ -22,6 +22,14 @@ class LingsController < GroupDataController
     render :json => @all_lings.to_json.html_safe
   end
 
+  def dict1
+    @all_lings = Hash.new
+    current_group.lings.find_each(:batch_size => 500) do |ling| 
+      @all_lings[ling.name] = ling.id
+    end
+    render :json => @all_lings.to_json.html_safe
+  end
+
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
       current_group.lings.at_depth(depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false})

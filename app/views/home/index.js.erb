@@ -1,6 +1,6 @@
 var bindTypeahead = function(id) {
     var dict, items = [];
-    $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "groups/" + id + "/lings/dict", function(data) { 
+    $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "groups/" + id + "/dict", function(data) { 
       dict = data;
       $.each(dict, function(key, val) {
         items.push(key);

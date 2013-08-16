@@ -14,6 +14,7 @@ LinguisticExplorer::Application.routes.draw do
   match "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
   match "/groups/:group_id/lings/:id/dict" => "lings#dict"
   match "/groups/:group_id/lings/dict" => "lings#dict"
+  match "/groups/:group_id/dict" => "lings#dict1"
   match "/groups/:group_id/properties/dict" => "properties#dict"
   match "/groups/:group_id/memberships/dict" => "memberships#dict"
   match "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"

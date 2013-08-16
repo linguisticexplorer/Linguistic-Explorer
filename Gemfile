@@ -111,6 +111,8 @@ group :test, :development do
 
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"
+  gem "Selenium"
+  gem "selenium-client"
   gem "database_cleaner", "0.6.7"
   # Due to the new name resolution approach of the bundler gem it has the require option
   gem "cucumber-rails", "0.4.0", :require => false # '0.4.0.beta.1'
