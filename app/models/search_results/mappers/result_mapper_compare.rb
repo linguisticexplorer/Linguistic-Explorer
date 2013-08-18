@@ -145,14 +145,20 @@ module SearchResults
       end
 
       class ResultEntryCompare < ResultEntry
-        attr_reader :lings
+        attr_reader :lings, :prop
+
         def initialize(parent, child=nil, lings)
           super parent, child
           @lings = lings
+          @prop  = parent.first.property.attributes
         end
 
         def common?
           child.size==1
+        end
+
+        def as_json(options={})
+          super(:include => [:property])
         end
 
       end

@@ -1,4 +1,4 @@
-<% unless @search.clustering? -%>
+<% unless true && @search.clustering? -%>
 $(function(){
   // Ajax Paging
   var default_page = "<%= escape_javascript(render("searches/results")) if @search.default? -%>"

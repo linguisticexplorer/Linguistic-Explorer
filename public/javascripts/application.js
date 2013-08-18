@@ -8,10 +8,10 @@ $(function() {
     var text = "<span class='loading'>Page is loading...</span>"
 
     // Manage the AJAX pagination and changing the URL
-    $(".pagination a").live("click", function(e) {
+    $(document).on('click', ".pagination a", function(e) {
         //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
-        jQuery.getScript(this.href);
-        jQuery(".pagination").html(text+img);
+        $.getScript(this.href);
+        $(".pagination").html(text+img);
         history.pushState(null, document.title, this.href);
         e.preventDefault();
     });
@@ -26,7 +26,7 @@ $(function() {
     hide_div('#show_impl');
 
     enable_similarity_radial_tree();
-//    console.log("OnLoad end");
+
     // TODO: check javascript capabilities on submit
     // Function to reset the form to the initial state
     $("input:reset").click( function() {
@@ -95,7 +95,7 @@ function reset_form(){
     show_delete();
 }
 
-name = "";
+var name = "";
 /* Function triggered by selecting an Implication radio button */
 function implication_on(){
 //    console.log("implication_on");
@@ -175,7 +175,7 @@ function show_includes(){
 
 /* Function to disable an element */
 function disable(element){
-  //console.log("disable "+element);
+  
   $(element).attr("disabled", true);
   $(element).parent().addClass("gray");
   $(element).parent().parent().children(".blue").remove();
@@ -184,7 +184,7 @@ function disable(element){
 
 /* Function to enable an element */
 function enable(element){
-//  console.log("enable "+element);
+
   $(element).attr("disabled", false);
   $(element).parent().removeClass("gray");
   $(element).parent().parent().children(".blue").remove();
@@ -200,7 +200,7 @@ function enable_similarity_radial_tree(){
     '<input id="search_group_clust_hamming1" name="search[advanced_set][clustering]" type="radio" value="hamming_r">' +
     ' Radial Tree' +
     '</label>';
-    // console.log($("#clustering"));
+
     $("#clustering").append(label);
 }
 

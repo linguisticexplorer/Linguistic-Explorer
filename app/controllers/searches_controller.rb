@@ -20,7 +20,7 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    @search = perform_search
+    @search = perform_search(params[:page])
 
     #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
     authorize! :search, @search
@@ -101,6 +101,16 @@ class SearchesController < GroupDataController
     end
   end
 
+  def visualize
+    @search = perform_search
+
+    # visualization = Visualization.new(@search)
+
+    authorize! :visualize, @search
+    # Rails.logger.debug "[DEBUG] JSON: #{visualization.to_json}"
+    render :json => {:success => true, :result => @search.results(false).as_json }
+  end
+
   protected
 
   def check_max_search_notice
@@ -124,12 +134,12 @@ class SearchesController < GroupDataController
     json
   end
 
-  def perform_search
+  def perform_search(offset=0)
     Search.new do |s|
       s.creator = current_user
       s.group = current_group
       s.query = params[:search]
-      s.offset = params[:page]
+      s.offset = offset
     end
   end
 

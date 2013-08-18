@@ -36,9 +36,10 @@ class Ability
       end
 
       # turn on all searches advanced features
-      can :search, Search,        :group => { :privacy => Group::PUBLIC }
-      can :cross, Search,         :group => { :privacy => Group::PUBLIC }
-      can :mapping, Search,       :group => { :privacy => Group::PUBLIC }
+      can :search, Search,          :group => { :privacy => Group::PUBLIC }
+      can :cross, Search,           :group => { :privacy => Group::PUBLIC }
+      can :mapping, Search,         :group => { :privacy => Group::PUBLIC }
+      can :visualize, Search,       :group => { :privacy => Group::PUBLIC }
 
       # turn on forum capabilities
       can :read, ForumGroup, :state => true
