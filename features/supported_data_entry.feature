@@ -107,10 +107,10 @@ Feature: Data entry supported by surrounding language context
     And I should see "Change Example"
 
 #User should be able to switch property
-  @javascript
   Scenario: The page allows the user to switch to a different property
     When I am on the Property Assignment with Context for "Spanish" Page
     When I select "Subject Object" from "prop-select"
+    And I press "Select" within "#select-col"
     Then I should see "Subject Object definition text"
     And I should not see "Adjective Noun definition text"
 
