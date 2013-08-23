@@ -115,15 +115,13 @@ Feature: Data entry supported by surrounding language context
     And I should not see "Adjective Noun definition text"
 
 #Testing the Next, Unset, and Uncertain buttons
-  @javascript
   Scenario: The page allows the user to switch to the next property,
     the next unset property, and the next uncertain property
     When I am on the Property Assignment with Context for "Spanish" Page
     Then I should see "Adjective Noun definition text"
     When I press "Next" within "#select-col"
-    Then I should see "Subject Object definition text"
+    Then I should see "Noun Adjective definition text"
     When I press "Next Unset" within "#select-col"
     Then I should see "Object Subject definition text"
-    When I press "Next" within "#select-col"
     When I press "Next Uncertain" within "#select-col"
     Then I should see "Noun Adjective definition text"

@@ -1,3 +1,8 @@
+<%= @properties %>
+One
+<%= params[:prop_id]%>
+Two
+<%= @properties.map(&:id) %>
 <div id="cat-title" class="fluid-row">
   <h2>Select Property</h2>
 </div>
@@ -20,8 +25,8 @@
   </div>
   <% end %>
   <h4> Properties </h4>
+  <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
   <div id="cat-prop" class="fluid-row">
-    <%= form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do %>
       <select id="prop-select" name="prop_id" multiple="multiple">
         <% @properties.each do |prop|%>
           <option id="prop-<%= prop.id %>" style= "color:

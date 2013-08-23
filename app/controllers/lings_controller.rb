@@ -59,6 +59,7 @@ class LingsController < GroupDataController
     @preexisting_values = @ling.lings_properties.select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
     @exists = true
     if params[:prop_id]
+      session[:prop_id] ||= params[:prop_id] if params[:prop_id]
       if params[:commit] == "Select"
         session[:prop_id] = params[:prop_id] if params[:prop_id]
       else
