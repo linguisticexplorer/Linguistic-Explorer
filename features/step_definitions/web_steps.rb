@@ -253,6 +253,10 @@ Then /^show me the page$/ do
   save_and_open_page
 end
 
+Then /^I wait "([^"]*)"$/ do |num|
+  sleep(num.to_i)
+end
+
 When /^I access the new tab$/ do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
 end
