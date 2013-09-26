@@ -1,4 +1,4 @@
-<%= form_for([current_group, @membership]) do |f| %>
+<%= form_for([current_group, @membership], :html => {:class => "form-horizontal"}) do |f| %>
   <% if @membership.errors.any? %>
     <div id="error_explanation">
       <h2><%= pluralize(@membership.errors.count, "error") %> prohibited this membership from being saved:</h2>
@@ -11,17 +11,24 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :member_id %><br />
-    <%= f.collection_select :member_id, @users, :id, :email %>
+
+  <div class="control-group">
+    <%= f.label :member_id, :class => "control-label" %>
+    <div class="controls">
+      <%= f.collection_select :member_id, @users, :id, :email %>
+    </div>
   </div>
 
-  <div class="field">
-    <%= f.label :level, 'Group access level:' %><br />
-    <%= f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s %>
+  <div class="control-group">
+    <%= f.label :level, :class => "control-label" %>
+    <div class="controls">
+      <%= f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s %>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit %>
+  <div class="control-group">
+    <div class="controls">
+      <%= f.submit :class => "btn" %>
+    </div>
   </div>
 <% end %>

@@ -1,6 +1,6 @@
-<div class="apple_pagination">
+<div class="apple_pagination will-paginate">
 <!-- render page links in the view: -->
-<%= will_paginate @lings_properties %>
+<%= will_paginate @lings_properties, renderer: BootstrapPagination::Rails  %>
 </div>
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
@@ -17,17 +17,17 @@
     <td><%= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling) %></td>
     <td><%= link_to lings_property.property.name, group_property_path(current_group, lings_property.property) %>
     </td>
-    <td><%= link_to lings_property.value, [current_group, lings_property] %></td>
+    <td class="text-left"><%= link_to lings_property.value, [current_group, lings_property] %></td>
     <% if can? :destroy, lings_property %>
     <td>
-      <%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete %>
+      <%= link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger btn-small' %>
     </td>
     <% end %>
   </tr>
 <% end %>
 </table>
 
-<div class="apple_pagination">
+<div class="apple_pagination will-paginate">
 <!-- render page links in the view: -->
-<%= will_paginate @lings_properties %>
+<%= will_paginate @lings_properties, renderer: BootstrapPagination::Rails %>
 </div>

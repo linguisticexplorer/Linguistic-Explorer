@@ -1,3 +1,61 @@
+<script>
+  $.getScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js').done( function() {
+
+    var examples = $('#group_example_fields').val().split(", ");
+
+    function makeElement (text) {
+
+      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"></input><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
+
+    };
+    
+    if (examples !== "") {
+      $.each(examples, function(i, val) {
+        $('#order').append(makeElement(val));
+      });
+    }
+    else {
+      $('#order').append(makeElement('text'));
+    }
+
+    $('#order').sortable({handle:'.handle', cancel: ''}).disableSelection().bind('DOMSubtreeModified change', function (event,ui){
+      var values = $('#order div input').map(function () { return $(this).val(); }).get().join(', ');
+      if (values) {
+        $('#group_example_fields').val(values);
+      }
+      else {
+        $('#group_example_fields').val('text')
+      }
+      
+    });
+    
+    $(window).on('click', '.delete-button',function (e) {
+      e.preventDefault(); 
+
+      if(confirm('Are you sure you want delete the element?')) {
+        $(this).parent().remove();
+      } 
+
+    }); 
+
+    $(window).bind('click', '#append-button', function (e) {
+      var text = $('#append').val();
+      if(text) {
+        $('#order').append(makeElement(text));
+        $('#append').val('');
+      };
+    });
+
+    $("#append").keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          $('#append-button').trigger('click');
+      }
+    });
+
+  });
+</script>
+
 <%= form_for(@group, :html => {:class => "form-horizontal"}) do |f| %>
     <% if @group.errors.any? %>
         <div id="error_explanation">
@@ -74,11 +132,18 @@
     </div>
 
     <div class="control-group">
-      <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)", :class => "control-label" %>
-      <div class="controls">
-        <%= f.text_field :example_fields %>
+      <%= f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label" %>
+      <div class="controls" id="row-fix">
+        <div class="row">
+          <div id="order" class="span4"></div>
+        </div>
+        <%= f.hidden_field :example_fields %>
+          <div id="add" class="input-append span4">
+            <input class="span2" id="append" type="text" placeholder="Type to add field" autocomplete=off></input>
+            <button class="btn btn-success" type="button" id="append-button"><i class="icon-plus icon-white"></i></button>
+          </div>
+        </div>
       </div>
-    </div>
 
     <div class="control-group">
       <%= f.label :depth_maximum, "Depth Maximum", :class => "control-label" %>
@@ -95,8 +160,26 @@
     </div>
 
     <div class="control-group">
+      <%= f.label :display_style, "Display Style", :class => "control-label" %>
+      <div class="controls">
+        <%= label_tag :style0, :class => "radio" do %>
+          <%= f.radio_button :display_style, "table",
+            :id => :style0,
+            :checked => true %>Table style, eg:
+            <%= display_style_example(0) %> 
+        <% end %>
+        <%= label_tag :style1, :class => "radio" do %>
+          <%= f.radio_button :display_style, "linguistic",
+            :id => :style1 %>Linguistic style, eg:
+             <%= display_style_example(1) %>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="control-group">
       <div class="controls">
         <%= f.submit :class => "btn" %>
       </div>
     </div>
+
 <% end %>

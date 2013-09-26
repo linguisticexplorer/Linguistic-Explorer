@@ -1,0 +1,209 @@
+$(function() {
+  var img = "<img id='loader' src='/images/loader.gif' class='loading'/>";
+  var getData = function() {
+    var data = $("#prop-name");
+    return {lingId: data.data("ling_id"),
+            propId: data.data("prop_id"),
+            lpId: data.data("lp_id")}
+  };
+
+  $('#prop-descrip p a').attr( 'target', '_blank' ); 
+
+  var newURL = function(id) {
+    var url = location.href;
+    if (/prop_id=/.test(location.href)) {
+      url = url.replace(/id=[0-9]+/, "id=" + id);   
+      url = url.replace(/commit=[^\&]+/, "commit=" + "Select");   
+      return url;
+    } else if (/\?.+/.test(location.href)) {
+      return location.href + "&prop_id=" + id + "&commit=Select";
+    } else  if (/\?$/.test(location.href)) {
+      return location.href + "prop_id=" + id + "&commit=Select";
+    } else {
+      return location.href + "?prop_id=" + id + "&commit=Select";
+    }
+  };
+
+  var reload = function(url) {
+    $("#property-description .fluid-container").html(img);
+    $("#property-setter .fluid-container").html(img);
+    $("#property-tab").addClass("hidden");
+    var data = $.get(url, function(resp) {
+      $("#property-description .fluid-container").html($("#property-description .fluid-container", resp).html());
+      $("#property-setter .fluid-container").html($("#property-setter .fluid-container", resp).html());
+      $("#prop-select").find(":selected").prop("selected", false);
+      var currentPropId = getData().propId;
+      var newOption = $("#prop-select option[value=" + currentPropId + "]");
+      newOption.prop("selected", true);
+    });
+    window.history.pushState(null, document.title, url);
+
+  };
+
+  $(window).on("click", "#cat-prop option", function(e) {
+    e.preventDefault();
+    reload(newURL(e.target.value));
+  });
+
+  $(window).on("click", "#property-selector .btn", function(e) {
+    e.preventDefault();
+    var val = e.target.value;
+    if (/commit/.test(location.href)) {
+      var url = location.href.replace(/commit=[^&]+/, "commit=" + val); 
+    } else {
+      var prop_id = $('#prop-select').val()[0];
+      if (/\?.+/.test(location.href)) {
+        var url = location.href + "&prop_id=" + prop_id + "&commit=" + val;  
+      } else  if (/\?$/.test(location.href)) {
+        var url = location.href + "prop_id=" + prop_id + "&commit=" + val;
+      } else {
+        var url = location.href + "?prop_id=" + prop_id + "&commit=" + val;
+      }
+    }
+    reload(url);
+  });
+
+  $(window).on("click", "#example-select-btn", function(e) {
+    e.preventDefault();
+    var form =  $("#prop-example-selector form");
+    $("#prop-active-example").html(img);
+    $.get(form.attr("action"), form.serialize(), function(data) {
+      $("#prop-active-example").html($("#prop-active-example", data).html());
+      $("#example-change").toggleClass("disabled enabled");
+    }).fail( function() {
+      $("#prop-active-example").html("No examples available");
+    });
+  });
+
+  $(window).on("click", "#save-btn", function(e) {
+    e.preventDefault();
+    var form = $("#value-form"),
+      saveOverlay = $('#save-container .save-overlay');
+    saveOverlay.css("display", "block").css("background-color", "white").html(img);
+    $.post(form.attr("action"), form.serialize(), function(data) {
+      saveOverlay.css("background-color", "");
+      if (data.success == true) {
+        $("#prop-name").data("lp_id", data.id); 
+        saveOverlay.toggleClass("alert-success").html("Save Successful");
+        var warning = $("#example-warning");
+        var colSelector = $("#prop-" + getData().propId);
+        if (colSelector.length > 0) {
+          if ($("#sureness\\[revisit\\]").is(":checked") || $("#sureness\\[need_help\\]").is(":checked"))  {
+            colSelector.css("color", "orange");
+          }
+          else {
+            colSelector.css("color", "green");
+          }
+        }
+        if (warning.length > 0) {
+          warning.remove();
+          $("#example-create").toggleClass("disabled enabled");
+        }
+      } else {
+        saveOverlay.toggleClass("alert-error");
+        saveOverlay.html("Save Unsuccessful")
+      }
+      setTimeout(function() {
+        saveOverlay.animate({opacity: 0}, 500, function() {
+          saveOverlay.removeAttr("style");
+          saveOverlay.removeClass("alert-success alert-error");
+          saveOverlay.html("");
+        });
+      }, 700);
+      }, 'json');
+  });
+
+  $(window).on("click", "#example-create.enabled", function(e) {
+    e.preventDefault();
+    var data = getData();
+    $("body").css("overflow", "hidden");
+    $("#example-tab").addClass("hidden");
+    $("#example-modal .modal-body").html(img);
+    $('#modal-head-content').html("<h3>Create Example</h3>");
+    $("#example-modal").modal('toggle');                      
+    $('#example-modal .modal-body').load("<%= new_group_example_path(current_group)  %>" + " form", "ling_id=" + data.lingId + 
+      "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
+  });
+
+  $(window).on("click", "#prop-modal", function(e) {
+    e.preventDefault();
+    $("body").css("overflow", "hidden");
+    $("#prop-tab").addClass("hidden");
+    $("#property-modal .modal-body").html($('#prop-descrip').html());
+    $("#modal-head-content-prop").html("<h3>Property Description</h3>");
+    $("#property-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#minimize-prop", function (e) {
+    $("#prop-tab").removeClass("hidden");
+    $("#property-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#minimize-example", function (e) {
+    $("#example-tab").removeClass("hidden");
+    $("#example-modal").modal("toggle");
+  });
+
+  $(window).on("click", "#prop-tab", function (e) {
+    $(this).addClass("hidden");
+    $('#property-modal').modal("toggle");
+    $("body").css("overflow", "hidden");
+  });
+
+  $(window).on("click", "#example-tab", function (e) {
+    $(this).addClass("hidden");
+    $('#example-modal').modal("toggle");
+    $("body").css("overflow", "hidden");
+  });
+
+  $(window).on("click", "#example-change.enabled", function(e) {
+    e.preventDefault();
+    var data = getData(),
+      ex_id = $('#example-select').find(":selected").val();
+    $("body").css("overflow", "hidden");
+    $("#example-tab").addClass("hidden");
+    $("#example-modal .modal-body").html(img);
+    $('#modal-head-content').html("<h3>Change Example</h3>");
+    $("#example-modal").modal('toggle');                      
+    $('#example-modal .modal-body').load("<%= edit_group_example_path(current_group) %>" .replace(/examples\/[0-9]+/, "examples/" + ex_id) + " form", "ling_id=" + data.lingId + 
+      "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
+    });
+
+  $(window).on("click", "#example-change.disabled", function(e) {
+    e.preventDefault();
+  });
+  
+  $(window).on("click", "#example-create.disabled", function(e) {
+    e.preventDefault();
+  });
+
+  $('#property-modal, #example-modal').on('hidden', function () {
+    $("body").css("overflow", "auto");
+  });
+
+  $("#example-modal").on("click", ".btn", function(e) {
+    e.preventDefault();
+    var form =  $("#example-modal form");
+    var saveOverlay = $('#example-modal .save-overlay')
+    saveOverlay.css("display", "block").css("background-color", "white").html(img);
+    $.post(form.attr("action"), form.serialize(), function(data) {
+      saveOverlay.css("background-color", "");
+      if (data.success == true) {
+        saveOverlay.toggleClass("alert-success").html("Save Successful")
+        $("#prop-example").html(img);
+        $("#prop-example").load(location.href + " #prop-example");
+      } else {
+        saveOverlay.toggleClass("alert-error").html("Save Unsuccessful")
+      }
+      setTimeout(function() {
+        $("#example-modal").modal("hide");
+        setTimeout(function() {
+          saveOverlay.removeAttr("style");
+          saveOverlay.removeClass("alert-success alert-error");
+          saveOverlay.html("");
+        }, 1000);
+      }, 700);
+      }, 'json');
+  });
+
+});

@@ -1,10 +1,17 @@
+<%= javascript_tag "$.getScript(location.href);" %>
 <% page_heading current_group.ling_name_for_depth(@depth) %>
+
 <h1>Listing <%= current_group.ling_name_for_depth(@depth).pluralize %></h1>
 <% if can? :create, Ling.new{|l| l.group = current_group} %>
   <%= link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn" %>
 <% end %>
+<div class="row">
+  <div class="margin span5 relative">
+   <input type="text" id="auto_lang" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+  </div>
+</div>
 <div id="pagination_table">
-  <%= render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} %>
+    <%= render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth} %>
 </div>
 <% if can? :create, Ling.new{|l| l.group = current_group} %>
   <%= link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn" %>

@@ -3,12 +3,22 @@ class MembershipsController < GroupDataController
   respond_to :html, :js
 
   def index
-    @memberships = current_group.memberships.paginate(:page => params[:page], :order=>"users.name").includes(:member)
+    @memberships = current_group.memberships.
+        includes(:member).to_a.
+        alpha_paginate(params[:letter]){|membership| membership.member.name}
 
     respond_with(@memberships) do |format|
       format.html
       format.js
     end
+  end
+  
+  def dict
+    @all_members = Hash.new
+    current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
+      @all_members[memb.member.name] = memb.id
+    end
+    render :json => @all_members.to_json.html_safe
   end
 
   def show

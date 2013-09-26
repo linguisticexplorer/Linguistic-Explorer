@@ -1,18 +1,27 @@
-<div class="apple_pagination">
+<div class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
-  <%= will_paginate @examples %>
+  <%= will_paginate @examples, renderer: BootstrapPagination::Rails %>
 </div>
 
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
     <th>Name</th>
     <th><%= current_group.ling0_name %></th>
-    <th><%= current_group.ling1_name %></th>
-    <% current_group.example_storable_keys.each do |key| %>
-        <th><%= key.humanize %></th>
+    <% if current_group.ling1_name != "not-present" %>
+      <th><%= current_group.ling1_name %></th>
     <% end %>
-    <% if can? :edit, @examples %>
-    <th></th>
+    <th>Property</th>
+    <% if @group.display_style == "linguistic" %>
+      <% current_group.example_storable_keys.each do |key| %>
+          <% if key == "comment" %>
+            <th></th>
+            <th><%= key.humanize %></th>
+          <% end %>
+      <% end %>
+    <% else %>
+      <% current_group.example_storable_keys.each do |key| %>
+          <th><%= key.humanize %></th>
+      <% end %>
     <% end %>
     <% if can? :destroy, @examples %>
     <th></th>
@@ -22,23 +31,47 @@
   <% @examples.each do |example| %>
       <tr>
         <td><%= link_to example.name, [current_group, example] %></td>
-        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 0 %></td>
-        <td><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) if example.ling && example.ling.depth == 1 %></td>
-        <% current_group.example_storable_keys.each do |key| %>
-            <td><%= example.stored_value(key) %></td>
+        <% if example.ling && example.ling.depth == 0 %>
+         <td class='tiny-col'><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) %></td>
         <% end %>
-        <% if can? :edit, example %>
+        <% if example.ling && example.ling.depth == 1 %>
+          <td class='tiny-col'><%= (link_to example.ling.name, group_ling_path(current_group, example.ling)) %></td>
+        <% end %>
+        <% elp = ExamplesLingsProperty.find_by_example_id(example.id) %>
         <td>
-              <%= link_to 'Edit', edit_group_example_path(current_group, example) %>
-        </td>  <% end %>
+          <% if elp %>
+          <%= link_to elp.lings_property.property.name, group_property_path(current_group, elp.lings_property.property) %><br>
+          <%= elp.lings_property.value %>
+          <% end %>
+          </td>
+        <% if @group.display_style == "linguistic" %>
+        <td class = "align-left">
+          <% current_group.example_storable_keys.each do |key| %>
+             <% val = example.stored_value(key) %>
+              <% if key == "comment" %>
+                </td><td class='small-col align-left'><%= example.stored_value(key) if val != "None"%></td>
+              <% elsif key != "description" %>
+                <p><%= example.stored_value(key) if val != "None" %></p>
+              <% end %>
+          <% end %>
+        <% else %>
+          <% current_group.example_storable_keys.each do |key| %>
+              <% if key == "comment" %>
+                <td class='small-col align-left'><%= example.stored_value(key) %></td>
+              <% else %>
+                <td class='align-left'><%= example.stored_value(key) %></td>
+              <% end %>
+          <% end %>
+        <% end %>
         <% if can? :destroy, example %>
-        <td>
-              <%= link_to 'Destroy', [current_group, example], :confirm => 'Are you sure?', :method => :delete %>
-          </td><% end %>
+          <td class="middle">
+          <%= link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete %>
+          </td>
+        <% end %>
       </tr>
   <% end %>
 </table>
-<div class="apple_pagination">
+<div class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
-  <%= will_paginate @examples %>
+  <%= will_paginate @examples, renderer: BootstrapPagination::Rails %>
 </div>

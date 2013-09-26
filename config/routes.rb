@@ -11,6 +11,13 @@ LinguisticExplorer::Application.routes.draw do
   root        :to => 'home#index'
 
   match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
+  match "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
+  match "/groups/:group_id/lings/:id/dict" => "lings#dict"
+  match "/groups/:group_id/lings/dict" => "lings#dict"
+  match "/groups/:group_id/dict" => "lings#dict1"
+  match "/groups/:group_id/properties/dict" => "properties#dict"
+  match "/groups/:group_id/memberships/dict" => "memberships#dict"
+  match "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   resources :groups do
     member do
@@ -32,7 +39,7 @@ LinguisticExplorer::Application.routes.draw do
         get 'set_values'
         get 'supported_set_values'
         post 'supported_submit_values'
-        post 'submit_values'
+        post 'supported_submit_values_multiple'
       end
     end
 

@@ -45,6 +45,9 @@ gem 'newrelic_rpm'
 # for easy pagination
 gem 'will_paginate', '~> 3.0'
 
+# new styles
+gem 'will_paginate-bootstrap'
+
 
 # Having problem with new migrations?
 # * Disable slim_scrooge here
@@ -78,6 +81,12 @@ end
 #sass support
 gem 'sass'
 
+#experimental
+gem "alphabetical_paginate"
+
+#iconv for utf-8 to latin1 conversion
+gem 'iconv'
+
 # Pure Ruby library to use R language from Ruby code
 # it needs that R interpreter is installed and R_HOME is configured
 # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
@@ -102,6 +111,8 @@ group :test, :development do
 
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"
+  gem "Selenium"
+  gem "selenium-client"
   gem "database_cleaner", "0.6.7"
   # Due to the new name resolution approach of the bundler gem it has the require option
   gem "cucumber-rails", "0.4.0", :require => false # '0.4.0.beta.1'

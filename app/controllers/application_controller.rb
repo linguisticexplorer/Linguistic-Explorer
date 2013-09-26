@@ -7,7 +7,7 @@ class ApplicationController < ActionController::Base
   end
   
   def current_group
-    nil # A stub so that the nav bar always gets a nil if current_group isn't defined/available
+    Group.first # changed to default to first group
   end
 
   def collection_authorize!(action, collection, *args)

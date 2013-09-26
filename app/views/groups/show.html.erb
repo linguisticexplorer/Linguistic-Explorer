@@ -1,3 +1,4 @@
+<%= javascript_tag "$.getScript(location.href);" %>
 <% add_body_classes "map" %>
 <% page_heading @group.name %>
 <h1><% @group.name %></h1>
@@ -7,6 +8,12 @@
     <h1><%= @group.name %></h1>
   </div>
   <div id="intro">
+    <div class="row">
+      <div class="margin span6 relative">
+      <input type="text" id="auto_group" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+      </div>
+    </div>
+    <br />
     <%- if @group.description.present? -%>
       <p><%= @group.description %></p>
     <% end %>
@@ -15,11 +22,13 @@
       <p><%= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth) %></p>
     <% end %>
     <p><%= link_to @group.property_name.pluralize, group_properties_path(@group) %></p>
-    <p><%= link_to @group.example_name.pluralize, group_examples_path(@group) %></p>
 
     <p>
       <%= link_to 'Group Info', info_group_path(@group) %> |
       <%= link_to 'Search this group', [:new, current_group, :search] %> |
+       <% if can? :edit, @group %>
+          <%= link_to 'Edit this group', edit_group_path(@group) %> |
+      <% end %>
       <%= link_to 'All groups', groups_path %>
     </p>
   </div>

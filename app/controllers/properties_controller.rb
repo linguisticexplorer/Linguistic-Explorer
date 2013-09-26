@@ -13,14 +13,26 @@ class PropertiesController < GroupDataController
     end
   end
 
-  def show
-    @property = current_group.properties.find(params[:id])
-    @values = @property.lings_properties.includes(:ling).paginate(:page => params[:page]).order("lings_properties.value DESC, lings.name ASC")
+  def dict
+    @all_props = Hash.new
+    current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
+      @all_props[prop.name] = prop.id
+    end
+    render :json => @all_props.to_json.html_safe
+  end
 
+  def show
+    @depth = params[:depth].to_i
+    @property = current_group.properties.find(params[:id])
+    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false})
+    lings_id = lings.all.map(&:id)
+    @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
+    
     respond_with(@values) do |format|
       format.html
       format.js
     end
+    
   end
 
   def new

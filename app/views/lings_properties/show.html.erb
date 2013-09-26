@@ -1,29 +1,28 @@
 <% page_heading @lings_property.ling.grouped_name %>
-<h3><%= @lings_property.ling.grouped_name %></h3>
 
-<%= link_to 'Back', group_lings_properties_path(current_group) %>
+<h1><%= @lings_property.ling.name %> - <%= @lings_property.property.name %></h1>
 
 <table class="show-table description-table table table-bordered table-striped table-hover">
   <p>
     <tr>
       <td><%= @lings_property.ling.grouped_name %>:</td>
-      <td><%= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling) %></td> 
+      <td><%= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling) %></td>
     </tr>
     <tr>
       <td><%= current_group.property_name %>:</td>
-      <td><%= link_to @lings_property.property.name, group_property_path(current_group, @lings_property.property) %></td> 
+      <td><%= link_to @lings_property.property.name, group_property_path(current_group, @lings_property.property) %></td>
     </tr>
     <tr>
       <td><%= current_group.lings_property_name %>:</td>
-      <td><%= @lings_property.value %></td> 
+      <td><%= @lings_property.value %> </td>
     </tr>
     <tr>
       <td>Created by:</td>
-      <td><%= @lings_property.creator ? @lings_property.creator.name : "Unknown user" %></td> 
+      <td><%= @lings_property.creator ? @lings_property.creator.name : "Unknown user" %> </td>
     </tr>
   </p>
 </table>
 
-
-<%= link_to 'Back', group_lings_properties_path(current_group) %>
-
+<%= link_to group_property_path(current_group, @lings_property.property), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>

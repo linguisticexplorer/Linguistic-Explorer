@@ -28,8 +28,10 @@ class ExamplesLingsPropertiesController < GroupDataController
     end
     authorize! :create, @examples_lings_property
 
-    @examples = current_group.examples
-    @lings_properties = current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
+    @examples = params[:ling_id] && 
+      ExamplesLingsProperty.where("lings_property_id IN (?)", 
+                                  LingsProperty.find(:all, :conditions => {:ling_id => params[:ling_id] })).map{|x| x.example} || current_group.examples
+    @lings_properties = params[:ling_id] ? false : current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
   end
 
   def create
@@ -39,12 +41,18 @@ class ExamplesLingsPropertiesController < GroupDataController
     end
     authorize! :create, @examples_lings_property
 
-    if @examples_lings_property.save
-      redirect_to([current_group, @examples_lings_property], :notice => (current_group.examples_lings_property_name + ' was successfully created.'))
-    else
-      @examples = current_group.examples
-      @lings_properties = current_group.lings_properties
-      render :action => "new"
+    respond_to do |format|
+      if @examples_lings_property.save
+        format.html {redirect_to([current_group, @examples_lings_property], :notice => (current_group.examples_lings_property_name + ' was successfully created.'))}
+        format.json {render json: {success: true}}
+      else
+        format.html do
+          @examples = current_group.examples
+          @lings_properties = current_group.lings_properties
+          render :action => "new"
+        end
+        format.json {render json: {success: false}}
+      end
     end
   end
 

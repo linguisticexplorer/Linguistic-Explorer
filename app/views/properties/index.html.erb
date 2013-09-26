@@ -1,12 +1,18 @@
+<%= javascript_tag "$.getScript(location.href);" %>
+
 <% page_heading current_group.property_name.pluralize %>
 
 <h1>Listing <%= current_group.property_name.pluralize %></h1>
 <% if can? :create, Property.new{|p| p.group = current_group} %>
   <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn" %>
 <% end %>
+<div class="row">
+  <div class="margin span5 relative">
+   <input type="text" id="auto_prop" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query big" disabled />
+  </div>
+</div>
 <div id="pagination_table">
   <%= render :partial => 'properties/index_partial' %>
-</div>
 </div>
 <% if can? :create, Property.new{|p| p.group = current_group} %>
   <%= link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn" %>

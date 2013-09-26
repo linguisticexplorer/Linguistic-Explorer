@@ -2,24 +2,36 @@
 // This file is automatically included by javascript_include_tag :defaults
 /* On DOM loaded */
 $(function() {
-  // PAGINATION CODE
-	// Text and image while loading
-    var img = "<img src='/images/loader.gif' class='loading'/>"
-    var text = "<span class='loading'>Page is loading...</span>"
 
+    // PAGINATION CODE
+	// Text and image while loading
+    // TODO: Make this check somehow to see if a .js.erb file exists
+    // Alterntaively, create one for every view, but not recommended
+    
+    var img = "<img src='/images/loader.gif' class='loading'/>",
+    once = false;
     // Manage the AJAX pagination and changing the URL
-    $(".pagination a").live("click", function(e) {
+     $(document).on("click", ".apple_pagination.will-paginate .pagination a", function(e) {
         //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
-        jQuery.getScript(this.href);
-        jQuery(".pagination").html(text+img);
+        $(".pagination").html(img);
+        $.get(this.href, function(result) {
+          $(".pagination").html($(".pagination", result)[0]);
+          $("#pagination_table").html($("#pagination_table", result));
+        });
         history.pushState(null, document.title, this.href);
         e.preventDefault();
     });
-
-    // Let navigate the browser throught the AJAX history
+    
     $(window).bind("popstate", function() {
-        $.getScript(location.href);
-        $(".pagination").html(text+img);
+      if (once) {
+        $(".pagination").html(img);
+        $.get(location.href, function(result) {
+            $(".pagination").html($(".pagination", result));
+            $("#pagination_table").html($("#pagination_table", result));
+      });
+    } else {
+      once = true;
+    }
     });
 
     // SEARCH PAGE CODE
@@ -306,3 +318,11 @@ function enable_similarity_radial_tree(){
     // "this" will always be "window" in a browser, even in strict mode.
     this.Newick = {}
 );
+
+$(function() {
+  $('ul.nav li.dropdown').hover(function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeIn();
+  }, function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeOut();
+  });
+});

@@ -11,11 +11,13 @@
     <% end %>
 
     <p>
+      <%= link_to current_group, :class => "btn btn-inverse" do %>
+        <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+      <% end %>&nbsp;
       <% if can? :update, @group %>
-          <%= link_to 'Edit', edit_group_path(@group) %> |
+        <%= link_to 'Edit', edit_group_path(@group), :class => "btn" %>&nbsp; 
       <% end %>
-      <%= link_to 'Back', current_group %> |
-      <%= link_to 'Search this group', [:new, current_group, :search] %>
+      <%= link_to 'Search this group', [:new, current_group, :search], :class => "btn"  %>
     </p>
 
     <div class="whitebox">
@@ -23,20 +25,29 @@
         <%- @group.info_attribute_names.each do |attr_name| -%>
           <tr>
             <td><b><%= attr_name.titleize %></b></td>
-            <td><%= @group.send(attr_name) %></td>
+            <% if @group.send(attr_name).is_a? String %>
+              <td><%= @group.send(attr_name).capitalize %></td>
+            <% else %>
+              <td><%= @group.send(attr_name) %></td>
+            <% end %>
           </tr>
         <%- end -%>
       </table>
     </div>
 
-    <p>
-      <% if can? :update, @group %>
-          <%= link_to 'Edit', edit_group_path(@group) %> |
-      <% end %>
-      <%= link_to 'Back', current_group %> |
-      <%= link_to 'Search this group', [:new, current_group, :search] %>
-    </p>
     <br />
+
+    <p>
+      <%= link_to current_group, :class => "btn btn-inverse" do %>
+        <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+      <% end %>&nbsp;
+      <% if can? :update, @group %>
+        <%= link_to 'Edit', edit_group_path(@group), :class => "btn" %>&nbsp; 
+      <% end %>
+      <%= link_to 'Search this group', [:new, current_group, :search], :class => "btn"  %>
+    </p>
+
+   <br />
     <div id="numbers">
       <div id="stats_title">
         <h2>Numbers for <%= @group.name %></h2>

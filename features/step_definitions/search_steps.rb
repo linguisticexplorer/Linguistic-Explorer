@@ -186,27 +186,27 @@ Then /^the csv should contain the following rows$/ do |table|
 end
 
 Then /^I should see (\d+) search result rows?$/ do |count|
-  page.should have_css("div.search_result.row", :count => count.to_i)
+  page.should have_css("tr.search_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) properties in common?$/ do |count|
-  page.should have_css("div.search_common_result.row", :count => count.to_i)
+  page.should have_css("tr.search_common_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) properties not in common?$/ do |count|
-  page.should have_css("div.search_diff_result.row", :count => count.to_i)
+  page.should have_css("tr.search_diff_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) ling rows?$/ do |count|
-  page.should have_css("div.search_ling_result.row", :count => count.to_i)
+  page.should have_css("tr.search_ling_result", :count => count.to_i)
 end
 
 Then /^I should not see properties in common?$/ do
-  page.should_not have_css("div.search_common_result.row")
+  page.should_not have_css("tr.search_common_result")
 end
 
 Then /^I should see no search result rows?$/ do
-  page.should_not have_css("div.search_result.row")
+  page.should_not have_css("tr.search_result")
 end
 
 Then /^I should see a map?/ do
