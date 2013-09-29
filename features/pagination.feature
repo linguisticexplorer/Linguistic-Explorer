@@ -30,12 +30,12 @@ Feature: Pagination
   Scenario: Visitor goes to Ling page and navigate with pagination letter button
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
     And I should see "Afrikaans"
-    And I should see "a"
-    And I should see "b"
-    And I should see "all"
-    And I follow "all"
+    And I should see "A"
+    And I should see "B"
+    And I should see "All"
+    And I follow "All"
     And I should see "Italian"
-    And I follow "s"
+    And I follow "S"
     And I should see "Spanish"
 
   Scenario: Visitor goes to Properties page and navigate with pagination
@@ -71,8 +71,8 @@ Feature: Pagination
     And I should see "Degree Adjective"
     And I follow "Degree Adjective"
     Then I should see "Afrikaans"
-    Then I should see "s"
-    And I follow "s"
+    Then I should see "S"
+    And I follow "S"
     Then I should see "Spanish"
 
   Scenario: Visitor goes on search page and get results with pagination, on depth 0

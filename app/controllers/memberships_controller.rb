@@ -3,7 +3,7 @@ class MembershipsController < GroupDataController
   respond_to :html, :js
 
   def index
-    @memberships = current_group.memberships.
+    @memberships, @params = current_group.memberships.
         includes(:member).to_a.
         alpha_paginate(params[:letter]){|membership| membership.member.name}
 
