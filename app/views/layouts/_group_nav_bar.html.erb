@@ -17,7 +17,9 @@
     <li><%= link_to @group.ling1_name.pluralize, group_lings_depth_path(@group, Depth::CHILD) %></li>
   <% end %>
   <li><%= link_to @group.property_name.pluralize, [@group, :properties] %></li>
-  <%= "<li>" + link_to(@group.category_name, [@group, :categories]) + "</li>" if @group.categories.count > 1 %>
+  <% if @group.categories.count > 1 %>
+    <li> <%= link_to(@group.category_name, [@group, :categories]) %> </li>
+  <% end %>
   <li><%= link_to "Members", [@group, :memberships] %></li>
   <li><%= link_to "Forums", forums_path %></li>
 <% elsif @groups %>
