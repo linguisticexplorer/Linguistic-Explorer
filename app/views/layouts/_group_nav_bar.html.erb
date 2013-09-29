@@ -18,7 +18,7 @@
   <% end %>
   <li><%= link_to @group.property_name.pluralize, [@group, :properties] %></li>
   <% if @group.categories.count > 1 %>
-    <li> <%= link_to(@group.category_name, [@group, :categories]) %> </li>
+    <li> <%= link_to(@group.category_name, [@group, :categories]) %></li>
   <% end %>
   <li><%= link_to "Members", [@group, :memberships] %></li>
   <li><%= link_to "Forums", forums_path %></li>
