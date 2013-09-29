@@ -32,12 +32,10 @@ class Example < ActiveRecord::Base
 
   def store_value!(key_symbol_or_string, value_string)
     key = key_symbol_or_string.to_s
-    p "[EXAMPLE] Key: #{key} - Value: #{value_string} => Stored values: #{stored_values}"
     if curr = stored_values.with_key(key).first
       curr.value = value_string
       curr.save
     else
-      p "[EXAMPLE] Else: #{StoredValue.create(:key => key, :value => value_string, :storable => self)}"
       StoredValue.create(:key => key, :value => value_string, :storable => self)
     end
   end
