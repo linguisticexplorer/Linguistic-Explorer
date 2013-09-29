@@ -24,7 +24,7 @@ describe MembershipsController do
 
         get :index, :group_id => @group.id, :letter => "all"
 
-        assigns(:memberships).first.should include membership
+        assigns(:memberships).should include membership
       end
     end
   end

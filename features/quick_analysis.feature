@@ -38,7 +38,7 @@ Feature: Analysis
     Then I access the new tab
     Then I should see "Lings in the Selection"
 
-  @javascript
+  @selenium
   Scenario: Visitor should be able to add and delete languages of the same depth to analyse 
     Then I should not see "Spanish" within "#selected-langs"
     When I fill in "auto_compare" with "s"
