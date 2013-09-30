@@ -11,7 +11,7 @@
     <% current_group.ling_storable_keys.each do |key| %>
       <th><%= key.humanize %></th>
     <% end %>
-    <th>Completeness</th>
+    <th class="span2">Completeness</th>
       <% if can? :destroy, lings%> 
       <th></th>
     <% end %>
