@@ -18,6 +18,7 @@ tmp/*
 config/database.yml
 config/import.yml
 config/sswl_migration.yml
+yamls/*.yml
 
 # Test files
 libpeerconnection.log
