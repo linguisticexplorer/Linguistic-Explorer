@@ -46,7 +46,7 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Configure it!
 
- `$ cp config/database.yml.example config/database.yml`
+ `$ cp yamls/database.yml.example config/database.yml`
 
   Edit your MySQL account data for development and test environment:
 
@@ -58,7 +58,15 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Run it!
 
-  `$ rails s`
+  `$ rails server`
+
+### YAML example files
+
+YAML files are now stored in the `yamls` folder: have a look there to configure:
+
+* your MySQL database (see above)
+* the import task for CSVs files
+* the SSWL import task (for SSWL administrators)
 
 #### Seed Data
 
