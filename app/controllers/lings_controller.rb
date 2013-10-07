@@ -34,7 +34,8 @@ class LingsController < GroupDataController
 
   def index
     @lings_by_depth = current_group.depths.collect do |depth|
-      current_group.lings.at_depth(depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false})
+      current_group.lings.at_depth(depth).
+        alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false})
     end
     return load_stats(@lings_by_depth, params[:plain], 1)
   end
@@ -270,13 +271,13 @@ class LingsController < GroupDataController
 
   def load_stats(lings, plain, depth)
     unless plain
-      lings.each do |ling|
+      lings.each do |lings_with_params|
         # If it is a multilanguage group map each subling
          if depth > 0
-          ling.map { |ling_at_depth| load_infos(ling_at_depth) }
+          lings_with_params.first.map { |ling_at_depth| load_infos(ling_at_depth) }
          else
         # otherwise map just the ling
-          load_infos(ling)
+          load_infos(lings_with_params)
          end
       end
     end

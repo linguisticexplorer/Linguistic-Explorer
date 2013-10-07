@@ -1,6 +1,5 @@
 <div class="apple_pagination">
-<%= alphabetical_paginate @params %> 
-<!-- render page links in the view: -->
+  <%= alphabetical_paginate paginate_params %> 
 </div>
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
@@ -42,7 +41,6 @@
   <% end %>
 </table>
 <div class="apple_pagination">
-  <%= alphabetical_paginate @params %>
-  <!-- render page links in the view: -->
+  <%= alphabetical_paginate paginate_params %> 
 </div>
 
