@@ -48,6 +48,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
     When I go to the home page
+    Then I wait "2"
     Then I should see "Test" within "#tabs"
     Then I follow "Test" within "#tabs"
     Then I should see "" within "#auto_2"
