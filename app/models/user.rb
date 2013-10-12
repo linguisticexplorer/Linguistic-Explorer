@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include CSVAttributes
+  include Humanizer
 
   ACCESS_LEVELS = [
       ADMIN = "admin",
@@ -10,6 +11,8 @@ class User < ActiveRecord::Base
   def self.csv_attributes
     CSV_ATTRIBUTES
   end
+
+  require_human_on :create
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -25,7 +28,7 @@ class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :password, :password_confirmation, :remember_me, :humanizer_question_id, :humanizer_answer
 
   def admin?
     ADMIN == self.access_level

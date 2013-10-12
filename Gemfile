@@ -31,6 +31,7 @@ gem "meta_where", '1.0.1'
 
 # for Users and authentication
 gem 'devise', '1.1.7'
+gem 'humanizer'
 
 gem 'json', '1.7.7'
 
