@@ -32,8 +32,8 @@ Feature: Show simple search columns
     Then I should see the following search results:
     | Lings         | depth    |
     | Speaker 1     | parent   |
-    | Speaker 2     | parent   |
     | Sentence 1    | child    |
+    | Speaker 2     | parent   |
     | Sentence 2    | child    |
     And I should not see "Property" within "#search_results"
     And I should not see "Properties" within "#search_results"

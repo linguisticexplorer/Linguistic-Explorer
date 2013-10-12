@@ -89,21 +89,27 @@ Then /^I should see the following search results:$/ do |table|
     elsif ling && prop
       LingsProperty.find_by_ling_id_and_property_id(ling.id, prop.id)
     elsif ling
-      LingsProperty.find_by_ling_id(ling.id)
+      LingsProperty.find_all_by_ling_id(ling.id)
     elsif prop
       LingsProperty.find_by_property_id(prop.id)
     end
     example = Example.find_by_name_and_ling_id(row["Example"], ling.id) if row["Example"]
     depth = (row["depth"] || "parent").downcase
-
-    Rails.logger.debug "[DEBUG] #{lp.inspect}"
     
-    with_scope(%Q|[data-#{depth}-value="#{lp.id}"]|) do
-      page.should have_content(ling.name)     if ling
-      page.should have_content(prop.name)     if prop
-      page.should have_content(lp.value)      if row["Value"]
-      page.should have_content(example.name)  if example
+    # Fix for #101
+    # If it's an Array with just one element, remove the Array structure
+    lp = lp.kind_of?(Array) && lp.size == 1 ? lp.first : lp
+    # If it's an Array provide values to perform a Regex search in case
+    element_values = lp.kind_of?(Array) ? "(#{(lp.map {|l| l.value }).join('|')})" : "#{lp.value}"
+    selector = lp.kind_of?(Array) ? %Q|[class="search_result"]| : %Q|[data-#{depth}-value="#{lp.id}"]|
+    
+    with_scope(selector) do
+      page.should have_content(ling.name)      if ling
+      page.should have_content(prop.name)      if prop
+      page.should have_content(element_values) if row["Value"]
+      page.should have_content(example.name)   if example
     end
+
   end
 end
 
