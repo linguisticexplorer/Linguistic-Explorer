@@ -5,6 +5,6 @@ std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} --strict --tags ~@w
 %>
 default: <%= std_opts %> features
 wip: --tags @wip:3 --wip features
-travis: <%= std_opts %> features --tags ~@devOnly --tags ~@selenium
+travis: <%= std_opts %> features --tags ~@devOnly
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
 alt_default: <%= std_opts %> --require config/environment.rb --require features/support/*.rb --require features/step_definitions --strict
