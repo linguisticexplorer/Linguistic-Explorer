@@ -51,6 +51,7 @@ Feature: Typeahead
     Then I wait "2"
     Then I should see "Test" within "#tabs"
     Then I follow "Test" within "#tabs"
+    Then I wait "1"
     Then I should see "" within "#auto_2"
     When I fill in "auto_2" with "b"
     Then I should see "Bellinzonese" within ".typeahead"
@@ -98,7 +99,6 @@ Feature: Typeahead
   Scenario: Visitor goes to Property page and searches a property
     When I go to the group Syntactic Structures
     And I follow "Properties"
-    #sometimes fails due to the time needed to load typeahead dictionary
     Then I wait "2"
     Then I should see "" within "#auto_prop"
     When I fill in "auto_prop" with "degree"

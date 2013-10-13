@@ -43,15 +43,20 @@ end
 end
 
 When /^(?:|I )fill in "([^"]*)" with "([^"]*)"(?: within "([^"]*)")?$/ do |field, value, selector|
-with_scope(selector) do
-  fill_in(field, :with => value)
-end
+  with_scope(selector) do
+    fill_in(field, :with => value)
+  end
 end
 
 When /^(?:|I )fill in "([^"]*)" for "([^"]*)"(?: within "([^"]*)")?$/ do |value, field, selector|
-with_scope(selector) do
+  with_scope(selector) do
     fill_in(field, :with => value)
   end
+end
+
+When /^(?:|I )fill in the CAPTCHA correctly$/ do
+  # Waiting for rspec 2.6
+  # User.any_instance.stubs(:bypass_humanizer?).returns(true)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
