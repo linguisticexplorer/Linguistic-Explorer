@@ -12,7 +12,12 @@ class User < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  require_human_on :create
+  attr_accessor :bypass_humanizer
+
+  # Until we migrate to rspec 2.6, use this trick...
+  if Rails.env.production?
+    require_human_on :create, :unless => :bypass_humanizer
+  end
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable

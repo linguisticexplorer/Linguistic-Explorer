@@ -79,6 +79,9 @@ module GroupData
         user = User.find_or_initialize_by_email(row["email"])
         if user.new_record?
           user.password_confirmation = row["password"]
+          # Needed for CAPTCHA
+          user.bypass_humanizer = true
+
           save_model_with_attributes(user, row)
         end
 
