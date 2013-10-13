@@ -32,6 +32,7 @@
 #
 
 require 'csv'
+require 'iconv'
 
 module GroupData
   class Importer
@@ -264,11 +265,13 @@ module GroupData
 
       StoredValue.transaction do
         csv_for_each :stored_value do |row|
+          value = row["value"].gsub("#{row["key"]}:", '')
+
           group         = groups[row["group_id"]]
           storable_type = row['storable_type']
           storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
           conditions = { :storable_id => storable_id, :storable_type => storable_type,
-                         :key => row["key"], :value => row["value"] }
+                         :key => row["key"], :value => value }
 
           group.stored_values.where(conditions).first || group.stored_values.create(conditions)
 
