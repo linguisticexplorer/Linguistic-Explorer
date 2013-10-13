@@ -34,7 +34,6 @@ module SswlData
       @config.symbolize_keys!
       @sanitized = {}
       @headers = load_headers
-      @iconv = Iconv.new('UTF-8','LATIN1')
     end
 
     def convert!
@@ -427,7 +426,7 @@ module SswlData
     end
 
     def self.decode(string)
-      string.nil? ? string : @iconv.iconv(string.encode("cp1252").force_encoding("UTF-8"))
+      string.nil? ? string : Iconv.new('UTF-8','LATIN1').iconv(string.encode("cp1252").force_encoding("UTF-8"))
     end
 
     def csv_for_each(key)
