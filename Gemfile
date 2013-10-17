@@ -68,9 +68,6 @@ gem 'jquery-rails', '>= 0.2.6'
 # It forces to use a specific version of Rake
 gem 'rake', '0.9.2.2'
 
-# Geomapping gem
-gem 'gmaps4rails'
-
 # Forum gem
 gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
