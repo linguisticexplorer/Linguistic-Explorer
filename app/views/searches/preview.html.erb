@@ -26,11 +26,11 @@
   var group = <%= current_group.to_param %>;
 
   var templates = {
-    'cross': '',
-    'compare': '',
-    'implication': '',
+    'cross': '#cross_results',
+    'compare': '#compare_results',
+    'implication': '#cross_results',
     'default': '#regular_results',
-    'clustering': ''
+    'clustering': '#clustering_results'
   };
 
   var loadingInterval,
@@ -38,7 +38,7 @@
 
   $(window).load(function(){
 
-    var timeoutMillis = 30000,
+    var timeoutMillis = 50000,
         refreshRate   = 100;
 
     var query = $.param({
@@ -135,25 +135,14 @@
   function createPagination(json, offset, max_rows){
 
     function pageToShow(n, avg, max, cur){
-      switch (n){
-        // first pages
-        case 1:
-        case 2:
-        // pages in the middle of the set
-        case avg - 1:
-        case avg:
-        case avg + 1:
-        // last pages
-        case max - 1:
-        case max:
-        // current pages
-        case cur - 1:
-        case cur:
-        case cur + 1:
-          return true;
-        default:
-          return false;
-      }
+      // First two pages
+      return n === 1      || n === 2      ||
+      // Pages in the middle
+             n === avg-1  || n === avg    || n === avg+1 ||
+      // Last pages
+             n === max-1  || n === max    ||
+      // Pages around the chosen one
+             n === cur-1  || n === cur    || n === cur+1;
     }
     // start to count from 1 instead of 0
     var page_offset = offset + 1;
@@ -197,16 +186,65 @@
 
   function createTable(json, offset, max_rows){
     var max_rows_per_page = max_rows || 25;
+    // this will clean the type of the search from all the implications subtypes
+    json.type = getType(json.type);
     // create the header
-    var table = {header: json.header, rows: []};
+    var table = headerMapping(json.type, json);;
 
     offset = offset || 0;
     
     for(var i=offset * max_rows_per_page; i<json.rows.length && i< max_rows_per_page * (offset + 1); i++){
-      table.rows.push(columnMapping(json.type, table.header, json.rows[i]));
+      table.rows.push(columnMapping(json.type, getHeader(json.type, table), json.rows[i]));
     }
 
     return table;
+  }
+
+  function getType(type){
+    return (/implication/).test(type) ? 'implication' : type;
+  }
+
+  function getHeader(type, table){
+    switch (type){
+      case 'compare':
+      case 'default':
+        return table.header;
+      case 'cross':
+      case 'implication':
+        return table;
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function headerMapping(type, json){
+    function mapCrossHeaders(headers, row){
+      var result = {headers: [], header: {count: headers['count']}, rows: []};
+      for( var i =0; i<row.length; i++){
+        var header = {};
+        for( var h in headers){
+          if(headers.hasOwnProperty(h) && h !== 'count'){
+            header[h] = headers[h];
+          }
+        }
+        result.headers.push(header);
+      }
+      return result;
+    }
+
+    switch (type){
+      case 'default':
+        return {header: json.header, rows: []};
+      case 'cross':
+      case 'implication':
+        return mapCrossHeaders(json.header, json.rows[0].parent);
+      case 'compare':
+        return compareMapping(columns, entry);
+      default:
+        // Fail silently....
+        return {};
+    }
   }
 
   function columnMapping(type, columns, entry){
@@ -214,7 +252,7 @@
       case 'default':
         return defaultMapping(columns, entry);
       case 'cross':
-      case /implication/:
+      case 'implication':
         return crossMapping(columns, entry);
       case 'compare':
         return compareMapping(columns, entry);
@@ -291,8 +329,57 @@
     return new_entry;
   }
 
-  function crossMapping(columns, entry){
+  function crossMapping(table, entry){
+    var func_dict = {
+      'count'         : getCrossLings,
+      'cross_property': getProperty('parent'),
+      'cross_value'   : getValue('parent')
+    };
 
+    function isThere(){
+      if(arguments.length){
+        var array = Array.prototype.slice.call(arguments),
+            obj = array.shift(),
+            new_obj = obj;
+        while(array.length && new_obj){
+          new_obj = new_obj[array.shift()];
+        }
+
+        return (!array.length && !!new_obj);
+      }
+      return false;
+    }
+
+    function getCrossLings(entry){
+      return isThere(entry, 'child', 'length') ? entry['child'].length : '0';
+    }
+
+    function getProperty(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+      };
+    }
+
+    function getValue(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
+      };
+    }
+    // columns is an array here!
+    var pair_columns = table.headers;
+
+    var new_entry = {pair: [], count: func_dict['count'](entry)};
+    for( var pc=0; pc< pair_columns.length; pc++ ){
+      var pair_entry = {};
+      for(var c in pair_columns[pc]){
+        if(pair_columns[pc].hasOwnProperty(c)){
+          pair_entry[c] = func_dict[c](entry, pc);
+        }
+      }
+      new_entry.pair.push(pair_entry);
+    }
+
+    return new_entry;
   }
 
   function compareMapping(columns, entry){
@@ -308,16 +395,11 @@
       once = false;
   // Manage the AJAX pagination and changing the URL
    $(document).on("click", ".apple_pagination.will-paginate .pagination a", function (e) {
-      //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
+
       var offset = getOffset(this.id);
       $(".pagination").html(img); 
       makeNewPage(resultsJson, offset);
       
-      // 
-      // $.get(this.href, function(result) {
-      //   $(".pagination").html($(".pagination", result)[0]);
-      //   $("#pagination_table").html($("#pagination_table", result));
-      // });
       history.pushState(null, document.title, this.href);
       e.preventDefault();
   });
@@ -327,11 +409,7 @@
       var offset = getOffset();
       $(".pagination").html(img);
       makeNewPage(resultsJson, offset);
-      
-      // $.get(location.href, function(result) {
-      //     $(".pagination").html($(".pagination", result));
-      //     $("#pagination_table").html($("#pagination_table", result));
-      // });
+
     } else {
       once = true;
     }
@@ -387,6 +465,42 @@
   </ul>
 </script>
 <!-- Results table template -->
+<script id="cross_results" type="text/templates">
+  <table class="show-table table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        {{#each headers}}
+          {{#if this.cross_property}}
+            <th>{{this.cross_property}}</th>
+          {{/if}}
+          {{#if this.cross_value}}
+            <th>{{this.cross_value}}</th>
+          {{/if}}
+        {{/each}}
+        {{#if header.count}}
+          <th>{{header.count}}</th>
+        {{/if}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr>
+        {{#each this.pair}}
+        {{#if this.cross_property}}
+          <td>{{this.cross_property}}</td>
+        {{/if}}
+        {{#if this.cross_value}}
+          <td>{{this.cross_value}}</td>
+        {{/if}}
+        {{/each}}
+        {{#if this.count}}
+          <td>{{this.count}}</td>
+        {{/if}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</script>
 <script id="regular_results" type="text/templates">
   <table class="show-table table table-bordered table-striped table-hover">
     <thead>
@@ -449,32 +563,3 @@
     </tbody>
   </table>
 </script>
-<!--
-<%# if @search.results.any? && !@search.clustering? %>
-  <div class="row-fluid">
-    <div id="search_interaction" class="padded border margin span4">
-      <%# if !@search.cross? && !@search.implication? && !@search.compare? -%>
-        <%= render :partial => 'searches/save_search_form' %>
-      <%# end %>
-      <%#= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
-    </div>
-  </div>
-<%# end %>
-<div id="search_results" class="padded_left padded_right">
-  <%# if @search.results.any? -%>
-        <div id="pagination_table">
-          <%# if @search.default? -%>
-              <%#= render :partial => 'searches/results' %>
-          <%# elsif @search.cross? || @search.implication? -%>
-              <%#= render :partial => 'searches/cross/results' %>
-          <%# elsif @search.compare? -%>
-              <%#= render :partial => 'searches/compare/results' %>
-          <%# elsif @search.clustering? -%>
-              <%#= render :partial => 'searches/clustering/results' %>
-          <%# end -%>
-        </div>
-  <%# else -%>
-      <div class="notice">Your search query returned no results.</div>
-  <%# end -%>
-</div>
--->
