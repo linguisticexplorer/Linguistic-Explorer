@@ -3,63 +3,32 @@
 /* On DOM loaded */
 $(function() {
 
-    // PAGINATION CODE
-	// Text and image while loading
-    // TODO: Make this check somehow to see if a .js.erb file exists
-    // Alterntaively, create one for every view, but not recommended
-    
-    var img = "<img src='/images/loader.gif' class='loading'/>",
-    once = false;
-    // Manage the AJAX pagination and changing the URL
-     $(document).on("click", ".apple_pagination.will-paginate .pagination a", function(e) {
-        //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
-        $(".pagination").html(img);
-        $.get(this.href, function(result) {
-          $(".pagination").html($(".pagination", result)[0]);
-          $("#pagination_table").html($("#pagination_table", result));
-        });
-        history.pushState(null, document.title, this.href);
-        e.preventDefault();
-    });
-    
-    $(window).bind("popstate", function() {
-      if (once) {
-        $(".pagination").html(img);
-        $.get(location.href, function(result) {
-            $(".pagination").html($(".pagination", result));
-            $("#pagination_table").html($("#pagination_table", result));
-      });
-    } else {
-      once = true;
-    }
-    });
+  // SEARCH PAGE CODE
+  hide_div('#show_impl');
 
-    // SEARCH PAGE CODE
-    hide_div('#show_impl');
+  enable_similarity_radial_tree();
 
-    enable_similarity_radial_tree();
-//    console.log("OnLoad end");
-    // TODO: check javascript capabilities on submit
-    // Function to reset the form to the initial state
-    $("input:reset").click( function() {
-       reset_form();
-    });
+  // TODO: check javascript capabilities on submit
+  // Function to reset the form to the initial state
+  $("input:reset").click( function() {
+     reset_form();
+  });
 
-    $("input[id^=search_group_impl]:radio").click( function() {
-      implication_on();
-    });
+  $("input[id^=search_group_impl]:radio").click( function() {
+    implication_on();
+  });
 
-    $('input[id$=_cross]:radio').click( function() {
-      cross_on(this);
-    });
+  $('input[id$=_cross]:radio').click( function() {
+    cross_on(this);
+  });
 
-    $('input[id$=_compare]:radio').click( function() {
-      compare_on(this);
-    });
+  $('input[id$=_compare]:radio').click( function() {
+    compare_on(this);
+  });
 
-    $("input[id^=search_group_clust]:radio").click( function() {
-      clustering_on();
-    });
+  $("input[id^=search_group_clust]:radio").click( function() {
+    clustering_on();
+  });
 });
 
 /*menu handler*/
@@ -107,7 +76,7 @@ function reset_form(){
     show_delete();
 }
 
-name = "";
+var name = "";
 /* Function triggered by selecting an Implication radio button */
 function implication_on(){
 //    console.log("implication_on");
@@ -319,6 +288,7 @@ function enable_similarity_radial_tree(){
     this.Newick = {}
 );
 
+/* Group dropdown selector code */
 $(function() {
   $('ul.nav li.dropdown').hover(function() {
     $(this).find('.dropdown-menu').stop(true, true).fadeIn();

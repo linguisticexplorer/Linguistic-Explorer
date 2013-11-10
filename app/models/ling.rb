@@ -7,8 +7,6 @@ class Ling < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  acts_as_gmappable :process_geocoding => false, :lat => :get_latitude, :lng => :get_longitude
-
   validates_presence_of :name, :depth
   validates_numericality_of :depth
   validates_uniqueness_of :name, :scope => :group_id
@@ -34,14 +32,6 @@ class Ling < ActiveRecord::Base
 
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
-
-  def get_latitude
-    get_latlong.split(/,/).first
-  end
-
-  def get_longitude
-    get_latlong.split(/,/).last
-  end
 
   attr_reader :info
 
@@ -107,15 +97,6 @@ class Ling < ActiveRecord::Base
   end
 
   private
-
-  def get_latlong
-    property = Property.in_group(group).where(:name => 'latlong').first
-    if property.present?
-      lings_has_latlong = LingsProperty.in_group(group).where(:property_id => property.id, :ling_id => self.id).first
-      return lings_has_latlong.value unless lings_has_latlong.nil?
-    end
-    return ""
-  end
 
   def props_in_group
     @props_total ||= Property.in_group(group).at_depth(depth).count(:id)

@@ -27,6 +27,12 @@ module SearchResults
     end
   end
 
+  def getType
+    results if @result.nil?
+
+    return !self.result_groups.key?("type") ? "default" : self.result_groups["type"]
+  end
+
   def default?
     results if @result.nil?
     !self.result_groups.key?("type")

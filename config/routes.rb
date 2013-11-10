@@ -25,10 +25,13 @@ LinguisticExplorer::Application.routes.draw do
     end
 
     resources :searches do
+      # Transform everything to POST:
+      # we don't know how many ids can be sent, so the length can hit the GET URL length limit
       collection do
-        get 'preview'
-        get 'lings_in_selected_row'
-        get 'geomapping'
+        post 'preview'
+        post 'get_results'
+        post 'lings_in_selected_row'
+        post 'geomapping'
       end
     end
 

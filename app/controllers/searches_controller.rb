@@ -20,12 +20,38 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    @search = perform_search
+    # @search = perform_search
 
     #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
-    authorize! :search, @search
+    # authorize! :search, @search
     
     # @search.get_results!
+
+    @search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+    end
+
+    @query = params[:search].to_json.html_safe
+
+    authorize! :search, @search
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def get_results
+    search = perform_search
+
+    json = SearchJSON.new(search).build_json
+    
+
+    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
+    authorize! :search, search
+
+    render :json => json
   end
 
   def create
@@ -80,6 +106,13 @@ class SearchesController < GroupDataController
   end
 
   def lings_in_selected_row
+    # collects lings from cross ids
+    # @cross_row_lings = SearchCross.new(params[:cross_ids]).filter_lings_row
+    
+    # authorize! :cross, @cross_row_lings
+
+    # render :json => @cross_row_lings.to_json.html_safe
+
     @search = perform_search
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
@@ -87,18 +120,27 @@ class SearchesController < GroupDataController
   end
 
   def geomapping
-    @search = perform_search
+    # @search = perform_search
     
-    geoMapping = GeoMapping.new(@search)
-    @json = check_retrieved_json(geoMapping.get_json)
-    @summary = geoMapping.get_legend
+    # geoMapping = GeoMapping.new(@search)
+    # @json = check_retrieved_json(geoMapping.get_json)
+    # @summary = geoMapping.get_legend
+    # @summary = {}
 
-    authorize! :mapping, @search
+    # authorize! :mapping, @search
 
-    respond_with(@search) do |format|
-      format.html
-      format.js
-    end
+    # respond_with(@search) do |format|
+    #   format.html
+    #   format.js
+    # end
+
+    # collect all geographic informations about languages to map
+    # @geoMapping = GeoMapping.new(params[:ling_ids])
+    @geoMapping = {}
+
+    authorize! :mapping, @geoMapping
+
+    render :json => @geoMapping.to_json.html_safe
   end
 
   protected

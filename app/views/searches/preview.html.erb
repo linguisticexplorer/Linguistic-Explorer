@@ -1,29 +1,480 @@
 <% page_heading "Search" %>
-  <h1><%= @search.group.name %> Search Results</h1>
-<% if @search.results.any? && !@search.clustering? %>
-  <div class="row-fluid">
-    <div id="search_interaction" class="padded border margin span4">
-      <%- if !@search.cross? && !@search.implication? && !@search.compare? -%>
-        <%= render :partial => 'searches/save_search_form' %>
-      <% end %>
-      <%= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+<h1><%= @search.group.name %> Search Results</h1>
+
+<div id="search_results" class="padded_left padded_right">
+  <div class="apple_pagination will-paginate">
+    <div class="pagination">
     </div>
   </div>
-<% end %>
-<div id="search_results" class="padded_left padded_right">
-  <%- if @search.results.any? -%>
-        <div id="pagination_table">
-          <%- if @search.default? -%>
-              <%= render :partial => 'searches/results' %>
-          <%- elsif @search.cross? || @search.implication? -%>
-              <%= render :partial => 'searches/cross/results' %>
-          <%- elsif @search.compare? -%>
-              <%= render :partial => 'searches/compare/results' %>
-          <%- elsif @search.clustering? -%>
-              <%= render :partial => 'searches/clustering/results' %>
-          <%- end -%>
-        </div>
-  <%- else -%>
-      <div class="notice">Your search query returned no results.</div>
-  <%- end -%>
+  <div id="pagination_table">
+    <div class="progress progress-striped" 
+      style='margin: 10px 20px 5px 30px;'>
+      <div class="bar" style="width: 0%;" id="results_loading_bar"></div>
+    </div>
+    <p class='strong' style='text-align: center;' id='results_loading_text'>
+      Your query is processing...
+    </p>
+  </div>
+  <div class="apple_pagination will-paginate">
+    <div class="pagination">
+    </div>
+  </div>
 </div>
+
+<% content_for :scripts do%>
+<script>
+  var group = <%= current_group.to_param %>;
+
+  var templates = {
+    'cross': '',
+    'compare': '',
+    'implication': '',
+    'default': '#regular_results',
+    'clustering': ''
+  };
+
+  var loadingInterval,
+      resultsJson;
+
+  $(window).load(function(){
+
+    var timeoutMillis = 30000,
+        refreshRate   = 100;
+
+    var query = $.param({
+      authenticity_token: "<%= form_authenticity_token %>",
+      search: <%= @query %>
+    });
+  
+    $.post(getResultsURL(group), query)
+    .success(compileResults)
+    .error(notifyError);
+    
+    var progress = 0,
+        step = 50 / (timeoutMillis / refreshRate);
+
+    function notifyError(err){
+      if(err){
+        progress = 100;
+      }
+
+      setBar(progress);
+
+      if(progress > 50){
+        clearInterval(loadingInterval);
+        // show an error
+        $('#results_loading_text').text('An error occurred');
+      }
+    }
+
+    loadingInterval = setInterval(function(){
+      progress += step;
+      notifyError();
+    }, refreshRate);
+
+  });
+
+  function setBar(value, msg){
+    $('#results_loading_bar').width(value+'%');
+    if(msg){
+      $('#results_loading_text').text(msg);
+    }
+  }
+
+  function getResultsURL(group, params){
+    return '/groups/'+group+'/searches/get_results';
+  }
+
+  function compileResults(json){
+
+    resultsJson = json;
+
+    clearInterval(loadingInterval);
+
+    makeNewPage(resultsJson, 0, true);
+  }
+
+  function makeNewPage(json, offset, bar){
+    if(bar){
+      setBar(50, 'Data received');
+    }
+    var template_id = 'default';
+
+    for( var type in templates){
+      if( (new RegExp(type)).test(json.type) ){
+        template_id = templates[type];
+        break;
+      }
+    }
+
+    var table = createTable(json, offset);
+    var pagination_data = createPagination(json, offset);
+
+    if(bar){
+      setBar(80, 'Data processed');
+    }
+
+    var source = $(template_id).html();
+    var template = Handlebars.compile(source);
+
+    var pag_source = $('#pagination_bar').html();
+    var pag_template = Handlebars.compile(pag_source);
+    
+    if(bar){
+      setBar(100, 'Preparing the table');
+    }
+    var html_rows = template(table);
+    var html_pagination = pag_template(pagination_data);
+
+    setTimeout(function(){
+      $(".pagination").html(html_pagination);
+      $('#pagination_table').html(html_rows);
+    }, 700);
+  }
+
+  function createPagination(json, offset, max_rows){
+
+    function pageToShow(n, avg, max, cur){
+      switch (n){
+        // first pages
+        case 1:
+        case 2:
+        // pages in the middle of the set
+        case avg - 1:
+        case avg:
+        case avg + 1:
+        // last pages
+        case max - 1:
+        case max:
+        // current pages
+        case cur - 1:
+        case cur:
+        case cur + 1:
+          return true;
+        default:
+          return false;
+      }
+    }
+    // start to count from 1 instead of 0
+    var page_offset = offset + 1;
+    var max_rows_per_page = max_rows || 25;
+
+    var pages = [];
+    var prev = {disabled: (page_offset === 1) },
+        next = {disabled: (!json.rows[page_offset*max_rows_per_page]) };
+
+    var pages_total = Math.ceil(json.rows.length / max_rows_per_page),
+        half_total  = pages_total / 2;
+
+    var middle_page = Math.floor(half_total) === half_total ?
+          half_total :
+          Math.floor(half_total) + 1;
+
+    for(var page = 1; page<=pages_total; page++){
+
+      // no more than 15 pages or check specific page
+      if(pages_total < 16 || pageToShow(page, middle_page, pages_total, page_offset)){
+        pages.push({number: page, current: (page === page_offset)});
+      }
+      else {
+        // add a gap only if it's not there yet...
+        if(!pages[pages.length - 1].gap){
+          pages.push({gap: true});
+        }
+      }
+      
+      // add prev and next buttons
+      if(!prev.disabled && page + 1 === page_offset){
+        prev.number = page;
+      }
+
+      if(!next.disabled && page - 1 === page_offset){
+        next.number = page;
+      }
+    }
+    return {pages: pages, prev: prev, next: next};
+  }
+
+  function createTable(json, offset, max_rows){
+    var max_rows_per_page = max_rows || 25;
+    // create the header
+    var table = {header: json.header, rows: []};
+
+    offset = offset || 0;
+    
+    for(var i=offset * max_rows_per_page; i<json.rows.length && i< max_rows_per_page * (offset + 1); i++){
+      table.rows.push(columnMapping(json.type, table.header, json.rows[i]));
+    }
+
+    return table;
+  }
+
+  function columnMapping(type, columns, entry){
+    switch (type){
+      case 'default':
+        return defaultMapping(columns, entry);
+      case 'cross':
+      case /implication/:
+        return crossMapping(columns, entry);
+      case 'compare':
+        return compareMapping(columns, entry);
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function defaultMapping(columns, entry){
+    var func_dict = {
+      'ling_0'    : getLing('parent'),
+      'property_0': getProperty('parent'),
+      'value_0'   : getValue('parent'),
+      'example_0' : getExamples('parent'),
+      'ling_1'    : getLing('child'),
+      'property_1': getProperty('child'),
+      'value_1'   : getValue('child'),
+      'example_1' : getExamples('child')
+    };
+
+    function isThere(){
+      if(arguments.length){
+        var array = Array.prototype.slice.call(arguments),
+            obj = array.shift(),
+            new_obj = obj;
+        while(array.length && new_obj){
+          new_obj = new_obj[array.shift()];
+        }
+
+        return (!array.length && !!new_obj);
+      }
+      return false;
+    }
+
+    function getLing(level){
+      return function (entry){
+        return isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
+      };
+    }
+
+    function getProperty(level){
+      return function (entry){
+        return isThere(entry, level, 'lings_property', 'property') ? entry[level].lings_property.property.name : ' ';
+      };
+    }
+
+    function getValue(level){
+      return function (entry){
+        return isThere(entry, level, 'lings_property') ? entry[level].lings_property.value : ' ';
+      };
+    }
+
+    function getExamples(level){
+      return function (entry){
+        var list = [];
+        if(isThere(entry, level, 'lings_property', 'examples')){
+          var examples = entry[level].lings_property.examples;
+
+          for( var i=0; i < examples.length; i++){
+            list.push(examples[i].name);
+          }
+        }
+        return list.join(',') || ' ';
+      };
+    }
+
+    var new_entry = {};
+    for( var c in columns ){
+      if(columns.hasOwnProperty(c)){
+        new_entry[c] = func_dict[c](entry);
+      }
+    }
+    return new_entry;
+  }
+
+  function crossMapping(columns, entry){
+
+  }
+
+  function compareMapping(columns, entry){
+
+  }
+
+    // PAGINATION CODE
+  // Text and image while loading
+  // TODO: Make this check somehow to see if a .js.erb file exists
+  // Alterntaively, create one for every view, but not recommended
+  
+  var img = "<img src='/images/loader.gif' class='loading'/>",
+      once = false;
+  // Manage the AJAX pagination and changing the URL
+   $(document).on("click", ".apple_pagination.will-paginate .pagination a", function (e) {
+      //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
+      var offset = getOffset(this.id);
+      $(".pagination").html(img); 
+      makeNewPage(resultsJson, offset);
+      
+      // 
+      // $.get(this.href, function(result) {
+      //   $(".pagination").html($(".pagination", result)[0]);
+      //   $("#pagination_table").html($("#pagination_table", result));
+      // });
+      history.pushState(null, document.title, this.href);
+      e.preventDefault();
+  });
+  
+  $(window).bind("popstate", function() {
+    if (once) {
+      var offset = getOffset();
+      $(".pagination").html(img);
+      makeNewPage(resultsJson, offset);
+      
+      // $.get(location.href, function(result) {
+      //     $(".pagination").html($(".pagination", result));
+      //     $("#pagination_table").html($("#pagination_table", result));
+      // });
+    } else {
+      once = true;
+    }
+  });
+
+  function getOffset(clicked_id){
+    // the user clicked something if clicked is defined...
+    var current_page = + $('[id^="current-page-"]')[0].id.replace(/current-page-/,'');
+    if(clicked_id){
+      // check if the user clicked on prev/next buttons
+      if((/(next|prev)/).test(clicked_id)){
+        return clicked_id.indexOf('next') > 0 ? current_page : (current_page - 2);
+      }
+      // the user clicked on a page number...
+      else {
+        return + clicked_id.replace(/page-/, '') - 1;
+      }
+    }
+    // the user pressed the back button of the browser
+    else {
+      return current_page - 2;
+    }
+    
+  }
+
+</script>
+<% end %>
+<%= javascript_include_tag 'handlebars' %>
+<!-- Pagination template -->
+<script id="pagination_bar" type="text/templates">
+  <ul>
+    {{#if prev.disabled}}
+      <li class="disabled" id='page-prev'><span>Prev</span></li>
+    {{else}}
+      <li><a href="#" id="page-prev">Prev</a></li>
+    {{/if}}
+    {{#each pages}}
+      {{#if this.current}}
+        <li class="active" id='current-page-{{this.number}}'><span>{{this.number}}</span></li>
+      {{else}}
+        {{#if this.gap}}
+          <li><span>&hellip;</span></li>
+        {{else}}
+          <li><a href="#" id="page-{{this.number}}">{{this.number}}</a></li>
+        {{/if}}
+      {{/if}}
+    {{/each}}
+    {{#if next.disabled}}
+      <li class="disabled" id='page-next'><span>Next</span></li>
+    {{else}}
+      <li><a href="#" id="page-next">Next</a></li>
+    {{/if}}
+  </ul>
+</script>
+<!-- Results table template -->
+<script id="regular_results" type="text/templates">
+  <table class="show-table table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        {{#if header.ling_0}}
+          <th>{{header.ling_0}}</th>
+        {{/if}}
+        {{#if header.property_0}}
+          <th>{{header.property_0}}</th>
+        {{/if}}
+        {{#if header.value_0}}
+          <th>{{header.value_0}}</th>
+        {{/if}}
+        {{#if header.example_0}}
+          <th>{{header.example_0}}</th>
+        {{/if}}
+        {{#if header.ling_1}}
+          <th>{{header.ling_1}}</th>
+        {{/if}}
+        {{#if header.property_1}}
+          <th>{{header.property_1}}</th>
+        {{/if}}
+        {{#if header.value_1}}
+          <th>{{header.value_1}}</th>
+        {{/if}}
+        {{#if header.example_1}}
+          <th>{{header.example_1}}</th>
+        {{/if}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr>
+        {{#if this.ling_0}}
+          <td>{{this.ling_0}}</td>
+        {{/if}}
+        {{#if this.property_0}}
+          <td>{{this.property_0}}</td>
+        {{/if}}
+        {{#if this.value_0}}
+          <td>{{this.value_0}}</td>
+        {{/if}}
+        {{#if this.example_0}}
+          <td>{{this.example_0}}</td>
+        {{/if}}
+        {{#if this.ling_1}}
+          <td>{{this.ling_1}}</td>
+        {{/if}}
+        {{#if this.property_1}}
+          <td>{{this.property_1}}</td>
+        {{/if}}
+        {{#if this.value_1}}
+          <td>{{this.value_1}}</td>
+        {{/if}}
+        {{#if this.example_1}}
+          <td>{{this.example_1}}</td>
+        {{/if}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</script>
+<!--
+<%# if @search.results.any? && !@search.clustering? %>
+  <div class="row-fluid">
+    <div id="search_interaction" class="padded border margin span4">
+      <%# if !@search.cross? && !@search.implication? && !@search.compare? -%>
+        <%= render :partial => 'searches/save_search_form' %>
+      <%# end %>
+      <%#= link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?%>
+    </div>
+  </div>
+<%# end %>
+<div id="search_results" class="padded_left padded_right">
+  <%# if @search.results.any? -%>
+        <div id="pagination_table">
+          <%# if @search.default? -%>
+              <%#= render :partial => 'searches/results' %>
+          <%# elsif @search.cross? || @search.implication? -%>
+              <%#= render :partial => 'searches/cross/results' %>
+          <%# elsif @search.compare? -%>
+              <%#= render :partial => 'searches/compare/results' %>
+          <%# elsif @search.clustering? -%>
+              <%#= render :partial => 'searches/clustering/results' %>
+          <%# end -%>
+        </div>
+  <%# else -%>
+      <div class="notice">Your search query returned no results.</div>
+  <%# end -%>
+</div>
+-->

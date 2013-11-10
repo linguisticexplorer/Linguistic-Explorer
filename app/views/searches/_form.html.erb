@@ -1,4 +1,4 @@
-<%= form_for search, :html => {:method => "get", :onsubmit =>
+<%= form_for search, :html => {:method => "post", :onsubmit =>
   "this.hidden_javascript.value=1;return true;", :class => "form-horizontal", :id => "search-form" } do |f| %>
 	<div class="row">
 		<div class="span2" id="display">
