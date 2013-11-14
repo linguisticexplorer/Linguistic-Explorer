@@ -161,7 +161,7 @@
 
     for(var page = 1; page<=pages_total; page++){
 
-      // no more than 15 pages or check specific page
+      // if there are 15 pages or less it's ok, otherwise check for specific pages
       if(pages_total < 16 || pageToShow(page, middle_page, pages_total, page_offset)){
         pages.push({number: page, current: (page === page_offset)});
       }
@@ -233,14 +233,22 @@
       return result;
     }
 
+    function mapCompareHeaders(headers){
+      return {header: {common: {}, diff: {}}, rows: []};
+    }
+
+    function mapRegularHeader(header){
+      return {header: header, rows: []};
+    }
+
     switch (type){
       case 'default':
-        return {header: json.header, rows: []};
+        return mapRegularHeader(json.header);
       case 'cross':
       case 'implication':
         return mapCrossHeaders(json.header, json.rows[0].parent);
       case 'compare':
-        return compareMapping(columns, entry);
+        return mapCompareHeader(json.header);
       default:
         // Fail silently....
         return {};
@@ -273,20 +281,6 @@
       'value_1'   : getValue('child'),
       'example_1' : getExamples('child')
     };
-
-    function isThere(){
-      if(arguments.length){
-        var array = Array.prototype.slice.call(arguments),
-            obj = array.shift(),
-            new_obj = obj;
-        while(array.length && new_obj){
-          new_obj = new_obj[array.shift()];
-        }
-
-        return (!array.length && !!new_obj);
-      }
-      return false;
-    }
 
     function getLing(level){
       return function (entry){
@@ -329,26 +323,26 @@
     return new_entry;
   }
 
+  function isThere(){
+    if(arguments.length){
+      var array = Array.prototype.slice.call(arguments),
+          obj = array.shift(),
+          new_obj = obj;
+      while(array.length && new_obj){
+        new_obj = new_obj[array.shift()];
+      }
+
+      return (!array.length && !!new_obj);
+    }
+    return false;
+  }
+
   function crossMapping(table, entry){
     var func_dict = {
       'count'         : getCrossLings,
       'cross_property': getProperty('parent'),
       'cross_value'   : getValue('parent')
     };
-
-    function isThere(){
-      if(arguments.length){
-        var array = Array.prototype.slice.call(arguments),
-            obj = array.shift(),
-            new_obj = obj;
-        while(array.length && new_obj){
-          new_obj = new_obj[array.shift()];
-        }
-
-        return (!array.length && !!new_obj);
-      }
-      return false;
-    }
 
     function getCrossLings(entry){
       return isThere(entry, 'child', 'length') ? entry['child'].length : '0';
@@ -383,7 +377,40 @@
   }
 
   function compareMapping(columns, entry){
+    var func_dict = {
+      'compare_property' : getProperty('parent'),
+      'common_values'    : getValue('parent'),
+      'ling_value'       : getValue('parent')
+    };
 
+    function getProperty(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+      };
+    }
+
+    function getValue(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
+      };
+    }
+
+    console.log(columns, entry);
+    // columns is an array here!
+    var pair_columns = table.headers;
+
+    var new_entry = {pair: [], count: func_dict['count'](entry)};
+    for( var pc=0; pc< pair_columns.length; pc++ ){
+      var pair_entry = {};
+      for(var c in pair_columns[pc]){
+        if(pair_columns[pc].hasOwnProperty(c)){
+          pair_entry[c] = func_dict[c](entry, pc);
+        }
+      }
+      new_entry.pair.push(pair_entry);
+    }
+
+    return new_entry;
   }
 
     // PAGINATION CODE
@@ -563,3 +590,370 @@
     </tbody>
   </table>
 </script>
+
+<script>
+//   var data,
+//       lings = [],
+//       props = [],
+//       valueScores = {};
+
+//   $(function(){
+
+//     $('#visualize').click(getCompareJSON);
+
+//   });
+
+//   function getCompareJSON(e){
+//     e.preventDefault();
+//     var searchURL = '/groups/'+ <%= @search.group.id %> +'/searches/visualize'+window.location.search;
+
+//     // var lings_name = "<%= @search.group.ling0_name.pluralize %>";
+
+//     $('#modal-head').text("Results Overview");
+//     $('#visualize-body').html(
+//       '<div style="text-align: center">'+
+//       '<span class="loading">Visualization is loading...'+
+//       '<img src="/images/loader.gif" class="loading"/>'+
+//       '</span>'+
+//       '</div>'
+//     );
+
+//     $('#visualize-modal').modal('toggle');
+
+//     if(data){
+//       createHeatmap();
+//     } else {
+//       $.getJSON(searchURL, processJSON);
+//     }
+//   }
+
+//   function isCommonProperty(row){
+//     return row.child.length !== row.lings.length;
+//   }
+
+//   function createCommonRow(index, entry, lings, property){
+//     var row = [];
+
+//     for( var j=0; j<lings.length; j++){
+//       var value = entry[0].lings_property.value;
+//       row.push({
+//         score: Number(valueScores[value]),
+//         value: value,
+//         prop: property.name,
+//         x: j,
+//         y: index
+//       });
+//     }
+
+//     return row;
+//   }
+
+//   function createDiffRow(index, entry, lings, property){
+
+//     var lingDict = {};
+//     var row = [];
+//     var j, position;
+
+//     for( var i=0; i<lings.length; i++){
+//       lingDict[lings[i].ling.id] = i;
+//     }
+
+//     // put in the array all the values we have
+//     for( j = 0; j<entry.length; j++){
+//       if(entry[j]){
+//         position = lingDict[entry[j].lings_property.ling_id];
+//         row[position] = {
+//           score: Number(valueScores[entry[j].lings_property.value]) ,
+//           value: entry[j].lings_property.value,
+//           prop: property.name,
+//           x: position,
+//           y: index
+//         };
+//       }
+//     }
+    
+//     // now fill the gaps
+//     for( j = 0; j<entry.length; j++){
+//       if(!row[j]){
+//         row[j] = {
+//           score: 0 ,
+//           value: ' ',
+//           prop: property.name,
+//           x: j,
+//           y: index
+//         };
+//       }
+//     }
+
+//     return row;
+//   }
+
+//   function mapLingColumns(rows){
+//     if(rows.length){
+//       for( var i=0; i<rows[0].lings.length; i++){
+//         lings.push(rows[0].lings[i].ling.name);
+//       }
+//     }
+//   }
+  
+//   // do nothing for the moment
+//   function mapPropRows(row){
+
+//   }
+
+//   function getURLParameter(name) {
+//     return decodeURI(
+//         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+//     );
+//   }
+
+//   function replaceURLParameter(name, value){
+//     var URL = location.search;
+//     if(getURLParameter(name) !== 'null'){
+//       URL = URL.replace(/page=(.+)/, 'page='+value);
+//     } else {
+//       URL += '&page='+value;
+//     }
+//     return URL;
+//   }
+
+//   function mapValues(rows){
+//     var i, j;
+
+//     var valuesDict = {};
+//     var vCount = 0;
+
+//     // find all the values
+//     for( i=0; i<rows.length; i++){
+//       var row = rows[i];
+//       if(isCommonProperty(row)){
+//         if(!valuesDict[row.parent[0].lings_property.value]){
+//           valuesDict[row.parent[0].lings_property.value] = 1;
+//           vCount++;
+//         }
+//       } else {
+//         for( j=0; j<row.child.length; j++){
+//           var value = row.child[j] ? row.child[j].lings_property.value : ' ';
+//           if(!valuesDict[value]){
+//             valuesDict[value] = 1;
+//             vCount++;
+//           }
+//         }
+//       }
+//     }
+
+//     // because we have to map al the values in a fixed range of 2
+//     // let's calculate how much is the gap between 2 consecutive values
+//     // in the range
+//     var vShift = 2 / vCount;
+
+//     var fixedValues = {
+//       'Yes': 1,
+//       ' ': 0,
+//       'No': -1
+//     };
+
+//     var reversedMap = {
+//       '1': 'Yes',
+//       '0': ' ',
+//       '-1':  'No'
+//     };
+//     // here we have all the values mapped:
+//     // now map them in a range
+//     for( i in valuesDict ){
+//       if( valuesDict.hasOwnProperty(i) ){
+
+//         // if it's a fixed value, skip it
+//         if(!isFinite(fixedValues[i])){
+//           var newValue = 1 - vShift;
+//           while(reversedMap[newValue] && newValue > -1){
+//             newValue -= vShift;
+//           }
+//           reversedMap[newValue] = i;
+//         }
+//       }
+//     }
+
+//     // now reverse again the map
+//     for( i in reversedMap ){
+//       if( reversedMap.hasOwnProperty(i)){
+
+//         valueScores[reversedMap[i]] = i;
+//       }
+//     }
+//   }
+
+//   function processJSON(rows){
+//     rows = rows.result;    
+
+//     mapLingColumns(rows);
+//     mapPropRows(rows);
+    
+//     mapValues(rows);
+
+//     data = [];
+//     for( var i=0; i<rows.length; i++){
+//       var entry = rows[i];
+//       if(isCommonProperty(entry)){
+//         data[i] = createCommonRow(i, entry.parent, entry.lings, entry.prop);
+//       } else {
+//         data[i] = createDiffRow(i, entry.child, entry.lings, entry.prop);
+//       }
+//     }
+
+//     createHeatmap();
+//   }
+
+//   function createHeatmap(){
+//     $('#visualize-body').empty().css('height', (5 * data.length + 105)+"px");
+
+//     var fixed_width = 580;
+//     //height of each row in the heatmap
+//     var h = 25;
+//     //width of each column in the heatmap
+//     var w = fixed_width / data[0].length;
+
+//     //attach a SVG element to the modal's body
+//     var svg = d3.select("#visualize-body")
+//        .append("svg")
+//        .attr("width", (w * data[0].length) + 100) 
+//        .attr("height", (h * data.length + 100))
+//        .style('position','absolute')
+//        .style('top',0)
+//        .style('left',0);
+
+//     //define a color scale using the min and max expression values
+//     var colorScale = d3.scale.linear()
+//       .domain([-1, 0, +1])
+//       .range(["red", "white", "green"]);
+
+//     //generate heatmap rows
+//     var heatmapRow = svg.selectAll(".heatmap")
+//        .data(data)
+//        .enter().append("g");
+
+//     //generate heatmap columns
+//     var heatmapRects = heatmapRow
+//        .selectAll(".rect")
+//        .data(function(d) {
+//           return d;
+//        }).enter().append("svg:rect")
+//        .attr('width',  w)
+//        .attr('height', h)
+//        .attr('x', function(d) {
+//           return (d.x * w) + 100;
+//        })
+//        .attr('y', function(d) {
+//           return (d.y * h) + 50;
+//        })
+//        .attr('rx', 7)
+//        .attr('ry', 2)
+//        .attr('stroke', '#E6E6E6')
+//        .attr('stroke-width', 2)
+//        .style('fill', function(d) {
+//           return colorScale(d.score);
+//        });
+
+//     //label columns
+//     var columnLabel = svg.selectAll(".colLabel")
+//       .data(lings)
+//       .enter().append('svg:text')
+//       .attr('x', function(d,i) {
+//         return ((i + 0.5) * w) + 100;
+//       })
+//       .attr('y', 30)
+//       .attr('class','label')
+//       .style('text-anchor','middle')
+//       // .attr('transform', 'translate(-' + 100 + ',' + 50 + ') rotate(-90)')
+//       .text(function(d) {
+//         return d;
+//       });
+
+//     var rowLabel = svg.selectAll('.rowLabel')
+//       .data(Array(data.length)).
+//       enter().append('svg:text')
+//       .attr('x', 15)
+//       .attr('y', function(d, i){
+//         return (i * h) + 50;
+//       })
+//       .attr('class', 'label')
+//       // .style('text-anchor','middle')
+//       .text(function(d, i){
+//         if(i%25 === 1){
+//           return 'PAGE '+(Math.floor(i/25) + 1);
+//         }
+//       });
+
+//     //expression value label
+//     var lock = true;
+//     var legend = d3.select("#visualize-body")
+//        .append('div')
+//        .attr('class', 'well')
+//        .style('height',23)
+//        .style('max-width','250px')
+//        .style('word-wrap','break-word')
+//        .style('position','absolute')
+//        .style('background','#E6E6E6')
+//        // .style('opacity',0.9)
+//        .style('padding','10px')
+//        .style('display','none');
+
+//     function unlockLegend(){
+//       lock = !lock;
+//     }
+
+//     function showLegend(d, i){
+//       // d3.select(this)
+//       //   .selectAll("rect")
+//       //   .attr('stroke-width',2)
+//       //   .attr('stroke','black');
+
+//       var xy = d3.mouse(d3.select(this)[0][0]);
+
+//       var cellNumber = Math.floor((xy[0] - 100) / w);
+
+//       var page = (Math.floor(i/25) + 1);
+//       var pageURL = replaceURLParameter('page', page);
+      
+//       var output = '<table class="table table-condensed">'
+      
+//       output += '<thead><tr><th>'+d[0].prop+'</th><th>&nbsp;</th></tr></thead>';
+//       output += '<tbody>'
+
+//       for (var j = 0; j < d.length; j ++ ) {
+//         var value = d[j].value === ' ' ? '"---"' : d[j].value;
+        
+//         output += '<tr '+ (cellNumber === j ? 'class="warning">' : '>');
+//         output += '<th>'+lings[j] + '</th><th>' + value+'</th></tr>';
+
+//       }
+//       output += '</tbody></table>'
+//       output += '<br/><a href='+pageURL+' class="pull-right">' + 'Go to page ' + page + '</a>';
+      
+
+//       legend
+//          .style('top', (xy[1] + 15)+'px')
+//          .style('left', (xy[0] + 5)+'px')
+//          .style('display','block')
+//          .html(output);
+//     }
+
+//     function hideLegend(d, i){
+//       // d3.select(this)
+//       //   .selectAll("rect")
+//       //   .attr('stroke-width',2)
+//       //   .attr('stroke','#E6E6E6');
+
+//       if(!lock){
+//         legend.style('display','none');
+//       }
+//     }
+
+//     //heatmap mouse events
+//     heatmapRow
+//       .on('click'    , unlockLegend)
+//       .on('mouseover', showLegend)
+//       .on('mouseout' , hideLegend);
+//   }
+
+ </script>
