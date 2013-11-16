@@ -359,40 +359,16 @@
 <% end %>
 <%= javascript_include_tag 'handlebars' %>
 <!-- Pagination template -->
-<script id="pagination_bar" type="text/templates">
-  <ul>
-    {{#if prev.disabled}}
-      <li class="disabled" id='page-prev'><span>Prev</span></li>
-    {{else}}
-      <li><a href="#" id="page-prev">Prev</a></li>
-    {{/if}}
-    {{#each pages}}
-      {{#if this.current}}
-        <li class="active" id='current-page-{{this.number}}'><span>{{this.number}}</span></li>
-      {{else}}
-        {{#if this.gap}}
-          <li><span>&hellip;</span></li>
-        {{else}}
-          <li><a href="#" id="page-{{this.number}}">{{this.number}}</a></li>
-        {{/if}}
-      {{/if}}
-    {{/each}}
-    {{#if next.disabled}}
-      <li class="disabled" id='page-next'><span>Next</span></li>
-    {{else}}
-      <li><a href="#" id="page-next">Next</a></li>
-    {{/if}}
-  </ul>
-</script>
+<%= render :partial => "searches/templates/util", :inline => true %>
 <%= render :partial => "searches/templates/compare", :inline => true %>
 <%= render :partial => "searches/templates/cross", :inline => true %>
 <%= render :partial => "searches/templates/regular", :inline => true %>
 
 <script>
 
-  var vizScriptsLoaded = false;
+  var extraScriptsLoaded = false;
 
-  
+
 //   var data,
 //       lings = [],
 //       props = [],
