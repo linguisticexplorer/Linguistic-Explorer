@@ -1,0 +1,78 @@
+<% content_for :scripts do%>
+<script>
+  function crossMapping(table, entry){
+    var func_dict = {
+      'count'         : getCrossLings,
+      'cross_property': getProperty('parent'),
+      'cross_value'   : getValue('parent')
+    };
+
+    function getCrossLings(entry){
+      return isThere(entry, 'child', 'length') ? entry['child'].length : '0';
+    }
+
+    function getProperty(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+      };
+    }
+
+    function getValue(level){
+      return function (entry, i){
+        return isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
+      };
+    }
+    // columns is an array here!
+    var pair_columns = table.headers;
+
+    var new_entry = {pair: [], count: func_dict['count'](entry)};
+    for( var pc=0; pc< pair_columns.length; pc++ ){
+      var pair_entry = {};
+      for(var c in pair_columns[pc]){
+        if(pair_columns[pc].hasOwnProperty(c)){
+          pair_entry[c] = func_dict[c](entry, pc);
+        }
+      }
+      new_entry.pair.push(pair_entry);
+    }
+
+    return new_entry;
+  }
+</script>
+<% end %>
+<script id="cross_results" type="text/templates">
+  <table class="show-table table table-bordered table-striped table-hover">
+    <thead>
+      <tr>
+        {{#each headers}}
+          {{#if this.cross_property}}
+            <th>{{this.cross_property}}</th>
+          {{/if}}
+          {{#if this.cross_value}}
+            <th>{{this.cross_value}}</th>
+          {{/if}}
+        {{/each}}
+        {{#if header.count}}
+          <th>{{header.count}}</th>
+        {{/if}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr>
+        {{#each this.pair}}
+        {{#if this.cross_property}}
+          <td>{{this.cross_property}}</td>
+        {{/if}}
+        {{#if this.cross_value}}
+          <td>{{this.cross_value}}</td>
+        {{/if}}
+        {{/each}}
+        {{#if this.count}}
+          <td>{{this.count}}</td>
+        {{/if}}
+      </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</script>
