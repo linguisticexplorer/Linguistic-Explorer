@@ -62,17 +62,19 @@ class SearchesController < GroupDataController
     authorize! :create, @search
 
     if @search.save
-      redirect_to [current_group, :searches]
+      render :json => {:success => true} 
+      # redirect_to [current_group, :searches]
     else
-      render :preview
+      render :json => {:success => false, :errors => @search.errors } 
+      # render :preview
     end
   end
 
   def show
     @search = current_group.searches.find(params[:id])
-    if(params[:page])
-      @search.offset = params[:page]
-    end
+    # if(params[:page])
+    #   @search.offset = params[:page]
+    # end
     
     authorize! :search, @search
 
@@ -105,19 +107,19 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
-  def lings_in_selected_row
-    # collects lings from cross ids
-    # @cross_row_lings = SearchCross.new(params[:cross_ids]).filter_lings_row
+  # def lings_in_selected_row
+  #   # collects lings from cross ids
+  #   # @cross_row_lings = SearchCross.new(params[:cross_ids]).filter_lings_row
     
-    # authorize! :cross, @cross_row_lings
+  #   # authorize! :cross, @cross_row_lings
 
-    # render :json => @cross_row_lings.to_json.html_safe
+  #   # render :json => @cross_row_lings.to_json.html_safe
 
-    @search = perform_search
+  #   @search = perform_search
 
-    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
-    authorize! :cross, @search
-  end
+  #   @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
+  #   authorize! :cross, @search
+  # end
 
   def geomapping
     # @search = perform_search
@@ -135,8 +137,8 @@ class SearchesController < GroupDataController
     # end
 
     # collect all geographic informations about languages to map
-    # @geoMapping = GeoMapping.new(params[:ling_ids])
-    @geoMapping = {}
+    @geoMapping = GeoMapping.new(params[:ling_ids])
+    # @geoMapping = {}
 
     authorize! :mapping, @geoMapping
 

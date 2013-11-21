@@ -16,10 +16,10 @@
 <div id="supported-entry-container" class="container-fluid">
   <div class="row-fluid">
     <div id="property-description" class="span4 set-col">
-      <%= render partial: "lings/mass_assignment/property", object: @property %>
+      <%= render partial: "lings/mass_assignment/property", object: @property, :inline => true %>
     </div>
     <div id="property-setter" class="span4 set-col">
-      <%= render partial: "lings/mass_assignment/value", object: @property %>
+      <%= render partial: "lings/mass_assignment/value", object: @property, :inline => true %>
       <div class="row-fluid">
       </div>
     </div>

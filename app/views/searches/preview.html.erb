@@ -1,14 +1,15 @@
 <% page_heading "Search" %>
 <h1><%= @search.group.name %> Search Results</h1>
-
+<div class="row-fluid">
+    <%= render :partial => 'searches/templates/results_navbar' %>
+</div>
 <div id="search_results" class="padded_left padded_right">
   <div class="apple_pagination will-paginate">
     <div class="pagination">
     </div>
   </div>
   <div id="pagination_table">
-    <div class="progress progress-striped" 
-      style='margin: 10px 20px 5px 30px;'>
+    <div class="progress progress-striped" style='margin: 10px 20px 5px 30px;'>
       <div class="bar" style="width: 0%;" id="results_loading_bar"></div>
     </div>
     <p class='strong' style='text-align: center;' id='results_loading_text'>
@@ -34,6 +35,7 @@
   };
 
   var loadingInterval,
+      query,
       resultsJson;
 
   $(window).load(function(){
@@ -41,10 +43,10 @@
     var timeoutMillis = 50000,
         refreshRate   = 100;
 
-    var query = $.param({
+    query = {
       authenticity_token: "<%= form_authenticity_token %>",
       search: <%= @query %>
-    });
+    };
   
     $.post(getResultsURL(group), query)
     .success(compileResults)
@@ -129,6 +131,12 @@
     setTimeout(function(){
       $(".pagination").html(html_pagination);
       $('#pagination_table').html(html_rows);
+
+      var navbar = $('#results_navbar');
+
+      if(!navbar.is(':visible')){
+        navbar.fadeIn('slow');
+      }
     }, 700);
   }
 
@@ -194,7 +202,7 @@
     offset = offset || 0;
     
     for(var i=offset * max_rows_per_page; i<json.rows.length && i< max_rows_per_page * (offset + 1); i++){
-      table.rows.push(columnMapping(json.type, getHeader(json.type, table), json.rows[i]));
+      table.rows.push(columnMapping(json.type, getHeader(json.type, table), json.rows[i], i));
     }
 
     return refineTable(json.type, table);
@@ -277,13 +285,13 @@
     }
   }
 
-  function columnMapping(type, columns, entry){
+  function columnMapping(type, columns, entry, index){
     switch (type){
       case 'default':
         return defaultMapping(columns, entry);
       case 'cross':
       case 'implication':
-        return crossMapping(columns, entry);
+        return crossMapping(columns, entry, index);
       case 'compare':
         return compareMapping(columns, entry);
       default:
@@ -317,31 +325,36 @@
    $(document).on("click", ".apple_pagination.will-paginate .pagination a", function (e) {
 
       var offset = getOffset(this.id);
+      var current = getCurrentPage();
+
       $(".pagination").html(img); 
       makeNewPage(resultsJson, offset);
       
-      history.pushState(null, document.title, this.href);
+      
+      history.pushState(current, document.title + '- Page '+current, '#');
       e.preventDefault();
   });
   
-  $(window).bind("popstate", function() {
-    if (once) {
-      var offset = getOffset();
+  $(window).bind("popstate", function (e) {
+    console.log(e.originalEvent.state);
+    if (e.originalEvent.state) {
+      var offset = e.originalEvent.state;
       $(".pagination").html(img);
       makeNewPage(resultsJson, offset);
-
-    } else {
-      once = true;
     }
   });
 
+  function getCurrentPage(){
+    return (+ $('[id^="current-page-"]')[0].id.replace(/current-page-/,''));
+  }
+
   function getOffset(clicked_id){
     // the user clicked something if clicked is defined...
-    var current_page = + $('[id^="current-page-"]')[0].id.replace(/current-page-/,'');
+    var current_page = getCurrentPage();
     if(clicked_id){
       // check if the user clicked on prev/next buttons
       if((/(next|prev)/).test(clicked_id)){
-        return clicked_id.indexOf('next') > 0 ? current_page : (current_page - 2);
+        return clicked_id.indexOf('next') > 0 ? (current_page) : (current_page - 2);
       }
       // the user clicked on a page number...
       else {
@@ -350,7 +363,7 @@
     }
     // the user pressed the back button of the browser
     else {
-      return current_page - 2;
+      return (current_page - 2);
     }
     
   }

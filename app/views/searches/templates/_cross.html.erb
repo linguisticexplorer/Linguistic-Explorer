@@ -1,6 +1,32 @@
 <% content_for :scripts do%>
 <script>
-  function crossMapping(table, entry){
+  // dynamically bind count links to show a modal with the lings
+  $(document).on('click', '[id^="lings_cross_"]', showLingsModal);
+
+  function showLingsModal(){
+    var index = this.id.replace('lings_cross_', '');
+    
+    // find the right entry
+    var entry = resultsJson.rows[index].child || [];
+
+    // fill a list of lings names
+    var lings_names = $.map(entry, function (el){
+      return el.lings_property.ling.name;
+    });
+
+    // append the list in the modal
+    var source = $('#lings_cross_template').html();
+    var template = Handlebars.compile(source);
+    var html = template({rows: lings_names});
+
+    $('#lings_cross').html(html);
+
+    // show the modal
+    $('#cross_lings_modal').modal('show');
+
+  }
+
+  function crossMapping(table, entry, index){
     var func_dict = {
       'count'         : getCrossLings,
       'cross_property': getProperty('parent'),
@@ -8,7 +34,7 @@
     };
 
     function getCrossLings(entry){
-      return isThere(entry, 'child', 'length') ? entry['child'].length : '0';
+      return {text: isThere(entry, 'child', 'length') ?  entry['child'].length : '0', index: index};
     }
 
     function getProperty(level){
@@ -40,6 +66,24 @@
   }
 </script>
 <% end %>
+
+<div id="cross_lings_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="saveModal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-example" aria-hidden="true">-&nbsp;</button>
+    <span>
+      <h4><%= current_group.ling0_name.pluralize %> in the row</h4>
+    </span>
+  </div>
+  <div class="modal-body">
+    <div class="row-fluid" id="lings_cross">
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
 <script id="cross_results" type="text/templates">
   <table class="show-table table table-bordered table-striped table-hover">
     <thead>
@@ -69,9 +113,23 @@
         {{/if}}
         {{/each}}
         {{#if this.count}}
-          <td>{{this.count}}</td>
+          <td><a href='#' id="lings_cross_{{this.count.index}}">{{this.count.text}}</a></td>
         {{/if}}
       </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</script>
+
+
+
+<script id="lings_cross_template" type="text/templates">
+  <table class="show-table table table-bordered table-striped table-hover">
+    <thead>
+    </thead>
+    <tbody>
+      {{#each rows}}
+      <tr><td>{{this}}</td></tr>
       {{/each}}
     </tbody>
   </table>
