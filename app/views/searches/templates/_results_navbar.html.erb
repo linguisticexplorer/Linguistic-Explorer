@@ -19,38 +19,4 @@
   </div>
 </div>
 
-<% content_for :scripts do%>
-<script>
-$('#saveit').click(function(){
-
-  var queryJsonString = JSON.stringify(query.search, null, 0);
-
-  var resultsJsonString = JSON.stringify(makeResultsJson(), null, 0);
-
-  // add search query
-  $('[name="search[query_json]"]').val(queryJsonString);
-
-  // add results json
-  $('[name="search[result_groups_json]"]').val(resultsJsonString);
-
-  $('#save-modal').modal('show');
-
-});
-
-function makeResultsJson(){
-
-  var rows = resultsJson.rows;
-  var saveJson = {};
-  
-  for( var i =0; i<rows.length; i++){
-    saveJson[rows[i].parent.lings_property.id] = [];
-    if(rows[i].child && rows[i].child.lings_property){
-      saveJson[rows[i].parent.lings_property.id] = $.map(rows[i].child, function(sub){ return sub.lings_property.id; });
-    }
-  }
-  return saveJson;
-}
-</script>
-<%- end -%>
-
 <%= render :partial => 'searches/save_search_form' %>
