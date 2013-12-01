@@ -72,15 +72,14 @@ class SearchesController < GroupDataController
 
   def show
     @search = current_group.searches.find(params[:id])
-    # if(params[:page])
-    #   @search.offset = params[:page]
-    # end
     
     authorize! :search, @search
 
+    @query = @search.query.to_json.html_safe
+
     respond_with(@search) do |format|
-      format.html
-      format.js
+      format.html  { render :preview }
+      format.js    { render :preview }
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
@@ -143,14 +142,6 @@ class SearchesController < GroupDataController
 
   def rescue_from_result_error(exception)
     render :json => {:success => false, :errors => exception.message } 
-  end
-
-  def check_retrieved_json(json)
-    if json == "[]"
-      flash[:notice] = "Sorry, no geographical data to show on the map!"
-      json=''
-    end
-    json
   end
 
   def perform_search

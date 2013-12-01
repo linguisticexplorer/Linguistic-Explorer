@@ -94,6 +94,28 @@
     return '/groups/'+group+'/searches/get_results';
   }
 
+  function enableNavbar(type){
+    var navbar = $('#results_navbar');
+    
+    // show download button only for clustering
+    if(!(/clustering/).test(type)){
+      $('#downloadit').hide();
+    } else {
+      $('#saveit, #mapit, #vizit').hide();
+    }
+    
+    // hide save button for non-regular searches
+    if(!(/default/).test(type)){
+      $('#saveit').hide();
+    } else {
+      $('#vizit').hide();
+    }
+
+    if(!navbar.is(':visible')){
+      navbar.fadeIn('slow');
+    }
+  }
+
   function compileResults(json){
 
     resultsJson = json;
@@ -183,11 +205,7 @@
 
       }
 
-      var navbar = $('#results_navbar');
-
-      if(!navbar.is(':visible')){
-        navbar.fadeIn('slow');
-      }
+      enableNavbar(json.type);
       
     }, 700);
   }
