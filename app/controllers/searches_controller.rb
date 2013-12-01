@@ -78,8 +78,8 @@ class SearchesController < GroupDataController
     @query = @search.query.to_json.html_safe
 
     respond_with(@search) do |format|
-      format.html  { render :preview }
-      format.js    { render :preview }
+      format.html  { render :template => 'searches/preview' }
+      format.js    { render :template => 'searches/preview' }
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
