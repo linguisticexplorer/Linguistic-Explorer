@@ -1,0 +1,30 @@
+<script id="clustering_results" type="text/templates">
+  <div id="similarity_tree">
+    <div id="download_div" class="well" style="display: none; width: auto; text-align: center;">
+      <h5>Save it:</h5>
+      <a id="download" class="btn btn-danger disabled" disabled="true">
+        Download
+      </a>
+    </div>
+    <div class='gallery' id='tree'> </div>
+    <canvas id="canvas" ></canvas>
+  </div>
+</script>
+<% content_for :scripts do%>
+<%= javascript_include_tag 'd3.v2.min', 'd3.phylogram', 'clustering', 'rgbcolor.js', "canvg.js" %>
+<script>
+  
+  function drawPhilogram(newick_string){
+
+    var newikObj = Newick.parse(newick_string);
+
+    buildNewickNodes(newikObj);
+
+    phylogram(newikObj);
+    
+    if(false){ // replace it with Modernizr test for canvas
+      $('#download_div').fadeIn();
+    }
+  }
+</script>
+<% end %>
