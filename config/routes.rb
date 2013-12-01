@@ -28,6 +28,7 @@ LinguisticExplorer::Application.routes.draw do
       # Transform everything to POST:
       # we don't know how many ids can be sent, so the length can hit the GET URL length limit
       collection do
+        get 'preview'
         post 'preview'
         post 'get_results'
         post 'lings_in_selected_row'

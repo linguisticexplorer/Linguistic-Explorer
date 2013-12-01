@@ -15,6 +15,13 @@
     <p class='strong' style='text-align: center;' id='results_loading_text'>
       Your query is processing...
     </p>
+    <div id="error_message" class="alert alert-danger hide">
+      <div>Start a new search here:
+        <span>
+          <%= link_to 'New Search', [:new, @group, :search], class: "btn" %>
+        </span>
+      </div>
+    </div>
   </div>
   <div class="apple_pagination will-paginate">
     <div class="pagination">
@@ -93,14 +100,35 @@
 
     clearInterval(loadingInterval);
 
-    makeNewPage(resultsJson, 0, true);
+    if(!json.success){
+
+      setBar(100, '');
+
+      $('#error_message').
+        prepend($('p').text(json.errors)).
+        show('slow');
+
+    } else {
+      
+      makeNewPage(resultsJson, 0, true);
+      
+    }
+
+    
   }
 
   function makeNewPage(json, offset, bar){
+    // Data variables
+    var table, template, htmlRows;
+    // Pagination variables
+    var paginationData, paginationTemplate, htmlPagination;
+
     if(bar){
       setBar(50, 'Data received');
     }
     var template_id = 'default';
+
+    var isClustering = (/clustering/).test(json.type);
 
     for( var type in templates){
       if( (new RegExp(type)).test(json.type) ){
@@ -109,34 +137,58 @@
       }
     }
 
-    var table = createTable(json, offset);
-    var pagination_data = createPagination(json, offset);
+    if(!isClustering){
+
+      table = createTable(json, offset);
+      paginationData = createPagination(json, offset);
+
+    }
 
     if(bar){
       setBar(80, 'Data processed');
     }
+    
+    // we need the template in case of clustering anyway...
+    template = Handlebars.compile($(template_id).html());
 
-    var source = $(template_id).html();
-    var template = Handlebars.compile(source);
+    if(!isClustering){
+      
+      paginationTemplate = Handlebars.compile($('#pagination_bar').html());
 
-    var pag_source = $('#pagination_bar').html();
-    var pag_template = Handlebars.compile(pag_source);
+    }
     
     if(bar){
-      setBar(100, 'Preparing the table');
+      setBar(100, 'Preparing the results');
     }
-    var html_rows = template(table);
-    var html_pagination = pag_template(pagination_data);
+
+    htmlRows = template(table || {});
+
+    if(!isClustering){
+      htmlPagination = paginationTemplate(paginationData);
+    }
+    
 
     setTimeout(function(){
-      $(".pagination").html(html_pagination);
-      $('#pagination_table').html(html_rows);
+
+      $('#pagination_table').html(htmlRows);
+
+      if(isClustering){
+
+        // draw philogram
+        drawPhilogram(json.rows[1]);
+
+      } else {
+
+        $(".pagination").html(htmlPagination);
+
+      }
 
       var navbar = $('#results_navbar');
 
       if(!navbar.is(':visible')){
         navbar.fadeIn('slow');
       }
+      
     }, 700);
   }
 
@@ -152,6 +204,7 @@
       // Pages around the chosen one
              n === cur-1  || n === cur    || n === cur+1;
     }
+
     // start to count from 1 instead of 0
     var page_offset = offset + 1;
     var max_rows_per_page = max_rows || 25;
@@ -377,6 +430,9 @@
 <%= render :partial => "searches/templates/compare", :inline => true %>
 <%= render :partial => "searches/templates/cross", :inline => true %>
 <%= render :partial => "searches/templates/regular", :inline => true %>
+<%= render :partial => "searches/templates/clustering", :inline => true %>
+
+
 
 <script>
 

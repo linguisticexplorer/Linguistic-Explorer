@@ -10,7 +10,8 @@ class SearchJSON
     {
       :type    => @search.getType,
       :header  => build_results_header,
-      :rows => @search.results(false)
+      :rows    => @search.results(false),
+      :success => true
     }.
     to_json.
     html_safe
@@ -19,6 +20,9 @@ class SearchJSON
   private
 
   def build_results_header
+    # clustering results have no header
+    return '' if /clustering/.match @search.getType
+
     header ||= {}.tap do |entry|
       if /compare/.match @search.getType
 

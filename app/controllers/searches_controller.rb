@@ -107,20 +107,6 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
-  # def lings_in_selected_row
-  #   # collects lings from cross ids
-  #   # @cross_row_lings = SearchCross.new(params[:cross_ids]).filter_lings_row
-    
-  #   # authorize! :cross, @cross_row_lings
-
-  #   # render :json => @cross_row_lings.to_json.html_safe
-
-  #   @search = perform_search
-
-  #   @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
-  #   authorize! :cross, @search
-  # end
-
   def geomapping
     # @search = perform_search
     
@@ -156,8 +142,7 @@ class SearchesController < GroupDataController
   end
 
   def rescue_from_result_error(exception)
-    flash[:notice] = exception.message
-    redirect_to :action => :new
+    render :json => {:success => false, :errors => exception.message } 
   end
 
   def check_retrieved_json(json)
