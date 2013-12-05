@@ -24,7 +24,6 @@
       <table class="show-table description-table table table-bordered table-hover table-striped full-width">
         <%- @group.info_attribute_names.each do |attr_name| -%>
           <tr>
-
             <td><b><%= attr_name.titleize %></b></td>
             <% if @group.send(attr_name).is_a? String %>
               <td><%= @group.send(attr_name).capitalize %></td>
@@ -53,19 +52,31 @@
       <div id="stats_title">
         <h2>Numbers for <%= @group.name %></h2>
       </div>
-
-      <table>
-        <tr>
-          <td><span class="strong"><%=@group.ling0_name.pluralize %>: </span> <%=@group.lings_in_group %></td>
-          <td><span class="strong"><%=@group.property_name.pluralize %>: </span> <%=@group.props_in_group %></td>
-          <td><span class="strong">Contributors : </span> <%=@group.members_in_group %></td>
-        </tr>
-        <tr>
-          <td><span class="strong"><%=@group.example_name.pluralize %> Class: </span> <%=@group.examples_in_group %></td>
-          <td><span class="strong"><%=@group.lings_property_name.pluralize %>: </span> <%=@group.ling_props_in_group %></td>
-          <td></td>
-        </tr>
-      </table>
+      
+      <div class="whitebox">
+        <table class="show-table description-table table table-bordered table-hover table-striped full-width">
+          <tr>
+            <td><b><%=@group.ling0_name.pluralize.titleize %></b></td>
+            <td><%=@group.lings_in_group %></td>
+          </tr>
+          <tr>
+            <td><b><%=@group.property_name.pluralize.titleize %></b></td>
+            <td><%=@group.props_in_group %></td>
+          </tr>
+          <tr>
+            <td><b>Contributors</b></td>
+            <td><%=@group.members_in_group %></td>
+          </tr>
+          <tr>
+            <td><b><%=@group.example_name.pluralize.titleize %></b></td>
+            <td><%=@group.examples_in_group %></td>
+          </tr>
+          <tr>
+            <td><b><%=@group.lings_property_name.pluralize.titleize %></b></td>
+            <td><%=@group.ling_props_in_group %></td>
+          </tr>
+        </table>
+      </div>
       <%= render :partial => 'groups/info/stats' %>
     </div>
   </div>

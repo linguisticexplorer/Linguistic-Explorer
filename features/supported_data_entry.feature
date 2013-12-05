@@ -125,3 +125,16 @@ Feature: Data entry supported by surrounding language context
     Then I should see "Object Subject definition text"
     When I press "Next Uncertain" within "#select-col"
     Then I should see "Noun Adjective definition text"
+
+  @selenium
+  Scenario: The page allows the user to see and minimize property description
+    When I am on the Property Assignment with Context for "Spanish" Page
+    Then I wait "2"
+    Then I follow "prop-modal"
+    # The modal takes up to 1 sec to load properly: wait 2 secs and then carry on
+    Then I wait "2"
+    Then I should see "Property Description" within "#property-modal"
+    Then I press "minimize-prop"
+    Then I should not see "#property-modal"
+    Then I follow "prop-tab"
+    Then I should see "Property Description" within "#property-modal"

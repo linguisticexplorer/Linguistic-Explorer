@@ -1,26 +1,38 @@
 # Do not add Gemfile.lock here
 .bundle
 *.sqlite3
+*~
+*.swp
+.rvmrc
+doc/TODO
+history.
+*.html
+db/seed/*
+
+# Development temporary files
+public/similarity_tree_images/*.png
 log/*
 tmp/*
-*~
-*.DS_Store
-*.swp
-*.out
-coverage.data
-coverage/*
-.idea/*
+
+# Local machine configuration files
 config/database.yml
 config/import.yml
 config/sswl_migration.yml
-.rvmrc
+yamls/*.yml
+
+# Test files
+libpeerconnection.log
 spec/csv/bad/bad_creator_id/*
 spec/csv/bad/bad_foreign_key/*
 spec/csv/bad/no_id/*
 spec/csv/good/import.yml
 spec/csv/good/*.csv
-doc/TODO
-public/similarity_tree_images/*.png
-history.
-*.html
-db/seed/*
+coverage.data
+coverage/*
+*.out
+
+# IDE specific files
+.idea/*
+
+# Platform specific files
+*.DS_Store

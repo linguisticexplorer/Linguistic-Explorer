@@ -1,5 +1,6 @@
 class User < ActiveRecord::Base
   include CSVAttributes
+  include Humanizer
 
   ACCESS_LEVELS = [
       ADMIN = "admin",
@@ -9,6 +10,13 @@ class User < ActiveRecord::Base
   CSV_ATTRIBUTES = %w[ id name email access_level password ]
   def self.csv_attributes
     CSV_ATTRIBUTES
+  end
+
+  attr_accessor :bypass_humanizer
+
+  # Until we migrate to rspec 2.6, use this trick...
+  if Rails.env.production?
+    require_human_on :create, :unless => :bypass_humanizer
   end
 
   # Include default devise modules. Others available are:
@@ -25,7 +33,7 @@ class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :password, :password_confirmation, :remember_me
+  attr_accessible :name, :password, :password_confirmation, :remember_me, :humanizer_question_id, :humanizer_answer
 
   def admin?
     ADMIN == self.access_level

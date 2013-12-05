@@ -1,10 +1,23 @@
 class ExamplesController < GroupDataController
+
+  respond_to :html, :js
+
   def index
     @examples = current_group.examples.includes(:group, :ling).paginate(:page => params[:page], :order => "name")
+
+    respond_with(@examples) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @example = current_group.examples.find(params[:id])
+
+    respond_with(@example) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new
@@ -34,7 +47,6 @@ class ExamplesController < GroupDataController
       example.group = current_group
       example.creator = current_user
     end
-    params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
 
     authorize! :create, @example
 
@@ -47,11 +59,12 @@ class ExamplesController < GroupDataController
       authorize! :create, elp
     end
 
-
     respond_to do |format|
       if @example.save && (params[:lp_val] && elp.save || true)
         @example.name = "Example_" + @example.id.to_s if @example.name == ""
         @example.save!
+        params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
+        
         format.html {redirect_to([current_group, @example],
                       :notice => (current_group.example_name + ' was successfully created.'))}
         format.json {render json: {success: true}}

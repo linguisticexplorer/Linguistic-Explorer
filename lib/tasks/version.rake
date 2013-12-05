@@ -5,28 +5,29 @@ namespace :version do
 	desc "Set specific version"
 	task :set do 
 		version = ARGV.last
-		Version.set(version)
+		version = version.split('.')
+		Version.set(version[0], version[1], version[2], version[3])
 		task version.to_sym do; end
 	end
 
 	desc "Increment major"
 	task :major do 
-		Version.bump(0)
+		Version.bump('major')
 	end
 
 	desc "Increment minor"
 	task :minor do 
-		Version.bump(1)
+		Version.bump('minor')
 	end
 
 	desc "Increment build"
 	task :build do 
-		Version.bump(2)
+		Version.bump('build')
 	end
 
 	desc "Increment patch"
 	task :patch do 
-		Version.bump(3)
+		Version.bump('patch')
 	end
 
 end

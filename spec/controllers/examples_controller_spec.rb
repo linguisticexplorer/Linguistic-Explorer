@@ -137,8 +137,8 @@ describe ExamplesController do
 
       it "creates and associates passed stored values" do
         lambda {
-          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:words => "foo"}, :group_id => groups(:inclusive).id
-          assigns(:example).stored_value(:words).should == 'foo'
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
+          assigns(:example).stored_value(:description).should == 'foo'
         }.should change(StoredValue, :count).by(1)
       end
 

@@ -1,11 +1,24 @@
 class ExamplesLingsPropertiesController < GroupDataController
+
+  respond_to :html, :js
+
   def index
     @examples_lings_properties = current_group.examples_lings_properties.includes({:example => :stored_values}, :lings_property).
         paginate(:page => params[:page], :order => "examples.name")
+
+    respond_with(@examples_lings_properties) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @examples_lings_property = current_group.examples_lings_properties.find(params[:id])
+
+    respond_with(@examples_lings_property) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

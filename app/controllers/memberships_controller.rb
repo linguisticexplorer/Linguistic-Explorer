@@ -1,7 +1,16 @@
 class MembershipsController < GroupDataController
+
+  respond_to :html, :js
+
   def index
-    @all_members = current_group.memberships
-    @memberships, @params = @all_members.includes(:member).to_a.alpha_paginate(params[:letter]){|membership| membership.member.name}
+    @memberships, @params = current_group.memberships.
+        includes(:member).to_a.
+        alpha_paginate(params[:letter]){|membership| membership.member.name}
+
+    respond_with(@memberships) do |format|
+      format.html
+      format.js
+    end
   end
   
   def dict
@@ -14,6 +23,11 @@ class MembershipsController < GroupDataController
 
   def show
     @membership = current_group.memberships.find(params[:id])
+
+    respond_with(@membership) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

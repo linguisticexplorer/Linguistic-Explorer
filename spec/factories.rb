@@ -9,10 +9,11 @@ end
 
 FactoryGirl.define do
   factory :user do |f|
-    f.name          "Bob Jones"
-    f.email         "bob@example.com"
-    f.access_level  "user"
-    f.password      "password"
+    f.name             "Bob Jones"
+    f.email            "bob@example.com"
+    f.access_level     "user"
+    f.password         "password"
+    f.bypass_humanizer true
   end
 end
 

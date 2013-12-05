@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.0.17'
+gem 'rails', '3.0.20'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'https://github.com/rails/rails.git'
@@ -31,6 +31,7 @@ gem "meta_where", '1.0.1'
 
 # for Users and authentication
 gem 'devise', '1.1.7'
+gem 'humanizer'
 
 gem 'json', '1.7.7'
 
@@ -108,6 +109,7 @@ group :test, :development do
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'cover_me', '>= 1.2.0'
+  gem 'ruby-prof'
 
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"

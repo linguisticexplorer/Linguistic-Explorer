@@ -15,6 +15,7 @@ describe User do
       u = User.new(:name => "FIXME", :password => "password")
       u.email = "FIXME@FiX.com"
       u.access_level = "user"
+      u.bypass_humanizer = true
       u.save!
       u.should_not be_new_record
     end

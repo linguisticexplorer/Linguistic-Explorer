@@ -1,8 +1,16 @@
 class PropertiesController < GroupDataController
+
+  respond_to :html, :js
+
   def index
-    @properties = current_group.properties.includes(:category).paginate(:page => params[:page]).order("name")
-    @properties.map! { |prop| prop.get_infos } unless params[:plain]
-    @properties
+    # Added Eager Loading
+    @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
+    @properties.map { |prop| prop.get_infos } unless params[:plain]
+
+    respond_with(@properties) do |format|
+      format.html
+      format.js
+    end
   end
 
   def dict
@@ -19,6 +27,12 @@ class PropertiesController < GroupDataController
     lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false})
     lings_id = lings.all.map(&:id)
     @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
+    
+    respond_with(@values) do |format|
+      format.html
+      format.js
+    end
+    
   end
 
   def new

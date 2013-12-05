@@ -32,6 +32,8 @@
 #
 
 require 'csv'
+require 'iconv'
+#require 'ruby-prof'
 
 module GroupData
   class Importer
@@ -66,6 +68,8 @@ module GroupData
     end
 
     def import!
+      #RubyProf.measure_mode = RubyProf::MEMORY
+      #RubyProf.start
       reset = "\r\e[0K"
 
       start = Time.now
@@ -79,6 +83,9 @@ module GroupData
         user = User.find_or_initialize_by_email(row["email"])
         if user.new_record?
           user.password_confirmation = row["password"]
+          # Needed for CAPTCHA
+          user.bypass_humanizer = true
+
           save_model_with_attributes(user, row)
         end
 
@@ -216,6 +223,8 @@ module GroupData
       print_to_console "\nprocessing lings_property..."
       print_to_console " will take about #{total/6000} minutes for #{total} rows" unless total<100000
 
+      LingsProperty.skip_callback(:create)
+
       LingsProperty.transaction do
         csv_for_each :lings_property do |row|
           group       = groups[row["group_id"]]
@@ -234,10 +243,16 @@ module GroupData
         end
       end
 
+      # Restore callbacks
+      LingsProperty.set_callback(:create)
+
       print_to_console "#{reset}processing lings_property...[OK]"
 
       logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
       print_to_console "\nprocessing examples_lings_property..."
+
+      # Speed up the creation
+      ExamplesLingsProperty.skip_callback(:create)
 
       ExamplesLingsProperty.transaction do
         csv_for_each :examples_lings_property do |row|
@@ -254,28 +269,47 @@ module GroupData
 
       end
 
+      # Restore callbacks
+      ExamplesLingsProperty.set_callback(:create)
+
       print_to_console "#{reset}processing examples_lings_property...[OK]"
 
       logger.info "processing #{csv_size(:stored_value)} stored value"
       print_to_console "\nprocessing stored_values..."
 
+      # Speed up
+      StoredValue.skip_callback(:create)
+
       StoredValue.transaction do
         csv_for_each :stored_value do |row|
+          value = row["value"].gsub("#{row["key"]}:", '')
+
           group         = groups[row["group_id"]]
           storable_type = row['storable_type']
           storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
           conditions = { :storable_id => storable_id, :storable_type => storable_type,
-                         :key => row["key"], :value => row["value"] }
+                         :key => row["key"], :value => value }
 
           group.stored_values.where(conditions).first || group.stored_values.create(conditions)
 
 
         end
       end
+
+      # Restore callbacks
+      StoredValue.set_callback(:create)
+
       print_to_console "#{reset}processing stored_values...[OK]\n"
 
       elapsed = seconds_fraction_to_time(Time.now - start)
       print_to_console "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}\n"
+
+      #result = RubyProf.stop
+
+      # Print a flat profile to text
+      # File.open "#{Rails.root}/tmp/profile-graph.html", 'w' do |file|
+      #   RubyProf::GraphHtmlPrinter.new(result).print(file)
+      # end
 
     end
 
@@ -305,7 +339,9 @@ module GroupData
       model.class.importable_attributes.each do |attribute|
         model.send("#{attribute}=", row[attribute])
       end
-      model.save!
+      model.class.skip_callback(:create)
+      model.save!(:validate => false)
+      model.class.set_callback(:create)
     end
 
     def csv_for_each(key)

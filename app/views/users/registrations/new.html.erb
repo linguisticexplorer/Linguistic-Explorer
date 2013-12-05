@@ -34,6 +34,14 @@
   </div>
 
   <div class="control-group">
+    <%= f.label :humanizer_answer, @user.humanizer_question, :class => "control-label" %>
+    <div class="controls">
+      <%= f.text_field :humanizer_answer %>
+      <%= f.hidden_field :humanizer_question_id %>
+    </div>
+  </div>
+
+  <div class="control-group">
     <div class="controls">
       <%= f.submit "Sign Up", :class => "btn" %>
     </div>

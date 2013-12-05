@@ -1,6 +1,5 @@
 <div class="apple_pagination">
-<%= alphabetical_paginate @params %> 
-<!-- render page links in the view: -->
+  <%= alphabetical_paginate paginate_params %> 
 </div>
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
@@ -11,7 +10,7 @@
     <% current_group.ling_storable_keys.each do |key| %>
       <th><%= key.humanize %></th>
     <% end %>
-    <th>Completeness</th>
+    <th class="span2">Completeness</th>
       <% if can? :destroy, lings%> 
       <th></th>
     <% end %>
@@ -42,7 +41,6 @@
   <% end %>
 </table>
 <div class="apple_pagination">
-  <%= alphabetical_paginate @params %>
-  <!-- render page links in the view: -->
+  <%= alphabetical_paginate paginate_params %> 
 </div>
 

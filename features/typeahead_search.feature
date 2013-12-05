@@ -24,20 +24,44 @@ Feature: Typeahead
     | Degree Adjective  | Italian     | yes         | Grammar  | 0     |
     | Degree Adjective  | French      | yes         | Grammar  | 0     |
     | Degree Adjective  | Bellinzonese| yes         | Grammar  | 1     |
+    And the group "Test"
+    And the group has a maximum depth of 0
+    And the following "Test" lings:
+    | name        | depth |
+    | Afrikaans   | 0     |
+    | Spanish     | 0     |
+    | German      | 0     |
+    | Italian     | 0     |
+    | French      | 0     |
+    | Bellinzonese| 0     |
 
-  @javascript
+
+  @selenium
   Scenario: Visitor searches a language from the group page and languages of all depths are available
-    Then show me the page
+    When I go to the home page
+    Then I wait "2"
     Then I should see "" within "#auto_1"
-    When I fill in "auto_group" with "b"
+    When I fill in "auto_1" with "b"
     Then I should see "Bellinzonese" within ".typeahead"
-    When I fill in "auto_group" with "afr"
+    When I fill in "auto_1" with "afr"
+    Then I should see "Afrikaans" within ".typeahead"
+    When I follow "Afrikaans"
+    Then I should see "Ling Afrikaans"
+    When I go to the home page
+    Then I wait "2"
+    Then I should see "Test" within "#tabs"
+    Then I follow "Test" within "#tabs"
+    Then I wait "1"
+    Then I should see "" within "#auto_2"
+    When I fill in "auto_2" with "b"
+    Then I should see "Bellinzonese" within ".typeahead"
+    When I fill in "auto_2" with "afr"
     Then I should see "Afrikaans" within ".typeahead"
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
 
-  @javascript
+  @selenium
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
     Then I should see "" within "#auto_group"
@@ -48,7 +72,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-  @javascript
+  @selenium
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
     Then I should see "" within "#auto_group"
@@ -59,7 +83,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-  @javascript
+  @selenium
   Scenario: Visitor goes to Ling page and searches a language and only languages with the right depth are searchable
     When I go to the group Syntactic Structures
     And I follow "Lings"
@@ -71,10 +95,11 @@ Feature: Typeahead
     When I follow "Spanish"
     Then I should see "Ling Spanish"
 
-  @javascript
+  @selenium
   Scenario: Visitor goes to Property page and searches a property
     When I go to the group Syntactic Structures
     And I follow "Properties"
+    Then I wait "2"
     Then I should see "" within "#auto_prop"
     When I fill in "auto_prop" with "degree"
     Then I should see "Degree Adjective" within ".typeahead"
