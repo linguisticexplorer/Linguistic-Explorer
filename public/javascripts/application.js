@@ -2,24 +2,36 @@
 // This file is automatically included by javascript_include_tag :defaults
 /* On DOM loaded */
 $(function() {
-  // PAGINATION CODE
-	// Text and image while loading
-    var img = "<img src='/images/loader.gif' class='loading'/>"
-    var text = "<span class='loading'>Page is loading...</span>"
 
+    // PAGINATION CODE
+	// Text and image while loading
+    // TODO: Make this check somehow to see if a .js.erb file exists
+    // Alterntaively, create one for every view, but not recommended
+    
+    var img = "<img src='/images/loader.gif' class='loading'/>",
+    once = false;
     // Manage the AJAX pagination and changing the URL
-    $(".pagination a").live("click", function(e) {
+     $(document).on("click", ".apple_pagination.will-paginate .pagination a", function(e) {
         //jQuery.setFragment({ "page" : jQuery.queryString(this.href).page })
-        jQuery.getScript(this.href);
-        jQuery(".pagination").html(text+img);
+        $(".pagination").html(img);
+        $.get(this.href, function(result) {
+          $(".pagination").html($(".pagination", result)[0]);
+          $("#pagination_table").html($("#pagination_table", result));
+        });
         history.pushState(null, document.title, this.href);
         e.preventDefault();
     });
-
-    // Let navigate the browser throught the AJAX history
+    
     $(window).bind("popstate", function() {
-        $.getScript(location.href);
-        $(".pagination").html(text+img);
+      if (once) {
+        $(".pagination").html(img);
+        $.get(location.href, function(result) {
+            $(".pagination").html($(".pagination", result));
+            $("#pagination_table").html($("#pagination_table", result));
+      });
+    } else {
+      once = true;
+    }
     });
 
     // SEARCH PAGE CODE
@@ -50,6 +62,29 @@ $(function() {
     });
 });
 
+/*menu handler*/
+$(function(){
+  function stripTrailingSlash(str) {
+    if(str.substr(-1) == '/') {
+      return str.substr(0, str.length - 1);
+    }
+    return str;
+  }
+
+  var url = window.location.pathname;  
+  var activePage = stripTrailingSlash(url);
+
+  $('.nav li a').each(function(){  
+    var currentPage = stripTrailingSlash($(this).attr('href'));
+
+    if (activePage == currentPage) {
+      $(this).parent().addClass('active'); 
+    } 
+  });
+});
+
+
+
 /* Function to hide a div by id */
 function hide_div(id){
     $(id).hide('slow');
@@ -69,13 +104,16 @@ function reset_form(){
     enable("input[id^=search_group_clust]:radio");
     enable('input[id$=_cross]:radio');
     enable('input[id$=_compare]:radio');
+    show_delete();
 }
 
+name = "";
 /* Function triggered by selecting an Implication radio button */
 function implication_on(){
 //    console.log("implication_on");
     show_div('#show_impl');
-    hide_includes();
+    hide_includes();    
+    name = "Universal Implication";
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_clust]:radio");
@@ -84,15 +122,18 @@ function implication_on(){
 function clustering_on(){
 //    console.log("clustering_on");
     hide_includes();
+    name = "Similarity";
     disable('input[id$=_cross]:radio');
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
+    display_delete();
 }
 
 // Function triggered by selecting a Cross radio button
 function cross_on(radio_element){
     hide_includes();
     hide_div('#show_impl');
+    name = "Constraints Cross On";
     disable('input[id$=_compare]:radio');
     disable("input[id^=search_group_impl]:radio");
     disable("input[id^=search_group_clust]:radio");
@@ -107,6 +148,7 @@ function compare_on(radio_element){
 //    console.log("compare_on =>"+ radio_element.id);
     hide_includes();
     hide_div('#show_impl');
+    name = "Constraints Compare On";
     disable('input[id$=_cross]:radio');
     disable("input[id^=search_group_impl]:radio");
     disable("input[id^=search_group_clust]:radio");
@@ -117,6 +159,18 @@ function compare_on(radio_element){
     else
     { disable('input[id$=1_compare]:radio'); }
 
+}
+
+/* Function to hide divs of display section of the search */
+function display_delete(){
+  hide_div('#display');
+  hide_div('#display_text');
+}
+
+/* Function to show hidden divs of display section of the search */
+function show_delete(){
+  show_div('#display');
+  show_div('#display_text');
 }
 
 /* Function to group the hiding of includes div */
@@ -133,25 +187,33 @@ function show_includes(){
 
 /* Function to disable an element */
 function disable(element){
-//  console.log("disable "+element);
+  //console.log("disable "+element);
   $(element).attr("disabled", true);
+  $(element).parent().addClass("gray");
+  $(element).parent().parent().children(".blue").remove();
+  $(element).parent().parent().append("<div class='italic blue ten'>Disabled by " + name + " settings</div>");
 }
 
 /* Function to enable an element */
 function enable(element){
 //  console.log("enable "+element);
   $(element).attr("disabled", false);
+  $(element).parent().removeClass("gray");
+  $(element).parent().parent().children(".blue").remove();
 }
 
 function disable_except(elements_regexp, except){
+    name = "Constraints";
     disable($(elements_regexp).not(except));
 }
 
 function enable_similarity_radial_tree(){
-    var label = '<label for="search_group_clust_hamming">Radial Tree</label>';
-    var radio = '<input id="search_group_clust_hamming" name="search[advanced_set][clustering]" type="radio" value="hamming_r">';
+    var label = '<label for="search_group_clust_hamming1" class="radio inline">'  +
+    '<input id="search_group_clust_hamming1" name="search[advanced_set][clustering]" type="radio" value="hamming_r">' +
+    ' Radial Tree' +
+    '</label>';
     // console.log($("#clustering"));
-    $("#clustering").append(label + radio );
+    $("#clustering").append(label);
 }
 
 /**
@@ -256,3 +318,11 @@ function enable_similarity_radial_tree(){
     // "this" will always be "window" in a browser, even in strict mode.
     this.Newick = {}
 );
+
+$(function() {
+  $('ul.nav li.dropdown').hover(function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeIn();
+  }, function() {
+    $(this).find('.dropdown-menu').stop(true, true).fadeOut();
+  });
+});

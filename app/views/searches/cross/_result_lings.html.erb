@@ -1,28 +1,29 @@
 <%
    page_heading "Search"
-   add_body_classes "full_width"
 %>
+
 <div id="titleHeader">
-  <h2 class="red_grad"><%= @search.group.name %>  Lings in the Selection</h2>
+  <h2><%= @search.group.name %>  Lings in the Selection</h2>
 </div>
 <div id="search_results" class="padded_left padded_right">
   <%- if @search.results.any? -%>
-      <div class="table spacing expand_width">
-        <div class="row">
+      <table class="show-table table table-bordered table-striped table-hover">
+        <tr>
           <%- result_headers.each do |proc| -%>
-              <div class="cell"><%= proc.call @search.group %></div>
+              <th><%= proc.call @search.group %></th>
           <%- end -%>
-        </div>
+        </tr>
         <%- @presenter_results.each do |result| -%>
             <%= render :partial => "searches/cross/result", :locals => { :result => result}, :inline => true %>
         <%- end -%>
-      </div>
-      <div class="table spacing expand_width">
-        <div class="row">
+      </table>
+
+      <table class="show-table table table-bordered table-striped table-hover">
+        <tr>
           <%- result_headers_lings_cross.each do |proc| -%>
-              <div class="cell"><%= proc.call @search.group %></div>
+              <th><%= proc.call @search.group %></th>
           <%- end -%>
-        </div>
+        </tr>
         <%- if @search.cross? || @search.implication? %>
             <%- @presenter_results.each do |result| -%>
                 <%- result.child.each do |ling| -%>
@@ -30,7 +31,7 @@
                 <%- end -%>
             <%- end -%>
         <%- end -%>
-      </div>
+      </table>
   <%- else -%>
       <div class="notice">Your search query returned no results.</div>
   <%- end -%>

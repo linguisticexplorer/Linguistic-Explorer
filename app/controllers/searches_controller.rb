@@ -3,7 +3,7 @@ class SearchesController < GroupDataController
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
   rescue_from Exceptions::ResultSearchError, :with => :rescue_from_result_error
 
-  respond_to :html, :csv
+  respond_to :html, :js, :csv
 
   def new
     @search = Search.new do |s|
@@ -12,6 +12,11 @@ class SearchesController < GroupDataController
     end
 
     authorize! :search, @search
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
   end
 
   def preview
@@ -19,7 +24,7 @@ class SearchesController < GroupDataController
 
     #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
     authorize! :search, @search
-
+    
     # @search.get_results!
   end
 
@@ -39,10 +44,15 @@ class SearchesController < GroupDataController
 
   def show
     @search = current_group.searches.find(params[:id])
+    if(params[:page])
+      @search.offset = params[:page]
+    end
+    
     authorize! :search, @search
 
     respond_with(@search) do |format|
       format.html
+      format.js
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
@@ -72,7 +82,7 @@ class SearchesController < GroupDataController
   def lings_in_selected_row
     @search = perform_search
 
-    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search)
+    @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
     authorize! :cross, @search
   end
 
@@ -84,6 +94,11 @@ class SearchesController < GroupDataController
     @summary = geoMapping.get_legend
 
     authorize! :mapping, @search
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
   end
 
   protected

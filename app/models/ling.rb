@@ -65,6 +65,14 @@ class Ling < ActiveRecord::Base
       end
     end
   end
+  def add_property_sureness(value, sureness, property)
+    params = {:property_id => property.id, :value => value, :sureness => sureness}
+    unless lings_properties.exists?(params)
+      lings_properties.create(params) do |lp|
+        lp.group = group
+      end
+    end
+  end
 
   def parent_depth_check
     errors.add(:parent, "must be a #{group.ling0_name.humanize} object") if (depth == 1 && parent && parent.depth != 0)

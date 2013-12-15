@@ -1,11 +1,11 @@
 --- 
-user: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/User.csv
-group: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Group.csv
-membership: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Membership.csv
-category: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Category.csv
-ling: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Ling.csv
-example: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Example.csv
-examples_lings_property: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/ExamplesLingsProperty.csv
-lings_property: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/LingsProperty.csv
-property: /home/dej611/Templates/Linguistic-Explorer/spec/csv/good/Property.csv
-stored_value: /home/dej611/Templates/Linguistic-Explorer/spec/csv/bad/bad_foreign_key/StoredValue.csv
+user: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/User.csv
+group: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Group.csv
+membership: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Membership.csv
+category: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Category.csv
+ling: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Ling.csv
+example: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Example.csv
+examples_lings_property: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/ExamplesLingsProperty.csv
+lings_property: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/LingsProperty.csv
+property: /home/dej611/Projects/Linguistic-Explorer/spec/csv/good/Property.csv
+stored_value: /home/dej611/Projects/Linguistic-Explorer/spec/csv/bad/bad_foreign_key/StoredValue.csv

@@ -1,4 +1,7 @@
-$(function(){
-  var newPage = "<%= escape_javascript(render("groups/index_partial")) -%>"
-  $("#pagination_table").html(newPage);
-});
+$(function () {
+  //$('#tabs a:first').tab('show');
+  $(window).on('click', '#tabs a', function (e) {
+    e.preventDefault();
+    $(this).tab('show');
+  });
+})

@@ -75,6 +75,7 @@ class GroupsController < ApplicationController
   private
 
   def current_group
+    #params[:group_id] && Group.find(params[:group_id]) || @group
     @group
   end
 end

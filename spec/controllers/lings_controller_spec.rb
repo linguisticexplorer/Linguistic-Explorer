@@ -24,7 +24,7 @@ describe LingsController do
     end
 
     it "@lings should be an array of lings for the passed depth (0)" do
-      get :depth, { :group_id => groups(:inclusive).id, :depth => 0, :plain => true }
+      get :depth, { :group_id => groups(:inclusive).id, :depth => 0, :plain => true, :letter => "all" }
       assigns(:lings).should include lings(:level0)
       assigns(:lings).should_not include lings(:level1)
     end
@@ -49,11 +49,11 @@ describe LingsController do
 
     it "@lings_by_depth should be an array of subarrays ordered by ling depth" do
         @group = groups(:inclusive)
-        get :index, { :group_id => @group.id, :plain => true }
+        get :index, { :group_id => @group.id, :plain => true, :letter => "all" }
 
         assigns(:lings_by_depth).size.should == @group.depths.count
-        assigns(:lings_by_depth)[0].should include lings(:level0)
-        assigns(:lings_by_depth)[1].should include lings(:level1)
+        assigns(:lings_by_depth)[0][0].should include lings(:level0)
+        assigns(:lings_by_depth)[1][0].should include lings(:level1)
       end
 
       it "@lings_by_depth should be an array with current_group.depth_maximum + 1 member subarrays" do
@@ -87,142 +87,6 @@ describe LingsController do
 
       assigns(:values).should include @lp
       assigns(:values).size.should == @ling.lings_properties.size
-    end
-  end
-
-  describe "set_values" do
-    def do_set_values_on_ling(ling)
-      get :set_values, :group_id => groups(:inclusive).id, :id => ling.id
-    end
-
-    describe "assigns" do
-      it "loads ling through the group" do
-        @ling = lings(:level0)
-        @group = groups(:inclusive)
-        @ling.group.should == @group
-
-        Group.stub(:find).and_return(Group)
-        Group.stub(:categories).and_return @group.categories
-        Group.should_receive(:lings).and_return @group.lings
-        get :set_values, :group_id => @group.id, :id => @ling.id
-      end
-
-      it "the requested ling to @ling and its depth to @depth" do
-        do_set_values_on_ling lings(:level0)
-        assigns(:ling).should == lings(:level0)
-        assigns(:depth).should == lings(:level0).depth
-
-        do_set_values_on_ling lings(:level1)
-        assigns(:ling).should == lings(:level1)
-        assigns(:depth).should == lings(:level1).depth
-      end
-
-      it "loads categories with the same depth as the ling, through the group" do
-        @ling = lings(:level0)
-        @category = categories(:inclusive0)
-        @other_depth_category = categories(:inclusive1)
-        @group = groups(:inclusive)
-
-        Group.stub(:find).and_return(Group)
-        Group.stub(:lings).and_return @group.lings
-        Group.should_receive(:categories).and_return @group.categories
-
-        get :set_values, :group_id => @group.id, :id => @ling.id
-
-        assigns(:categories).should include @category
-        assigns(:categories).should_not include @other_depth_category
-      end
-
-      it "pre-existing LingsProperties for the ling to @preexisting_values" do
-        do_set_values_on_ling lings(:level0)
-        assigns(:preexisting_values).should include lings_properties(:level0)
-        assigns(:preexisting_values).should_not include lings_properties(:level1)
-      end
-    end
-  end
-
-  describe "submit_values" do
-    it "loads ling through the group" do
-      @ling = lings(:level0)
-      @group = groups(:inclusive)
-      @ling.group.should == @group
-
-      Group.stub(:find).and_return(Group)
-      Group.should_receive(:lings).and_return @group.lings
-      post :submit_values, :group_id => @group.id, :id => @ling.id
-
-      assigns(:ling).should == lings(:level0)
-    end
-
-    it "should authorize :manage on preexisting LingsProperties" do
-      @ling = lings(:level0)
-      @group = @ling.group
-      @preexisting_values = [ lings_properties(:level0) ]
-      @preexisting_values.each do |lp|
-        @ability.should_receive(:can?).ordered.with(:manage, lp).and_return(true)
-      end
-
-      @ling.stub(:lings_properties).and_return( @preexisting_values )
-
-      Ling.stub(:find).and_return(@ling)
-      Group.stub(:find).and_return(@group)
-      post :submit_values, :group_id => @group.id, :id => @ling.id
-    end
-
-    it "should authorize :create on new lings_properties" do
-      @ling = lings(:level0)
-      @group = @ling.group
-      @new_property = LingsProperty.new
-      @new_property.should_receive(:save).and_return true
-
-      @ability.should_receive(:can?).ordered.with(:create, @new_property).and_return(true)
-
-      LingsProperty.stub(:find_by_ling_id_and_property_id_and_value).and_return nil
-      LingsProperty.stub(:new).and_return @new_property
-      post :submit_values, :group_id => @group.id, :id => @ling.id, :values => { @ling.id.to_s => { "_new" => "foobar" }}
-    end
-
-    it "creates lings_properties for the ling and any submitted property values" do
-      ling = lings(:level0)
-      property = properties(:level0)
-      group = ling.group
-      value = "neverbeforeseen999"
-      LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should_not be_present
-
-      post :submit_values, :group_id => group.id, :id => ling.id, :values => { ling.id.to_s => { "_new" => value } }
-
-      LingsProperty.find_by_ling_id_and_property_id_and_value(ling.id, property.id, value).should be_present
-    end
-
-    it "destroys lings_properties for the ling if they are not included in the mass assignment" do
-      lp = lings_properties(:level0)
-      lp.should be_present
-      deleted_id = lp.id
-      ling = lp.ling
-      group = lp.group
-
-      post :submit_values, :group_id => group.id, :id => ling.id, :values => {}
-
-      LingsProperty.find_by_id(deleted_id).should be_nil
-    end
-
-    it "does not do anything to lings_properties for the ling that were submitted when they already existed" do
-      lp = lings_properties(:level0)
-      lp.should be_present
-      ling = lp.ling
-      property = lp.property
-      group = lp.group
-
-      post :submit_values, :group_id => group.id, :id => ling.id, :values => {property.id.to_s => {lp.value => lp.value, :_new => ""}}
-
-      lp.reload
-      lp.should be_present
-    end
-
-    it "should redirect to set_values" do
-      lp = lings_properties(:level0)
-      post :submit_values, :group_id => lp.group.id, :id => lp.ling.id, :values => {lp.property.id.to_s => {lp.value => lp.value, :_new => ""}}
-      response.should redirect_to set_values_group_ling_path(lp.group, lp.ling)
     end
   end
 

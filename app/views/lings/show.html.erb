@@ -1,82 +1,125 @@
+<%= javascript_tag "$.getScript(location.href);" %>
 <% page_heading @ling.grouped_name %>
-
+<h1><%= @ling.grouped_name %> <%= @ling.name %></h1>
+<%= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-    <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
 <% end %>
 <% if can? :edit, @ling %>
-    <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
+   <%= link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
-<%= link_to 'Back', group_lings_path(current_group) %>
 <br /><br />
-<p>
-  <b>Type:</b> <br />
-  <%= current_group.ling_name_for_depth(@ling.depth) %> <br />
+<div class = "row-fluid">
+  <div class="span6">
+    <table class="show-table table table-bordered table-hover table-striped ling-table">
+    <p>
+      <tr>
+        <td><b>Type:</b></td> 
+        <td><%= current_group.ling_name_for_depth(@ling.depth) %></td>
+      </tr>
 
-  <b>Name:</b> <br />
-  <%= @ling.name %> <br />
+      <tr>
+        <td><b>Name:</b></td> 
+        <td><%= @ling.name %> </td>
+      </tr>
 
-  <% @ling.storable_keys.each do |key| %>
-    <b><%= key.humanize %></b>: <br />
-    <%= @ling.stored_value(key) %> <br />
-  <% end %>
+      <% @ling.storable_keys.each do |key| %>
+        <% if @ling.stored_value(key) != "" %>
+          <tr>
+            <td><b><%= key.humanize %>:</b></td> 
+            <td><%= @ling.stored_value(key) %></td>
+          </tr>
+        <% end %>
+      <% end %>
 
-  <% if @ling.depth == 1 && @ling.parent %>
-    <b><%= current_group.ling0_name %>:</b> <br />
-    <%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> <br />
-  <% elsif @ling.depth == 0 && !@ling.children.empty?%>
-    <b><%= current_group.ling1_name.pluralize %>:</b> <br />
-    <% @ling.children.each do |child| %>
-      <%= link_to child.name, group_ling_path(current_group, child) %> <br />
-    <% end %>
-  <% end %>
+      <% if @ling.depth == 1 && @ling.parent %>
+        <tr>
+          <td><b><%= current_group.ling0_name %>:</b></td> 
+          <td><%= link_to @ling.parent.name, group_ling_path(current_group, @ling.parent) %> </td>
+        </tr>
+      <% elsif @ling.depth == 0 && !@ling.children.empty?%>
+        <tr>
+        <td><b><%= current_group.ling1_name.pluralize %>:</b></td> 
+        <td><% @ling.children.each do |child| %>
+          <%= link_to child.name, group_ling_path(current_group, child) %> </br>
+        <% end %></td>
+        </tr>
+      <% end %>
 
-  <% if !@ling.examples.empty? %>
-    <b><%= current_group.example_name.pluralize %>:</b> <br />
-    <% @ling.examples.each do |example| %>
-      <%= link_to example.id, group_example_path(current_group, example) %> <br />
-    <% end %>
-  <% end %>
-
-  <b>Created by:</b> <br />
-  <%= @ling.creator ? @ling.creator.name : "Unknown user" %> <br />
-</p>
-
+      <tr>
+        <td><b>Created by:</b></td> 
+        <td><%= @ling.creator ? @ling.creator.name : "Unknown user" %> </td>
+      </tr>
+    </p>
+    </table>
+  </div>
+  <div class="span6 border" id="analysis-container">
+    <div class="row-fluid">
+      <div class="span12 relative" id="analysis">
+        <h3>Quick Analysis</h3>
+        <h5>Add languages to compare with <%= @ling.name %></h5>
+        <input type="text" id="auto_compare" autocomplete="off" placeholder="Loading..." class="input-block-level autocomplete search-query" disabled />
+      </div>
+      <div class="span5 hidden1 search-buttons" id="languages-container">
+        Selected languages (<a href="/Clear All" class="remove-langs">clear all</a>)
+        <ul id="selected-langs"></ul>
+      </div>
+    </div>
+    <div class="row-fluid relative">
+      <div class="span12 search-buttons" id="compare-buttons">
+        <a href="#" class="btn btn-primary btn-block" id="compare-langs" disabled>Compare Properties</a>
+        <a href="#" class="btn btn-primary btn-block" id="compare-tree" disabled>Similarity Tree</a>
+        <a href="#" class="btn btn-primary btn-block" id="compare-radial" disabled>Radial Tree</a>
+        <a href="#" class="btn btn-primary btn-block" id="map"><i class="icon-white icon-map-marker shift-down"></i> Map</a>
+      </div>
+    </div>
+  </div>
+</div>
 <br />
 
-<div class="values">
-  <h3><%= current_group.lings_property_name.pluralize %></h3>
-  <div class="apple_pagination">
+<div class="values" id="pagination_table">
+  <div class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
-    <%= will_paginate @values %>
+    <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
   </div>
-  <table>
+  <table class="show-table table table-bordered table-striped table-hover">
     <thead>
-      <th><%= current_group.property_name %></th>
-      <th><%= current_group.lings_property_name %></th>
-      <th> Creator </th>
+      <th class="span2"><%= current_group.property_name %></th>
+      <th class="span2"><%= current_group.lings_property_name %></th>
+      <th class="span6"><%= current_group.example_name.pluralize %></th>
+      <th class="span2"> Creator </th>
     </thead>
     <tbody>
       <% @values.each do |value| %>
         <tr>
           <td><%=	link_to value.property.name, [current_group, value.property] %></td>
-          <td><%=	link_to value.value, [current_group, value] %></td>
+          <td><%= value.value %></td>
+          <% elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id) %>
+          <td class="align-left">
+            <% elps.each do |elp| %>
+              <% example = elp.example %>
+              <%= link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp %>
+            <% end %>
+          </td>
           <td><%=	(value.creator ? value.creator.name : "") %></td>
         </tr>
       <% end %>
     </tbody>
   </table>
-  <div class="apple_pagination">
+  <div class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
-    <%= will_paginate @values %>
+    <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
   </div>
 </div>
 
 <br />
-
+<%= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :create, LingsProperty.new{|lp| lp.group = current_group} %>
-  <%= link_to "Edit #{current_group.lings_property_name.pluralize}", set_values_group_ling_path(current_group, @ling) %> |
+    <%= link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn" %>&nbsp;
+<% end %> <% if can? :edit, @ling %>
+    <%= link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn" %> &nbsp;
 <% end %>
-<% if can? :edit, @ling %>
-  <%= link_to 'Edit', edit_group_ling_path(current_group, @ling) %> |
-<% end %>
-<%= link_to 'Back', group_lings_path(current_group) %>

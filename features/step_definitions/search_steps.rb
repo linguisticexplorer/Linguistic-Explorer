@@ -89,19 +89,27 @@ Then /^I should see the following search results:$/ do |table|
     elsif ling && prop
       LingsProperty.find_by_ling_id_and_property_id(ling.id, prop.id)
     elsif ling
-      LingsProperty.find_by_ling_id(ling.id)
+      LingsProperty.find_all_by_ling_id(ling.id)
     elsif prop
       LingsProperty.find_by_property_id(prop.id)
     end
     example = Example.find_by_name_and_ling_id(row["Example"], ling.id) if row["Example"]
     depth = (row["depth"] || "parent").downcase
     
-    with_scope(%Q|[data-#{depth}-value="#{lp.id}"]|) do
-      page.should have_content(ling.name)     if ling
-      page.should have_content(prop.name)     if prop
-      page.should have_content(lp.value)      if row["Value"]
-      page.should have_content(example.name)  if example
+    # Fix for #101
+    # If it's an Array with just one element, remove the Array structure
+    lp = lp.kind_of?(Array) && lp.size == 1 ? lp.first : lp
+    # If it's an Array provide values to perform a Regex search in case
+    element_values = lp.kind_of?(Array) ? "(#{(lp.map {|l| l.value }).join('|')})" : "#{lp.value}"
+    selector = lp.kind_of?(Array) ? %Q|[class="search_result"]| : %Q|[data-#{depth}-value="#{lp.id}"]|
+    
+    with_scope(selector) do
+      page.should have_content(ling.name)      if ling
+      page.should have_content(prop.name)      if prop
+      page.should have_content(element_values) if row["Value"]
+      page.should have_content(example.name)   if example
     end
+
   end
 end
 
@@ -186,27 +194,27 @@ Then /^the csv should contain the following rows$/ do |table|
 end
 
 Then /^I should see (\d+) search result rows?$/ do |count|
-  page.should have_css("div.search_result.row", :count => count.to_i)
+  page.should have_css("tr.search_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) properties in common?$/ do |count|
-  page.should have_css("div.search_common_result.row", :count => count.to_i)
+  page.should have_css("tr.search_common_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) properties not in common?$/ do |count|
-  page.should have_css("div.search_diff_result.row", :count => count.to_i)
+  page.should have_css("tr.search_diff_result", :count => count.to_i)
 end
 
 Then /^I should see (\d+) ling rows?$/ do |count|
-  page.should have_css("div.search_ling_result.row", :count => count.to_i)
+  page.should have_css("tr.search_ling_result", :count => count.to_i)
 end
 
 Then /^I should not see properties in common?$/ do
-  page.should_not have_css("div.search_common_result.row")
+  page.should_not have_css("tr.search_common_result")
 end
 
 Then /^I should see no search result rows?$/ do
-  page.should_not have_css("div.search_result.row")
+  page.should_not have_css("tr.search_result")
 end
 
 Then /^I should see a map?/ do

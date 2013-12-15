@@ -42,7 +42,7 @@ describe PropertiesController do
         @lp.ling.should == @ling
         @property = @lp.property
 
-        get :show, :id => @property.id, :group_id => @group.id
+        get :show, { :id => @property.id, :group_id => @group.id, :letter => "l" }
 
         assigns(:values).should include @lp
         assigns(:values).size.should == @property.lings_properties.size
@@ -55,6 +55,7 @@ describe PropertiesController do
       Group.stub(:find).and_return(Group)
 
       Group.should_receive(:properties).and_return @group.properties
+      Group.should_receive(:lings).and_return @group.lings
 
       get :show, :id => @property.id, :group_id => @group.id
       assigns(:property).should == @property

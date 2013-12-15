@@ -41,7 +41,7 @@ module SearchCompareResultsHelper
 
   def attributes_for_common_compare(entry)
     {}.tap do |attrs|
-      attrs[:class] = "search_common_result row"
+      attrs[:class] = "search_common_result"
       attrs["data-common-parent-value"] = entry.parent.first.id
       attrs["data-common-child-value"] = entry.child.first.id
     end
@@ -49,7 +49,7 @@ module SearchCompareResultsHelper
 
   def attributes_for_diff_compare(entry)
     {}.tap do |attrs|
-      attrs[:class] = "search_diff_result row"
+      attrs[:class] = "search_diff_result"
       attrs["data-diff-parent-value"] = entry.parent.first.id
       attrs["data-diff-child-value"] = entry.child.compact.inject(0) {|sum, lp| sum + lp.id}
     end

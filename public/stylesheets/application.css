@@ -8,8 +8,12 @@ html>body{
   line-height:1.5em;
 }
 
+html * {
+  font-family: 'Open Sans', sans-serif;
+}
+
 body, p, ol, ul, td {
-  font-family: verdana, arial, helvetica, sans-serif;
+  font-family: 'Open Sans', sans-serif;
   font-size:   13px;
   line-height: 18px;
 }
@@ -23,6 +27,14 @@ pre {
 .strong {
   font-weight:bold;
   color: #C30;
+}
+
+.gray {
+  color:#CCCCCC;
+}
+
+.ten {
+  font-size: 10px;
 }
 
 a           { color: #CC3300; text-decoration:none; }
@@ -46,19 +58,6 @@ div.field, div.actions {
 }
 
 /* header */
-#header {
-  color: white;
-  padding:1em;
-}
-#header h2 {
-  font-family: Helvetica, Verdana, Arial, sans-serif;
-  font-weight:bold;
-  font-size:150%;
-  text-shadow: #111 2px 2px;
-}
-#header h2 a {
-  color:#ccc;
-}
 
 #user_nav {
   color:#ccc;
@@ -76,7 +75,12 @@ div.field, div.actions {
   color:white;
 }
 /* main layout */
-body.map { background-image: url(/images/map_bg.gif); }
+body.map { 
+  background-image: url(/images/map_bg.gif); 
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
 body.map #main {
   background-color:transparent;
   box-shadow:none;
@@ -119,14 +123,12 @@ body.full_width #main h2 {
 #inner{width:800px;margin:0 auto;}
 #title{width:640px;padding: 3% 0 0 10%;}
 #title h1{font-size: 5em;font-family: Helvetica,Verdana,Arial,sans-serif;color:#CC3300;border-bottom:1px solid #CC3300; margin:15px 0 0 0; padding:0 0 5px 0;}
-#title h2{font-size: 2.2em;font-family: Garamond,"Times New Roman",serif;color:#BAB86C;margin:15px 0 0 0;padding:0 0 15px 0;}
+#title h2{font-size: 2.2em;font-family: Garamond,"Times New Roman",serif;color:#0088cc;margin:15px 0 0 0;padding:0 0 15px 0;}
 #intro{width:80%;padding: 0 0 0 10%;margin:10px 0 0 0;}
 #intro p{font-size:1.2em;line-height:135%;text-align:justify;}
 #intro p+p {margin-top:20px;}
 
 #messages{ text-align:center; }
-#messages .alert{  border: 1px solid #C30; }
-#messages .notice{ border: 1px solid #DD0; }
 #messages p{
   background-color:#DDD;
   padding-bottom: 5px;
@@ -143,8 +145,8 @@ body.full_width #main h2 {
 
 #title h2 {
   font-size: 2.2em;
-  font-family: Garamond,"Times New Roman",serif;
-  color: #BAB86C;
+  font-family: Helvetica,Verdana,Arial,sans-serif;
+  color: #0088cc
   margin: 15px 0 0 0;
   padding: 0 0 15px 0;
 }
@@ -153,7 +155,7 @@ body.full_width #main h2 {
 
 #numbers h2 {
     font-size: 2.2em;
-    font-family: Garamond,"Times New Roman",serif;
+    font-family: Helvetica,Verdana,Arial,sans-serif;
     color: #C30;
     border-bottom: 1px solid #C30;
     line-height:1.25em;
@@ -256,7 +258,7 @@ img.loading {
     font-size:   20px;
     font-weight: 900;
     background-image: url('/images/geomapping_header.png');
-    background-size:100% 100%;
+    background-size: 100% 100%;
     border-bottom: 1px solid #C30;
     line-height:1.25em;
     text-align: center;
@@ -275,3 +277,4 @@ img.loading {
   width: auto;
   height: auto;
 }
+

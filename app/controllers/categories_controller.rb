@@ -1,10 +1,23 @@
 class CategoriesController < GroupDataController
+
+  respond_to :html, :js
+  
   def index
     @categories = current_group.categories.paginate(:page => params[:page], :order => "name")
+
+    respond_with(@categories) do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
     @category = current_group.categories.find(params[:id])
+
+    respond_with(@category) do |format|
+      format.html
+      format.js
+    end
   end
 
   def new

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+
 gem 'rails', '~> 3.2.13'
 
 # Bundle edge Rails instead:
@@ -29,10 +30,11 @@ gem 'rvm-capistrano'
 # # gem 'aws-s3', :require => 'aws/s3'
 # gem "meta_where", '1.0.1'
 # Squeel will work with Rails >= 3.1.3 due to a Rails issue
-gem "squeel", "~> 0.9.3"
+# gem "squeel", "~> 0.9.3"
 
-# # for Users and authentication
-gem 'devise'
+# for Users and authentication
+gem 'devise', '1.1.7'
+gem 'humanizer'
 
 
 gem 'json', '~> 1.7.7'
@@ -44,9 +46,12 @@ gem "validates_existence", "~> 0.8.0"
 gem 'cancan', '~> 1.6.10'
 
 # gem 'nokogiri', ">= 1.4.4.1", "<=1.5.0.beta.2"
-gem "nokogiri", "~> 1.5.6"
+gem "nokogiri", ">= 1.5.6"
 
 gem "newrelic_rpm"
+
+# new styles
+gem 'will_paginate-bootstrap'
 
 # # for easy pagination
 gem 'will_paginate', '~> 3.0.3'
@@ -82,6 +87,15 @@ group :development do
   gem 'ruby-debug19'
 end
 
+#sass support
+gem 'sass'
+
+#experimental
+gem "alphabetical_paginate"
+
+#iconv for utf-8 to latin1 conversion
+gem 'iconv'
+
 # Pure Ruby library to use R language from Ruby code
 # it needs that R interpreter is installed and R_HOME is configured
 # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
@@ -106,6 +120,7 @@ group :test, :development do
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem 'cover_me', '>= 1.2.0'
+  gem 'ruby-prof'
 
   gem 'factory_girl_rails', "~> 1.1"
   gem "cucumber", "~> 1.1.0"
@@ -113,6 +128,9 @@ group :test, :development do
 
   gem "active_record_query_trace"
   
+  gem "Selenium"
+  gem "selenium-client"
+
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
   gem 'cucumber-rails', "~> 1.1.1", :require => false

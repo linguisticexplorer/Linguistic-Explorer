@@ -1,4 +1,62 @@
-<%= form_for(@group) do |f| %>
+<script>
+  $.getScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js').done( function() {
+
+    var examples = $('#group_example_fields').val().split(", ");
+
+    function makeElement (text) {
+
+      return '<div class="input-prepend input-append"><button class="handle btn"><i class="icon-resize-vertical"></i></button><input value=' + text + ' type="text" class="span2"></input><button class="delete-button btn btn-danger"><i class="icon-white icon-remove"></i></button></div>'
+
+    };
+    
+    if (examples !== "") {
+      $.each(examples, function(i, val) {
+        $('#order').append(makeElement(val));
+      });
+    }
+    else {
+      $('#order').append(makeElement('text'));
+    }
+
+    $('#order').sortable({handle:'.handle', cancel: ''}).disableSelection().bind('DOMSubtreeModified change', function (event,ui){
+      var values = $('#order div input').map(function () { return $(this).val(); }).get().join(', ');
+      if (values) {
+        $('#group_example_fields').val(values);
+      }
+      else {
+        $('#group_example_fields').val('text')
+      }
+      
+    });
+    
+    $(window).on('click', '.delete-button',function (e) {
+      e.preventDefault(); 
+
+      if(confirm('Are you sure you want delete the element?')) {
+        $(this).parent().remove();
+      } 
+
+    }); 
+
+    $(window).bind('click', '#append-button', function (e) {
+      var text = $('#append').val();
+      if(text) {
+        $('#order').append(makeElement(text));
+        $('#append').val('');
+      };
+    });
+
+    $("#append").keydown(function(event){
+        if(event.keyCode == 13) {
+          event.preventDefault();
+          $('#append-button').trigger('click');
+      }
+    });
+
+  });
+</script>
+
+<%= form_for(@group, :html => {:class => "form-horizontal"}) do |f| %>
     <% if @group.errors.any? %>
         <div id="error_explanation">
             <h2><%= pluralize(@group.errors.count, "error") %> prohibited this group from being saved:</h2>
@@ -10,67 +68,118 @@
         </div>
     <% end %>
 
-    <div class="field">
-        <%= f.label :name %><br />
+    <div class="control-group">
+      <%= f.label :name, :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :ling0_name, "Depth 0 Ling name" %><br />
+    <div class="control-group">
+      <%= f.label :ling0_name, "Depth 0 Ling name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :ling0_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :ling1_name, "Depth 1 Ling name" %><br />
+    <div class="control-group">
+      <%= f.label :ling1_name, "Depth 1 Ling name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :ling1_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :property_name, "Property name" %><br />
+    <div class="control-group">
+      <%= f.label :property_name, "Property name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :property_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :category_name, "Category name" %><br />
+    <div class="control-group">
+      <%= f.label :category_name, "Category name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :category_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :lings_property_name, "Lings Property name" %><br />
+    <div class="control-group">
+      <%= f.label :lings_property_name, "Lings Property name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :lings_property_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :example_name, "Example name" %><br />
+    <div class="control-group">
+      <%= f.label :example_name, "Example name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :example_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :examples_lings_property_name, "Example Lings Property name" %><br />
+    <div class="control-group">
+      <%= f.label :examples_lings_property_name, "Example Lings Property name", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :examples_lings_property_name %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :ling_fields, "Unsearchable field names available for Lings, split on commas ('description' is pre-included by default)" %><br />
+    <div class="control-group">
+      <%= f.label :ling_fields, "Unsearchable field names available for Lings, split on commas ('description' is pre-included by default)", :class => "control-label" %>
+      <div class="controls">
         <%= f.text_field :ling_fields %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :example_fields, "Data field names available for Examples, split on commas ('text' is pre-included by default)" %><br />
-        <%= f.text_field :example_fields %>
-    </div>
+    <div class="control-group">
+      <%= f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label" %>
+      <div class="controls" id="row-fix">
+        <div class="row">
+          <div id="order" class="span4"></div>
+        </div>
+        <%= f.hidden_field :example_fields %>
+          <div id="add" class="input-append span4">
+            <input class="span2" id="append" type="text" placeholder="Type to add field" autocomplete=off></input>
+            <button class="btn btn-success" type="button" id="append-button"><i class="icon-plus icon-white"></i></button>
+          </div>
+        </div>
+      </div>
 
-    <div class="field">
-        <%= f.label :depth_maximum, "Depth Maximum" %><br />
+    <div class="control-group">
+      <%= f.label :depth_maximum, "Depth Maximum", :class => "control-label" %>
+      <div class="controls">
         <%= f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i %>
+      </div>
     </div>
 
-    <div class="field">
-        <%= f.label :privacy, "Privacy level" %><br />
+    <div class="control-group">
+      <%= f.label :privacy, "Privacy level", :class => "control-label" %>
+      <div class="controls">
         <%= f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s %>
+      </div>
     </div>
 
-    <div class="actions">
-        <%= f.submit %>
+    <div class="control-group">
+      <%= f.label :display_style, "Display Style", :class => "control-label" %>
+      <div class="controls">
+        <%= label_tag :style0, :class => "radio" do %>
+          <%= f.radio_button :display_style, "table",
+            :id => :style0,
+            :checked => true %>Table style, eg:
+            <%= display_style_example(0) %> 
+        <% end %>
+        <%= label_tag :style1, :class => "radio" do %>
+          <%= f.radio_button :display_style, "linguistic",
+            :id => :style1 %>Linguistic style, eg:
+             <%= display_style_example(1) %>
+        <% end %>
+      </div>
     </div>
+
+    <div class="control-group">
+      <div class="controls">
+        <%= f.submit :class => "btn" %>
+      </div>
+    </div>
+
 <% end %>

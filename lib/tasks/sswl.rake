@@ -26,7 +26,7 @@ namespace :sswl do
     config    = YAML.load_file(ENV['DUMP_CONFIG'])
 
     tables = {
-        users: ["id", "first_name", "last_name", "email", "user_type"],
+        users: ["id", "first_name", "last_name", "email", "user_type", "role", "language"],
         languages: ["id", "value", "property", "language"],
         example_objects: ["id", "language"],
         examples: ["id", "language", "value", "property", "example_object_id"],

@@ -10,7 +10,7 @@ class Group < ActiveRecord::Base
   DEFAULT_EXAMPLE_KEYS = ["description"]
   DEFAULT_LING_KEYS = ["description"]
 
-  INFO_ATTRIBUTES = %w[privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ling_fields]
+  INFO_ATTRIBUTES = %w[privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields display_style ling_fields]
 
   CSV_ATTRIBUTES = %W[ id name privacy depth_maximum ling0_name ling1_name property_name category_name lings_property_name example_name examples_lings_property_name example_fields ]
   def self.csv_attributes

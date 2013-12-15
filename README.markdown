@@ -46,7 +46,7 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Configure it!
 
- `$ cp config/database.yml.example config/database.yml`
+ `$ cp yamls/database.yml.example config/database.yml`
 
   Edit your MySQL account data for development and test environment:
 
@@ -58,7 +58,15 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 
 * Run it!
 
-  `$ rails s`
+  `$ rails server`
+
+### YAML example files
+
+YAML files are now stored in the `yamls` folder: have a look there to configure:
+
+* your MySQL database (see above)
+* the import task for CSVs files
+* the SSWL import task (for SSWL administrators)
 
 #### Seed Data
 
@@ -86,7 +94,7 @@ Copy seed data to the doc/data in Terraling:
 
 To test yourself the app write in the console
 
-  `$rake`
+  `$ rake`
   
 It should run both rspec and cucumber tests.
   
@@ -94,7 +102,7 @@ It should run both rspec and cucumber tests.
 
 We are looking for some help in this project. Want to help us?
 
-Fork this repo, pick one issue from the list and pull the fix back!
+[How To Contribute](https://github.com/linguisticexplorer/Linguistic-Explorer/wiki/How-To-Contribute)
   
 ## License
 This project is under the MIT License.

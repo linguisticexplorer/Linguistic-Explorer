@@ -1,17 +1,37 @@
 <% page_heading current_group.category_name %>
+<h1><%= current_group.category_name %></h1>
 
-<p>
-  <b>Name:</b> <br />
-  <%= @category.name %> <br />
-  <b>Type:</b> <br />
-  <%= @category.group.ling_name_for_depth(@category.depth) %> <br />
-  <b>Description:</b> <br />
-  <%= @category.description %> <br />
-  <b>Created by:</b> <br />
-  <%= @category.creator ? @category.creator.name : "Unknown user" %> <br />
-</p>
-
-<% if can? :edit, @category%>
-  <%= link_to 'Edit', edit_group_category_path(current_group, @category) %> |
+<%= link_to group_categories_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<% if can? :edit, @category %>
+  <%= link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn" %>
 <% end %>
-<%= link_to 'Back', group_categories_path(current_group) %>
+
+<br /> <br />
+
+
+<table class="show-table description-table table table-bordered table-striped table-hover">
+  <tr>
+    <td><b>Name:</td></b></td> 
+    <td><%= @category.name %></td> 
+  </tr>
+  <tr>
+    <td><b>Type:</td></b></td> 
+    <td><%= @category.group.ling_name_for_depth(@category.depth) %></td> 
+  </tr>
+  <tr>
+    <td><b>Description:</td></b></td> 
+    <td><%= @category.description %></td> 
+  </tr>
+  <tr>
+    <td><b>Created by:</b></td> 
+    <td><%= @category.creator ? @category.creator.name : "Unknown user" %></td> 
+  </tr>
+</table>
+<%= link_to group_categories_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<% if can? :edit, @category %>
+  <%= link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn" %>
+<% end %>

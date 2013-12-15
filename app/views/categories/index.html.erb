@@ -3,12 +3,12 @@
 <h1>Listing <%= current_group.category_name.pluralize %></h1>
 
 <% if can? :create, Category.new{|c| c.group = current_group} %>
-    <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group) %>
+    <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn"  %>
 <% end %>
 <div id='pagination_table'>
   <%= render :partial => "index_partial" %>
 </div>
 <% if can? :create, Category.new{|c| c.group = current_group} %>
-  <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group) %>
+  <%= link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn" %>
 <% end %>
 

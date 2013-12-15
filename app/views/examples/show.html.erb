@@ -1,24 +1,47 @@
 <% page_heading current_group.example_name %>
-
-<p>
-  <b>Name:</b> <br />
-  <%= @example.name %> <br />
-
-  <% if @example.ling %>
-    <b><%= @example.ling.grouped_name %>:</b> <br />
-    <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
-  <% end %>
-
-  <% @example.storable_keys.each do |key| %>
-    <b><%= key.humanize %></b>: <br />
-    <%= @example.stored_value(key) %> <br />
-  <% end %>
-
-  <b>Created by:</b> <br />
-  <%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
-</p>
-
+<h1><%= current_group.example_name %></h1>
+<%= link_to group_examples_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
 <% if can? :edit, @example%>
-  <%= link_to 'Edit', edit_group_example_path(current_group, @example) %> |
+  <%= link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn" %>
 <% end %>
-<%= link_to 'Back', group_examples_path(current_group) %>
+<br />
+<br />
+<table class="show-table description-table table table-bordered table-striped table-hover">
+  <p>
+    <tr>
+      <td>Name:</td>
+      <td><%= @example.name %> </td>
+    </tr>
+
+    <% if @example.ling %>
+      <tr>
+        <td><%= @example.ling.grouped_name %>:</td>
+        <td><%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> </td>
+      </tr>
+    <% end %>
+
+    <% @example.storable_keys.each do |key| %>
+      <% if @example.stored_value(key) != "" %>
+        <tr>
+          <td><%= key.humanize %>:</td>
+          <td class="text-justify"><%= @example.stored_value(key) %> </td>
+        </tr>
+      <% end %>
+    <% end %>
+
+    <tr>
+      <td>Created by:</td>
+      <td><%= @example.creator ? @example.creator.name : "Unknown user" %> </td>
+    </tr>
+  </p>
+</table>
+
+<br />
+<%= link_to group_examples_path(current_group), :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back 
+<% end %>&nbsp;
+<% if can? :edit, @example%>
+  <%= link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn" %>
+<% end %>

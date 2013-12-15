@@ -1,0 +1,59 @@
+<% content_for :head do -%>
+  <%= javascript_include_tag "scrollTo.min" %>
+<% end -%>
+<script type="text/javascript">
+  $.getScript(location.href);
+</script>
+<% page_heading @ling.name + " Examples Supported Edit" %>
+
+<h1>Edit <%= current_group.lings_property_name.pluralize %> for <%= @ling.name %></h1>
+
+<%= link_to [current_group, @ling], :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back to <%= @ling.name %> page
+<% end %>&nbsp;
+<%= link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn" %>
+<br /><br />
+<div id="supported-entry-container" class="container-fluid">
+  <div class="row-fluid">
+    <div id="property-description" class="span4 set-col">
+      <%= render partial: "lings/mass_assignment/property", object: @property %>
+    </div>
+    <div id="property-setter" class="span4 set-col">
+      <%= render partial: "lings/mass_assignment/value", object: @property %>
+      <div class="row-fluid">
+      </div>
+    </div>
+    <div id="property-selector" class="span4 set-col">
+      <%= render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true %>
+    </div>
+  </div>
+</div>
+<br /><br />
+<%= link_to [current_group, @ling], :class => "btn btn-inverse" do %>
+  <i class = "icon-white icon-arrow-left"></i>&nbsp;Back to <%= @ling.name %> page
+<% end %>&nbsp;
+<%= link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn" %>
+<div id="example-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-example" aria-hidden="true">-&nbsp;</button>
+    <span id="modal-head-content"></span>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>
+
+<div id="property-modal" class="modal hide fade">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-prop" aria-hidden="true">-&nbsp;</button>
+    <span id="modal-head-content-prop"></span>
+  </div>
+  <div class="modal-body">
+  </div>
+</div>
+
+<div class="mod-tab">
+  <a href="#" class="btn btn-info hidden" id="prop-tab"><i class="icon-white icon-chevron-up shift-down"></i> Property Description</a>
+  <a href="#" class="btn btn-info hidden" id="example-tab"><i class="icon-white icon-chevron-up shift-down"></i> Example </a>
+</div>

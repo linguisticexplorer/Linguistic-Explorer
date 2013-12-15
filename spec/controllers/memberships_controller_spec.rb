@@ -22,7 +22,7 @@ describe MembershipsController do
         @group = groups(:inclusive)
         membership = FactoryGirl.create(:membership, :group => @group)
 
-        get :index, :group_id => @group.id
+        get :index, :group_id => @group.id, :letter => "all"
 
         assigns(:memberships).should include membership
       end

@@ -6,23 +6,23 @@
 
 
 require 'uri'
-require 'cgi'
-require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+  require 'cgi'
+  require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-module WithinHelpers
+  module WithinHelpers
   def with_scope(locator)
     locator ? within(locator) { yield } : yield
   end
-end
-World(WithinHelpers)
+  end
+  World(WithinHelpers)
 
-Given /^(?:|I )am on (.+)$/ do |page_name|
+  Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
-end
+  end
 
-When /^(?:|I )go to (.+)$/ do |page_name|
+  When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
-end
+  end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
@@ -58,6 +58,11 @@ When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |val
     fill_in(field, :with => value)
     # first(:field, field).set value
   end
+end
+
+When /^(?:|I )fill in the CAPTCHA correctly$/ do
+  # Waiting for rspec 2.6
+  # User.any_instance.stubs(:bypass_humanizer?).returns(true)
 end
 
 # Use this to fill in an entire form with data from a table. Example:
@@ -141,6 +146,7 @@ Then /^I should see the "([^\"]*)" draw$/ do |selector|
     assert page.has_selector?("\##{selector.underscore}")
   end
 end
+
 
 Then /^(?:|I )should see "([^\"]*)" in common?$/ do |text|
   with_scope("div.search_common_result.row") do
@@ -252,8 +258,22 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   end
 end
 
+Then /^I should see "([^"]*)" button/ do |name|
+  find_button(name).should_not be_nil
+end
+
 Then /^show me the page$/ do
   save_and_open_page
 end
 
+Then /^I wait "([^"]*)"$/ do |num|
+  sleep(num.to_i)
+end
 
+When /^I access the new tab$/ do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+end
+
+When /^I access the first tab$/ do
+  page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+end

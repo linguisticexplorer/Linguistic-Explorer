@@ -1,0 +1,28 @@
+<% if current_group.display_style == "table" %>
+  <% @example.storable_keys.each do |key| %>
+    <strong><%= key.humanize %></strong>: <br />
+    <%= @example.stored_value(key) %> <br />
+  <% end %>
+<% else %>
+  <% @example.storable_keys.each do |key| %>
+    <%= (@example.stored_value(key) + "<br />").html_safe if key != "description" %>
+  <% end %>
+  <br />
+  <% if @example.storable_keys.include? "description" %>
+    <strong>Description:</strong><br />
+    <%= @example.stored_value("description") %><br />
+  <% end %>
+<% end %>
+
+<strong>Name:</strong> <br />
+<%= @example.name %> <br />
+
+<% if @example.ling %>
+  <%= @example.ling.grouped_name %>:</strong> <br />
+  <%= link_to @example.ling.name, group_ling_path(current_group, @example.ling) %> <br />
+<% end %>
+
+<strong>Created by:</strong> <br />
+<%= @example.creator ? @example.creator.name : "Unknown user" %> <br />
+
+

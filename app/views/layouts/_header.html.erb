@@ -1,10 +1,11 @@
-<div id="header" class="blue_bg">
-  <div class="table expand_width">
-    <div class="mcell padded_right logo" style="width:125px">
-      <h2><%= link_to 'TerraLing', root_url %></h2>
-    </div>
-    <div class="mcell padded_left padded_right">
-      <%= render :partial => 'layouts/navigation' unless Settings.in_preview %>
-    </div>
+<div id="header" class="navbar navbar-static-top navbar-inverse">
+  <div class="navbar-inner">
+    <%= link_to 'TerraLing', root_url, :class => "brand" %>
+    <ul class="nav">
+      <%= render :partial => 'layouts/group_nav_bar' unless Settings.in_preview%>
+    </ul>
+    <ul class="nav pull-right user-nav">
+      <%= render :partial => 'layouts/status_bar'%>
+    <ul>
   </div>
 </div>

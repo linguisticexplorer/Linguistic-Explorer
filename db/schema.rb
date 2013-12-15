@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120202180323) do
+ActiveRecord::Schema.define(:version => 20130721143951) do
 
   create_table "categories", :force => true do |t|
     t.integer  "group_id"
@@ -83,6 +83,7 @@ ActiveRecord::Schema.define(:version => 20120202180323) do
     t.string   "privacy",                      :default => "public"
     t.text     "example_fields"
     t.text     "ling_fields"
+    t.string   "display_style",                :default => "table"
   end
 
   create_table "lings", :force => true do |t|
@@ -106,6 +107,7 @@ ActiveRecord::Schema.define(:version => 20120202180323) do
     t.integer  "group_id"
     t.integer  "creator_id"
     t.string   "property_value"
+    t.string   "sureness"
   end
 
   add_index "lings_properties", ["group_id"], :name => "index_lings_properties_on_group_id"
@@ -147,13 +149,13 @@ ActiveRecord::Schema.define(:version => 20120202180323) do
   add_index "properties", ["group_id"], :name => "index_properties_on_group_id"
 
   create_table "searches", :force => true do |t|
-    t.string   "name",          :null => false
-    t.integer  "creator_id",    :null => false
-    t.integer  "group_id",      :null => false
+    t.string   "name",                              :null => false
+    t.integer  "creator_id",                        :null => false
+    t.integer  "group_id",                          :null => false
     t.text     "query"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text     "result_groups"
+    t.text     "result_groups", :limit => 16777215
   end
 
   add_index "searches", ["creator_id", "group_id"], :name => "index_searches_on_creator_id_and_group_id"

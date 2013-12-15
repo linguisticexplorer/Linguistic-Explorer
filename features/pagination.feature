@@ -6,7 +6,7 @@ Feature: Pagination
     And the group has a maximum depth of 1
     And the following "Syntactic Structures" lings:
     | name        | depth |
-    | English     | 0     |
+    | Afrikaans   | 0     |
     | Spanish     | 0     |
     | German      | 0     |
     | Italian     | 0     |
@@ -14,35 +14,28 @@ Feature: Pagination
     | Bellinzonese| 1     |
     And the following "Syntactic Structures" properties:
     | property name     | ling name   | prop val    | category | depth |
-    | Adjective Noun    | English     | yes         | Grammar  | 0     |
-    | Adjective Degree  | English     | yes         | Grammar  | 0     |
-    | Degree Adjective  | English     | yes         | Grammar  | 0     |
+    | Adjective Noun    | Afrikaans   | yes         | Grammar  | 0     |
+    | Adjective Degree  | Afrikaans   | yes         | Grammar  | 0     |
+    | Degree Adjective  | Afrikaans   | yes         | Grammar  | 0     |
     | Degree Adjective  | German      | yes         | Grammar  | 0     |
     | Degree Adjective  | Spanish     | no          | Grammar  | 0     |
-    | Demonstrative Noun| English     | no          | Grammar  | 0     |
-    | Noun Demonstrative| English     | no          | Grammar  | 0     |
+    | Demonstrative Noun| Afrikaans   | no          | Grammar  | 0     |
+    | Noun Demonstrative| Afrikaans   | no          | Grammar  | 0     |
     | Degree Adjective  | Italian     | yes         | Grammar  | 0     |
     | Degree Adjective  | French      | yes         | Grammar  | 0     |
     | Degree Adjective  | Bellinzonese| yes         | Grammar  | 1     |
 
     And I go to the group Syntactic Structures
 
-  Scenario: Visitor goes to Ling page and navigate with pagination next button
+  Scenario: Visitor goes to Ling page and navigate with pagination letter button
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
-    And I should see "English"
-    And I should see "1"
-    And I should see "2"
-    And I should see "Next"
-    And I follow "Next"
-    And I should see "Spanish"
-
-  Scenario: Visitor goes to Ling page and navigate with pagination page number button
-    When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
-    And I should see "English"
-    And I should see "1"
-    And I should see "2"
-    And I should see "Next"
-    And I follow "2"
+    And I should see "Afrikaans"
+    And I should see "A"
+    And I should see "B"
+    And I should see "All"
+    And I follow "All"
+    And I should see "Italian"
+    And I follow "S"
     And I should see "Spanish"
 
   Scenario: Visitor goes to Properties page and navigate with pagination
@@ -52,21 +45,21 @@ Feature: Pagination
     And I follow "Next"
     And I should see "Noun Demonstrative"
 
-  Scenario: Visitor goes to English ling page and navigate with pagination
+  Scenario: Visitor goes to Afrikaans ling page and navigate with pagination
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
-    And I should see "English"
-    And I should see "Next"
-    And I follow "English"
+    And I should see "Afrikaans"
+    And I should see "a"
+    And I follow "Afrikaans"
     And I should see "Adjective Noun"
     And I should see "Next"
     And I follow "Next"
     And I should see "Noun Demonstrative"
 
-  Scenario: Visitor goes to English ling page and navigate properties with pagination
+  Scenario: Visitor goes to Afrikaans ling page and navigate properties with pagination
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
-    And I should see "English"
-    And I should see "Next"
-    And I follow "English"
+    And I should see "Afrikaans"
+    And I should see "a"
+    And I follow "Afrikaans"
     And I should see "Adjective Noun"
     And I should see "Next"
     And I follow "Next"
@@ -77,9 +70,9 @@ Feature: Pagination
     And I should see "Adjective Noun"
     And I should see "Degree Adjective"
     And I follow "Degree Adjective"
-    Then I should see "English"
-    Then I should see "Next"
-    And I follow "Next"
+    Then I should see "Afrikaans"
+    Then I should see "S"
+    And I follow "S"
     Then I should see "Spanish"
 
   Scenario: Visitor goes on search page and get results with pagination, on depth 0
@@ -88,7 +81,7 @@ Feature: Pagination
     And I uncheck "Properties" within "#show_child"
     And I uncheck "Value" within "#show_child"
     And I uncheck "Examples" within "#show_child"
-    And I select "English" from "Ling"
+    And I select "Afrikaans" from "Ling"
     And I press "Show results"
     Then I should see "Next"
     And I should see "2"
@@ -97,7 +90,7 @@ Feature: Pagination
 
   Scenario: Visitor goes on search page and get results with pagination, on depth 1
     When I go to the Syntactic Structures search page
-    And I select "English" from "Ling"
+    And I select "Afrikaans" from "Ling"
     And I press "Show results"
     Then I should see "Next"
     And I should see "2"

@@ -3,7 +3,7 @@
 <h1>Listing <%= current_group.example_name.pluralize %></h1>
 
 <% if can? :create, Example.new{|e| e.group = current_group } %>
-    <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+  <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group), :class => "btn" %>
 <% end %>
 <div id='pagination_table'>
     <%= render :partial => "index_partial" %>
@@ -11,5 +11,5 @@
 <br />
 
 <% if can? :create, Example.new{|e| e.group = current_group } %>
-    <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group) %>
+    <%= link_to "New #{current_group.example_name}", new_group_example_path(current_group), :class => "btn" %>
 <% end %>

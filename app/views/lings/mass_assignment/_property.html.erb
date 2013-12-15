@@ -1,15 +1,36 @@
-<div class="accordion-group">
-  <div class="accordion-heading" >
-  	<a class="accordion-toggle" data-toggle="collapse" data-parent="#<%=category.name.gsub(' ', '') %>" href="#<%= property.name.gsub(" ", "")%>">
-      <b><%= property.name %></b>
-  	</a>
+<div id="prop-title" class="fluid-row">
+  <h2>Property</h2>
+</div>
+<div class="fluid-container">
+  <div id="prop-name" class="fluid-row" data-prop_id=<%= @property.id || 0 %> data-ling_id=<%= @ling.id || 0 %> 
+    data-lp_id=<%= (@ling_properties && @ling_properties.any?) ? @ling_properties[0].id : 0 %> >
+    <h4> Property Name </h4>
+    <p>
+      <%= property.name %>
+    </p>
   </div>
-  <div id="<%= property.name.gsub(" ", "")%>" class="accordion-body collapse">
-  	<div class="accordion-inner">
-  <%= render :partial => "lings/mass_assignment/value", :collection => property.available_values, :inline => true , :locals => { :property => property } %>
-  <%= label_tag "values[#{property.id}][_new]", "Add new" %>:
-  <%= text_field_tag "values[#{property.id}][_new]" %>
+  <div class="fluid-row"> 
+    <h4 class="inline">Property Description</h4>&nbsp; 
+    <a href="#" class="btn btn-info btn-small" id="prop-modal"><i class="icon-white icon-resize-full shift-down"></i> Show all</a>
+  </div>
+  <div id="prop-descrip" class="fluid-row">
+    <p>
+      <% if property.description %>
+        <%= property.description.html_safe %>
+      <% else %>
+        no property description available
+      <% end %>
+    </p>
+  </div>
+
+  <div id="prop-relations" class="fluid-row">
+    <h4>Value in other <%= current_group.ling_name_for_depth(@depth).pluralize.downcase %></h4>
+    <div class="content-box">
+      <% @relations.each do |lp| %>
+        <b><%= lp[0] %></b>: <%= lp[1] %><br />
+      <% end %>
     </div>
   </div>
 </div>
-<br />
+
+

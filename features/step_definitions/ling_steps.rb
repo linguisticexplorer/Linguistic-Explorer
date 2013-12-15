@@ -35,8 +35,7 @@ When /^(?:|I )follow the "([^\"]*)" (?:with depth "([^\"]*)" )model link for (?:
     with_scope(selector) do
       group = Group.find_by_name(group_name)
       model_field = "#{model}#{depth ? depth : ""}_name"
-      link = group.send(model_field.downcase).to_s
-      # click_link(link)
-      first(:link, link).click
+      link = group.send(model_field.downcase).pluralize.to_s
+      click_link(link)
     end
 end
