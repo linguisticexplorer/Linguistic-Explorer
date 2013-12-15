@@ -31,7 +31,6 @@ LinguisticExplorer::Application.routes.draw do
         get 'preview'
         post 'preview'
         post 'get_results'
-        post 'lings_in_selected_row'
         post 'geomapping'
       end
     end
@@ -47,8 +46,8 @@ LinguisticExplorer::Application.routes.draw do
       end
     end
 
-    resources :lings_properties, :only => [:show, :destroy]
-    resources :examples_lings_properties, :only => [:show, :destroy]
+    resources :lings_properties, :only => [:index, :show, :destroy]
+    resources :examples_lings_properties, :only => [:index, :show, :destroy]
     resources :properties, :examples, :categories, :memberships
   end
 

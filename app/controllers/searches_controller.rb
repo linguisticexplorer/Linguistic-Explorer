@@ -127,7 +127,7 @@ class SearchesController < GroupDataController
 
     authorize! :mapping, @geoMapping
 
-    render :json => @geoMapping.to_json.html_safe
+    render :json => @geoMapping.build_json
   end
 
   protected
