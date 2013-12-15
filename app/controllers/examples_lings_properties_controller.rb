@@ -30,7 +30,7 @@ class ExamplesLingsPropertiesController < GroupDataController
 
     @examples = params[:ling_id] && 
       ExamplesLingsProperty.where("lings_property_id IN (?)", 
-                                  LingsProperty.find(:all, :conditions => {:ling_id => params[:ling_id] })).map{|x| x.example} || current_group.examples
+                                  LingsProperty.where(:ling_id => params[:ling_id])).map{ |x| x.example } || current_group.examples
     @lings_properties = params[:ling_id] ? false : current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
   end
 

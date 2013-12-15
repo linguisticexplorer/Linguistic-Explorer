@@ -64,19 +64,19 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      # result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
+      result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
       # Squeel Syntax
-      result = LingsProperty.select_ids.where{ (:id == my{vals}) } & search_scope_name_by_keyword(keyword)
+      # result = LingsProperty.select_ids.where{ (:id == my{vals}) } & search_scope_name_by_keyword(keyword)
 
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
     def search_scope_name_by_keyword(keyword)
-      # model_class.in_group(group).unscoped.
-      #     where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
-      # Squeel Syntax
       model_class.in_group(group).unscoped.
-          where{ (:name =~  "#{keyword}%") || ( :name =~ "%#{keyword}%")}
+          where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+      # Squeel Syntax
+      # model_class.in_group(group).unscoped.
+      #     where{ (:name =~  "#{keyword}%") || ( :name =~ "%#{keyword}%")}
     end
 
   end
