@@ -33,11 +33,11 @@ gem 'rvm-capistrano'
 # gem "squeel", "~> 0.9.3"
 
 # for Users and authentication
-gem 'devise', '1.1.7'
+gem 'devise'
 gem 'humanizer'
 
 
-gem 'json', '~> 1.7.7'
+gem 'json'
 
 gem 'validation_reflection', "~> 1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
 # gem 'validates_existence', "0.5.6", :git => 'git://github.com/bosh/validates_existence.git'

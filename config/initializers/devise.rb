@@ -99,6 +99,9 @@ Devise.setup do |config|
   # is failed attempts.
   # config.maximum_attempts = 20
 
+  # ==> Secret key
+  config.secret_key = '09afdba69f1fccc25b52d0bd00aa13852a595521c106fb89476c9b0a2d48f60eea432b19315459c7093a489477f8ca7b0ac02a0f2ddff32b7ea242a19fbf8d5c'
+
   # Time interval to unlock the account if :time is enabled as unlock_strategy.
   # config.unlock_in = 1.hour
 

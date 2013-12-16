@@ -7,8 +7,6 @@ class Ling < ActiveRecord::Base
     CSV_ATTRIBUTES
   end
 
-  acts_as_gmappable :process_geocoding => false, :lat => :get_latitude, :lng => :get_longitude
-
   # validates_presence_of :name, :depth
   # validates_numericality_of :depth
   # validates_uniqueness_of :name, :scope => :group_id
@@ -37,14 +35,6 @@ class Ling < ActiveRecord::Base
 
   scope :parent_ids, select("#{self.table_name}.parent_id")
   scope :with_parent_id, lambda { |id_or_ids| where("#{self.table_name}.parent_id" => id_or_ids) }
-
-  def get_latitude
-    get_latlong.split(/,/).first
-  end
-
-  def get_longitude
-    get_latlong.split(/,/).last
-  end
 
   attr_reader :info
 
