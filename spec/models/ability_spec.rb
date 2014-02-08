@@ -266,10 +266,10 @@ describe Ability do
       describe "with a private group that they are not a member of" do
         before do
           group  = FactoryGirl.create(:group)
-          user   = FactoryGirl.create(:user)
-          Membership.create(:group => group, :member => user, :level => Membership::ADMIN)
-          user.reload
-          @admin = Ability.new(user)
+          @user   = FactoryGirl.create(:user)
+          Membership.create(:group => group, :member => @user, :level => Membership::ADMIN)
+          @user.reload
+          @admin = Ability.new(@user)
           @other_group = FactoryGirl.create(:group, :name => "haters", :privacy => Group::PRIVATE)
           @other_group.private?.should be_true
         end
