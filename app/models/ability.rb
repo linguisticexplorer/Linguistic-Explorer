@@ -35,6 +35,12 @@ class Ability
         search.is_manageable_by?(user)
       end
 
+      can :manage, SearchComparison do |sc|
+        # p "[DEBUG] #{sc.inspect}"
+        # Rails.logger.debug "[DEBUG] #{sc.searches.inspect}"
+        sc.searches.all? {|s| s.is_manageable_by?(user)}
+      end
+
       # turn on all searches advanced features
       can :search, Search,        :group => { :privacy => Group::PUBLIC }
       can :cross, Search,         :group => { :privacy => Group::PUBLIC }
@@ -51,10 +57,6 @@ class Ability
 
       can :create, Post, :topic => { :locked => false } unless user.new_record?
       can :create, Topic unless user.new_record?
-
-      can :manage, SearchComparison do |sc|
-        sc.searches.all? {|s| s.is_manageable_by?(user)}
-      end
     end
   end
 end

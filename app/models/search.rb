@@ -20,7 +20,7 @@ class Search < ActiveRecord::Base
 
   json_accessor :query, :result_groups
 
-  scope :by, lambda { |creator| where{ creator == my{creator}} }
+  scope :by, lambda { |creator| where( :creator_id => creator.id ) }
 
   attr_accessor :parent_ids, :child_ids, :offset
 
@@ -33,7 +33,7 @@ class Search < ActiveRecord::Base
   end
 
   def is_manageable_by?(user)
-    user.id.present? && user == creator && Ability.new(user).can?(:read, group)
+    user.id.present? && user.id == creator.id && Ability.new(user).can?(:read, group)
   end
 
 
