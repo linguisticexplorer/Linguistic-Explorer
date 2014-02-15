@@ -64,18 +64,22 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      result = LingsProperty.select_ids.where(:id => vals) & search_scope_name_by_keyword(keyword)
+      result = LingsProperty.select_ids.where(:id => vals.pluck(:id)).merge search_scope_name_by_keyword(keyword)
       # Squeel Syntax
       # result = LingsProperty.select_ids.where{ (:id == my{vals}) } & search_scope_name_by_keyword(keyword)
-
+      p "[DEBUG] #{vals.inspect} + #{keyword}"
+      p "[DEBUG] #{LingsProperty.select_ids.where(:id => vals.pluck(:id)).inspect} + #{search_scope_name_by_keyword(keyword).inspect}"
+      p "[DEBUG] #{result.inspect}"
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
     def search_scope_name_by_keyword(keyword)
       model_class.in_group(group).unscoped.
-          where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
+      # Arel
+        where(model_class.arel_table[:name].matches("#{keyword}%") || model_class.arel_table[:name].matches("%#{keyword}%") )
+      # Metawhere
+          # where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
       # Squeel Syntax
-      # model_class.in_group(group).unscoped.
       #     where{ (:name =~  "#{keyword}%") || ( :name =~ "%#{keyword}%")}
     end
 

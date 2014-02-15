@@ -36,7 +36,7 @@ Feature: Typeahead
     | Bellinzonese| 0     |
 
 
-  @selenium
+  @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the home page
     Then I wait "2"
@@ -61,7 +61,7 @@ Feature: Typeahead
     Then I should see "Ling Afrikaans"
 
 
-  @selenium
+  @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
     Then I should see "" within "#auto_group"
@@ -72,7 +72,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-  @selenium
+  @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
     Then I should see "" within "#auto_group"
@@ -83,7 +83,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-  @selenium
+  @javascript
   Scenario: Visitor goes to Ling page and searches a language and only languages with the right depth are searchable
     When I go to the group Syntactic Structures
     And I follow "Lings"
@@ -95,7 +95,7 @@ Feature: Typeahead
     When I follow "Spanish"
     Then I should see "Ling Spanish"
 
-  @selenium
+  @javascript
   Scenario: Visitor goes to Property page and searches a property
     When I go to the group Syntactic Structures
     And I follow "Properties"

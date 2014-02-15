@@ -1,8 +1,11 @@
 $(function() {
-  var dict_lang, items_lang = [],
-      dict_prop, items_prop = [],
+  var dict_lang,
+      dict_prop,
+      items_prop = [],
+      items_lang = [],
       base_url = location.href.replace(/(groups\/[0-9]+\/).*/, "$1"),
-      auto_ling = $("#auto_ling.enabled"), auto_prop = $("#auto_prop.enabled"),
+      auto_ling = $("#auto_ling.enabled"),
+      auto_prop = $("#auto_prop.enabled"),
       isLoading = <%= @ling && @property && @lp ? "true" : "false" %>;
 
   var searchLp = function() {

@@ -25,44 +25,51 @@ Feature: Analysis
     | Degree Adjective  | Italian     | yes         | Grammar  | 0     |
     | Degree Adjective  | French      | yes         | Grammar  | 0     |
     | Degree Adjective  | Bellinzonese| yes         | Grammar  | 1     |
-
     And I go to the group Syntactic Structures
     And I follow "Lings"
     And I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
-
-  @selenium
+  @wip
+  @javascript
   Scenario: Visitor should be able to map a language 
     Then I should see "Map" within "#compare-buttons"
     When I follow "Map"
-    Then I access the new tab
-    Then I should see "Lings in the Selection"
-
-  @selenium
-  Scenario: Visitor should be able to add and delete languages of the same depth to analyse 
-    Then I should not see "Spanish" within "#selected-langs"
-    When I fill in "auto_compare" with "s"
-    Then I should see "Spanish" within ".typeahead"
-    Then I follow "Spanish" within ".typeahead"
-    Then I should see "Spanish" within "#selected-langs"
+    # Then a new window "Search Results" will open
+    Then I access the new tab and should see "Lings in the Selection"
+    # Then I should see "Lings in the Selection"
+  @wip
+  @javascript
+  Scenario: Visitor should be able to add and delete languages of the same depth to analyse
+    # When I fill in "auto_compare" with "s"
+    When I search in the "auto_compare" field with "spa"
+    Then I should see "Spanish" in the "auto_compare"
+    Then I see the Javascript console
+    # Then I follow "Spanish" within ".typeahead"
+    Then I add "Spanish" to the list
+    Then I should see "Spanish" within "#selected-lings"
     Then I follow "clear all" within "#languages-container"
-    Then I should not see "Spanish" within "#selected-langs"
-    When I fill in "auto_compare" with "b"
+    Then I should not see "Spanish" within "#selected-lings"
+    # When I fill in "auto_compare" with "b"
+    When I search in the "auto_compare" field with "bel"
     Then I should not see "Bellinzonese"
-
-  @selenium
+  @wip
+  @javascript
   Scenario: Visitor should be able to perform quick analysis on languages 
-    When I fill in "auto_compare" with "s"
+    # When I fill in "auto_compare" with "s"
+    When I search in the "auto_compare" field with "spa"
     Then I should see "Spanish" within ".typeahead"
-    Then I follow "Spanish" within ".typeahead"
+    Then I add "Spanish" to the list
     Then I follow "Compare Properties" within "#compare-buttons"
-    Then I access the new tab
-    Then I should see "Properties in Common"
-    Then I access the first tab
+    # Then a new window "Search Results" will open
+    Then I access the new tab and should see "Properties in Common" 
+    # Then I should see "Properties in Common"
+    # Then I access the first tab
     Then I follow "Similarity Tree" within "#compare-buttons"
-    Then I access the new tab
-    Then I should see "Search Results"
-    Then I access the first tab
+    # Then a new window "Search Results" will open
+    Then I access the new tab and should see "Search Results"
+    # Then I should see "Search Results"
+    # Then I access the first tab
     Then I follow "Radial Tree" within "#compare-buttons"
-    Then I access the new tab
-    Then I should see "Search Results" 
+    # Then a new window "Search Results" will open
+    Then I access the new tab and should see "Search Results"
+    # Then I should see "Search Results" 

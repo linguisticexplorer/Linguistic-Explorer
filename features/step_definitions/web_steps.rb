@@ -6,57 +6,84 @@
 
 
 require 'uri'
-  require 'cgi'
-  require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
+require 'cgi'
+require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "paths"))
 
-  module WithinHelpers
+module WithinHelpers
   def with_scope(locator)
     locator ? within(locator) { yield } : yield
   end
-  end
-  World(WithinHelpers)
+end
+World(WithinHelpers)
 
-  Given /^(?:|I )am on (.+)$/ do |page_name|
+Given /^(?:|I )am on (.+)$/ do |page_name|
   visit path_to(page_name)
-  end
+end
 
-  When /^(?:|I )go to (.+)$/ do |page_name|
+When /^(?:|I )go to (.+)$/ do |page_name|
   visit path_to(page_name)
-  end
+end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
-    click_button(button)
-    # To fix ambiguity with Capybara let's take just the first match
-    # first(:button, button).click
+    # click_button(button)
+    # To fix ambiguity with Capybara 2 let's take just the first match
+    first(:button, button).click
   end
 end
 
 When /^(?:|I )return to "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| # Simple replacement of "return to" for "follow", seen below
   with_scope(selector) do
-    click_link(link)
+    # click_link(link)
+    first(:link, link).click
   end
 end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
   with_scope(selector) do
-    click_link(link)
+    # click_link(link)
     # To fix ambiguity with Capybara let's take just the first match
-    # first(:link, link).click
+    first(:link, link).click
   end
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
-    fill_in(field, :with => value)
-    # first(:field, field).set value
+    # fill_in(field, :with => value)
+    first(:field, field).set value
   end
 end
 
-When /^(?:|I )fill in "([^\"]*)" for "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
+# When I search in the "#auto_compare" field with "s"
+When /^(?:|I )search in the "([^\"]*)" field with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
     fill_in(field, :with => value)
     # first(:field, field).set value
+    # See Issue #43 in Poltergeist
+    page.execute_script "$('\##{field}').keydown()"
+  end
+end
+
+Then /^(?:|I )should see "([^\"]*)" in the "([^\"]*)"$/ do |text, field|
+  # Focus to the autocomplete
+  page.execute_script "$('#{field}').focus()"
+  # search for the text
+  with_scope(".typeahead") do
+    if page.respond_to? :should
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
+# Then I add "Spanish" to the list
+When /^(?:|I )add "([^\"]*)"(?: within "([^\"]*)")? to the list$/ do |link, selector| 
+  selector |= ".typeahead"
+  with_scope(selector) do
+    # click_link(link)
+    # To fix ambiguity with Capybara let's take just the first match
+    first(:link, link).click
   end
 end
 
@@ -87,19 +114,22 @@ end
 When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
     select(value, :from => field)
+    # find(:input, field).set(value)
+    # find_field(field).select(value)
   end
 end
 
 When /^(?:|I )check "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    check(field)
-    # find(:checkbox, field).first.set(true)
+    # check(field)
+    find(:checkbox, field).first.set(true)
   end
 end
 
 When /^(?:|I )uncheck "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    uncheck(field)
+    # uncheck(field)
+    find(:checkbox, field).set(false)
   end
 end
 
@@ -258,22 +288,51 @@ Then /^(?:|I )should have the following query string:$/ do |expected_pairs|
   end
 end
 
-Then /^I should see "([^"]*)" button/ do |name|
+Then /^I should see "([^\"]*)" button/ do |name|
   find_button(name).should_not be_nil
+end
+
+Then /^I wait "([^\"]*)"$/ do |num|
+  sleep(num.to_i)
 end
 
 Then /^show me the page$/ do
   save_and_open_page
 end
 
-Then /^I wait "([^"]*)"$/ do |num|
-  sleep(num.to_i)
-end
-
-When /^I access the new tab$/ do
-  page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+When /^I access the new tab and should see "([^\"]*)"$/ do |regexp|
+  # page.driver.browser.switch_to.window(page.driver.browser.window_handles.last)
+  sleep(2)
+  opened = page.driver.window_handles.last
+  page.within_window opened do
+    regexp = Regexp.new(regexp)
+    if page.respond_to? :should
+      page.should have_xpath('//*', :text => regexp)
+    else
+      assert page.has_xpath?('//*', :text => regexp)
+    end
+  end
 end
 
 When /^I access the first tab$/ do
   page.driver.browser.switch_to.window(page.driver.browser.window_handles.first)
+end
+
+Then /^a new window (.+) will open$/ do |page_title|
+  sleep(3)
+  opened = page.driver.window_handles.last
+  p "#{page.driver.window_handles.inspect}"
+  if page.respond_to? :should
+      opened.should have_title(page_title)
+    else
+      assert opened.has_title?(page_title)
+    end
+end
+
+Then /^(?:|I )see this page$/ do
+  page.save_screenshot("./page.png", :full => true)
+end
+
+Then /^(?:|I )see the Javascript console$/ do
+  page.driver.debug
 end

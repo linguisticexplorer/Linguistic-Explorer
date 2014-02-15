@@ -48,7 +48,7 @@ Given /^the following lings and properties:$/ do |table|
   end
 end
 
-Given /^the following "([^"]*)" definitions for properties$/ do |group_name, table|
+Given /^the following "([^\"]*)" definitions for properties$/ do |group_name, table|
   group = Group.find_by_name(group_name)
   raise "Group #{group_name} does not exist! Did you remember to create it first?" if group.nil?
   table.hashes.each do |attrs|
@@ -76,5 +76,6 @@ end
 When /^I follow the "([^"]*)" for the group "([^"]*)"$/ do |model, group_name|
     group = Group.find_by_name(group_name)
     link = "#{model}"
-    click_link(link)
+    # click_link(link)
+    first(:link, link).click
 end

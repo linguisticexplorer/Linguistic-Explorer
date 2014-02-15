@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 
-gem 'rails', '~> 3.2.13'
+gem 'rails', '=3.2.13'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'https://github.com/rails/rails.git'
@@ -74,7 +74,7 @@ gem "jquery-rails"
 
 # # It forces to use a specific version of Rake
 # gem 'rake', '0.9.2.2'
-gem "rake", "~> 10.0.3"
+gem "rake", "= 10.1.0"
 
 # Geomapping gem
 gem 'gmaps4rails'
@@ -84,7 +84,7 @@ gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 gem 'bb-ruby'
 
 group :development do
-  gem 'ruby-debug19'
+  # gem 'ruby-debug19'
 end
 
 #sass support
@@ -114,12 +114,15 @@ group :test, :development do
   # Use Thin as web server
   gem "thin"
 
+  gem "spork-rails"
+
   # gem 'rspec', "2.5.0"
   gem 'rspec-rails', "~> 2.0"
   gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
-  gem 'cover_me', '>= 1.2.0'
+  #gem 'cover_me', '>= 1.2.0'
+  gem 'simplecov', :require => false
   gem 'ruby-prof'
 
   gem 'factory_girl_rails', "~> 1.1"
@@ -134,7 +137,9 @@ group :test, :development do
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
   gem 'cucumber-rails', "~> 1.1.1", :require => false
-  gem 'capybara', '~> 1.1.4'
+  gem 'capybara'
   gem 'launchy'
   gem 'brakeman'
+  gem 'poltergeist', '~> 1.5.0'
+  gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end

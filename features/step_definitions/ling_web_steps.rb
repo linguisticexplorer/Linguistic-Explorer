@@ -1,5 +1,5 @@
 Given /^the setting(?:|s) "([^\"]*)" is true$/ do |setting|
-  Settings.stub!(setting.underscorize.to_sym => true)
+  Settings.stub(setting.underscorize.to_sym => true)
 end
 
 When /^(?:|I )clear "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|

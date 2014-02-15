@@ -1,6 +1,6 @@
-<div class="apple_pagination will-paginate">
-<!-- render page links in the view: -->
-<%= will_paginate @properties, renderer: BootstrapPagination::Rails %>
+<div id="pagination_top" class="apple_pagination will-paginate">
+  <!-- render page links in the view: -->
+  <%= will_paginate @properties, renderer: BootstrapPagination::Rails %>
 </div>
 <table class="show-table table table-bordered table-striped table-hover">
   <tr>
@@ -34,6 +34,7 @@
 </table>
 
 <br />
-<div class="apple_pagination will-paginate">
-<!-- render page links in the view: -->
-<%= will_paginate @properties, renderer: BootstrapPagination::Rails %>
+<div id="pagination_bottom" class="apple_pagination will-paginate">
+  <!-- render page links in the view: -->
+  <%= will_paginate @properties, renderer: BootstrapPagination::Rails %>
+</div>

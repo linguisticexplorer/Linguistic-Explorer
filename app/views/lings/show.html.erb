@@ -64,7 +64,7 @@
       </div>
       <div class="span5 hidden1 search-buttons" id="languages-container">
         Selected languages (<a href="/Clear All" class="remove-langs">clear all</a>)
-        <ul id="selected-langs"></ul>
+        <ul id="selected-lings"></ul>
       </div>
     </div>
     <div class="row-fluid relative">
@@ -80,7 +80,7 @@
 <br />
 
 <div class="values" id="pagination_table">
-  <div class="apple_pagination will-paginate">
+  <div id="pagination_top" class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
     <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
   </div>
@@ -108,7 +108,7 @@
       <% end %>
     </tbody>
   </table>
-  <div class="apple_pagination will-paginate">
+  <div id="pagination_bottom" class="apple_pagination will-paginate">
     <!-- render page links in the view: -->
     <%= will_paginate @values, renderer: BootstrapPagination::Rails %>
   </div>

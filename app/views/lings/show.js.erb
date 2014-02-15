@@ -1,5 +1,7 @@
 var group = <%= current_group.to_param %>,
-    dict, items = [], id = <%= @ling.id %>,
+    id = <%= @ling.id %>,
+    items = [],
+    dict  = {},
     makeButton = function() {
       return '<a href="/Remove" class="remove-lang"><i class=\'icon-remove shift-down\'></i></a>  ';
     },
@@ -9,7 +11,7 @@ var group = <%= current_group.to_param %>,
       $('div#compare-buttons a').attr('disabled', 'disabled'); 
     },
     langsParams = function() {
-      return '&search[lings][0][]=' + ($.map( $('#selected-langs li'), function (val, i) { return dict[$.trim($(val).text())] })).join('&search[lings][0][]=');
+      return '&search[lings][0][]=' + ($.map( $('#selected-lings li'), function (val, i) { return dict[$.trim($(val).text())] })).join('&search[lings][0][]=');
     },
     searchQuery = function (param) {
       var param = (!param) ? "" : param;
@@ -19,13 +21,13 @@ var group = <%= current_group.to_param %>,
     $(window).on('click', '.remove-lang', function (e) {
       items.push(($(this).parent().text()));
       $(this).parent().remove();
-      if ($('ul#selected-langs li').length == 0) {
+      if ( !$('ul#selected-lings li').length ) {
          hideList(); 
       }
     });
 
     $(window).on('click', '.remove-langs', function (e) {
-      $('#selected-langs li').each( function () {
+      $('#selected-lings li').each( function () {
         items.push($(this).text());
         $(this).remove();
       });
@@ -68,7 +70,7 @@ var group = <%= current_group.to_param %>,
           source: items,
           updater:function (item){
             $('#languages-container').removeClass('hidden1');
-            $('#selected-langs').append($('<li></li>').html(makeButton() + item));
+            $('#selected-lings').append($('<li></li>').html(makeButton() + item));
             items.splice(items.indexOf(item),1);
             $('#analysis').removeClass('span12').addClass('span7');
             $('div#compare-buttons a').removeAttr("disabled");

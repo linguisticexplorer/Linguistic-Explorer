@@ -14,22 +14,23 @@ class GeoMapping
   end
 
   def get_json
-    json = ''
-    @data[:lings].each do |row_number, lings_list|
-      if lings_list.any?
-        json << lings_list.to_gmaps4rails do |ling, marker|
-          marker.infowindow info_window_for ling, row_number
-          marker.title rollover_information(ling, row_number)
-          marker.picture({
-                             :picture => get_marker_url(row_number),
-                             :width 	=> 32,
-                             :height 	=> 37
-                         })
-          marker.json({ id: row_number })
+    json = {}.tap do |entry|
+      @data[:lings].each do |row_number, lings_list|
+        if lings_list.any?
+          entry = Gmaps4rails.build_markers(lings_list) do |ling, marker|
+            marker.infowindow info_window_for ling, row_number
+            marker.title rollover_information(ling, row_number)
+            marker.picture({
+                               :picture => get_marker_url(row_number),
+                               :width 	=> 32,
+                               :height 	=> 37
+                           })
+            marker.json({ id: row_number })
+          end
         end
       end
     end
-    json.gsub('][', ",")
+    json.to_json
   end
 
   private

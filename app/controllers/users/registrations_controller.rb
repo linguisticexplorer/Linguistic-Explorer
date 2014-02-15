@@ -10,7 +10,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       sign_in_and_redirect(resource_name, resource)
     else
       clean_up_passwords(resource)
-      render_with_scope :new
+      render :new
     end
   end
 end

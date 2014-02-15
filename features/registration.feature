@@ -3,7 +3,6 @@ Feature: Registration
   Scenario: Vistor Registers
     Given I am a visitor
     When I go to the home page
-    Then I should see "Sign Up"
     When I follow "Sign Up"
     And  I should be on the registration page
     When I fill in "Email" with "foo@bar.com"
@@ -11,10 +10,10 @@ Feature: Registration
     And  I fill in "Password" with "hunter2"
     And  I fill in "Password confirmation" with "hunter2"
     And  I fill in the CAPTCHA correctly
-    And  I press "Sign Up"
+    And  I press "Sign Up" within "#login-form"
     Then I should be on the home page
-    And  I should see "foo@bar.com"
     And  I should see "You have signed up successfully"
+    And  I should see "foo@bar.com"
 
   Scenario: Attempting to Register with bad data
     Given I am a visitor

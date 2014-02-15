@@ -34,6 +34,9 @@ module LinguisticExplorer
     # JavaScript files you want as :defaults (application.js is always included).
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
+    # I18n configuration
+    # I18n.enforce_available_locales = false
+
     # Use FactoryGirl
     config.generators do |g|
       g.fixture_replacement :factory_girl
@@ -51,12 +54,6 @@ module LinguisticExplorer
     config.filter_parameters += [:password]
 
     require "settings"
-    
-    # While the Squeel DSL is the preferred way to access advanced query functionality,
-    # you can still enable methods on symbols to access ARel predications in a similar manner to MetaWhere:
-    # Squeel.configure do |config|
-    #   config.load_core_extensions :hash, :symbol
-    # end
 
     Settings.configure do |s|
       s.in_preview          = false

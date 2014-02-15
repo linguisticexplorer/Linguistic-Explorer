@@ -18,14 +18,14 @@ Feature: Search By Similarity Tree (R language)
       | Degree Adjective  | German      | yes         | Grammar  | 0     |
       | Degree Adjective  | Spanish     | no          | Grammar  | 0     |
 
-  @selenium
+  @javascript
   Scenario: Visitor searches Similarity Tree with all Properties and Lings
     When I go to the Syntactic Structures search page
     And I choose "Tree" within "#advanced_set"
     And I press "Show results"
     Then I should see the "SimilarityTree" draw
 
-  @selenium
+  @javascript
   Scenario: Visitor searches Similarity Tree with all Properties and Lings
     When I go to the Syntactic Structures search page
     And I choose "Tree" within "#advanced_set"

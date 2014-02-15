@@ -1,4 +1,4 @@
-<div class="apple_pagination will-paginate">
+<div id="pagination_top" class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @search.results, renderer: BootstrapPagination::Rails unless @search.search_comparison %>
 </div>
@@ -13,7 +13,7 @@
       <%= render :partial => "searches/result", :locals => { :result => result}, :inline => true %>
   <%- end -%>
 </table>
-<div class="apple_pagination will-paginate">
+<div id="pagination_bottom" class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @search.results, renderer: BootstrapPagination::Rails unless @search.search_comparison %>
 </div>

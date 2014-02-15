@@ -1,4 +1,4 @@
-<div class="apple_pagination will-paginate">
+<div id="pagination_top" class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @examples, renderer: BootstrapPagination::Rails %>
 </div>
@@ -71,7 +71,7 @@
       </tr>
   <% end %>
 </table>
-<div class="apple_pagination will-paginate">
+<div id="pagination_bottom" class="apple_pagination will-paginate">
   <!-- render page links in the view: -->
   <%= will_paginate @examples, renderer: BootstrapPagination::Rails %>
 </div>
