@@ -25,7 +25,6 @@ module SearchResults
       LingsProperty.select_ids.where conditions
     end
  
-    # Change here with same Squeel stuff...
     def conditions_at_depth(depth)
       conditions = {}.tap do |c|
         ling_ids        = ling_ids(depth)

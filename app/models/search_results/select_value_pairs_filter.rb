@@ -17,7 +17,7 @@ module SearchResults
       pairs = @query.lings_props_pairs(depth)
 
       if pairs.any? && value_pairs_search_enabled?
-         LingsProperty.select_ids.where({ :property_value => pairs } & {:id => vals})
+         LingsProperty.select_ids.where( :property_value => pairs).where(:id => vals)
          # Using the Squeel format
          # LingsProperty.select_ids.where{ (:property_value == my{pairs} ) & (:id == my{vals} )}
       else

@@ -32,7 +32,8 @@ module SearchResults
       @filter = filter_by_all_conditions     :property
 
       @filter = filter_by_all_conditions     :lings_property
-
+      
+      p "[DEBUG] #{[@filter.depth_0_ids, @filter.depth_1_ids]}"
       [@filter.depth_0_ids, @filter.depth_1_ids]
     end
 

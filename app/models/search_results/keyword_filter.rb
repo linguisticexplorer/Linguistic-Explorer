@@ -64,9 +64,11 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      result = LingsProperty.select_ids.where(:id => vals.pluck(:id)).joins(:ling)
-      # Intersect with text search
-              .merge search_scope_name_by_keyword(keyword)
+      result = LingsProperty.select_ids
+        .where(:id => vals.pluck(:id))
+        .includes(:ling, :property, :examples)
+        .merge search_scope_name_by_keyword(keyword)
+
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
