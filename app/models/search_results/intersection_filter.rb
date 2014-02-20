@@ -32,14 +32,15 @@ module SearchResults
 
       LingsProperty.select_ids.
         with_id(val_ids).
-        where(:property_id => prop_ids(Depth::CHILD)) &
-        Ling.parent_ids.with_parent_id(parent_ling_ids)
+        where(:property_id => prop_ids(Depth::CHILD)).
+        includes(:ling).
+        merge Ling.parent_ids.with_parent_id(parent_ling_ids)
     end
 
     def filter_depth_0_vals_by_filtered_depth_1_vals(depth_0_vals, depth_1_vals)
       return [] if any_error? depth_1_vals
       val_ids         = depth_0_vals.map(&:id).uniq
-      parent_ling_ids = depth_1_vals.map(&:parent_id).uniq
+      parent_ling_ids = depth_1_vals.map(&:parent_ling_id).uniq
 
       LingsProperty.select_ids.
         with_id(val_ids).
