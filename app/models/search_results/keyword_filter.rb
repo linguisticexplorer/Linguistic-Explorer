@@ -64,12 +64,9 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      result = LingsProperty.select_ids.where(:id => vals.pluck(:id)).merge search_scope_name_by_keyword(keyword)
-      # Squeel Syntax
-      # result = LingsProperty.select_ids.where{ (:id == my{vals}) } & search_scope_name_by_keyword(keyword)
-      p "[DEBUG] #{vals.inspect} + #{keyword}"
-      p "[DEBUG] #{LingsProperty.select_ids.where(:id => vals.pluck(:id)).inspect} + #{search_scope_name_by_keyword(keyword).inspect}"
-      p "[DEBUG] #{result.inspect}"
+      result = LingsProperty.select_ids.where(:id => vals.pluck(:id)).joins(:ling)
+      # Intersect with text search
+              .merge search_scope_name_by_keyword(keyword)
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
