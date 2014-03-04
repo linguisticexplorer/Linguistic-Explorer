@@ -19,7 +19,7 @@ module SearchResults
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
     #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
-
+    
     if pagination
       @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
     else

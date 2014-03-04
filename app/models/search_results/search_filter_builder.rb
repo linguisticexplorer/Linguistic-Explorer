@@ -16,24 +16,23 @@ module SearchResults
 
     def filter_search_query
       # Filters return depth_0_vals and depth_1_vals
-
+      
       @filter = filter_by_any_selected_lings_and_props
-
+      
       @filter = filter_by_keywords           :ling
-
+      
       @filter = filter_by_keywords           :property
-
+      
       @filter = filter_by_keywords           :example
-
+      
       @filter = filter_by_val_query_params
-
+      
       @filter = filter_by_depth_intersection
-
+      
       @filter = filter_by_all_conditions     :property
 
       @filter = filter_by_all_conditions     :lings_property
-      
-      p "[DEBUG] #{[@filter.depth_0_ids, @filter.depth_1_ids]}"
+
       [@filter.depth_0_ids, @filter.depth_1_ids]
     end
 

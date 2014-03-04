@@ -73,20 +73,26 @@ module SearchResults
 
     def collect_all_from_vals(vals, associated)
       # select depth vals whose ling_ids have all column value in category for all section
-      vals.select do |v|
+      result = vals.select do |v|
         associated.map(&:to_s).all? { |col|
           vals_with_ling_id_and_column(vals, v.ling_id).include?(col)
         }
       end
+
+      return result
     end
 
     def vals_with_ling_id_and_column(vals, ling_id)
-      vals_by_ling_id(vals)[ling_id].map(&column).map(&:to_s)
+      result = vals_by_ling_id(vals)[ling_id].map(&column).map(&:to_s)
+
+      return result
     end
 
     def vals_by_ling_id(vals)
       # [vals] --> {1 => [val,val], 2 ==> [val, val] etc.}
-      vals.group_by { |v| v.ling_id }
+      result = vals.group_by { |v| v.ling_id }
+      
+      return result
     end
 
   end

@@ -32,8 +32,8 @@ Feature: Search with All
     Then I should see the following search results:
     | Lings         | Properties        | Value     | depth   |
     | Speaker 1     | Property 1        | Eastern   | parent  |
-    | Speaker 1     | Property 2        | Western   | parent  |
     | Sentence 1    | Property 3        | verb      | child   |
+    | Speaker 1     | Property 2        | Western   | parent  |
     | Sentence 1    | Property 4        | noun      | child   |
     And I should not see "Speaker 2"
     And I should not see "Speaker 3"

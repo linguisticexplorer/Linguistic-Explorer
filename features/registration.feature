@@ -10,7 +10,8 @@ Feature: Registration
     And  I fill in "Password" with "hunter2"
     And  I fill in "Password confirmation" with "hunter2"
     And  I fill in the CAPTCHA correctly
-    And  I press "Sign Up" within "#login-form"
+    And  I press "Sign Up"
+    And show me the page
     Then I should be on the home page
     And  I should see "You have signed up successfully"
     And  I should see "foo@bar.com"
@@ -22,9 +23,9 @@ Feature: Registration
     When I follow "Sign Up"
     And  I should be on the registration page
     When I clear "Email"
-    And  I fill in "Name" with "bob jonez"
-    And  I fill in "Password" with "hunter2"
-    And  I fill in "Password confirmation" with "hunter2"
+    And  I fill in "Name" with "bob jonez" 
+    And  I fill in "Password" with "hunter2" 
+    And  I fill in "Password confirmation" with "hunter2" 
     And  I press "Sign Up"
     Then I should not be on the home page
     Then I should see "errors"

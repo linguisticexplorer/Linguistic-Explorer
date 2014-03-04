@@ -9,7 +9,7 @@ module SearchCrossResultsHelper
     {}.tap do |attrs|
       attrs[:class] = "search_result"
       # attrs["data-parent-value"] = entry.parent.inject("p") {|memo, lp| "#{memo}-#{lp.prop_name.hash - lp.property_value.hash}" }
-      attrs["data-parent-value"] = entry.parent.map { |lp| "#{lp.ling_id}:#{lp.prop_id}:#{lp.property_value}"}.join("_")
+      attrs["data-parent-value"] = entry.parent.map { |lp| "#{lp.prop_id}:#{lp.property_value}"}.join("_")
       attrs["data-child-value"]  = "#{entry.child.count}-#{attrs["data-parent-value"]}"
     end
   end

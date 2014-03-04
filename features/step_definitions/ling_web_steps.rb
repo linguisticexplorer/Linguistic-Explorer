@@ -1,5 +1,7 @@
-Given /^the setting(?:|s) "([^\"]*)" is true$/ do |setting|
-  Settings.stub(setting.underscorize.to_sym => true)
+Given /^the setting "Preview" is (.+)$/ do |value|
+  Settings.configure do |s|
+    s.in_preview = value
+  end
 end
 
 When /^(?:|I )clear "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|

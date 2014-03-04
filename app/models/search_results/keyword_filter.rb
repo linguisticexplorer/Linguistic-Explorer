@@ -47,7 +47,11 @@ module SearchResults
     end
 
     def query_key
-      "#{model_class.name.downcase.underscorize}_keywords".to_sym
+      "#{model_name}_keywords".to_sym
+    end
+
+    def model_name
+      "#{model_class.name.downcase.underscorize}"
     end
 
     def keyword(depth)
@@ -64,18 +68,22 @@ module SearchResults
     end
 
     def select_vals_by_keyword(vals, keyword)
-      result = LingsProperty.select_ids
-        .where(:id => vals.pluck(:id))
-        .includes(:ling, :property, :examples)
-        .merge search_scope_name_by_keyword(keyword)
-
+      result = LingsProperty.select_ids.
+        where(:id => vals.pluck(:id)).
+        # includes(:ling, :property, :examples).
+        joins("#{model_name}".to_sym).
+        # Intersect with the result of keyword search
+        merge search_scope_name_by_keyword(keyword)
+      
+      # p "[DEBUG] #{result.inspect}"
       result.empty? ? Filter::NO_DEPTH_1_RESULT : result
     end
 
     def search_scope_name_by_keyword(keyword)
       model_class.in_group(group).unscoped.
       # Arel
-        where(model_class.arel_table[:name].matches("#{keyword}%") || model_class.arel_table[:name].matches("%#{keyword}%") )
+        where( (model_class.arel_table[:name].matches("#{keyword}%")).
+        or( model_class.arel_table[:name].matches("%#{keyword}%") ))
       # Metawhere
           # where({:name.matches  => "#{keyword}%"} | { :name.matches => "%#{keyword}%"})
       # Squeel Syntax
@@ -151,19 +159,20 @@ module SearchResults
                           search_scope_value_by_stored_value_key_pair(keyword, example_attribute)
                       end
 
-      # LingsProperty.select_ids.where(:id => vals) & keyword_scope
+      LingsProperty.select_ids.where(:id => vals).merge keyword_scope
       # Squeel Syntax
-      LingsProperty.select_ids.where{ (:id == my{vals}) } & keyword_scope
+      # LingsProperty.select_ids.where{ (:id == my{vals}) } & keyword_scope
     end
 
     def search_scope_value_by_stored_value_key_pair(keyword, key)
-      # model_class.unscoped.where(:group_id => group.id) &
-      #   StoredValue.unscoped.with_key(key).
-      #   where({:value.matches => "#{keyword}%"} | { :value.matches => "%#{keyword}%"})
+      model_class.unscoped.where(:group_id => group.id).
+        merge  StoredValue.unscoped.with_key(key).
+        where( (StoredValue.arel_table[:value].matches("#{keyword}%")).
+        or(StoredValue.arel_table[:value].matches("%#{keyword}%") ))
       #  Squeel Syntax
-      model_calss.unscoped.where{ :group == my{group.id} } &
-        StoredValue.unscoped.with_key(key).
-        where { (:value =~ "#{keyword}%") || (:value =~ "%#{keyword}%")}
+      # model_calss.unscoped.where{ :group == my{group.id} } &
+      #   StoredValue.unscoped.with_key(key).
+      #   where { (:value =~ "#{keyword}%") || (:value =~ "%#{keyword}%")}
     end
 
   end

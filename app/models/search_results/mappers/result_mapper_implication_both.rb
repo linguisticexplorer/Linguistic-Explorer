@@ -68,17 +68,17 @@ module SearchResults
       end
 
       def self.prop_values_in(vals)
-        vals.keys.uniq
+        vals.keys
       end
 
       def self.prop_values_in_subset(val_ids)
-        LingsProperty.with_id(val_ids).select("DISTINCT(property_value)").map(&:property_value).uniq
+        LingsProperty.with_id(val_ids).distinct.pluck(:property_value)
       end
 
       def self.common_values_in_subset(ling_ids, prop_values_filtered=nil)
-        result = LingsProperty.select_ids.where(:ling_id => ling_ids).group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
+        result = LingsProperty.where(:ling_id => ling_ids).group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
         result = result.where(:property_value => prop_values_filtered) unless prop_values_filtered.nil?
-        LingsProperty.with_ling_id(ling_ids).where("property_value" => result.map(&:property_value)).group_by(&:property_value)
+        LingsProperty.with_ling_id(ling_ids).select("id, property_value").where(:property_value => result.pluck(:property_value)).group_by(&:property_value)
         # Squeel Syntax
         # result = LingsProperty.select_ids.where{ (:ling_id == my{ling_ids} )}.group(:property_value).having(["COUNT(property_value) = ?", ling_ids.size])
         # result = result.where{ (:property_value == my{prop_values_filtered} )} unless prop_values_filtered.nil?
@@ -86,7 +86,7 @@ module SearchResults
       end
 
       def self.vals_by_prop_values(val_ids)
-        LingsProperty.with_id(val_ids).group_by(&:property_value)
+        LingsProperty.with_id(val_ids).select_ids.group_by(&:property_value)
       end
 
       def self.filter_ling_ids(vals_by_prop_value, prop_value)

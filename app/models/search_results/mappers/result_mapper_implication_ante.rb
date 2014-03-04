@@ -7,7 +7,7 @@ module SearchResults
       private
 
       def self.filter_ling_ids(group, prop_value)
-        LingsProperty.in_group(group).select("ling_id").where("property_value = ?", prop_value).index_by(&:ling_id).keys
+        LingsProperty.in_group(group).where(:property_value => prop_value).pluck(:ling_id)
         # Squeel Syntax
         # LingsProperty.in_group(group).select("ling_id").where{ ("property_value" == my{prop_value})} .index_by(&:ling_id).keys
       end

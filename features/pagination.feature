@@ -24,7 +24,7 @@ Feature: Pagination
     | Degree Adjective  | Italian     | yes         | Grammar  | 0     |
     | Degree Adjective  | French      | yes         | Grammar  | 0     |
     | Degree Adjective  | Bellinzonese| yes         | Grammar  | 1     |
-
+    And I want at most "4" results per page
     And I go to the group Syntactic Structures
 
   Scenario: Visitor goes to Ling page and navigate with pagination letter button

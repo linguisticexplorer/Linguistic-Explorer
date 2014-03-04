@@ -30,6 +30,7 @@ Feature: Search with Implication Both
     | Property 7    | Sentence 2  | yes       | Linguistic  | 1     |
     | Property 7    | Sentence 3  | no        | Linguistic  | 1     |
     | Property 8    | Sentence 2  | no        | Linguistic  | 1     |
+    And I want at most "25" results per page
 
   Scenario: Visitor searches Implication Both with all Properties and Lings
     When I go to the Syntactic Structures search page
@@ -44,23 +45,23 @@ Feature: Search with Implication Both
     | Property 4      | no               | Property 2      | yes              |   2   |
     | Property 2      | no               | Property 1      | yes              |   1   |
     | Property 2      | no               | Property 3      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 3      | no               | Property 1      | yes              |   1   |
     | Property 3      | no               | Property 2      | no               |   1   |
     | Property 3      | yes              | Property 2      | yes              |   1   |
     | Property 3      | yes              | Property 4      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 5      | yes              | Property 6      | yes              |   1   |
     | Property 5      | yes              | Property 7      | no               |   1   |
     | Property 6      | yes              | Property 5      | yes              |   1   |
     | Property 6      | yes              | Property 7      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 7      | yes              | Property 5      | no               |   1   |
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
@@ -78,9 +79,9 @@ Feature: Search with Implication Both
     | Property 4      | no               | Property 2      | yes              |   2   |
     | Property 2      | no               | Property 1      | yes              |   1   |
     | Property 2      | no               | Property 3      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 3      | no               | Property 1      | yes              |   1   |
     | Property 3      | no               | Property 2      | no               |   1   |
     | Property 3      | yes              | Property 2      | yes              |   1   |
@@ -98,9 +99,9 @@ Feature: Search with Implication Both
     | Property 5      | yes              | Property 7      | no               |   1   |
     | Property 6      | yes              | Property 5      | yes              |   1   |
     | Property 6      | yes              | Property 7      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 7      | yes              | Property 5      | no               |   1   |
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
@@ -119,16 +120,16 @@ Feature: Search with Implication Both
     | Property 4      | no               | Property 2      | yes              |   2   |
     | Property 1      | yes              | Property 2      | yes              |   1   |
     | Property 1      | yes              | Property 4      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 3      | yes              | Property 2      | yes              |   1   |
     | Property 3      | yes              | Property 4      | no               |   1   |
     | Property 7      | no               | Property 5      | no               |   1   |
     | Property 7      | yes              | Property 5      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
     | Property 8      | no               | Property 7      | yes              |   1   |
@@ -146,9 +147,9 @@ Feature: Search with Implication Both
     | Property 4      | no               | Property 2      | yes              |   2   |
     | Property 1      | yes              | Property 2      | yes              |   1   |
     | Property 1      | yes              | Property 4      | no               |   1   |
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 3      | yes              | Property 2      | yes              |   1   |
     | Property 3      | yes              | Property 4      | no               |   1   |
     And I should not see "Property 7"
@@ -160,16 +161,16 @@ Feature: Search with Implication Both
     And I select "Speaker 3" from "Lings"
     And I choose "Both" within "#advanced_set"
     And I press "Show results"
+    And I should not see "Property 2"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 7      | no               | Property 5      | no               |   1   |
     | Property 7      | yes              | Property 5      | no               |   1   |
     | Property 7      | yes              | Property 8      | no               |   1   |
     | Property 8      | no               | Property 5      | no               |   1   |
-    And I should not see "Property 2"
-    And I follow "Next"
-    Then I should see the following Implication search results:
-    | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
+    # And I follow "Next"
+    # Then I should see the following Implication search results:
+    # | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
     | Property 8      | no               | Property 7      | yes              |   1   |
 
 

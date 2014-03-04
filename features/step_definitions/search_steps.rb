@@ -79,7 +79,7 @@ When /^I allow all properties$/ do
 end
 
 
-Then /^I should see the following search results:$/ do |table|
+Then /^I should see the following search results\:$/ do |table|
   table.hashes.each do |row|
     ling  = Ling.find_by_name(row["Lings"]) if row["Lings"]
     prop  = Property.find_by_name(row["Properties"]) if row["Properties"]
@@ -135,7 +135,7 @@ Then /^I should see the following Cross search results:$/ do |table|
     end
 
     # calculated_div_id = lps.inject("p") {|memo, lp| "#{memo}-#{lp.prop_name.hash - lp.property_value.hash}" }
-    calculated_div_id =  lps.map { |lp| "#{lp.ling_id}:#{lp.prop_id}:#{lp.property_value}"}.join("_")
+    calculated_div_id =  lps.map { |lp| "#{lp.prop_id}:#{lp.property_value}"}.join("_")
     with_scope(%Q|[data-parent-value="#{calculated_div_id}"]|) do
       props.each do |prop|
         page.should have_content(prop.name)

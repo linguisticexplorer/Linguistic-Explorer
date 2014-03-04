@@ -35,11 +35,11 @@ LinguisticExplorer::Application.configure do
 
   # Use a different size of pagination
   # See http://rubyflare.com/2010/11/25/faster-cucumbering-with-pagination/
-  ActiveRecord::Base.instance_eval do
-    def per_page; 4; end
-  end
+  # ActiveRecord::Base.instance_eval do
+  #   def per_page; 4; end
+  # end
 
-  DEFAULT_PER_PAGE = ActiveRecord::Base.per_page
+  # DEFAULT_PER_PAGE = ActiveRecord::Base.per_page
 
   # Trace Query triggers
   ActiveRecordQueryTrace.enabled = true

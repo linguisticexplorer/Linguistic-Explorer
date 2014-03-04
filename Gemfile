@@ -122,7 +122,7 @@ group :test, :development do
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   #gem 'cover_me', '>= 1.2.0'
-  gem 'simplecov', :require => false
+  gem 'simplecov', '~> 0.7.1', :require => false
   gem 'ruby-prof'
 
   gem 'factory_girl_rails', "~> 1.1"

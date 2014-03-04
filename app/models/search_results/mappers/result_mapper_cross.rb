@@ -9,7 +9,8 @@ module SearchResults
         vals_by_prop_ids = vals_by_property_id(vals)
 
         # p "FIRST: #{result.inspect} - #{vals}"
-
+        # Cannot optimize with a single query:
+        # we need to create for each property an array of (unique) prop_values
         prop_values = [].tap do |p|
           vals_by_prop_ids.keys.each do |prop_id|
             p << vals_by_prop_ids[prop_id].map(&:property_value).uniq
@@ -25,7 +26,7 @@ module SearchResults
 
         combinations.each do |c|
           c.map! do |prop_value|
-            LingsProperty.find_by_property_value(prop_value)
+            LingsProperty.select_ids.find_by_property_value(prop_value)
           end
         end
 

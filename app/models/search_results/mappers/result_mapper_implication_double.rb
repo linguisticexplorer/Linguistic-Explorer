@@ -7,8 +7,8 @@ module SearchResults
       private
 
       def self.find_double_implication(ids, bigger_set_ids)
-        prop_values_selected_in_all = LingsProperty.with_ling_id(bigger_set_ids).select_ids.group(:property_value).having(["COUNT(property_value) = ?", ids.size]).count
-        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) = ?", ids.size]).count
+        prop_values_selected_in_all = LingsProperty.with_ling_id(bigger_set_ids).select(:id).group(:property_value).having(["COUNT(property_value) = ?", ids.size]).count
+        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select(:id).group(:property_value).having(["COUNT(property_value) = ?", ids.size]).count
         prop_values_double = intersect prop_values_selected_in_all, prop_values_selected_in_ids
 
         LingsProperty.select_ids.where(:property_value => prop_values_double.keys).group_by(&:property_value)

@@ -28,11 +28,11 @@ module SearchResults
       end
 
       def self.vals_by_property_id(vals)
-        vals.group_by { |v| v.property_id }
+        vals.group_by(&:property_id)
       end
 
       def self.vals_by_ling_id(vals)
-        vals.group_by { |v| v.ling_id }
+        vals.group_by(&:ling_id)
       end
 
       class ResultEntry

@@ -30,6 +30,7 @@ Feature: Search with Double Both Implication
     | Property 7    | Sentence 2  | yes       | Linguistic  | 1     |
     | Property 7    | Sentence 3  | no        | Linguistic  | 1     |
     | Property 8    | Sentence 2  | no        | Linguistic  | 1     |
+    And I want at most "25" results per page
 
   Scenario: Visitor searches Implication Double Both
     When I go to the Syntactic Structures search page

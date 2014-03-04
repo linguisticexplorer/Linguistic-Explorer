@@ -11,7 +11,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "..", "support", "pat
 
 module WithinHelpers
   def with_scope(locator)
-    locator ? within(locator) { yield } : yield
+    locator ? within(locator, :match => :prefer_exact) { yield } : yield
   end
 end
 World(WithinHelpers)
@@ -26,38 +26,38 @@ end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
   with_scope(selector) do
-    # click_button(button)
+    click_button(button, :match => :prefer_exact)
     # To fix ambiguity with Capybara 2 let's take just the first match
-    first(:button, button).click
+    # first(:button, button).click
   end
 end
 
 When /^(?:|I )return to "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| # Simple replacement of "return to" for "follow", seen below
   with_scope(selector) do
-    # click_link(link)
-    first(:link, link).click
+    click_link(link, :match => :prefer_exact)
+    # first(:link, link).click
   end
 end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
   with_scope(selector) do
-    # click_link(link)
+    click_link(link, :match => :prefer_exact)
     # To fix ambiguity with Capybara let's take just the first match
-    first(:link, link).click
+    # first(:link, link).click
   end
 end
 
 When /^(?:|I )fill in "([^\"]*)" with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
-    # fill_in(field, :with => value)
-    first(:field, field).set value
+    fill_in(field, :with => value, :match => :prefer_exact)
+    # first(:field, field).set value
   end
 end
 
 # When I search in the "#auto_compare" field with "s"
 When /^(?:|I )search in the "([^\"]*)" field with "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, value, selector|
   with_scope(selector) do
-    fill_in(field, :with => value)
+    fill_in(field, :with => value, :match => :prefer_exact)
     # first(:field, field).set value
     # See Issue #43 in Poltergeist
     page.execute_script "$('\##{field}').keydown()"
@@ -81,9 +81,9 @@ end
 When /^(?:|I )add "([^\"]*)"(?: within "([^\"]*)")? to the list$/ do |link, selector| 
   selector |= ".typeahead"
   with_scope(selector) do
-    # click_link(link)
+    click_link(link, :match => :prefer_exact)
     # To fix ambiguity with Capybara let's take just the first match
-    first(:link, link).click
+    # first(:link, link).click
   end
 end
 
@@ -113,7 +113,7 @@ end
 
 When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
   with_scope(selector) do
-    select(value, :from => field)
+    select(value, :from => field, :match => :prefer_exact)
     # find(:input, field).set(value)
     # find_field(field).select(value)
   end
@@ -121,28 +121,28 @@ end
 
 When /^(?:|I )check "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    # check(field)
-    find(:checkbox, field).first.set(true)
+    check(field, :match => :prefer_exact)
+    # find(:checkbox, field).first.set(true)
   end
 end
 
 When /^(?:|I )uncheck "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    # uncheck(field)
-    find(:checkbox, field).set(false)
+    uncheck(field, :match => :prefer_exact)
+    # find(:checkbox, field).set(false)
   end
 end
 
 When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    choose(field)
+    choose(field, :match => :prefer_exact)
   end
 end
 
 When /^(?:|I )choose Implication "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   field = "search_group_impl_#{field.downcase}"
   with_scope(selector) do
-    choose(field)
+    choose(field, :match => :prefer_exact)
   end
 end
 
@@ -335,4 +335,26 @@ end
 
 Then /^(?:|I )see the Javascript console$/ do
   page.driver.debug
+end
+
+Then /^(?:|I )want at most "([^\"]*)" results per page$/ do |rows|
+  results = rows.to_i
+
+  LinguisticExplorer::Application.configure do
+
+    if (ActiveRecord::Base.per_page != results)
+      # regular pagination value
+      if(results == 25)
+        ActiveRecord::Base.instance_eval do
+          def per_page; 25; end
+        end
+      elsif(results == 4)
+      # need to test pagination without overloading the db...
+        ActiveRecord::Base.instance_eval do
+          def per_page; 4; end
+        end
+      end
+      DEFAULT_PER_PAGE = results
+    end
+  end
 end

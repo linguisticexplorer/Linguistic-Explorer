@@ -7,14 +7,14 @@ module SearchResults
       private
 
       def self.filter_ling_ids(group, prop_value)
-        # LingsProperty.in_group(group).select("ling_id").where("property_value" => prop_value).index_by(&:ling_id).keys
+        LingsProperty.in_group(group).where(:property_value => prop_value).uniq.pluck(:ling_id)
         # Squeel Syntax
-        LingsProperty.in_group(group).select("ling_id").where{ ("property_value" == my{prop_value} )}.index_by(&:ling_id).keys
+        # LingsProperty.in_group(group).select("ling_id").where{ ("property_value" == my{prop_value} )}.index_by(&:ling_id).keys
       end
 
       def self.find_antecedents(ids)
-        prop_values_selected_in_all = LingsProperty.select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
-        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select_ids.group(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
+        prop_values_selected_in_all = LingsProperty.group(:property_value).select(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
+        prop_values_selected_in_ids = LingsProperty.with_ling_id(ids).select(:property_value).group(:property_value).having(["COUNT(property_value) <= ?", ids.size]).count
         prop_values_antecedents = intersect prop_values_selected_in_all, prop_values_selected_in_ids
 
         LingsProperty.select_ids.where(:property_value => prop_values_antecedents.keys).group_by(&:property_value)
