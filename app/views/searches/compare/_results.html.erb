@@ -4,6 +4,7 @@
 </div>
 <%- common_results = results_in_common_compare_search(@search.results) -%>
 <%- if common_results.any? -%>
+  <div id="tableCommon">
     <div id="tableCommonHeader">
 	    <h3 class="red_grad">Properties in Common <%= get_lings(@search.results) -%>:</h3>
     </div>
@@ -17,9 +18,11 @@
           <%= render :partial => "searches/compare/result_common", :locals => { :result => result}, :inline => true %>
       <%- end -%>
     </table>
+  </div>
 <%- end -%>
 <%- diff_results = results_diff_compare_search(@search.results) -%>
 <%- if diff_results.any? -%>
+  <div id="tableNotCommon">
     <div id="tableNotCommonHeader">
 	    <h3 class="red_grad">Properties not in Common:</h3>
     </div>
@@ -36,6 +39,7 @@
           <%= render :partial => "searches/compare/result_diff", :locals => { :result => result}, :inline => true %>
       <%- end -%>
     </table>
+  </div>
 <%- end -%>
 <div id="pagination_bottom" class="apple_pagination will-paginate">
   <!-- render page links in the view: -->

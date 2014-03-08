@@ -179,7 +179,7 @@ end
 
 
 Then /^(?:|I )should see "([^\"]*)" in common?$/ do |text|
-  with_scope("div.search_common_result.row") do
+  with_scope("#tableCommon") do
     if page.respond_to? :should
       page.should have_content(text)
     else
