@@ -37,7 +37,6 @@ Feature: Search with Any in Properties (Both Depth 0 and 1)
       | Sentence 1    | Property 4        | boh       | child   |
       | Speaker 1     | Property 2        | yes       | parent  |
       | Sentence 1    | Property 5        | boh       | child   |
-    And I should see "Next"
 
   Scenario: Visitor searches any property
     When I go to the Syntactic Structures search page
