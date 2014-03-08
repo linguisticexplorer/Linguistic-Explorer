@@ -141,6 +141,6 @@ group :test, :development do
   gem 'capybara'
   gem 'launchy'
   gem 'brakeman'
-  gem 'poltergeist', '~> 1.5.0'
+  gem 'poltergeist', '~> 1.4.0'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
