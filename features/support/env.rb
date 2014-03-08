@@ -18,7 +18,7 @@ Spork.prefork do
 	require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 	require 'cucumber/rails'
 	# require "cucumber/rspec/doubles"
-	# require "capybara/poltergeist"
+	require "capybara/poltergeist"
 
 	# Lets you click links with onclick javascript handlers without using @culerity or @javascript
 	# require 'cucumber/rails/capybara_javascript_emulation'
@@ -83,6 +83,10 @@ Spork.prefork do
 	AfterConfiguration do |config|
 	  DatabaseCleaner.clean
 	end
+    
+    # suppress some warnings about pagination
+    # remove it in case you want to debug issues in the features
+	$VERBOSE = nil
   
   # Enable this hack to discover which dependencies is making your tests slow
   # useful to use together with spork

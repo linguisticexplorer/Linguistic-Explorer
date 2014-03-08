@@ -27,7 +27,6 @@ Feature: Save searches
   Scenario: View a simple saved searches
     Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
-    And show me the page
     When I follow "History" within "#header"
     Then I should see "My First Search"
 

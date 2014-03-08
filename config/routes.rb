@@ -10,14 +10,14 @@ LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
 
-  match "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
-  match "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
-  match "/groups/:group_id/lings/:id/dict" => "lings#dict"
-  match "/groups/:group_id/lings/dict" => "lings#dict"
-  match "/groups/:group_id/dict" => "lings#dict1"
-  match "/groups/:group_id/properties/dict" => "properties#dict"
-  match "/groups/:group_id/memberships/dict" => "memberships#dict"
-  match "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
+  get "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
+  get "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
+  get "/groups/:group_id/lings/:id/dict" => "lings#dict"
+  get "/groups/:group_id/lings/dict" => "lings#dict"
+  get "/groups/:group_id/dict" => "lings#dict1"
+  get "/groups/:group_id/properties/dict" => "properties#dict"
+  get "/groups/:group_id/memberships/dict" => "memberships#dict"
+  get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   resources :groups do
     member do

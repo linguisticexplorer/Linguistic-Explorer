@@ -1,7 +1,7 @@
 Given /^the setting "Preview" is (.+)$/ do |value|
   LinguisticExplorer::Application.configure do
     Settings.configure do |s|
-      s.in_preview = value
+      s.in_preview = (value == "true")
     end
   end
 end
