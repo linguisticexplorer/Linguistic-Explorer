@@ -1,7 +1,8 @@
 Given /^the setting "Preview" is (.+)$/ do |value|
-  require "settings"
-  Settings.configure do |s|
-    s.in_preview = value
+  LinguisticExplorer::Application.configure do
+    Settings.configure do |s|
+      s.in_preview = value
+    end
   end
 end
 
