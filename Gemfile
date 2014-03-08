@@ -113,8 +113,9 @@ group :test, :development do
   # gem 'mongrel', "1.2.0"
   # Use Thin as web server
   gem "thin"
-
-  gem "spork-rails"
+  
+  # Disable for the moment
+  # gem "spork-rails"
 
   # gem 'rspec', "2.5.0"
   gem 'rspec-rails', "~> 2.0"

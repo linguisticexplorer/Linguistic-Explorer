@@ -1,8 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 
-require "spork"
+# require "spork"
 
-Spork.prefork do
+# Spork.prefork do
   # Simplecov needs to start at the top
   require 'simplecov'
 
@@ -85,7 +85,7 @@ Spork.prefork do
   #   end
   #   alias_method_chain :require, :trace
   # end
-end
+# end
 
-Spork.each_run do
-end
+# Spork.each_run do
+# end

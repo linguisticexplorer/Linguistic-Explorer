@@ -5,9 +5,9 @@
 # files.
 
 
-require "spork"
+# require "spork"
 
-Spork.prefork do
+# Spork.prefork do
 
   # Load simplecov on top of everything
   require 'simplecov'
@@ -101,4 +101,4 @@ Spork.prefork do
  #    end
  #    alias_method_chain :require, :trace
  #  end
-end
+# end
