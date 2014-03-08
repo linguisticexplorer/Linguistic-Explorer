@@ -277,7 +277,7 @@ DEPENDENCIES
   nokogiri (>= 1.5.6)
   passenger
   phantomjs
-  poltergeist (~> 1.5.0)
+  poltergeist (>= 1.4.0)
   progressbar
   rails (= 3.2.13)
   rake (= 10.1.0)
