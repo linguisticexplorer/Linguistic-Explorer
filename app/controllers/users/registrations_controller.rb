@@ -1,13 +1,13 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   def create
     email = params[:user].delete(:email)
-    build_resource
+    build_resource sign_up_params
     resource.email = email
     resource.access_level = User::USER
 
     result = resource.save
 
-    p "[DEBUG] #{resource.inspect} - #{result}"
+    # p "[DEBUG] #{resource.inspect} - #{result}"
 
     if result
       set_flash_message :notice, :signed_up
