@@ -1,7 +1,7 @@
 language: ruby
-bundler_args: --without development production
 before_script:
   - rm Gemfile.lock
+  - bundle install --without development production
   - bundle check
   - cp yamls/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
