@@ -27,7 +27,8 @@ Feature: Save searches
   Scenario: View a simple saved searches
     Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
-    When I follow "History"
+    And show me the page
+    When I follow "History" within "#header"
     Then I should see "My First Search"
 
   Scenario: No link to search history if signed out
@@ -96,7 +97,7 @@ Feature: Save searches
   Scenario: Delete saved query
     Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
-    When I follow "History"
+    When I follow "History" within "#header"
     And I follow "Delete"
     Then I should see "successfully deleted"
     And I should see "Syntactic Structures Search History"

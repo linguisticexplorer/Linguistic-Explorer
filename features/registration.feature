@@ -11,7 +11,6 @@ Feature: Registration
     And  I fill in "Password confirmation" with "hunter2"
     And  I fill in the CAPTCHA correctly
     And  I press "Sign Up"
-    And show me the page
     Then I should be on the home page
     And  I should see "You have signed up successfully"
     And  I should see "foo@bar.com"
