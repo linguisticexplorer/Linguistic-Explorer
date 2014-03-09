@@ -1,11 +1,11 @@
 language: ruby
 bundler_args: --without development production
 before_script:
-  - bundle check
   - cp yamls/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
   - RAILS_ENV=test bundle exec rake db:migrate
   - RAILS_ENV=test bundle exec rake db:test:prepare
+  - mysqld_safe --innodb-flush-log-at-trx-commit=2
   - phantomjs --version
 script:
   - RAILS_ENV=test bundle exec rspec spec
