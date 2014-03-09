@@ -1,9 +1,6 @@
 language: ruby
-before_install:
-  - rm Gemfile.lock
 bundler_args: --without development production
 before_script:
-  - bundle install --without development production
   - bundle check
   - cp yamls/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
@@ -14,10 +11,9 @@ script:
   - RAILS_ENV=test bundle exec rspec spec
   - RAILS_ENV=test bundle exec cucumber --profile travis
 rvm:
-  - 1.9.2
   - 1.9.3
   - 2.0.0
-  - 2.1.0
+  - 2.1.1
 gemfile:
   - Gemfile
 branches:

@@ -122,9 +122,8 @@ group :test, :development do
   gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
-  #gem 'cover_me', '>= 1.2.0'
   gem 'simplecov', '~> 0.7.1', :require => false
-  gem 'ruby-prof'
+  # gem 'ruby-prof'
 
   gem 'factory_girl_rails', "~> 1.1"
   gem "cucumber", "~> 1.1.0"
@@ -138,9 +137,9 @@ group :test, :development do
   # Due to the new name resolution approach of the bundler gem it has the require option
   # gem "cucumber-rails", ">= 0.5.1" #, :require => false # '0.4.0.beta.1'
   gem 'cucumber-rails', "~> 1.1.1", :require => false
-  gem 'capybara', ">= 2.1.0"
+  gem 'capybara'
   gem 'launchy'
   gem 'brakeman'
-  gem 'poltergeist', '>= 1.4.0'
+  gem 'poltergeist'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
 end
