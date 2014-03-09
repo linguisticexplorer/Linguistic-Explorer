@@ -13,6 +13,11 @@ class SearchesController < GroupDataController
 
     authorize! :search, @search
 
+    # eager loading of some some heavy stuff
+    @search.property_categories.each do |category, depth|
+      @search.lings_prop_options(category)
+    end
+
     respond_with(@search) do |format|
       format.html
       format.js
