@@ -3,7 +3,7 @@ bundler_args: --without development production
 before_script:
   - cp yamls/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
-  - mysql -e 'SET GLOBAL innodb-flush-log-at-trx-commit=2'
+  - mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
   - RAILS_ENV=test bundle exec rake db:migrate
   - RAILS_ENV=test bundle exec rake db:test:prepare
   - phantomjs --version
