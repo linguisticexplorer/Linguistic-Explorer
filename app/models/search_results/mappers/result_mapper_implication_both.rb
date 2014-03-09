@@ -86,7 +86,8 @@ module SearchResults
       end
 
       def self.vals_by_prop_values(val_ids)
-        LingsProperty.with_id(val_ids).select_ids.group_by(&:property_value)
+        result ||= LingsProperty.with_id(val_ids).select_ids.group_by(&:property_value)
+        return result
       end
 
       def self.filter_ling_ids(vals_by_prop_value, prop_value)

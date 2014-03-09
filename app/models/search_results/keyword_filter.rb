@@ -159,7 +159,7 @@ module SearchResults
                           search_scope_value_by_stored_value_key_pair(keyword, example_attribute)
                       end
 
-      LingsProperty.select_ids.where(:id => vals).merge keyword_scope
+      LingsProperty.joins(:Examples).where(:id => vals.pluck(:id)).merge keyword_scope
       # Squeel Syntax
       # LingsProperty.select_ids.where{ (:id == my{vals}) } & keyword_scope
     end

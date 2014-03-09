@@ -14,7 +14,7 @@ module SearchForm
   end
 
   def lings_prop_options(category)
-    @prop_value_readable ||=group_lings_props_in_category(category).map { |lp|
+    @prop_value_readable =group_lings_props_in_category(category).map { |lp|
         ["#{lp.prop_name}: #{lp.value}", lp.property_value] }
   end
 
@@ -23,7 +23,7 @@ module SearchForm
   end
 
   def property_categories
-    @property_categories ||= Category.in_group(group).order(:depth, :name)
+    @property_categories = Category.in_group(group).order(:depth, :name)
   end
 
   def has_ling_children?

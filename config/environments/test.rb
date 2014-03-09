@@ -42,5 +42,8 @@ LinguisticExplorer::Application.configure do
   # DEFAULT_PER_PAGE = ActiveRecord::Base.per_page
 
   # Trace Query triggers
-  ActiveRecordQueryTrace.enabled = true
+  # Set to true to debug and reace query
+  # restore it to true to run tests!
+  # It's it insanely expensive in memory terms this guy!!!!
+  ActiveRecordQueryTrace.enabled = false
 end
