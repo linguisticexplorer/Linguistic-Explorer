@@ -1,6 +1,8 @@
 language: ruby
-before_script:
+before_install:
   - rm Gemfile.lock
+bundler_args: --without development production
+before_script:
   - bundle install --without development production
   - bundle check
   - cp yamls/database.yml.travisCI config/database.yml
