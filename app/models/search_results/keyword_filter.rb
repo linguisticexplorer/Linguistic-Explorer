@@ -69,7 +69,8 @@ module SearchResults
 
     def select_vals_by_keyword(vals, keyword)
       result = LingsProperty.select_ids.
-        where(:id => vals.pluck(:id)).
+        # where(:id => vals.pluck(:id)).
+        with_id(vals.pluck(:id)).
         # includes(:ling, :property, :examples).
         joins("#{model_name}".to_sym).
         # Intersect with the result of keyword search
@@ -158,19 +159,23 @@ module SearchResults
                           # keyword search by stored value key/pair
                           search_scope_value_by_stored_value_key_pair(keyword, example_attribute)
                       end
-
-      LingsProperty.joins(:Examples).where(:id => vals.pluck(:id)).merge keyword_scope
+      
+      LingsProperty.select_ids.where(:id => vals.pluck(:id)).
+        joins(:examples).merge keyword_scope
       # Squeel Syntax
       # LingsProperty.select_ids.where{ (:id == my{vals}) } & keyword_scope
     end
 
     def search_scope_value_by_stored_value_key_pair(keyword, key)
       model_class.unscoped.where(:group_id => group.id).
+
+        joins("INNER JOIN stored_values ON examples.id = stored_values.storable_id").
         merge  StoredValue.unscoped.with_key(key).
+
         where( (StoredValue.arel_table[:value].matches("#{keyword}%")).
         or(StoredValue.arel_table[:value].matches("%#{keyword}%") ))
       #  Squeel Syntax
-      # model_calss.unscoped.where{ :group == my{group.id} } &
+      # model_class.unscoped.where{ :group == my{group.id} } &
       #   StoredValue.unscoped.with_key(key).
       #   where { (:value =~ "#{keyword}%") || (:value =~ "%#{keyword}%")}
     end
