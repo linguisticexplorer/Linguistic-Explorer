@@ -35,7 +35,7 @@ module LinguisticExplorer
     # config.action_view.javascript_expansions[:defaults] = %w(jquery rails)
 
     # I18n configuration
-    # I18n.enforce_available_locales = false
+    I18n.enforce_available_locales = false
 
     # Use FactoryGirl
     config.generators do |g|

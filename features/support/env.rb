@@ -29,14 +29,14 @@
 	Capybara.default_selector = :css
 
   # Setup Poltergeist + PhantomJS and set it as default driver
-  # Capybara.javascript_driver = :poltergeist
-  # Capybara.register_driver :poltergeist do |app|
-  #   Capybara::Poltergeist::Driver.new(app, {
-  #     :phantomjs => Phantomjs.path,
-  #     :timeout => 60,
-  #     :inspector => true
-  #   })
-  # end
+  Capybara.javascript_driver = :poltergeist
+  Capybara.register_driver :poltergeist do |app|
+    Capybara::Poltergeist::Driver.new(app, {
+      :phantomjs => Phantomjs.path,
+      :timeout => 60,
+      :inspector => true
+    })
+  end
 
  #  Capybara.default_wait_time = 5
 
