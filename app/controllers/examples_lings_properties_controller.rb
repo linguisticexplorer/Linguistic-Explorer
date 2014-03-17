@@ -2,16 +2,6 @@ class ExamplesLingsPropertiesController < GroupDataController
 
   respond_to :html, :js
 
-  def index
-    @examples_lings_properties = current_group.examples_lings_properties.includes({:example => :stored_values}, :lings_property).
-        paginate(:page => params[:page], :order => "examples.name")
-
-    respond_with(@examples_lings_properties) do |format|
-      format.html
-      format.js
-    end
-  end
-
   def show
     @examples_lings_property = current_group.examples_lings_properties.find(params[:id])
 
@@ -28,10 +18,16 @@ class ExamplesLingsPropertiesController < GroupDataController
     end
     authorize! :create, @examples_lings_property
 
-    @examples = params[:ling_id] && 
-      ExamplesLingsProperty.where("lings_property_id IN (?)", 
-                                  LingsProperty.where(:ling_id => params[:ling_id])).map{ |x| x.example } || current_group.examples
-    @lings_properties = params[:ling_id] ? false : current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
+    @examples = current_group.examples
+    @lings_properties = current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
+
+    if(params[:ling_id])
+      lps_by_lings = LingsProperty.where(:ling_id => params[:ling_id])
+
+      @examples = ExamplesLingsProperty.where(:lings_property_id => lps_by_lings).map{ |x| x.example } || @examples
+
+      @lings_properties = false
+    end
   end
 
   def create
@@ -63,6 +59,6 @@ class ExamplesLingsPropertiesController < GroupDataController
     authorize! :destroy, @examples_lings_property
     @examples_lings_property.destroy
 
-    redirect_to(group_examples_lings_properties_url(current_group))
+    redirect_to(current_group)
   end
 end

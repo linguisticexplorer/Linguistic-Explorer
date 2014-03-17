@@ -33,7 +33,7 @@ class User < ActiveRecord::Base
   has_many :posts, :dependent => :destroy
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :name, :password, :password_confirmation, :remember_me, :humanizer_question_id, :humanizer_answer
+  attr_accessible :name, :email, :password, :password_confirmation, :remember_me, :humanizer_question_id, :humanizer_answer
 
   def admin?
     ADMIN == self.access_level
