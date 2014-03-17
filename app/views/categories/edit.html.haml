@@ -1,0 +1,7 @@
+- page_heading "Edit " + current_group.category_name
+%h1
+  Editing #{current_group.category_name}
+= render 'form'
+= link_to 'Show', [current_group, @category]
+|
+\#{link_to 'Back', group_categories_path(current_group)}

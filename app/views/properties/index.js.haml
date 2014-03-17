@@ -1,0 +1,17 @@
+var group = #{current_group.to_param},
+dict, items = [];
+
+$.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
+dict = data;
+$.each(dict, function(key, val) {
+items.push(key);
+});
+}).done( function() {
+$('#auto_prop').typeahead({
+source: items,
+updater:function (item){
+window.location.href = '/groups/' + group + '/properties/' + dict[item];
+}
+});
+$('#auto_prop').attr("placeholder", "Start typing to search through properties").removeAttr('disabled');
+});

@@ -1,0 +1,28 @@
+#prop-title.fluid-row
+  %h2 Property
+.fluid-container
+  <div id="prop-name" class="fluid-row" data-prop_id=#{@property.id || 0} data-ling_id=#{@ling.id || 0}
+  data-lp_id=#{(@ling_properties && @ling_properties.any?) ? @ling_properties[0].id : 0} >
+  %h4 Property Name
+  %p
+    = property.name
+.fluid-row
+  %h4.inline> Property Description
+  \&nbsp;
+  %a#prop-modal.btn.btn-info.btn-small{:href => "#"}
+    %i.icon-white.icon-resize-full.shift-down
+    Show all
+#prop-descrip.fluid-row
+  %p
+    - if property.description
+      = property.description.html_safe
+    - else
+      no property description available
+#prop-relations.fluid-row
+  %h4
+    Value in other #{current_group.ling_name_for_depth(@depth).pluralize.downcase}
+  .content-box
+    - @relations.each do |lp|
+      %b>= lp[0]
+      \: #{lp[1]}
+      %br/

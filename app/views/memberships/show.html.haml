@@ -1,0 +1,26 @@
+- page_heading "Membership"
+%h1
+  Showing #{@membership.member.name}
+%table.show-table.description-table.table.table-bordered.table-hover.table-striped
+  %p
+  %tr
+    %td
+      %b Member:
+    %td
+      = @membership.member.name
+  %tr
+    %td
+      %b Level:
+    %td
+      = @membership.level
+  %tr
+    %td
+      %b Created by:
+    %td
+      = @membership.creator ? @membership.creator.name : "Unknown user"
+%br/
+= link_to group_memberships_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+\#{link_to 'Edit', edit_group_membership_path(current_group, @membership), :class => 'btn'}

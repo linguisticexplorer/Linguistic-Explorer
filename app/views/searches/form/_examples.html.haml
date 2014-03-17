@@ -1,0 +1,17 @@
+- current_group.depths.each do |depth|
+  - example_label  = search_example_label(@search, depth)
+  - keyword_label = "#{example_label} Keywords"
+  = content_tag :fieldset, :id => example_label.underscorize, :class => "table" do
+    .control-group
+      = f.label :example_fields, example_label + " Attribute", :class => "control-label hidden_label example_fields_label"
+      .controls
+        = f.select :example_fields, @search.example_field_options, {}, |
+          :name => search_text_field_name(:example_fields, depth),     |
+          :label => "#{example_label} Attribute",                      |
+          :label_class => 'hidden_label'                               |
+    .control-group
+      = label_tag search_text_id(keyword_label), keyword_label, :class => "control-label"
+      .controls
+        = f.text_field :example_keywords,                           |
+          :id => search_text_id(keyword_label),                     |
+          :name => search_text_field_name(:example_keywords, depth) |

@@ -1,0 +1,7 @@
+- page_heading "New " + current_group.ling_name_for_depth(@depth)
+%h1
+  New #{current_group.ling_name_for_depth(@depth)}
+= render 'form'
+= link_to group_lings_depth_path(current_group, @depth), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back

@@ -1,0 +1,5 @@
+- page_heading "New " + current_group.category_name
+%h1
+  New #{current_group.category_name}
+= render 'form'
+= link_to 'Back', group_categories_path(current_group)

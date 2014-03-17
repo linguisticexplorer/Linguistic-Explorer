@@ -1,0 +1,26 @@
+= javascript_tag "$.getScript(location.href);"
+- add_body_classes "map"
+- page_heading @group.name
+%h1
+  - @group.name
+#inner
+  #title
+    %h1= @group.name
+  #intro
+    .row
+      .margin.span6.relative
+        %input#auto_group.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
+    %br/
+    - if @group.description.present?
+      %p= @group.description
+    - @group.depths.each do |depth|
+      %p= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
+    %p= link_to @group.property_name.pluralize, group_properties_path(@group)
+    %p
+      = link_to 'Group Info', info_group_path(@group)
+      |
+      \#{link_to 'Search this group', [:new, current_group, :search]} |
+      - if can? :edit, @group
+        = link_to 'Edit this group', edit_group_path(@group)
+        |
+      = link_to 'All groups', groups_path

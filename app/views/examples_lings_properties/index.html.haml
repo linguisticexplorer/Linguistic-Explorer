@@ -1,0 +1,10 @@
+- page_heading current_group.examples_lings_property_name.pluralize
+%h1
+  Listing #{current_group.examples_lings_property_name.pluralize}
+- if can? :create, ExamplesLingsProperty.new{|elp| elp.group = current_group}
+  = link_to "New #{current_group.examples_lings_property_name}", new_group_examples_lings_property_path(current_group), :class => "btn"
+#pagination_table
+  = render :partial => "index_partial"
+%br/
+- if can? :create, ExamplesLingsProperty.new{|elp| elp.group = current_group}
+  = link_to "New #{current_group.examples_lings_property_name}", new_group_examples_lings_property_path(current_group), :class => "btn"

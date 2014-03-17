@@ -1,0 +1,35 @@
+var bindTypeahead = function(id) {
+var dict, items = [];
+$.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "groups/" + id + "/dict", function(data) {
+dict = data;
+$.each(dict, function(key, val) {
+items.push(key);
+});
+}).done( function() {
+$('#auto_' + id).typeahead({
+source: items,
+updater:function (item){
+window.location.href = '/groups/' + id + '/lings/' + dict[item];
+}
+});
+$('#auto_' + id).attr("placeholder", "Type the name of a language...").removeAttr('disabled');
+});
+
+};
+
+$(function () {
+$('.carousel').carousel({
+interval: 4000
+});
+$('#tabs a').not("#tabs a:first").click(function (e) {
+e.preventDefault();
+$(this).tab('show');
+if (!$(this).data('bind')) {
+bindTypeahead($(this).data('bind', true).data('id'));
+}
+});
+bindTypeahead($('#search-tabs ul li.active a').data('bind',true).data('id'));
+$(window).on("click", "#tab-descrip", function(e) {
+e.preventDefault();
+});
+});

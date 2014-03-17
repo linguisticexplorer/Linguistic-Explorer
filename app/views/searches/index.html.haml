@@ -1,0 +1,24 @@
+- page_heading "Search History"
+%h2
+  = current_group.name
+  Search History
+%table#searches.show-table.table.table-bordered.table-striped.table-hover
+  - if @searches.any?
+    - @searches.each do |search|
+      %tr
+        %td
+          = search.name
+        %td
+          = link_to "Show results", [current_group, search], :class => "btn", :id => "results"
+        %td
+          = link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn"
+        %td
+          = link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-small"
+  - else
+    %tr.center
+      %td
+        No saved searches for #{current_group.name}
+- if @search_comparison.enough_to_compare?
+  #search_comparisons.padded.border.margin.span5
+    %h3 Search comparisons
+    = render :partial => 'search_comparisons/new'

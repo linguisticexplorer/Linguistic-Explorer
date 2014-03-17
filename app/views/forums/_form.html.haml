@@ -1,0 +1,50 @@
+= render :partial => 'layouts/forum_header_bar'
+.module
+  .module_header
+    = action_name.humanize
+    Forum
+  .module_subheader.smaller
+    %em To create a forum group, leave the category field unselected.
+  .module_body
+    = form_for @forum do |f|
+      - if @forum.errors.any?
+        - flash.now[:error] = @forum.errors.full_messages.join(', and ')
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :forum_group_id
+          %br/
+          %small (Required)
+        %span.input.indent.smaller
+          = f.collection_select :forum_group_id, ForumGroup.all, :id, :title
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :title
+          %br/
+          %small (Required)
+        %span.input.indent.smaller= f.text_field :title, :size => 75
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :description
+          %br/
+          %small (Required)
+        %span.input.indent.smaller= f.text_area :description, :cols => 60, :rows => 5
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :position
+        %span.input.indent.smaller= f.text_field :position
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+        %span.input.indent.smaller
+          = f.check_box :state
+          = f.label :state
+        .clear
+  .module_footer
+    .fieldset
+      %span.input
+        = f.submit "submit"
+        or #{link_to "cancel", @forum.nil? ? forum_path(@forum) : forums_path}
+      .clear

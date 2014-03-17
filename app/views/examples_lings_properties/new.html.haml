@@ -1,0 +1,5 @@
+- page_heading "New " + current_group.examples_lings_property_name
+%h1
+  New #{current_group.examples_lings_property_name}
+= render 'form'
+= link_to 'Back', group_examples_lings_properties_path(current_group)

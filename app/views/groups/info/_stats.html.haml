@@ -1,0 +1,87 @@
+%h4 Overview:
+%div{:style => "width: 80%; margin: 10px 20px 10px 30px; text-align: center;"}
+  %button#lings.btn.btn-danger.active
+    = @group.ling0_name.pluralize
+  %button#props.btn.btn-danger
+    = @group.property_name.pluralize
+.progress.progress-striped.progress-danger{:style => "width: 80%; margin: 10px 20px 5px 30px;"}
+  .bar{:style => "width: 90%;"}
+    %p#nbrs{:style => "text-align: center;"}
+#slider{:style => "width: 80%; margin: 10px 20px 5px 30px;"}
+%div{:style => "width: 80%; margin: 10px;"}
+  %p#slider_label.strong{:style => "text-align: center;"}
+    = @group.ling0_name.pluralize
+    Completeness:
+    %span#perc 90%
+:javascript
+  $(window).ready(function(){
+    var lings_data = #{@group.lings_with_all_property_quotas.values.map {|value| [value, @group.lings_in_group - value]}},
+        props_data = #{@group.props_with_all_ling_quotas.values.map {|value| [value, @group.props_in_group - value]}};
+  
+    var active = $('#lings').text(),
+        last_quota;
+  
+    function changeProgressBarWidth(new_width, new_label){
+      $('.bar').attr('style', 'width: '+new_width+'%');
+      $('#nbrs').text(new_label);
+    }
+  
+    function getQuotaToDisplay(quota, callback){
+      var new_width,
+          new_label;
+      if($('#lings').hasClass('active')){
+        new_width = 100 * lings_data[quota][0] / lings_data[0][0];
+        new_label = lings_data[quota][0];
+      } else {
+        new_width = 100 * props_data[quota][0] / props_data[0][0];
+        new_label = props_data[quota][0];
+      }
+      changeProgressBarWidth(new_width, new_label);
+      callback(quota*10);
+    }
+    
+    function resetSlider(){
+      last_quota = 90;
+      $('#slider').slider("value", last_quota);
+    }
+  
+    function replaceLabel(newQuota){
+      $('#slider_label').text(active+' Completeness: ').append($('<span>').text(newQuota+'%'));
+    }
+  
+    $('#lings').live('click', function(){
+      $(this).attr('class', 'btn btn-danger active');
+      active = $(this).text();
+  
+      $('#props').attr('class', 'btn btn-danger');
+      if(!isFinite(last_quota)) resetSlider();
+      
+      getQuotaToDisplay(last_quota / 10, replaceLabel);
+    });
+  
+    $('#props').live('click', function(){
+      $(this).attr('class', 'btn btn-danger active');
+      active = $(this).text();
+  
+      $('#lings').attr('class', 'btn btn-danger');
+      if(!isFinite(last_quota)) resetSlider();
+      
+      getQuotaToDisplay(last_quota / 10, replaceLabel);
+    });
+  
+    // Slider of percentage
+    $("#slider").slider({
+        min: 0,
+        max: 100,
+        step: 10,
+        value: 90,
+        animate: true,
+        create: function(event, ui) {
+          getQuotaToDisplay(9, replaceLabel);
+        },
+        change: function(event, ui) {
+            last_quota = ui.value;
+            getQuotaToDisplay(ui.value / 10, replaceLabel);
+          }
+      });
+    });

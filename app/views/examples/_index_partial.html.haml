@@ -1,0 +1,53 @@
+#pagination_top.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @examples, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th Name
+    %th= current_group.ling0_name
+    - if current_group.ling1_name != "not-present"
+      %th= current_group.ling1_name
+    %th Property
+    - if @group.display_style == "linguistic"
+      - current_group.example_storable_keys.each do |key|
+        - if key == "comment"
+          %th
+          %th= key.humanize
+    - else
+      - current_group.example_storable_keys.each do |key|
+        %th= key.humanize
+    - if can? :destroy, @examples
+      %th
+  - @examples.each do |example|
+    %tr
+      %td= link_to example.name, [current_group, example]
+      - if example.ling && example.ling.depth == 0
+        %td.tiny-col= (link_to example.ling.name, group_ling_path(current_group, example.ling))
+      - if example.ling && example.ling.depth == 1
+        %td.tiny-col= (link_to example.ling.name, group_ling_path(current_group, example.ling))
+      - elp = ExamplesLingsProperty.find_by_example_id(example.id)
+      %td
+        - if elp
+          = link_to elp.lings_property.property.name, group_property_path(current_group, elp.lings_property.property)
+          %br/
+          = elp.lings_property.value
+      - if @group.display_style == "linguistic"
+        %td.align-left
+          - current_group.example_storable_keys.each do |key|
+            - val = example.stored_value(key)
+            - if key == "comment"
+        %td.small-col.align-left= example.stored_value(key) if val != "None"
+      - elsif key != "description"
+        %p= example.stored_value(key) if val != "None"
+  - else
+    - current_group.example_storable_keys.each do |key|
+      - if key == "comment"
+        %td.small-col.align-left= example.stored_value(key)
+      - else
+        %td.align-left= example.stored_value(key)
+  - if can? :destroy, example
+    %td.middle
+      = link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete
+#pagination_bottom.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @examples, renderer: BootstrapPagination::Rails

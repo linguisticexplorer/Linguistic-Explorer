@@ -1,0 +1,29 @@
+= form_for search, :html => {:method => "get", :onsubmit =>                                                 |
+  "this.hidden_javascript.value=1;return true;", :class => "form-horizontal", :id => "search-form" } do |f| |
+  .row
+    #display.span2
+      %h3 Display
+    #display_text.span7
+      = render :partial => 'searches/form/includes'
+  .row
+    .span2
+      %h3 Advanced
+    .span7
+      = render :partial => 'searches/form/advanced_set', :locals => { :f => f }, :inline => true
+  .row
+    .span2
+      \&nbsp;
+  .row
+    .span2
+      %h3 Constraints
+    .span7
+      = render :partial => 'searches/form/lings', :locals => { :f => f }, :inline => true
+      = render :partial => 'searches/form/properties', :locals => { :f => f }, :inline => true
+      = render :partial => 'searches/form/lings_properties', :locals => { :f => f }, :inline => true
+      = render :partial => 'searches/form/examples', :locals => { :f => f }, :inline => true
+      .control-group
+        %label.control-label{:for => ""}
+        .controls
+          %input#hidden_javascript{:name => "search[javascript]", :type => "hidden", :value => "0"}/
+          = f.submit "Show results", :name => nil, :class => "btn"
+          %input.nudge.btn{:type => "reset", :value => "Reset"}/

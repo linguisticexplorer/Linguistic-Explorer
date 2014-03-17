@@ -1,0 +1,31 @@
+= render :partial => 'layouts/forum_header_bar'
+= form_for [@forum, @topic] do |f|
+  - if @topic.errors.any?
+    - flash.now[:error] = @topic.errors.full_messages.join(', and ')
+  .module
+    .module_header
+      = action_name.humanize
+      Topic
+    .module_subheader.smaller
+    .module_body
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :title
+          %br/
+          %small (Required)
+        %span.input.indent.smaller= f.text_field :title, :size => 75
+        .clear
+      - unless @topic.id
+        .fieldset
+          %span.label.indent.smaller
+            = f.label :body
+            %br/
+            %small (Required)
+          %span.input.indent.smaller= f.text_area :body, :cols => 60, :rows => 15
+          .clear
+.module_footer
+  .fieldset
+    %span.input
+      = f.submit "submit"
+      or #{link_to "cancel", @topic.nil? ?  @topic : @forum}
+    .clear

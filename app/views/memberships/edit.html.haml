@@ -1,0 +1,9 @@
+- page_heading "Edit Membership"
+%h1 Editing Memberships
+= render 'form'
+%br/
+= link_to group_memberships_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+\#{link_to 'Show', [current_group, @membership], :class => "btn"}

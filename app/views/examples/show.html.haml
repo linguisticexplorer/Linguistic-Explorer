@@ -1,0 +1,42 @@
+- page_heading current_group.example_name
+%h1= current_group.example_name
+= link_to group_examples_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :edit, @example
+  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn"
+%br/
+%br/
+%table.show-table.description-table.table.table-bordered.table-striped.table-hover
+  %p
+  %tr
+    %td Name:
+    %td
+      = @example.name
+  - if @example.ling
+    %tr
+      %td
+        = @example.ling.grouped_name
+        \:
+      %td
+        = link_to @example.ling.name, group_ling_path(current_group, @example.ling)
+  - @example.storable_keys.each do |key|
+    - if @example.stored_value(key) != ""
+      %tr
+        %td
+          = key.humanize
+          \:
+        %td.text-justify
+          = @example.stored_value(key)
+  %tr
+    %td Created by:
+    %td
+      = @example.creator ? @example.creator.name : "Unknown user"
+%br/
+= link_to group_examples_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :edit, @example
+  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn"

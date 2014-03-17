@@ -1,0 +1,20 @@
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @categories, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th Name
+    %th Depth
+    - if can? :destroy, @categories
+      %th
+  - @categories.each do |category|
+    %tr
+      %td= link_to category.name, [current_group, category]
+      %td= category.depth
+      - if can? :destroy, category
+        %td
+          = link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete, :class => "btn btn-danger btn-small"
+%br/
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @categories, renderer: BootstrapPagination::Rails

@@ -1,0 +1,10 @@
+- page_heading @search.name + " Saved Search"
+%h1
+  = @search.name
+  Saved Search
+.row
+  #search_interaction.padded.border.margin.span4
+    = link_to "<i class = 'icon-white icon-map-marker'></i>&nbsp;Map it!".html_safe, {:action => "geomapping", :search => @search.query}, :class => "btn btn-block btn-primary" if @search.mappable?
+#search_results.padded_left.padded_right
+  #pagination_table
+    = render :partial => 'searches/results'

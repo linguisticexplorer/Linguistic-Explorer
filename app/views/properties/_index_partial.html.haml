@@ -1,0 +1,27 @@
+#pagination_top.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @properties, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th Name
+    %th= current_group.category_name
+    %th Completeness
+    - if can? :destroy, @properties
+      %th
+  - @properties.each do |property|
+    %tr
+      %td= link_to property.name, [current_group, property]
+      %td= link_to property.category.name, group_category_path(current_group, property.category)
+      %td
+        - percentage = "#{property.info}%"
+        %center
+          .progress.progress-striped.progress-danger{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
+            .bar{:style => "width: #{percentage};"}
+              %p#nbrs{:style => "text-align: center;"}= percentage
+      - if can? :destroy, property
+        %td
+          = link_to 'Destroy', [current_group, property], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete
+%br/
+#pagination_bottom.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @properties, renderer: BootstrapPagination::Rails

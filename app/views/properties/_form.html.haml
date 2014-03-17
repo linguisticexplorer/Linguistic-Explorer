@@ -1,0 +1,31 @@
+:javascript
+  $.getScript('//tinymce.cachefly.net/4.0/tinymce.min.js').done( function () {
+    tinymce.init({
+      selector:'#desc',
+      plugins: 'table'
+    });
+  });
+= form_for([current_group, @property], :html => {:class => "form-horizontal"}) do |f|
+  - if @property.errors.any?
+    #error_explanation
+      %h2
+        = pluralize(@property.errors.count, "error")
+        prohibited this #{current_group.property_name} from being saved:
+      %ul
+        - @property.errors.full_messages.each do |msg|
+          %li= msg
+  .control-group
+    = f.label :name, :class => "control-label"
+    .controls
+      = f.text_field :name
+  .control-group
+    = f.label current_group.category_name, :class => "control-label"
+    .controls
+      = f.collection_select :category_id, @categories[:depth_0] + @categories[:depth_1], :id, :name, :prompt => 'Select a ' + current_group.category_name
+  .control-group
+    = f.label :description, :class => "control-label"
+    .controls
+      = f.text_area :description, :rows => 20, :class => "span6 hidden", :id => "desc"
+  .control-group
+    .controls
+      = f.submit :class => "btn"

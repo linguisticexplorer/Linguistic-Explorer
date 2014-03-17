@@ -1,0 +1,19 @@
+- if display_save_search_form?(@search)
+  = content_tag :fieldset do
+    %h4 Save search results
+    = form_for [:group, @search], :html => {:class => "form-horizontal"} do |f|
+      - if @search.errors.any?
+        #error_explanation
+          %h2
+            = pluralize(@search.errors.count, "error")
+            prohibited this search from being saved:
+          %ul
+            - @search.errors.full_messages.each do |msg|
+              %li= msg
+      .row-fluid
+        .span12.input-append
+          = f.text_field :name, :placeholder => "Enter name", class: "search-input"
+          = f.submit "Save", :class => "btn"
+      = f.hidden_field :query_json
+      = f.hidden_field :result_groups_json
+  %hr/

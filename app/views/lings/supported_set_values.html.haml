@@ -1,0 +1,49 @@
+- content_for :head do
+  = javascript_include_tag "scrollTo.min"
+:javascript
+  $.getScript(location.href);
+- page_heading @ling.name + " Examples Supported Edit"
+%h1
+  Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
+= link_to [current_group, @ling], :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back to #{@ling.name} page
+\&nbsp;
+\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
+%br/
+%br/
+#supported-entry-container.container-fluid
+  .row-fluid
+    #property-description.span4.set-col
+      = render partial: "lings/mass_assignment/property", object: @property
+    #property-setter.span4.set-col
+      = render partial: "lings/mass_assignment/value", object: @property
+      .row-fluid
+    #property-selector.span4.set-col
+      = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
+%br/
+%br/
+= link_to [current_group, @ling], :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back to #{@ling.name} page
+\&nbsp;
+\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
+#example-modal.modal.hide.fade
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+    %button#minimize-example.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
+    %span#modal-head-content
+  .modal-body
+#property-modal.modal.hide.fade
+  .modal-header
+    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+    %button#minimize-prop.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
+    %span#modal-head-content-prop
+  .modal-body
+.mod-tab
+  %a#prop-tab.btn.btn-info.hidden{:href => "#"}
+    %i.icon-white.icon-chevron-up.shift-down
+    Property Description
+  %a#example-tab.btn.btn-info.hidden{:href => "#"}
+    %i.icon-white.icon-chevron-up.shift-down
+    Example

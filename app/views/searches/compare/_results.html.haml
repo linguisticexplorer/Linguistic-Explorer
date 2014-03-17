@@ -1,0 +1,32 @@
+#pagination_top.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails
+- common_results = results_in_common_compare_search(@search.results)
+- if common_results.any?
+  #tableCommon
+    #tableCommonHeader
+      %h3.red_grad
+        Properties in Common #{get_lings(@search.results)}:
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %tr
+        - result_headers(value_for_header(common_results)).each do |proc|
+          %th= proc.call value_for_header(common_results)
+      - common_results.each do |result|
+        = render :partial => "searches/compare/result_common", :locals => { :result => result}, :inline => true
+- diff_results = results_diff_compare_search(@search.results)
+- if diff_results.any?
+  #tableNotCommon
+    #tableNotCommonHeader
+      %h3.red_grad Properties not in Common:
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %tr
+        - values_for_header = value_for_header(diff_results)
+        - diff_headers = result_headers(values_for_header)
+        %th= diff_headers[0].call values_for_header
+        - values_for_header.each do |value|
+          %th= diff_headers[1].call value
+      - diff_results.each do |result|
+        = render :partial => "searches/compare/result_diff", :locals => { :result => result}, :inline => true
+#pagination_bottom.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails

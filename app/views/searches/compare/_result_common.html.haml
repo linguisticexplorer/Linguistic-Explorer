@@ -1,0 +1,4 @@
+- parent, child = result.parent, result.child
+= content_tag :tr, search_result_attributes_for_compare(result) do
+  %td= row_methods[:compare_property].call(*parent)
+  %td= row_methods[:common_values].call(*child)

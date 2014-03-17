@@ -1,0 +1,9 @@
+- page_heading "Search Comparison"
+%h2
+  Compare #{current_group.name} Searches
+- if @search_comparison.enough_to_compare?
+  = render :partial => 'new'
+- else
+  .center
+    Need at least two searches for #{current_group.name} to compare.
+    \#{link_to 'New search', [:new, current_group, :search]}

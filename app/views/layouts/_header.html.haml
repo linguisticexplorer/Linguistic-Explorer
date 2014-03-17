@@ -1,0 +1,8 @@
+#header.navbar.navbar-static-top.navbar-inverse
+  .navbar-inner
+    = link_to 'TerraLing', root_url, :class => "brand"
+    %ul.nav
+      = render :partial => 'layouts/group_nav_bar' unless Settings.in_preview
+    %ul.nav.pull-right.user-nav
+      = render :partial => 'layouts/status_bar'
+    %ul

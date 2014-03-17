@@ -1,0 +1,56 @@
+- page_heading current_group.property_name
+%h1
+  = current_group.property_name
+  = @property.name
+= link_to group_properties_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :edit, @property
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn"
+%br/
+%br/
+%table.show-table.description-table.table.table-bordered.table-striped.table-hover
+  %p
+  %tr
+    %td Name:
+    %td= @property.name
+  %tr
+    %td
+      = current_group.category_name
+      \:
+    %td= link_to @property.category.name, [current_group, @property.category]
+  %td Created by:
+  %td= @property.creator ? @property.creator.name : "Unknown user"
+- if @property.description != nil && @property.description != ""
+  .row
+    %h3 Description
+    .span11.text-justify
+      = @property.description.html_safe
+%br/
+#pagination_table.values
+  %h3= current_group.lings_property_name.pluralize
+  #pagination_top.apple_pagination
+    / render page links in the view:
+    = alphabetical_paginate @params
+  %table.show-table.table.table-bordered.table-striped.table-hover
+    %thead
+      %th= current_group.ling_name_for_depth(@property.depth)
+      %th= current_group.lings_property_name
+      %th Creator
+    %tbody
+      - @values.each do |value|
+        %tr
+          %td= link_to value.ling.name, [current_group, value.ling]
+          %td= link_to value.value, [current_group, value]
+          %td= (value.creator ? value.creator.name : "")
+  #pagination_bottom.apple_pagination
+    / render page links in the view:
+    = alphabetical_paginate @params
+%br/
+= link_to group_properties_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :edit, @property
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn"

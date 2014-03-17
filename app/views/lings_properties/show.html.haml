@@ -1,0 +1,29 @@
+- page_heading @lings_property.ling.grouped_name
+%h1
+  = @lings_property.ling.name
+  \- #{@lings_property.property.name}
+%table.show-table.description-table.table.table-bordered.table-striped.table-hover
+  %p
+  %tr
+    %td
+      = @lings_property.ling.grouped_name
+      \:
+    %td= link_to @lings_property.ling.name, group_ling_path(current_group, @lings_property.ling)
+  %tr
+    %td
+      = current_group.property_name
+      \:
+    %td= link_to @lings_property.property.name, group_property_path(current_group, @lings_property.property)
+  %tr
+    %td
+      = current_group.lings_property_name
+      \:
+    %td
+      = @lings_property.value
+  %tr
+    %td Created by:
+    %td
+      = @lings_property.creator ? @lings_property.creator.name : "Unknown user"
+= link_to group_property_path(current_group, @lings_property.property), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back

@@ -1,0 +1,34 @@
+= render :partial => 'layouts/forum_header_bar'
+.right.controls= link_to "Back to Forum", forum_path(@topic.forum)
+.module
+  .module_header
+    = @topic.title
+    %span.right.controls
+      = link_to "Edit", edit_topic_path(@topic) if can? :manage, @topic
+      = link_to "Delete", @topic, :confirm => "Are you sure?", :method => :delete if can? :manage, @topic
+      = link_to @topic.sticky ? "Unstick" : "Sticky", {:controller => 'topics', :action => 'update', :topic => {:sticky => @topic.sticky ? "false" : "true" }}, :method => :put if can? :moderate, @topic
+      = link_to @topic.locked ? "Unlock" : "Lock", {:controller => 'topics', :action => 'update', :topic => {:locked => @topic.locked ? "false" : "true" }}, :method => :put if can? :moderate, @topic
+  %div
+    %table
+      - @topic.posts.each do |post|
+        %tr
+          %td.post_author{:rowspan => "2"}
+            %span.name= post.user.name
+            %span.avatar
+              / This space reserved for Avatar
+            %span.info.smaller
+              Posts #{post.user.posts.size}
+              %br/
+              Registered #{post.user.created_at.to_s(:joined)}
+              %br/
+          %td.post_header
+            %span.left.post_date.smaller
+              Posted #{post.created_at}
+            %span.right.controls
+              = link_to "Reply", new_topic_post_path(@topic) if can? :create, @topic.posts.new
+              = link_to "Quote", new_topic_post_path(@topic, :quote => post) if can? :create, @topic.posts.new
+              = link_to "Edit", edit_post_path(post) if can? :update, post
+              = link_to "Delete", post, :confirm => "Are you sure?", :method => :delete if can? :destroy, post
+        %tr
+          %td.post_body
+            = post.body.bbcode_to_html().html_safe

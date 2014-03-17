@@ -1,0 +1,38 @@
+- resource_name ||= :search
+= content_tag :fieldset, :id => "show_columns" do
+  #show_parent
+    = label_tag included_column_name(resource_name, :ling_0), :class => "checkbox inline" do
+      = check_box_tag(included_column_name(resource_name, :ling_0), "1", true, :class => "controls")
+      = current_group.ling0_name.pluralize
+    = label_tag included_column_name(resource_name, :property_0), :class => "checkbox inline" do
+      = check_box_tag included_column_name(resource_name, :property_0), "1", true
+      = current_group.property_name.pluralize
+    = label_tag included_column_name(resource_name, :value_0), :class => "checkbox inline" do
+      = check_box_tag included_column_name(resource_name, :value_0), "1", true
+      = current_group.lings_property_name.pluralize
+    = label_tag included_column_name(resource_name, :example_0), :class => "checkbox inline" do
+      = check_box_tag included_column_name(resource_name, :example_0), "1", true
+      Examples
+  - if current_group.has_depth?
+    %br/
+    #show_child
+      = label_tag included_column_name(resource_name, :ling_1), :class => "checkbox inline" do
+        = check_box_tag included_column_name(resource_name, :ling_1), "1", true
+        = current_group.ling1_name.pluralize
+      = label_tag included_column_name(resource_name, :property_1), :class => "checkbox inline" do
+        = check_box_tag included_column_name(resource_name, :property_1), "1", true
+        = current_group.property_name.pluralize
+      = label_tag included_column_name(resource_name, :value_1), :class => "checkbox inline" do
+        = check_box_tag included_column_name(resource_name, :value_1), "1", true
+        = current_group.lings_property_name.pluralize
+      = label_tag included_column_name(resource_name, :example_1), :class => "checkbox inline" do
+        = check_box_tag included_column_name(resource_name, :example_1), "1", true
+        Examples
+    %br/
+    #show_impl
+      = label_tag included_column_name(resource_name, :depth_0), :class => "checkbox inline" do
+        = check_box_tag included_implication_depth(resource_name, :depth_0), "1", true
+        = "Implication on #{current_group.ling0_name}"
+      = label_tag included_column_name(resource_name, :depth_1), :class => "checkbox inline" do
+        = check_box_tag included_implication_depth(resource_name, :depth_1), "1", true
+        = "Implication on #{current_group.ling1_name}"

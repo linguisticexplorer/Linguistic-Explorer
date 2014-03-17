@@ -1,0 +1,34 @@
+.table.spacing.expand_width
+  #similarity_tree
+    - rendering = @search.results.first
+    - if rendering == :legacy
+      - path_to_file = @search.results.last
+      #download_div.well{:style => "width: auto; text-align: center;"}
+        %h5 Save it:
+        = link_to "Download", path_to_file, :class => "btn btn-danger", :id => 'download'
+      = image_tag path_to_file, :alt => "Similarity tree", :class => 'clustering'
+    - else
+      %img#loading_phylogram{:src => "/images/loading_phylogram.gif"}/
+      #download_div.well{:style => "display: none; width: auto; text-align: center;"}
+        %h5 Save it:
+        %a#download.btn.btn-danger.disabled{:disabled => "true"}
+          Download
+      #tree.gallery
+      %canvas#canvas
+      = javascript_include_tag 'd3.v2.min', 'd3.phylogram', 'clustering', 'rgbcolor.js', "canvg.js"
+      :javascript
+        /* On DOM loaded */
+        $(function() {
+          $("#loading_phylogram").css({left: $(window).width / 2, top: '180px', position: 'absolute' });
+          // Data is computed in Newick format and processed by d3.phylogram javascript library
+          var dendogram_type = "#{@search.results.first}"
+          var newick_string = "#{@search.results.last}"
+          var newick = Newick.parse(newick_string);
+        
+          buildNewickNodes(newick);
+        
+          #{"phylogram(newick);" if dendogram_type == :d3_phylogram 
+          #{"radial_tree(newick);" if dendogram_type == :d3_radial_tree
+          $("#loading_phylogram").fadeOut().remove();
+          $('#download_div').fadeIn();
+        });

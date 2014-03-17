@@ -1,0 +1,34 @@
+= render :partial => 'layouts/forum_header_bar'
+.module
+  .module_header
+    = action_name.humanize
+    Group
+  .module_subheader.smaller
+  .module_body
+    = form_for @forum_group do |f|
+      - if @forum_group.errors.any?
+        - flash.now[:error] = @forum_group.errors.full_messages.join(', and ')
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :title
+          %br/
+          %small (Required)
+        %span.input.indent.smaller= f.text_field :title, :size => 75
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+          = f.label :position
+        %span.input.indent.smaller= f.text_field :position
+        .clear
+      .fieldset
+        %span.label.indent.smaller
+        %span.input.indent.smaller
+          = f.check_box :state
+          = f.label :state
+        .clear
+  .module_footer
+    .fieldset
+      %span.input
+        = f.submit "submit"
+        or #{link_to "cancel", forums_path}
+      .clear

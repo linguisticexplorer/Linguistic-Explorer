@@ -1,0 +1,13 @@
+#pagination_top.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails unless @search.search_comparison
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    - result_headers.each do |proc|
+      %th= proc.call @search.group
+  - pagination_enable = !@search.search_comparison
+  - @search.results(pagination_enable).each do |result|
+    = render :partial => "searches/result", :locals => { :result => result}, :inline => true
+#pagination_bottom.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails unless @search.search_comparison

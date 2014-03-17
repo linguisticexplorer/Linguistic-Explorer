@@ -1,0 +1,39 @@
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @groups, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th
+    %th Search
+    %th Ling0
+    %th Ling1
+    %th Properties
+    %th Categories
+    %th Display style
+    %th MaxDepth
+    %th Privacy
+    - if can? :update, @groups
+      %th
+    - if can? :destroy, @groups
+      %th
+  - @groups.each do |group|
+    %tr
+      %td= link_to group.name, group
+      %td= link_to 'Search', new_group_search_path(group)
+      %td= link_to group.ling0_name, group_lings_path(group)
+      %td= link_to group.ling1_name, group_lings_path(group) if group.ling1_name != "not-present"
+      %td= link_to group.property_name, group_properties_path(group)
+      %td= link_to group.category_name, group_categories_path(group)
+      %td= group.display_style.capitalize
+      %td= group.depth_maximum
+      %td= group.privacy.capitalize
+      - if can? :update, @group
+        %td
+          = link_to 'Edit', edit_group_path(group), :class => "btn btn-small"
+      - if can? :destroy, @group
+        %td
+          = link_to 'Destroy', group, :class => "btn btn-small btn-danger", :confirm => 'Are you sure?', :method => :delete
+%br/
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @groups, renderer: BootstrapPagination::Rails

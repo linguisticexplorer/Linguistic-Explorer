@@ -1,8 +1,0 @@
-<%- parent, child = result.parent, result.child -%>
-<%= content_tag :tr, search_result_attributes_for_cross(result) do %>
-   <%- parent.each do |prop| -%>
-      <td><%= row_methods[:cross_property].call(*prop)%></td>
-      <td><%= row_methods[:cross_value].call(*prop)%></td>
-   <%- end -%>
-      <td><%= row_methods[:count].call(child) %></td>
-   <% end %>

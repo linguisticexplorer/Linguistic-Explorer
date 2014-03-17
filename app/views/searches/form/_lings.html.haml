@@ -1,0 +1,25 @@
+- current_group.depths.each do |depth|
+  - ling_label  = search_ling_label(@search, depth)
+  - keyword_label = "#{ling_label.singularize} Keywords"
+  = content_tag :fieldset, :id => ling_label.underscorize do
+    .control-group
+      = label_tag search_options_id(ling_label), ling_label, :class => "control-label"
+      .controls
+        = f.select :lings, @search.ling_options(depth), {}, |
+          :name => search_field_name(:lings, depth),        |
+          :multiple => true,                                |
+          :id => search_options_id(ling_label)              |
+    .control-group
+      = label_tag search_text_id(keyword_label), keyword_label, :class => "control-label"
+      .controls
+        = f.text_field :ling_keywords,                           |
+          :id => search_text_id(keyword_label),                  |
+          :name => search_text_field_name(:ling_keywords, depth) |
+    .control-group
+      = label_tag "lings-select", "Selection", :class => "control-label"
+      .controls.field{:name => "lings-select"}
+        = label_tag search_compare_id(depth), :class => "radio inline" do
+          = f.radio_button "ling_set", "compare",                |
+            :id => search_compare_id(depth),                     |
+            :name => search_compare_field_name(:ling_set ,depth) |
+          Compare

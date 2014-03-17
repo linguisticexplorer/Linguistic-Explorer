@@ -1,0 +1,37 @@
+= render :partial => 'layouts/forum_header_bar'
+.right.controls= link_to "New Forum/Group", new_forum_path
+- @forum_groups.each do |group|
+  .module
+    .module_header
+      = group.title
+      %span.controls.right.smaller
+        = link_to "New Forum", new_forum_path
+        = link_to "Edit Forum Group", edit_forum_path(group)
+        = link_to "Delete Forum Group", forum_path(group), :confirm => "Are you sure you want to delete this forum group?", :method => :delete
+    - if group.forums.size > 0
+      %div
+        %table
+          %tr.smaller
+            %th{:align => "left", :colspan => "2"} Forum
+            %th Topics
+            %th Posts
+            %th.last_post{:align => "left"} Last Post
+          - group.forums.each do |forum|
+            %tr
+              %td.icon= image_tag 'forum_icon.png'
+              %td.description
+                = link_to forum.title, forum_path(forum)
+                %br/
+                %span.smaller= forum.description
+                %br/
+              %td.counts.smaller= forum.topics.size
+              %td.counts.smaller= forum.posts.size - forum.topics.size
+              %td.last_post.smaller
+                - if forum.posts.size > 0
+                  = forum.posts.last.created_at
+                  %br/
+                  = forum.posts.last.user.username
+                - else
+                  No Topics / Posts
+    - else
+      .module_body There are currently no forums.

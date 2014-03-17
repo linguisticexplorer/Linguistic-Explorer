@@ -1,0 +1,8 @@
+- page_heading "Edit " + current_group.property_name
+%h1
+  Editing #{current_group.property_name}
+= render 'form'
+%br/
+= link_to group_properties_path(current_group), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back

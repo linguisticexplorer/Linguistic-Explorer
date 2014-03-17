@@ -1,0 +1,65 @@
+- add_body_classes "map"
+- page_heading "Group Info"
+#inner
+  #title
+    %h1= @group.name
+  #intro
+    - if @group.description.present?
+      %p= @group.description
+    %p
+      = link_to current_group, :class => "btn btn-inverse" do
+        %i.icon-white.icon-arrow-left>
+        \&nbsp;Back
+      \&nbsp;
+      - if can? :update, @group
+        = link_to 'Edit', edit_group_path(@group), :class => "btn"
+        \&nbsp;
+      = link_to 'Search this group', [:new, current_group, :search], :class => "btn"
+    .whitebox
+      %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
+        - @group.info_attribute_names.each do |attr_name|
+          %tr
+            %td
+              %b= attr_name.titleize
+            - if @group.send(attr_name).is_a? String
+              %td= @group.send(attr_name).capitalize
+            - else
+              %td= @group.send(attr_name)
+    %br/
+    %p
+      = link_to current_group, :class => "btn btn-inverse" do
+        %i.icon-white.icon-arrow-left>
+        \&nbsp;Back
+      \&nbsp;
+      - if can? :update, @group
+        = link_to 'Edit', edit_group_path(@group), :class => "btn"
+        \&nbsp;
+      = link_to 'Search this group', [:new, current_group, :search], :class => "btn"
+    %br/
+    #numbers
+      #stats_title
+        %h2
+          Numbers for #{@group.name}
+      .whitebox
+        %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
+          %tr
+            %td
+              %b= @group.ling0_name.pluralize.titleize
+            %td= @group.lings_in_group
+          %tr
+            %td
+              %b= @group.property_name.pluralize.titleize
+            %td= @group.props_in_group
+          %tr
+            %td
+              %b Contributors
+            %td= @group.members_in_group
+          %tr
+            %td
+              %b= @group.example_name.pluralize.titleize
+            %td= @group.examples_in_group
+          %tr
+            %td
+              %b= @group.lings_property_name.pluralize.titleize
+            %td= @group.ling_props_in_group
+      = render :partial => 'groups/info/stats'

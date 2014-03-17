@@ -1,0 +1,19 @@
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @examples_lings_properties, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th= current_group.example_name
+    %th= current_group.lings_property_name
+    - if can? :destroy, @examples_lings_properties
+      %th
+  - @examples_lings_properties.each do |examples_lings_property|
+    %tr
+      %td= link_to examples_lings_property.example.name, [current_group, examples_lings_property.example]
+      %td= link_to examples_lings_property.lings_property.property_value, [current_group, examples_lings_property.lings_property]
+      - if can? :destroy, examples_lings_property
+        %td
+          = link_to 'Destroy', [current_group, examples_lings_property], :confirm => 'Are you sure?', :method => :delete
+.apple_pagination
+  / render page links in the view:
+  = will_paginate @examples_lings_properties, renderer: BootstrapPagination::Rails

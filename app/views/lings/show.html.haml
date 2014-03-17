@@ -1,0 +1,116 @@
+= javascript_tag "$.getScript(location.href);"
+- page_heading @ling.grouped_name
+%h1
+  = @ling.grouped_name
+  = @ling.name
+= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :create, LingsProperty.new{|lp| lp.group = current_group}
+  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn"
+  \&nbsp;
+- if can? :edit, @ling
+  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn"
+  \&nbsp;
+%br/
+%br/
+.row-fluid
+  .span6
+    %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
+    %p
+      %tr
+        %td
+          %b Type:
+        %td= current_group.ling_name_for_depth(@ling.depth)
+      %tr
+        %td
+          %b Name:
+        %td
+          = @ling.name
+      - @ling.storable_keys.each do |key|
+        - if @ling.stored_value(key) != ""
+          %tr
+            %td
+              %b
+                = key.humanize
+                \:
+            %td= @ling.stored_value(key)
+      - if @ling.depth == 1 && @ling.parent
+        %tr
+          %td
+            %b
+              = current_group.ling0_name
+              \:
+          %td
+            = link_to @ling.parent.name, group_ling_path(current_group, @ling.parent)
+      - elsif @ling.depth == 0 && !@ling.children.empty?
+        %tr
+          %td
+            %b
+              = current_group.ling1_name.pluralize
+              \:
+          %td
+            - @ling.children.each do |child|
+              = link_to child.name, group_ling_path(current_group, child)
+      %tr
+        %td
+          %b Created by:
+        %td
+          = @ling.creator ? @ling.creator.name : "Unknown user"
+  #analysis-container.span6.border
+    .row-fluid
+      #analysis.span12.relative
+        %h3 Quick Analysis
+        %h5
+          Add languages to compare with #{@ling.name}
+        %input#auto_compare.input-block-level.autocomplete.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
+      #languages-container.span5.hidden1.search-buttons
+        Selected languages (
+        %a.remove-langs{:href => "/Clear All"}> clear all
+        )
+        %ul#selected-lings
+    .row-fluid.relative
+      #compare-buttons.span12.search-buttons
+        %a#compare-langs.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Compare Properties
+        %a#compare-tree.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Similarity Tree
+        %a#compare-radial.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Radial Tree
+        %a#map.btn.btn-primary.btn-block{:href => "#"}
+          %i.icon-white.icon-map-marker.shift-down
+          Map
+%br/
+#pagination_table.values
+  #pagination_top.apple_pagination.will-paginate
+    / render page links in the view:
+    = will_paginate @values, renderer: BootstrapPagination::Rails
+  %table.show-table.table.table-bordered.table-striped.table-hover
+    %thead
+      %th.span2= current_group.property_name
+      %th.span2= current_group.lings_property_name
+      %th.span6= current_group.example_name.pluralize
+      %th.span2 Creator
+    %tbody
+      - @values.each do |value|
+        %tr
+          %td= link_to value.property.name, [current_group, value.property]
+          %td= value.value
+          - elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id)
+          %td.align-left
+            - elps.each do |elp|
+              - example = elp.example
+              = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
+          %td= (value.creator ? value.creator.name : "")
+  #pagination_bottom.apple_pagination.will-paginate
+    / render page links in the view:
+    = will_paginate @values, renderer: BootstrapPagination::Rails
+%br/
+= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
+  %i.icon-white.icon-arrow-left>
+  \&nbsp;Back
+\&nbsp;
+- if can? :create, LingsProperty.new{|lp| lp.group = current_group}
+  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn"
+  \&nbsp;
+- if can? :edit, @ling
+  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn"
+  \&nbsp;

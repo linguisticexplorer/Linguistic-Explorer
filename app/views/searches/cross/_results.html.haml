@@ -1,0 +1,12 @@
+#pagination_top.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails
+%table.show-table.table.table-bordered.table-striped.table-hover.search_results
+  %tr
+    - result_headers.each do |proc|
+      %th= proc.call @search.group
+  - @search.results.each do |result|
+    = render :partial => "searches/cross/result", :locals => { :result => result}, :inline => true
+#pagination_bottom.apple_pagination.will-paginate
+  / render page links in the view:
+  = will_paginate @search.results, renderer: BootstrapPagination::Rails

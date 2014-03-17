@@ -1,0 +1,25 @@
+#pagination_top.apple_pagination
+  / render page links in the view:
+  = alphabetical_paginate @params
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th Member
+    %th Level
+    - if can? :edit, @memberships
+      %th
+    - if can? :destroy, @memberships
+      %th
+  - @memberships.each do |membership|
+    %tr
+      %td= link_to membership.member.name, [current_group, membership]
+      %td= membership.level
+      - if can? :edit, membership
+        %td
+          = link_to 'Edit', edit_group_membership_path(current_group, membership), :class => 'btn btn-small'
+      - if can? :destroy, membership
+        %td
+          = link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger btn-small'
+%br/
+#pagination_bottom.apple_pagination
+  / render page links in the view:
+  = alphabetical_paginate @params

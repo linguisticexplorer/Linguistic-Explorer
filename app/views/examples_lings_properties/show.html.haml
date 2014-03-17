@@ -1,0 +1,20 @@
+- page_heading current_group.examples_lings_property_name
+%h1= current_group.examples_lings_property_name
+%p
+  %b
+    = current_group.examples_lings_property_name
+    \:
+  %br/
+  = link_to @examples_lings_property.example.name, group_example_path(current_group, @examples_lings_property.example)
+  %br/
+  %b
+    = current_group.lings_property_name
+    \:
+  %br/
+  = link_to @examples_lings_property.lings_property.id, group_lings_property_path(current_group, @examples_lings_property.lings_property)
+  %br/
+  %b Created by:
+  %br/
+  = @examples_lings_property.creator ? @examples_lings_property.creator.name : "Unknown user"
+  %br/
+= link_to 'Back', group_examples_lings_properties_path(current_group)

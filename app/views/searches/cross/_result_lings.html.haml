@@ -1,0 +1,23 @@
+- page_heading "Search"
+#titleHeader
+  %h2
+    = @search.group.name
+    Lings in the Selection
+#search_results.padded_left.padded_right
+  - if @search.results.any?
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %tr
+        - result_headers.each do |proc|
+          %th= proc.call @search.group
+      - @presenter_results.each do |result|
+        = render :partial => "searches/cross/result", :locals => { :result => result}, :inline => true
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %tr
+        - result_headers_lings_cross.each do |proc|
+          %th= proc.call @search.group
+      - if @search.cross? || @search.implication?
+        - @presenter_results.each do |result|
+          - result.child.each do |ling|
+            = render :partial => "searches/cross/result_ling", :locals => { :result => ling }, :inline => true
+  - else
+    .notice Your search query returned no results.

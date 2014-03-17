@@ -1,0 +1,36 @@
+#cat-title.fluid-row
+  %h2 Select Property
+.fluid-container
+  - if category.count > 1
+    %h4 Category
+    #cat-select.fluid-row{:style => "height:50px;"}
+      = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
+        .span7
+          %select#category-select{:name => "category_id"}
+            - category.each do |category|
+              <option value="#{category.id}" #{"selected" if category.id == @category.id}> #{category.name}
+        .span3.offset1
+          = submit_tag("Select", class: "btn", style: "display:block; margin-top:10px;width:120px;")
+  %h4 Properties
+  = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
+    #cat-prop.fluid-row
+      %select#prop-select{:multiple => "multiple", :name => "prop_id"}
+        - @properties.each do |prop|
+          <option id="prop-#{prop.id}" style= "color:
+          - if @preexisting_values.any?
+            - lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0]
+            - if lp
+              - if lp.sureness != "revisit" && lp.sureness != "need_help"
+                green;
+              - else
+                orange;
+            - else
+              red;
+          - else
+            red;
+          " value="#{prop.id}" #{"selected" if prop.id == @property.id}> #{prop.name}
+    #select-col.row-fluid
+      = submit_tag("Select", class: "btn cat-btn hidden")
+      = submit_tag("Next", class: "btn btn-primary btn-block cat-btn")
+      = submit_tag("Next Unset", class: "btn btn-danger btn-block cat-btn")
+      = submit_tag("Next Uncertain", class: "btn btn-warning btn-block cat-btn")
