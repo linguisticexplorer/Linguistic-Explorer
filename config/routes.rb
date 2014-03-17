@@ -1,11 +1,4 @@
 LinguisticExplorer::Application.routes.draw do
-  resources :forum_groups, :except => [:index, :show]
-  resources :forums, :except => :index do
-    resources :topics, :shallow => true, :except => :index do
-      resources :posts, :shallow => true, :except => [:index, :show]
-    end
-    root :to => 'forum_groups#index', :via => :get
-  end
 
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
@@ -43,8 +36,8 @@ LinguisticExplorer::Application.routes.draw do
       end
     end
 
-    resources :lings_properties, :only => [:show, :index, :destroy]
-    resources :examples_lings_properties, :except => [:edit, :update]
+    resources :lings_properties, :only => [:show, :destroy]
+    resources :examples_lings_properties, :except => [:index, :edit, :update]
     resources :properties, :examples, :categories, :memberships
   end
 

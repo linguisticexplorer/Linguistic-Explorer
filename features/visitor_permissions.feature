@@ -18,8 +18,6 @@ Feature: Permissions testing for non-logged-in users
     Then I should be on the group Syntactic Structures
     And  I follow "Advanced Search"
     Then I should be on the search page for Syntactic Structures
-    #When I go to the lings page for Syntactic Structures
-    #Then I should be on the lings page for Syntactic Structures
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
     Then I should be on the ling0s page for Syntactic Structures
     And  I follow the "Ling" with depth "1" model link for the group "Syntactic Structures"
@@ -46,17 +44,13 @@ Feature: Permissions testing for non-logged-in users
     Then I should be on the access denied page
     When I go to the properties page for Secret Club
     Then I should be on the access denied page
-    When I go to the values page for Secret Club
-    Then I should be on the access denied page
     When I go to the examples page for Secret Club
-    Then I should be on the access denied page
-    When I go to the example values page for Secret Club
     Then I should be on the access denied page
     When I go to the memberships page for Secret Club
     Then I should be on the access denied page
 
-  Scenario: Visitors should not able to create a new forum
-    When I should see "TerraLing"
-    Then I should see "Forums" within ".nav"
-    Then I follow "Forums"
-    And I should not see "New Forum Group"
+  # Scenario: Visitors should not able to create a new forum
+  #   When I should see "TerraLing"
+  #   Then I should see "Forums" within ".nav"
+  #   Then I follow "Forums"
+  #   And I should not see "New Forum Group"

@@ -28,9 +28,8 @@ Terraling is a Ruby on Rails web application to let you store and browse your li
 ## Install
 
 #### Requirements
-* Ruby 1.9.x
+* Ruby 1.9.3 - if you are stuck with 1.9.2 use version 1.3.3
 * MySQL 5.5.x
-* [R server](http://cran.r-project.org/doc/FAQ/R-FAQ.html#How-can-R-be-installed_003f)
 
 #### How to
 
