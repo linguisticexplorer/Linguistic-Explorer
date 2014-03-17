@@ -7,24 +7,6 @@ describe LingsPropertiesController do
     @controller.stub(:current_ability).and_return(@ability)
   end
 
-  describe "index" do
-    it "@lings_properties should lings_properties through the current group" do
-      @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
-
-      Group.should_receive(:lings_properties).and_return @group.lings_properties
-
-      get :index, :group_id => @group.id
-    end
-
-    describe "assigns" do
-      it "@lings_properties should contain lings_properties for the group" do
-        get :index, :group_id => groups(:inclusive).id
-        assigns(:lings_properties).should include lings_properties(:smelly)
-      end
-    end
-  end
-
   describe "show" do
     describe "assigns" do
       it "@lings_property should match the passed id" do
@@ -77,11 +59,12 @@ describe LingsPropertiesController do
       Group.stub(:find).and_return @group
       do_destroy_on_lings_property(@lp)
     end
-
-    it "redirects to the lings_properties list" do
+    
+    # TODO: change this to go back to the ling page once destroyed
+    it "redirects to the group home page" do
       @group = groups(:inclusive)
       delete :destroy, :id => lings_properties(:inclusive), :group_id => @group.id
-      response.should redirect_to(group_lings_properties_url(@group))
+      response.should redirect_to(@group)
     end
   end
 end

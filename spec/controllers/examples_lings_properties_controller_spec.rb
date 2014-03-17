@@ -7,17 +7,6 @@ describe ExamplesLingsPropertiesController do
     @controller.stub(:current_ability).and_return(@ability)
   end
 
-  describe "index" do
-    it "@examples_lings_properties should contain examples_lings_properties from the current group" do
-      @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
-
-      Group.should_receive(:examples_lings_properties).and_return @group.examples_lings_properties
-
-      get :index, :group_id => @group.id
-    end
-  end
-
   describe "show" do
     describe "assigns" do
       it "@examples_lings_property should match the passed id" do
@@ -65,6 +54,12 @@ describe ExamplesLingsPropertiesController do
         @group = groups(:inclusive)
         get :new, :group_id => groups(:inclusive).id
         assigns(:lings_properties).should == @group.lings_properties.sort_by(&:description)
+      end
+
+      it "no ling_properties if a ling is passed" do
+        @group = groups(:inclusive)
+        get :new, :group_id => groups(:inclusive).id, :ling_id => lings(:level0).id
+        assigns(:lings_properties).should == false
       end
     end
   end
@@ -207,10 +202,11 @@ describe ExamplesLingsPropertiesController do
       Group.stub(:find).and_return @group
       do_destroy_on_examples_lings_property(@elp)
     end
-
+    
+    ## TODO: Redirect to the ling page once done
     it "redirects to the examples_lings_properties list" do
       delete :destroy, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
-      response.should redirect_to(group_examples_lings_properties_url(assigns(:group)))
+      response.should redirect_to(assigns(:group))
     end
   end
 end

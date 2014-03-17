@@ -40,10 +40,13 @@ describe GroupsController do
     nested_resources.each do |resource|
       skip_edit_and_update = (["examples_lings_properties", "lings_properties"].include? resource)
       skip_new_and_create = (["lings_properties"].include? resource)
+      skip_index = (["examples_lings_properties", "lings_properties"].include? resource)
 
       describe resource do
-        it "recognizes and generates #index" do
-          { :get => "groups/1/#{resource}" }.should route_to(:controller => resource, :action => "index", :group_id => "1")
+        unless skip_index
+          it "recognizes and generates #index" do
+            { :get => "groups/1/#{resource}" }.should route_to(:controller => resource, :action => "index", :group_id => "1")
+          end
         end
 
         it "recognizes and generates #show" do
