@@ -96,7 +96,7 @@ Feature: Data entry supported by surrounding language context
     When I am on the Property Assignment with Context for "Afrikaans" Page
     Then I should see "Save" button
 
-  Scenario: The page displays existing examples for for this property & ling
+  Scenario: The page displays existing examples for this property & ling
     When I am on the Property Assignment with Context for "Afrikaans" Page
     Then I should see "Examples"
     And I should see "I speak Afrikaans"
