@@ -12,9 +12,9 @@
       %br/
     .container-fluid
       #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
-        .row-fluid
+        .row
           %h5 Type the name of a language here:
-        .row-fluid
+        .row
           .margin.span11.offset1
             %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "lings_autocomplete", :placeholder => "Loading...", :type => "text"}
         / #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
@@ -40,11 +40,11 @@
         /       -else
         /         .tab-pane{:id => "#{id}"}
         /       - first = false if first
-        /       .row-fluid
+        /       .row
         /         .margin.span12
         /           %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "auto_#{x.id}", :placeholder => "Loading...", :type => "text"}/
       %br/
-      .row-fluid
+      .row
         #carousel.carousel.slide
           %ol.carousel-indicators
             %li.active{"data-slide-to" => "0", "data-target" => "#carousel"}
@@ -74,7 +74,7 @@
                 %p Terraling is free and open-ended, all the data is contributed by linguistic professionals
           %a.left.carousel-control{"data-slide" => "prev", :href => "#carousel"} &lsaquo;
           %a.right.carousel-control{"data-slide" => "next", :href => "#carousel"} &rsaquo;
-      .row-fluid
+      .row
         #intro
           %p
             Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
