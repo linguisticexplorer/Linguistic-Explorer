@@ -3,10 +3,10 @@
     = current_user.email
     - if current_user && current_user.admin?
       %br/
-      %span.nav-status Site Admin
+      .col-md-.nav-status Site Admin
     - elsif current_user && @group && (current_user.admin? || current_user.administrated_groups.include?(@group))
       %br/
-      %span.nav-status Group Admin
+      .col-md-.nav-status Group Admin
   %li.pull-right.buttons= link_to "Sign Out", destroy_user_session_path, html_options = {:class => "btn"}
 - else
   %li.pull-right.buttons= link_to "Sign In", new_user_session_path, html_options = {:class => "btn"}
