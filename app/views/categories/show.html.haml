@@ -1,7 +1,7 @@
 - page_heading current_group.category_name
 %h1= current_group.category_name
 = link_to group_categories_path(current_group), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @category
@@ -26,7 +26,7 @@
       %b Created by:
     %td= @category.creator ? @category.creator.name : "Unknown user"
 = link_to group_categories_path(current_group), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @category

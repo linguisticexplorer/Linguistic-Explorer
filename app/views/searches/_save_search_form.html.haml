@@ -11,7 +11,7 @@
             - @search.errors.full_messages.each do |msg|
               %li= msg
       .row-fluid
-        .span12.input-append
+        .col-md-12.input-append
           = f.text_field :name, :placeholder => "Enter name", class: "search-input"
           = f.submit "Save", :class => "btn"
       = f.hidden_field :query_json

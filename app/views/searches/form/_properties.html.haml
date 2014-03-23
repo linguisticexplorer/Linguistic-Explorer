@@ -19,17 +19,17 @@
     .control-group
       = label_tag "props-select", "Selection", :class => "control-label"
       .controls.field{:name => "props-select"}
-        = label_tag categorized_set_id(category.name, "any"), :class => "radio inline" do
+        = label_tag categorized_set_id(category.name, "any"), :class => "radio-inline" do
           = f.radio_button "property_set", "any", :checked => true, |
             :id => categorized_set_id(category.name, "any"),        |
             :name => categorized_field_name(:property, category.id) |
           Any
-        = label_tag categorized_set_id(category.name, "all"), :class => "radio inline" do
+        = label_tag categorized_set_id(category.name, "all"), :class => "radio-inline" do
           = f.radio_button "property_set", "all",                   |
             :id => categorized_set_id(category.name, "all"),        |
             :name => categorized_field_name(:property, category.id) |
           All
-        = label_tag categorized_set_id(category.name, "cross"), :class => "radio inline" do
+        = label_tag categorized_set_id(category.name, "cross"), :class => "radio-inline" do
           = f.radio_button "property_set", "cross",                 |
             :id => categorized_set_id(category.name, "cross"),      |
             :name => categorized_field_name(:property, category.id) |

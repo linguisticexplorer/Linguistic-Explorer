@@ -11,12 +11,12 @@
     .control-group
       = label_tag "lings-prop-select", "Selection", :class => "control-label"
       .controls{:name => "lings-prop-select"}
-        = label_tag categorized_set_id(lings_prop_label, "any"), :class => "radio inline" do
+        = label_tag categorized_set_id(lings_prop_label, "any"), :class => "radio-inline" do
           = f.radio_button "lings_property_set", "any", :checked => true, |
             :id => categorized_set_id(lings_prop_label, "any"),           |
             :name => categorized_field_name(:lings_property, category.id) |
           Any
-        = label_tag categorized_set_id(lings_prop_label, "all"), :class => "radio inline" do
+        = label_tag categorized_set_id(lings_prop_label, "all"), :class => "radio-inline" do
           = f.radio_button "lings_property_set", "all",                   |
             :id => categorized_set_id(lings_prop_label, "all"),           |
             :name => categorized_field_name(:lings_property, category.id) |

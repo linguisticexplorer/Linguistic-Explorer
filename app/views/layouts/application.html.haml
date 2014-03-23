@@ -7,7 +7,7 @@
     / 'reset', 'framework', 'application', 'jquery-ui', 'gmaps4rails', 'bootstrap.min', 'bootstrap-responsive.min'
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin-ext,latin", :rel => "stylesheet", :type => "text/css"}/
     = stylesheet_link_tag 'application'
-    = javascript_include_tag 'application'
+    = javascript_include_tag 'application', controller_name
     = csrf_meta_tag
     = yield :head
   %body{:class => body_classes}

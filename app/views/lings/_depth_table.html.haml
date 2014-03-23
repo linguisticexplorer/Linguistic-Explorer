@@ -7,7 +7,7 @@
       %th= current_group.ling_name_for_depth(depth - 1)
     - current_group.ling_storable_keys.each do |key|
       %th= key.humanize
-    %th.span2 Completeness
+    %th.col-md-2 Completeness
     - if can? :destroy, lings
       %th
   - lings.each do |ling|

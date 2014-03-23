@@ -6,7 +6,7 @@
 %h1
   Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
 = link_to [current_group, @ling], :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back to #{@ling.name} page
 \&nbsp;
 \#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
@@ -14,17 +14,17 @@
 %br/
 #supported-entry-container.container-fluid
   .row-fluid
-    #property-description.span4.set-col
+    #property-description.col-md-4.set-col
       = render partial: "lings/mass_assignment/property", object: @property
-    #property-setter.span4.set-col
+    #property-setter.col-md-4.set-col
       = render partial: "lings/mass_assignment/value", object: @property
       .row-fluid
-    #property-selector.span4.set-col
+    #property-selector.col-md-4.set-col
       = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
 %br/
 %br/
 = link_to [current_group, @ling], :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back to #{@ling.name} page
 \&nbsp;
 \#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
@@ -42,8 +42,8 @@
   .modal-body
 .mod-tab
   %a#prop-tab.btn.btn-info.hidden{:href => "#"}
-    %i.icon-white.icon-chevron-up.shift-down
+    %i.glyphicon-white.glyphicon-chevron-up.shift-down
     Property Description
   %a#example-tab.btn.btn-info.hidden{:href => "#"}
-    %i.icon-white.icon-chevron-up.shift-down
+    %i.glyphicon-white.glyphicon-chevron-up.shift-down
     Example

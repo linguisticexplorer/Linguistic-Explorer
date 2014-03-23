@@ -18,7 +18,7 @@
     .control-group
       = label_tag "lings-select", "Selection", :class => "control-label"
       .controls.field{:name => "lings-select"}
-        = label_tag search_compare_id(depth), :class => "radio inline" do
+        = label_tag search_compare_id(depth), :class => "radio-inline" do
           = f.radio_button "ling_set", "compare",                |
             :id => search_compare_id(depth),                     |
             :name => search_compare_field_name(:ling_set ,depth) |

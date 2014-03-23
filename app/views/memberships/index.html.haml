@@ -4,7 +4,7 @@
 - if can? :create, Membership.new{|m| m.group = current_group}
   = link_to "New Membership", new_group_membership_path(current_group), :class => "btn"
 .row
-  .margin.span5.relative
+  .margin.col-md-5.relative
     %input#auto_memb.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
 #pagination_table
   = render :partial => "index_partial"

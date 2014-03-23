@@ -8,7 +8,7 @@
     %h1= @group.name
   #intro
     .row
-      .margin.span6.relative
+      .margin.col-md-6.relative
         %input#auto_group.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
     %br/
     - if @group.description.present?

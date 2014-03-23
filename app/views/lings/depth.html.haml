@@ -4,7 +4,7 @@
 - if can? :create, Ling.new{|l| l.group = current_group}
   = link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn"
 .row
-  .margin.span5.relative
+  .margin.col-md-5.relative
     %input#auto_lang.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
 #pagination_table
   = render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth, :paginate_params => @params }

@@ -3,17 +3,17 @@
     .implication_search.control-group
       = label_tag "univ-impl", "Universal Implication", :class => "control-label"
       .controls.field{:name => "univ-impl"}
-        = label_tag advanced_search_id(:impl_both), :class => "radio inline" do
+        = label_tag advanced_search_id(:impl_both), :class => "radio-inline" do
           = f.radio_button "advanced_set", "both", :checked => false, |
             :id => advanced_search_id(:impl_both),                    |
             :name => advanced_search_field_name(:advanced_set, :impl) |
           Both
-        = label_tag advanced_search_id(:impl_ante), :class => "radio inline" do
+        = label_tag advanced_search_id(:impl_ante), :class => "radio-inline" do
           = f.radio_button "advanced_set", "ante", :checked => false, |
             :id => advanced_search_id(:impl_ante),                    |
             :name => advanced_search_field_name(:advanced_set, :impl) |
           Antecedent
-        = label_tag advanced_search_id(:impl_cons), :class => "radio inline" do
+        = label_tag advanced_search_id(:impl_cons), :class => "radio-inline" do
           = f.radio_button "advanced_set", "cons", :checked => false, |
             :id => advanced_search_id(:impl_cons),                    |
             :name => advanced_search_field_name(:advanced_set, :impl) |
@@ -21,7 +21,7 @@
     .implication_search.control-group
       = label_tag "univ-impl-doub", "Universal Implication<br />Double".html_safe, :class => "control-label"
       .controls.field{:name => "univ-impl-doub"}
-        = label_tag advanced_search_id(:impl_double), :class => "radio inline" do
+        = label_tag advanced_search_id(:impl_double), :class => "radio-inline" do
           = f.radio_button "advanced_set", "double", :checked => false, |
             :id => advanced_search_id(:impl_double),                    |
             :name => advanced_search_field_name(:advanced_set, :impl)   |
@@ -29,13 +29,8 @@
     .clustering_search.control-group
       = label_tag "similarity", "Similarity", :class => "control-label"
       #clustering.controls.field{:name => "similarity"}
-        = label_tag advanced_search_id(:clust_hamming), :class => "radio inline" do
+        = label_tag advanced_search_id(:clust_hamming), :class => "radio-inline" do
           = f.radio_button "advanced_set", "hamming", :checked => false,    |
             :id => advanced_search_id(:clust_hamming),                      |
             :name => advanced_search_field_name(:advanced_set, :clustering) |
           Tree
-    .control-group
-      %label.control-label{:for => ""}
-      .controls
-        = f.submit "Show results", :name => nil, :class => "btn inline"
-        %input#reset.nudge.btn.inline{:type => "reset", :value => "Reset"}/

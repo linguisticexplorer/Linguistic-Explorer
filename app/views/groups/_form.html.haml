@@ -103,12 +103,12 @@
     = f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label"
     #row-fix.controls
       .row
-        #order.span4
+        #order.col-md-4
       = f.hidden_field :example_fields
-      #add.input-append.span4
-        %input#append.span2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}/
+      #add.input-append.col-md-4
+        %input#append.col-md-2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}/
         %button#append-button.btn.btn-success{:type => "button"}
-          %i.icon-plus.icon-white
+          %i.glyphicon-plus.glyphicon-white
   .control-group
     = f.label :depth_maximum, "Depth Maximum", :class => "control-label"
     .controls

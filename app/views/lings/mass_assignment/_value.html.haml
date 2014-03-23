@@ -43,19 +43,19 @@
           No example selected
     #prop-example-selector.fluid-row
       = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
-        .span8
+        .col-md-8
           %select#example-select{:name => "example_id"}
             - if !@examples.empty?
               - @examples.each do |example|
                 <option value=#{example.id}> #{example.name}
             - else
               %option No examples available
-        .span4.offset.1
+        .col-md-4.col-md-offset-1
           = submit_tag("Select", class: "btn btn-block", id: "example-select-btn")
     #prop-example-creator.row-fluid
-      .span6
+      .col-md-6
         %a#example-create{:class => "btn btn-primary btn-block #{@exists ? "enabled" : "disabled"}", :href => "#"} Create Example
-      .span6
+      .col-md-6
         %a#example-change{:class => "btn btn-success btn-block #{!@examples.empty? ? "enabled" : "disabled"}", :href => "#"} Change Example
     - if !@exists
       %span#example-warning.blue.italic You must set a value before creating examples

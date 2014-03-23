@@ -5,7 +5,7 @@
 - if can? :create, Property.new{|p| p.group = current_group}
   = link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn"
 .row
-  .margin.span5.relative
+  .margin.col-md-5.relative
     %input#auto_prop.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
 #pagination_table
   = render :partial => 'properties/index_partial'

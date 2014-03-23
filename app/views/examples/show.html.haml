@@ -1,7 +1,7 @@
 - page_heading current_group.example_name
 %h1= current_group.example_name
 = link_to group_examples_path(current_group), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @example
@@ -35,7 +35,7 @@
       = @example.creator ? @example.creator.name : "Unknown user"
 %br/
 = link_to group_examples_path(current_group), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @example

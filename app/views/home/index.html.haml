@@ -15,7 +15,7 @@
         .row
           %h5 Type the name of a language here:
         .row
-          .margin.span11.offset1
+          .margin.col-md-11.col-md-offset-1
             %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "lings_autocomplete", :placeholder => "Loading...", :type => "text"}
         / #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
         /   %ul#tabs.nav.nav-tabs
@@ -41,7 +41,7 @@
         /         .tab-pane{:id => "#{id}"}
         /       - first = false if first
         /       .row
-        /         .margin.span12
+        /         .margin.col-md-12
         /           %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "auto_#{x.id}", :placeholder => "Loading...", :type => "text"}/
       %br/
       .row

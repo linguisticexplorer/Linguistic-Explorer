@@ -4,7 +4,7 @@
   = @ling.grouped_name
   = @ling.name
 = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :create, LingsProperty.new{|lp| lp.group = current_group}
@@ -16,7 +16,7 @@
 %br/
 %br/
 .row-fluid
-  .span6
+  .col-md-6
     %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
     %p
       %tr
@@ -58,25 +58,25 @@
           %b Created by:
         %td
           = @ling.creator ? @ling.creator.name : "Unknown user"
-  #analysis-container.span6.border
+  #analysis-container.col-md-6.border
     .row-fluid
-      #analysis.span12.relative
+      #analysis.col-md-12.relative
         %h3 Quick Analysis
         %h5
           Add languages to compare with #{@ling.name}
         %input#auto_compare.input-block-level.autocomplete.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
-      #languages-container.span5.hidden1.search-buttons
+      #languages-container.col-md-5.hidden1.search-buttons
         Selected languages (
         %a.remove-langs{:href => "/Clear All"}> clear all
         )
         %ul#selected-lings
     .row-fluid.relative
-      #compare-buttons.span12.search-buttons
+      #compare-buttons.col-md-12.search-buttons
         %a#compare-langs.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Compare Properties
         %a#compare-tree.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Similarity Tree
         %a#compare-radial.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Radial Tree
         %a#map.btn.btn-primary.btn-block{:href => "#"}
-          %i.icon-white.icon-map-marker.shift-down
+          %i.glyphicon-white.glyphicon-map-marker.shift-down
           Map
 %br/
 #pagination_table.values
@@ -85,10 +85,10 @@
     = will_paginate @values, renderer: BootstrapPagination::Rails
   %table.show-table.table.table-bordered.table-striped.table-hover
     %thead
-      %th.span2= current_group.property_name
-      %th.span2= current_group.lings_property_name
-      %th.span6= current_group.example_name.pluralize
-      %th.span2 Creator
+      %th.col-md-2= current_group.property_name
+      %th.col-md-2= current_group.lings_property_name
+      %th.col-md-6= current_group.example_name.pluralize
+      %th.col-md-2 Creator
     %tbody
       - @values.each do |value|
         %tr
@@ -105,7 +105,7 @@
     = will_paginate @values, renderer: BootstrapPagination::Rails
 %br/
 = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
-  %i.icon-white.icon-arrow-left>
+  %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
 - if can? :create, LingsProperty.new{|lp| lp.group = current_group}

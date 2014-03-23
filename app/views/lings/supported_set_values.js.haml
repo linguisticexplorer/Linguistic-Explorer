@@ -102,13 +102,13 @@ warning.remove();
 $("#example-create").toggleClass("disabled enabled");
 }
 } else {
-saveOverlay.toggleClass("alert-error");
+saveOverlay.toggleClass("alert-danger");
 saveOverlay.html("Save Unsuccessful")
 }
 setTimeout(function() {
 saveOverlay.animate({opacity: 0}, 500, function() {
 saveOverlay.removeAttr("style");
-saveOverlay.removeClass("alert-success alert-error");
+saveOverlay.removeClass("alert-success alert-danger");
 saveOverlay.html("");
 });
 }, 700);
@@ -201,13 +201,13 @@ saveOverlay.toggleClass("alert-success").html("Save Successful")
 $("#prop-example").html(img);
 $("#prop-example").load(location.href + " #prop-example");
 } else {
-saveOverlay.toggleClass("alert-error").html("Save Unsuccessful")
+saveOverlay.toggleClass("alert-danger").html("Save Unsuccessful")
 }
 setTimeout(function() {
 $("#example-modal").modal("hide");
 setTimeout(function() {
 saveOverlay.removeAttr("style");
-saveOverlay.removeClass("alert-success alert-error");
+saveOverlay.removeClass("alert-success alert-danger");
 saveOverlay.html("");
 }, 1000);
 }, 700);

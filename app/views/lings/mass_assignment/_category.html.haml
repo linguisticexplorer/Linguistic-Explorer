@@ -5,11 +5,11 @@
     %h4 Category
     #cat-select.fluid-row{:style => "height:50px;"}
       = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
-        .span7
+        .col-md-7
           %select#category-select{:name => "category_id"}
             - category.each do |category|
               <option value="#{category.id}" #{"selected" if category.id == @category.id}> #{category.name}
-        .span3.offset1
+        .col-md-3.col-md-offset-1
           = submit_tag("Select", class: "btn", style: "display:block; margin-top:10px;width:120px;")
   %h4 Properties
   = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
