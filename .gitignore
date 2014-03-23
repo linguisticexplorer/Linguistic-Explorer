@@ -13,6 +13,7 @@ db/seed/*
 public/similarity_tree_images/*.png
 log/*
 tmp/*
+.sass-cache/
 
 # Local machine configuration files
 config/database.yml
