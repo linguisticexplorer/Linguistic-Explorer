@@ -33,13 +33,9 @@ LinguisticExplorer::Application.configure do
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
 
-  # Use a different size of pagination
-  # See http://rubyflare.com/2010/11/25/faster-cucumbering-with-pagination/
-  # ActiveRecord::Base.instance_eval do
-  #   def per_page; 4; end
-  # end
-
-  # DEFAULT_PER_PAGE = ActiveRecord::Base.per_page
+  # Configure static asset server for tests with Cache-Control for performance
+  config.serve_static_assets = true
+  config.static_cache_control = "public, max-age=3600"
 
   # Trace Query triggers
   # Set to true to debug and reace query
