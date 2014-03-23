@@ -32,21 +32,42 @@ gem "validates_existence", "~> 0.8.0"
 
 # # Presentation Related gems
 gem 'json'
-gem 'haml'
-# # Geomapping gem
-gem 'gmaps4rails'
+# # Use HAML instead of ERB
+gem 'haml-rails'
 # # new styles
 gem 'will_paginate-bootstrap'
 # # for easy pagination
 gem 'will_paginate'
-# # sass support
-gem 'sass'
+# # experimental
+gem "alphabetical_paginate"
 # # iconv for utf-8 to latin1 conversion
 gem 'iconv'
-# # Will remove prototype in favor of jQuery
-gem "jquery-rails"
-#experimental
-gem "alphabetical_paginate"
+# # Bootstrap gem
+gem 'bootstrap-sass'
+# # Some more icons
+gem 'font-awesome-sass'
+# # sass support: it should be out of the assets group!
+gem 'sass-rails', '>= 3.2'
+# # Use Twitter Typeahead
+gem 'twitter-typeahead-rails'
+
+# # Js libs
+# # jQuery
+gem 'jquery-rails'
+# # jQuery UI
+gem 'jquery-ui-rails'
+# # Add Modernizr to dynamically run HTML5 checks and load JS polyfills conditionally
+gem 'modernizr-rails'
+# d3js gem -> takes care about updating the JS file
+gem 'd3-rails'
+# leaflet gem
+gem 'leaflet-rails'
+
+# Use it to precompile assets
+group :assets do
+  # No need for coffeescript here, JS it's enough
+  gem "uglifier"
+end
 
 
 # # Forum gem
@@ -98,6 +119,7 @@ group :test, :development do
   
   # # Query Tracer: useful to debug
   # # Do not activate unless you really need it!
+  # # When active it fills all your memory!
   gem "active_record_query_trace"
   
   # # Used to test with a real browser
