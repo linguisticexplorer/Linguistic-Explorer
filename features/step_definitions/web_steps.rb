@@ -87,11 +87,6 @@ When /^(?:|I )add "([^\"]*)"(?: within "([^\"]*)")? to the list$/ do |link, sele
   end
 end
 
-When /^(?:|I )fill in the CAPTCHA correctly$/ do
-  # Waiting for rspec 2.6
-  # User.any_instance.stubs(:bypass_humanizer?).returns(true)
-end
-
 # Use this to fill in an entire form with data from a table. Example:
 #
 #   When I fill in the following:

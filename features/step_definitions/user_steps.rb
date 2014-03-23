@@ -36,3 +36,8 @@ Given /^the following users:$/ do |table|
     create_user(attrs)
   end
 end
+
+When /^(?:|I )fill in the CAPTCHA correctly$/ do
+  # Waiting for rspec 2.6
+  User.any_instance.stubs(:bypass_humanizer?).returns(true)
+end
