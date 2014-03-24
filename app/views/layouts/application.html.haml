@@ -2,12 +2,12 @@
 %html
   %head
     = favicon_link_tag 'favicon.ico'
+    // Make the site mobile friendly
+    %meta{:name => "viewport",  :content => "width=device-width, initial-scale=1"}
     %title= page_title
     = javascript_include_tag 'modernizr'
-    / 'reset', 'framework', 'application', 'jquery-ui', 'gmaps4rails', 'bootstrap.min', 'bootstrap-responsive.min'
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin-ext,latin", :rel => "stylesheet", :type => "text/css"}/
     = stylesheet_link_tag 'application'
-    = javascript_include_tag 'application', controller_name
     = csrf_meta_tag
     = yield :head
   %body{:class => body_classes}
@@ -21,15 +21,16 @@
           .alert.alert-success
             = notice
       = yield
-    #footer.container
-      = yield :scripts
-      %p
-        \&copy; 2013 terraling.com, Version: #{Version::VERSION}
-        %br/
-        10 Washington Place, New York, NY 10003 .
-        = succeed "." do
-          %a{:href => "mailto:support@terraling.com"} support AT terraling.com
-        All Rights Reserved
+      #footer
+        %p
+          \&copy; 2013 terraling.com, Version: #{Version::VERSION}
+          %br/
+          10 Washington Place, New York, NY 10003 .
+          = succeed "." do
+            %a{:href => "mailto:support@terraling.com"} support AT terraling.com
+          All Rights Reserved
+    = javascript_include_tag 'application', controller_name
+    = yield :scripts
     :javascript
       var _gaq = _gaq || [];
       _gaq.push(['_setAccount', 'UA-38340701-1']);

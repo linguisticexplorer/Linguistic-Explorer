@@ -1,16 +1,17 @@
 - @search.property_categories.each do |category, depth|
   - lings_prop_label  = "#{category.name} Value Pairs"
   = content_tag :fieldset, :id => lings_prop_label.underscorize, :class => "table" do
-    .control-group
-      = label_tag search_options_id(lings_prop_label), lings_prop_label, :class => "control-label"
-      .controls
+    .form-group
+      = label_tag search_options_id(lings_prop_label), lings_prop_label, :class => "col-md-4 control-label"
+      .controls.col-md-6
         = f.select :lings_props, @search.lings_prop_options(category), {}, |
           :name => search_field_name(:lings_props, category.id),           |
+          :class => "form-control",                                        |
           :multiple => true,                                               |
           :id => search_options_id(lings_prop_label)                       |
-    .control-group
-      = label_tag "lings-prop-select", "Selection", :class => "control-label"
-      .controls{:name => "lings-prop-select"}
+    .form-group
+      = label_tag "lings-prop-select", "Selection", :class => "col-md-4 control-label"
+      .controls.col-md-8{:name => "lings-prop-select"}
         = label_tag categorized_set_id(lings_prop_label, "any"), :class => "radio-inline" do
           = f.radio_button "lings_property_set", "any", :checked => true, |
             :id => categorized_set_id(lings_prop_label, "any"),           |

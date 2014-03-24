@@ -1,32 +1,27 @@
 = form_for search, :html => {:method => "get", :class => "form-horizontal", :id => "search-form" } do |f| |
   .row
-    #display.col-md-3
+    #display.col-md-2
       %h3 Display
     #display_text.col-md-7
       = render :partial => 'searches/form/includes'
   .row
-    .col-md-3
+    .col-md-2
       %h3 Advanced
     .col-md-7
       = render :partial => 'searches/form/advanced_set', :locals => { :f => f }, :inline => true
   .row
-    .col-md-7.col-md-offset-2
-      .control-group
-        %label.control-label{:for => ""}
-        .controls
-          %submit.btn.btn-primary Show results
-          %input.nudge.btn.btn-default{:type => "reset", :value => "Reset"}
+    \&nbsp;
   .row
-    .col-md-3
+    .col-md-2
       %h3 Constraints
     .col-md-7
       = render :partial => 'searches/form/lings', :locals => { :f => f }, :inline => true
       = render :partial => 'searches/form/properties', :locals => { :f => f }, :inline => true
       = render :partial => 'searches/form/lings_properties', :locals => { :f => f }, :inline => true
       = render :partial => 'searches/form/examples', :locals => { :f => f }, :inline => true
-      .control-group
+      .form-group
         %label.control-label{:for => ""}
-        .controls
+        .controls.col-md-offset-4
           %input#hidden_javascript{:name => "search[javascript]", :type => "hidden", :value => "0"}
           %submit.btn.btn-primary Show results
           %input.nudge.btn.btn-default{:type => "reset", :value => "Reset"}

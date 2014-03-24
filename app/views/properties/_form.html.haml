@@ -14,18 +14,18 @@
       %ul
         - @property.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = f.label :name, :class => "control-label"
     .controls
       = f.text_field :name
-  .control-group
+  .form-group
     = f.label current_group.category_name, :class => "control-label"
     .controls
       = f.collection_select :category_id, @categories[:depth_0] + @categories[:depth_1], :id, :name, :prompt => 'Select a ' + current_group.category_name
-  .control-group
+  .form-group
     = f.label :description, :class => "control-label"
     .controls
       = f.text_area :description, :rows => 20, :class => "span6 hidden", :id => "desc"
-  .control-group
+  .form-group
     .controls
       = f.submit :class => "btn"

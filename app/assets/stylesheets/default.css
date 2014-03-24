@@ -1,7 +1,9 @@
 body {
   background-color: #D5E6D5;
   color: #333;
-  font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif
+  font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+  padding-top: 70px;
+  padding-bottom: 30px;
 }
 html>body{
   font-size:14px;
@@ -86,8 +88,8 @@ body.map #main {
   box-shadow:none;
 }
 
-.container { width: 950px; padding:1em; margin:0 auto;}
-body.full_width #main { width: auto; padding: 0 0 1em; }
+/*.container { width: 950px; padding:1em; margin:0 auto;}*/
+/*body.full_width #main { width: auto; padding: 0 0 1em; }*/
 
 #main {
   box-shadow: #CCC 0px 1px 3px;

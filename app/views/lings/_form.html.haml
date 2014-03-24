@@ -9,20 +9,20 @@
         - @ling.errors.full_messages.each do |msg|
           %li= msg
   = f.hidden_field :depth
-  .control-group
+  .form-group
     = label_tag :name, "Name", :class => "control-label"
     .controls
       = f.text_field :name
   - if @parents && !@parents.empty?
-    .control-group
+    .form-group
       = label_tag current_group.ling_name_for_depth(@depth), current_group.ling_name_for_depth(@depth), :class => "control-label"
       .controls
         = f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"'
   - @ling.storable_keys.each do |key|
-    .control-group
+    .form-group
       = label_tag :stored_values, key.capitalize(), :class => "control-label"
       .controls
         = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10
-  .control-group
+  .form-group
     .controls
       = f.submit("Submit", :class => "btn")

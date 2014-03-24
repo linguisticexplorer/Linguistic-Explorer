@@ -2,23 +2,24 @@
   - prop_label = search_prop_label(category)
   - keyword_label = "#{category.name} Keywords"
   = content_tag :fieldset, :id => prop_label.underscorize, :class => "table" do
-    .control-group
-      = label_tag search_options_id(prop_label), prop_label, :class => "control-label"
-      .controls
+    .form-group
+      = label_tag search_options_id(prop_label), prop_label, :class => "col-md-4 control-label"
+      .controls.col-md-6
         = f.select :properties, @search.property_options(category), {}, |
           :name => search_field_name(:properties, category.id),         |
+          :class => "form-control",                                     |
           :multiple => true,                                            |
           :id => search_options_id(prop_label)                          |
-    .control-group
-      = label_tag search_text_id(keyword_label), keyword_label, :class => "control-label"
-      .controls
+    .form-group
+      = label_tag search_text_id(keyword_label), keyword_label,  :class => "col-md-4 control-label"
+      .controls.col-md-8
         = f.text_field :property_keywords,                                 |
           :id => search_text_id(keyword_label),                            |
           :label => keyword_label,                                         |
           :name => search_text_field_name(:property_keywords, category.id) |
-    .control-group
-      = label_tag "props-select", "Selection", :class => "control-label"
-      .controls.field{:name => "props-select"}
+    .form-group
+      = label_tag "props-select", "Selection", :class => "col-md-4 control-label"
+      .controls.col-md-8.field{:name => "props-select"}
         = label_tag categorized_set_id(category.name, "any"), :class => "radio-inline" do
           = f.radio_button "property_set", "any", :checked => true, |
             :id => categorized_set_id(category.name, "any"),        |

@@ -1,5 +1,5 @@
 .table  { display:table;}
-.row    { display:table-row;}
+/*.row    { display:table-row;}*/
 .cell   { display:table-cell; vertical-align:top;}
 .mcell  { display:table-cell; vertical-align:middle;}
 

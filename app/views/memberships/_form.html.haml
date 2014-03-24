@@ -7,14 +7,14 @@
       %ul
         - @membership.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = f.label :member_id, :class => "control-label"
     .controls
       = f.collection_select :member_id, @users, :id, :email
-  .control-group
+  .form-group
     = f.label :level, :class => "control-label"
     .controls
       = f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s
-  .control-group
+  .form-group
     .controls
       = f.submit :class => "btn"

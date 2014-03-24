@@ -100,7 +100,7 @@ $link-color: #005580;
 }
 
 #search-form {
-  .span7 {
+  .col-md-7 {
     margin-top: 10px;
     padding: 10px;
     border: 1px solid;
@@ -124,7 +124,7 @@ a.btn {
 	color: #333333;
 }
 
-a.btn-danger, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-primary {
+a.btn-danger, a.btn-default, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-primary {
 	color: #ffffff;
 }
 
@@ -223,10 +223,10 @@ input.autocomplete {
       form {
         margin: 0px;
       }
-      .span8 {
+      .col-md-7 {
         margin-left: 0px;
       }
-      .span4 {
+      .col-md-7 {
         margin-right: 0px;
       }
     }
@@ -455,6 +455,10 @@ div#languages-container.hidden1 {
 
 #prop-modal {
   margin-bottom: 10px;
+}
+
+#show_child, #show_impl {
+  margin-top: 10px;
 }
 
 // Import Bootstrap here

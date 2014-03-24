@@ -1,6 +1,8 @@
 - resource_name ||= :search
+- parent_columns_name = current_group.has_depth? ? "Parent " : ""
 = content_tag :fieldset, :id => "show_columns" do
   #show_parent
+    = label_tag "parent-columns", "#{parent_columns_name}Columns", :class => "col-md-4 control-label"
     = label_tag included_column_name(resource_name, :ling_0), :class => "checkbox-inline" do
       = check_box_tag(included_column_name(resource_name, :ling_0), "1", true, :class => "controls")
       = current_group.ling0_name.pluralize
@@ -12,10 +14,10 @@
       = current_group.lings_property_name.pluralize
     = label_tag included_column_name(resource_name, :example_0), :class => "checkbox-inline" do
       = check_box_tag included_column_name(resource_name, :example_0), "1", true
-      Examples
+      = current_group.example_name.pluralize
   - if current_group.has_depth?
-    %br/
     #show_child
+      = label_tag "child-columns", "Child Columns", :class => "col-md-4 control-label"
       = label_tag included_column_name(resource_name, :ling_1), :class => "checkbox-inline" do
         = check_box_tag included_column_name(resource_name, :ling_1), "1", true
         = current_group.ling1_name.pluralize
@@ -27,12 +29,12 @@
         = current_group.lings_property_name.pluralize
       = label_tag included_column_name(resource_name, :example_1), :class => "checkbox-inline" do
         = check_box_tag included_column_name(resource_name, :example_1), "1", true
-        Examples
-    %br/
+        = current_group.example_name.pluralize
     #show_impl
+      = label_tag "depth-implication", "Perform in", :class => "col-md-4 control-label"
       = label_tag included_column_name(resource_name, :depth_0), :class => "checkbox-inline" do
         = check_box_tag included_implication_depth(resource_name, :depth_0), "1", true
-        = "Implication on #{current_group.ling0_name}"
+        = current_group.ling0_name.pluralize
       = label_tag included_column_name(resource_name, :depth_1), :class => "checkbox-inline" do
         = check_box_tag included_implication_depth(resource_name, :depth_1), "1", true
-        = "Implication on #{current_group.ling1_name}"
+        = current_group.ling1_name.pluralize

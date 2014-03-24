@@ -8,21 +8,21 @@
       %ul
         - @example.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = f.label :name, :class => "control-label"
     .controls
       = f.text_field :name, :placeholder => "Leave empty to generate a name"
-  .control-group
+  .form-group
     = label_tag "auto_ling", current_group.ling0_name, :class => "control-label"
     .controls
       = text_field_tag "ling_id", "#{@ling ? @ling.name : "" }", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete search-query |
         #{@ling ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true"                                                                |
-  .control-group
+  .form-group
     = label_tag "auto_prop", current_group.property_name, :class => "control-label"
     .controls
       = text_field_tag "prop_id", "#{@property ? @property.name : "" }", :id => "auto_prop", :placeholder => "Loading...", :class => "search-query autocomplete |
         #{@property ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true"                                                                    |
-  .control-group
+  .form-group
     = label_tag "lp-status", "%s-%s" % [current_group.ling0_name.capitalize, current_group.property_name.capitalize], :class => "control-label"
     .controls
       = hidden_field_tag "lp_val", (@lp && @lp.id) || "false"
@@ -33,14 +33,14 @@
           Not Found (Enter Ling and Property)
   - @example.storable_keys.each do |key|
     - if key.downcase != "description"
-      .control-group
+      .form-group
         = label :stored_values, key, :class => "control-label"
         .controls
           - if key.downcase == "comment"
             = text_area :stored_values, key, :value => @example.stored_value(key), :rows => 4, :style => "width:288px;"
           - else
             = text_field :stored_values, key, :value => @example.stored_value(key)
-  .control-group
+  .form-group
     .controls
       .save-container
         .save-overlay

@@ -7,18 +7,18 @@
       %ul
         - @category.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = label_tag :name, "Name", :class => "control-label"
     .controls
       = f.text_field :name
-  .control-group
+  .form-group
     = label_tag :description, "Description", :class => "control-label"
     .controls
       = f.text_area :description
-  .control-group
+  .form-group
     = label_tag :depth, "Depth", :class => "control-label"
     .controls
       = f.collection_select :depth, current_group.depths.to_a, :to_s, :to_s
-  .control-group
+  .form-group
     .controls
       = f.submit :class => "btn"

@@ -63,43 +63,43 @@
       %ul
         - @group.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = f.label :name, :class => "control-label"
     .controls
       = f.text_field :name
-  .control-group
+  .form-group
     = f.label :ling0_name, "Depth 0 Ling name", :class => "control-label"
     .controls
       = f.text_field :ling0_name
-  .control-group
+  .form-group
     = f.label :ling1_name, "Depth 1 Ling name", :class => "control-label"
     .controls
       = f.text_field :ling1_name
-  .control-group
+  .form-group
     = f.label :property_name, "Property name", :class => "control-label"
     .controls
       = f.text_field :property_name
-  .control-group
+  .form-group
     = f.label :category_name, "Category name", :class => "control-label"
     .controls
       = f.text_field :category_name
-  .control-group
+  .form-group
     = f.label :lings_property_name, "Lings Property name", :class => "control-label"
     .controls
       = f.text_field :lings_property_name
-  .control-group
+  .form-group
     = f.label :example_name, "Example name", :class => "control-label"
     .controls
       = f.text_field :example_name
-  .control-group
+  .form-group
     = f.label :examples_lings_property_name, "Example Lings Property name", :class => "control-label"
     .controls
       = f.text_field :examples_lings_property_name
-  .control-group
+  .form-group
     = f.label :ling_fields, "Unsearchable field names available for Lings, split on commas ('description' is pre-included by default)", :class => "control-label"
     .controls
       = f.text_field :ling_fields
-  .control-group
+  .form-group
     = f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label"
     #row-fix.controls
       .row
@@ -109,15 +109,15 @@
         %input#append.col-md-2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}/
         %button#append-button.btn.btn-success{:type => "button"}
           %i.glyphicon-plus.glyphicon-white
-  .control-group
+  .form-group
     = f.label :depth_maximum, "Depth Maximum", :class => "control-label"
     .controls
       = f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i
-  .control-group
+  .form-group
     = f.label :privacy, "Privacy level", :class => "control-label"
     .controls
       = f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s
-  .control-group
+  .form-group
     = f.label :display_style, "Display Style", :class => "control-label"
     .controls
       = label_tag :style0, :class => "radio" do
@@ -131,6 +131,6 @@
           :id => :style1                               |
         Linguistic style, eg:
         \#{display_style_example(1)}
-  .control-group
+  .form-group
     .controls
       = f.submit :class => "btn"

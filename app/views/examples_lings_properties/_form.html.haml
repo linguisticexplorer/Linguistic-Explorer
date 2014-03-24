@@ -7,18 +7,18 @@
       %ul
         - @examples_lings_property.errors.full_messages.each do |msg|
           %li= msg
-  .control-group
+  .form-group
     = f.label current_group.example_name, :class => "control-label"
     .controls
       = f.collection_select :example_id, @examples, :id, :name, :prompt => 'Select a ' + current_group.example_name
   - if @lings_properties
-    .control-group
+    .form-group
       = f.label current_group.lings_property_name, :class => "control-label"
       .controls
         = f.collection_select :lings_property_id, @lings_properties, :id, :description, :prompt => 'Select a ' + current_group.lings_property_name
   - else
     = f.hidden_field :lings_property_id, :value => params[:lp_id]
-  .control-group
+  .form-group
     .controls
       .save-container
         .save-overlay

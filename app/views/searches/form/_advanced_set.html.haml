@@ -1,8 +1,8 @@
 = content_tag :fieldset, :id => "advanced_set" do
   .advanced_set
-    .implication_search.control-group
-      = label_tag "univ-impl", "Universal Implication", :class => "control-label"
-      .controls.field{:name => "univ-impl"}
+    .implication_search.form-group
+      = label_tag "univ-impl", "Universal Implication", :class => "col-md-4 control-label"
+      .controls.col-md-8.field{:name => "univ-impl"}
         = label_tag advanced_search_id(:impl_both), :class => "radio-inline" do
           = f.radio_button "advanced_set", "both", :checked => false, |
             :id => advanced_search_id(:impl_both),                    |
@@ -18,17 +18,17 @@
             :id => advanced_search_id(:impl_cons),                    |
             :name => advanced_search_field_name(:advanced_set, :impl) |
           Consequent
-    .implication_search.control-group
-      = label_tag "univ-impl-doub", "Universal Implication<br />Double".html_safe, :class => "control-label"
-      .controls.field{:name => "univ-impl-doub"}
+    .implication_search.form-group
+      = label_tag "univ-impl-doub", "Universal Implication<br />Double".html_safe, :class => "col-md-4 control-label"
+      .controls.col-md-8.field{:name => "univ-impl-doub"}
         = label_tag advanced_search_id(:impl_double), :class => "radio-inline" do
           = f.radio_button "advanced_set", "double", :checked => false, |
             :id => advanced_search_id(:impl_double),                    |
             :name => advanced_search_field_name(:advanced_set, :impl)   |
           Both
-    .clustering_search.control-group
-      = label_tag "similarity", "Similarity", :class => "control-label"
-      #clustering.controls.field{:name => "similarity"}
+    .clustering_search.form-group
+      = label_tag "similarity", "Similarity", :class => "col-md-4 control-label"
+      #clustering.controls.col-md-8.field{:name => "similarity"}
         = label_tag advanced_search_id(:clust_hamming), :class => "radio-inline" do
           = f.radio_button "advanced_set", "hamming", :checked => false,    |
             :id => advanced_search_id(:clust_hamming),                      |
