@@ -8,4 +8,4 @@
     = f.select :with_id, @search_comparison.search_options, :include_blank => true
     %label using the following columns
     = render :partial => 'searches/form/includes', :locals => { :resource_name => :comparison }
-    = f.submit "Go", :class => "btn"
+    = f.submit "Go", :class => "btn btn-primary"

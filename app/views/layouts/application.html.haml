@@ -8,6 +8,8 @@
     = javascript_include_tag 'modernizr'
     %link{:href => "http://fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin-ext,latin", :rel => "stylesheet", :type => "text/css"}/
     = stylesheet_link_tag 'application'
+    // Cannot move this down: jQuery is required by some plugins in the middle of the page
+    = javascript_include_tag 'application'
     = csrf_meta_tag
     = yield :head
   %body{:class => body_classes}
@@ -21,15 +23,15 @@
           .alert.alert-success
             = notice
       = yield
-      #footer
-        %p
-          \&copy; 2013 terraling.com, Version: #{Version::VERSION}
-          %br/
-          10 Washington Place, New York, NY 10003 .
-          = succeed "." do
-            %a{:href => "mailto:support@terraling.com"} support AT terraling.com
-          All Rights Reserved
-    = javascript_include_tag 'application', controller_name
+    #footer
+      %p
+        \&copy; 2013 terraling.com, Version: #{Version::VERSION}
+        %br/
+        10 Washington Place, New York, NY 10003 .
+        = succeed "." do
+          %a{:href => "mailto:support@terraling.com"} support AT terraling.com
+        All Rights Reserved
+    = javascript_include_tag controller_name
     = yield :scripts
     :javascript
       var _gaq = _gaq || [];

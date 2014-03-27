@@ -15,8 +15,8 @@
       %td
         - percentage = "#{property.info}%"
         %center
-          .progress.progress-striped.progress-danger{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-            .bar{:style => "width: #{percentage};"}
+          .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
+            .progress-bar.progress-bar-danger{:style => "width: #{percentage};"}
               %p#nbrs{:style => "text-align: center;"}= percentage
       - if can? :destroy, property
         %td

@@ -3,9 +3,14 @@ class MembershipsController < GroupDataController
   respond_to :html, :js
 
   def index
+    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true}
     @memberships, @params = current_group.memberships.
         includes(:member).to_a.
-        alpha_paginate(params[:letter]){|membership| membership.member.name}
+        alpha_paginate(params[:letter], pagination_options) do |membership|
+          # Handle nil (?!) values
+          user = membership.member
+          user.present? ? user.name : '*'
+        end
 
     respond_with(@memberships) do |format|
       format.html

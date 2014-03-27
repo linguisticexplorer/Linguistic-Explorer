@@ -9,9 +9,9 @@
         %td
           = search.name
         %td
-          = link_to "Show results", [current_group, search], :class => "btn", :id => "results"
+          = link_to "Show results", [current_group, search], :class => "btn btn-primary", :id => "results"
         %td
-          = link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn"
+          = link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn btn-success"
         %td
           = link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-small"
   - else
@@ -19,6 +19,6 @@
       %td
         No saved searches for #{current_group.name}
 - if @search_comparison.enough_to_compare?
-  #search_comparisons.padded.border.margin.col-md-5
+  #search_comparisons.padded.border.margin.col-md-12
     %h3 Search comparisons
     = render :partial => 'search_comparisons/new'

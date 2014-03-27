@@ -1,6 +1,6 @@
 #pagination_top.apple_pagination
   = alphabetical_paginate paginate_params
-%table.show-table.table.table-bordered.table-striped.table-hover
+%table#pagination_table.show-table.table.table-bordered.table-striped.table-hover
   %tr
     %th Name
     - if current_group.has_depth?
@@ -20,8 +20,8 @@
       %td
         %center
           - percentage = "#{ling.info}%"
-          .progress.progress-striped.progress-danger{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-            .bar{:style => "width: #{ling.info}%;"}
+          .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
+            .progress-bar.progress-bar-danger{:style => "width: #{ling.info}%;"}
               %p#nbrs{:style => "text-align: center;"}
                 = ling.info
                 \%
