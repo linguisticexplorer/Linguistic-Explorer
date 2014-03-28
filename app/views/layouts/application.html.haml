@@ -31,7 +31,7 @@
         = succeed "." do
           %a{:href => "mailto:support@terraling.com"} support AT terraling.com
         All Rights Reserved
-    = javascript_include_tag controller_name
+    = javascript_include_tag controller_name if ::Rails.application.assets.find_asset("#{controller_name}.js")
     = yield :scripts
     :javascript
       var _gaq = _gaq || [];

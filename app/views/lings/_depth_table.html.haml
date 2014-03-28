@@ -1,22 +1,27 @@
 #pagination_top.apple_pagination
   = alphabetical_paginate paginate_params
-%table#pagination_table.show-table.table.table-bordered.table-striped.table-hover
+%table.show-table.table.table-bordered.table-striped.table-hover
   %tr
     %th Name
     - if current_group.has_depth?
-      %th= current_group.ling_name_for_depth(depth - 1)
+      %th
+        = current_group.ling_name_for_depth(depth - 1)
     - current_group.ling_storable_keys.each do |key|
-      %th= key.humanize
+      %th
+        = key.humanize
     %th.col-md-2 Completeness
     - if can? :destroy, lings
       %th
   - lings.each do |ling|
     %tr
-      %td= link_to ling.name, [current_group, ling]
+      %td
+        = link_to ling.name, [current_group, ling]
       - if current_group.has_depth?
-        %td= (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent
+        %td
+          = (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent
       - current_group.ling_storable_keys.each do |key|
-        %td= ling.stored_value(key)
+        %td
+          = ling.stored_value(key)
       %td
         %center
           - percentage = "#{ling.info}%"

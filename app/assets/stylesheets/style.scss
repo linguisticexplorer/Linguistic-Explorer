@@ -464,5 +464,81 @@ div#languages-container.hidden1 {
   margin-top: 10px;
 }
 
+/* For more paginating styles: http://mislav.uniqpath.com/will_paginate/ */
+/* Pagination Apple-style */
+.apple_pagination {
+  background:  #fff;
+  border: 1px #fff;
+  text-align: center;
+  padding: 1em;
+  cursor: default;
+  a {
+    padding: 0.2em 0.3em;
+    text-decoration: none;
+    color: #C30;
+    :hover, :focus {
+      text-decoration: underline;
+    }
+  }
+  // span {
+  //   padding: 0.2em 0.3em;
+  // }
+  .current {
+    font-style: normal;
+    font-weight: bold;
+    color: #C30;
+    background-color: #bebebe;
+    display: inline-block;
+    width: 1.4em;
+    height: 1.4em;
+    line-height: 1.5;
+    -moz-border-radius: 2em;
+    -webkit-border-radius: 2em;
+    border-radius: 2em;
+    text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+  }
+  .disabled {
+    color: #aaaaaa;
+  }
+}
+// .apple_pagination a, .apple_pagination span {
+//   padding: 0.2em 0.3em;
+// }
+// .apple_pagination .disabled {
+//   color: #aaaaaa;
+// }
+// .apple_pagination .current {
+//   font-style: normal;
+//   font-weight: bold;
+//   color: #C30;
+//   background-color: #bebebe;
+//   display: inline-block;
+//   width: 1.4em;
+//   height: 1.4em;
+//   line-height: 1.5;
+//   -moz-border-radius: 2em;
+//   -webkit-border-radius: 2em;
+//   border-radius: 2em;
+//   text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
+// }
+// .apple_pagination a {
+//   text-decoration: none;
+//   color: #C30;
+// }
+// .apple_pagination a:hover, .apple_pagination a:focus {
+//   text-decoration: underline;
+// }
+
+#mapping {
+    font-family: "Times New Roman",Times,serif;
+    font-size:   20px;
+    font-weight: 900;
+    background-image: url('/images/geomapping_header.png');
+    background-size: 100% 100%;
+    border-bottom: 1px solid #C30;
+    line-height:1.25em;
+    text-align: center;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
