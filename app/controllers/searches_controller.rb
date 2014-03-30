@@ -89,9 +89,7 @@ class SearchesController < GroupDataController
   def geomapping
     @search = perform_search
     
-    geoMapping = GeoMapping.new(@search)
-    @json = check_retrieved_json(geoMapping.get_json)
-    @summary = geoMapping.get_legend
+    @json = GeoMapping.new(@search).to_json
 
     authorize! :mapping, @search
 
@@ -114,14 +112,6 @@ class SearchesController < GroupDataController
   def rescue_from_result_error(exception)
     flash[:notice] = exception.message
     redirect_to :action => :new
-  end
-
-  def check_retrieved_json(json)
-    if json == "[]"
-      flash[:notice] = "Sorry, no geographical data to show on the map!"
-      json=''
-    end
-    json
   end
 
   def perform_search

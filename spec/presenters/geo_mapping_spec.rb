@@ -1,6 +1,7 @@
 require "spec_helper"
 
 describe GeoMapping do
+
   before(:each) do
     @ling_1 = lings(:american_lang)
     @ling_2 = lings(:african_lang)
@@ -8,17 +9,21 @@ describe GeoMapping do
     @property_copy = properties(:latlong_support)
     @cat = categories(:geomap_cat).id
   end
+
   describe "json for regular search results" do
+
     before (:each) do
       query = create_mock_query(@ling_1.depth.to_s, "#{@cat}", "any")
       query["lings"] = { @ling_1.depth.to_s => [@ling_1.id.to_s]}
       query["include"] = { "ling_0" => "1"}
       @search = do_search(query)
     end
+
     it "should be json string" do
-      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
-      GeoMapping.new(@search).get_json.should match(json)
+      json = "{\"type\":\"Regular\",\"data\":{\"#{@ling_1.id.to_s}\":[\"1\",\"\"]}}"
+      GeoMapping.new(@search).to_json.should eq(json)
     end
+
   end
 
   describe "json for cross search results" do
@@ -32,8 +37,8 @@ describe GeoMapping do
       @search = do_search(query)
     end
     it "should be json string" do
-      json = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"}]"
-      GeoMapping.new(@search).get_json.should match(json)
+      json = "{\"type\":\"Cross\",\"data\":{\"#{@ling_1.id.to_s}\":[\"1\",\"\"]}}"
+      GeoMapping.new(@search).to_json.should eq(json)
     end
   end
 
@@ -45,10 +50,12 @@ describe GeoMapping do
       query["lings"] = { @ling_1.depth.to_s => [ @ling_1.id.to_s, @ling_2.id.to_s]}
       @search = do_search(query)
     end
+
     it "should be json string" do
-      json1 = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"},\n"
-      json2 = "{\"title\": \"ling_2\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_2\", \"lat\": \"lingproperty_2\"}]"
-      GeoMapping.new(@search).get_json.should match(json1+json2)
+      json = "{\"type\":\"Compare\",\"data\":{\"#{@ling_1.id.to_s}\":[\"1\",\"\"],\"#{@ling_2.id.to_s}\":[\"maybe\",\"\"]}}"
+      # json1 = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"},\n"
+      # json2 = "{\"title\": \"ling_2\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_2\", \"lat\": \"lingproperty_2\"}]"
+      GeoMapping.new(@search).to_json.should eq(json)
     end
   end
 
