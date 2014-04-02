@@ -14,9 +14,10 @@
       %td= link_to property.category.name, group_category_path(current_group, property.category)
       %td
         - percentage = "#{property.info}%"
+        - color = property.info < 100 ? 'warning' : 'success'
         %center
           .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-            .progress-bar.progress-bar-danger{:style => "width: #{percentage};"}
+            %div{:style => "width: #{property.info}%;", :class => "progress-bar progress-bar-#{color}"}
               %p#nbrs{:style => "text-align: center;"}= percentage
       - if can? :destroy, property
         %td

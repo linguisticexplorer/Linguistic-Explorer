@@ -25,8 +25,9 @@
       %td
         %center
           - percentage = "#{ling.info}%"
+          - color = ling.info < 100 ? 'warning' : 'success'
           .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-            .progress-bar.progress-bar-danger{:style => "width: #{ling.info}%;"}
+            %div{:style => "width: #{ling.info}%;", :class => "progress-bar progress-bar-#{color}"}
               %p#nbrs{:style => "text-align: center;"}
                 = ling.info
                 \%
