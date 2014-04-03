@@ -35,7 +35,7 @@ Feature: Typeahead
     | French      | 0     |
     | Bellinzonese| 0     |
 
-
+  @wip
   @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the home page
@@ -60,7 +60,7 @@ Feature: Typeahead
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
 
-
+  @wip
   @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
@@ -71,7 +71,8 @@ Feature: Typeahead
     Then I should see "Afrikaans" within ".typeahead"
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
-
+  
+  @wip
   @javascript
   Scenario: Visitor searches a language from the group page and languages of all depths are available
     When I go to the group Syntactic Structures
@@ -82,7 +83,8 @@ Feature: Typeahead
     Then I should see "Afrikaans" within ".typeahead"
     When I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
-
+  
+  @wip
   @javascript
   Scenario: Visitor goes to Ling page and searches a language and only languages with the right depth are searchable
     When I go to the group Syntactic Structures
@@ -94,7 +96,8 @@ Feature: Typeahead
     Then I should see "Spanish" within ".typeahead"
     When I follow "Spanish"
     Then I should see "Ling Spanish"
-
+  
+  @wip
   @javascript
   Scenario: Visitor goes to Property page and searches a property
     When I go to the group Syntactic Structures

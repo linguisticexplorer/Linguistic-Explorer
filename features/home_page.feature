@@ -21,7 +21,7 @@ Feature: Linguistic Explorer Home Page
   Scenario: Visitor can search a public group
     When I go to the group Syntactic Structures
     And I follow "Search"
-    Then I should see "Search Syntactic Structures"
+    Then I should see "Advanced Search: Syntactic Structures"
     And I should be on the Syntactic Structures search page
 
   Scenario: Visitor haven't any saved searches

@@ -17,7 +17,8 @@ Feature: Search By Similarity Tree (R language)
       | Adjective Degree  | German      | no          | Grammar  | 0     |
       | Degree Adjective  | German      | yes         | Grammar  | 0     |
       | Degree Adjective  | Spanish     | no          | Grammar  | 0     |
-
+  
+  @wip
   @javascript
   Scenario: Visitor searches Similarity Tree with all Properties and Lings
     When I go to the Syntactic Structures search page
@@ -26,6 +27,7 @@ Feature: Search By Similarity Tree (R language)
     # And show me the page
     Then I should see the "SimilarityTree" draw
 
+  @wip
   @javascript
   Scenario: Visitor searches Similarity Tree with all Properties and Lings
     When I go to the Syntactic Structures search page

@@ -140,8 +140,8 @@ Feature: Search Lings for Any Property
     | name        | property_name | prop val  | depth | group   | category  |
     | Sentence 1  | Homonym       | yes       | 0     | Phones  | Sound     |
     When I go to the Syntactic Structures search page
-    Then I should not see "Phones" within ".container" 
-    #it's still in the dropdown and is supposed to be there
+    Then I should not see "Phones" within "#main"
+    # it's still in the dropdown and is supposed to be there
     And I should not see "Sentence 1"
     And I should not see "Homonym"
 

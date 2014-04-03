@@ -30,6 +30,7 @@ Feature: Analysis
     And I follow "Afrikaans"
     Then I should see "Ling Afrikaans"
   
+  @wip
   @javascript
   Scenario: Visitor should be able to map a language 
     Then I should see "Map" within "#compare-buttons"
@@ -38,6 +39,7 @@ Feature: Analysis
     Then I access the new tab and should see "Lings in the Selection"
     # Then I should see "Lings in the Selection"
   
+  @wip
   @javascript
   Scenario: Visitor should be able to add and delete languages of the same depth to analyse
     # When I fill in "auto_compare" with "s"
@@ -53,6 +55,7 @@ Feature: Analysis
     When I search in the "auto_compare" field with "bel"
     Then I should not see "Bellinzonese"
   
+  @wip
   @javascript
   Scenario: Visitor should be able to perform quick analysis on languages 
     # When I fill in "auto_compare" with "s"
