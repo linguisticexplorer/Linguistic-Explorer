@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Scaffolding
-gem 'rails', '~> 3.2.13'
+gem 'rails', '~> 3.2.17'
 # # Use passenger as the web server
 gem 'passenger'
 # # It forces to use a specific version of Rake
@@ -24,7 +24,8 @@ gem 'mysql2', '~> 0.3.11'
 # # for Users and authentication
 gem 'devise'
 gem 'humanizer'
-gem 'cancan', '~> 1.6.10'
+gem 'cancan'
+gem 'rolify'
 
 # # Model validation
 gem 'validation_reflection', "~> 1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'
