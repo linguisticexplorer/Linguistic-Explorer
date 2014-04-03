@@ -5,7 +5,7 @@
   %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back to #{@ling.name} page
 \&nbsp;
-\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
+\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
 %br/
 %br/
 #supported-entry-container.container-fluid
@@ -23,7 +23,7 @@
   %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back to #{@ling.name} page
 \&nbsp;
-\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn"}
+\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
 #example-modal.modal.hide.fade
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
