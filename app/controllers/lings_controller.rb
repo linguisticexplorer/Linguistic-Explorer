@@ -13,15 +13,18 @@ class LingsController < GroupDataController
  
   def dict
     @all_lings = Hash.new
-    if (params[:depth] || params[:id])
-      current_group.lings.at_depth(params[:depth] || Ling.find(params[:id]).depth).find_each(:batch_size => 500) do |ling| 
-        @all_lings[ling.name] = ling.id
-      end
-    else
-      current_group.lings.find_each(:batch_size => 500) do |ling| 
-        @all_lings[ling.name] = ling.id
-      end
+    # if (params[:depth] || params[:id])
+    # Look for ids first, then for depth or get depth 0 by default
+    condition = params[:id] ? Ling.find(params[:id]).depth : params[:depth] || 0
+    # Speed up the query: filter by columns!
+    current_group.lings.at_depth(condition).select([:name, :id]).map() do |cols| 
+      @all_lings[cols.first] = cols.last
     end
+    # else
+    #   current_group.lings.find_each(:batch_size => 500) do |ling| 
+    #     @all_lings[ling.name] = ling.id
+    #   end
+    # end
     render :json => @all_lings.to_json.html_safe
   end
 

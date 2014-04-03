@@ -2,8 +2,6 @@ class GeoMapping
 
   def initialize(search)
     @search = search
-    # @data = { lings: {}, titles: {}, colours: {} }
-    # create_lings_hash(search)
   end
 
   def to_json

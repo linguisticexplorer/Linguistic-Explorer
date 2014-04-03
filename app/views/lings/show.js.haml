@@ -3,10 +3,7 @@ id = #{@ling.id},
 items = [],
 dict  = {},
 makeButton = function() {
-return '
-%a.remove-lang{:href => "/Remove"}
-  <i class=\'icon-remove shift-down\'>
-';
+return '<a class="remove-lang" href="/Remove"> <i class=\'icon-remove shift-down\'></a>';
 },
 hideList = function () {
 $('#languages-container').addClass('hidden1');
@@ -61,25 +58,23 @@ $(window).on('click', 'div.search-buttons a', function (e) {
 e.preventDefault();
 });
 
-$.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
-dict = data;
-$.each(dict, function(key, val) {
-if (val !== id) {
-items.push(key);
-}
-});
-}).done( function() {
-$('#auto_compare').typeahead({
-source: items,
-updater:function (item){
-$('#languages-container').removeClass('hidden1');
-$('#selected-lings').append($('
-%li>
-').html(makeButton() + item));
-items.splice(items.indexOf(item),1);
-$('#analysis').removeClass('span12').addClass('span7');
-$('div#compare-buttons a').removeAttr("disabled");
-}
-});
-$('#auto_compare').attr("placeholder", "Start typing the name of the language").removeAttr('disabled');
-});
+/ $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
+/ dict = data;
+/ $.each(dict, function(key, val) {
+/ if (val !== id) {
+/ items.push(key);
+/ }
+/ });
+/ }).done( function() {
+/ $('#auto_compare').typeahead({
+/ source: items,
+/ updater:function (item){
+/ $('#languages-container').removeClass('hidden1');
+/ $('#selected-lings').append($('<li>').html(makeButton() + item));
+/ items.splice(items.indexOf(item),1);
+/ $('#analysis').removeClass('span12').addClass('span7');
+/ $('div#compare-buttons a').removeAttr("disabled");
+/ }
+/ });
+/ $('#auto_compare').attr("placeholder", "Start typing the name of the language").removeAttr('disabled');
+/ });

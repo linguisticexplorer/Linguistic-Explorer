@@ -53,8 +53,6 @@ describe GeoMapping do
 
     it "should be json string" do
       json = "{\"type\":\"Compare\",\"data\":{\"#{@ling_1.id.to_s}\":[\"1\",\"\"],\"#{@ling_2.id.to_s}\":[\"maybe\",\"\"]}}"
-      # json1 = "[{\"title\": \"ling_1\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_1\", \"lat\": \"lingproperty_1\"},\n"
-      # json2 = "{\"title\": \"ling_2\", \"picture\": \"/images/marker1.png\", \"width\": \"20\", \"height\": \"34\", \"lng\": \"lingproperty_2\", \"lat\": \"lingproperty_2\"}]"
       GeoMapping.new(@search).to_json.should eq(json)
     end
   end

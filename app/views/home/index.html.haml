@@ -3,7 +3,6 @@
   = render :partial => "preview"
 - else
   - page_heading "Home"
-  = javascript_tag "$.getScript(location.href);"
   #inner
     #title
       %h1 Terraling
@@ -16,7 +15,7 @@
           %h5 Type the name of a language here:
         .row
           .margin.col-md-11.col-md-offset-1
-            %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "lings_autocomplete", :placeholder => "Loading...", :type => "text"}
+            %input#lings_autocomplete.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}
         / #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
         /   %ul#tabs.nav.nav-tabs
         /     %li

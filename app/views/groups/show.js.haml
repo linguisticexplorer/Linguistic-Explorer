@@ -1,17 +1,17 @@
 var group = #{current_group.to_param},
 dict, items = [];
 
-$.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
-dict = data;
-$.each(dict, function(key, val) {
-items.push(key);
-});
-}).done( function() {
-$('#auto_group').typeahead({
-source: items,
-updater:function (item){
-window.location.href = '/groups/' + group + '/lings/' + dict[item];
-}
-});
-$('#auto_group').attr("placeholder", "Start typing to search through languages").removeAttr('disabled');
-});
+/ $.get(location.href.replace(/[\?#]+[^\?]*$/, "") + "/dict", function(data) {
+/ dict = data;
+/ $.each(dict, function(key, val) {
+/ items.push(key);
+/ });
+/ }).done( function() {
+/ $('#auto_group').typeahead({
+/ source: items,
+/ updater:function (item){
+/ window.location.href = '/groups/' + group + '/lings/' + dict[item];
+/ }
+/ });
+/ $('#auto_group').attr("placeholder", "Start typing to search through languages").removeAttr('disabled');
+/ });

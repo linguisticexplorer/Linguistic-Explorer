@@ -1,7 +1,5 @@
 $(function() {
-var img = "
-%img#loader.loading{:src => "/images/loader.gif"}>/
-";
+var img = "<img id="loader" class="loading" src="/images/loader.gif" />";
 var getData = function() {
 var data = $("#prop-name");
 return {lingId: data.data("ling_id"),
@@ -121,9 +119,7 @@ var data = getData();
 $("body").css("overflow", "hidden");
 $("#example-tab").addClass("hidden");
 $("#example-modal .modal-body").html(img);
-$('#modal-head-content').html("
-%h3> Create Example
-");
+$('#modal-head-content').html("<h3> Create Example</h3>");
 $("#example-modal").modal('toggle');
 $('#example-modal .modal-body').load("#{new_group_example_path(current_group)}" + " form", "ling_id=" + data.lingId +
 "&prop_id=" + data.propId + "&lp_id=" + data.lpId);
@@ -134,9 +130,7 @@ e.preventDefault();
 $("body").css("overflow", "hidden");
 $("#prop-tab").addClass("hidden");
 $("#property-modal .modal-body").html($('#prop-descrip').html());
-$("#modal-head-content-prop").html("
-%h3> Property Description
-");
+$("#modal-head-content-prop").html("<h3> Property Description</h3>");
 $("#property-modal").modal("toggle");
 });
 
@@ -169,9 +163,7 @@ ex_id = $('#example-select').find(":selected").val();
 $("body").css("overflow", "hidden");
 $("#example-tab").addClass("hidden");
 $("#example-modal .modal-body").html(img);
-$('#modal-head-content').html("
-%h3> Change Example
-");
+$('#modal-head-content').html("<h3> Change Example</h3>");
 $("#example-modal").modal('toggle');
 $('#example-modal .modal-body').load("#{edit_group_example_path(current_group)}" .replace(/examples\/[0-9]+/, "examples/" + ex_id) + " form", "ling_id=" + data.lingId +
 "&prop_id=" + data.propId + "&lp_id=" + data.lpId);

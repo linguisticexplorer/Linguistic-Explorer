@@ -1,7 +1,3 @@
-- content_for :head do
-  = javascript_include_tag "scrollTo.min"
-:javascript
-  $.getScript(location.href);
 - page_heading @ling.name + " Examples Supported Edit"
 %h1
   Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
@@ -47,3 +43,7 @@
   %a#example-tab.btn.btn-info.hidden{:href => "#"}
     %i.glyphicon-white.glyphicon-chevron-up.shift-down
     Example
+- content_for :scripts do
+  / = javascript_include_tag "scrollTo.min"
+  :javascript
+    // $.getScript(location.href);

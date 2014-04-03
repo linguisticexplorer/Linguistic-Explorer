@@ -1,4 +1,4 @@
-= javascript_tag "$.getScript(location.href);"
+/ = javascript_tag "$.getScript(location.href);"
 - page_heading @ling.grouped_name
 %h1
   = @ling.grouped_name
@@ -65,16 +65,15 @@
         %h5
           Add languages to compare with #{@ling.name}
         %input#auto_compare.input-block-level.autocomplete.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
-      #languages-container.col-md-5.hidden1.search-buttons
+      #languages-container.col-md-5.hidden.search-buttons
         Selected languages (
         %a.remove-langs{:href => "/Clear All"}> clear all
         )
         %ul#selected-lings
     .row-fluid.relative
       #compare-buttons.col-md-12.search-buttons
-        %a#compare-langs.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Compare Properties
-        %a#compare-tree.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Similarity Tree
-        %a#compare-radial.btn.btn-primary.btn-block{:disabled => "", :href => "#"} Radial Tree
+        %a#compare-lings.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Compare Properties
+        %a#compare-tree.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Similarity Tree
         %a#map.btn.btn-primary.btn-block{:href => "#"}
           %i.glyphicon-white.glyphicon-map-marker.shift-down
           Map
@@ -114,3 +113,8 @@
 - if can? :edit, @ling
   = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn"
   \&nbsp;
+
+- content_for :scripts do
+  :javascript
+    var group = #{current_group.to_param},
+        id    = #{@ling.id};

@@ -15,9 +15,7 @@ setTimeout(function() {
 isLoading = true;
 ling_name = auto_ling.val();
 prop_name = auto_prop.val();
-var img = "
-%img.loading{:src => "/images/loader.gif"}>/
-";
+var img = "<img class="loading" src="/images/loader.gif"/>";
 $("#lp-status").html("Loading..." + img);
 $.get(base_url + "lings_properties/exists", "ling_name=" + ling_name + "&prop_name=" + prop_name,
 function(resp) {
