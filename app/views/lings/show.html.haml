@@ -8,10 +8,10 @@
   \&nbsp;Back
 \&nbsp;
 - if can? :create, LingsProperty.new{|lp| lp.group = current_group}
-  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn"
+  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success"
   \&nbsp;
 - if can? :edit, @ling
-  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn"
+  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn btn-default"
   \&nbsp;
 %br/
 %br/

@@ -30,7 +30,7 @@ namespace :sswl do
         languages: ["id", "value", "property", "language"],
         example_objects: ["id", "language"],
         examples: ["id", "language", "value", "property", "example_object_id"],
-        properties: ["id", "property"] #, "description"]
+        properties: ["id", "property", "description"]
     }
 
     dumpDir = "/dumpdir/csvdump/"
@@ -115,7 +115,7 @@ namespace :sswl do
     Dump and convert SSWL data to Terraling data
     #{usage}
   DESC
-  task :migrateToTerraling => :environment do
+  task :migrate_to_terraling => :environment do
     raise "Must specify a config file.\n\n#{usage}" unless ENV['DUMP_CONFIG'].present?
 
     Rake::Task["sswl:dump"].invoke

@@ -341,7 +341,7 @@ module SswlData
     def self.convert_property_in(row, property_ids, max_id)
       max_id = row["id"].to_i unless max_id > row["id"].to_i
 
-      #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
+      description = "\"#{row["description"].gsub(/\#/,"\n")}\""
       #puts "DEBUG: #{description}"
       # cache property id
       property_ids[row["property"]] ||= {
@@ -349,7 +349,7 @@ module SswlData
           "name" => "#{row["property"]}",
           "group_id" => "0",
           "category_id" => "0",
-          #"description" => description
+          "description" => description
       }
       max_id
     end
