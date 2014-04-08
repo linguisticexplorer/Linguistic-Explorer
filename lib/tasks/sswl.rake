@@ -1,27 +1,27 @@
 namespace :sswl do
 
-  usage = "Usage: rake sswl:convert CONVERT_CONFIG=/path/to/config.yml"
+  convert_usage = "Usage: rake sswl:convert CONVERT_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Convert SSWL .csvs to Terraling data
-    #{usage}
+    #{convert_usage}
   DESC
   task :convert => :environment do
-    raise "Must specify a config file.\n\n#{usage}" unless ENV['CONVERT_CONFIG'].present?
+    raise "Must specify a config file.\n\n#{convert_usage}" unless ENV['CONVERT_CONFIG'].present?
 
     config    = YAML.load_file(ENV['CONVERT_CONFIG'])
 
     invoke_converter config
   end
 
-  usage = "Usage: rake sswl:dump DUMP_CONFIG=/path/to/config.yml"
+  dump_usage = "Usage: rake sswl:dump DUMP_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Dump in csv files SSWL data from the server
-    #{usage}
+    #{dump_usage}
   DESC
   task :dump => :environment do
-    raise "Must specify a config file.\n\n#{usage}" unless ENV['DUMP_CONFIG'].present?
+    raise "Must specify a config file.\n\n#{dump_usage}" unless ENV['DUMP_CONFIG'].present?
 
     config    = YAML.load_file(ENV['DUMP_CONFIG'])
 
@@ -35,7 +35,7 @@ namespace :sswl do
 
     dumpDir = "/dumpdir/csvdump/"
 
-    param_query = "SELECT 1 UNION (SELECT 2 INTO OUTFILE '3' FIELDS TERMINATED BY ';' LINES TERMINATED BY 'END\\\\n' FROM 4 ORDER BY 'id' DESC);"
+    param_query = "SELECT 1 UNION (SELECT 2 INTO OUTFILE '3' FIELDS TERMINATED BY '###' LINES TERMINATED BY '@@@\n' FROM 4 ORDER BY 'id' DESC);"
 
     queries = {}.tap do |query|
       tables.each do |table, cols|

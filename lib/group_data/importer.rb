@@ -189,6 +189,8 @@ module GroupData
           p.category = category
           p.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
         end
+        # fix some issues with the description field
+        row["description"] = row["description"].nil? ? '' : row["description"].gsub(/\{\}/, ";").gsub(/\[\]/,"\"")
         save_model_with_attributes property, row
 
         # cache property id

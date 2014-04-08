@@ -341,8 +341,8 @@ module SswlData
     def self.convert_property_in(row, property_ids, max_id)
       max_id = row["id"].to_i unless max_id > row["id"].to_i
 
-      description = "\"#{row["description"].gsub(/\#/,"\n")}\""
-      #puts "DEBUG: #{description}"
+      description = "#{decode(row["description"])}"
+
       # cache property id
       property_ids[row["property"]] ||= {
           "id" => "#{row["id"]}",
@@ -355,13 +355,15 @@ module SswlData
     end
 
     def self.convert_example_in(row, example_ids, ling_ids, counter)
-      example_ids[row["id"]] ||= {
-          "id" => "#{row["id"]}",
-          "name" => "Example_#{counter}",
-          "group_id" => "0",
-          "ling_id" => "#{ling_ids["#{decode(row["language"])}"]["id"]}"
-      }
-      counter+=1
+      if ling_ids["#{decode(row["language"])}"].present?
+        example_ids[row["id"]] ||= {
+            "id" => "#{row["id"]}",
+            "name" => "Example_#{counter}",
+            "group_id" => "0",
+            "ling_id" => "#{ling_ids["#{decode(row["language"])}"]["id"]}"
+        }
+        counter+=1
+      end
     end
 
     def self.convert_ling_in(row, ling_ids)
@@ -411,28 +413,29 @@ module SswlData
       if !@sanitized[key]
         file = @config[key]
         strings = {
-            "\"" => "\\\\'",
-            "\\\\;" => "\.",
-            "END" => ""
+            # "\"" => "[]",
+            # ";"  => "{}",
+            # "(\n|\r)*" => "",
+            # "@@@" => "@@@\n"
         }
         @sanitized[key] ||= true
-
         strings.each do |bad, fixed|
-          text = File.read(file){|f| f.readline}
+          text = File.read(file){|f| f.readline }
           new_text = text.gsub(/#{bad}/, fixed)
           File.open(file, "w") {|file| file.puts new_text}
         end
+        
       end
     end
 
     def self.decode(string)
-      string.nil? ? string : Iconv.new('UTF-8','LATIN1').iconv(string.encode("cp1252").force_encoding("UTF-8"))
+      string #.nil? ? string : Iconv.new('UTF-8','LATIN1').iconv(string.encode("cp1252").force_encoding("UTF-8"))
     end
 
     def csv_for_each(key)
       sanitize_csv key
       line_cache = ""
-      CSV.foreach(@config[key], :headers => true, :col_sep => ";") do |row|
+      CSV.foreach(@config[key], :headers => true, :col_sep => "###", :row_sep=> "@@@\n") do |row|
         yield(row)
         line_cache = "#{row}"
       end
