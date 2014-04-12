@@ -4,7 +4,7 @@ $(function() {
   // var img = "<img src='/assets/aloader.gif' class='loading'/>";
   // RAILS 3.0 USERS -> Please delete the above line and uncomment the bottom line
   // ensure that the image directory matches
-  var img = "<img src='/img/aloader.gif' class='loading'/>";
+  var img = "<img src='/images/aloader.gif' class='loading'/>";
 
   var navbar = $(".pagination.alpha a");
   // Pick the handler list: just a quick check for the jQuery version (see here: http://bugs.jquery.com/ticket/10589)
