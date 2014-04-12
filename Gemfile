@@ -69,7 +69,7 @@ gem 'jquery-rails', '>= 0.2.6'
 gem 'rake', '0.9.2.2'
 
 # Geomapping gem
-gem 'gmaps4rails'
+gem 'gmaps4rails', "=1.5.6"
 
 # Forum gem
 gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'

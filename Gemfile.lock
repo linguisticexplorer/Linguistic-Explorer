@@ -118,7 +118,7 @@ GEM
     gem_plugin (0.2.3)
     gherkin (2.4.21)
       json (>= 1.4.6)
-    gmaps4rails (2.1.2)
+    gmaps4rails (1.5.6)
     haml (4.0.5)
       tilt
     hashie (2.1.0)
@@ -269,7 +269,7 @@ DEPENDENCIES
   devise (= 1.1.7)
   factory_girl_rails (= 1.1)
   forum_monster!
-  gmaps4rails
+  gmaps4rails (= 1.5.6)
   humanizer
   iconv
   jquery-rails (>= 0.2.6)
