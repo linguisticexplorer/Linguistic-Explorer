@@ -8,6 +8,7 @@ doc/TODO
 history.
 *.html
 db/seed/*
+.sass-cache
 
 # Development temporary files
 public/similarity_tree_images/*.png
