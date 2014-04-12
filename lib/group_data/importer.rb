@@ -90,7 +90,7 @@ module GroupData
         end
 
         # cache user id
-        user_ids[row["id"]] = user.id
+        user_ids[row["id"]] = user
       end
       print_to_console "#{reset}processing users...[OK]"
 
@@ -119,9 +119,9 @@ module GroupData
 
       csv_for_each :membership do |row|
         group       = groups[row["group_id"]]
-        member_id   = user_ids[row["member_id"]]
+        member_id   = user_ids[row["member_id"]].id
         membership  = group.memberships.find_or_initialize_by_member_id(member_id) do |m|
-          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          m.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
         end
         save_model_with_attributes(membership, row)
 
@@ -136,7 +136,7 @@ module GroupData
       csv_for_each :ling do |row|
         group     = groups[row["group_id"]]
         ling      = group.lings.find_or_initialize_by_name(row["name"]) do |m|
-          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          m.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
         end
         save_model_with_attributes(ling, row)
 
@@ -168,7 +168,7 @@ module GroupData
       csv_for_each :category do |row|
         group     = groups[row["group_id"]]
         category  = group.categories.find_or_initialize_by_name(row["name"]) do |m|
-          m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          m.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
         end
         save_model_with_attributes category, row
 
@@ -187,7 +187,7 @@ module GroupData
         category = group.categories.find(category_ids[row["category_id"]])
         property = group.properties.find_or_initialize_by_name(row["name"]) do |p|
           p.category = category
-          p.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+          p.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
         end
         save_model_with_attributes property, row
 
@@ -206,7 +206,7 @@ module GroupData
           ling     = Ling.find(ling_ids[row["ling_id"]])
           example  = group.examples.find_or_initialize_by_name(row["name"]) do |e|
             e.ling = ling
-            e.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+            e.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
           end
           save_model_with_attributes example, row
 
@@ -235,7 +235,7 @@ module GroupData
 
           lp = group.lings_properties.where(conditions).first ||
               group.lings_properties.create(conditions) do |lp|
-                lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+                lp.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
               end
 
           # cache lings_property id
@@ -263,7 +263,7 @@ module GroupData
 
           group.examples_lings_properties.where(conditions).first ||
               group.examples_lings_properties.create(conditions) do |elp|
-                elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
+                elp.creator = user_ids[row["creator_id"]] if row["creator_id"].present?
               end
         end
 
