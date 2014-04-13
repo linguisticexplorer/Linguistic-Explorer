@@ -118,5 +118,4 @@ group :test, :development do
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
   gem 'brakeman'
-  gem 'ruby-prof'
 end

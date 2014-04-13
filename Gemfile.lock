@@ -203,7 +203,6 @@ GEM
       columnize (>= 0.3.1)
       linecache19 (>= 0.5.11)
       ruby-debug-base19 (>= 0.11.19)
-    ruby-prof (0.14.2)
     ruby2ruby (2.0.8)
       ruby_parser (~> 3.1)
       sexp_processor (~> 4.0)
@@ -283,7 +282,6 @@ DEPENDENCIES
   rspec-rails (= 2.5.0)
   rspec_rails3_validation_expectations (= 0.0.2)!
   ruby-debug19
-  ruby-prof
   rvm-capistrano
   sass
   selenium-client
