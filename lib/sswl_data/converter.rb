@@ -154,6 +154,8 @@ module SswlData
       example_ids = {}
       csv_for_each :example do |row|
 
+        next if ling_ids["#{Converter.decode(row["language"])}"].nil?
+
         # cache example id
         counter = Converter.convert_example_in(row, example_ids, ling_ids, counter)
       end
@@ -341,7 +343,7 @@ module SswlData
     def self.convert_property_in(row, property_ids, max_id)
       max_id = row["id"].to_i unless max_id > row["id"].to_i
 
-      #description = "\"#{row["description"].gsub(/\#/,"\n")}\""
+      description = "\"#{row["description"]}\""
       #puts "DEBUG: #{description}"
       # cache property id
       property_ids[row["property"]] ||= {
@@ -349,7 +351,7 @@ module SswlData
           "name" => "#{row["property"]}",
           "group_id" => "0",
           "category_id" => "0",
-          #"description" => description
+          "description" => description
       }
       max_id
     end
@@ -413,7 +415,7 @@ module SswlData
         strings = {
             "\"" => "\\\\'",
             "\\\\;" => "\.",
-            "END" => ""
+            "END" => "\n"
         }
         @sanitized[key] ||= true
 
@@ -432,7 +434,7 @@ module SswlData
     def csv_for_each(key)
       sanitize_csv key
       line_cache = ""
-      CSV.foreach(@config[key], :headers => true, :col_sep => ";") do |row|
+      CSV.foreach(@config[key], :headers => true, :col_sep => "\#\#\#") do |row|
         yield(row)
         line_cache = "#{row}"
       end
