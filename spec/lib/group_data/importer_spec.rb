@@ -56,7 +56,7 @@ module GroupData
       end
 
       it "should cache user ids" do
-        @importer.user_ids.values.first.should == User.find_by_name(@users.first.name)
+        @importer.user_ids.values.first.should == User.find_by_name(@users.first.name).id
       end
 
       it "should import memberships" do

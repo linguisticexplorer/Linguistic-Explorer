@@ -163,7 +163,7 @@ module SswlData
       end
 
       it "should contain all the values needed in Terraling" do
-        row_converted("property").keys.should == ["id", "name", "group_id", "category_id" ]
+        row_converted("property").keys.should == ["id", "name", "group_id", "category_id", "description" ]
       end
 
       it "should contain all string values" do
