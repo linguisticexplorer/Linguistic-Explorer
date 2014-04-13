@@ -108,9 +108,6 @@ group :test, :development do
   gem 'rspec-rails', "2.5.0"
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
-  gem 'cover_me', '>= 1.2.0'
-  gem 'ruby-prof'
-
   gem 'factory_girl_rails', "1.1"
   gem "cucumber", "1.0.0"
   gem "Selenium"
@@ -121,4 +118,5 @@ group :test, :development do
   gem 'capybara', "~>0.4.1"
   gem 'launchy'
   gem 'brakeman'
+  gem 'ruby-prof'
 end
