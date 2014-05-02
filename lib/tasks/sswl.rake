@@ -35,7 +35,7 @@ namespace :sswl do
 
     dumpDir = "/dumpdir/csvdump/"
 
-    param_query = "SELECT 1 UNION (SELECT 2 INTO OUTFILE '3' FIELDS TERMINATED BY '###' LINES TERMINATED BY '@@@\n' FROM 4 ORDER BY 'id' DESC);"
+    param_query = "SELECT 1 UNION (SELECT 2 INTO OUTFILE '3' FIELDS TERMINATED BY '###' LINES TERMINATED BY 'END\\\\n' FROM 4 ORDER BY 'id' DESC);"
 
     queries = {}.tap do |query|
       tables.each do |table, cols|
@@ -106,6 +106,8 @@ namespace :sswl do
     puts "Creating converter config file..."
     # create YAML file for import
     File.open("#{localPath}convert.yml", "wb") { |f| f.write paths.to_yaml }
+    # Monkey patch for descriptions
+    sanitize_property_descriptions paths[:property]
 
   end
 
@@ -134,6 +136,20 @@ namespace :sswl do
 
   def invoke_converter(config)
     SswlData::Converter.load(config).convert!
+  end
+
+  def sanitize_property_descriptions(file)
+    strings = {
+      "\"" => "[]",
+      ";"  => "{}",
+      "(\n|\r)*" => ""
+    }
+
+    strings.each do |bad, fixed|
+      text = File.read(file){|f| f.readline }
+      new_text = text.gsub(/#{bad}/, fixed)
+      File.open(file, "w") {|file| file.puts new_text}
+    end
   end
 
 end

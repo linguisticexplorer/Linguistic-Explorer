@@ -70,10 +70,9 @@ group :assets do
   gem "uglifier"
 end
 
-
-# # Forum gem
-gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
-gem 'bb-ruby'
+# Forum gem
+# gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
+# gem 'bb-ruby'
 
 # # Deploy with Capistrano
 gem 'capistrano'
@@ -106,11 +105,13 @@ group :test, :development do
   # Disable for the moment
   # gem "spork-rails"
 
+
   gem 'rspec-rails', "~> 2.0"
   gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
   
   gem "cucumber", "~> 1.1.0"
+
   # Due to the new name resolution approach of the bundler gem it has the require option
   gem 'cucumber-rails', :require => false
   gem 'capybara'
