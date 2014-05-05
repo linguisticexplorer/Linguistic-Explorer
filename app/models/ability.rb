@@ -26,18 +26,14 @@ class Ability
       # turn on group member data management and all data reading for group members
       can     :manage, group_member_data,       :group_id => user.group_ids
       can     :read,   group_data,              :group_id => user.group_ids
-
       # turn on own membership deletion
       can     :destroy, Membership,             :member_id => user.id
-
+      
       # turn on custom search authorization method
       can :manage, Search do |search|
         search.is_manageable_by?(user)
       end
-
       can :manage, SearchComparison do |sc|
-        # p "[DEBUG] #{sc.inspect}"
-        # Rails.logger.debug "[DEBUG] #{sc.searches.inspect}"
         sc.searches.all? {|s| s.is_manageable_by?(user)}
       end
 
