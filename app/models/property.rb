@@ -1,4 +1,6 @@
 class Property < ActiveRecord::Base
+  resourcify
+  
   include Groupable
   include CSVAttributes
 

@@ -13,7 +13,8 @@ class User < ActiveRecord::Base
   end
 
   attr_accessor :bypass_humanizer
-
+  
+  #TODO: Remove this trick 
   # Until we migrate to rspec 2.6, use this trick...
   if Rails.env.production?
     require_human_on :create, :unless => :bypass_humanizer
@@ -53,6 +54,28 @@ class User < ActiveRecord::Base
 
   def group_admin_of?(group)
     group.membership_for(user).try(:group_admin?)
+  end
+
+  def properties_author
+    ids = []
+    # get memberships
+    self.administrated_groups.each do |group|
+      # for each membership get property ids can define
+      ids << Property.with_role(:property_author, group.membership_for(user)).pluck(:id)
+    end
+    # return a single array list
+    ids.flatten
+  end
+
+  def resources_expert
+    ids = []
+    # get memberships
+    self.administrated_groups.each do |group|
+      # for each membership get property ids can define
+      ids << Property.with_role(:property_author, group.membership_for(user)).pluck(:id)
+    end
+    # return a single array list
+    ids.flatten
   end
 
   def fake_password

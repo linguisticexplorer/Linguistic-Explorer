@@ -14,7 +14,7 @@
   .form-group
     = f.label :level, :class => "control-label"
     .controls
-      = f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s
+      = f.collection_select :level, Membership::ROLES, :to_s, :to_s
   .form-group
     .controls
       = f.submit :class => "btn"

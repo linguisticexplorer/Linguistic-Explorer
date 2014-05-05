@@ -1,4 +1,6 @@
 class Ling < ActiveRecord::Base
+  resourcify
+  
   include Groupable
   include CSVAttributes
 

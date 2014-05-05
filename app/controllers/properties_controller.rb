@@ -24,7 +24,7 @@ class PropertiesController < GroupDataController
   def show
     @depth = params[:depth].to_i
     @property = current_group.properties.find(params[:id])
-    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false})
+    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false, :bootstrap3 => true})
     lings_id = lings.all.map(&:id)
     @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
     
@@ -40,14 +40,14 @@ class PropertiesController < GroupDataController
       p.group = current_group
       p.creator = current_user
     end
-    authorize! :create, @property
+    authorize! :define, @property
 
     @categories = get_categories
   end
 
   def edit
     @property = current_group.properties.find(params[:id])
-    authorize! :update, @property
+    authorize! :define, @property
 
     @categories = get_categories
   end
@@ -57,7 +57,7 @@ class PropertiesController < GroupDataController
       property.group = current_group
       property.creator = current_user
     end
-    authorize! :create, @property
+    authorize! :define, @property
 
     if @property.save
       redirect_to([current_group, @property],
@@ -70,7 +70,9 @@ class PropertiesController < GroupDataController
 
   def update
     @property = current_group.properties.find(params[:id])
-    authorize! :update, @property
+    authorize! :define, @property
+
+    Rails.logger.debug "[DEBUG] #{(authorize! :define, @property).id}"
 
     if @property.update_attributes(params[:property])
       redirect_to([current_group, @property],

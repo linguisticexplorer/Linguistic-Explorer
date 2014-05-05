@@ -2,12 +2,12 @@
 %h1
   = current_group.property_name
   = @property.name
-= link_to group_properties_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
+= link_to group_properties_path(current_group), :class => "btn btn-primary" do
+  %span.glyphicon.glyphicon-arrow-left
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @property
-  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn"
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-default"
 %br/
 %br/
 %table.show-table.description-table.table.table-bordered.table-striped.table-hover
@@ -28,7 +28,7 @@
     .col-md-11.text-justify
       = @property.description.html_safe
 %br/
-#pagination_table.values
+#pagination_table
   %h3= current_group.lings_property_name.pluralize
   #pagination_top.apple_pagination
     / render page links in the view:
@@ -53,4 +53,4 @@
   \&nbsp;Back
 \&nbsp;
 - if can? :edit, @property
-  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn"
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-default"
