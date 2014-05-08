@@ -57,6 +57,8 @@ class MembershipsController < GroupDataController
       membership.group = current_group
       membership.creator = current_user
     end
+    @membership.grant_role params[:membership][:role][:type], params[:membership][:role][:instance]
+
     authorize! :create, @membership
 
     if @membership.save

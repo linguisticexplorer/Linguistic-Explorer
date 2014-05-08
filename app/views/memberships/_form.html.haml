@@ -7,14 +7,76 @@
       %ul
         - @membership.errors.full_messages.each do |msg|
           %li= msg
-  .form-group
-    = f.label :member_id, :class => "control-label"
-    .controls
-      = f.collection_select :member_id, @users, :id, :email
-  .form-group
-    = f.label :level, :class => "control-label"
-    .controls
-      = f.collection_select :level, Membership::ROLES, :to_s, :to_s
-  .form-group
-    .controls
-      = f.submit :class => "btn"
+  .row
+    .col-md-6
+      .form-group
+        = f.label :member_id, :class => "control-label col-sm-2"
+        .controls.col-sm-4
+          = f.collection_select :member_id, @users, :id, :email
+      .form-group
+        = f.label :level, :class => "control-label col-sm-2"
+        .controls.col-sm-4
+          = f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s
+      .form-group
+        = f.label :role, :class => "control-label col-sm-2"
+        .controls.col-sm-4
+          = f.collection_select :role, Membership::ROLES, :to_s, :to_s
+      .form-group
+        .controls
+          = f.submit :class => "btn"
+    .col-md.6
+      .row
+        #roles
+      .row
+        %h3 Set a Role choosing a language or a property
+        %h5
+          Add languages to compare with #{@ling.name}
+        %input#resources.input-block-level.typeahead.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}
+      .row
+        #resources-container.col-md-5.search-buttons
+          Selected Resources (
+          %a#remove-roles{:href => "/Clear All"} Remove All
+          )
+          %ul#selected-resources
+
+- content_for :scripts do
+  :javascript
+    $(function(){
+
+      // Setup the Typeahead matcher engine
+      var lingDictionary = createDictionary('Languages', 'Language Expert', lingData),
+          propDictionary = createDictionary('Properties', 'Property Author', propData);
+
+      $('#resources').typeahead({
+        hint: true,
+        minLength: 1,
+        highlight: true
+      }, 
+        lingDictionary, 
+        propDictionary
+      );
+
+    });
+
+    function createMatcher(data){
+      var engine = new BloodHound({
+        datumTokenizer: BloodHound.tokenizers.obj.whitespace('name'),
+        queryTokenizer: BloodHound.tokenizers.whitespace,
+        local: data
+      });
+
+      engine.initialize();
+      return engine;
+    }
+
+    function createDictionary(name, role, rawData){
+      var matcher = createMatcher(rawData);
+
+      var template = createTemplate(role);
+
+      return {
+        name: name,
+        source: matcher,
+        template: template
+      };
+    }

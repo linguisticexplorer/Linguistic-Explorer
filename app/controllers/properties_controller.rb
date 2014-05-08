@@ -14,9 +14,10 @@ class PropertiesController < GroupDataController
   end
 
   def dict
-    @all_props = Hash.new
-    current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
-      @all_props[prop.name] = prop.id
+    @all_props = {}.tap do |entry|
+      current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
+        entry[prop.name] = prop.id
+      end
     end
     render :json => @all_props.to_json.html_safe
   end

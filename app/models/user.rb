@@ -57,28 +57,27 @@ class User < ActiveRecord::Base
   end
 
   def properties_author
-    ids = []
-    # get memberships
-    self.administrated_groups.each do |group|
-      # for each membership get property ids can define
-      ids << Property.with_role(:property_author, group.membership_for(user)).pluck(:id)
-    end
-    # return a single array list
-    ids.flatten
+    resource_ids_for_role :property_author, Property
   end
 
-  def resources_expert
-    ids = []
-    # get memberships
-    self.administrated_groups.each do |group|
-      # for each membership get property ids can define
-      ids << Property.with_role(:property_author, group.membership_for(user)).pluck(:id)
-    end
-    # return a single array list
-    ids.flatten
+  def resources_expert(resource)
+    resource_ids_for_role :linguistic_expert, resource
   end
 
   def fake_password
 
+  end
+
+  private
+
+  def resource_ids_for_role(role, model)
+    ids = []
+    # get memberships
+    self.administrated_groups.each do |group|
+      # for each membership get property ids can define
+      ids << model.with_role(role, group.membership_for(user)).pluck(:id)
+    end
+    # return a single array list
+    ids.flatten
   end
 end

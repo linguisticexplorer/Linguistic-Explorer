@@ -9,8 +9,8 @@ class Membership < ActiveRecord::Base
 
   ROLES = [
     MODERATOR = "Moderator",
-    EXPERT = "Linguistic Expert",
-    AUTHOR = "Property Author"
+    EXPERT    = "Linguistic Expert",
+    AUTHOR    = "Property Author"
   ]
 
   CSV_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
@@ -26,11 +26,15 @@ class Membership < ActiveRecord::Base
   validates :level, :presence => true
   # validates_uniqueness_of :member_id, :scope => :group_id
   validates :member_id, :uniqueness => {:scope => :group_id }
-  validates_inclusion_of :level, :in => ACCESS_LEVELS + ROLES
+  validates_inclusion_of :level, :in => ACCESS_LEVELS
 
   belongs_to :member, :class_name => "User", :foreign_key => :member_id
 
   def group_admin?
     ADMIN == level
+  end
+
+  def grant_role(role_string, instance)
+    self.grant "#{role_string.underscorize}".to_sym instance
   end
 end

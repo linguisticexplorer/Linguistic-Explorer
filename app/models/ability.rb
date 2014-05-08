@@ -19,18 +19,17 @@ class Ability
       can     :read,   Group,                   :privacy => Group::PUBLIC
       can     :read,   group_data, :group => {  :privacy => Group::PUBLIC }
 
+      # turn on full data management for group admins
+      can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN }
+      can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)
+      # turn on group reading for members
+      can     :read,   Group, :memberships => { :member_id => user.id }
+      # turn on group data reading for group members
+      can     :read,   group_data,              :group_id => user.group_ids
+      # can     :manage, group_member_data,       :group_id => user.group_ids
       # turn on property edit for property authors
       can :define , Property, :id => user.properties_author
       can :destroy, Property, :id => user.properties_author
-
-      # turn on full data management for group admins
-      # can     :manage, Group, :memberships => { :member_id => user.id, :level => Membership::ADMIN }
-      # can     :manage, group_data,              :group_id => user.administrated_groups.map(&:id)
-      # turn on group reading for members
-      # can     :read,   Group, :memberships => { :member_id => user.id }
-      # turn on group member data management and all data reading for group members
-      # can     :manage, group_member_data,       :group_id => user.group_ids
-      # can     :read,   group_data,              :group_id => user.group_ids
       # turn on own membership deletion
       can     :destroy, Membership,             :member_id => user.id
 

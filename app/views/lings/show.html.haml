@@ -15,7 +15,7 @@
   \&nbsp;
 %br/
 %br/
-.row-fluid
+.row
   .col-md-6
     %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
     %p
@@ -59,7 +59,7 @@
         %td
           = @ling.creator ? @ling.creator.name : "Unknown user"
   #analysis-container.col-md-6.border
-    .row-fluid
+    .row
       #analysis.col-md-12.relative
         %h3 Quick Analysis
         %h5
@@ -67,10 +67,10 @@
         %input#auto_compare.input-block-level.autocomplete.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
       #languages-container.col-md-5.hidden.search-buttons
         Selected languages (
-        %a.remove-langs{:href => "/Clear All"}> clear all
+        %a.remove-langs{:href => "/Clear All"} clear all
         )
         %ul#selected-lings
-    .row-fluid.relative
+    .row.relative
       #compare-buttons.col-md-12.search-buttons
         %a#compare-lings.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Compare Properties
         %a#compare-tree.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Similarity Tree
