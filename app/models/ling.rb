@@ -124,4 +124,8 @@ class Ling < ActiveRecord::Base
     @info ||= LingsProperty.in_group(group).where(:ling_id => self.id).count(:id) * 100 / props_in_group
     @info = 100 if @info > 100
   end
+
+  def as_json(options={})
+    super(:only => [:id, :name, :depth, :parent_id])
+  end
 end
