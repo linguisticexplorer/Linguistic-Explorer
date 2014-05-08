@@ -18,7 +18,7 @@ class MembershipsController < GroupDataController
     end
   end
   
-  def dict
+  def list
     @all_members = Hash.new
     current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
       @all_members[memb.member.name] = memb.id

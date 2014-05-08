@@ -4,12 +4,12 @@ LinguisticExplorer::Application.routes.draw do
   root        :to => 'home#index'
 
   get "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
-  get "/groups/:group_id/lings/depth/:depth/dict" => "lings#dict"
-  get "/groups/:group_id/lings/:id/dict" => "lings#dict"
-  get "/groups/:group_id/lings/dict" => "lings#dict"
-  get "/groups/:group_id/dict" => "lings#dict1"
-  get "/groups/:group_id/properties/dict" => "properties#dict"
-  get "/groups/:group_id/memberships/dict" => "memberships#dict"
+  get "/groups/:group_id/lings/depth/:depth/list" => "lings#list_by_depth"
+  get "/groups/:group_id/lings/:id/list" => "lings#list_by_depth"
+  get "/groups/:group_id/lings/list" => "lings#list_by_depth"
+  get "/groups/:group_id/list" => "lings#list"
+  get "/groups/:group_id/properties/list" => "properties#list"
+  get "/groups/:group_id/memberships/list" => "memberships#list"
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   resources :groups do
