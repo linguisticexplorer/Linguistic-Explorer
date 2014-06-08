@@ -1,9 +1,11 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user)
+  def initialize(user, resource=nil)
     group_member_data = [Example, LingsProperty, ExamplesLingsProperty]
     group_admin_data  = [Ling, Property, Category, Membership]
+
+    group_expert_data = [Ling, Example, LingsProperty, ExamplesLingsProperty]
     group_data = group_admin_data + group_member_data
 
     # ensure there is a user object in the not logged in case
@@ -27,9 +29,19 @@ class Ability
       # turn on group data reading for group members
       can     :read,   group_data,              :group_id => user.group_ids
       # can     :manage, group_member_data,       :group_id => user.group_ids
-      # turn on property edit for property authors
-      can :define , Property, :id => user.properties_author
-      can :destroy, Property, :id => user.properties_author
+      
+      # turn on edit for experts
+      # group_expert_data.each do |resource|
+      # ids = user.ids_as_expert_of resource
+      # Member can manage things either assigned OR not assigned yet Resources
+      # can [:define, :destroy] ,  group_expert_data, :id => ids
+      can [:define, :destroy] ,  group_expert_data if user.expert_of? resource
+      # can [:define, :destroy] ,  group_expert_data if resource.roles.empty?
+      # end
+
+      # can :define , group_author_data, :id => user.properties_author
+      # can :destroy, group_author_data, :id => user.properties_author
+
       # turn on own membership deletion
       can     :destroy, Membership,             :member_id => user.id
 
@@ -37,6 +49,7 @@ class Ability
       can :manage, Search do |search|
         search.is_manageable_by?(user)
       end
+
       can :manage, SearchComparison do |sc|
         sc.searches.all? {|s| s.is_manageable_by?(user)}
       end

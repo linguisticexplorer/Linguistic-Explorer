@@ -3,12 +3,19 @@
     = link_to "Sign Out", destroy_user_session_path, html_options = {:class => "btn btn-default"}
   %li#userInfo.pull-right.buttons
     = current_user.email
+    %br/
     - if current_user && current_user.admin?
-      %br/
       .col-md-.nav-status Site Admin
-    - elsif current_user && @group && (current_user.admin? || current_user.administrated_groups.include?(@group))
-      %br/
-      .col-md-.nav-status Group Admin
+    - elsif current_user && @group
+      - if (current_user.admin? || current_user.administrated_groups.include?(@group))
+        .col-md-.nav-status Group Admin
+      - elsif (current_user.member_of? (@group))
+        .col-md-.nav-status
+          - if (current_user.is_expert? @group)
+            = icon 'certificate', 'Expert'
+          - else
+            Member
+          
 - else
   %li.pull-right.buttons
     = link_to "Sign In", new_user_session_path, html_options = {:class => "btn btn-default"}

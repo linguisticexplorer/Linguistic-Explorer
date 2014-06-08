@@ -8,9 +8,8 @@ class Membership < ActiveRecord::Base
   ]
 
   ROLES = [
-    MODERATOR = "Moderator",
-    EXPERT    = "Linguistic Expert",
-    AUTHOR    = "Property Author"
+    REGULAR = "member",
+    EXPERT  = "expert"
   ]
 
   CSV_ATTRIBUTES = %w[ id member_id group_id level creator_id ]
@@ -34,7 +33,38 @@ class Membership < ActiveRecord::Base
     ADMIN == level
   end
 
-  def grant_role(role_string, instance)
-    self.grant "#{role_string.underscorize}".to_sym instance
+  def add_expertise_in(instance)
+    grant :expert, instance
   end
+
+  def remove_expertise_in(instance)
+    revoke :expert, instance
+  end
+
+  def set_expertise_in(instances)
+    # check instances and sort them
+    current_resources = self.roles.sort
+    # sort incoming instances as well
+    new_resources = instances.sort
+    
+    # remove roles not present in the new set
+    current_resources.each do |resource|
+      unless new_resources.include? resource
+        remove_expertise_in resource
+      end
+    end
+    
+    # add resources present only in the new set and not in the old one
+    new_resources.each do |resource|
+      unless current_resources.include? resource
+        add_expertise_in resource
+      end
+    end
+  end
+
+  def role
+    level === 'admin' ? 'admin' : 
+      has_role?(:expert, :any) ? 'expert' : 'member'
+  end
+
 end

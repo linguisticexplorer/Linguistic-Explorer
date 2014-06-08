@@ -39,9 +39,9 @@ pre {
   font-size: 10px;
 }
 
-a           { color: #CC3300; text-decoration:none; }
+/*a           { color: #CC3300; text-decoration:none; }
 a:visited   { color: #AC250E; }
-a:hover     { color: #CC3300; text-decoration:underline; }
+a:hover     { color: #CC3300; text-decoration:underline; }*/
 
 h1 { font-size:175%;}
 h2 { font-size:150%;}

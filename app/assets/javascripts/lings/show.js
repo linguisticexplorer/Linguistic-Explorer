@@ -99,13 +99,13 @@
         });
 
         $('#auto_compare').typeahead({
-        source: lings.list,
-        updater:function (item){
-          $('#languages-container').removeClass('hidden');
-          $('#analysis').removeClass('col-md-12').addClass('col-md-7');
-          $('div#compare-buttons a').removeAttr("disabled");
-          $('#selected-lings').append($('<li>').html(makeButton() + item));
-          lings.list.splice(lings.list.indexOf(item),1);
+            source: lings.list,
+            updater:function (item){
+              $('#languages-container').removeClass('hidden');
+              $('#analysis').removeClass('col-md-12').addClass('col-md-7');
+              $('div#compare-buttons a').removeAttr("disabled");
+              $('#selected-lings').append($('<li>').html(makeButton() + item));
+              lings.list.splice(lings.list.indexOf(item),1);
         }
       });
       $('#auto_compare').attr("placeholder", "Start typing the name of the language").removeAttr('disabled');

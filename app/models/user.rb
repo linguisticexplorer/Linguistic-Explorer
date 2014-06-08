@@ -56,28 +56,38 @@ class User < ActiveRecord::Base
     group.membership_for(user).try(:group_admin?)
   end
 
-  def properties_author
-    resource_ids_for_role :property_author, Property
+  def expert_of?(resource)
+    # resource_ids_for_role :resource_expert, resource
+    if resource.present? && member_of?(resource.group)
+      # is thruthy if either is assigned to that resource or
+      # the resource has nobody set as expert for the moment
+      return resource.group.membership_for(self).has_role(:expert, resource) || resource.roles.empty?
+    end
   end
 
-  def resources_expert(resource)
-    resource_ids_for_role :linguistic_expert, resource
+  def is_expert?(group)
+    group.membership_for(self).has_role? :expert, :any
   end
 
   def fake_password
 
   end
 
-  private
+  # private
 
-  def resource_ids_for_role(role, model)
-    ids = []
-    # get memberships
-    self.administrated_groups.each do |group|
-      # for each membership get property ids can define
-      ids << model.with_role(role, group.membership_for(user)).pluck(:id)
-    end
-    # return a single array list
-    ids.flatten
-  end
+  # def resource_ids_for_role(role, resource)
+    
+  #   # get resource group id
+  #   if resource.present?
+  #     return member_of? resource.group && resource.group.membership_for(self).has_role :expert, resource
+  #   end
+  #   # iterate memberships
+  #   self.memberships do |member|
+  #     # append resource ids
+  #     # ids << model.with_role(role, member).pluck(:id)
+  #     ids << resource.
+  #   end
+  #   # return a single array list
+  #   ids.flatten
+  # end
 end

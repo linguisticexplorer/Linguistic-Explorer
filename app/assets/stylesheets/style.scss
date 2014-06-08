@@ -120,13 +120,13 @@ $link-color: #005580;
 .blue {
   color: darken($highlight-color, 10);
 }
-a.btn {
-	color: #333333;
-}
+// a.btn {
+// 	color: #333333;
+// }
 
-a.btn-danger, a.btn-default, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-primary {
-	color: #ffffff;
-}
+// a.btn-danger, a.btn-default, a.btn-info, a.btn-success, a.btn-warning, a.btn-inverse, a.btn-primary {
+// 	color: #ffffff;
+// }
 
 .whitebox {
   background: rgba(245,245,245, 0.8);
@@ -307,7 +307,7 @@ form {
     height: 40px;
   }
   input[type="text"], .alert {
-    width: 300px;
+    // width: 300px;
     height: 30px;
     box-sizing:border-box;
     -moz-box-sizing:border-box; /* Firefox */
@@ -540,5 +540,10 @@ div#languages-container.hidden {
     text-align: center;
 }
 
+.fa-15x{
+  font-size: 1.5em;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
+@import "font-awesome";

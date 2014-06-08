@@ -68,6 +68,7 @@ gem 'leaflet-rails'
 group :assets do
   # No need for coffeescript here, JS it's enough
   gem "uglifier"
+  gem "handlebars_assets"
 end
 
 # Forum gem

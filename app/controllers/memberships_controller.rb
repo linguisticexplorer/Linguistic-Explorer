@@ -29,6 +29,10 @@ class MembershipsController < GroupDataController
   def show
     @membership = current_group.memberships.find(params[:id])
 
+    authorize! :read, @membership
+
+    @lings = Ling.find(@membership.roles.map(&:resource_id))
+
     respond_with(@membership) do |format|
       format.html
       format.js
@@ -48,20 +52,31 @@ class MembershipsController < GroupDataController
   def edit
     @membership = current_group.memberships.find(params[:id])
     authorize! :update, @membership
+    
+    # Stick with Ling for the moment, then will group by resource type and query them
+    @lings = Ling.find(@membership.roles.map(&:resource_id))
 
     @users = User.all
   end
 
   def create
-    @membership = Membership.new(params[:membership]) do |membership|
+    attributes, roles = get_attributes_and_roles
+      
+    @membership = Membership.new(attributes) do |membership|
       membership.group = current_group
       membership.creator = current_user
     end
-    @membership.grant_role params[:membership][:role][:type], params[:membership][:role][:instance]
+
+
+    # @membership.grant_role params[:membership][:role][:type], params[:membership][:role][:instance]
 
     authorize! :create, @membership
 
     if @membership.save
+      # Set the expertise in all the passed resources
+      if roles[:role] && roles[:resources].any?
+        @membership.set_expertise_in roles[:resources]
+      end
       redirect_to([current_group, @membership],
                   :notice => 'Membership was successfully created.')
     else
@@ -72,9 +87,16 @@ class MembershipsController < GroupDataController
 
   def update
     @membership = current_group.memberships.find(params[:id])
+
     authorize! :update, @membership
 
-    if @membership.update_attributes(params[:membership])
+    attributes, roles = get_attributes_and_roles
+
+    if @membership.update_attributes attributes
+      # Set the expertise in all the passed resources
+      if roles[:role] && roles[:resources].any?
+        @membership.set_expertise_in roles[:resources]
+      end
       redirect_to([current_group, @membership],
                   :notice => 'Membership was successfully updated.')
     else
@@ -88,6 +110,29 @@ class MembershipsController < GroupDataController
 
     @membership.destroy
 
+    # destroy roles
+
     redirect_to(group_memberships_url(current_group))
+  end
+
+  private
+
+  def get_attributes_and_roles
+    selected_role = params[:membership][:role]
+
+    level = selected_role == 'admin' ? 'admin' : 'member';
+    role  = Membership::ROLES.include? selected_role && selected_role
+    
+    attributes = { 
+      :member_id => params[:membership][:member_id],
+      :level => level
+    }
+
+    roles = {
+      :role => role,
+      :resources => Ling.find((params[:membership][:resources] || '').split(';'))
+    }
+
+    [attributes, roles]
   end
 end

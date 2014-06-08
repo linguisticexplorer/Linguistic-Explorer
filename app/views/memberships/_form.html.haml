@@ -7,76 +7,132 @@
       %ul
         - @membership.errors.full_messages.each do |msg|
           %li= msg
-  .row
-    .col-md-6
-      .form-group
-        = f.label :member_id, :class => "control-label col-sm-2"
-        .controls.col-sm-4
-          = f.collection_select :member_id, @users, :id, :email
-      .form-group
-        = f.label :level, :class => "control-label col-sm-2"
-        .controls.col-sm-4
-          = f.collection_select :level, Membership::ACCESS_LEVELS, :to_s, :to_s
-      .form-group
-        = f.label :role, :class => "control-label col-sm-2"
-        .controls.col-sm-4
-          = f.collection_select :role, Membership::ROLES, :to_s, :to_s
-      .form-group
-        .controls
-          = f.submit :class => "btn"
-    .col-md.6
-      .row
-        #roles
-      .row
-        %h3 Set a Role choosing a language or a property
-        %h5
-          Add languages to compare with #{@ling.name}
-        %input#resources.input-block-level.typeahead.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}
-      .row
-        #resources-container.col-md-5.search-buttons
-          Selected Resources (
-          %a#remove-roles{:href => "/Clear All"} Remove All
-          )
-          %ul#selected-resources
+  .form-group
+    .col-sm-6
+      = f.label :member_id, :class => "control-label"
+      .controls
+        = f.collection_select :member_id, @users, :id, :email, {}, :class =>'form-control'
+    //- Show this only if role is different than "Member"
+    #resources-search.col-sm-6{:style => 'display: none;'}
+      %label.control-label Choosing a language or a property
+      %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Languages", :type => "text"}
+  .form-group{:style => "min-height: 80px;"}
+    .col-sm-6
+      = f.label :role, :class => "control-label"
+      .controls
+        //- Simplify the interface: levels and roles in a single field
+        //- TODO: Remember to wrap and capitalize roles
+        = f.collection_select :role, Membership::ACCESS_LEVELS | Membership::ROLES, :to_s, :to_s, {}, :class =>'form-control'
+    #resources-list.col-sm-6{:style => 'display: none;'}
+      = f.hidden_field 'resources', :value => ''
+      %label.control-label
+        Selected Resources (
+        %a#remove-resources{:href => "#Clean"} Clean
+        )
+      .controls
+        %ul#selected-resources
+          - @lings.each do |ling|
+            %li{ :data => {:id => ling.id} }
+              %a.remove-resource{:href => '#Remove'}
+                %span.glyphicon.glyphicon-remove.shift-down
+              #{ling.name}
+  .form-group
+    .col-sm-6
+      .controls
+        = link_to group_memberships_path(current_group), :class => "btn btn-default" do
+          %span.glyphicon.glyphicon-arrow-left
+          Back
+        = f.submit :class => "btn btn-success"
 
 - content_for :scripts do
   :javascript
+
+    var lingsDictURL = "#{group_lings_all_path(current_group)}";
+
     $(function(){
 
-      // Setup the Typeahead matcher engine
-      var lingDictionary = createDictionary('Languages', 'Language Expert', lingData),
-          propDictionary = createDictionary('Properties', 'Property Author', propData);
+      var lingsName = "#{current_group.ling_names.map(&:pluralize).join(' - ')}";
 
-      $('#resources').typeahead({
-        hint: true,
-        minLength: 1,
-        highlight: true
-      }, 
-        lingDictionary, 
-        propDictionary
-      );
+      var resourceId = 'resources';
+      enableRolesPanel();
+
+      // Setup the Typeahead matcher engine
+      var lingDictionary = Terraling.Search.createDictionary(lingsName, 'expert', lingsDictURL);
+
+      Terraling.Search.create(resourceId +'-search-field', [lingDictionary]);
+      Terraling.Search.onSelection(onLingSelected);
+
+      var buttonTemplate = Handlebars.compile('<li data-id="{{id}}"><a class="remove-resource" href="#Remove"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>');
+
+      var resourcesDict;
+      mapResourcesRoles();
+
+      function mapResourcesRoles(){
+        resourcesDict = {};
+        $('#selected-resources li').each( function(){
+          resourcesDict[$(this).text()] = ''+$(this).data('id');
+        });
+      }
+
+      function removeLanguage(evt){
+        var item = $(this).parent();
+
+        var name = item.text().substring(1);
+
+        delete resourcesDict[name];
+
+        item.remove();
+        // refresh hidden field values
+        updateResourceField();
+
+        evt.preventDefault();
+      }
+
+      function removeLanguages(evt) {
+        $('#selected-resources li').each( function () {
+            var item = $(this);
+            item.remove();
+        });
+        // clear the cache
+        resourcesDict = {};
+
+        updateResourceField();
+        
+        evt.preventDefault();
+      }
+
+      function updateResourceField(){
+        $('#membership_'+resourceId).val($.map(resourcesDict, function(value){
+          return value;
+        }).join(';'));
+      }
+
+      function onLingSelected(evt, ling, name){
+
+        if(!resourcesDict[ling.name]){
+
+          resourcesDict[ling.name] = ''+ling.id;
+
+          $('#selected-resources').append(buttonTemplate(ling));
+        }
+
+        updateResourceField();
+
+        $('#'+resourceId+'-search-field').typeahead('val', '');
+
+      }
+
+      function enableRolesPanel(){
+
+        var isValidRole = $('#membership_role').val() === 'expert';
+        $('#'+resourceId + '-search , #'+resourceId + '-list ').toggle(isValidRole);
+
+      }
+      
+      $('#membership_role').change(enableRolesPanel);
+
+      $('body')
+          .on('click', '#remove-resources', removeLanguages)
+          .on('click', '.remove-resource' , removeLanguage);
 
     });
-
-    function createMatcher(data){
-      var engine = new BloodHound({
-        datumTokenizer: BloodHound.tokenizers.obj.whitespace('name'),
-        queryTokenizer: BloodHound.tokenizers.whitespace,
-        local: data
-      });
-
-      engine.initialize();
-      return engine;
-    }
-
-    function createDictionary(name, role, rawData){
-      var matcher = createMatcher(rawData);
-
-      var template = createTemplate(role);
-
-      return {
-        name: name,
-        source: matcher,
-        template: template
-      };
-    }
