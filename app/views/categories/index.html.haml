@@ -1,9 +1,9 @@
 - page_heading current_group.category_name.pluralize
 %h1
   Listing #{current_group.category_name.pluralize}
-- if can? :create, Category.new{|c| c.group = current_group}
-  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn"
+- if can_see? :create, Category.new{|c| c.group = current_group}
+  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn btn-primary"
 #pagination_table
   = render :partial => "index_partial"
-- if can? :create, Category.new{|c| c.group = current_group}
-  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn"
+- if can_see? :create, Category.new{|c| c.group = current_group}
+  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn btn-primary"

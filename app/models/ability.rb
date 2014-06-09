@@ -33,7 +33,6 @@ class Ability
       
       # turn on edit for experts
       # Member can manage things either assigned OR not assigned yet Resources
-      # Rails.logger.debug "DEBUG #{resource} - #{user.expert_of? resource}"
       # can [:define, :destroy] , group_expert_data if user.expert_of? resource
 
       # can :define , group_author_data, :id => user.properties_author

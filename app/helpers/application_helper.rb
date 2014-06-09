@@ -91,7 +91,7 @@ module ApplicationHelper
     if current_user.admin? || current_user.group_admin_of?(current_group)
       can? action, item
     else
-      can?(action, item) && current_user.is_expert_of?(item)
+      can?(action, item) && current_user.is_expert_of?(item.is_a?(Array) ? item.first : item)
     end
   end
 

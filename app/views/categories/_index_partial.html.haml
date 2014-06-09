@@ -5,13 +5,13 @@
   %tr
     %th Name
     %th Depth
-    - if can? :destroy, @categories
+    - if can_see? :destroy, @categories
       %th
   - @categories.each do |category|
     %tr
       %td= link_to category.name, [current_group, category]
       %td= category.depth
-      - if can? :destroy, category
+      - if can_see? :destroy, category
         %td
           = link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete, :class => "btn btn-danger btn-small"
 %br/

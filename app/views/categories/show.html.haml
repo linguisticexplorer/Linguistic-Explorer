@@ -4,8 +4,8 @@
   %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
-- if can? :edit, @category
-  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn"
+- if can_see? :edit, @category
+  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn btn-primary"
 %br/
 %br/
 %table.show-table.description-table.table.table-bordered.table-striped.table-hover
@@ -25,9 +25,9 @@
     %td
       %b Created by:
     %td= @category.creator ? @category.creator.name : "Unknown user"
-= link_to group_categories_path(current_group), :class => "btn btn-inverse" do
+= link_to group_categories_path(current_group), :class => "btn btn-default" do
   %i.glyphicon-white.glyphicon-arrow-left>
   \&nbsp;Back
 \&nbsp;
-- if can? :edit, @category
-  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn"
+- if can_see? :edit, @category
+  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn btn-primary"

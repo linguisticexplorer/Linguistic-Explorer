@@ -9,8 +9,9 @@
       = @group.name
       = link_to info_group_path(@group) do
         %i.fa.fa-info-circle.fa-05x
-      = link_to edit_group_path(@group) do
-        %i.fa.fa-edit.fa-05x
+      - if can_see? :edit, @group
+        = link_to edit_group_path(@group) do
+          %i.fa.fa-edit.fa-05x
   #intro
     .row
       .margin.col-md-6.relative
