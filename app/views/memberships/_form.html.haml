@@ -31,11 +31,12 @@
         )
       .controls
         %ul#selected-resources
-          - @lings.each do |ling|
-            %li{ :data => {:id => ling.id} }
-              %a.remove-resource{:href => '#Remove'}
-                %span.glyphicon.glyphicon-remove.shift-down
-              #{ling.name}
+          -if @lings.present?
+            - @lings.each do |ling|
+              %li{ :data => {:id => ling.id} }
+                %a.remove-resource{:href => '#Remove'}
+                  %span.glyphicon.glyphicon-remove.shift-down
+                #{ling.name}
   .form-group
     .col-sm-6
       .controls

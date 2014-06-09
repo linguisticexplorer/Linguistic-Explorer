@@ -8,7 +8,7 @@ class GroupsController < ApplicationController
     if params[:group_id]
       begin
         @group = Group.find(params[:group_id])
-        authorize! :show, @group
+        is_authorized? :show, @group
         redirect_to @group
         return
       rescue ActiveRecord::RecordNotFound
@@ -24,27 +24,27 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    authorize! :show, @group
+    is_authorized? :show, @group
   end
 
   def info
     @group = Group.find(params[:id]).loadInfos
-    authorize! :show, @group
+    is_authorized? :show, @group
   end
 
   def new
     @group = Group.new
-    authorize! :create, @group
+    is_authorized? :create, @group
   end
 
   def edit
     @group = Group.find(params[:id])
-    authorize! :update, @group
+    is_authorized? :update, @group
   end
 
   def create
     @group = Group.new(params[:group])
-    authorize! :create, @group
+    is_authorized? :create, @group
 
     if @group.save
       redirect_to(@group, :notice => 'Group was successfully created.')
@@ -55,7 +55,7 @@ class GroupsController < ApplicationController
 
   def update
     @group = Group.find(params[:id])
-    authorize! :update, @group
+    is_authorized? :update, @group
 
     if @group.update_attributes(params[:group])
       redirect_to(@group, :notice => 'Group was successfully updated.')
@@ -66,7 +66,7 @@ class GroupsController < ApplicationController
 
   def destroy
     @group = Group.find(params[:id])
-    authorize! :destroy, @group
+    is_authorized? :destroy, @group
     @group.destroy
 
     redirect_to(groups_url)

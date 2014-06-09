@@ -14,6 +14,8 @@ class ExamplesController < GroupDataController
   def show
     @example = current_group.examples.find(params[:id])
 
+    is_authorized? :read, @example
+
     respond_with(@example) do |format|
       format.html
       format.js
@@ -24,11 +26,12 @@ class ExamplesController < GroupDataController
     @ling = params[:ling_id] && Ling.find(params[:ling_id])
     @property = params[:prop_id] && Property.find(params[:prop_id])
     @lp = params[:lp_id] && LingsProperty.find_by_id(params[:lp_id])
+
     @example = Example.new do |e|
       e.group = current_group
       e.creator = current_user
     end
-    authorize! :create, @example
+    is_authorized? :create, @example, true
 
   end
 
@@ -37,7 +40,8 @@ class ExamplesController < GroupDataController
     @ling = Ling.find(params[:ling_id]) if params[:ling_id]
     @property = Property.find(params[:prop_id]) if params[:prop_id]
     @lp = LingsProperty.find(params[:lp_id]) if params[:lp_id]
-    authorize! :update, @example
+
+    is_authorized? :update, @example, true
 
     @lings = get_lings
   end
@@ -48,7 +52,7 @@ class ExamplesController < GroupDataController
       example.creator = current_user
     end
 
-    authorize! :create, @example
+    is_authorized? :create, @example, true
 
     if params[:lp_val]
       elp = ExamplesLingsProperty.new()
@@ -56,7 +60,7 @@ class ExamplesController < GroupDataController
       elp.lings_property = LingsProperty.find(params[:lp_val])
       elp.example = @example
 
-      authorize! :create, elp
+      is_authorized? :create, elp, true
     end
 
     respond_to do |format|
@@ -80,7 +84,7 @@ class ExamplesController < GroupDataController
 
   def update
     @example = current_group.examples.find(params[:id])
-    authorize! :update, @example
+    is_authorized? :update, @example, true
 
     respond_to do |format|
       if @example.update_attributes(params[:example])
@@ -100,7 +104,7 @@ class ExamplesController < GroupDataController
 
   def destroy
     @example = current_group.examples.find(params[:id])
-    authorize! :destroy, @example
+    is_authorized? :destroy, @example, true
 
     @example.destroy
 

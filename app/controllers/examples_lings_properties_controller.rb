@@ -16,7 +16,7 @@ class ExamplesLingsPropertiesController < GroupDataController
       elp.group = current_group
       elp.creator = current_user
     end
-    authorize! :create, @examples_lings_property
+    is_authorized? :create, @examples_lings_property, true
 
     @examples = current_group.examples
     @lings_properties = current_group.lings_properties.includes(:property, :ling).sort_by(&:description)
@@ -35,7 +35,7 @@ class ExamplesLingsPropertiesController < GroupDataController
       elp.group = current_group
       elp.creator = current_user
     end
-    authorize! :create, @examples_lings_property
+    is_authorized? :create, @examples_lings_property, true
 
     respond_to do |format|
       if @examples_lings_property.save
@@ -56,7 +56,7 @@ class ExamplesLingsPropertiesController < GroupDataController
     @examples_lings_property = ExamplesLingsProperty.find(params[:id])
     @examples_lings_property = current_group.examples_lings_properties.find(params[:id])
 
-    authorize! :destroy, @examples_lings_property
+    is_authorized? :destroy, @examples_lings_property, true
     @examples_lings_property.destroy
 
     redirect_to(current_group)

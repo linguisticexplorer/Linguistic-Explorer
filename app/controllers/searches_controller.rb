@@ -11,7 +11,7 @@ class SearchesController < GroupDataController
       s.group   = current_group
     end
 
-    authorize! :search, @search
+    is_authorized? :search, @search
 
     respond_with(@search) do |format|
       format.html
@@ -22,10 +22,7 @@ class SearchesController < GroupDataController
   def preview
     @search = perform_search
 
-    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
-    authorize! :search, @search
-    
-    # @search.get_results!
+    is_authorized? :search, @search
   end
 
   def create
@@ -33,7 +30,7 @@ class SearchesController < GroupDataController
       s.creator = current_user
       s.group   = current_group
     end
-    authorize! :create, @search
+    is_authorized? :create, @search
 
     if @search.save
       redirect_to [current_group, :searches]
@@ -48,7 +45,7 @@ class SearchesController < GroupDataController
       @search.offset = params[:page]
     end
     
-    authorize! :search, @search
+    is_authorized? :search, @search
 
     respond_with(@search) do |format|
       format.html
@@ -73,7 +70,7 @@ class SearchesController < GroupDataController
 
   def destroy
     @search = current_group.searches.find(params[:id])
-    authorize! :destroy, @search
+    is_authorized? :destroy, @search
 
     @search.destroy
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
@@ -83,7 +80,7 @@ class SearchesController < GroupDataController
     @search = perform_search
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
-    authorize! :cross, @search
+    is_authorized? :cross, @search
   end
 
   def geomapping
@@ -91,7 +88,7 @@ class SearchesController < GroupDataController
     
     @json = GeoMapping.new(@search).to_json
 
-    authorize! :mapping, @search
+    is_authorized? :mapping, @search
 
     respond_with(@search) do |format|
       format.html

@@ -10,6 +10,7 @@ $link-color: #005580;
   }
   &.ling-table {
     width:100%;
+    margin-top: 15px;
   }
   &.description-table {
     width: 40em;
@@ -542,6 +543,19 @@ div#languages-container.hidden {
 
 .fa-15x{
   font-size: 1.5em;
+}
+
+.fa-05x{
+  font-size: 0.5em;
+}
+
+.user-nav {
+  padding: 5px !important;
+}
+
+#userInfo a {
+  padding: 0;
+  color: white;
 }
 
 // Import Bootstrap here

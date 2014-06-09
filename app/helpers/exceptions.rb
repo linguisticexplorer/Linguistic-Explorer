@@ -47,4 +47,11 @@ module Exceptions
       "An error occurred during the search. Please select less Properties for the Similarity Tree"
     end
   end
+
+  class AccessDenied < StandardError
+    def message
+      "The member has not the permissions to access the resource"
+    end
+  end
+  
 end

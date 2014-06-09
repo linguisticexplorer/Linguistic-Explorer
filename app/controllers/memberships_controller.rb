@@ -29,7 +29,7 @@ class MembershipsController < GroupDataController
   def show
     @membership = current_group.memberships.find(params[:id])
 
-    authorize! :read, @membership
+    is_authorized? :read, @membership
 
     @lings = Ling.find(@membership.roles.map(&:resource_id))
 
@@ -44,14 +44,14 @@ class MembershipsController < GroupDataController
       m.group = current_group
       m.creator = current_user
     end
-    authorize! :create, @membership
+    is_authorized? :create, @membership
 
     @users = User.all
   end
 
   def edit
     @membership = current_group.memberships.find(params[:id])
-    authorize! :update, @membership
+    is_authorized? :update, @membership
     
     # Stick with Ling for the moment, then will group by resource type and query them
     @lings = Ling.find(@membership.roles.map(&:resource_id))
@@ -67,10 +67,7 @@ class MembershipsController < GroupDataController
       membership.creator = current_user
     end
 
-
-    # @membership.grant_role params[:membership][:role][:type], params[:membership][:role][:instance]
-
-    authorize! :create, @membership
+    is_authorized? :create, @membership
 
     if @membership.save
       # Set the expertise in all the passed resources
@@ -88,7 +85,7 @@ class MembershipsController < GroupDataController
   def update
     @membership = current_group.memberships.find(params[:id])
 
-    authorize! :update, @membership
+    is_authorized? :update, @membership
 
     attributes, roles = get_attributes_and_roles
 
@@ -106,11 +103,9 @@ class MembershipsController < GroupDataController
 
   def destroy
     @membership = current_group.memberships.find(params[:id])
-    authorize! :destroy, @membership
+    is_authorized? :destroy, @membership
 
     @membership.destroy
-
-    # destroy roles
 
     redirect_to(group_memberships_url(current_group))
   end

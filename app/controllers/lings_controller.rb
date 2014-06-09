@@ -2,37 +2,27 @@ class LingsController < GroupDataController
   helper :groups
 
   respond_to :html, :js
-
+  
+  # Per level index
   def depth
     @depth = params[:depth].to_i
+
     pagination_options = {db_mode: true, db_field: "name", default_field: "a", numbers: false, :bootstrap3 => true}
+
     @all_lings = current_group.lings.at_depth(@depth)
+
     @lings, @params = @all_lings.alpha_paginate(params[:letter], pagination_options)
+
     return load_stats(@lings, params[:plain], 0)
   end
  
   def by_depth
-    # @all_lings = Hash.new
-    # if (params[:depth] || params[:id])
     # Look for ids first, then for depth or get depth 0 by default
     condition = params[:id] ? Ling.find(params[:id]).depth : params[:depth] || 0
-    # Speed up the query: filter by columns!
-    # current_group.lings.at_depth(condition).select([:name, :id]).map() do |cols| 
-    #   @all_lings[cols.first] = cols.last
-    # end
-    # else
-    #   current_group.lings.find_each(:batch_size => 500) do |ling| 
-    #     @all_lings[ling.name] = ling.id
-    #   end
-    # end
     render :json => current_group.lings.at_depth(condition).to_json.html_safe
   end
 
   def list
-    # @all_lings = Hash.new
-    # current_group.lings.find_each(:batch_size => 500) do |ling| 
-    #   @all_lings[ling.name] = ling.id
-    # end
     render :json => current_group.lings.to_json.html_safe
   end
 
@@ -49,6 +39,8 @@ class LingsController < GroupDataController
     @ling = current_group.lings.find(params[:id])
     @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
 
+    is_authorized? :read, @ling
+
     respond_with(@values) do |format|
       format.html
       format.js
@@ -57,6 +49,9 @@ class LingsController < GroupDataController
 
   def supported_set_values
     @ling = current_group.lings.find(params[:id])
+
+    is_authorized? :manage, @ling, true
+
     @depth = @ling.depth
     @categories = current_group.categories.at_depth(@depth)
     session[:category_id] = params[:category_id] if params[:category_id]
@@ -64,6 +59,7 @@ class LingsController < GroupDataController
     @properties = @category.properties.order('name')
     @preexisting_values = @ling.lings_properties.select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
     @exists = true
+
     if params[:prop_id]
       session[:prop_id] ||= params[:prop_id] if params[:prop_id]
       if params[:commit] == "Select"
@@ -122,7 +118,8 @@ class LingsController < GroupDataController
     end
 
 
-    authorize! :manage, fresh if fresh
+    # authorize! :manage, fresh if fresh
+    is_authorized? :manage, fresh, true if fresh
 
     prop_id = params[:property_id]
     prop_value = params[:value] == "value_new" ? params[:new_value] : params[:value]
@@ -141,7 +138,7 @@ class LingsController < GroupDataController
       end
     end
 
-    authorize! :create, fresh
+    is_authorized? :manage, fresh, true
 
     respond_to do |format|
       if fresh.save!
@@ -158,7 +155,7 @@ class LingsController < GroupDataController
     @ling = current_group.lings.find(params[:id])
     stale_values = @ling.lings_properties.find(:all, conditions: {property_id: params[:property_id]})
 
-    collection_authorize! :manage, stale_values if stale_values
+    collection_authorize! :manage, stale_values, true if stale_values
 
     fresh_values = []
     values = params.delete(:values) || []
@@ -193,7 +190,7 @@ class LingsController < GroupDataController
       end
     end
 
-    collection_authorize! :create, fresh_values
+    collection_authorize! :manage, fresh_values, true
 
     fresh_values.each{ |fresh| fresh.save}
     stale_values.each{ |stale| stale.delete unless fresh_values.include?(stale) } if stale_values
@@ -213,14 +210,14 @@ class LingsController < GroupDataController
       l.group = current_group
     end
 
-    authorize! :create, @ling
+    is_authorized? :create, @ling, true
   end
 
   def edit
     @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
 
-    authorize! :update, @ling
+    is_authorized? :update, @ling, true
 
     @parents = @depth ? current_group.lings.at_depth(@depth - 1) : []
   end
@@ -234,7 +231,7 @@ class LingsController < GroupDataController
     end
     @depth = @ling.depth
 
-    authorize! :create, @ling
+    is_authorized? :create, @ling, true
 
     if @ling.save
       params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
@@ -250,7 +247,7 @@ class LingsController < GroupDataController
     @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
 
-    authorize! :update, @ling
+    is_authorized? :update, @ling, true
 
     if @ling.update_attributes(params[:ling])
       params[:stored_values].each{ |k,v| @ling.store_value!(k,v) } if params[:stored_values]
@@ -266,7 +263,7 @@ class LingsController < GroupDataController
     @ling = current_group.lings.find(params[:id])
     @depth = @ling.depth
 
-    authorize! :destroy, @ling
+    is_authorized? :destroy, @ling, true
     @ling.destroy
 
     redirect_to(group_lings_depth_url(current_group, @depth))

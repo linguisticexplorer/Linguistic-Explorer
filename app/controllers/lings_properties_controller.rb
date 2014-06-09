@@ -5,6 +5,8 @@ class LingsPropertiesController < GroupDataController
   def show
     @lings_property = current_group.lings_properties.find(params[:id])
 
+    is_authorized? :read, @lings_property
+
     respond_with(@lings_property) do |format|
       format.html
       format.js
@@ -13,7 +15,7 @@ class LingsPropertiesController < GroupDataController
 
   def destroy
     @lings_property = current_group.lings_properties.find(params[:id])
-    authorize! :destroy, @lings_property
+    is_authorized? :destroy, @lings_property, true
 
     @lings_property.destroy
 
@@ -31,7 +33,7 @@ class LingsPropertiesController < GroupDataController
         render :json => {exists: false}
       end
     else
-    render :json => {error: "Missing ling_name or prop_name in params"}
+      render :json => {error: "Missing ling_name or prop_name in params"}
     end
   end
 end

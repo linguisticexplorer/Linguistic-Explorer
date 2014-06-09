@@ -10,17 +10,22 @@
       = @membership.member.name
   %tr
     %td
-      %b Level:
-    %td
-      = @membership.level
-  %tr
-    %td
       %b Created by:
     %td
       = @membership.creator ? @membership.creator.name : "Unknown user"
+  %tr
+    %td
+      %b Role:
+    %td
+      = describe_role
+  -if @membership.is_expert?
+    %tr
+      %td
+        %b &nbsp;
+      %td= resources_list
 %br/
-= link_to group_memberships_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-\#{link_to 'Edit', edit_group_membership_path(current_group, @membership), :class => 'btn'}
+= link_to group_memberships_path(current_group), :class => "btn btn-default" do
+  %i.glyphicon.glyphicon-arrow-left
+  Back
+- if current_user.group_admin_of? current_group 
+  = link_to 'Edit', edit_group_membership_path(current_group, @membership), :class => 'btn btn-primary'

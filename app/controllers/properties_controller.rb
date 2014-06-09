@@ -14,12 +14,6 @@ class PropertiesController < GroupDataController
   end
 
   def list
-    # @all_props = {}.tap do |entry|
-    #   current_group.properties.includes(:category).find_each(:batch_size => 500) do |prop|
-    #     entry[prop.name] = prop.id
-    #   end
-    # end
-    # render :json => @all_props.to_json.html_safe
     render :json => current_group.properties.to_json
   end
 
@@ -30,6 +24,8 @@ class PropertiesController < GroupDataController
     lings_id = lings.all.map(&:id)
     @values = LingsProperty.includes(:ling).find(:all, :conditions => ["ling_id IN (?) and property_id = ?", lings_id, @property.id])
     
+    is_authorized? :read, @property
+
     respond_with(@values) do |format|
       format.html
       format.js
@@ -42,14 +38,14 @@ class PropertiesController < GroupDataController
       p.group = current_group
       p.creator = current_user
     end
-    authorize! :define, @property
+    is_authorized? :create, @property
 
     @categories = get_categories
   end
 
   def edit
     @property = current_group.properties.find(params[:id])
-    authorize! :define, @property
+    is_authorized? :update, @property
 
     @categories = get_categories
   end
@@ -59,7 +55,7 @@ class PropertiesController < GroupDataController
       property.group = current_group
       property.creator = current_user
     end
-    authorize! :define, @property
+    is_authorized? :create, @property
 
     if @property.save
       redirect_to([current_group, @property],
@@ -72,9 +68,7 @@ class PropertiesController < GroupDataController
 
   def update
     @property = current_group.properties.find(params[:id])
-    authorize! :define, @property
-
-    Rails.logger.debug "[DEBUG] #{(authorize! :define, @property).id}"
+    is_authorized? :update, @property
 
     if @property.update_attributes(params[:property])
       redirect_to([current_group, @property],
@@ -87,7 +81,7 @@ class PropertiesController < GroupDataController
 
   def destroy
     @property = current_group.properties.find(params[:id])
-    authorize! :destroy, @property
+    is_authorized? :destroy, @property
 
     @property.destroy
 

@@ -87,4 +87,12 @@ module ApplicationHelper
     return result.html_safe
   end
 
+  def can_see?(action, item)
+    if current_user.admin? || current_user.group_admin_of?(current_group)
+      can? action, item
+    else
+      can?(action, item) && current_user.is_expert_of?(item)
+    end
+  end
+
 end

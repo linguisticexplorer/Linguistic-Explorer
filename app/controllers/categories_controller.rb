@@ -14,6 +14,8 @@ class CategoriesController < GroupDataController
   def show
     @category = current_group.categories.find(params[:id])
 
+    is_authorized? :read, @category
+
     respond_with(@category) do |format|
       format.html
       format.js
@@ -28,12 +30,15 @@ class CategoriesController < GroupDataController
       c.creator = current_user
       c.depth = @depth
     end
-    authorize! :create, @category
+
+    is_authorized? :create, @category
   end
 
   def edit
     @category = current_group.categories.find(params[:id])
-    authorize! :update, @category
+
+    is_authorized? :update, @category
+
     @depth = @category.depth
   end
 
@@ -45,7 +50,7 @@ class CategoriesController < GroupDataController
       category.creator = current_user
       category.depth = @depth
     end
-    authorize! :create, @category
+    is_authorized? :create, @category
 
     if @category.save
       redirect_to([current_group, @category],
@@ -57,7 +62,8 @@ class CategoriesController < GroupDataController
 
   def update
     @category = current_group.categories.find(params[:id])
-    authorize! :update, @category
+    
+    is_authorized? :update, @category
 
     @depth = @category.depth
 
@@ -71,7 +77,7 @@ class CategoriesController < GroupDataController
 
   def destroy
     @category = current_group.categories.find(params[:id])
-    authorize! :destroy, @category
+    is_authorized? :destroy, @category
 
     @category.destroy
 

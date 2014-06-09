@@ -3,22 +3,20 @@
 %h1
   = @ling.grouped_name
   = @ling.name
-= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-- if can? :create, LingsProperty.new{|lp| lp.group = current_group}
-  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success"
-  \&nbsp;
-- if can? :edit, @ling
-  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn btn-default"
-  \&nbsp;
-%br/
-%br/
+.row
+  .col-md-6
+    = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
+      %i.glyphicon.glyphicon-arrow-left
+      Back
+    -if can_see?(:manage, @ling)
+      .pull-right
+        = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
+          = icon 'edit', "Edit #{current_group.lings_property_name.pluralize}"
+        = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
+          = icon 'edit', "Edit #{@ling.grouped_name}"
 .row
   .col-md-6
     %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
-    %p
       %tr
         %td
           %b Type:
@@ -72,11 +70,12 @@
         %ul#selected-lings
     .row.relative
       #compare-buttons.col-md-12.search-buttons
-        %a#compare-lings.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Compare Properties
-        %a#compare-tree.btn.btn-primary.btn-block{:disabled => "disabled", :href => "#"} Similarity Tree
-        %a#map.btn.btn-primary.btn-block{:href => "#"}
-          %i.glyphicon-white.glyphicon-map-marker.shift-down
-          Map
+        %a#compare-lings.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          =icon 'search', 'Compare Properties'
+        %a#compare-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          = icon 'search', 'Similarity Tree'
+        %a#map.btn.btn-default.btn-block{:href => "#Map"}
+          = icon 'globe', 'See it on a Map'
 %br/
 #pagination_table.values
   #pagination_top.apple_pagination.will-paginate
@@ -103,16 +102,14 @@
     / render page links in the view:
     = will_paginate @values, renderer: BootstrapPagination::Rails
 %br/
-= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-- if can? :create, LingsProperty.new{|lp| lp.group = current_group}
-  = link_to "Supported Edit #{current_group.lings_property_name.pluralize}", supported_set_values_group_ling_path(current_group, @ling), :class => "btn"
-  \&nbsp;
-- if can? :edit, @ling
-  = link_to "Edit #{@ling.grouped_name}", edit_group_ling_path(current_group, @ling), :class => "btn"
-  \&nbsp;
+= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
+  %i.glyphicon.glyphicon-arrow-left
+  Back
+-if can?(:manage, @ling) && current_user.is_expert_of?(@ling)
+  = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
+    = icon 'edit', "Supported Edit #{current_group.lings_property_name.pluralize}"
+  = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
+    = icon 'edit', "Edit #{@ling.grouped_name}"
 
 - content_for :scripts do
   :javascript

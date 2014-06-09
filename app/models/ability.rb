@@ -1,7 +1,7 @@
 class Ability
   include CanCan::Ability
 
-  def initialize(user, resource=nil)
+  def initialize(user)
     group_member_data = [Example, LingsProperty, ExamplesLingsProperty]
     group_admin_data  = [Ling, Property, Category, Membership]
 
@@ -28,16 +28,13 @@ class Ability
       can     :read,   Group, :memberships => { :member_id => user.id }
       # turn on group data reading for group members
       can     :read,   group_data,              :group_id => user.group_ids
-      # can     :manage, group_member_data,       :group_id => user.group_ids
+      # Cannot scope to specific instances, but at least let experts only pass
+      can     :manage, group_expert_data,       :group_id => user.is_expert_for_groups
       
       # turn on edit for experts
-      # group_expert_data.each do |resource|
-      # ids = user.ids_as_expert_of resource
       # Member can manage things either assigned OR not assigned yet Resources
-      # can [:define, :destroy] ,  group_expert_data, :id => ids
-      can [:define, :destroy] ,  group_expert_data if user.expert_of? resource
-      # can [:define, :destroy] ,  group_expert_data if resource.roles.empty?
-      # end
+      # Rails.logger.debug "DEBUG #{resource} - #{user.expert_of? resource}"
+      # can [:define, :destroy] , group_expert_data if user.expert_of? resource
 
       # can :define , group_author_data, :id => user.properties_author
       # can :destroy, group_author_data, :id => user.properties_author

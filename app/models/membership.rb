@@ -67,4 +67,8 @@ class Membership < ActiveRecord::Base
       has_role?(:expert, :any) ? 'expert' : 'member'
   end
 
+  def is_expert?
+    has_role? :expert, :any
+  end
+
 end

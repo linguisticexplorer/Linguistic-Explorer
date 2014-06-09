@@ -53,41 +53,41 @@ class User < ActiveRecord::Base
   end
 
   def group_admin_of?(group)
-    group.membership_for(user).try(:group_admin?)
+    group.membership_for(self).try(:group_admin?)
   end
 
-  def expert_of?(resource)
+  def is_expert_of?(resource)
+    # special rule for ExampleLingsProperty
+    resource = resource.is_a?(ExamplesLingsProperty) ? resource.lingsproperty : resource
+
+    # get referenced Ling
+    ling = resource.is_a?(Ling) ? resource : 
+           resource.try(:ling)
+
     # resource_ids_for_role :resource_expert, resource
-    if resource.present? && member_of?(resource.group)
+    if ling && member_of?(resource.group) && is_expert?(resource.group)
+       
       # is thruthy if either is assigned to that resource or
       # the resource has nobody set as expert for the moment
-      return resource.group.membership_for(self).has_role(:expert, resource) || resource.roles.empty?
+      return resource.group.membership_for(self).has_role?(:expert, ling) || ling.roles.empty?
     end
+
   end
 
   def is_expert?(group)
-    group.membership_for(self).has_role? :expert, :any
+    group.membership_for(self).try(:is_expert?)
+  end
+
+  def is_expert_for_groups
+    ids = []
+    memberships.each do |membership|
+      ids << Ling.find(membership.roles.map(&:resource_id)).map(&:group_id)
+    end
+    ids.flatten.uniq
   end
 
   def fake_password
 
   end
 
-  # private
-
-  # def resource_ids_for_role(role, resource)
-    
-  #   # get resource group id
-  #   if resource.present?
-  #     return member_of? resource.group && resource.group.membership_for(self).has_role :expert, resource
-  #   end
-  #   # iterate memberships
-  #   self.memberships do |member|
-  #     # append resource ids
-  #     # ids << model.with_role(role, member).pluck(:id)
-  #     ids << resource.
-  #   end
-  #   # return a single array list
-  #   ids.flatten
-  # end
 end
