@@ -49,4 +49,8 @@ class Example < ActiveRecord::Base
       nil
     end
   end
+
+  def get_valid_resource
+    ling
+  end
 end

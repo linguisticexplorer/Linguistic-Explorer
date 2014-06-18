@@ -2,13 +2,11 @@
 %h1
   = current_group.property_name
   = @property.name
-= link_to group_properties_path(current_group), :class => "btn btn-primary" do
+= link_to group_properties_path(current_group), :class => "btn btn-default" do
   %span.glyphicon.glyphicon-arrow-left
-  \&nbsp;Back
-\&nbsp;
-- if can? :edit, @property
-  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-default"
-%br/
+  Back
+- if can_see? :manage, @property
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-primary"
 %br/
 %table.show-table.description-table.table.table-bordered.table-striped.table-hover
   %p
@@ -48,9 +46,8 @@
     / render page links in the view:
     = alphabetical_paginate @params
 %br/
-= link_to group_properties_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-- if can? :edit, @property
-  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-default"
+= link_to group_properties_path(current_group), :class => "btn btn-default" do
+  %i.glyphicon.glyphicon-arrow-left
+  Back
+- if can_see? :manage, @property
+  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-primary"

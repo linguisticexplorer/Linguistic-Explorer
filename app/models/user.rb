@@ -57,19 +57,14 @@ class User < ActiveRecord::Base
   end
 
   def is_expert_of?(resource)
-    # special rule for ExampleLingsProperty
-    resource = resource.is_a?(ExamplesLingsProperty) ? resource.lingsproperty : resource
-
-    # get referenced Ling
-    ling = resource.is_a?(Ling) ? resource : 
-           resource.try(:ling)
+    ling, group = get_ling_and_group resource
 
     # resource_ids_for_role :resource_expert, resource
-    if ling && member_of?(resource.group) && is_expert?(resource.group)
+    if ling && member_of?(group) && is_expert?(group)
        
       # is thruthy if either is assigned to that resource or
       # the resource has nobody set as expert for the moment
-      return resource.group.membership_for(self).has_role?(:expert, ling) || ling.roles.empty?
+      return group.membership_for(self).has_role?(:expert, ling) || has_no_expert(ling)
     end
 
   end
@@ -79,15 +74,33 @@ class User < ActiveRecord::Base
   end
 
   def is_expert_for_groups
-    ids = []
-    memberships.each do |membership|
-      ids << Ling.find(membership.roles.map(&:resource_id)).map(&:group_id)
+    [].tap do |entry|
+      memberships.each do |membership|
+        entry << membership.group.id if membership.is_expert?
+      end
     end
-    ids.flatten.uniq
   end
 
   def fake_password
 
+  end
+
+  private
+
+  def get_ling_and_group(resource)
+    # resource.get_valid_resource
+    # # special rule for ExampleLingsProperty
+    # resource = resource.is_a?(ExamplesLingsProperty) ? resource.lingsproperty : resource
+
+    # # get referenced Ling
+    # ling = resource.is_a?(Ling) ? resource : 
+    #        resource.try(:ling)
+
+    [resource.get_valid_resource, resource.is_a?(Group) ? resource : resource.group]
+  end
+
+  def has_no_expert(resource)
+    resource.roles.empty?
   end
 
 end

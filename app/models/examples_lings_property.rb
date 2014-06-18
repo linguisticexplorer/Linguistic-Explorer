@@ -25,4 +25,8 @@ class ExamplesLingsProperty < ActiveRecord::Base
   def group_association_match
     errors[:base] << "#{group.example_name} and #{group.lings_property_name} must belong to the same group as this #{group.examples_lings_property_name}" if (example && lings_property && group) && (example.group != lings_property.group || example.group != group)
   end
+
+  def get_valid_resource
+    lings_property.ling
+  end
 end

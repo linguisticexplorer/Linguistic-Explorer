@@ -2,5 +2,5 @@
 %h1 Listing groups
 #pagination_table
   = render :partial => "index_partial"
-- if can? :create, Group.new
-  = link_to 'New Group', new_group_path, :class => "btn"
+- if can_see? :create, Group.new
+  = link_to 'New Group', new_group_path, :class => "btn btn-default"

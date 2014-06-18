@@ -29,7 +29,11 @@ class Ability
       # turn on group data reading for group members
       can     :read,   group_data,              :group_id => user.group_ids
       # Cannot scope to specific instances, but at least let experts only pass
-      can     :manage, group_expert_data,       :group_id => user.is_expert_for_groups
+      can     :manage,  group_expert_data,       :group_id => user.is_expert_for_groups
+      can     :destroy, group_expert_data,       :group_id => user.is_expert_for_groups
+
+      # turn on all searches advanced features
+      can :search, Search,        :group => { :privacy => Group::PUBLIC }
       
       # turn on edit for experts
       # Member can manage things either assigned OR not assigned yet Resources
@@ -49,11 +53,6 @@ class Ability
       can :manage, SearchComparison do |sc|
         sc.searches.all? {|s| s.is_manageable_by?(user)}
       end
-
-      # turn on all searches advanced features
-      can :search, Search,        :group => { :privacy => Group::PUBLIC }
-      can :cross, Search,         :group => { :privacy => Group::PUBLIC }
-      can :mapping, Search,       :group => { :privacy => Group::PUBLIC }
 
       # turn on forum capabilities
       can :read, ForumGroup, :state => true

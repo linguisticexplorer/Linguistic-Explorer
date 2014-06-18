@@ -5,20 +5,19 @@
   %tr
     %th Member
     %th Level
-    - if can? :edit, @memberships
-      %th
-    - if can? :destroy, @memberships
-      %th
+    - if can_see? :manage, @memberships
+      %th Actions
   - @memberships.each do |membership|
     %tr
       %td= link_to membership.member.name, [current_group, membership]
       %td= membership.level
-      - if can? :edit, membership
+      - if can_see? :manage, membership
         %td
-          = link_to 'Edit', edit_group_membership_path(current_group, membership), :class => 'btn btn-small'
-      - if can? :destroy, membership
-        %td
-          = link_to 'Destroy', [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger btn-small'
+          = link_to edit_group_membership_path(current_group, membership), :class => 'btn btn-default', :title => "Edit" do
+            = icon 'edit', '', :class => "fa-15x"
+          - if can_see? :destroy, membership
+            = link_to [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :title => "Destroy" do
+              = icon 'trash-o', '', :class => "fa-15x"
 %br/
 #pagination_bottom.apple_pagination
   / render page links in the view:

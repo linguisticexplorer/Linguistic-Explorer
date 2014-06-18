@@ -1,4 +1,4 @@
-= javascript_tag "$.getScript(location.href);"
+// = javascript_tag "$.getScript(location.href);"
 - add_body_classes "map"
 - page_heading @group.name
 %h1
@@ -26,5 +26,5 @@
     / = link_to 'Group Info', info_group_path(@group)
     / |
     / \#{link_to 'Search this group', [:new, current_group, :search]} |
-    / - if can? :edit, @group
+    / - if can_see? :edit, @group
     / = link_to 'Edit this group', edit_group_path(@group)

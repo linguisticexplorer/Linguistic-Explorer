@@ -1,61 +1,63 @@
-#value-title.fluid-row
+%div
   %h2 Values
-.fluid-container
-  = form_tag(supported_submit_values_group_ling_path(current_group, @ling), |
-    :method => "post", id: "value-form") do                                 |
+#values_container{:style => "min-height: 290px;"}
+  = form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post", id: "value-form") do
     = hidden_field_tag :property_id, @property.id
-    #value-select.fluid-row
+    #value-select.form-group
       %h4 Select Value
-      %div{:style => "max-height:200px;*height:150px;overflow-y:auto;"}
-        - @property.available_values.sort.reverse.each do |value|
-          = label_tag "value[#{value}]", :class => "radio" do
-            = radio_button_tag "value",                                                            |
-              value,                                                                               |
-              @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first |
-            = value
-      - if current_user.admin? || current_user.administrated_groups.include?(@group)
-        = label_tag "value[value_new]", :class => "radio" do
-          = radio_button_tag "value", |
-            "value_new"               |
-          = text_field_tag "new_value", nil, :placeholder => "or Add a New one"
-    #value-sureness.fluid-row{:name => "value_sureness"}
+      #values{:style => "max-height:200px; *height:150px; overflow-y: auto;"}
+        %div{:style => "margin-left: 25px;"}
+          - @property.available_values.sort.reverse.each do |value|
+            = label_tag "value[#{value}]", :class => "radio" do
+              = radio_button_tag "value", value,                                                     |
+                @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first
+              = value
+          - if can_see? :manage, @ling
+            = label_tag "value[value_new]", :class => "radio" do
+              = radio_button_tag "value", "value_new"
+              .input-group
+                %span.input-group-addon +
+                %input{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
+              // = text_field_tag "new_value", nil, :placeholder => "or Add a New one"
+    #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px;"}
       %h4 How sure are you?
-      %label.radio
-        <input type="radio" id="sureness[certain]" name="value_sureness" value="certain" #{"checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}>
-        Certain
-      %label.radio
-        <input type="radio" id="sureness[revisit]" name="value_sureness" value="revisit"#{"checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}>
-        Revisit
-      %label.radio
-        <input type="radio" id="sureness[need_help]" name="value_sureness" value="need_help"#{"checked" if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}>
-        Need Help
-    #save-container
-      .save-overlay
-      = submit_tag("Save", class: "btn btn-block", id: "save-btn")
-  #prop-example.fluid-row
-    %h4 Examples
-    #prop-active-example.content-box
-      - if @example
-        %p
-          = render partial: "examples/show", object: @example
-      - else
-        %p
-          No example selected
-    #prop-example-selector.fluid-row
-      = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
-        .col-md-8
-          %select#example-select{:name => "example_id"}
-            - if !@examples.empty?
-              - @examples.each do |example|
-                <option value=#{example.id}> #{example.name}
-            - else
-              %option No examples available
-        .col-md-4.col-md-offset-1
-          = submit_tag("Select", class: "btn btn-block", id: "example-select-btn")
-    #prop-example-creator.row-fluid
-      .col-md-6
-        %a#example-create{:class => "btn btn-primary btn-block #{@exists ? "enabled" : "disabled"}", :href => "#"} Create Example
-      .col-md-6
-        %a#example-change{:class => "btn btn-success btn-block #{!@examples.empty? ? "enabled" : "disabled"}", :href => "#"} Change Example
-    - if !@exists
-      %span#example-warning.blue.italic You must set a value before creating examples
+      .btn-group
+        %button.btn.btn-default#sureness_certain{ :name => "value_sureness", :value => "certain", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}" } Certain
+        %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
+        %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need help
+      //%label.radio
+      //  %input#sureness_certain{:type=> "radio", :name => "value_sureness", :value => "certain", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any? } Certain
+      //%label.radio
+      //  %input#sureness_revisit{:type=> "radio", :name => "value_sureness", :value => "revisit", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any? } Revisit
+      //%label.radio
+      //  %input#sureness_need_help{:type=> "radio", :name => "value_sureness", :value => "need_help", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any? } Need Help
+    //#save-container
+    //  .save-overlay
+    //    #save-btn.btn.btn-block.btn-success Save
+#prop-example
+  %h4 Examples
+  #prop-active-example.content-box
+    - if @example
+      %p
+        = render :partial => "examples/show", :object => @example
+    - else
+      %p.lead
+        No example selected
+  #prop-example-selector
+    = form_tag({controller: "lings", action: "supported_set_values"}, method: "get", :class=> "form-inline") do
+      .form-group
+        %select.form-control#example-select{:name => "example_id"}
+          - if @examples.present?
+            - @examples.each do |example|
+              %option{ :value => example.id } #{example.name}
+          - else
+            %option No examples available
+      .form-group
+        %a#exampe-select-btn.btn.btn-default Select
+  #prop-example-creator{:style => "margin-top: 15px;"}
+    %a#example-create{:class => "btn btn-success #{@exists ? "enabled" : "disabled"}", :href => "#"} 
+      = icon 'plus', 'Create Example'
+    %a#example-change{:class => "btn btn-default #{@examples.present? ? "enabled" : "disabled"}", :href => "#"}
+      =icon 'edit', 'Change Example'
+  - if @exists.present?
+    %span#example-warning.blue.italic You must set a value before creating examples

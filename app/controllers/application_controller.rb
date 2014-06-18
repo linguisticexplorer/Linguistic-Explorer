@@ -2,13 +2,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery
   helper_method :current_group
 
-  rescue_from CanCan::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
-  end
-
-  rescue_from Exceptions::AccessDenied do |exception|
-    redirect_to root_url, :alert => exception.message
-  end
+  rescue_from CanCan::AccessDenied, Exceptions::AccessDenied, :with => :show_error_message
   
   def current_group
     Group.first # changed to default to first group
@@ -25,10 +19,14 @@ class ApplicationController < ActionController::Base
     authorize! action, resource
     # Use Rolify if requested
     if expertizeNeeded
-      unless current_user.is_expert_of? resource
-        raise Exception::AccessDenied
-      end
+
+      raise Exceptions::AccessDenied unless current_user.admin? || current_user.is_expert_of?(resource)
+
     end
+  end
+
+  def show_error_message(exception)
+    redirect_to root_url, :alert => exception.message
   end
   
 end

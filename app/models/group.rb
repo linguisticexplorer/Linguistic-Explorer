@@ -79,4 +79,8 @@ class Group < ActiveRecord::Base
   def info_attribute_names
     INFO_ATTRIBUTES
   end
+
+  def get_valid_resource
+    false
+  end
 end

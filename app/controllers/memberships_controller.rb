@@ -31,7 +31,14 @@ class MembershipsController < GroupDataController
 
     is_authorized? :read, @membership
 
-    @lings = Ling.find(@membership.roles.map(&:resource_id))
+    resource_ids = @membership.roles.map(&:resource_id)
+
+    @lings = Ling.find(resource_ids)
+
+    if @membership.is_expert?
+      # Just Lings for the moment
+      @activities = Ling.where({:id => resource_ids}).order(:updated_at).first(25)
+    end
 
     respond_with(@membership) do |format|
       format.html

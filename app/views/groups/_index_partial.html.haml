@@ -12,9 +12,9 @@
     %th Display style
     %th MaxDepth
     %th Privacy
-    - if can? :update, @groups
+    - if can_see? :update, @groups
       %th
-    - if can? :destroy, @groups
+    - if can_see? :destroy, @groups
       %th
   - @groups.each do |group|
     %tr
@@ -27,12 +27,12 @@
       %td= group.display_style.capitalize
       %td= group.depth_maximum
       %td= group.privacy.capitalize
-      - if can? :update, @group
+      - if can_see? :update, @group
         %td
-          = link_to 'Edit', edit_group_path(group), :class => "btn btn-small"
-      - if can? :destroy, @group
+          = link_to 'Edit', edit_group_path(group), :class => "btn btn-primary"
+      - if can_see? :destroy, @group
         %td
-          = link_to 'Destroy', group, :class => "btn btn-small btn-danger", :confirm => 'Are you sure?', :method => :delete
+          = link_to 'Destroy', group, :class => "btn btn-danger", :confirm => 'Are you sure?', :method => :delete
 %br/
 .apple_pagination
   / render page links in the view:

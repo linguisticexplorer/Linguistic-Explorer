@@ -105,6 +105,10 @@ class Ling < ActiveRecord::Base
     super(:only => [:id, :name, :depth, :parent_id])
   end
 
+  def get_valid_resource
+    self
+  end
+
   private
 
   def get_latlong

@@ -1,11 +1,11 @@
 - page_heading current_group.example_name
 %h1= current_group.example_name
-= link_to group_examples_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
+= link_to group_examples_path(current_group), :class => "btn btn-default" do
+  %i.glyphicon.glyphicon-arrow-left
+  Back
 \&nbsp;
-- if can? :edit, @example
-  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn"
+- if can_see? :manage, @example
+  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn btn-primary"
 %br/
 %br/
 %table.show-table.description-table.table.table-bordered.table-striped.table-hover
@@ -34,9 +34,9 @@
     %td
       = @example.creator ? @example.creator.name : "Unknown user"
 %br/
-= link_to group_examples_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
+= link_to group_examples_path(current_group), :class => "btn btn-default" do
+  %i.glyphicon.glyphicon-arrow-left
+  Back
 \&nbsp;
-- if can? :edit, @example
-  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn"
+- if can_see? :manage, @example
+  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn btn-primary"

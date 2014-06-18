@@ -6,8 +6,8 @@
     %th Name
     %th= current_group.category_name
     %th Completeness
-    - if can? :destroy, @properties
-      %th
+    - if can_see? :manage, @properties
+      %th Actions
   - @properties.each do |property|
     %tr
       %td= link_to property.name, [current_group, property]
@@ -19,9 +19,9 @@
           .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
             %div{:style => "width: #{property.info}%;", :class => "progress-bar progress-bar-#{color}"}
               %p#nbrs{:style => "text-align: center;"}= percentage
-      - if can? :destroy, property
+      - if can_see? :destroy, property
         %td
-          = link_to 'Destroy', [current_group, property], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete
+          = link_to 'Destroy', [current_group, property], :class => 'btn btn-danger', :confirm => 'Are you sure?', :method => :delete
 %br/
 #pagination_bottom.apple_pagination.will-paginate
   / render page links in the view:

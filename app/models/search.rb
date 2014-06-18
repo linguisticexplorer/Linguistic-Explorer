@@ -36,7 +36,9 @@ class Search < ActiveRecord::Base
     user.id.present? && user.id == creator.id && Ability.new(user).can?(:read, group)
   end
 
-
+  def get_valid_resource
+    false
+  end
 
   private
 

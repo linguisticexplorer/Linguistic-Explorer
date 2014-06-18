@@ -8,7 +8,6 @@ class Membership < ActiveRecord::Base
   ]
 
   ROLES = [
-    REGULAR = "member",
     EXPERT  = "expert"
   ]
 
@@ -63,8 +62,8 @@ class Membership < ActiveRecord::Base
   end
 
   def role
-    level === 'admin' ? 'admin' : 
-      has_role?(:expert, :any) ? 'expert' : 'member'
+    level === ADMIN ? 'group admin' : 
+      has_role?(:expert, :any) ? 'expert' : MEMBER
   end
 
   def is_expert?

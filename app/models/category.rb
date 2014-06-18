@@ -28,4 +28,8 @@ class Category < ActiveRecord::Base
   def depth_for_group
     errors.add(:depth, "is deeper than allowed in #{group.name}") if group && depth && group.depth_maximum < depth
   end
+
+  def get_valid_resource
+    false
+  end
 end

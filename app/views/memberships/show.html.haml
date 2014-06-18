@@ -1,28 +1,40 @@
 - page_heading "Membership"
 %h1
-  Showing #{@membership.member.name}
-%table.show-table.description-table.table.table-bordered.table-hover.table-striped
-  %p
-  %tr
-    %td
-      %b Member:
-    %td
-      = @membership.member.name
-  %tr
-    %td
-      %b Created by:
-    %td
-      = @membership.creator ? @membership.creator.name : "Unknown user"
-  %tr
-    %td
-      %b Role:
-    %td
-      = describe_role
-  -if @membership.is_expert?
-    %tr
-      %td
-        %b &nbsp;
-      %td= resources_list
+  = @membership.member.name
+  %small= describe_role
+  -if @membership.creator
+    %span.small.pull-right
+      Set by
+      = @membership.creator.name
+.row
+  .col-md-6
+    %table.table.table-hover
+      %tr
+        %td
+          %b Description:
+        -if @membership.is_expert?
+          %td #{describe_role} in #{resources_list.size} #{current_group.ling0_name.pluralize}
+        -else
+          %td
+            = describe_role
+      -if @membership.is_expert?
+        %tr
+          %td
+            %b &nbsp;
+          %td= resources_names
+  .col-md-6
+    -if @activities
+      %table.table.table-hover.table-bordered.table-striped.fixed-height-table
+        %tr
+          %th
+            %b Has changed recently
+          %th
+            %b When
+        - @activities.each do |activity|
+          %tr
+            %td
+              = link_to activity.name, [current_group, @activity]
+            %td= (activity.updated_at || activity.created_at).to_formatted_s(:long)
 %br/
 = link_to group_memberships_path(current_group), :class => "btn btn-default" do
   %i.glyphicon.glyphicon-arrow-left

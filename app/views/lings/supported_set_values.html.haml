@@ -1,29 +1,24 @@
 - page_heading @ling.name + " Examples Supported Edit"
 %h1
   Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
-= link_to [current_group, @ling], :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back to #{@ling.name} page
-\&nbsp;
-\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
+%div{:style=> "height: 50px;"}
+  = link_to [current_group, @ling], :class => "btn btn-default" do
+    = icon "angle-left", "Back to #{@ling.name} page"
+//= link_to group_lings_depth_path(current_group, @depth), :class => "btn btn-default" do
+//  = icon "angle-left", "Go to #{@ling.grouped_name.pluralize} page"
 %br/
-%br/
-#supported-entry-container.container-fluid
-  .row-fluid
+#supported-entry-container
+  .row
     #property-description.col-md-4.set-col
-      = render partial: "lings/mass_assignment/property", object: @property
+      = render :partial => "lings/mass_assignment/property", :object => @property
     #property-setter.col-md-4.set-col
-      = render partial: "lings/mass_assignment/value", object: @property
-      .row-fluid
+      = render :partial => "lings/mass_assignment/value", :object => @property
     #property-selector.col-md-4.set-col
       = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
-%br/
-%br/
-= link_to [current_group, @ling], :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back to #{@ling.name} page
-\&nbsp;
-\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
+%div{:style=> "height: 60px;"}
+  = link_to [current_group, @ling], :class => "btn btn-default" do
+    = icon "angle-left", "Back to #{@ling.name} page"
+//\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
 #example-modal.modal.hide.fade
   .modal-header
     %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×

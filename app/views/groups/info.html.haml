@@ -7,14 +7,12 @@
     - if @group.description.present?
       %p= @group.description
     %p
-      = link_to current_group, :class => "btn btn-inverse" do
-        %i.glyphicon-white.glyphicon-arrow-left>
-        \&nbsp;Back
-      \&nbsp;
-      - if can? :update, @group
-        = link_to 'Edit', edit_group_path(@group), :class => "btn"
-        \&nbsp;
-      = link_to 'Search this group', [:new, current_group, :search], :class => "btn"
+      = link_to current_group, :class => "btn btn-default" do
+        %i.glyphicon.glyphicon-arrow-left
+        Back
+      - if can_see? :update, @group
+        = link_to 'Edit', edit_group_path(@group), :class => "btn btn-primary"
+      = link_to 'Search this group', [:new, current_group, :search], :class => "btn btn-default"
     .whitebox
       %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
         - @group.info_attribute_names.each do |attr_name|
@@ -27,14 +25,12 @@
               %td= @group.send(attr_name)
     %br/
     %p
-      = link_to current_group, :class => "btn btn-inverse" do
-        %i.glyphicon-white.glyphicon-arrow-left>
-        \&nbsp;Back
-      \&nbsp;
-      - if can? :update, @group
-        = link_to 'Edit', edit_group_path(@group), :class => "btn"
-        \&nbsp;
-      = link_to 'Search this group', [:new, current_group, :search], :class => "btn"
+      = link_to current_group, :class => "btn btn-default" do
+        %i.glyphicon.glyphicon-arrow-left
+        Back
+      - if can_see? :update, @group
+        = link_to 'Edit', edit_group_path(@group), :class => "btn btn-primary"
+      = link_to 'Search this group', [:new, current_group, :search], :class => "btn  btn-default"
     %br/
     #numbers
       #stats_title

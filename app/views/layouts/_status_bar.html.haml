@@ -4,15 +4,13 @@
       = icon 'sign-out', 'Sign out'
   %li#userInfo.pull-right
     // First Line: User info
-    - if @group && (current_user.member_of? (@group))
+    - if @group && (current_user.admin? || (current_user.member_of?(@group)))
       = link_to current_user.email, [@group, @group.membership_for(current_user)]
-    - else
-      = current_user.email
-    // Second Line: User/Member Role
-    - if current_user && current_user.admin?
-      .col-md-.nav-status Site Admin
-    - elsif current_user && @group
-      - if (current_user.admin? || current_user.administrated_groups.include?(@group))
+      // Second Line: User/Member Role
+      - if current_user.admin?
+        .col-md-.nav-status
+          = "Site Admin"
+      - elsif current_user.administrated_groups.include? @group
         .col-md-.nav-status 
           = icon 'group', 'Group Admin'
       - elsif (current_user.member_of? (@group))
@@ -21,9 +19,10 @@
             = icon 'certificate', 'Expert'
           - else
             = icon 'user', 'Member'
-          
+    - else
+      = current_user.email
 - else
   %li.pull-right.buttons
-    = link_to "Sign In", new_user_session_path, html_options = {:class => "btn btn-default"}
+    = link_to "Sign In", new_user_session_path, :class => "btn btn-default"
   %li.pull-right.buttons
-    = link_to "Sign Up", new_user_registration_path, html_options = {:class => "btn btn-default"}
+    = link_to "Sign Up", new_user_registration_path, :class => "btn btn-default"

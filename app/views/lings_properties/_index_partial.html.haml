@@ -6,17 +6,17 @@
     %th Ling
     %th= current_group.property_name
     %th= current_group.lings_property_name
-    - if can? :destroy, @lings_properties
-      %th
+    - if can_see? :manage, @lings_properties
+      %th Actions
   - @lings_properties.each do |lings_property|
     %tr
       %td= link_to lings_property.ling.name, group_ling_path(current_group, lings_property.ling)
       %td
         = link_to lings_property.property.name, group_property_path(current_group, lings_property.property)
       %td.text-left= link_to lings_property.value, [current_group, lings_property]
-      - if can? :destroy, lings_property
+      - if can_see? :destroy, lings_property
         %td
-          = link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger btn-small'
+          = link_to 'Destroy', [current_group, lings_property], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger'
 .apple_pagination.will-paginate
   / render page links in the view:
   = will_paginate @lings_properties, renderer: BootstrapPagination::Rails

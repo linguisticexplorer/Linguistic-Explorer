@@ -105,9 +105,9 @@
 = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
   %i.glyphicon.glyphicon-arrow-left
   Back
--if can?(:manage, @ling) && current_user.is_expert_of?(@ling)
+-if can_see? :manage, @ling
   = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
-    = icon 'edit', "Supported Edit #{current_group.lings_property_name.pluralize}"
+    = icon 'edit', "Edit #{current_group.lings_property_name.pluralize}"
   = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
     = icon 'edit', "Edit #{@ling.grouped_name}"
 

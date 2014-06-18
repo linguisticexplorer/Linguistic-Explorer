@@ -10,8 +10,8 @@
       %th
         = key.humanize
     %th.col-md-2 Completeness
-    - if can? :destroy, lings
-      %th
+    - if can_see? :destroy, lings
+      %th Actions
   - lings.each do |ling|
     %tr
       %td
@@ -31,8 +31,8 @@
               %p#nbrs{:style => "text-align: center;"}
                 = ling.info
                 \%
-      - if can? :destroy, ling
+      - if can_see? :destroy, ling
         %td
-          = link_to 'Destroy', [current_group, ling], :class => 'btn btn-danger btn-small', :confirm => 'Are you sure?', :method => :delete
+          = link_to 'Destroy', [current_group, ling], :class => 'btn btn-danger', :confirm => 'Are you sure?', :method => :delete
 #pagination_bottom.apple_pagination
   = alphabetical_paginate paginate_params

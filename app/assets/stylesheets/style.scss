@@ -49,12 +49,13 @@ $link-color: #005580;
 }
 
 #header {
-  background: $navbar-color;
+  // background: $navbar-color;
+  background: rgba(16, 16, 16, 0.85);
   .navbar-brand {
     color: white;
   }
   div {
-    background: inherit;
+    // background: inherit;
     border: none;
     padding: 0px 0px;
     li {
@@ -556,6 +557,12 @@ div#languages-container.hidden {
 #userInfo a {
   padding: 0;
   color: white;
+}
+
+.fixed-height-table{
+  max-height: 150px;
+  min-height: 150px;
+  y-overflow: auto;
 }
 
 // Import Bootstrap here

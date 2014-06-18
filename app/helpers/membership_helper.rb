@@ -2,19 +2,17 @@ module MembershipHelper
   
   def describe_role
     # find out for which resources is expert
-    role = @membership.role.titleize
-
-    if @membership.is_expert?
-      role << " in #{@lings.size} #{current_group.ling0_name.pluralize}"
-    end
-
-    role
+    @membership.role.titleize
   end
 
   def resources_list
-    @lings.map do |ling|
+    @resources ||= @lings.map do |ling|
       link_to ling.name, [current_group, ling]
-    end.join("; ").html_safe
+    end
+  end
+
+  def resources_names
+    @resources.join("; ").html_safe
   end
 
 end

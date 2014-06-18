@@ -1,12 +1,14 @@
 = javascript_tag "$.getScript(location.href);"
 - page_heading "Members"
 %h1 Listing Memberships
-- if can? :create, Membership.new{|m| m.group = current_group}
-  = link_to "New Membership", new_group_membership_path(current_group), :class => "btn"
 .row
   .margin.col-md-5.relative
     %input#auto_memb.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
 #pagination_table
+- if can_see? :manage, Membership.new{|m| m.group = current_group}
+  = link_to new_group_membership_path(current_group), :class => "btn btn-success", :title => "Create" do
+    = icon "plus", "New Membership"
   = render :partial => "index_partial"
-- if can? :create, Membership.new{|m| m.group = current_group}
-  = link_to "New Membership", new_group_membership_path(current_group), :class => "btn"
+- if can_see? :manage, Membership.new{|m| m.group = current_group}
+  = link_to new_group_membership_path(current_group), :class => "btn btn-success", :title => "Create" do
+    = icon "plus", "New Membership"

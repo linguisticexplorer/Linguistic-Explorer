@@ -45,6 +45,10 @@ class Property < ActiveRecord::Base
     self
   end
 
+  def get_valid_resource
+    false
+  end
+
   private
 
   def lings_in_group
