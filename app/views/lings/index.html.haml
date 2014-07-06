@@ -1,4 +1,18 @@
-- page_heading current_group.ling_names.map(&:pluralize).join " - "
-%h1 Listing all linguistic objects
+- name = current_group.ling_names.map(&:pluralize).join " - "
+- page_heading name
+%h1 Listing all #{name}
+%form.form
+  .row
+    .col-md-6
+      .form-group
+        %label{:for => "ling-search-field"} Quick look
+        %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .col-md-6
+      .form-group
+        - @lings_by_depth.each_with_index do |lings_with_params, depth|
+          - if can_see? :manage, Ling.new{|l| l.group = current_group}
+            .row
+              = link_to new_group_ling_path(current_group, :depth => depth), :class => "btn btn-success pull-right btn-spaced", :title => "Create" do
+                = icon "plus", "New #{current_group.ling_name_for_depth(depth - 1)}"
 #pagination_table
   = render :partial => "index_partial"

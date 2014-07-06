@@ -314,43 +314,43 @@ form {
     box-sizing:border-box;
     -moz-box-sizing:border-box; /* Firefox */
   }
-  .typeahead.dropdown-menu {
-    width: 300px;
-  }
+  // .typeahead.dropdown-menu {
+  //   width: 300px;
+  // }
 }
 
-input.autocomplete {
-  height: auto;
-  position: static;
-  right: 0;
-}
+// input.autocomplete {
+//   height: auto;
+//   position: static;
+//   right: 0;
+// }
 
-.search-query {
-  box-sizing:border-box;
-  -moz-box-sizing:border-box; /* Firefox */
-}
+// .search-query {
+//   box-sizing:border-box;
+//   -moz-box-sizing:border-box; /* Firefox */
+// }
 
-input.autocomplete.big {
-  height: 40px;
-  position:relative;
-  right: 30px;
-}
+// input.autocomplete.big {
+//   height: 40px;
+//   position:relative;
+//   right: 30px;
+// }
 
-div.tab-content input.autocomplete.big {
-  right: 0px;
-  display: block;
-  width: 90%;
-  margin: 0 auto;
-}
+// div.tab-content input.autocomplete.big {
+//   right: 0px;
+//   display: block;
+//   width: 90%;
+//   margin: 0 auto;
+// }
 
-#search_name {
-  width:70%;
-  @media screen and (max-width: 979px) and (min-width: 768px) {
-    & {
-      width: 40%;
-    }
-  }
-}
+// #search_name {
+//   width:70%;
+//   @media screen and (max-width: 979px) and (min-width: 768px) {
+//     & {
+//       width: 40%;
+//     }
+//   }
+// }
 
 fieldset {
   width: 100%;
@@ -565,6 +565,22 @@ div#languages-container.hidden {
   y-overflow: auto;
 }
 
+.btn-spaced {
+  margin: 10px 5px 10px 5px;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
 @import "font-awesome";
+
+i.less-than-half {
+  color: $brand-danger;
+}
+
+i.not-complete {
+  color: $brand-warning;
+}
+
+ i.complete {
+  color: $brand-success;
+}

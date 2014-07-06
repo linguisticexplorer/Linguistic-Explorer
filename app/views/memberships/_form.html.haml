@@ -14,8 +14,8 @@
         = f.collection_select :member_id, @users, :id, :email, {}, :class =>'form-control'
     //- Show this only if role is different than "Member"
     #resources-search.col-sm-6{:style => 'display: none;'}
-      %label.control-label Choosing a language or a property
-      %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Languages", :type => "text"}
+      %label.control-label Choosing a language
+      %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
   .form-group{:style => "min-height: 80px;"}
     .col-sm-6
       = f.label :role, :class => "control-label"
@@ -44,96 +44,3 @@
           %span.glyphicon.glyphicon-arrow-left
           Back
         = f.submit :class => "btn btn-success"
-
-- content_for :scripts do
-  :javascript
-
-    var lingsDictURL = "#{group_lings_all_path(current_group)}";
-
-    $(function(){
-
-      var lingsName = "#{current_group.ling_names.map(&:pluralize).join(' - ')}";
-
-      var resourceId = 'resources';
-      enableRolesPanel();
-
-      // Setup the Typeahead matcher engine
-      var lingDictionary = Terraling.Search.createDictionary(lingsName, 'expert', lingsDictURL);
-
-      Terraling.Search.create(resourceId +'-search-field', [lingDictionary]);
-      Terraling.Search.onSelection(onLingSelected);
-
-      var buttonTemplate = Handlebars.compile('<li data-id="{{id}}"><a class="remove-resource" href="#Remove"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>');
-
-      var resourcesDict;
-      mapResourcesRoles();
-
-      function mapResourcesRoles(){
-        resourcesDict = {};
-        $('#selected-resources li').each( function(){
-          resourcesDict[$(this).text()] = ''+$(this).data('id');
-        });
-      }
-
-      function removeLanguage(evt){
-        var item = $(this).parent();
-
-        var name = item.text().substring(1);
-
-        delete resourcesDict[name];
-
-        item.remove();
-        // refresh hidden field values
-        updateResourceField();
-
-        evt.preventDefault();
-      }
-
-      function removeLanguages(evt) {
-        $('#selected-resources li').each( function () {
-            var item = $(this);
-            item.remove();
-        });
-        // clear the cache
-        resourcesDict = {};
-
-        updateResourceField();
-        
-        evt.preventDefault();
-      }
-
-      function updateResourceField(){
-        $('#membership_'+resourceId).val($.map(resourcesDict, function(value){
-          return value;
-        }).join(';'));
-      }
-
-      function onLingSelected(evt, ling, name){
-
-        if(!resourcesDict[ling.name]){
-
-          resourcesDict[ling.name] = ''+ling.id;
-
-          $('#selected-resources').append(buttonTemplate(ling));
-        }
-
-        updateResourceField();
-
-        $('#'+resourceId+'-search-field').typeahead('val', '');
-
-      }
-
-      function enableRolesPanel(){
-
-        var isValidRole = $('#membership_role').val() === 'expert';
-        $('#'+resourceId + '-search , #'+resourceId + '-list ').toggle(isValidRole);
-
-      }
-      
-      $('#membership_role').change(enableRolesPanel);
-
-      $('body')
-          .on('click', '#remove-resources', removeLanguages)
-          .on('click', '.remove-resource' , removeLanguage);
-
-    });

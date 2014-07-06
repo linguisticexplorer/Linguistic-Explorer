@@ -2,16 +2,19 @@
   = alphabetical_paginate paginate_params
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
-    %th Name
+    %th.col-md-3 Name
     - if current_group.has_depth?
       %th
         = current_group.ling_name_for_depth(depth - 1)
     - current_group.ling_storable_keys.each do |key|
       %th
         = key.humanize
-    %th.col-md-2 Completeness
-    - if can_see? :destroy, lings
-      %th Actions
+    %th.col-md-2
+      Completeness
+      %a{:href => "#", :rel => "tooltip", :title => "Hover the icon for percentage details", :data => {:toggle => "tooltip", :animation => "true"} }
+        = icon 'question-circle', '', :class => "pull-right"
+    - if can_see? :manage, lings
+      %th.col-md-2 Actions
   - lings.each do |ling|
     %tr
       %td
@@ -23,16 +26,25 @@
         %td
           = ling.stored_value(key)
       %td
-        %center
-          - percentage = "#{ling.info}%"
-          - color = ling.info < 100 ? 'warning' : 'success'
-          .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-            %div{:style => "width: #{ling.info}%;", :class => "progress-bar progress-bar-#{color}"}
-              %p#nbrs{:style => "text-align: center;"}
-                = ling.info
-                \%
-      - if can_see? :destroy, ling
+        - percentage = "#{ling.info}%"
+        - label = ling.info < 100 ? ling.info < 50 ? 'Just Started' : 'Almost Complete' : 'Complete'
+        - stage = ling.info < 100 ? ling.info < 50 ? 'less-than-half' : 'not-complete' : 'complete'
+        - icon_name  = ling.info < 100 ? 'spinner' : 'check' 
+        %p
+          %a{:href => "#", :rel => "tooltip", :title => percentage, :data => {:toggle => "tooltip" }}
+            = icon icon_name, '' , :class => "fa-15x #{stage}"
+            = label
+        / .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
+        /   %div{:style => "width: #{ling.info}%;", :class => "progress-bar progress-bar-#{color}"}
+        /     %p#nbrs{:style => "text-align: center;"}
+        /       = ling.info
+        /       \%
+      - if can_see? :manage, ling
         %td
-          = link_to 'Destroy', [current_group, ling], :class => 'btn btn-danger', :confirm => 'Are you sure?', :method => :delete
+          = link_to edit_group_ling_path(current_group, ling), :class => 'btn btn-default', :title => "Edit" do
+            = icon 'edit', '', :class => "fa-15x"
+          - if can_see? :destroy, ling
+            = link_to [current_group, ling], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :title => "Destroy" do
+              = icon 'trash-o', '', :class => "fa-15x"
 #pagination_bottom.apple_pagination
   = alphabetical_paginate paginate_params

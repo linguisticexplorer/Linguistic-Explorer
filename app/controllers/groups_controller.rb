@@ -22,6 +22,15 @@ class GroupsController < ApplicationController
     end
   end
 
+  def list
+    @groups = if user_signed_in?
+      Group.accessible_by(current_ability).uniq
+    else
+      Group.public
+    end
+    render :json => @groups.to_json(:except => [:created_at, :updated_at, :display_style]).html_safe
+  end
+
   def show
     @group = Group.find(params[:id])
     is_authorized? :show, @group

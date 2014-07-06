@@ -85,6 +85,10 @@ class User < ActiveRecord::Base
 
   end
 
+  def as_json(options={})
+    super(:only => [:id, :name, :email])
+  end
+
   private
 
   def get_ling_and_group(resource)

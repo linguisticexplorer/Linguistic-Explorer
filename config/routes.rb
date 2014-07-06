@@ -3,13 +3,21 @@ LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
   root        :to => 'home#index'
 
+  # JSON Endpoints
+  get "/groups/list" => "groups#list", :as => "groups_list"
+  # get "lings/list"   => "lings#all_list", :as => "lings_list"
+  # get "properties/list" => "properties#all_list", :as => "properties_list"
+  
   get "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
-  get "/groups/:group_id/lings/depth/:depth/list" => "lings#list_by_depth"
-  get "/groups/:group_id/lings/:id/list" => "lings#list_by_depth"
-  get "/groups/:group_id/lings/list" => "lings#list_by_depth",:as => "group_lings_by_depth"
+  get "/groups/:group_id/lings/depth/:depth/list" => "lings#by_depth"
+  get "/groups/:group_id/lings/:id/list" => "lings#by_depth"
+  get "/groups/:group_id/lings/list" => "lings#by_depth",:as => "group_lings_by_depth"
   get "/groups/:group_id/list" => "lings#list" ,:as => "group_lings_all"
+
   get "/groups/:group_id/properties/list" => "properties#list"
+
   get "/groups/:group_id/memberships/list" => "memberships#list"
+
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   resources :groups do

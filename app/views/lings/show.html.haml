@@ -3,6 +3,7 @@
 %h1
   = @ling.grouped_name
   = @ling.name
+  // show the creator on the right here
 .row
   .col-md-6
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
@@ -14,6 +15,7 @@
           = icon 'edit', "Edit #{current_group.lings_property_name.pluralize}"
         = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
           = icon 'edit', "Edit #{@ling.grouped_name}"
+// Remove this table and move the quick analysis here
 .row
   .col-md-6
     %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
@@ -56,17 +58,19 @@
           %b Created by:
         %td
           = @ling.creator ? @ling.creator.name : "Unknown user"
+  // put a tabbed thing here with map (and some viz?)
   #analysis-container.col-md-6.border
     .row
       #analysis.col-md-12.relative
         %h3 Quick Analysis
         %h5
           Add languages to compare with #{@ling.name}
-        %input#auto_compare.input-block-level.autocomplete.search-query{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
-      #languages-container.col-md-5.hidden.search-buttons
-        Selected languages (
-        %a.remove-langs{:href => "/Clear All"} clear all
+        %input#ling-search-field{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+      %label.control-label
+        Selected Lings (
+        %a#remove-lings{:href => "#Clean"} Clean
         )
+      .controls
         %ul#selected-lings
     .row.relative
       #compare-buttons.col-md-12.search-buttons
@@ -111,7 +115,7 @@
   = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
     = icon 'edit', "Edit #{@ling.grouped_name}"
 
-- content_for :scripts do
-  :javascript
-    var group = #{current_group.to_param},
-        id    = #{@ling.id};
+/ - content_for :scripts do
+/   :javascript
+/     var group = #{current_group.to_param},
+/         id    = #{@ling.id};

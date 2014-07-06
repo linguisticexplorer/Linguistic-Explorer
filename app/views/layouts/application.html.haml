@@ -12,7 +12,7 @@
     = javascript_include_tag 'application'
     = csrf_meta_tag
     = yield :head
-  %body{:class => body_classes}
+  %body{:class => body_classes, :data => {:controller => params[:controller].camelize, :action => params[:action], :group => ((@current_group || @group).present? ? (@current_group || @group).id : nil) }}
     = render :partial => 'layouts/header'
     #main.container
       #messages
@@ -31,15 +31,4 @@
         = succeed "." do
           %a{:href => "mailto:support@terraling.com"} support AT terraling.com
         All Rights Reserved
-    = javascript_include_tag controller_name if ::Rails.application.assets.find_asset("#{controller_name}.js")
     = yield :scripts
-    :javascript
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-38340701-1']);
-      _gaq.push(['_trackPageview']);
-
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();

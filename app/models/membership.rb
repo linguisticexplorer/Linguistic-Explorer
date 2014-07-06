@@ -70,4 +70,15 @@ class Membership < ActiveRecord::Base
     has_role? :expert, :any
   end
 
+  def as_json(options={})
+    super(
+      :only => [:id, :group_id, :level, :creator_id], 
+      :include => { 
+        :member => { 
+          :only => [:id, :name, :email]
+        }
+      }
+    )
+  end
+
 end

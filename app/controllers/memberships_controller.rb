@@ -19,11 +19,7 @@ class MembershipsController < GroupDataController
   end
   
   def list
-    @all_members = Hash.new
-    current_group.memberships.includes(:member).find_each(:batch_size => 500) do |memb|
-      @all_members[memb.member.name] = memb.id
-    end
-    render :json => @all_members.to_json.html_safe
+    render :json => current_group.memberships.includes(:member).to_json.html_safe
   end
 
   def show
