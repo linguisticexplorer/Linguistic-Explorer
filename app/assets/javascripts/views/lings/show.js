@@ -12,16 +12,22 @@
     };
     
     // local variable containing the state of the page
-    var ling = {};
+    var currentId,
+        resourceTemplate,
+        resourcesDict;
 
     var resourceId = 'ling';
 
-    function setupAnalysis(group, id){
-        // Perhaps better names?
-        ling.list      = [];
-        ling.dict      = {};
-        ling.group     = group || 0 ;
-        ling.currentId = id    || '';
+    function setupAnalysis(){
+        // Set the id
+        currentId = $('#details').data('id') || '';
+        // Setup the resource "cache"
+        // we use it to prevent duplicates on the list
+        resourcesDict = {};
+        // perhaps we should get it from a Handlebar template script
+        var htmlTemplate = '<li data-id="{{id}}"><a class="remove-ling" href="#"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
+
+        resourceTemplate = Handlebars.compile(htmlTemplate);
 
         // bind some buttons here
         bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');
@@ -30,26 +36,24 @@
         // init the typeahead
         setupTypeahead();
 
-        $(window)
+        $(document)
           .on('click', '.remove-lings', removeLanguages)
           .on('click', '.remove-ling' , removeLanguage);
     }
 
-    // append some helper functions here
-    function makeButton(){
-        return '<a class="remove-lang" href="Remove"><i class="glyphicon-remove shift-down"></a>';
-    }
-
-    function hideList(){
-        $('#languages-container').addClass('hidden');
-        $('#analysis').removeClass('col-md-7').addClass('col-md-12');
-        $('div#compare-buttons a').attr('disabled', 'disabled');
+    function checkButtons(criteria){
+      var buttons = $('div#compare-buttons a');
+      if(criteria){
+        buttons.removeAttr('disabled');
+      } else {
+        buttons.attr('disabled', 'disabled');
+      }
     }
 
     function buildLingsURL(){
         //TODO: refactor this stuff here!
         return '&search[lings][0][]=' + ($.map( $('#selected-lings li'), function (val, i) {
-            return lings.dict[$.trim($(val).text())];
+            return resourcesDict[$.trim($(val).text())];
         })).join('&search[lings][0][]=');
     }
 
@@ -65,36 +69,46 @@
         params = params || '';
         return '/groups/' + T.currentGroup +
                '/searches/preview?'+ staticParams() +
-               '&search[lings][0][]=' + ling.currentId +
+               '&search[lings][0][]=' + currentId +
                '&search[example_keywords][0]=' + params +
                buildLingsURL();
     }
 
     function bindAnalysis(id, url){
-        $(window).on('click', id, function (e) {
-            if (! $(this).attr("disabled")) {
-                window.open(searchQuery(url));
-            }
-        });
+      $(document).on('click', id, function (e) {
+          if (! $(this).attr("disabled")) {
+              window.open(searchQuery(url));
+          }
+      });
     }
 
-    // remove a language from the list
+    // remove a language from the cache
     function removeLanguage(){
-        var item = $(this).parent();
-        lings.list.push(item.text());
-        item.remove();
-        if ( !$('ul#selected-lings li').length ) {
-            hideList();
-        }
+      var item = $(this).parent();
+
+      var name = item.text().substring(1);
+
+      delete resourcesDict[name];
+
+      item.remove();
+
+      checkButtons($('ul#selected-lings li').length);
+
+      evt.preventDefault();
     }
 
     function removeLanguages() {
-        $('#selected-lings li').each( function () {
-            var item = $(this);
-            lings.list.push(item.text());
-            item.remove();
-        });
-        hideList();
+      $('#selected-lings li').each( function () {
+          var item = $(this);
+          item.remove();
+      });
+      // reset the cache
+      resourcesDict = {};
+
+      checkButtons(false);
+
+
+      evt.preventDefault();
     }
 
     function setupTypeahead(){
@@ -128,56 +142,16 @@
       return T.groups[T.currentGroup].ling0_name.split(' ').join(' - ');
     }
 
-    function mapResourcesRoles(){
-      resourcesDict = {};
-      $('#selected-resources li').each( function(){
-        resourcesDict[$(this).text()] = ''+$(this).data('id');
-      });
-    }
-
-    function removeLanguage(evt){
-      var item = $(this).parent();
-
-      var name = item.text().substring(1);
-
-      delete resourcesDict[name];
-
-      item.remove();
-      // refresh hidden field values
-      updateResourceField();
-
-      evt.preventDefault();
-    }
-
-    function removeLanguages(evt) {
-      $('#selected-resources li').each( function () {
-          var item = $(this);
-          item.remove();
-      });
-      // clear the cache
-      resourcesDict = {};
-
-      updateResourceField();
-      
-      evt.preventDefault();
-    }
-
-    function updateResourceField(){
-      $('#membership_'+resourceId).val($.map(resourcesDict, function(value){
-        return value;
-      }).join(';'));
-    }
-
     function onLingSelected(evt, ling, name){
 
       if(!resourcesDict[ling.name]){
 
         resourcesDict[ling.name] = ''+ling.id;
 
-        $('#selected-resources').append(resourceTemplate(ling));
-      }
+        $('#selected-lings').append(resourceTemplate(ling));
 
-      updateResourceField();
+        checkButtons(true);
+      }
 
       $('#'+resourceId+'-search-field').typeahead('val', '');
 

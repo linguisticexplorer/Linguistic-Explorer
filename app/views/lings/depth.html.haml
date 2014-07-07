@@ -13,11 +13,5 @@
         - if can_see? :manage, Ling.new{|l| l.group = current_group}
           = link_to new_group_ling_path(current_group, :depth => @depth), :class => "btn btn-success pull-right", :title => "Create" do
             = icon "plus", "New #{current_group.ling_name_for_depth(@depth)}"
-/ .row
-/   .col-md-5
-/     %input#ling-search-field{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
 #pagination_table
   = render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth, :paginate_params => @params }
-/ # - if can_see? :manage, Ling.new{|l| l.group = current_group}
-/ #   = link_to "New #{current_group.ling_name_for_depth(@depth)}", new_group_ling_path(current_group, :depth => @depth), :class => "btn btn-success"
-// = javascript_tag "$.getScript(location.href);"

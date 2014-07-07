@@ -9,6 +9,7 @@
     var util = this.Terraling.Util = {};
     
     var img = "<img src='/images/loader.gif' class='loading'/>",
+        previousURL = location.href,
         once = false;
 
     util.init = function(){
@@ -28,7 +29,9 @@
 
     function activatePagination(){
       // Manage the AJAX pagination and changing the URL
-       $(document).on("click", ".apple_pagination.will-paginate .pagination a", function (e) {
+       $(document).on("click", ".will-paginate .pagination a", function (e) {
+          // local history 
+          previousURL = this.href;
 
           $(".pagination").html(img);
           $.get(this.href, function(result) {
@@ -36,18 +39,20 @@
             $("#pagination_table").html($("#pagination_table", result));
           });
           history.pushState(null, document.title, this.href);
+
           e.preventDefault();
+
       });
       
-      $(window).bind("popstate", function() {
-        if (once) {
+      $(window).bind("popstate", function (evt) {
+        // prevent requests if the hash is the only change!
+        var hashCheck = location.hash;
+        if (previousURL.indexOf(hashCheck) < 0) {
           $(".pagination").html(img);
           $.get(location.href, function(result) {
               $(".pagination").html($(".pagination", result));
               $("#pagination_table").html($("#pagination_table", result));
           });
-        } else {
-          once = true;
         }
       });
     }

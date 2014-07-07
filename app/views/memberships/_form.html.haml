@@ -27,14 +27,14 @@
       = f.hidden_field 'resources', :value => ''
       %label.control-label
         Selected Resources (
-        %a#remove-resources{:href => "#Clean"} Clean
+        %a#remove-resources{:href => "#"} Clean
         )
       .controls
         %ul#selected-resources
           -if @lings.present?
             - @lings.each do |ling|
               %li{ :data => {:id => ling.id} }
-                %a.remove-resource{:href => '#Remove'}
+                %a.remove-resource{:href => '#'}
                   %span.glyphicon.glyphicon-remove.shift-down
                 #{ling.name}
   .form-group

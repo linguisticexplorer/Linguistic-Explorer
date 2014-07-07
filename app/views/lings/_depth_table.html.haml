@@ -34,11 +34,6 @@
           %a{:href => "#", :rel => "tooltip", :title => percentage, :data => {:toggle => "tooltip" }}
             = icon icon_name, '' , :class => "fa-15x #{stage}"
             = label
-        / .progress.progress-striped{:style => "width: 200px; margin: 10px 20px 5px 30px;"}
-        /   %div{:style => "width: #{ling.info}%;", :class => "progress-bar progress-bar-#{color}"}
-        /     %p#nbrs{:style => "text-align: center;"}
-        /       = ling.info
-        /       \%
       - if can_see? :manage, ling
         %td
           = link_to edit_group_ling_path(current_group, ling), :class => 'btn btn-default', :title => "Edit" do

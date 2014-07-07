@@ -4,8 +4,9 @@
   = @ling.grouped_name
   = @ling.name
   // show the creator on the right here
+
 .row
-  .col-md-6
+  .col-md-12
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       %i.glyphicon.glyphicon-arrow-left
       Back
@@ -15,107 +16,111 @@
           = icon 'edit', "Edit #{current_group.lings_property_name.pluralize}"
         = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
           = icon 'edit', "Edit #{@ling.grouped_name}"
-// Remove this table and move the quick analysis here
-.row
-  .col-md-6
-    %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
-      %tr
-        %td
-          %b Type:
-        %td= current_group.ling_name_for_depth(@ling.depth)
-      %tr
-        %td
-          %b Name:
-        %td
-          = @ling.name
-      - @ling.storable_keys.each do |key|
-        - if @ling.stored_value(key) != ""
-          %tr
-            %td
-              %b
-                = key.humanize
-                \:
-            %td= @ling.stored_value(key)
-      - if @ling.depth == 1 && @ling.parent
-        %tr
-          %td
-            %b
-              = current_group.ling0_name
-              \:
-          %td
-            = link_to @ling.parent.name, group_ling_path(current_group, @ling.parent)
-      - elsif @ling.depth == 0 && !@ling.children.empty?
-        %tr
-          %td
-            %b
-              = current_group.ling1_name.pluralize
-              \:
-          %td
-            - @ling.children.each do |child|
-              = link_to child.name, group_ling_path(current_group, child)
-      %tr
-        %td
-          %b Created by:
-        %td
-          = @ling.creator ? @ling.creator.name : "Unknown user"
-  // put a tabbed thing here with map (and some viz?)
+
+.row{:style => "margin: 15px;"}
+
   #analysis-container.col-md-6.border
     .row
-      #analysis.col-md-12.relative
-        %h3 Quick Analysis
-        %h5
-          Add languages to compare with #{@ling.name}
-        %input#ling-search-field{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-      %label.control-label
-        Selected Lings (
-        %a#remove-lings{:href => "#Clean"} Clean
-        )
-      .controls
-        %ul#selected-lings
-    .row.relative
-      #compare-buttons.col-md-12.search-buttons
+      .col-md-12
+        #analysis
+          %h3 Quick Analysis
+        %form.form
+          .row
+            .col-md-8
+              .form-group
+                %label{:for => "ling-search-field"} Add languages to compare with #{@ling.name}
+                %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .row
+      .col-md-6
+        %label.control-label
+          Selected Lings (
+          %a#remove-lings{:href => "#"} Clean
+          )
+        .controls
+          %ul#selected-lings
+      #compare-buttons.col-md-6.search-buttons
         %a#compare-lings.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
           =icon 'search', 'Compare Properties'
         %a#compare-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
           = icon 'search', 'Similarity Tree'
-        %a#map.btn.btn-default.btn-block{:href => "#Map"}
-          = icon 'globe', 'See it on a Map'
-%br/
-#pagination_table.values
-  #pagination_top.apple_pagination.will-paginate
-    / render page links in the view:
-    = will_paginate @values, renderer: BootstrapPagination::Rails
-  %table.show-table.table.table-bordered.table-striped.table-hover
-    %thead
-      %th.col-md-2= current_group.property_name
-      %th.col-md-2= current_group.lings_property_name
-      %th.col-md-6= current_group.example_name.pluralize
-      %th.col-md-2 Creator
-    %tbody
-      - @values.each do |value|
-        %tr
-          %td= link_to value.property.name, [current_group, value.property]
-          %td= value.value
-          - elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id)
-          %td.align-left
-            - elps.each do |elp|
-              - example = elp.example
-              = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
-          %td= (value.creator ? value.creator.name : "")
-  #pagination_bottom.apple_pagination.will-paginate
-    / render page links in the view:
-    = will_paginate @values, renderer: BootstrapPagination::Rails
-%br/
-= link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
-  %i.glyphicon.glyphicon-arrow-left
-  Back
--if can_see? :manage, @ling
-  = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
-    = icon 'edit', "Edit #{current_group.lings_property_name.pluralize}"
-  = link_to edit_group_ling_path(current_group, @ling), :class => "btn btn-primary" do
-    = icon 'edit', "Edit #{@ling.grouped_name}"
-
-/ - content_for :scripts do
-/   :javascript
-/     var group = #{current_group.to_param},
-/         id    = #{@ling.id};
+  .col-md-6
+    // Nav tabs
+    %ul.nav.nav-tabs.pull-right
+      %li.active
+        %a{:href => '#details', :data => {:toggle => "tab"}} Overview
+      %li
+        %a{:href => "#sureness", :data => {:toggle => "tab"}} Sureness
+      %li
+        %a{:href => "#map", :data => {:toggle => "tab"}} View on Map
+    // Tab panes
+    .tab-content
+      // use this div to store some ling information
+      .tab-pane.active#details{:data => {:id => @ling.id }}
+        .tabbed-pane
+          %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
+            - @ling.storable_keys.each do |key|
+              - if @ling.stored_value(key) != ""
+                %tr
+                  %td
+                    %b
+                      = key.humanize
+                      \:
+                  %td= @ling.stored_value(key)
+            - if @ling.depth == 1 && @ling.parent
+              %tr
+                %td
+                  %b
+                    = current_group.ling0_name
+                    \:
+                %td
+                  = link_to @ling.parent.name, group_ling_path(current_group, @ling.parent)
+            - elsif @ling.depth == 0 && !@ling.children.empty?
+              %tr
+                %td
+                  %b
+                    = current_group.ling1_name.pluralize
+                    \:
+                %td
+                  - @ling.children.each do |child|
+                    = link_to child.name, group_ling_path(current_group, child)
+            %tr
+              %td
+                %b Created by:
+              %td
+                = @ling.creator ? @ling.creator.name : "Unknown user"
+      .tab-pane#map
+        .tabbed-pane
+          #ling-map
+      .tab-pane#sureness
+        .tabbed-pane
+          #sureness-map
+.row
+  #pagination_table.col-md-12
+    #pagination_top.apple_pagination.will-paginate
+      / render page links in the view:
+      = will_paginate @values, renderer: BootstrapPagination::Rails
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %thead
+        %th.col-md-2= current_group.property_name
+        %th.col-md-2= current_group.lings_property_name
+        %th.col-md-6= current_group.example_name.pluralize
+        %th.col-md-2 Creator
+      %tbody
+        - @values.each do |value|
+          %tr
+            %td= link_to value.property.name, [current_group, value.property]
+            %td= value.value
+            - elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id)
+            %td.align-left
+              - elps.each do |elp|
+                - example = elp.example
+                = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
+            %td= (value.creator ? value.creator.name : "")
+    #pagination_bottom.apple_pagination.will-paginate
+      / render page links in the view:
+      = will_paginate @values, renderer: BootstrapPagination::Rails
+.row
+  .col-md-12
+    = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
+      %i.glyphicon.glyphicon-arrow-left
+      Back

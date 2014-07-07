@@ -407,9 +407,10 @@ div#languages-container.hidden {
 }
 
 #analysis-container {
+  height: 290px;
   padding:5px 15px 20px 15px;
-  position:relative;
-  top:-50px;
+  // position:relative;
+  // top:-50px;
   @media screen and (max-width: 768px) {
     & {
       top: 0px;
@@ -567,6 +568,15 @@ div#languages-container.hidden {
 
 .btn-spaced {
   margin: 10px 5px 10px 5px;
+}
+
+.tabbed-pane{
+  border: 1px solid #ccc;
+  min-height: 250px;
+  *height: 300px;
+  margin: 39px 0 0;
+  padding-right: 5px;
+  padding-left: 5px;
 }
 
 // Import Bootstrap here
