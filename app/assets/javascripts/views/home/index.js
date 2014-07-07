@@ -38,7 +38,53 @@
 	};
 
   function createMultiTypeahead(){
+
+    var id = 'resources';
     
+    // create a dictionary for each group
+    var resourceName = 'resource',
+        resourceType = 'ling',
+        templateType = 'groups';
+
+    var selectionAction = goToResourceURL;
+
+    function createResolver(group){
+      return function (entry){
+          return {
+            name: entry[resourceType].name.replace(/\\/g, ''),
+            id: entry[resourceType].id,
+            group: group.name,
+            group_id: group.id
+          };
+        };
+    }
+
+    $.when(T.promises.groups).then(function(){
+
+      // change placeholder
+      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName+' in Terraling');
+
+      var dictionaries = [];
+      $.each(T.groups, function (id, group){
+
+        
+
+        var dictionary = T.Search.createDictionary(group.name, resourceType, templateType, createResolver(group), id);
+        dictionaries.push(dictionary);
+      });
+
+      // Setup the Typeahead matcher engine
+      
+
+      T.Search.init(id +'-search-field', dictionaries);
+      T.Search.onSelection(selectionAction);
+
+    });
+  }
+
+  function goToResourceURL(evt, ling, name){
+    // limit to lings for the moment
+    window.location.href = '/groups/'+ling.group_id+'/lings/'+ling.id;
   }
 
 })();

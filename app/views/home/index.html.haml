@@ -10,46 +10,22 @@
         Explore the World's Languages
       %br/
     .container
-      #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
-        .row
-          %h5 Type the name of a language here:
-        .row
-          .margin.col-md-11.col-md-offset-1
-            %input#lings_autocomplete.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}
-        / #search-tabs.home-lead{:style => "width:80%; margin:auto;"}
-        /   %ul#tabs.nav.nav-tabs
-        /     %li
-        /       %a#tab-descrip{:href => "#"} Pick a data set:
-        /     - first = true
-        /     - Group.all.each do |x|
-        /       - name = x.name
-        /       - if first
-        /         %li.active
-        /       - else
-        /         %li
-        /       %a{"data-bind" => "false", "data-id" => x.id, "data-toogle" => "tab", :href => "##{name.split(" ").join("_")}"}= name
-        /       - first = false if first
-        /   .tab-content
-        /     - first = true
-        /     - Group.all.each do |x|
-        /       - name = x.name
-        /       - id = name.split(" ").join("_")
-        /       -if first
-        /         .tab-pane.active{ :id => "#{id}"}
-        /       -else
-        /         .tab-pane{:id => "#{id}"}
-        /       - first = false if first
-        /       .row
-        /         .margin.col-md-12
-        /           %input.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :id => "auto_#{x.id}", :placeholder => "Loading...", :type => "text"}/
-      %br/
-      .row
+      .row.home-lead{:style => "width:80%; margin:auto;"}
+        .col-md-12
+          #analysis
+            %h3 Start your exploration with a language:
+          %form.form
+            .row
+              .col-md-12
+                .form-group
+                  %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+      .row{ :style => "margin-top: 50px;"}
         #carousel.carousel.slide
           %ol.carousel-indicators
             %li.active{"data-slide-to" => "0", "data-target" => "#carousel"}
-            %li{"data-slide-to" => "1", "data-target" => "#carousel"}
-            %li{"data-slide-to" => "2", "data-target" => "#carousel"}
-            %li{"data-slide-to" => "3", "data-target" => "#carousel"}
+            %li{ :data => { :target => "#carousel", "slide-to" => "1"} }
+            %li{ :data => { :target => "#carousel", "slide-to" => "2"} }
+            %li{ :data => { :target => "#carousel", "slide-to" => "3"} }
           .carousel-inner
             .item.active
               = image_tag "home1.png", :style => "width: 646px; height: 307px;"

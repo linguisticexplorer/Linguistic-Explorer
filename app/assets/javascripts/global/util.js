@@ -35,8 +35,7 @@
 
           $(".pagination").html(img);
           $.get(this.href, function(result) {
-            $(".pagination").html($(".pagination", result)[0]);
-            $("#pagination_table").html($("#pagination_table", result));
+            $("#pagination_table").html($("#pagination_table", result).contents());
           });
           history.pushState(null, document.title, this.href);
 
@@ -50,8 +49,7 @@
         if (previousURL.indexOf(hashCheck) < 0) {
           $(".pagination").html(img);
           $.get(location.href, function(result) {
-              $(".pagination").html($(".pagination", result));
-              $("#pagination_table").html($("#pagination_table", result));
+            $("#pagination_table").html($("#pagination_table", result).contents());
           });
         }
       });

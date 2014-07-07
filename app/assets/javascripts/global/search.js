@@ -6,14 +6,16 @@
 
   var currentId;
 
+  // something in here to clear the Typeahead cache
+  // when the dataset has changed
+
   function createTypeahead(id, dictionaries){
     currentId = id;
 
     var options = {
       hint: true,
       minLength: 1,
-      highlight: true,
-      engine: Handlebars
+      highlight: true
     };
 
     $('#'+currentId).typeahead(options, dictionaries);
@@ -34,20 +36,22 @@
     });
   }
 
-  function createMatcher(type, resolver){
+  function createMatcher(type, group, resolver){
 
     function defaultResolver(entry){
       return {name: entry[type].name.replace(/\\/g, ''), id: entry[type].id };
+    }
+
+    function dataTransform(list){
+      return $.map(list, resolver || defaultResolver);
     }
 
     var engine = new Bloodhound({
       datumTokenizer: Bloodhound.tokenizers.obj.whitespace('name'),
       queryTokenizer: Bloodhound.tokenizers.whitespace,
       prefetch: {
-        url: getPrefetchURL(type),
-        filter: function(list){
-          return $.map(list, resolver || defaultResolver);
-        }
+        url: getPrefetchURL(type, group),
+        filter: dataTransform
         // Later add some stuff in here to show a feedback to the user while waiting an async response
         // ,ajax: {
         //   beforeSend: function(){},
@@ -60,29 +64,33 @@
     return engine.ttAdapter();
   }
 
-  function createDictionary(name, type, templateType, entityResolver){
-    var matcher = createMatcher(type, entityResolver);
+  function createDictionary(name, type, templateType, entityResolver, group){
+    var matcher = createMatcher(type, group, entityResolver);
 
-    var template = createTemplate(templateType);
+    var template = createTemplate(templateType, group && name);
 
     return {
       name: name,
       source: matcher,
-      template: template,
+      templates: template,
       displayKey: 'name'
     };
   }
 
-  function createTemplate(type){
+  function createTemplate(type, name){
     var emptyTemplate = ['<div class="empty-message">unable to find any Resource that match the current query</div>'];
     var templates = {
       'expert': {
         empty: emptyTemplate,
-        suggestion: '<p><strong>{{name}}</strong></p>'
+        // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
       },
       'resource':{
         empty: emptyTemplate,
-        suggestion: '<p><strong>{{name}}</strong></p>'
+        // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
+      },
+      'groups':{
+        header: '<div><h4 class="group-header">Group: '+name+'</h4></div>',
+        // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
       }
     };
 
@@ -94,8 +102,8 @@
   }
 
 
-  function getPrefetchURL(type){
-    return getURL(type);
+  function getPrefetchURL(type, group){
+    return getURL(type, group);
   }
 
   var types = {
@@ -104,8 +112,8 @@
     'membership': 'memberships'
   };
 
-  function getURL(type){
-    var group_id = T.currentGroup;
+  function getURL(type, group){
+    var group_id = group || T.currentGroup;
     return "/groups/"+group_id+"/"+types[type]+"/list";
   }
 
@@ -129,7 +137,7 @@
         if(nameResolver){
           resourceName = nameResolver();
         } else {
-          nameResolver = 'resource';
+          resourceName = 'resource';
         }
       }
 
@@ -137,10 +145,10 @@
       $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName);
 
       // Setup the Typeahead matcher engine
-      var dictionary = T.Search.createDictionary(resourceName, resourceType, templateType, entityResolver);
+      var dictionary = createDictionary(resourceName, resourceType, templateType, entityResolver);
 
-      T.Search.init(id +'-search-field', [dictionary]);
-      T.Search.onSelection(selectionAction);
+      createTypeahead(id +'-search-field', [dictionary]);
+      bindSelection(selectionAction);
 
     });
   };
