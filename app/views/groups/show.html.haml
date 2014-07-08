@@ -7,21 +7,72 @@
   #title
     %h1
       = @group.name
-      = link_to info_group_path(@group) do
-        %i.fa.fa-info-circle.fa-05x
+      //= link_to info_group_path(@group) do
+      //  %i.fa.fa-info-circle.fa-05x
       - if can_see? :edit, @group
         = link_to edit_group_path(@group) do
           %i.fa.fa-edit.fa-05x
   #intro
     .row
-      .margin.col-md-6.relative
-        %input#auto_group.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
-    %br/
-    - if @group.description.present?
-      %p= @group.description
-    - @group.depths.each do |depth|
-      %p= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
-    %p= link_to @group.property_name.pluralize, group_properties_path(@group)
+      .col-md-6
+        - if @group.description.present?
+          %p.lead= @group.description
+
+        .row
+          - @group.depths.each do |depth|
+            .col-md-4
+              %p
+                = @group.lings_in_group 
+                = link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
+          .col-md-4
+            %p
+              = @group.props_in_group
+              = link_to @group.property_name.pluralize, group_properties_path(@group)
+        .row
+          .col-md-4
+            %p
+              = @group.members_in_group
+              = link_to 'Members', [@group, :memberships]
+          .col-md-4
+            %p
+              = @group.examples_in_group
+              Examples
+          .col-md-4
+            %p
+              = @group.ling_props_in_group
+              Values
+      .col-md-6
+        %form.form
+          .row
+            .col-md-12
+              .form-group
+                %label{:for => "resources-search-field"}
+                  Looking for a specific 
+                  =@group.ling_names.join(", ") 
+                  or perhaps a 
+                  =@group.property_name 
+                  ? 
+                %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .row
+      .col-md-12
+        %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
+          - @group.info_attribute_names.each do |attr_name|
+            %tr
+              %td
+                %b= attr_name.titleize
+              - if @group.send(attr_name).is_a? String
+                %td= @group.send(attr_name).capitalize
+              - else
+                %td= @group.send(attr_name)
+    / .row
+    /   .margin.col-md-6.relative
+    /     %input#auto_group.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
+    / %br/
+    / - if @group.description.present?
+    /   %p= @group.description
+    / - @group.depths.each do |depth|
+    /   %p= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
+    / %p= link_to @group.property_name.pluralize, group_properties_path(@group)
     / %p
     / = link_to 'Group Info', info_group_path(@group)
     / |

@@ -49,6 +49,10 @@ class Property < ActiveRecord::Base
     false
   end
 
+  def as_json(options={})
+    super(:only => [:id, :name, :category_id])
+  end
+
   private
 
   def lings_in_group
@@ -60,7 +64,4 @@ class Property < ActiveRecord::Base
     @info = 100 if @info > 100
   end
 
-  def as_json(options={})
-    super(:only => [:id, :name, :category_id])
-  end
 end

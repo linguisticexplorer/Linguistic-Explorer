@@ -39,7 +39,7 @@
   function createMatcher(type, group, resolver){
 
     function defaultResolver(entry){
-      return {name: entry[type].name.replace(/\\/g, ''), id: entry[type].id };
+      return {name: entry[type].name.replace(/\\/g, ''), id: entry[type].id, type: type };
     }
 
     function dataTransform(list){
@@ -78,7 +78,13 @@
   }
 
   function createTemplate(type, name){
-    var emptyTemplate = ['<div class="empty-message">unable to find any Resource that match the current query</div>'];
+    // ensure type string
+    type = type || '';
+    var emptyTemplate = [
+      '<div class="empty-message">unable to find any '+
+      type[0].toUpperCase() + type.substring(1)+
+      ' that match the current query</div>'
+    ];
     var templates = {
       'expert': {
         empty: emptyTemplate,
@@ -94,7 +100,7 @@
       }
     };
 
-    return templates[type] || templates.expert;
+    return templates[type] || templates.resource;
   }
 
   function bindSelection(handler){
