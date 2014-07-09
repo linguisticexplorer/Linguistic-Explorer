@@ -5,16 +5,16 @@ module GroupStats
   # Infos preload returning self for chaining
   def loadInfos
     @lings_info, @props_info = {}, {}
-    lings_with_all_property_quotas || props_with_all_ling_quotas
+    # lings_with_all_property_quotas || props_with_all_ling_quotas
     self
   end
 
-  def lings_in_group
-    @lings_total ||= Ling.in_group(self).count(:id)
+  def lings_in_group(depth)
+    self.lings.at_depth(depth).count(:id)
   end
 
   def props_in_group
-    @props_total ||= Property.in_group(self).count(:id)
+    self.properties.count(:id)
   end
 
   def ling_props_in_group

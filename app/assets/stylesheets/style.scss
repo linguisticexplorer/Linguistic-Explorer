@@ -579,9 +579,20 @@ div#languages-container.hidden {
   padding-left: 5px;
 }
 
+.empty-message {
+  padding: 5px 10px;
+  text-align: center;
+}
+
+#intro {
+  margin-top: 20px;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
 @import "font-awesome";
+
+// These guys here need some bootstrap variables
 
 i.less-than-half {
   color: $brand-danger;
@@ -593,11 +604,6 @@ i.not-complete {
 
  i.complete {
   color: $brand-success;
-}
-
-.empty-message {
-  padding: 5px 10px;
-  text-align: center;
 }
 
 h4.group-header {
