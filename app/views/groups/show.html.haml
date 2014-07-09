@@ -14,10 +14,24 @@
         %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
           = icon  'lock', '', :class => "pull-right"
   #intro
-    .row
+    .row{:style => "margin-bottom: 20px;"}
       .col-md-6
         - if @group.description.present?
           %p.lead= @group.description
+        %form.form
+          .row
+            .col-md-12
+              .form-group
+                %label{:for => "resources-search-field"}
+                  Looking for a specific 
+                  =@group.ling_names.join(", ") 
+                  or perhaps a 
+                  =@group.property_name 
+                  ? 
+                %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .row
+      .col-md-12
+        %h3 Group details:
         .row
           - @group.depths.each do |depth|
             .col-md-4
@@ -41,41 +55,17 @@
             %p
               = @group.ling_props_in_group
               Values
-      .col-md-6
-        %form.form
-          .row
-            .col-md-12
-              .form-group
-                %label{:for => "resources-search-field"}
-                  Looking for a specific 
-                  =@group.ling_names.join(", ") 
-                  or perhaps a 
-                  =@group.property_name 
-                  ? 
-                %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .row
       .col-md-12
-        %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
-          - @group.info_attribute_names.each do |attr_name|
-            %tr
-              %td
-                %b= attr_name.titleize
-              - if @group.send(attr_name).is_a? String
-                %td= @group.send(attr_name).capitalize
-              - else
-                %td= @group.send(attr_name)
+        %h3 Something here?
     / .row
-    /   .margin.col-md-6.relative
-    /     %input#auto_group.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
-    / %br/
-    / - if @group.description.present?
-    /   %p= @group.description
-    / - @group.depths.each do |depth|
-    /   %p= link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
-    / %p= link_to @group.property_name.pluralize, group_properties_path(@group)
-    / %p
-    / = link_to 'Group Info', info_group_path(@group)
-    / |
-    / \#{link_to 'Search this group', [:new, current_group, :search]} |
-    / - if can_see? :edit, @group
-    / = link_to 'Edit this group', edit_group_path(@group)
+    /   .col-md-12
+    /     %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
+    /       - @group.info_attribute_names.each do |attr_name|
+    /         %tr
+    /           %td
+    /             %b= attr_name.titleize
+    /           - if @group.send(attr_name).is_a? String
+    /             %td= @group.send(attr_name).capitalize
+    /           - else
+    /             %td= @group.send(attr_name)

@@ -24,8 +24,9 @@
     $.when(T.promises.groups).then(function(){
 
       // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName+' in Terraling');
-
+      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName+' in '+T.groups[T.currentGroup].name);
+      
+      // multi-dictionary typeahead
       var dictionaries = [];
       $.each(['ling', 'property'], function (index, entityType){
         

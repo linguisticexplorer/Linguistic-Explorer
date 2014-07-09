@@ -586,6 +586,8 @@ div#languages-container.hidden {
 
 #intro {
   margin-top: 20px;
+  min-height: 500px;
+  *height: 500px;
 }
 
 // Import Bootstrap here

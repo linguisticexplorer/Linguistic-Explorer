@@ -12,7 +12,12 @@
         previousURL = location.href,
         once = false;
 
+    var cacheEnabled;
+
     util.init = function(){
+
+      // check for localStorage
+      cacheEnabled = $('body').hasClass('localstorage');
 
       // PAGINATION CODE
       activatePagination();
@@ -65,25 +70,57 @@
 
     function loadGroupsData(){
 
-      // save the promise
-      Terraling.promises.groups = $.get('/groups/list')
-        .done(function (data){
+      var request;
+      var url = '/groups/list';
+      // if localstorage is enabled, use it
+      request = get(url);
+      
+      // in case of no cache or old cache
+      if(!request || request[T.currentGroup]){
+        // save the promise
+        request = $.get(url)
+        // Note: the browser should cache itself the request
+        // and reply after the first call with a 304 Status Code
+        // in case of no localStorage
+          .done(function (data){
 
-          Terraling.groups = {};
-          // map the data to an object in the format id => group
-          $.each(data, function (i, wrapper){
-            // for the moment just append it to the Terraling object
-            Terraling.groups[wrapper.group.id] = wrapper.group;
-          });
-        })
-        .fail()
-        .always();
+            Terraling.groups = {};
+            // map the data to an object in the format id => group
+            $.each(data, function (i, wrapper){
+              // for the moment just append it to the Terraling object
+              Terraling.groups[wrapper.group.id] = wrapper.group;
+            });
+            // Quick and dirty clone
+            var copy = JSON.parse(JSON.stringify(T.groups));
+            save(url, copy);
+          })
+          .fail()
+          .always();
+      } else {
+        // just put it
+        Terraling.groups = request;
+      }
+      // don't worry: jQuery treats objects as resolved promises 
+      Terraling.promises.groups = request;
     }
 
-    var delayBindArray = [];
+    function save(key, value){
+      // if localstorage
+      if(cacheEnabled){
+        localStorage[key] = JSON.stringify(value);
+      }
+    }
 
-    function bind(controller, main, other){
-      delayBindArray.push({c: controller, from: main, to: other});
+    function get(key){
+      if(cacheEnabled){
+        if(key in localStorage){
+          return JSON.parse(localStorage[key]);
+        }
+      }
+    }
+
+    function moreThanOneDayOld(d1, d2){
+      return d2 - d1 > 86400000;
     }
 
 })();
