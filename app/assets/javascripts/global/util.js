@@ -73,10 +73,10 @@
       var request;
       var url = '/groups/list';
       // if localstorage is enabled, use it
-      request = get(url);
+      request = getGroups();
       
       // in case of no cache or old cache
-      if(!request || request[T.currentGroup]){
+      if(!request){
         // save the promise
         request = $.get(url)
         // Note: the browser should cache itself the request
@@ -92,6 +92,8 @@
             });
             // Quick and dirty clone
             var copy = JSON.parse(JSON.stringify(T.groups));
+            // set  timestamp
+            copy.__ttl = (Date).getTime();
             save(url, copy);
           })
           .fail()
@@ -104,11 +106,21 @@
       Terraling.promises.groups = request;
     }
 
-    function save(key, value){
-      // if localstorage
-      if(cacheEnabled){
-        localStorage[key] = JSON.stringify(value);
+    function getGroups(url){
+      var groups = get(url);
+      
+      // return null if any of these doesn't pass
+      if(!groups ||
+         olderThanOneDay(groups.__ttl) ||
+         groups[T.currentGroup] ){
+        // refresh groups every day
+        return null;
       }
+      return groups;
+    }
+
+    function olderThanOneDay(date){
+      return date - (Date).getTime() > 86400000;
     }
 
     function get(key){
@@ -119,8 +131,11 @@
       }
     }
 
-    function moreThanOneDayOld(d1, d2){
-      return d2 - d1 > 86400000;
+    function save(key, value){
+      // if localstorage
+      if(cacheEnabled){
+        localStorage[key] = JSON.stringify(value);
+      }
     }
 
 })();
