@@ -1,13 +1,17 @@
-= javascript_tag "$.getScript(location.href);"
 - page_heading current_group.property_name.pluralize
 %h1
   Listing #{current_group.property_name.pluralize}
-- if can_see? :manage, Property.new{|p| p.group = current_group}
-  = link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn btn-default"
-.row
-  .margin.col-md-5.relative
-    %input#auto_prop.input-block-level.autocomplete.search-query.big{:autocomplete => "off", :disabled => "", :placeholder => "Loading...", :type => "text"}/
+%form.form
+  .row
+    .col-md-6
+      .form-group
+        %label{:for => "property-search-field"} Quick search:
+        %input#property-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .col-md-6
+      .form-group
+        - if can_see? :manage, Property.new{|p| p.group = current_group}
+          = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :title => "Create" do
+            = icon "plus", "New #{current_group.property_name}"
 #pagination_table
   = render :partial => 'properties/index_partial'
-- if can_see? :manage, Property.new{|p| p.group = current_group}
-  = link_to "New #{current_group.property_name}", new_group_property_path(current_group), :class => "btn btn-default"
+

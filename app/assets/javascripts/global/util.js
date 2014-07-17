@@ -93,7 +93,7 @@
             // Quick and dirty clone
             var copy = JSON.parse(JSON.stringify(T.groups));
             // set  timestamp
-            copy.__ttl = (Date).getTime();
+            copy.__ttl = (new Date()).getTime();
             save(url, copy);
           })
           .fail()
@@ -120,7 +120,7 @@
     }
 
     function olderThanOneDay(date){
-      return date - (Date).getTime() > 86400000;
+      return date - (new Date()).getTime() > 86400000;
     }
 
     function get(key){
