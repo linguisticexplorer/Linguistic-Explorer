@@ -17,7 +17,7 @@
     util.init = function(){
 
       // check for localStorage
-      cacheEnabled = $('body').hasClass('localstorage');
+      cacheEnabled = Modernizr.localstorage;
 
       // PAGINATION CODE
       activatePagination();
@@ -73,7 +73,7 @@
       var request;
       var url = '/groups/list';
       // if localstorage is enabled, use it
-      request = getGroups();
+      request = getGroups('__'+url);
       
       // in case of no cache or old cache
       if(!request){
@@ -94,7 +94,7 @@
             var copy = JSON.parse(JSON.stringify(T.groups));
             // set  timestamp
             copy.__ttl = (new Date()).getTime();
-            save(url, copy);
+            save("__"+url, copy);
           })
           .fail()
           .always();
@@ -110,9 +110,8 @@
       var groups = get(url);
       
       // return null if any of these doesn't pass
-      if(!groups ||
-         olderThanOneDay(groups.__ttl) ||
-         groups[T.currentGroup] ){
+      if(!groups || !groups[T.currentGroup] ||
+         olderThanOneDay(groups.__ttl) ){
         // refresh groups every day
         return null;
       }

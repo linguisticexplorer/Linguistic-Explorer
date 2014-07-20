@@ -2,6 +2,7 @@
 %h1
   Editing #{current_group.example_name}
 = render 'form'
-= link_to 'Show', [current_group, @example]
-|
-\#{link_to 'Back', group_examples_path(current_group)}
+- back_url = @example.ling ? [current_group, @example.ling] : group_examples_path(current_group)
+= link_to back_url, :class => "btn btn-default" do
+  %span.glyphicon.glyphicon-arrow-left
+  Back

@@ -110,11 +110,16 @@
           %tr
             %td= link_to value.property.name, [current_group, value.property]
             %td= value.value
-            - elps = ExamplesLingsProperty.find_all_by_lings_property_id(value.id)
-            %td.align-left
-              - elps.each do |elp|
-                - example = elp.example
-                = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
+            - elps = current_group.examples_lings_properties.find_all_by_lings_property_id(value.id)
+            -if elps.any?
+              %td.align-left
+                - elps.each do |elp|
+                  - example = elp.example
+                  = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
+            - elsif can_see?(:manage, @ling)
+              %td.text-center
+                = link_to supported_set_values_group_ling_path(current_group, @ling), :prop_id => value.property.id, :class => "btn btn-success", :title => "Create a new Example" do
+                  = icon 'plus', ""
             %td= (value.creator ? value.creator.name : "")
     #pagination_bottom.apple_pagination.will-paginate
       / render page links in the view:

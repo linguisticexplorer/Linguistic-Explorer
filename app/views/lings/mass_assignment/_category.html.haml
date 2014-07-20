@@ -7,7 +7,7 @@
       .form-group
         %select.form-control#category-select{:name => "category_id"}
           - category.each do |category|
-            <option value="#{category.id}" #{"selected" if category.id == @category.id}> #{category.name}
+            %option{ :value => category.id, :selected => category.id == @category.id }= category.name
       .form-group
         // = submit_tag("Select", class: "btn btn-default", style: "display:block; margin-top:10px;width:120px;")
         %a.btn.btn-default Select
@@ -16,19 +16,7 @@
   #cat-prop.form-group
     %select.form-control#prop-select{:multiple => "multiple", :name => "prop_id"}
       - @properties.each do |prop|
-        <option id="prop-#{prop.id}" style= "color:
-        - if @preexisting_values.any?
-          - lp = @preexisting_values.select{|lp| lp.property_id == prop.id}[0]
-          - if lp
-            - if lp.sureness != "revisit" && lp.sureness != "need_help"
-              green;
-            - else
-              orange;
-          - else
-            red;
-        - else
-          red;
-        " value="#{prop.id}" #{"selected" if prop.id == @property.id}> #{prop.name}
+        %option{:id => "prop-#{prop.id}", :style => sureness_color(prop), :value => prop.id, :selected => prop.id == @property.id}= prop.name
   #select-col.form-group
     // = submit_tag "Select", :class => "btn cat-btn hidden"
     %a.btn.cat-btn.hidden Select

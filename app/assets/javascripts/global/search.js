@@ -6,6 +6,8 @@
 
   var currentId;
 
+  var binds = 0;
+
   // something in here to clear the Typeahead cache
   // when the dataset has changed
 
@@ -22,18 +24,24 @@
 
     var fCode = 70,
         fCodeOsx = 6;
+    
+    // prevent multi-binding for the moment:
+    // first comes first wins
+    if(binds < 2){
+      binds++;
 
-    // bind CTRL/META - f keypress with the search
-    $(window).keypress(function (evt){
-      if(
-        // CTRL / CMD + F in the rest of the World
-        evt.which === fCode && (evt.ctrlKey || evt.metaKey) ||
-        evt.which === fCodeOsx
-      ){
-        $('#'+currentId).focus();
-        evt.preventDefault();
-      }
-    });
+      // bind CTRL/META - f keypress with the search
+      $(window).keypress(function (evt){
+        if(
+          // CTRL / CMD + F in the rest of the World
+          evt.which === fCode && (evt.ctrlKey || evt.metaKey) ||
+          evt.which === fCodeOsx
+        ){
+          $('#'+currentId).focus();
+          evt.preventDefault();
+        }
+      });
+    }
   }
 
   function createMatcher(type, group, resolver){
@@ -147,13 +155,15 @@
         }
       }
 
-      // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName);
-
       // Setup the Typeahead matcher engine
       var dictionary = createDictionary(resourceName, resourceType, templateType, entityResolver);
 
       createTypeahead(id +'-search-field', [dictionary]);
+
+      // in theory this stuff should wait the dictionary promise...
+      // change placeholder
+      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName);
+
       bindSelection(selectionAction);
 
     });

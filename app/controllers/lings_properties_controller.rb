@@ -24,8 +24,8 @@ class LingsPropertiesController < GroupDataController
 
   def exists
     if params[:ling_name] && params[:prop_name]
-      ling = Ling.find_by_name(params[:ling_name])
-      prop = Property.find_by_name(params[:prop_name])
+      ling = current_group.lings.find_by_name(params[:ling_name])
+      prop = current_group.properties.find_by_name(params[:prop_name])
       lp = ling && prop && current_group.lings_properties.find_by_ling_id_and_property_id(ling.id, prop.id)
       if lp
         render :json => {exists: true, value: lp.value, id: lp.id} 

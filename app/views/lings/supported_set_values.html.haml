@@ -3,10 +3,9 @@
   Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
 %div{:style=> "height: 50px;"}
   = link_to [current_group, @ling], :class => "btn btn-default" do
-    = icon "angle-left", "Back to #{@ling.name} page"
-//= link_to group_lings_depth_path(current_group, @depth), :class => "btn btn-default" do
-//  = icon "angle-left", "Go to #{@ling.grouped_name.pluralize} page"
-%br/
+    %i.glyphicon.glyphicon-arrow-left
+    Back
+
 #supported-entry-container
   .row
     #property-description.col-md-4.set-col
@@ -17,28 +16,34 @@
       = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
 %div{:style=> "height: 60px;"}
   = link_to [current_group, @ling], :class => "btn btn-default" do
-    = icon "angle-left", "Back to #{@ling.name} page"
-//\#{link_to "Go to #{@ling.grouped_name.pluralize} page", group_lings_depth_path(current_group, @depth), :class => "btn btn-default"}
-#example-modal.modal.hide.fade
-  .modal-header
-    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-    %button#minimize-example.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
-    %span#modal-head-content
-  .modal-body
-#property-modal.modal.hide.fade
-  .modal-header
-    %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
-    %button#minimize-prop.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
-    %span#modal-head-content-prop
-  .modal-body
+    %i.glyphicon.glyphicon-arrow-left
+    Back
+
+// Example modal
+#example-modal.modal.fade
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+        %button#minimize-example.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
+        %span#example-modal-title
+      .modal-body
+
+// Property modal
+#property-modal.modal.fade
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+        %button#minimize-prop.close{"aria-hidden" => "true", :type => "button"} -&nbsp;
+        %span#property-modal-title
+      .modal-body
+
+// ???
 .mod-tab
-  %a#prop-tab.btn.btn-info.hidden{:href => "#"}
+  %a#property-tab.btn.btn-info.hidden{:href => "#"}
     %i.glyphicon-white.glyphicon-chevron-up.shift-down
     Property Description
   %a#example-tab.btn.btn-info.hidden{:href => "#"}
     %i.glyphicon-white.glyphicon-chevron-up.shift-down
     Example
-- content_for :scripts do
-  / = javascript_include_tag "scrollTo.min"
-  :javascript
-    // $.getScript(location.href);

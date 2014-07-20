@@ -1,4 +1,3 @@
-= javascript_tag "$.getScript(location.href);"
 = form_for([current_group, @example], :html => {:class => "form-horizontal"}) do |f|
   - if @example.errors.any?
     #error_explanation
@@ -8,40 +7,53 @@
       %ul
         - @example.errors.full_messages.each do |msg|
           %li= msg
-  .form-group
-    = f.label :name, :class => "control-label"
-    .controls
-      = f.text_field :name, :placeholder => "Leave empty to generate a name"
-  .form-group
-    = label_tag "auto_ling", current_group.ling0_name, :class => "control-label"
-    .controls
-      = text_field_tag "ling_id", "#{@ling ? @ling.name : "" }", :id => "auto_ling", :placeholder => "Loading...", :class => "autocomplete search-query |
-        #{@ling ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true"                                                                |
-  .form-group
-    = label_tag "auto_prop", current_group.property_name, :class => "control-label"
-    .controls
-      = text_field_tag "prop_id", "#{@property ? @property.name : "" }", :id => "auto_prop", :placeholder => "Loading...", :class => "search-query autocomplete |
-        #{@property ? "disabled" : "enabled" }", :autocomplete => "off", :disabled => "true"                                                                    |
-  .form-group
-    = label_tag "lp-status", "%s-%s" % [current_group.ling0_name.capitalize, current_group.property_name.capitalize], :class => "control-label"
-    .controls
-      = hidden_field_tag "lp_val", (@lp && @lp.id) || "false"
-      #lp-status{:class => "alert #{"alert-success" if @lp}"}
-        - if @lp
-          Value: "#{@lp.value}"
-        - else
-          Not Found (Enter Ling and Property)
-  - @example.storable_keys.each do |key|
-    - if key.downcase != "description"
+  .row
+    .col-md-8
       .form-group
-        = label :stored_values, key, :class => "control-label"
-        .controls
-          - if key.downcase == "comment"
-            = text_area :stored_values, key, :value => @example.stored_value(key), :rows => 4, :style => "width:288px;"
-          - else
-            = text_field :stored_values, key, :value => @example.stored_value(key)
-  .form-group
-    .controls
-      .save-container
-        .save-overlay
-          = f.submit :class => "btn btn-success"
+        .col-md-12
+          = f.label :name, :class => "control-label"
+          .controls
+            = f.text_field :name, :placeholder => "Leave empty to generate a name"
+        .col-md-1
+          = hidden_field_tag "lp_val", (@lp && @lp.id) || ""
+      - storable_rows(2).each do |row|
+        .form-group
+          - row.each do |key|
+            .col-md-6
+              = label :stored_values, key, :class => "control-label"
+              .controls
+                - if key.downcase == "comment"
+                  = text_area :stored_values, key, :value => @example.stored_value(key), :rows => 4, :class => "col-md-12"
+                - else
+                  = text_field :stored_values, key, :value => @example.stored_value(key)
+      .form-group
+        .col-md-6
+          .controls
+            = f.submit :class => "btn btn-success", :id => "save-example"
+    .col-md-4
+      .row
+        .col-md-12
+          %h3 Related to:
+      .row
+        .col-md-12
+          = label_tag "ling-search-field", current_group.ling0_name, :class => "control-label"
+          .controls
+            = text_field_tag "ling_id", "#{@ling ? @ling.name : "" }", :id => "ling-search-field", :placeholder => "Loading...", :class => "form-control", :autocomplete => "off"
+      .row
+        .col-md-12
+          = label_tag "prop-search-field", current_group.property_name, :class => "control-label"
+          .controls
+            = text_field_tag "prop_id", "#{@property ? @property.name : "" }", :id => "prop-search-field", :placeholder => "Loading...", :class => "form-control", :autocomplete => "off"
+      - if @props_list.present?
+        //- TODO: in case of new/edit page show here all the properties bound to this example
+        //- For a look and style guide have a look to the quick analysis panel in ling/show
+      - else
+        .row
+          .col-md-12
+            = label_tag "lp-status", "Value:", :class => "control-label"
+            .controls
+              #lp-status{:class => "alert #{"alert-success" if @lp}"}
+                - if @lp
+                  "#{@lp.value}"
+                - else
+                  Not Found (Enter Ling and Property)

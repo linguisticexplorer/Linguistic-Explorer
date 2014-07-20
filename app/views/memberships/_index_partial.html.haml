@@ -3,10 +3,10 @@
   = alphabetical_paginate @params
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
-    %th Member
+    %th.col-sm-8 Member
     %th Level
     - if can_see? :manage, @memberships
-      %th Actions
+      %th.col-sm-2 Actions
   - @memberships.each do |membership|
     %tr
       %td= link_to membership.member.name, [current_group, membership]

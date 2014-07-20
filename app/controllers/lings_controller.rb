@@ -107,8 +107,7 @@ class LingsController < GroupDataController
 
   def supported_submit_values
     @ling = current_group.lings.find(params[:id])
-    fresh_vals = LingsProperty.find(:all,
-                                :conditions => {ling_id: @ling.id, property_id: params[:property_id]})
+    fresh_vals = current_group.lings_properties.where({ling_id: @ling.id, property_id: params[:property_id]})
     if fresh_vals.count > 1
       fresh_vals.each do |val|
         val.delete

@@ -23,9 +23,9 @@ class ExamplesController < GroupDataController
   end
 
   def new
-    @ling = params[:ling_id] && Ling.find(params[:ling_id])
-    @property = params[:prop_id] && Property.find(params[:prop_id])
-    @lp = params[:lp_id] && LingsProperty.find_by_id(params[:lp_id])
+    @ling = params[:ling_id] && current_group.lings.find(params[:ling_id])
+    @property = params[:prop_id] && current_group.properties.find(params[:prop_id])
+    @lp = params[:lp_id] && current_group.lings_properties.find_by_id(params[:lp_id])
 
     @example = Example.new do |e|
       e.group = current_group
@@ -37,13 +37,13 @@ class ExamplesController < GroupDataController
 
   def edit
     @example = current_group.examples.find(params[:id])
-    @ling = Ling.find(params[:ling_id]) if params[:ling_id]
-    @property = Property.find(params[:prop_id]) if params[:prop_id]
-    @lp = LingsProperty.find(params[:lp_id]) if params[:lp_id]
+    @ling = params[:ling_id] ? current_group.lings.find(params[:ling_id]) : @example.ling
+    @property = current_group.properties.find(params[:prop_id]) if params[:prop_id]
+    @lp = current_group.lings_properties.find(params[:lp_id]) if params[:lp_id]
 
     is_authorized? :update, @example, true
 
-    @lings = get_lings
+    # @lings = get_lings
   end
 
   def create
@@ -57,7 +57,7 @@ class ExamplesController < GroupDataController
     if params[:lp_val]
       elp = ExamplesLingsProperty.new()
       elp.group = current_group
-      elp.lings_property = LingsProperty.find(params[:lp_val])
+      elp.lings_property = current_group.lings_properties.find(params[:lp_val])
       elp.example = @example
 
       is_authorized? :create, elp, true
@@ -74,7 +74,7 @@ class ExamplesController < GroupDataController
         format.json {render json: {success: true}}
       else
         @format.html do 
-          @lings = get_lings
+          # @lings = get_lings
           render :action => "new"
         end
         format.json {render json: {success: false}}
@@ -94,7 +94,7 @@ class ExamplesController < GroupDataController
         format.json {render json: {success: true}}
       else
         @format.html do 
-          @lings = get_lings
+          # @lings = get_lings
           render :action => "edit"
         end
         format.json {render json: {success: false}}

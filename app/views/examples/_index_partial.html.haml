@@ -25,7 +25,7 @@
         %td.tiny-col= (link_to example.ling.name, group_ling_path(current_group, example.ling))
       - if example.ling && example.ling.depth == 1
         %td.tiny-col= (link_to example.ling.name, group_ling_path(current_group, example.ling))
-      - elp = ExamplesLingsProperty.find_by_example_id(example.id)
+      - elp = current_group.examples_lings_properties.find_by_example_id(example.id)
       %td
         - if elp
           = link_to elp.lings_property.property.name, group_property_path(current_group, elp.lings_property.property)

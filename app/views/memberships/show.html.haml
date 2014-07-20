@@ -7,6 +7,14 @@
       Set by
       = @membership.creator.name
 .row
+  .col-md-12
+    = link_to group_memberships_path(current_group), :class => "btn btn-default" do
+      %i.glyphicon.glyphicon-arrow-left
+      Back
+    - if can_see? :manage, @membership
+      = link_to edit_group_membership_path(current_group, @membership), :class => 'btn btn-primary pull-right', :title => "Edit" do
+        = icon 'edit', 'Edit Membership'
+.row{:style => "margin-top: 25px;"}
   .col-md-6
     %table.table.table-hover
       %tr
@@ -35,9 +43,4 @@
             %td
               = link_to activity.name, [current_group, @activity]
             %td= (activity.updated_at || activity.created_at).to_formatted_s(:long)
-%br/
-= link_to group_memberships_path(current_group), :class => "btn btn-default" do
-  %i.glyphicon.glyphicon-arrow-left
-  Back
-- if current_user.group_admin_of? current_group 
-  = link_to 'Edit', edit_group_membership_path(current_group, @membership), :class => 'btn btn-primary'
+

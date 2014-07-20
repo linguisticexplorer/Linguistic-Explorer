@@ -1,42 +1,37 @@
 - page_heading current_group.example_name
-%h1= current_group.example_name
-= link_to group_examples_path(current_group), :class => "btn btn-default" do
-  %i.glyphicon.glyphicon-arrow-left
-  Back
-\&nbsp;
-- if can_see? :manage, @example
-  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn btn-primary"
-%br/
-%br/
-%table.show-table.description-table.table.table-bordered.table-striped.table-hover
-  %p
-  %tr
-    %td Name:
-    %td
-      = @example.name
-  - if @example.ling
-    %tr
-      %td
-        = @example.ling.grouped_name
-        \:
-      %td
+%h1
+  = @example.name
+  %small= @example.grouped_name
+  -if @example.creator
+    %span.small.pull-right
+      Set by
+      = @example.creator.name
+.row
+  .col-md-12
+    - if @example.ling
+      = link_to [current_group, @example.ling], :class => "btn btn-default" do
+        %i.glyphicon.glyphicon-arrow-left
+        Back
+    - else
+      = link_to group_examples_path(current_group), :class => "btn btn-default" do
+        %i.glyphicon.glyphicon-arrow-left
+        Back
+    - if can_see? :manage, @example
+      = link_to edit_group_example_path(current_group, @example), :class => "btn btn-primary pull-right" do
+        = icon 'edit', "Edit #{current_group.example_name}"
+.row{:style => "margin-top: 25px;"}
+  .col-md-6
+    - if @example.ling
+      %h3
+        %small Related to :
         = link_to @example.ling.name, group_ling_path(current_group, @example.ling)
-  - @example.storable_keys.each do |key|
-    - if @example.stored_value(key) != ""
-      %tr
-        %td
-          = key.humanize
-          \:
-        %td.text-justify
-          = @example.stored_value(key)
-  %tr
-    %td Created by:
-    %td
-      = @example.creator ? @example.creator.name : "Unknown user"
-%br/
-= link_to group_examples_path(current_group), :class => "btn btn-default" do
-  %i.glyphicon.glyphicon-arrow-left
-  Back
-\&nbsp;
-- if can_see? :manage, @example
-  = link_to 'Edit', edit_group_example_path(current_group, @example), :class => "btn btn-primary"
+  .col-md-6
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      - @example.storable_keys.each do |key|
+        - if @example.stored_value(key) != ""
+          %tr
+            %td
+              = key.humanize
+              \:
+            %td.text-justify
+              = @example.stored_value(key)
