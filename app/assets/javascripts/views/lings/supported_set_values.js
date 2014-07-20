@@ -13,12 +13,11 @@
 
   function setupComplexPage(){
 
-    var img = '<img id="loader" class="loading" src="/images/loader.gif" />';
+    var img = Handlebars.compile($('#loadingTemplate').html());
 
     $('#prop-descrip p a').attr('target', '_blank');
 
-    var exampleOverlay = $('#example-modal .save-overlay'),
-        saveOverlay    = $('#save-container .save-overlay');
+    var exampleOverlay = $('#example-modal .save-overlay');
 
     var newURL = function(id) {
         var url = location.href;
@@ -36,26 +35,32 @@
     };
 
     var reload = function(url) {
-        $("#property-description .fluid-container").html(img);
-        $("#property-setter .fluid-container").html(img);
+        $("#property-container, #values-container").html(img);
+
         $("#property-tab").addClass("hidden");
         var data = $.get(url, function(resp) {
-            $("#property-description .fluid-container").html($("#property-description .fluid-container", resp).html());
-            $("#property-setter .fluid-container").html($("#property-setter .fluid-container", resp).html());
-            $("#prop-select").find(":selected").prop("selected", false);
+
+            if(Modernizr.history){
+              window.history.pushState(null, document.title, url);
+            }
+
+            $("#property-container").html($("#property-container", resp).html());
+            $("#values-container").html($("#values-container", resp).html());
+            $("#prop-select").find(':selected').prop("selected", false);
             var currentPropId = getData().prop_id;
             var newOption = $("#prop-select option[value=" + currentPropId + "]");
             newOption.prop("selected", true);
+
+            toggleSureness();
         });
-        if(Modernizr.history){
-          window.history.pushState(null, document.title, url);
-        }
 
     };
 
+    toggleSureness();
+
     $(document)
     // Category
-      .on("click", "#cat-prop option", function(e) {
+      .on("change", "#prop-select", function(e) {
         e.preventDefault();
         reload(newURL(e.target.value));
       })
@@ -78,6 +83,7 @@
         }
         reload(url);
       })
+      .on('change', "#values input[name='value']", toggleSureness)
       // Example selection
       .on("click", "#example-select-btn", function(e) {
         e.preventDefault();
@@ -95,20 +101,17 @@
         });
       })
       // Save
-      .on("click", "[id^=sureness_]", function (e) {
+      .on("click", "[id^=sureness_]:not(:disabled)", function (e) {
         e.preventDefault();
         var form = $("#value-form");
-
-        displayOverlay(saveOverlay);
 
         $.post(form.attr("action"), form.serialize(), onSavedValue, 'json');
 
         function onSavedValue(data) {
-          saveOverlay.css("background-color", "");
 
           if (data.success) {
             $("#prop-name").data("lp_id", data.id);
-            saveOverlay.addClass("alert-success").text("Save Successful");
+
             var warning = $("#example-warning");
             var colSelector = $("#prop-" + getData().prop_id);
 
@@ -123,11 +126,8 @@
               $("#example-create").toggleClass("disabled enabled");
             }
           } else {
-            saveOverlay.addClass("alert-danger");
-            saveOverlay.text("Save Unsuccessful");
-          }
 
-          saveOverlay.animate({ opacity: 0 }, 500, closeOverlay());
+          }
 
         }
 
@@ -251,6 +251,13 @@
 
     function displayOverlay(overlay){
       overlay.css("display", "block").css("background-color", "white").html(img);
+    }
+
+    function toggleSureness(){
+      // check the state of the value
+      var isChecked = $("#values input[name='value']:checked").length > 0;
+      // toggle the disabled state of sureness
+      $('[id^=sureness_]').toggleClass("disabled", !isChecked);
     }
 
   }

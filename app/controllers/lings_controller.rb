@@ -94,9 +94,10 @@ class LingsController < GroupDataController
     @examples = []
     if @exists
       @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
-      @example =  params[:example_id] ? Example.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
+      @example =  params[:example_id] ? current_group.examples.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
     @relations = []
+    # do this with one query
     @property.lings_properties.includes(:ling).find_each(:batch_size => 500) do |lp|
       @relations << [lp.ling.name, lp.value]
     end

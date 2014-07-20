@@ -1,6 +1,6 @@
 %div
   %h2 Values
-#values_container{:style => "min-height: 290px;"}
+#values-container{:style => "min-height: 290px;"}
   = form_tag(supported_submit_values_group_ling_path(current_group, @ling), :method => "post", id: "value-form") do
     = hidden_field_tag :property_id, @property.id
     #value-select.form-group
@@ -18,48 +18,38 @@
               .input-group
                 %span.input-group-addon +
                 %input{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
-              // = text_field_tag "new_value", nil, :placeholder => "or Add a New one"
 
-    %h4 To save your value think:
+    %h4 To save this value think:
     #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px;"}
-      %h5 How sure are you about this value?
+      %h5 How sure are you about the value set?
       .btn-group
         %button.btn.btn-default#sureness_certain{ :name => "value_sureness", :value => "certain", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}" } Certain
         %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
         %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need help
-      //%label.radio
-      //  %input#sureness_certain{:type=> "radio", :name => "value_sureness", :value => "certain", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any? } Certain
-      //%label.radio
-      //  %input#sureness_revisit{:type=> "radio", :name => "value_sureness", :value => "revisit", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any? } Revisit
-      //%label.radio
-      //  %input#sureness_need_help{:type=> "radio", :name => "value_sureness", :value => "need_help", :checked => @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any? } Need Help
-    //#save-container
-    //  .save-overlay
-    //    #save-btn.btn.btn-block.btn-success Save
-#prop-example
-  %h4 Examples
-  #prop-active-example.content-box
-    - if @example
-      %p
-        = render :partial => "examples/show", :object => @example
-    - else
-      %p.lead
-        No example selected
-  #prop-example-selector
-    = form_tag({controller: "lings", action: "supported_set_values"}, method: "get", :class=> "form-inline") do
-      .form-group
-        %select.form-control#example-select{:name => "example_id"}
-          - if @examples.present?
-            - @examples.each do |example|
-              %option{ :value => example.id } #{example.name}
-          - else
-            %option No examples available
-      .form-group
-        %a#exampe-select-btn.btn.btn-default Select
-  #prop-example-creator{:style => "margin-top: 15px;"}
-    %a#example-create{:class => "btn btn-success #{@exists ? "enabled" : "disabled"}", :href => "#"} 
-      = icon 'plus', 'Create Example'
-    %a#example-change{:class => "btn btn-default #{@examples.present? ? "enabled" : "disabled"}", :href => "#"}
-      =icon 'edit', 'Change Example'
-  - if @exists.present?
-    %span#example-warning.blue.italic You must set a value before creating examples
+  #prop-example.form-group{:style => "margin-top: 15px;"}
+    %h4 Examples
+    #prop-active-example.content-box
+      - if @example
+        %p
+          = render :partial => "examples/show", :object => @example
+      - else
+        %p.lead
+          No example selected
+    #prop-example-selector
+      = form_tag({controller: "lings", action: "supported_set_values"}, method: "get", :class=> "form-inline") do
+        .form-group
+          %select.form-control#example-select{:name => "example_id"}
+            - if @examples.present?
+              - @examples.each do |example|
+                %option{ :value => example.id } #{example.name}
+            - else
+              %option No examples available
+        .form-group
+          %a#exampe-select-btn.btn.btn-default Select
+    %div{:style => "margin: 10px 0 0 0; min-height: 15px; *height: 15px;"}
+      %span#example-warning.blue.italic= "You must set a value before creating examples" if @exists
+    #prop-example-creator{:style => "margin-top: 10px;"}
+      %a#example-create{:class => "btn btn-success #{@exists ? "enabled" : "disabled"}", :href => "#"} 
+        = icon 'plus', 'Create Example'
+      %a#example-change{:class => "btn btn-default #{@examples.present? ? "enabled" : "disabled"}", :href => "#"}
+        =icon 'edit', 'Change Example'

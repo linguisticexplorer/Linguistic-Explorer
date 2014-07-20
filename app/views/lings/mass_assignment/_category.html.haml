@@ -9,20 +9,15 @@
           - category.each do |category|
             %option{ :value => category.id, :selected => category.id == @category.id }= category.name
       .form-group
-        // = submit_tag("Select", class: "btn btn-default", style: "display:block; margin-top:10px;width:120px;")
-        %a.btn.btn-default Select
+        %a{:href => "#"}.btn.btn-default Select
 %h4 Properties
 = form_tag({controller: "lings", action: "supported_set_values"}, method: "get") do
   #cat-prop.form-group
     %select.form-control#prop-select{:multiple => "multiple", :name => "prop_id"}
       - @properties.each do |prop|
-        %option{:id => "prop-#{prop.id}", :style => sureness_color(prop), :value => prop.id, :selected => prop.id == @property.id}= prop.name
+        %option{:id => "prop-#{prop.id}", :style => sureness_color(prop), :value => prop.id, :selected => (prop.id == @property.id) }= prop.name
   #select-col.form-group
-    // = submit_tag "Select", :class => "btn cat-btn hidden"
     %a.btn.cat-btn.hidden Select
-    // = submit_tag "Next", :class => "btn btn-default btn-block cat-btn"
-    // = submit_tag "Next Unset", :class => "btn btn-danger btn-block cat-btn"
-    // = submit_tag "Next Uncertain", :class => "btn btn-warning btn-block cat-btn"
     - [["  ","default"], ["Unset","danger"], ["Uncertain","warning"]].each do |text, style|
       %a{:class => "btn btn-block cat-btn btn-#{style}"}
         Next #{text}
