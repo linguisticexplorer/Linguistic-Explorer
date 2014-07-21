@@ -3,6 +3,6 @@
 *= require reset
 *= require default
 *= require style
-*= require typeaheadjs
-*= require_self
+*= require leaflet
+*= require_tree .
 */

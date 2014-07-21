@@ -39,6 +39,9 @@
         $(document)
           .on('click', '.remove-lings', removeLanguages)
           .on('click', '.remove-ling' , removeLanguage);
+
+        // load Map
+        $("#mapButton").one('click', loadMap);
     }
 
     function checkButtons(criteria){
@@ -137,6 +140,10 @@
 
       $('#'+resourceId+'-search-field').typeahead('val', '');
 
+    }
+
+    function loadMap(){
+      T.Map.init('ling-map', {name: $('#map').data('name')});
     }
 
 })();
