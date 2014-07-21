@@ -57,7 +57,7 @@ class LingsController < GroupDataController
     session[:category_id] = params[:category_id] if params[:category_id]
     @category = session[:category_id] ? Category.find(session[:category_id]) : @categories.first
     @properties = @category.properties.order('name')
-    @preexisting_values = @ling.lings_properties.select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
+    @preexisting_values = @ling.lings_properties.includes(:property).select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
     @exists = true
 
     if params[:prop_id]
@@ -93,15 +93,22 @@ class LingsController < GroupDataController
     end
     @examples = []
     if @exists
-      @ling_properties.each {|lp| @examples += lp.examples if !lp.examples.empty?}
+      @ling_properties.each {|lp| @examples += lp.examples if lp.examples.any?}
       @example =  params[:example_id] ? current_group.examples.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
-    @relations = []
-    # do this with one query
-    @property.lings_properties.includes(:ling).find_each(:batch_size => 500) do |lp|
-      @relations << [lp.ling.name, lp.value]
-    end
-    @relations.sort{|x,y| x[0] <=> y[0]}
+    @relations = @property.lings_properties
+      .select('lings.`name`, lings_properties.`value`')
+      .order('lings.`name`')
+      .includes(:ling)
+      .limit(500)
+      .to_a.map {|lp| [lp.ling.name, lp.value]}
+
+    # @relations = []
+    # #do this with one query
+    # @property.lings_properties.includes(:ling).find_each(:batch_size => 500) do |lp|
+    #   @relations << [lp.ling.name, lp.value]
+    # end
+    # @relations.sort{|x,y| x[0] <=> y[0]}
 
     # authorize! :update, @ling
   end

@@ -51,12 +51,10 @@
             var newOption = $("#prop-select option[value=" + currentPropId + "]");
             newOption.prop("selected", true);
 
-            toggleSureness();
+            onValueChange();
         });
 
     };
-
-    toggleSureness();
 
     $(document)
     // Category
@@ -83,7 +81,7 @@
         }
         reload(url);
       })
-      .on('change', "#values input[name='value']", toggleSureness)
+      .on('change', "#values input[name='value']", onValueChange)
       // Example selection
       .on("click", "#example-select-btn", function(e) {
         e.preventDefault();
@@ -112,7 +110,6 @@
           if (data.success) {
             $("#prop-name").data("lp_id", data.id);
 
-            var warning = $("#example-warning");
             var colSelector = $("#prop-" + getData().prop_id);
 
             if (colSelector.length > 0) {
@@ -121,10 +118,9 @@
               colSelector.css("color", needsReview ? "orange" : "green");
               
             }
-            if (warning.length) {
-              warning.remove();
-              $("#example-create").toggleClass("disabled enabled");
-            }
+
+            toggleExampleWarning(false);
+
           } else {
 
           }
@@ -194,6 +190,11 @@
       };
     }
 
+    function onValueChange(){
+      toggleSureness();
+      toggleExampleWarning();
+    }
+
     function disableAction(e){
       e.preventDefault();
     }
@@ -253,11 +254,21 @@
       overlay.css("display", "block").css("background-color", "white").html(img);
     }
 
+    function isValueSet(){
+      return $("#values input[name='value']:checked").length > 0;
+    }
+
     function toggleSureness(){
       // check the state of the value
-      var isChecked = $("#values input[name='value']:checked").length > 0;
+      var isChecked = isValueSet();
       // toggle the disabled state of sureness
       $('[id^=sureness_]').toggleClass("disabled", !isChecked);
+    }
+
+    function toggleExampleWarning(){
+      var isChecked = isValueSet();
+      $("#example-warning").toggleClass("hidden", isChecked);
+      $("#example-create").toggleClass("disabled enabled", !isChecked);
     }
 
   }

@@ -9,7 +9,7 @@
         %div{:style => "margin-left: 25px;"}
           - @property.available_values.sort.reverse.each do |value|
             = label_tag "value[#{value}]", :class => "radio" do
-              = radio_button_tag "value", value,                                                     |
+              = radio_button_tag "value", value, 
                 @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first
               = value
           - if can_see? :manage, @ling
@@ -18,7 +18,6 @@
               .input-group
                 %span.input-group-addon +
                 %input{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
-
     %h4 To save this value think:
     #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px;"}
       %h5 How sure are you about the value set?
@@ -47,7 +46,7 @@
         .form-group
           %a#exampe-select-btn.btn.btn-default Select
     %div{:style => "margin: 10px 0 0 0; min-height: 15px; *height: 15px;"}
-      %span#example-warning.blue.italic= "You must set a value before creating examples" if @exists
+      %span#example-warning.blue.italic{:class => "#{'hidden' unless @exists}"} You must set a value before creating examples 
     #prop-example-creator{:style => "margin-top: 10px;"}
       %a#example-create{:class => "btn btn-success #{@exists ? "enabled" : "disabled"}", :href => "#"} 
         = icon 'plus', 'Create Example'

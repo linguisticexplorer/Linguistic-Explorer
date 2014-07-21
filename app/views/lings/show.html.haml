@@ -4,7 +4,10 @@
   = @ling.grouped_name
   = @ling.name
   // show the creator on the right here
-
+  -if @ling.creator
+    %span.small.pull-right
+      Set by
+      = @ling.creator.name
 .row
   .col-md-12
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
