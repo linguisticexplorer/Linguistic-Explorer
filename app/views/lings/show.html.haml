@@ -120,8 +120,8 @@
                   - example = elp.example
                   = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
             - elsif can_see?(:manage, @ling)
-              %td.text-center
-                = link_to supported_set_values_group_ling_path(current_group, @ling), :prop_id => value.property.id, :class => "btn btn-success", :title => "Create a new Example" do
+              %td
+                = link_to supported_set_values_group_ling_path(current_group, @ling), :prop_id => value.property.id, :class => "btn btn-success pull-right", :title => "Create a new Example" do
                   = icon 'plus', ""
             %td= (value.creator ? value.creator.name : "")
     #pagination_bottom.apple_pagination.will-paginate
