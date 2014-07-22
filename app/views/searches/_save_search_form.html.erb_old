@@ -1,0 +1,113 @@
+<%- if display_save_search_form?(@search) -%>
+  <div id="save-modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="saveModal" aria-hidden="true">
+    <%= content_tag :fieldset do %>
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+        <button type="button" class="close" id="minimize-example" aria-hidden="true">-&nbsp;</button>
+        <span id="modal-head-content">
+          <h4>Save search results</h4>
+        </span>
+      </div>
+      <%= form_for [:group, @search], :html => {:class => "form-horizontal", :id => "save-form", :style => "margin-bottom: 0px;"} do |f| %>
+        <div class="modal-body">
+          <div class="row-fluid">
+            <div id="error_explanation" class="span8 hide">
+              <h2>An error prohibited this search from being saved:</h2>
+              <ul id="error_messages">
+              </ul>
+            </div>
+            <div id="success_explanation" class="span8 alert alert-success hide">
+              <p>Your search has been successfully saved!</p>
+            </div>
+            <div class="span12 input-append">
+              <%= f.text_field :name, :placeholder => "Enter name", class: "search-input  disabled" %>
+            </div>
+          </div>
+          <%= f.hidden_field :query_json %>
+          <%= f.hidden_field :result_groups_json %>
+        </div>
+        <div class="modal-footer">
+          <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+          <%= f.submit "Save", :id => "save-search", :class => "btn btn-primary", "data-loading-text" => "Saving..." %>
+        </div>
+      <%- end -%>
+    <%- end -%>
+  </div>
+<%- end -%>
+
+<% content_for :scripts do%>
+<script>
+$('#saveit').click(function(){
+
+  var queryJsonString = JSON.stringify(query.search, null, 0);
+
+  var resultsJsonString = JSON.stringify(makeResultsJson(), null, 0);
+
+  // add search query
+  $('[name="search[query_json]"]').val(queryJsonString);
+
+  // add results json
+  $('[name="search[result_groups_json]"]').val(resultsJsonString);
+
+  $('#save-modal').modal('show');
+
+});
+
+function makeResultsJson(){
+
+  var rows = resultsJson.rows;
+  var saveJson = {};
+  
+  for( var i =0; i<rows.length; i++){
+    saveJson[rows[i].parent.lings_property.id] = [];
+    if(rows[i].child && rows[i].child.lings_property){
+      saveJson[rows[i].parent.lings_property.id] = $.map(rows[i].child, function(sub){ return sub.lings_property.id; });
+    }
+  }
+  return saveJson;
+}
+
+$('#save-form').on('submit', function (e){
+  var params = $(this).serialize();
+  
+  $('#save-search').button('loading');
+
+  // Prevent page change: use AJAX power!
+  e.preventDefault();
+
+  saveSearch(params);
+  
+});
+
+function saveSearch(data){
+  $.post("/groups/<%= @search.group.id =%>/searches", data, function (json){
+
+    var idToShow = json.success ? 'success_explanation' : 'error_messages',
+        errorMessages = json.success ? '' : json.errors;
+
+    if(errorMessages){
+      var source = $('#errors_template').html();
+      var template = Handlebars.compile(source);
+      var html = template(template);
+
+      $('#'+idToShow).append(html);
+    }
+
+    $('#'+idToShow).fadeIn();
+    // hide the button so the user can only close the modal
+    $('#save-search').hide();
+    
+  });
+}
+</script>
+<% end %>
+
+<script id="errors_template" type="text/templates">
+  {{#if errors}}
+    <ul id="error_messages">
+    {{#each errors.full_messages}}
+      <li>{{this}}</li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</script>

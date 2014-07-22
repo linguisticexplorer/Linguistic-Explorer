@@ -1,0 +1,825 @@
+<% page_heading "Search" %>
+<h1><%= @search.group.name %> Search Results</h1>
+<div class="row-fluid">
+    <%= render :partial => 'searches/templates/results_navbar' %>
+</div>
+<div id="search_results" class="padded_left padded_right">
+  <div class="apple_pagination will-paginate">
+    <div class="pagination">
+    </div>
+  </div>
+  <div id="pagination_table">
+    <div class="progress progress-striped" style='margin: 10px 20px 5px 30px;'>
+      <div class="bar" style="width: 0%;" id="results_loading_bar"></div>
+    </div>
+    <p class='strong' style='text-align: center;' id='results_loading_text'>
+      Your query is processing...
+    </p>
+    <div id="error_message" class="alert alert-danger hide">
+      <div>Start a new search here:
+        <span>
+          <%= link_to 'New Search', [:new, @group, :search], class: "btn" %>
+        </span>
+      </div>
+    </div>
+  </div>
+  <div class="apple_pagination will-paginate">
+    <div class="pagination">
+    </div>
+  </div>
+</div>
+
+<% content_for :scripts do%>
+<script>
+  var group = <%= current_group.to_param %>;
+
+  var templates = {
+    'cross': '#cross_results',
+    'compare': '#compare_results',
+    'implication': '#cross_results',
+    'default': '#regular_results',
+    'clustering': '#clustering_results'
+  };
+
+  var loadingInterval,
+      query,
+      resultsJson;
+
+  $(window).load(function(){
+
+    var timeoutMillis = 50000,
+        refreshRate   = 100;
+
+    query = {
+      authenticity_token: "<%= form_authenticity_token %>",
+      search: <%= @query %>
+    };
+  
+    $.post(getResultsURL(group), query)
+    .success(compileResults)
+    .error(notifyError);
+    
+    var progress = 0,
+        step = 50 / (timeoutMillis / refreshRate);
+
+    function notifyError(err){
+      if(err){
+        progress = 100;
+      }
+
+      setBar(progress);
+
+      if(progress > 50){
+        clearInterval(loadingInterval);
+        // show an error
+        $('#results_loading_text').text('An error occurred');
+      }
+    }
+
+    loadingInterval = setInterval(function(){
+      progress += step;
+      notifyError();
+    }, refreshRate);
+
+  });
+
+  function setBar(value, msg){
+    $('#results_loading_bar').width(value+'%');
+    if(msg){
+      $('#results_loading_text').text(msg);
+    }
+  }
+
+  function getResultsURL(group, params){
+    return '/groups/'+group+'/searches/get_results';
+  }
+
+  function enableNavbar(type){
+    var navbar = $('#results_navbar');
+    
+    // show download button only for clustering
+    if(!(/clustering/).test(type)){
+      $('#downloadit').hide();
+    } else {
+      $('#saveit, #mapit, #vizit').hide();
+    }
+    
+    // hide save button for non-regular searches
+    if(!(/default/).test(type)){
+      $('#saveit').hide();
+    } else {
+      $('#vizit').hide();
+    }
+
+    if(!navbar.is(':visible')){
+      navbar.fadeIn('slow');
+    }
+  }
+
+  function compileResults(json){
+
+    resultsJson = json;
+
+    clearInterval(loadingInterval);
+
+    if(!json.success){
+
+      setBar(100, '');
+
+      $('#error_message').
+        prepend($('p').text(json.errors)).
+        show('slow');
+
+    } else {
+      
+      makeNewPage(resultsJson, 0, true);
+      
+    }
+
+    
+  }
+
+  function makeNewPage(json, offset, bar){
+    // Data variables
+    var table, template, htmlRows;
+    // Pagination variables
+    var paginationData, paginationTemplate, htmlPagination;
+
+    if(bar){
+      setBar(50, 'Data received');
+    }
+    var template_id = 'default';
+
+    var isClustering = (/clustering/).test(json.type);
+
+    for( var type in templates){
+      if( (new RegExp(type)).test(json.type) ){
+        template_id = templates[type];
+        break;
+      }
+    }
+
+    if(!isClustering){
+
+      table = createTable(json, offset);
+      paginationData = createPagination(json, offset);
+
+    }
+
+    if(bar){
+      setBar(80, 'Data processed');
+    }
+    
+    // we need the template in case of clustering anyway...
+    template = Handlebars.compile($(template_id).html());
+
+    if(!isClustering){
+      
+      paginationTemplate = Handlebars.compile($('#pagination_bar').html());
+
+    }
+    
+    if(bar){
+      setBar(100, 'Preparing the results');
+    }
+
+    htmlRows = template(table || {});
+
+    if(!isClustering){
+      htmlPagination = paginationTemplate(paginationData);
+    }
+    
+
+    setTimeout(function(){
+
+      $('#pagination_table').html(htmlRows);
+
+      if(isClustering){
+
+        // draw philogram
+        drawPhilogram(json.rows[1]);
+
+      } else {
+
+        $(".pagination").html(htmlPagination);
+
+      }
+
+      enableNavbar(json.type);
+      
+    }, 700);
+  }
+
+  function createPagination(json, offset, max_rows){
+
+    function pageToShow(n, avg, max, cur){
+      // First two pages
+      return n === 1      || n === 2      ||
+      // Pages in the middle
+             n === avg-1  || n === avg    || n === avg+1 ||
+      // Last pages
+             n === max-1  || n === max    ||
+      // Pages around the chosen one
+             n === cur-1  || n === cur    || n === cur+1;
+    }
+
+    // start to count from 1 instead of 0
+    var page_offset = offset + 1;
+    var max_rows_per_page = max_rows || 25;
+
+    var pages = [];
+    var prev = {disabled: (page_offset === 1) },
+        next = {disabled: (!json.rows[page_offset*max_rows_per_page]) };
+
+    var pages_total = Math.ceil(json.rows.length / max_rows_per_page),
+        half_total  = pages_total / 2;
+
+    var middle_page = Math.floor(half_total) === half_total ?
+          half_total :
+          Math.floor(half_total) + 1;
+
+    for(var page = 1; page<=pages_total; page++){
+
+      // if there are 15 pages or less it's ok, otherwise check for specific pages
+      if(pages_total < 16 || pageToShow(page, middle_page, pages_total, page_offset)){
+        pages.push({number: page, current: (page === page_offset)});
+      }
+      else {
+        // add a gap only if it's not there yet...
+        if(!pages[pages.length - 1].gap){
+          pages.push({gap: true});
+        }
+      }
+      
+      // add prev and next buttons
+      if(!prev.disabled && page + 1 === page_offset){
+        prev.number = page;
+      }
+
+      if(!next.disabled && page - 1 === page_offset){
+        next.number = page;
+      }
+    }
+    return {pages: pages, prev: prev, next: next};
+  }
+
+  function createTable(json, offset, max_rows){
+    var max_rows_per_page = max_rows || 25;
+    // this will clean the type of the search from all the implications subtypes
+    json.type = getType(json.type);
+    // create the header
+    var table = headerMapping(json.type, json);;
+
+    offset = offset || 0;
+    
+    for(var i=offset * max_rows_per_page; i<json.rows.length && i< max_rows_per_page * (offset + 1); i++){
+      table.rows.push(columnMapping(json.type, getHeader(json.type, table), json.rows[i], i));
+    }
+
+    return refineTable(json.type, table);
+  }
+
+  function getType(type){
+    return (/implication/).test(type) ? 'implication' : type;
+  }
+
+  function refineTable(type, table){
+    if(type === 'compare'){
+      // redefine rows property:
+      var oldRows = table.rows;
+      table.rows = {commons: [], differents: []};
+      
+      $(oldRows).each(function(index, row){
+        // pick common rows and put them in a commons property
+        // pick diff rows and put them in a diff property  
+        table.rows[(row.common ? 'commons' : 'differents')].push(row);
+      });
+      table.commons    = !!table.rows.commons.length;
+      table.differents = !!table.rows.differents.length;
+      
+    }
+    return table;
+  }
+
+  function getHeader(type, table){
+    switch (type){
+      case 'compare':
+      case 'default':
+        return table.header;
+      case 'cross':
+      case 'implication':
+        return table;
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function headerMapping(type, json){
+    function mapCrossHeaders(headers, row){
+      var result = {headers: [], header: {count: headers['count']}, rows: []};
+      for( var i =0; i<row.length; i++){
+        var header = {};
+        for( var h in headers){
+          if(headers.hasOwnProperty(h) && h !== 'count'){
+            header[h] = headers[h];
+          }
+        }
+        result.headers.push(header);
+      }
+      return result;
+    }
+
+    function mapCompareHeaders(headers, lings){
+      function mapLingName(el){
+        return el.ling.name;
+      }
+
+      return {header: headers, rows: [], lings: $.map(lings, mapLingName).join(', ') };
+    }
+
+    function mapRegularHeader(header){
+      return {header: header, rows: []};
+    }
+
+    switch (type){
+      case 'default':
+        return mapRegularHeader(json.header);
+      case 'cross':
+      case 'implication':
+        return mapCrossHeaders(json.header, json.rows[0].parent);
+      case 'compare':
+        return mapCompareHeaders(json.header, json.rows[0].lings);
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function columnMapping(type, columns, entry, index){
+    switch (type){
+      case 'default':
+        return defaultMapping(columns, entry);
+      case 'cross':
+      case 'implication':
+        return crossMapping(columns, entry, index);
+      case 'compare':
+        return compareMapping(columns, entry);
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function isThere(){
+    if(arguments.length){
+      var array = Array.prototype.slice.call(arguments),
+          obj = array.shift(),
+          new_obj = obj;
+      while(array.length && new_obj){
+        new_obj = new_obj[array.shift()];
+      }
+
+      return (!array.length && !!new_obj);
+    }
+    return false;
+  }
+
+    // PAGINATION CODE
+  // Text and image while loading
+  // TODO: Make this check somehow to see if a .js.erb file exists
+  // Alterntaively, create one for every view, but not recommended
+  
+  var img = "<img src='/images/loader.gif' class='loading'/>",
+      once = false;
+  // Manage the AJAX pagination and changing the URL
+   $(document).on("click", ".apple_pagination.will-paginate .pagination a", function (e) {
+
+      var offset = getOffset(this.id);
+      var current = getCurrentPage();
+
+      $(".pagination").html(img); 
+      makeNewPage(resultsJson, offset);
+      
+      
+      history.pushState(current, document.title + '- Page '+current, '#');
+      e.preventDefault();
+  });
+  
+  $(window).bind("popstate", function (e) {
+    console.log(e.originalEvent.state);
+    if (e.originalEvent.state) {
+      var offset = e.originalEvent.state;
+      $(".pagination").html(img);
+      makeNewPage(resultsJson, offset);
+    }
+  });
+
+  function getCurrentPage(){
+    return (+ $('[id^="current-page-"]')[0].id.replace(/current-page-/,''));
+  }
+
+  function getOffset(clicked_id){
+    // the user clicked something if clicked is defined...
+    var current_page = getCurrentPage();
+    if(clicked_id){
+      // check if the user clicked on prev/next buttons
+      if((/(next|prev)/).test(clicked_id)){
+        return clicked_id.indexOf('next') > 0 ? (current_page) : (current_page - 2);
+      }
+      // the user clicked on a page number...
+      else {
+        return + clicked_id.replace(/page-/, '') - 1;
+      }
+    }
+    // the user pressed the back button of the browser
+    else {
+      return (current_page - 2);
+    }
+    
+  }
+
+</script>
+<%= javascript_include_tag 'handlebars' %>
+<% end %>
+
+<!-- Pagination template -->
+<%= render :partial => "searches/templates/util", :inline => true %>
+<%= render :partial => "searches/templates/compare", :inline => true %>
+<%= render :partial => "searches/templates/cross", :inline => true %>
+<%= render :partial => "searches/templates/regular", :inline => true %>
+<%= render :partial => "searches/templates/clustering", :inline => true %>
+<%= render :partial => "searches/templates/geomapping", :inline => true %>
+
+
+
+<script>
+
+  var extraScriptsLoaded = false;
+
+
+//   var data,
+//       lings = [],
+//       props = [],
+//       valueScores = {};
+
+//   $(function(){
+
+//     $('#visualize').click(getCompareJSON);
+
+//   });
+
+//   function getCompareJSON(e){
+//     e.preventDefault();
+//     var searchURL = '/groups/'+ <%= @search.group.id %> +'/searches/visualize'+window.location.search;
+
+//     // var lings_name = "<%= @search.group.ling0_name.pluralize %>";
+
+//     $('#modal-head').text("Results Overview");
+//     $('#visualize-body').html(
+//       '<div style="text-align: center">'+
+//       '<span class="loading">Visualization is loading...'+
+//       '<img src="/images/loader.gif" class="loading"/>'+
+//       '</span>'+
+//       '</div>'
+//     );
+
+//     $('#visualize-modal').modal('toggle');
+
+//     if(data){
+//       createHeatmap();
+//     } else {
+//       $.getJSON(searchURL, processJSON);
+//     }
+//   }
+
+//   function isCommonProperty(row){
+//     return row.child.length !== row.lings.length;
+//   }
+
+//   function createCommonRow(index, entry, lings, property){
+//     var row = [];
+
+//     for( var j=0; j<lings.length; j++){
+//       var value = entry[0].lings_property.value;
+//       row.push({
+//         score: Number(valueScores[value]),
+//         value: value,
+//         prop: property.name,
+//         x: j,
+//         y: index
+//       });
+//     }
+
+//     return row;
+//   }
+
+//   function createDiffRow(index, entry, lings, property){
+
+//     var lingDict = {};
+//     var row = [];
+//     var j, position;
+
+//     for( var i=0; i<lings.length; i++){
+//       lingDict[lings[i].ling.id] = i;
+//     }
+
+//     // put in the array all the values we have
+//     for( j = 0; j<entry.length; j++){
+//       if(entry[j]){
+//         position = lingDict[entry[j].lings_property.ling_id];
+//         row[position] = {
+//           score: Number(valueScores[entry[j].lings_property.value]) ,
+//           value: entry[j].lings_property.value,
+//           prop: property.name,
+//           x: position,
+//           y: index
+//         };
+//       }
+//     }
+    
+//     // now fill the gaps
+//     for( j = 0; j<entry.length; j++){
+//       if(!row[j]){
+//         row[j] = {
+//           score: 0 ,
+//           value: ' ',
+//           prop: property.name,
+//           x: j,
+//           y: index
+//         };
+//       }
+//     }
+
+//     return row;
+//   }
+
+//   function mapLingColumns(rows){
+//     if(rows.length){
+//       for( var i=0; i<rows[0].lings.length; i++){
+//         lings.push(rows[0].lings[i].ling.name);
+//       }
+//     }
+//   }
+  
+//   // do nothing for the moment
+//   function mapPropRows(row){
+
+//   }
+
+//   function getURLParameter(name) {
+//     return decodeURI(
+//         (RegExp(name + '=' + '(.+?)(&|$)').exec(location.search)||[,null])[1]
+//     );
+//   }
+
+//   function replaceURLParameter(name, value){
+//     var URL = location.search;
+//     if(getURLParameter(name) !== 'null'){
+//       URL = URL.replace(/page=(.+)/, 'page='+value);
+//     } else {
+//       URL += '&page='+value;
+//     }
+//     return URL;
+//   }
+
+//   function mapValues(rows){
+//     var i, j;
+
+//     var valuesDict = {};
+//     var vCount = 0;
+
+//     // find all the values
+//     for( i=0; i<rows.length; i++){
+//       var row = rows[i];
+//       if(isCommonProperty(row)){
+//         if(!valuesDict[row.parent[0].lings_property.value]){
+//           valuesDict[row.parent[0].lings_property.value] = 1;
+//           vCount++;
+//         }
+//       } else {
+//         for( j=0; j<row.child.length; j++){
+//           var value = row.child[j] ? row.child[j].lings_property.value : ' ';
+//           if(!valuesDict[value]){
+//             valuesDict[value] = 1;
+//             vCount++;
+//           }
+//         }
+//       }
+//     }
+
+//     // because we have to map al the values in a fixed range of 2
+//     // let's calculate how much is the gap between 2 consecutive values
+//     // in the range
+//     var vShift = 2 / vCount;
+
+//     var fixedValues = {
+//       'Yes': 1,
+//       ' ': 0,
+//       'No': -1
+//     };
+
+//     var reversedMap = {
+//       '1': 'Yes',
+//       '0': ' ',
+//       '-1':  'No'
+//     };
+//     // here we have all the values mapped:
+//     // now map them in a range
+//     for( i in valuesDict ){
+//       if( valuesDict.hasOwnProperty(i) ){
+
+//         // if it's a fixed value, skip it
+//         if(!isFinite(fixedValues[i])){
+//           var newValue = 1 - vShift;
+//           while(reversedMap[newValue] && newValue > -1){
+//             newValue -= vShift;
+//           }
+//           reversedMap[newValue] = i;
+//         }
+//       }
+//     }
+
+//     // now reverse again the map
+//     for( i in reversedMap ){
+//       if( reversedMap.hasOwnProperty(i)){
+
+//         valueScores[reversedMap[i]] = i;
+//       }
+//     }
+//   }
+
+//   function processJSON(rows){
+//     rows = rows.result;    
+
+//     mapLingColumns(rows);
+//     mapPropRows(rows);
+    
+//     mapValues(rows);
+
+//     data = [];
+//     for( var i=0; i<rows.length; i++){
+//       var entry = rows[i];
+//       if(isCommonProperty(entry)){
+//         data[i] = createCommonRow(i, entry.parent, entry.lings, entry.prop);
+//       } else {
+//         data[i] = createDiffRow(i, entry.child, entry.lings, entry.prop);
+//       }
+//     }
+
+//     createHeatmap();
+//   }
+
+//   function createHeatmap(){
+//     $('#visualize-body').empty().css('height', (5 * data.length + 105)+"px");
+
+//     var fixed_width = 580;
+//     //height of each row in the heatmap
+//     var h = 25;
+//     //width of each column in the heatmap
+//     var w = fixed_width / data[0].length;
+
+//     //attach a SVG element to the modal's body
+//     var svg = d3.select("#visualize-body")
+//        .append("svg")
+//        .attr("width", (w * data[0].length) + 100) 
+//        .attr("height", (h * data.length + 100))
+//        .style('position','absolute')
+//        .style('top',0)
+//        .style('left',0);
+
+//     //define a color scale using the min and max expression values
+//     var colorScale = d3.scale.linear()
+//       .domain([-1, 0, +1])
+//       .range(["red", "white", "green"]);
+
+//     //generate heatmap rows
+//     var heatmapRow = svg.selectAll(".heatmap")
+//        .data(data)
+//        .enter().append("g");
+
+//     //generate heatmap columns
+//     var heatmapRects = heatmapRow
+//        .selectAll(".rect")
+//        .data(function(d) {
+//           return d;
+//        }).enter().append("svg:rect")
+//        .attr('width',  w)
+//        .attr('height', h)
+//        .attr('x', function(d) {
+//           return (d.x * w) + 100;
+//        })
+//        .attr('y', function(d) {
+//           return (d.y * h) + 50;
+//        })
+//        .attr('rx', 7)
+//        .attr('ry', 2)
+//        .attr('stroke', '#E6E6E6')
+//        .attr('stroke-width', 2)
+//        .style('fill', function(d) {
+//           return colorScale(d.score);
+//        });
+
+//     //label columns
+//     var columnLabel = svg.selectAll(".colLabel")
+//       .data(lings)
+//       .enter().append('svg:text')
+//       .attr('x', function(d,i) {
+//         return ((i + 0.5) * w) + 100;
+//       })
+//       .attr('y', 30)
+//       .attr('class','label')
+//       .style('text-anchor','middle')
+//       // .attr('transform', 'translate(-' + 100 + ',' + 50 + ') rotate(-90)')
+//       .text(function(d) {
+//         return d;
+//       });
+
+//     var rowLabel = svg.selectAll('.rowLabel')
+//       .data(Array(data.length)).
+//       enter().append('svg:text')
+//       .attr('x', 15)
+//       .attr('y', function(d, i){
+//         return (i * h) + 50;
+//       })
+//       .attr('class', 'label')
+//       // .style('text-anchor','middle')
+//       .text(function(d, i){
+//         if(i%25 === 1){
+//           return 'PAGE '+(Math.floor(i/25) + 1);
+//         }
+//       });
+
+//     //expression value label
+//     var lock = true;
+//     var legend = d3.select("#visualize-body")
+//        .append('div')
+//        .attr('class', 'well')
+//        .style('height',23)
+//        .style('max-width','250px')
+//        .style('word-wrap','break-word')
+//        .style('position','absolute')
+//        .style('background','#E6E6E6')
+//        // .style('opacity',0.9)
+//        .style('padding','10px')
+//        .style('display','none');
+
+//     function unlockLegend(){
+//       lock = !lock;
+//     }
+
+//     function showLegend(d, i){
+//       // d3.select(this)
+//       //   .selectAll("rect")
+//       //   .attr('stroke-width',2)
+//       //   .attr('stroke','black');
+
+//       var xy = d3.mouse(d3.select(this)[0][0]);
+
+//       var cellNumber = Math.floor((xy[0] - 100) / w);
+
+//       var page = (Math.floor(i/25) + 1);
+//       var pageURL = replaceURLParameter('page', page);
+      
+//       var output = '<table class="table table-condensed">'
+      
+//       output += '<thead><tr><th>'+d[0].prop+'</th><th>&nbsp;</th></tr></thead>';
+//       output += '<tbody>'
+
+//       for (var j = 0; j < d.length; j ++ ) {
+//         var value = d[j].value === ' ' ? '"---"' : d[j].value;
+        
+//         output += '<tr '+ (cellNumber === j ? 'class="warning">' : '>');
+//         output += '<th>'+lings[j] + '</th><th>' + value+'</th></tr>';
+
+//       }
+//       output += '</tbody></table>'
+//       output += '<br/><a href='+pageURL+' class="pull-right">' + 'Go to page ' + page + '</a>';
+      
+
+//       legend
+//          .style('top', (xy[1] + 15)+'px')
+//          .style('left', (xy[0] + 5)+'px')
+//          .style('display','block')
+//          .html(output);
+//     }
+
+//     function hideLegend(d, i){
+//       // d3.select(this)
+//       //   .selectAll("rect")
+//       //   .attr('stroke-width',2)
+//       //   .attr('stroke','#E6E6E6');
+
+//       if(!lock){
+//         legend.style('display','none');
+//       }
+//     }
+
+//     //heatmap mouse events
+//     heatmapRow
+//       .on('click'    , unlockLegend)
+//       .on('mouseover', showLegend)
+//       .on('mouseout' , hideLegend);
+//   }
+
+ </script>
