@@ -1,21 +1,17 @@
 class GeoMapping
 
-  def initialize(search)
-    @search = search
+  def initialize(ids)
+    @ids = ids
   end
 
   def to_json
-    # get search type
-    type = get_search_type
-    # collect lings in the results
-    ling_ids = get_ling_ids(type)
+
     # get the latlong id
-    prop_id = Property.in_group(@search.group).where(:name => 'latlong').pluck(:id).first
+    latlong_id = current_group.properties.where(:name => 'latlong').pluck(:id).first
     
     # create a simple hash to send as json
     json = {
-      :type => type,
-      :data => get_coords(ling_ids, prop_id)
+      :ids => get_coords(@ids, latlong_id)
     }.to_json
   end
 
@@ -23,9 +19,9 @@ class GeoMapping
 
   def get_coords(ling_ids, prop_id)
 
-    latlongs = LingsProperty.
+    latlongs = current_group.
     # query to get the ling properties for that group
-      in_group(@search.group).
+      lings_properties.
     # filter by property and ling ids
       where(:ling_id => ling_ids, :property_id => prop_id ).
     # get only two columns
@@ -51,49 +47,6 @@ class GeoMapping
         entry["#{lp.ling_id}"] = [lat, long]
       end
     end
-  end
-
-  def get_search_type
-    return "Regular" if @search.default?
-    return "Compare" if @search.compare?
-    return "Cross"   if @search.cross?
-    return "Implication"
-  end
-
-  def get_ling_ids(type)
-    # pre-calculate the results here
-    @cached_results = @search.results(false)
-    self.send("get_ids_from_#{type.downcase}")
-  end
-
-  def get_ids_from_regular
-    # Add parent ids
-    ids = @cached_results.map { |result| result.parent.ling.id }
-    # If has child lings, add them
-    if(@cached_results.first.child.present?)
-      ids = ids.concat @cached_results.map { |result| result.child.ling.id }
-    end
-    return ids.uniq
-  end
-
-  def get_ids_from_compare
-    # get the data from the first entry
-    first_entry = @cached_results.first
-    # map all the lings with their ids
-    first_entry.lings.map { |ling| ling.id }
-  end
-
-  def get_ids_from_cross
-    ids = [].tap do |entry|
-      @cached_results.each do |result|
-        entry << result.child.map {|lp| lp.ling_id }
-      end
-    end
-    ids.flatten.uniq
-  end
-
-  def get_ids_from_implication
-    get_ids_from_cross
   end
 
   # def get_legend

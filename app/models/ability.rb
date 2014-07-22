@@ -50,9 +50,17 @@ class Ability
         search.is_manageable_by?(user)
       end
 
-      can :manage, SearchComparison do |sc|
-        sc.searches.all? {|s| s.is_manageable_by?(user)}
-      end
+# <<<<<<< HEAD
+#       can :manage, SearchComparison do |sc|
+#         sc.searches.all? {|s| s.is_manageable_by?(user)}
+#       end
+# =======
+#       # turn on all searches advanced features
+#       can :search, Search,          :group => { :privacy => Group::PUBLIC }
+#       can :cross, Search,           :group => { :privacy => Group::PUBLIC }
+#       can :mapping, Search,         :group => { :privacy => Group::PUBLIC }
+#       can :visualize, Search,       :group => { :privacy => Group::PUBLIC }
+# >>>>>>> viz
 
       # turn on forum capabilities
       can :read, ForumGroup, :state => true

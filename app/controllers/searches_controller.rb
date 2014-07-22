@@ -20,7 +20,7 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    @search = perform_search
+    @search = perform_search(params[:page])
 
     is_authorized? :search, @search
   end
@@ -84,16 +84,28 @@ class SearchesController < GroupDataController
   end
 
   def geomapping
-    @search = perform_search
+    search = perform_search
     
-    @json = GeoMapping.new(@search).to_json
+    # authorize before doing the effort
 
-    is_authorized? :mapping, @search
+    is_authorized? :mapping, search
+    
+    @json = GeoMapping.new(params[:ling_ids]).to_json
 
-    respond_with(@search) do |format|
+    respond_with(search) do |format|
       format.html
       format.js
     end
+  end
+
+  def visualize
+    @search = perform_search
+
+    # visualization = Visualization.new(@search)
+
+    authorize! :visualize, @search
+    # Rails.logger.debug "[DEBUG] JSON: #{visualization.to_json}"
+    render :json => {:success => true, :result => @search.results(false).as_json }
   end
 
   protected
@@ -111,12 +123,20 @@ class SearchesController < GroupDataController
     redirect_to :action => :new
   end
 
-  def perform_search
+  def check_retrieved_json(json)
+    if json == "[]"
+      flash[:notice] = "Sorry, no geographical data to show on the map!"
+      json=''
+    end
+    json
+  end
+
+  def perform_search(offset=0)
     Search.new do |s|
       s.creator = current_user
       s.group = current_group
       s.query = params[:search]
-      s.offset = params[:page]
+      s.offset = offset
     end
   end
 

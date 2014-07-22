@@ -75,7 +75,7 @@
 
 
     if($.isArray(ids)){
-      url = '/groups/'+T.currentGroup+'/searches/geomapping';
+      url = '/groups/'+T.currentGroup+'/map-oracle';
       payload.ids = ids;
       method = 'post';
     } else {

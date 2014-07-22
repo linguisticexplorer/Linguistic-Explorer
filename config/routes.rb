@@ -20,6 +20,8 @@ LinguisticExplorer::Application.routes.draw do
 
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
+  get "/groups/:group_id/map-oracle" => "searches#geomapping"
+
   resources :groups do
     member do
       get 'info'
@@ -29,7 +31,7 @@ LinguisticExplorer::Application.routes.draw do
       collection do
         get 'preview'
         get 'lings_in_selected_row'
-        get 'geomapping'
+        get 'visualize'
       end
     end
 
