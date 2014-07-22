@@ -1,3 +1,4 @@
+//= require modernizr
 //= require jquery.min
 //= require bootstrap
 //= require twitter/typeahead
