@@ -16,6 +16,7 @@ class Ling < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => { :scope => :group_id }
   validates :depth, :presence => true, :numericality => true
   validates :parent, :existence => true, :allow_nil => true
+  
   validate :parent_depth_check
   validate :group_association_match
   validate :available_depth_for_group
@@ -110,15 +111,6 @@ class Ling < ActiveRecord::Base
   end
 
   private
-
-  def get_latlong
-    property = Property.in_group(group).where(:name => 'latlong').first
-    if property.present?
-      lings_has_latlong = LingsProperty.in_group(group).where(:property_id => property.id, :ling_id => self.id).first
-      return lings_has_latlong.value unless lings_has_latlong.nil?
-    end
-    return ""
-  end
 
   def props_in_group
     # look for categories at that depth

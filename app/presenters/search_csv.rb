@@ -9,10 +9,10 @@ class SearchCSV
   def to_csv
     CSV.generate do |csv|
       # header row
-      csv << result_headers.map { |header| header.call(@search.group) }
+      csv << result_headers.map { |header| header[:value].call(@search.group) }
 
       # data rows
-      @search.results(false).each do |result|
+      @search.results.each do |result|
         csv << parent_data(result.parent) + child_data(result.child)
       end
     end

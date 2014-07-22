@@ -32,10 +32,10 @@ module SearchColumns
       :example_1        => lambda { |g| "#{g.ling1_name} Examples" },
       # Cross & Implication Search
       :count            => lambda { |g| "Count"},
-      :cross_property   => lambda { |g| "Property Name"},
-      :cross_value      => lambda { |g| "Property Value" },
+      :cross_property   => lambda { |g| "#{g.property_name.titleize} Name"},
+      :cross_value      => lambda { |g| "#{g.property_name.titleize} Value" },
       # Compare Search
-      :compare_property => lambda { |g| "Property Name" },
+      :compare_property => lambda { |g| "#{g.property_name.titleize} Name" },
       :common_values    => lambda { |g| "Common Value"},
       :ling_value       => lambda { |v| v ? "#{v.name} Value" : ""},
   }
@@ -51,7 +51,7 @@ module SearchColumns
       header_keys ||= columns_to_include
       header_keys -= child_columns unless @search.group.has_depth?
     end
-    header_keys.map{ |k| HEADERS[k] }
+    header_keys.map{ |k| { :key => k, :value => HEADERS[k] } }
   end
 
   def result_headers_lings_cross

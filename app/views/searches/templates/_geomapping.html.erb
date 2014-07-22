@@ -1,0 +1,293 @@
+<div id="geomapping_modal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="geoModal" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <button type="button" class="close" id="minimize-geomodal" aria-hidden="true">-&nbsp;</button>
+    <span>
+      <h4><%= current_group.ling0_name.pluralize %> in the row</h4>
+    </span>
+  </div>
+  <div class="modal-body">
+    <div id="results_map" style="height:600px;" class="hide"></div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
+
+<% content_for :styles do %>
+<%= stylesheet_link_tag "leaflet" %>
+<!--[if lte IE 8]>
+    <%= stylesheet_link_tag "leaflet.ie" %>
+<![endif]-->
+<% end %>
+  
+<% content_for :scripts do %>
+  <script src="http://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/async/0.2.7/async.min.js"></script>
+  <%= javascript_include_tag 'leaflet', 'leaflet_google' %>
+
+  <script type="text/javascript">
+  var map;
+
+  function startMap(){
+    // initialize the map with the whole world
+    // map = new L.Map('results_map', {center: new L.LatLng(29, 0), zoom: 2});
+    // // create a layer for the Google tiles
+    // var gmap_layer = new L.Google('ROADMAP');
+    // // add the layer to the map
+    // map.addLayer(gmap_layer);
+    // now go and process the data!
+    addGeoData();
+    // addLegend();
+  }
+
+  function addGeoData(){
+    // extract lings from results
+    var lings = lingsExtractor(resultsJson.rows, resultsJson.type);
+
+    var lingIds = {lingIds: $.map(lings, function(l){ return l.id; })};
+
+    // ask for lings geographic attributes
+    var positions = $.post('/groups/'+group+'/searches/geomapping', lingIds).promise();
+
+    // group by row while waiting for geographic attributes
+    // var markers = createMarkers(lings, resultsJson.rows, resultsJson.type);
+
+    positions.done(function (json){
+
+      console.log(json);
+      
+      // addPositions(markers, json, resultsJson.type);
+
+      // add markers to the map and the legend
+
+      // show the map
+
+    });
+  }
+
+  function lingsExtractor(rows, type){
+
+    var lingIds = extractLingFrom(rows, type);
+
+    for( var i =0; i<rows.length; i++){
+      
+      var entryIds = [];
+
+      lingIds = lingIds.concat(entryIds);
+    }
+
+    return lingIds;
+  }
+
+  function addPositions(markersObj, positions){
+
+    var markerDict = markersObj.dict;
+
+    for( var p = 0; p < positions.length; p++){
+
+      var position = positions[p];
+
+      var marker = markerDict[position.lingId];
+
+      if($.isArray(marker)){
+        
+        // for each marker add the position and then randomize across a spiral
+
+      } else {
+
+        marker.pos = position.coords;
+      }
+    }
+  }
+
+  function createMarkers(lings, rows, type){
+
+    function markerPerLing(lingsList, entries){
+
+      // basically create a marker per ling...
+      var markers = [];
+      var markersDict = {};
+
+      for( var l=0; l < lingsList.length; l++){
+
+        var marker = {id: lingsList[l].id, icon: createMarkerIcon(lingsList[l].id), info: lingsList[l] };
+
+        markers.push(marker);
+
+        markersDict[marker.id] = marker;
+
+      }
+
+      return {array: markers, dict: markersDict};
+    }
+
+    function markerPerRow(lingsList, entries){
+
+      // this is hard: basically for each row look if there's a ling to associate
+      // for each row - ling combination, create a marker
+      // the icon of the marker should be associated with the row
+
+      // first thing, create a dict of lings to quickly lookup
+      var lingsDict = {};
+      for( var l=0; l < lingsList.length; l++ ){
+
+        lingsDict[lingsList[l].id] = lingsList[l];
+
+      }
+
+      var markers = [],
+          markersDict = {};
+      
+      // step 2: iterate rows and create a marker for each row - ling association found
+      for( var e = 0; e < entries.length; e++ ){
+
+        var lingsEntry = isThere(rows[i], 'child', 'length') ?  rows[i]['child'] : [];
+
+        for( var le = 0; le < lingsEntry.length; le++ ){
+
+          var entryIds = $.map(entry.parent, function(el){ return el.lings_property.id; }).join('-');
+
+          var markerId = entryIds +'-ling:'+lingsEntry[le].id;
+
+          var marker = {id: markerId, icon: createMarkerIcon(entryIds), info: {row: entry.parent, ling: lingsEntry[le]} };
+
+          markers.push(marker);
+
+          if(!markersDict[lingsEntry[le].id]){
+            markersDict[lingsEntry[le].id] = [];
+          }
+
+          markersDict[lingsEntry[le].id].push(marker);
+
+        }
+
+      }
+
+      return {array: markers, dict: markersDict};
+    }
+    
+
+    switch (type){
+      case 'compare':
+      case 'default':
+        return markerPerLing(lings, rows);
+      case 'cross':
+      case 'implication':
+        return crossMarkers(lings, rows);
+      default:
+        // Fail silently....
+        return {};
+    }
+  }
+
+  function createMarkerIcon(){
+    return L.AwesomeMarkers.icon({
+      icon: 'flag',
+      markerColor: 'white',
+      iconColor: 'black'
+    });
+  }
+
+  function extractLingFrom(rows, type){
+
+    function getFromCompare(rows){
+      return rows[0].lings;
+    }
+
+    function getFromCross(rows){
+      var lings = [];
+
+      var lingsDict = {};
+
+      for( var i =0; i< rows.length; i++){
+        var lingsEntry = isThere(rows[i], 'child', 'length') ?  rows[i]['child'] : [];
+
+        for( var j =0; j < lingsEntry.length; j++){
+
+          if(!lingsDict[lingsEntry[j].id]){
+
+            lingsDict[lingsEntry[j].id] = 1;
+
+            lings.push(lingsEntry[j]);
+          }
+        }
+
+      }
+      return lings;
+    }
+
+    function getFromRegular(rows){
+      var lings = [];
+
+      var lingsDict = {};
+
+      for( var i =0; i < rows.length; i++){
+        var lingsEntry = isThere(rows[i], 'parent', 'lings_property', 'ling') ? [ rows[i]['parent'].lings_property.ling ] : [];
+
+        lingsEntry = lingsEntry.concat( isThere(rows[i], 'child', 'lings_property', 'ling') ? [ rows[i]['child'].lings_property.ling ] : [] );
+        
+
+        for( var j=0; j < lingsEntry.length; j++){
+
+          if(!lingsDict[lingsEntry[j].id]){
+
+            lingsDict[lingsEntry[j].id] = 1;
+
+            lings.push(lingsEntry[j]);
+          }
+        }
+      }
+
+      return lings;
+    }
+
+    switch (type){
+      case 'compare':
+        return getFromCompare(rows);
+      case 'default':
+        return getFromRegular(rows);
+      case 'cross':
+      case 'implication':
+        return getFromCross(rows);
+      default:
+        // Fail silently....
+        return {};
+    }
+
+  }
+
+  function addLegend(){
+    var legend = L.control({position: 'topright'});
+
+    legend.onAdd = function (map) {
+      // create the control container with a particular class name
+      this._div = L.DomUtil.create('div', 'map-control'); // create a div with a class "info"
+      this.fillDiv();
+      return this._div;
+    };
+
+    legend.fillDiv = function(rows){
+      this._div.innerHTML = '<a id="map-legend-btn" class="btn">Legend</a>';
+    };
+
+    legend.addTo(map);
+    $('body').on('click', 'map-legend-btn', toggleLegend);
+  }
+
+  function toggleLegend(){
+    
+  }
+
+  $('#mapit').click(function(){
+    
+    if(!map){
+      startMap();
+    }
+    
+
+  });
+
+  </script>
+<% end %>

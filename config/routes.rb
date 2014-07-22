@@ -1,7 +1,11 @@
 LinguisticExplorer::Application.routes.draw do
 
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
+
   root        :to => 'home#index'
+  
+  # shared Handlebars templates
+  get '/templates' => 'home#templates'
 
   # JSON Endpoints
   get "/groups/list" => "groups#list", :as => "groups_list"
@@ -20,18 +24,14 @@ LinguisticExplorer::Application.routes.draw do
 
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
-  get "/groups/:group_id/map-oracle" => "searches#geomapping"
+  post "/groups/:group_id/map-oracle" => "searches#geomapping"
 
   resources :groups do
-    member do
-      get 'info'
-    end
 
     resources :searches do
       collection do
-        get 'preview'
-        get 'lings_in_selected_row'
-        get 'visualize'
+        post 'preview'
+        post 'get_results'
       end
     end
 
@@ -42,7 +42,7 @@ LinguisticExplorer::Application.routes.draw do
         get 'set_values'
         get 'supported_set_values'
         post 'supported_submit_values'
-        post 'supported_submit_values_multiple'
+        # post 'supported_submit_values_multiple'
       end
     end
 

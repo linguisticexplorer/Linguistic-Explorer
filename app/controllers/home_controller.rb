@@ -7,4 +7,7 @@ class HomeController < ApplicationController
     end
     @group = params[:group_id] && Group.find(params[:group_id]) || current_group
   end
+
+  def templates
+  end
 end

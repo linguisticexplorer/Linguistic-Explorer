@@ -20,9 +20,40 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    @search = perform_search(params[:page])
+    # @search = perform_search
+
+    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
+    # authorize! :search, @search
+    
+    # @search.get_results!
+
+    @search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+    end
+
+    @query = params[:search].to_json.html_safe
 
     is_authorized? :search, @search
+
+    # perhaps a switch for non-javascript things here?
+
+    respond_with(@search) do |format|
+      format.html
+      format.js
+    end
+  end
+
+  def get_results
+    search = perform_search
+
+    json = SearchJSON.new(search).build_json
+    
+
+    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"  
+    is_authorized? :search, @search
+
+    render :json => json
   end
 
   def create
@@ -33,23 +64,24 @@ class SearchesController < GroupDataController
     is_authorized? :create, @search
 
     if @search.save
-      redirect_to [current_group, :searches]
+      render :json => {:success => true} 
+      # redirect_to [current_group, :searches]
     else
-      render :preview
+      render :json => {:success => false, :errors => @search.errors } 
+      # render :preview
     end
   end
 
   def show
     @search = current_group.searches.find(params[:id])
-    if(params[:page])
-      @search.offset = params[:page]
-    end
     
     is_authorized? :search, @search
 
+    @query = @search.query.to_json.html_safe
+
     respond_with(@search) do |format|
-      format.html
-      format.js
+      format.html  { render :template => 'searches/preview' }
+      format.js    { render :template => 'searches/preview' }
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
@@ -80,7 +112,7 @@ class SearchesController < GroupDataController
     @search = perform_search
 
     @presenter_results = SearchCross.new(params[:cross_ids]).filter_lings_row(@search).paginate(:page => params[:page], :order => "name")
-    is_authorized? :cross, @search
+    is_authorized? :search, @search
   end
 
   def geomapping
@@ -88,24 +120,11 @@ class SearchesController < GroupDataController
     
     # authorize before doing the effort
 
-    is_authorized? :mapping, search
+    is_authorized? :search, search
     
-    @json = GeoMapping.new(params[:ling_ids]).to_json
+    @geoMapping = GeoMapping.new(params[:ling_ids]).to_json
 
-    respond_with(search) do |format|
-      format.html
-      format.js
-    end
-  end
-
-  def visualize
-    @search = perform_search
-
-    # visualization = Visualization.new(@search)
-
-    authorize! :visualize, @search
-    # Rails.logger.debug "[DEBUG] JSON: #{visualization.to_json}"
-    render :json => {:success => true, :result => @search.results(false).as_json }
+    render :json => @geoMapping.to_json
   end
 
   protected
@@ -119,16 +138,7 @@ class SearchesController < GroupDataController
   end
 
   def rescue_from_result_error(exception)
-    flash[:notice] = exception.message
-    redirect_to :action => :new
-  end
-
-  def check_retrieved_json(json)
-    if json == "[]"
-      flash[:notice] = "Sorry, no geographical data to show on the map!"
-      json=''
-    end
-    json
+    render :json => {:success => false, :errors => exception.message } 
   end
 
   def perform_search(offset=0)

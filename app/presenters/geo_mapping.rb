@@ -10,9 +10,7 @@ class GeoMapping
     latlong_id = current_group.properties.where(:name => 'latlong').pluck(:id).first
     
     # create a simple hash to send as json
-    json = {
-      :ids => get_coords(@ids, latlong_id)
-    }.to_json
+    get_coords(@ids, latlong_id).to_json
   end
 
   private
@@ -56,7 +54,6 @@ class GeoMapping
   #     rows: get_rich_legend
   #   }
   # end
-
   # def get_json1
   #   json = {}.tap do |entry|
   #     @data[:lings].each do |row_number, lings_list|

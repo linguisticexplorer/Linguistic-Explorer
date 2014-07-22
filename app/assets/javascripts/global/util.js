@@ -30,6 +30,9 @@
 
       // LOAD GROUPS JSON
       loadGroupsData();
+
+      // LOAD Handlebars Templates
+      loadTemplates();
     };
 
     function activatePagination(){
@@ -68,44 +71,6 @@
       $('ul.nav li.dropdown').hover(fadeDropdown, fadeDropdown);
     }
 
-    function loadGroupsData(){
-
-      var request;
-      var url = '/groups/list';
-      // if localstorage is enabled, use it
-      request = getGroups('__'+url);
-      
-      // in case of no cache or old cache
-      if(!request){
-        // save the promise
-        request = $.get(url)
-        // Note: the browser should cache itself the request
-        // and reply after the first call with a 304 Status Code
-        // in case of no localStorage
-          .done(function (data){
-
-            Terraling.groups = {};
-            // map the data to an object in the format id => group
-            $.each(data, function (i, wrapper){
-              // for the moment just append it to the Terraling object
-              Terraling.groups[wrapper.group.id] = wrapper.group;
-            });
-            // Quick and dirty clone
-            var copy = JSON.parse(JSON.stringify(T.groups));
-            // set  timestamp
-            copy.__ttl = (new Date()).getTime();
-            save("__"+url, copy);
-          })
-          .fail()
-          .always();
-      } else {
-        // just put it
-        Terraling.groups = request;
-      }
-      // don't worry: jQuery treats objects as resolved promises 
-      Terraling.promises.groups = request;
-    }
-
     function getGroups(url){
       var groups = get(url);
       
@@ -134,6 +99,68 @@
       // if localstorage
       if(cacheEnabled){
         localStorage[key] = JSON.stringify(value);
+      }
+    }
+
+    function loader(url, namespace, cacheFn, processFn){
+      // if localstorage is enabled use it
+      var request = cacheFn('__'+url);
+
+      if(!request){
+        // save the promise
+        request = $.get(url)
+        // Note: the browser should cache itself the request
+        // and reply after the first call with a 304 Status Code
+        // in case of no localStorage
+          .done(processFn)
+          .fail()
+          .always();
+      } else {
+        Terraling[namespace] = request;
+      }
+
+      Terraling.promises[namespace] = request;
+    }
+
+    function loadGroupsData(){
+
+      var url = '/groups/list';
+      // if localstorage is enabled, use it
+      request = getGroups('__'+url);
+      loader(url, 'groups', getGroups, function (data){
+
+        Terraling.groups = {};
+        // map the data to an object in the format id => group
+        $.each(data, function (i, wrapper){
+          // for the moment just append it to the Terraling object
+          Terraling.groups[wrapper.group.id] = wrapper.group;
+        });
+        // Quick and dirty clone
+        var copy = JSON.parse(JSON.stringify(T.groups));
+        // set  timestamp
+        copy.__ttl = (new Date()).getTime();
+        save("__"+url, copy);
+      });
+    }
+
+    function loadTemplates(){
+      var url = '/templates';
+
+      loader(url, 'templates', getTemplates, function (templates){
+
+        Terraling.templates = $(templates);
+
+        // Quick and dirty clone
+        var copy = JSON.parse(JSON.stringify({html: templates}));
+        // set  timestamp
+        copy.__ttl = (new Date()).getTime();
+        save("__"+url, copy);
+
+      });
+
+      // just need to replace the current templates in case it was cached
+      if(T.templates){
+        T.templates = $(T.templates.html);
       }
     }
 

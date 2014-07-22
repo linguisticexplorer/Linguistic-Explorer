@@ -16,6 +16,9 @@ class SearchComparisonsController < GroupDataController
 
     if @search_comparison.save
       @search = @search_comparison.search
+      
+      @query = @search.query.to_json.html_safe
+      
       render :template => 'searches/preview'
     else
       flash.now[:notice] = "Please select a comparison and two searches"

@@ -71,6 +71,15 @@ class LingsProperty < ActiveRecord::Base
     ling.parent_id
   end
 
+  def as_json(options)
+    options = {
+      :include => [:ling, :property, :examples ], 
+      :except => [:created_at, :updated_at, :property_value, :creator_id, :group_id]
+    }.merge(options || {})
+    
+    super(options)
+  end
+
   def column_map(attrs)
     [].tap do |cols|
       cols << self.id
