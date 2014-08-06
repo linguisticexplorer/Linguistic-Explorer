@@ -1,0 +1,30 @@
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %thead
+    %tr
+      {{#headers}}
+      {{#this.cross_property}}
+      %th {{this.cross_property}}
+      {{/this.cross_property}}
+      {{#this.cross_value}}
+      %th {{this.cross_value}}
+      {{/this.cross_value}}
+      {{/headers}}
+      {{#header.count}}
+      %th {{header.count}}
+      {{/header.count}}
+  %tbody
+    {{#rows}}
+    %tr
+      {{#this.pair}}
+      {{#this.cross_property}}
+      %td {{this.cross_property}}
+      {{/this.cross_property}}
+      {{#this.cross_value}}
+      %td {{this.cross_value}}
+      {{/this.cross_value}}
+      {{/this.pair}}
+      {{#this.count}}
+      %td
+        %a{:href => '#', :id=> "lings_cross_{{this.count.index}}"} {{this.count.text}}
+      {{/this.count}}
+    {{/rows}}

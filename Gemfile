@@ -68,7 +68,7 @@ gem 'leaflet-rails'
 group :assets do
   # No need for coffeescript here, JS it's enough
   gem "uglifier"
-  gem "handlebars_assets"
+  gem "hogan_assets"
 end
 
 # Forum gem
@@ -107,7 +107,7 @@ group :test, :development do
   # gem "spork-rails"
 
 
-  gem 'rspec-rails', "~> 2.0"
+  gem 'rspec-rails', "= 2.0"
   gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
   

@@ -1,35 +1,34 @@
 //- Pagination Template
-
 %script#pagination_bar{:type => "text/templates"}
   %ul
-    {{#if prev.disabled}}
-      %li.disabled#page-prev
-        %span Prev
+  {{#if prev.disabled}}
+    %li.disabled#page-prev
+      %span Prev
+  {{else}}
+    %li
+      %a#page-prev{:href=> "#" } Prev
+  {{/if}}
+  {{#each pages}}
+    {{#if this.current}}
+      %li.active#current-page-{{this.number}}
+        %span {{this.number}}
     {{else}}
-      %li
-        %a#page-prev{:href=> "#" }Prev
-    {{/if}}
-    {{#each pages}}
-      {{#if this.current}}
-        %li.active#current-page-{{this.number}}
-          %span {{this.number}}
+      {{#if this.gap}}
+        %li
+          %span &hellip;
       {{else}}
-        {{#if this.gap}}
-          %li
-            %span &hellip;
-        {{else}}
-          %li
-            %a#page-{{this.number}}{:href => "#" } {{this.number}}
-        {{/if}}
+        %li
+          %a#page-{{this.number}}{:href => "#" } {{this.number}}
       {{/if}}
-    {{/each}}
-    {{#if next.disabled}}
-      %li#page-next.disabled
-        %span Next
-    {{else}}
-      %li
-        %a#page-next{:href=> "#" } Next
     {{/if}}
+  {{/each}}
+  {{#if next.disabled}}
+    %li#page-next.disabled
+      %span Next
+  {{else}}
+    %li
+      %a#page-next{:href=> "#" } Next
+  {{/if}}
 
 // Save Search Template
 

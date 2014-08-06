@@ -40,6 +40,9 @@ module LinguisticExplorer
     # Enable the asset pipeline
     config.assets.enabled = true
 
+    # Add the templates folder to the assets
+    config.assets.paths << Rails.root.join('app', 'assets', 'templates')
+
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
 
@@ -66,6 +69,10 @@ module LinguisticExplorer
 
     Settings.configure do |s|
       s.in_preview          = false
+    end
+
+    HoganAssets::Config.configure do |config|
+        config.hamstache_extensions = %w(hamstache)
     end
   end
 end

@@ -1,0 +1,33 @@
+%ul
+  {{#prev.disabled}}
+  %li.disabled#page-prev
+    %span Prev
+  {{/prev.disabled}}
+  {{^prev.disabled}}
+  %li
+    %a#page-prev{:href=> "#" } Prev
+  {{/prev.disabled}}
+  {{#pages}}
+  {{#this.current}}
+  %li.active{:id => "current-page-{{this.number}}"}
+    %span {{this.number}}
+  {{/this.current}}
+  {{^this.current}}
+  {{#this.gap}}
+  %li
+    %span &hellip;
+  {{/this.gap}}
+  {{^this.gap}}
+  %li
+    %a{:href => "#", :id => "page-{{this.number}}" } {{this.number}}
+  {{/this.gap}}
+  {{/this.current}}
+  {{/pages}}
+  {{#next.disabled}}
+  %li#page-next.disabled
+    %span Next
+  {{/next.disabled}}
+  {{^next.disabled}}
+  %li
+    %a#page-next{:href=> "#" } Next
+  {{/next.disabled}}

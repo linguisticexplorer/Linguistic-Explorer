@@ -13,7 +13,7 @@
 
   function setupComplexPage(){
 
-    var img = Handlebars.compile($('#loadingTemplate').html());
+    var img = Hogan.compile($('#loadingTemplate').html());
 
     $('#prop-descrip p a').attr('target', '_blank');
 

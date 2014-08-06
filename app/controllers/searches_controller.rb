@@ -20,24 +20,27 @@ class SearchesController < GroupDataController
   end
 
   def preview
-    # @search = perform_search
 
-    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"
-    # authorize! :search, @search
-    
-    # @search.get_results!
+    @js_enabled = params[:javascript] == true
 
-    @search = Search.new do |s|
-      s.creator = current_user
-      s.group   = current_group
+    if @js_enabled
+
+      @query = params[:search].to_json.html_safe : ''
+      # Create a clean search object
+      @search = Search.new do |s|
+        s.creator = current_user
+        s.group   = current_group
+      end
+
+    else
+      # Perform the old-fashioned search with pagination
+      @search = perform_search
+
     end
-
-    @query = params[:search].to_json.html_safe
 
     is_authorized? :search, @search
 
     # perhaps a switch for non-javascript things here?
-
     respond_with(@search) do |format|
       format.html
       format.js

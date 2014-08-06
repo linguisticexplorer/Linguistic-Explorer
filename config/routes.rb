@@ -3,9 +3,6 @@ LinguisticExplorer::Application.routes.draw do
   devise_for  :users, :controllers => { :registrations => "users/registrations" }
 
   root        :to => 'home#index'
-  
-  # shared Handlebars templates
-  get '/templates' => 'home#templates'
 
   # JSON Endpoints
   get "/groups/list" => "groups#list", :as => "groups_list"

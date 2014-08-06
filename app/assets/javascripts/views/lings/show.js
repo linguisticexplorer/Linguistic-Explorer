@@ -27,7 +27,7 @@
         // perhaps we should get it from a Handlebar template script
         var htmlTemplate = '<li data-id="{{id}}"><a class="remove-ling" href="#"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
 
-        resourceTemplate = Handlebars.compile(htmlTemplate);
+        resourceTemplate = Hogan.compile(htmlTemplate);
 
         // bind some buttons here
         bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');

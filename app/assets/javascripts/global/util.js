@@ -31,7 +31,7 @@
       // LOAD GROUPS JSON
       loadGroupsData();
 
-      // LOAD Handlebars Templates
+      // LOAD Mustache Templates
       loadTemplates();
     };
 
@@ -83,6 +83,18 @@
       return groups;
     }
 
+    function getTemplates(url){
+      var templates = get(url);
+      
+      // return null if any of these doesn't pass
+      if(!templates ||
+         olderThanOneDay(templates.__ttl) ){
+        // refresh templates every day
+        return null;
+      }
+      return teamplates.html;
+    }
+
     function olderThanOneDay(date){
       return date - (new Date()).getTime() > 86400000;
     }
@@ -113,8 +125,12 @@
         // and reply after the first call with a 304 Status Code
         // in case of no localStorage
           .done(processFn)
-          .fail()
-          .always();
+          .fail(function(){
+            console.log(arguments);
+          })
+          .always(function(){
+            console.log(arguments);
+          });
       } else {
         Terraling[namespace] = request;
       }
@@ -144,11 +160,11 @@
     }
 
     function loadTemplates(){
-      var url = '/templates';
+      var url = '/assets/templates.mustache';
 
       loader(url, 'templates', getTemplates, function (templates){
 
-        Terraling.templates = $(templates);
+        T.templates = $(templates);
 
         // Quick and dirty clone
         var copy = JSON.parse(JSON.stringify({html: templates}));
@@ -157,11 +173,6 @@
         save("__"+url, copy);
 
       });
-
-      // just need to replace the current templates in case it was cached
-      if(T.templates){
-        T.templates = $(T.templates.html);
-      }
     }
 
 })();

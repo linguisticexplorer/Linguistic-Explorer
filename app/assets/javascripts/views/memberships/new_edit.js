@@ -22,7 +22,7 @@
 
     var htmlTemplate = '<li data-id="{{id}}"><a class="remove-resource" href="#Remove"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
 
-    resourceTemplate = Handlebars.compile(htmlTemplate);
+    resourceTemplate = Hogan.compile(htmlTemplate);
     mapResourcesRoles();
     
     $('#membership_role').change(enableRolesPanel);
