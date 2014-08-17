@@ -1,0 +1,2 @@
+%label.radio.inline{ :for => "search_group_clust_hamming1" }
+  %input#search_group_clust_hamming1{ :type => "radio", :name => "search[advanced_set][clustering]", :value => "hamming_r"} Radial Tree

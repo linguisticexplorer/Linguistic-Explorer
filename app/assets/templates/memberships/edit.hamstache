@@ -1,0 +1,4 @@
+%li{ :data => { :id => "{{id}}" } }
+  %a.remove-resource{ :href=> "#Remove" }
+    %span.glyphicon.glyphicon-remove.shift-down
+  | {{name}}

@@ -1,0 +1,2 @@
+.text-center
+  %i.fa.fa-refresh.fa-spin.fa-5x{ :style => "color: #E53900" }
