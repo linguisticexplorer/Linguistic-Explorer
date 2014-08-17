@@ -3,7 +3,7 @@ class SearchesController < GroupDataController
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
   rescue_from Exceptions::ResultSearchError, :with => :rescue_from_result_error
 
-  respond_to :html, :js, :csv
+  respond_to :html, :csv
 
   def new
     @search = Search.new do |s|
@@ -21,9 +21,9 @@ class SearchesController < GroupDataController
 
   def preview
 
-    @js_enabled = params[:javascript] == true
+    @dynamic_results = params[:search][:javascript] == "true"
 
-    if @js_enabled
+    if @dynamic_results
 
       @query = params[:search].to_json.html_safe || ''
       # Create a clean search object
@@ -50,11 +50,9 @@ class SearchesController < GroupDataController
   def get_results
     search = perform_search
 
-    json = SearchJSON.new(search).build_json
-    
+    is_authorized? :search, search
 
-    #Rails.logger.debug "DEBUG: Step 1 => #{self.class}"  
-    is_authorized? :search, @search
+    json = SearchJSON.new(search).build_json
 
     render :json => json
   end

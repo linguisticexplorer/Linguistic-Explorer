@@ -30,34 +30,54 @@
 
       // LOAD GROUPS JSON
       loadGroupsData();
+      
+      // some handy functions
+      util.isThere = isThere;
     };
 
-    function activatePagination(){
-      // Manage the AJAX pagination and changing the URL
-       $(document).on("click", ".will-paginate .pagination a", function (e) {
-          // local history 
-          previousURL = this.href;
-
-          $(".pagination").html(img);
-          $.get(this.href, function(result) {
-            $("#pagination_table").html($("#pagination_table", result).contents());
-          });
-          history.pushState(null, document.title, this.href);
-
-          e.preventDefault();
-
-      });
-      
-      $(window).bind("popstate", function (evt) {
-        // prevent requests if the hash is the only change!
-        var hashCheck = location.hash;
-        if (previousURL.indexOf(hashCheck) < 0) {
-          $(".pagination").html(img);
-          $.get(location.href, function(result) {
-            $("#pagination_table").html($("#pagination_table", result).contents());
-          });
+    function isThere(){
+      if(arguments.length){
+        var array = Array.prototype.slice.call(arguments),
+            obj = array.shift(),
+            new_obj = obj;
+        while(array.length && new_obj){
+          new_obj = new_obj[array.shift()];
         }
-      });
+
+        return (!array.length && !!new_obj);
+      }
+      return false;
+    }
+
+    function activatePagination(){
+
+      if(!$('.js-pagination').length){
+        // Manage the AJAX pagination and changing the URL
+         $(document).on("click", ".will-paginate .pagination a", function (e) {
+            // local history 
+            previousURL = this.href;
+
+            $(".pagination").html(img);
+            $.get(this.href, function(result) {
+              $("#pagination_table").html($("#pagination_table", result).contents());
+            });
+            history.pushState(null, document.title, this.href);
+
+            e.preventDefault();
+
+        });
+        
+        $(window).bind("popstate", function (evt) {
+          // prevent requests if the hash is the only change!
+          var hashCheck = location.hash;
+          if (previousURL.indexOf(hashCheck) < 0) {
+            $(".pagination").html(img);
+            $.get(location.href, function(result) {
+              $("#pagination_table").html($("#pagination_table", result).contents());
+            });
+          }
+        });
+      }
     }
 
     function activateDropdowns(){

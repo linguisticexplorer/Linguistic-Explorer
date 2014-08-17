@@ -1,0 +1,15 @@
+.row
+  = render :partial => 'searches/templates/results_navbar'
+#search_results.padded_left.padded_right
+  .apple_pagination.js-pagination
+  #pagination_table
+    .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }
+      #results_loading_bar.bar{ :style => "width: 0%;"}
+    %p#results_loading_text.strong{ :style => 'text-align: center;', :data => {:query => @query }}
+      Your query is processing...
+    #error_message.alert.alert-danger.hide
+      %div
+        | Start a new search here:
+        %span
+          = link_to 'New Search', [:new, @group, :search], class: "btn"
+  .apple_pagination.js-pagination

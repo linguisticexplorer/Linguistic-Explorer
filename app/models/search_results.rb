@@ -12,7 +12,7 @@ module SearchResults
     results.each { |r| yield r }
   end
 
-  def results(pagination=true)
+  def results(pagination=false)
     @results ||= begin
       ensure_result_groups!
       #Rails.logger.debug "Step 4 => #{self.class} - Rendering"
@@ -30,7 +30,7 @@ module SearchResults
   def getType
     results if @result.nil?
 
-    return !self.result_groups.key?("type") ? "default" : self.result_groups["type"]
+    return self.result_groups["type"] || "default"
   end
 
   def default?

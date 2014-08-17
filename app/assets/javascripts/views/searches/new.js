@@ -188,7 +188,7 @@
 
   function changeJavascriptFlag(){
     // change the flag
-    $('#hidden_javascript').val('1');
+    $('#hidden_javascript').val(true);
   }
 
 })();

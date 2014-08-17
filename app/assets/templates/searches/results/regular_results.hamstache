@@ -28,28 +28,28 @@
   %tbody
     {{#rows}}
     %tr
-      {{#this.ling_0}}
-      %td {{this.ling_0}}
-      {{/this.ling_0}}
-      {{#this.property_0}}
-      %td {{this.property_0}}
-      {{/this.property_0}}
-      {{#this.value_0}}
-      %td {{this.value_0}}
-      {{/this.value_0}}
-      {{#this.example_0}}
-      %td {{this.example_0}}
-      {{/this.example_0}}
-      {{#this.ling_1}}
-      %td {{this.ling_1}}
-      {{/this.ling_1}}
-      {{#this.property_1}}
-      %td {{this.property_1}}
-      {{/this.property_1}}
-      {{#this.value_1}}
-      %td {{this.value_1}}
-      {{/this.value_1}}
-      {{#this.example_1}}
-      %td {{this.example_1}}
-      {{/this.example_1}}
+      {{#ling_0}}
+      %td {{ling_0}}
+      {{/ling_0}}
+      {{#property_0}}
+      %td {{property_0}}
+      {{/property_0}}
+      {{#value_0}}
+      %td {{value_0}}
+      {{/value_0}}
+      {{#example_0}}
+      %td {{example_0}}
+      {{/example_0}}
+      {{#ling_1}}
+      %td {{ling_1}}
+      {{/ling_1}}
+      {{#property_1}}
+      %td {{property_1}}
+      {{/property_1}}
+      {{#value_1}}
+      %td {{value_1}}
+      {{/value_1}}
+      {{#example_1}}
+      %td {{example_1}}
+      {{/example_1}}
     {{/rows}}

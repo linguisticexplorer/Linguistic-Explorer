@@ -1,4 +1,4 @@
-%ul
+%ul.pagination
   {{#prev.disabled}}
   %li.disabled#page-prev
     %span Prev
@@ -8,20 +8,20 @@
     %a#page-prev{:href=> "#" } Prev
   {{/prev.disabled}}
   {{#pages}}
-  {{#this.current}}
-  %li.active{:id => "current-page-{{this.number}}"}
-    %span {{this.number}}
-  {{/this.current}}
-  {{^this.current}}
-  {{#this.gap}}
+  {{#current}}
+  %li.active{:id => "current-page-{{number}}"}
+    %span {{number}}
+  {{/current}}
+  {{^current}}
+  {{#gap}}
   %li
     %span &hellip;
-  {{/this.gap}}
-  {{^this.gap}}
+  {{/gap}}
+  {{^gap}}
   %li
-    %a{:href => "#", :id => "page-{{this.number}}" } {{this.number}}
-  {{/this.gap}}
-  {{/this.current}}
+    %a{:href => "#", :id => "page-{{number}}" } {{number}}
+  {{/gap}}
+  {{/current}}
   {{/pages}}
   {{#next.disabled}}
   %li#page-next.disabled

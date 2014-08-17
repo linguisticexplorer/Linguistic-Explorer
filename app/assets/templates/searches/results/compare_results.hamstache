@@ -13,12 +13,12 @@
   %tbody
     {{#rows.commons}}
     %tr
-      {{#this.compare_property}}
-      %td {{this.compare_property}}
-      {{/this.compare_property}}
-      {{#this.common_values}}
-      %td {{this.common_values}}
-      {{/this.common_values}}
+      {{#compare_property}}
+      %td {{compare_property}}
+      {{/compare_property}}
+      {{#common_values}}
+      %td {{common_values}}
+      {{/common_values}}
     {{/rows.commons}}
 {{/commons}}
 {{#differents}}
@@ -36,11 +36,11 @@
   %tbody
     {{#rows.differents}}
     %tr
-      {{#this.compare_property}}
-      %td {{this.compare_property}}
-      {{/this.compare_property}}
-      {{#this.ling_value}}
+      {{#compare_property}}
+      %td {{compare_property}}
+      {{/compare_property}}
+      {{#ling_value}}
       %td {{this}}
-      {{/this.ling_value}}
+      {{/ling_value}}
     {{/rows.differents}}
 {{/differents}}

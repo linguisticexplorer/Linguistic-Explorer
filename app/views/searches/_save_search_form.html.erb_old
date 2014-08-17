@@ -82,7 +82,7 @@ $('#save-form').on('submit', function (e){
 function saveSearch(data){
   $.post("/groups/<%= @search.group.id =%>/searches", data, function (json){
 
-    var idToShow = json.success ? 'success_explanation' : 'error_messages',
+    var idToShow = json.success ? 'success-explanation' : 'error-messages',
         errorMessages = json.success ? '' : json.errors;
 
     if(errorMessages){

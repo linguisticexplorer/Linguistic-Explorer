@@ -1,0 +1,7 @@
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %thead
+  %tbody
+    {{#rows}}
+    %tr
+      %td {{this}}
+    {{/rows}}

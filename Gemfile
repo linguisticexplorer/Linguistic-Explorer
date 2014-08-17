@@ -63,6 +63,8 @@ gem 'modernizr-rails'
 gem 'd3-rails'
 # leaflet gem
 gem 'leaflet-rails'
+# async.js gem
+gem 'async-rails'
 
 # Use it to precompile assets
 group :assets do
