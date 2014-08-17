@@ -594,6 +594,10 @@ div#languages-container.hidden {
   height: 250px;
 }
 
+input[type="submit"]{
+  font-family: FontAwesome
+}
+
 // Import Bootstrap here
 @import "bootstrap";
 @import "font-awesome";

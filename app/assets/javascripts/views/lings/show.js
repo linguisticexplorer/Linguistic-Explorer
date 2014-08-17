@@ -25,9 +25,11 @@
         // we use it to prevent duplicates on the list
         resourcesDict = {};
         // perhaps we should get it from a Handlebar template script
-        var htmlTemplate = '<li data-id="{{id}}"><a class="remove-ling" href="#"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
+        // var htmlTemplate = '<li data-id="{{id}}"><a class="remove-ling" href="#"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
 
-        resourceTemplate = Hogan.compile(htmlTemplate);
+        // resourceTemplate = Hogan.compile(htmlTemplate);
+        var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
+        resourceTemplate = HoganTemplates[tplPath];
 
         // bind some buttons here
         bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');

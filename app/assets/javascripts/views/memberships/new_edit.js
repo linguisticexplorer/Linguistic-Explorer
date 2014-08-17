@@ -20,9 +20,7 @@
     // Check current role and toggle panel
     enableRolesPanel();
 
-    var htmlTemplate = '<li data-id="{{id}}"><a class="remove-resource" href="#Remove"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
-
-    resourceTemplate = Hogan.compile(htmlTemplate);
+    resourceTemplate = HoganTemplates[T.controller.toLowerCase() + '/edit'];
     mapResourcesRoles();
     
     $('#membership_role').change(enableRolesPanel);

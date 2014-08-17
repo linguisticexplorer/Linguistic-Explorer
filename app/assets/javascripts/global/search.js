@@ -17,7 +17,8 @@
     var options = {
       hint: true,
       minLength: 1,
-      highlight: true
+      highlight: true,
+      engine: Hogan
     };
 
     $('#'+currentId).typeahead(options, dictionaries);
@@ -103,8 +104,9 @@
         // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
       },
       'groups':{
-        header: '<div><h4 class="group-header">Group: '+name+'</h4></div>',
+        // header: '<div><h4 class="group-header">Group: '+name+'</h4></div>',
         // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
+        header: HoganTemplates['typeahead/multi_search_header']
       }
     };
 

@@ -13,7 +13,9 @@
 
   function setupComplexPage(){
 
-    var img = Hogan.compile($('#loadingTemplate').html());
+    var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
+
+    var img = HoganTemplates[tplPath].render();
 
     $('#prop-descrip p a').attr('target', '_blank');
 

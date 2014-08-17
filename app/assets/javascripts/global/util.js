@@ -30,9 +30,6 @@
 
       // LOAD GROUPS JSON
       loadGroupsData();
-
-      // LOAD Mustache Templates
-      loadTemplates();
     };
 
     function activatePagination(){
@@ -156,22 +153,6 @@
         // set  timestamp
         copy.__ttl = (new Date()).getTime();
         save("__"+url, copy);
-      });
-    }
-
-    function loadTemplates(){
-      var url = '/assets/templates.mustache';
-
-      loader(url, 'templates', getTemplates, function (templates){
-
-        T.templates = $(templates);
-
-        // Quick and dirty clone
-        var copy = JSON.parse(JSON.stringify({html: templates}));
-        // set  timestamp
-        copy.__ttl = (new Date()).getTime();
-        save("__"+url, copy);
-
       });
     }
 
