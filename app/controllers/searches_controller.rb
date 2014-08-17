@@ -25,7 +25,7 @@ class SearchesController < GroupDataController
 
     if @js_enabled
 
-      @query = params[:search].to_json.html_safe : ''
+      @query = params[:search].to_json.html_safe || ''
       # Create a clean search object
       @search = Search.new do |s|
         s.creator = current_user
