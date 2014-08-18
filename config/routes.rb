@@ -21,7 +21,7 @@ LinguisticExplorer::Application.routes.draw do
 
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
-  post "/groups/:group_id/map-oracle" => "searches#geomapping"
+  post "/groups/:group_id/maps" => "searches#geomapping"
 
   resources :groups do
 
@@ -29,6 +29,8 @@ LinguisticExplorer::Application.routes.draw do
       collection do
         post 'preview'
         post 'get_results'
+        # backward compatibility
+        get 'preview'
       end
     end
 
