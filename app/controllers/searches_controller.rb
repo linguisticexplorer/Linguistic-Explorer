@@ -74,6 +74,10 @@ class SearchesController < GroupDataController
   end
 
   def show
+    if params[:id] == "preview"
+      return redirect_to :action => :new
+    end
+
     @search = current_group.searches.find(params[:id])
     
     is_authorized? :search, @search
@@ -82,7 +86,7 @@ class SearchesController < GroupDataController
 
     respond_with(@search) do |format|
       format.html  { render :template => 'searches/preview' }
-      format.js    { render :template => 'searches/preview' }
+      # format.js    { render :template => 'searches/preview' }
       format.csv {
         send_data SearchCSV.new(@search).to_csv,
                   :type => "text/csv; charset=utf-8; header=present",
