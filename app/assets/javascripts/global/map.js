@@ -75,7 +75,7 @@
 
 
     if($.isArray(ids)){
-      url = '/groups/'+T.currentGroup+'/map-oracle';
+      url = '/groups/'+T.currentGroup+'/maps';
       payload.ids = ids;
       method = 'post';
     } else {
