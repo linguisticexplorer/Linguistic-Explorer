@@ -31,7 +31,7 @@
       %th {{header.differents.compare_property}}
       {{/header.differents.compare_property}}
       {{#header.differents.ling_value}}
-      %th {{this}}
+      %th {{.}}
       {{/header.differents.ling_value}}
   %tbody
     {{#rows.differents}}
@@ -40,7 +40,7 @@
       %td {{compare_property}}
       {{/compare_property}}
       {{#ling_value}}
-      %td {{this}}
+      %td {{.}}
       {{/ling_value}}
     {{/rows.differents}}
 {{/differents}}
