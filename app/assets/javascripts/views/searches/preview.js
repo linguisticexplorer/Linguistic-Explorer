@@ -85,16 +85,16 @@
     
     // show download button only for clustering
     if(!(/clustering/).test(type)){
-      $('#downloadit').hide();
+      $('#downloadit').toggleClass('disabled');
     } else {
-      $('#saveit, #mapit, #vizit').hide();
+      $('#saveit, #mapit, #vizit').toggleClass('disabled');
     }
     
     // hide save button for non-regular searches
     if(!(/default/).test(type)){
-      $('#saveit').hide();
+      $('#saveit').toggleClass('disabled');
     } else {
-      $('#vizit').hide();
+      $('#vizit').toggleClass('disabled');
     }
 
     if(navbar.is(':hidden')){

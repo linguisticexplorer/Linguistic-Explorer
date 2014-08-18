@@ -12,21 +12,21 @@
       %ul.nav.navbar-nav
         %li.active
           = link_to '#', :id => 'table' do
-            = icon 'table', 'Table'
+            = icon 'table', '', :class => "fa-15x", :title => "Table"
         %li
           = link_to '#', :id => 'mapit' do
-            = icon 'map-marker', 'Map'
+            = icon 'map-marker', '', :class => "fa-15x", :title => "Map"
         %li
           = link_to '#', :id => 'vizit' do
-            = icon 'photo', 'Chart'
+            = icon 'photo', '', :class => "fa-15x", :title => "Chart"
       %ul.nav.navbar-nav.pull-right
         %li
           = link_to '#', :id => 'downloadit' do
-            = icon 'download', 'Download it'
-        - if display_save_search_form?(@search)
-          %li
-            = link_to '#save-modal', :id => 'saveit' do
-              = icon 'tags', 'Save it'
+            = icon 'download', '', :class => "fa-15x", :title => "Download CSV"
+        / - if display_save_search_form?(@search)
+        %li
+          = link_to '#save-modal', :id => 'saveit', :class => "#{display_save_search_form?(@search) ? "" : 'disabled'}" do
+            = icon 'tags', '', :class => "fa-15x", :title => "Save Search"
       = link_to 'Actions', '#', :class => "navbar-brand pull-right"
 
 = render :partial => 'searches/save_search_form'
