@@ -98,7 +98,9 @@
     }
 
     if(navbar.is(':hidden')){
-      navbar.fadeIn('slow', searches.preview.initSave);
+      navbar.fadeIn('slow', function(){
+        searches.preview.initSave(resultsJson);
+      });
     }
   }
 

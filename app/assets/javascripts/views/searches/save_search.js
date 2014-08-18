@@ -11,7 +11,9 @@
 
   searches.preview.initSave = initSaveSearch;
 
-  function initSaveSearch(){
+  var resultsJson;
+
+  function initSaveSearch(json){
 
     var saveButton = $('#saveit');
 
@@ -21,15 +23,15 @@
 
       saveButton.click(function(){
 
-        var queryJsonString = JSON.stringify(query.search, null, 0);
+        var queryJsonString = $('#results_loading_text').data('query');
 
-        var resultsJsonString = JSON.stringify(makeResultsJson(), null, 0);
+        resultsJson = json;
 
         // add search query
         $('[name="search[query_json]"]').val(queryJsonString);
 
         // add results json
-        $('[name="search[result_groups_json]"]').val(resultsJsonString);
+        $('[name="search[result_groups_json]"]').val(resultsJson);
 
         $('#save-modal').modal('show');
 

@@ -1,20 +1,32 @@
-#results_navbar.navbar{ :style => "display: none;" }
-  .navbar-inner
-    = link_to 'Actions', '#', :class => "brand"
-    %ul.nav
-      %li
-      	= link_to '#', :id => 'mapit' do
-          = icon 'map-marker', 'Map it'
-      %li
-        = link_to '#', :id => 'vizit' do
-          = icon 'photo', 'Visualize it'
-    %ul.nav.pull-right
-      %li
-        = link_to '#', :id => 'downloadit' do
-          = icon 'download', 'Download it'
-      - if display_save_search_form?(@search)
+#results_navbar.navbar.navbar-default{ :style => "display: none;" }
+  .container-fluid
+    .navbar-inner
+      %button.navbar-toggle{:data => {:toggle => "collapse", :target => "#results-navbar-collapse"}}
+        %span.sr-only Toggle navigation
+        %span.icon-bar
+        %span.icon-bar
+        %span.icon-bar
+    // Navbar for wider screens
+    #results-navbar-collapse.collapse.navbar-collapse
+      = link_to 'Views', '#', :class => "navbar-brand"
+      %ul.nav.navbar-nav
+        %li.active
+          = link_to '#', :id => 'table' do
+            = icon 'table', 'Table'
         %li
-          = link_to '#save-modal', :id => 'saveit' do
-          = icon 'tags', 'Save it'
+          = link_to '#', :id => 'mapit' do
+            = icon 'map-marker', 'Map'
+        %li
+          = link_to '#', :id => 'vizit' do
+            = icon 'photo', 'Chart'
+      %ul.nav.navbar-nav.pull-right
+        %li
+          = link_to '#', :id => 'downloadit' do
+            = icon 'download', 'Download it'
+        - if display_save_search_form?(@search)
+          %li
+            = link_to '#save-modal', :id => 'saveit' do
+              = icon 'tags', 'Save it'
+      = link_to 'Actions', '#', :class => "navbar-brand pull-right"
 
 = render :partial => 'searches/save_search_form'
