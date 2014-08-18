@@ -4,7 +4,7 @@
   .apple_pagination.js-pagination
   #pagination_table
     .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }
-      #results_loading_bar.bar{ :style => "width: 0%;"}
+      #results_loading_bar.progress-bar{ :aria => {:valuemin => "0", :valuemax=>"100"}, :style => "width: 0%;"}
     %p#results_loading_text.strong{ :style => 'text-align: center;', :data => {:query => @query }}
       Your query is processing...
     #error_message.alert.alert-danger.hide
