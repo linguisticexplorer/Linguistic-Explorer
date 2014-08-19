@@ -1,0 +1,25 @@
+<div id="results_navbar" class="navbar", style="display: none;">
+  <div class="navbar-inner">
+    <%= link_to 'Actions', '#', :class => "brand" %>
+    <ul class="nav">
+      <li>
+      	<%= link_to "<i class = 'icon-map-marker'></i>&nbsp;Map it".html_safe, '#', id: 'mapit' %>
+      </li>
+      <li>
+        <%= link_to "<i class = 'icon-eye-open'></i>&nbsp;Visualize it".html_safe, '#', id: 'vizit' %>
+      </li>
+    </ul>
+    <ul class="nav pull-right ">
+      <li>
+        <%= link_to "<i class = 'icon-download'></i>&nbsp;Download".html_safe, '#', id: 'downloadit' %>
+      </li>
+      <%- if display_save_search_form?(@search) -%>
+      <li>
+        <%= link_to "<i class = 'icon-tags'></i>&nbsp;Save Results".html_safe, '#save-modal', id: 'saveit' %>
+      </li>
+      <%- end -%>
+    <ul>
+  </div>
+</div>
+
+<%= render :partial => 'searches/save_search_form' %>

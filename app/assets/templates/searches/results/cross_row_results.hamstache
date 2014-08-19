@@ -3,5 +3,5 @@
   %tbody
     {{#rows}}
     %tr
-      %td {{this}}
+      %td {{.}}
     {{/rows}}

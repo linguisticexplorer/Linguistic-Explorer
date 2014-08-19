@@ -1,25 +1,32 @@
 - if display_save_search_form?(@search)
-  #save-modal.modal.hide.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "saveModal", :hidden => "true" }}
-    = content_tag :fieldset do
-      .modal-header
-        %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
-        %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
-        %span#modal-head-content
-          %h4 Save search results
-      = form_for [:group, @search], :html => {:class => "form-horizontal", :id => "save-form", :style =>"margin-bottom: 0px"} do |f|
-        .modal-body
-          .row
-            #error-explanation.col-8-md.hide
-              %h2
-                = pluralize(@search.errors.count, "error")
-                prohibited this search from being saved:
-              %ul#error-message
-            #success-explanation.col-8-md.alert.alert-success.hide
-              %p Your seach has been successfully saved!
-            .col-12-md.input-append
-              = f.text_field :name, :placeholder => "Enter name", class: "search-input disabled"
-              = f.hidden_field :query_json
-              = f.hidden_field :result_groups_json
-        .modal-footer
-          %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close
-          = f.submit "Save", :id => "save-search", :class => "btn btn-primary", :data => {:loading => {:text => "Savings..." }}
+  #save-modal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "saveModal", :hidden => "true" }}
+    .modal-dialog.modal-lg
+      .modal-content
+        = content_tag :fieldset do
+          .modal-header
+            %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+            %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
+            %span#modal-head-content
+              %h3 Save search results
+          = form_for [:group, @search], :html => {:class => "form-horizontal", :id => "save-form", :style =>"margin-bottom: 0px"} do |f|
+            .modal-body
+              .form-group
+                .col-md-12
+                  #error-explanation.col-8-md.hide
+                    %h2
+                      = pluralize(@search.errors.count, "error")
+                      prohibited this search from being saved:
+                    %ul#error-message
+                  #success-explanation.col-8-md.alert.alert-success.hide
+                    %p Your seach has been successfully saved!
+              .form-group
+                %label.col-md-2.control-label{:for => "save-search-name"} Search name:
+                .col-md-8
+                  = f.text_field :name, :placeholder => "Enter name", :class => "disabled form-control", :id => "save-search-name"
+              .form-group
+                .col-md-8
+                  = f.hidden_field :query_json
+                  = f.hidden_field :result_groups_json
+            .modal-footer
+              %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close
+              = f.submit "Save", :id => "save-search", :class => "btn btn-primary", :data => {:loading => {:text => "Savings..." }}

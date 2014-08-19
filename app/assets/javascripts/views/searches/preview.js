@@ -38,7 +38,7 @@
 
     query = {
       authenticity_token: $('meta[name=csrf-token]').attr('content'),
-      search: $('#results_loading_text').data('query')
+      search: $('#search_results').data('query')
     };
   
     $.post(getResultsURL(), query)
@@ -80,22 +80,43 @@
     return '/groups/'+T.currentGroup+'/searches/get_results';
   }
 
+  function toggleNavbarButton(ids, isEnable){
+    // get li parents
+    var elements     = $(ids);
+    var parents = elements.parent();
+
+    elements.attr('disabled', !isEnable);
+    parents.toggleClass('disabled', !isEnable);
+  }
+
   function enableNavbar(type){
     var navbar = $('#results_navbar');
+
+    // Download  => Clustering
+    // Save      => Default
+    // Visualize => All but Default
+    // Map       => All but Clustering
+    var isClustering = (/clustering/).test(type),
+        isDefault    = (/default/).test(type);
+
+    toggleNavbarButton('#saveit'    , isDefault    );
+    toggleNavbarButton('#vizit'     , !isDefault   );
+    toggleNavbarButton('#downloadit', isClustering );
+    toggleNavbarButton('#mapit'     , !isClustering);
     
     // show download button only for clustering
-    if(!(/clustering/).test(type)){
-      $('#downloadit').toggleClass('disabled');
-    } else {
-      $('#saveit, #mapit, #vizit').toggleClass('disabled');
-    }
+    // if(!(/clustering/).test(type)){
+    //   $('#downloadit').attr('disabled', true);
+    // } else if(!(/default/).test(type)){
+    //   $('#saveit, #mapit, #vizit').toggleClass('disabled');
+    // }
     
-    // hide save button for non-regular searches
-    if(!(/default/).test(type)){
-      $('#saveit').toggleClass('disabled');
-    } else {
-      $('#vizit').toggleClass('disabled');
-    }
+    // // hide save button for non-regular searches
+    // if(!(/default/).test(type)){
+    //   $('#saveit').toggleClass('disabled');
+    // } else {
+    //   $('#vizit').toggleClass('disabled');
+    // }
 
     if(navbar.is(':hidden')){
       navbar.fadeIn('slow', function(){

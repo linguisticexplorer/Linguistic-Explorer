@@ -23,9 +23,8 @@
         %li
           = link_to '#', :id => 'downloadit' do
             = icon 'download', '', :class => "fa-15x", :title => "Download CSV"
-        / - if display_save_search_form?(@search)
         %li
-          = link_to '#save-modal', :id => 'saveit', :class => "#{display_save_search_form?(@search) ? "" : 'disabled'}" do
+          = link_to '#save-modal', :id => 'saveit' do
             = icon 'tags', '', :class => "fa-15x", :title => "Save Search"
       = link_to 'Actions', '#', :class => "navbar-brand pull-right"
 

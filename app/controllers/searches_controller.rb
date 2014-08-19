@@ -58,6 +58,8 @@ class SearchesController < GroupDataController
   end
 
   def create
+    Rails.logger.debug params[:search]
+    
     @search = Search.new(params[:search]) do |s|
       s.creator = current_user
       s.group   = current_group
@@ -74,6 +76,7 @@ class SearchesController < GroupDataController
   end
 
   def show
+    # Deal with the legacy GET route
     if params[:id] == "preview"
       return redirect_to :action => :new
     end

@@ -14,42 +14,37 @@
   var resultsJson;
 
   function initSaveSearch(json){
+    // deal with async check of the button:
+    // it will check live to trigger or not the function
+    $(document).on('click', '#saveit:enabled', function(){
 
-    var saveButton = $('#saveit');
+        var queryJsonString = $('#search_results').data('query');
 
-    var saveEnabled = saveButton.length;
-
-    if(saveEnabled){
-
-      saveButton.click(function(){
-
-        var queryJsonString = $('#results_loading_text').data('query');
-
-        resultsJson = json;
+        // resultsJson = json;
+        resultsJson = null;
 
         // add search query
-        $('[name="search[query_json]"]').val(queryJsonString);
+        $('[name="search[query_json]"]').val(JSON.stringify(queryJsonString));
 
         // add results json
-        $('[name="search[result_groups_json]"]').val(resultsJson);
+        $('[name="search[result_groups_json]"]').val(JSON.stringify(resultsJson));
 
         $('#save-modal').modal('show');
 
       });
 
+    // don't worry: in case it's forced the server will reject it anyway
+    $('#save-form').on('submit', function (e){
+      var params = $(this).serialize();
+      
+      $('#save-search').button('loading');
 
-      $('#save-form').on('submit', function (e){
-        var params = $(this).serialize();
-        
-        $('#save-search').button('loading');
+      // Prevent page change: use AJAX power!
+      e.preventDefault();
 
-        // Prevent page change: use AJAX power!
-        e.preventDefault();
-
-        saveSearch(params);
-        
-      });
-    }
+      saveSearch(params);
+      
+    });
   }
 
 
@@ -75,7 +70,11 @@
   }
 
   function saveSearch(data){
-    $.post("/groups/"+T.currentGroup+"/searches", data, function (json){
+    $.post("/groups/"+T.currentGroup+"/searches", data)
+    .done(onSuccess)
+    .fail(onSuccess);
+
+    function onSuccess(json){
 
       var idToShow = json.success ? 'success-explanation' : 'error-messages',
           errorMessages = json.success ? '' : json.errors;
@@ -93,6 +92,6 @@
       // hide the button so the user can only close the modal
       $('#save-search').hide();
       
-    });
+    }
   }
 })();
