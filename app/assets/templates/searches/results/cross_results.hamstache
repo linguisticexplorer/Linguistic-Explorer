@@ -14,7 +14,7 @@
       {{/header.count}}
   %tbody
     {{#rows}}
-    %tr
+    %tr{:id => "{{pair_id}}" }
       {{#pair}}
       {{#cross_property}}
       %td {{cross_property}}

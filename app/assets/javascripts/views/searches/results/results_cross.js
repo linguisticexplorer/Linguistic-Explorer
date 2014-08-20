@@ -22,39 +22,58 @@
     $(document).on('click', '[id^="lings_cross_"]', showLingsModal);
 
     function showLingsModal(){
+
+      // load the modal
+      if(!modal){
+        modal = HoganTemplates[T.controller.toLowerCase() + '/results/cross_modal'];
+        $('body').append(modal.render({name: T.groups[T.currentGroup].ling0_name }));
+      }
+
       var index = + this.id.replace('lings_cross_', '');
       
       // find the right entry
       var entry = resultsJson.rows[index].child || [];
 
-      // fill a list of lings names
-      var lings_names = $.map(entry, function (el){
-        return el.lings_property.ling.name;
+      var lings = $.map(entry, function (el){
+        return el.lings_property.ling;
       });
 
-      // append the list in the modal
-      // var source = $('#lings_cross_template').html();
-      // var template = Handlebars.compile(source);
+      var table = [];
+      var lingsPerRow = 4;
+      var row = [];
+      for( var i=0; i<lings.length; i++){
+
+        if(i && i%lingsPerRow === 0){
+          table.push(row);
+          row = [];
+        }
+        row.push(prepareForRow(lings[i]));
+      }
+      table.push(row);
+
       var template = HoganTemplates[T.controller.toLowerCase() + '/results/cross_row_results'];
-      var html = template.render({rows: lings_names});
+      var html = template.render({rows: table});
 
       $('#lings_cross').html(html);
-
-      // show the modal
-      if(!modal){
-        modal = HoganTemplates[T.controller.toLowerCase() + '/results/cross_modal'];
-        $('body').append(modal.render({name: T.groups[T.currentGroup].ling0_name }));
-      }
       $('#cross_lings_modal').modal('show');
 
     }
   };
 
+  function prepareForRow(entry){
+    return {name: entry.name, link: getLingURL(entry)};
+  }
+
+  function getLingURL(ling){
+    return '/groups/'+T.currentGroup+'/lings/'+ling.id;
+  }
+
   function crossMapping(table, entry, index){
     var func_dict = {
       'count'         : getCrossLings,
       'cross_property': getProperty('parent'),
-      'cross_value'   : getValue('parent')
+      'cross_value'   : getValue('parent'),
+      'row_id'        : getValueId('parent')
     };
 
     function getCrossLings(entry){
@@ -72,18 +91,28 @@
         return T.Util.isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
       };
     }
+
+    function getValueId(level){
+      return function (entry, i){
+        return T.Util.isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.id : 'NA';
+      };
+    }
+
     // columns is an array here!
     var pair_columns = table.headers;
 
-    var new_entry = {pair: [], count: func_dict['count'](entry)};
+    var new_entry = {pair: [], pair_id: null, count: func_dict.count(entry)};
     for( var pc=0; pc< pair_columns.length; pc++ ){
       var pair_entry = {};
+      var pairId = [];
       for(var c in pair_columns[pc]){
         if(pair_columns[pc].hasOwnProperty(c)){
           pair_entry[c] = func_dict[c](entry, pc);
+          pairId.push(func_dict.row_id(entry, pc));
         }
       }
       new_entry.pair.push(pair_entry);
+      new_entry.pair_id = pairId.join('-');
     }
 
     return new_entry;

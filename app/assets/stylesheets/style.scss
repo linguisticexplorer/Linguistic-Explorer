@@ -594,8 +594,15 @@ div#languages-container.hidden {
   height: 250px;
 }
 
-input[type="submit"]{
-  font-family: FontAwesome
+#lings_cross {
+  max-height: 350px;
+  *height: 350px;
+  overflow-y: auto;
+}
+
+#lings_cross [class^=col-]{
+  // border: 1px solid rgba(127, 127, 127, 0.8)
+  margin: 10px 0 10px 0;
 }
 
 // Import Bootstrap here
