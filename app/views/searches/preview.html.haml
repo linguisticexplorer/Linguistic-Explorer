@@ -1,10 +1,10 @@
-- page_heading "Search"
+- page_heading @search.name ? "#{@search.name} Saved Search" : "Search"
 %h1
-  = @search.group.name
+  = @search.name || @search.group.name
   Search Results
 
 // Use the new JSON version
-- if @dynamic_results
+- if @dynamic_results || @search.name
   = render :partial => 'searches/dynamic_results'
 - else
   // Disable advanced interactions for older version

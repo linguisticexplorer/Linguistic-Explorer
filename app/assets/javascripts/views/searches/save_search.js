@@ -21,7 +21,7 @@
         var queryJsonString = $('#search_results').data('query');
 
         // resultsJson = json;
-        resultsJson = null;
+        resultsJson = json;
 
         // add search query
         $('[name="search[query_json]"]').val(JSON.stringify(queryJsonString));
@@ -29,6 +29,8 @@
         // add results json
         $('[name="search[result_groups_json]"]').val(JSON.stringify(resultsJson));
 
+        // enable the save button in case it was disabled
+        $('#save-search').attr('disabled', false);
         $('#save-modal').modal('show');
 
       });
@@ -37,7 +39,9 @@
     $('#save-form').on('submit', function (e){
       var params = $(this).serialize();
       
-      $('#save-search').button('loading');
+      $('#save-search')
+        .button('loading')
+        .attr('disabled', true);
 
       // Prevent page change: use AJAX power!
       e.preventDefault();
@@ -80,17 +84,13 @@
           errorMessages = json.success ? '' : json.errors;
 
       if(errorMessages){
-        // var source = $('#errors_template').html();
-        // var template = Handlebars.compile(source);
-        var template = HoganTemplates[T.controller.toLowerCase() + 'errors_template'];
-        var html = template.render(template);
+        var template = HoganTemplates[T.controller.toLowerCase() + '/errors_template'];
+        var html = template.render(errorMessages);
 
         $('#'+idToShow).append(html);
       }
 
       $('#'+idToShow).fadeIn();
-      // hide the button so the user can only close the modal
-      $('#save-search').hide();
       
     }
   }

@@ -7,7 +7,7 @@
 
   var searches = this.Terraling.Searches;
   
-  searches.preview = searches.preview || {};
+  searches.preview = searches.show = searches.preview || {};
 
   searches.preview.init = getResults;
 

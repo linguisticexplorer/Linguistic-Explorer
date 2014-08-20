@@ -7,13 +7,18 @@
     - @searches.each do |search|
       %tr
         %td
-          = search.name
-        %td
-          = link_to "Show results", [current_group, search], :class => "btn btn-primary", :id => "results"
-        %td
-          = link_to "Download CSV", group_search_path(current_group, search, :format => :csv), :class => "btn btn-success"
-        %td
-          = link_to "Delete", [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-small"
+          = link_to search.name, [current_group, search], :class => "pull-left"
+        %td.col-md-1
+          Regular
+        %td.col-md-3
+          Saved on Timestamp here
+        //  = link_to "Show results", [current_group, search], :class => "btn btn-primary btn-sm", :id => "results"
+        // %td
+        %td.col-md-2
+          = link_to group_search_path(current_group, search, :format => :csv), :class => "btn btn-success btn-sm" do
+            = icon 'download', '', :class => "fa-15x", :title => "Download CSV"
+          = link_to [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-sm" do
+            = icon "trash-o", '', :class => "fa-15x", :title => "Delete"
   - else
     %tr.center
       %td
