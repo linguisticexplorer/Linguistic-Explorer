@@ -1,6 +1,6 @@
 .row
   = render :partial => 'searches/results_navbar'
-#search_results.padded_left.padded_right{:data => {:query => @query }}
+#search_results.padded_left.padded_right{:data => {:query => @query, :search-id => "#{@search.name ? @search.id || null}" }}
   .apple_pagination.js-pagination
   #pagination_table
     .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }

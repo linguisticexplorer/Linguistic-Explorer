@@ -41,7 +41,6 @@ module SearchResults
 
       def parents
         @parents ||= LingsProperty.with_id(parent_ids).includes([:ling, :property, :examples, :examples_lings_properties]).index_by(&:id)
-            #joins(:ling).order("lings.parent_id, lings.name").to_a
       end
 
       def children
@@ -54,7 +53,6 @@ module SearchResults
 
       def retrieve_children
         LingsProperty.with_id(all_child_ids).includes([:ling, :property, :examples, :examples_lings_properties]).index_by(&:id)
-            #joins(:ling).order("lings.parent_id, lings.name").to_a
       end
 
       def self.filter_results_by_columns(parent_results, child_results, columns)

@@ -48,7 +48,7 @@ class SearchesController < GroupDataController
   end
 
   def get_results
-    search = perform_search
+    search = params[:id] ? current_group.searches.find(params[:id]) : perform_search
 
     is_authorized? :search, search
 
@@ -58,12 +58,12 @@ class SearchesController < GroupDataController
   end
 
   def create
-    Rails.logger.debug params[:search]
     
     @search = Search.new(params[:search]) do |s|
       s.creator = current_user
       s.group   = current_group
     end
+
     is_authorized? :create, @search
 
     if @search.save
@@ -77,9 +77,9 @@ class SearchesController < GroupDataController
 
   def show
     # Deal with the legacy GET route
-    if params[:id] == "preview"
-      return redirect_to :action => :new
-    end
+    # if params[:id] == "preview"
+    #   return redirect_to :action => :new
+    # end
 
     @search = current_group.searches.find(params[:id])
     

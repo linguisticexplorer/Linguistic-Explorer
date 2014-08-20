@@ -38,7 +38,8 @@
 
     query = {
       authenticity_token: $('meta[name=csrf-token]').attr('content'),
-      search: $('#search_results').data('query')
+      search: $('#search_results').data('query'),
+      id: $('#search_results').data('search-id')
     };
   
     $.post(getResultsURL(), query)
