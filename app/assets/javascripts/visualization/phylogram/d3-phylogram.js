@@ -172,14 +172,14 @@ if (!d3) { throw new Error("d3 wasn't included!"); }
         h = options.height || d3.select(selector).style('height') || d3.select(selector).attr('height');
     w = + w;
     h = + h;
-    var tree = options.tree || d3.layout.cluster()
+    var tree = d3.layout.cluster()
       .size([h, w])
       .sort(function(node) { return node.children ? node.children.length : -1; })
-      .children(options.children || function(node) {
+      .children(function(node) {
         return node.branchset;
       });
-    var diagonal = options.diagonal || d3.phylogram.rightAngleDiagonal();
-    var vis = options.vis || d3.select(selector).append("svg:svg")
+    var diagonal = d3.phylogram.rightAngleDiagonal();
+    var vis = d3.select(selector).append("svg:svg")
         .attr("width", w  )
         .attr("height", h )
       .append("svg:g")

@@ -2,13 +2,15 @@
 	// Init the module here
   this.Terraling = this.Terraling || {};
 
-  var heatmap = this.Terraling.Heatmap = {};
+  this.Terraling.Visualization = this.Terraling.Visualization || {};
 
-  heatmap.init = createHeatmap;
+  var heatmap = this.Terraling.Visualization.HeatMap = {};
+
+  heatmap.init = createVisualization;
 
   function createVisualization(id, data, options){
     // preprocess the data to get the color range
-    var colors = T.ColorRange(data.type, data);
+    var colors = T.Visualization.ColorRange(data.type, data);
 
     // now preprocess the data
     
