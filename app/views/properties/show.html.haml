@@ -7,47 +7,93 @@
   Back
 - if can_see? :manage, @property
   = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-primary"
-%br/
-%table.show-table.description-table.table.table-bordered.table-striped.table-hover
-  %p
-  %tr
-    %td Name:
-    %td= @property.name
-  %tr
-    %td
-      = current_group.category_name
-      \:
-    %td= link_to @property.category.name, [current_group, @property.category]
-  %td Created by:
-  %td= @property.creator ? @property.creator.name : "Unknown user"
-- if @property.description != nil && @property.description != ""
-  .row
-    %h3 Description
-    .col-md-11.text-justify
-      = @property.description.html_safe
-%br/
-#pagination_table
-  %h3= current_group.lings_property_name.pluralize
-  #pagination_top.apple_pagination
-    / render page links in the view:
-    = alphabetical_paginate @params
-  %table.show-table.table.table-bordered.table-striped.table-hover
-    %thead
-      %th= current_group.ling_name_for_depth(@property.depth)
-      %th= current_group.lings_property_name
-      %th Creator
-    %tbody
-      - @values.each do |value|
-        %tr
-          %td= link_to value.ling.name, [current_group, value.ling]
-          %td= link_to value.value, [current_group, value]
-          %td= (value.creator ? value.creator.name : "")
-  #pagination_bottom.apple_pagination
-    / render page links in the view:
-    = alphabetical_paginate @params
-%br/
-= link_to group_properties_path(current_group), :class => "btn btn-default" do
-  %i.glyphicon.glyphicon-arrow-left
-  Back
-- if can_see? :manage, @property
-  = link_to 'Edit', edit_group_property_path(current_group, @property), :class => "btn btn-primary"
+
+.row{:style => "margin: 15px;"}
+
+  #analysis-container.col-md-6.border
+    .row
+      .col-md-12
+        #analysis
+          %h3 Quick Analysis
+        %form.form
+          .row
+            .col-md-12
+              .form-group
+                %label{:for => "ling-search-field"} Add #{current_group.ling_name_for_depth(@property.depth).pluralize} to compare their #{@property.name} values
+                %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .row
+      .col-md-6
+        %label.control-label
+          Selected Lings (
+          %a#remove-lings{:href => "#"} Clean
+          )
+        .controls
+          %ul#selected-lings
+      #compare-buttons.col-md-6.search-buttons
+        %a#compare-lings.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          =icon 'search', 'Compare Properties'
+        %a#similarity-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          = icon 'search', 'Similarity Tree'
+  .col-md-6
+    // Nav tabs
+    %ul.nav.nav-tabs.pull-right
+      %li.active
+        %a{:href => '#details', :data => {:toggle => "tab"}} Overview
+      %li
+        %a{:href => "#sureness", :data => {:toggle => "tab"}} Sureness Map
+      %li
+        %a#mapButton{:href => "#map", :data => {:toggle => "tab"}} View on Map
+    // Tab panes
+    .tab-content
+      .tab-pane.active#details{:data => {:id => @property.id, :depth => @property.depth,:name => @property.name }}
+        .tabbed-pane
+          %table.show-table.table.table-bordered.table-striped.table-hover
+            %tr
+              %td Name:
+              %td= @property.name
+            %tr
+              %td
+                = current_group.category_name
+                \:
+              %td= link_to @property.category.name, [current_group, @property.category]
+            %td Created by:
+            %td= @property.creator ? @property.creator.name : "Unknown user"
+          - if @property.description != nil && @property.description != ""
+            .row
+              %h3 Description
+              .col-md-11.text-justify
+                = @property.description.html_safe
+      .tab-pane#map
+        .tabbed-pane
+          #property-map
+      .tab-pane#sureness
+        .tabbed-pane
+          #sureness-map
+            %p TODO:
+            %p Here will appear a "sureness" heatmap
+
+.row
+  #pagination_table
+    %h3= current_group.lings_property_name.pluralize
+    #pagination_top.apple_pagination
+      / render page links in the view:
+      = alphabetical_paginate @params
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %thead
+        %th= current_group.ling_name_for_depth(@property.depth)
+        %th= current_group.lings_property_name
+        %th Creator
+      %tbody
+        - @values.each do |value|
+          %tr
+            %td= link_to value.ling.name, [current_group, value.ling]
+            %td= link_to value.value, [current_group, value]
+            %td= (value.creator ? value.creator.name : "")
+    #pagination_bottom.apple_pagination
+      / render page links in the view:
+      = alphabetical_paginate @params
+.row
+  .col-md-12
+    = link_to group_properties_path(current_group), :class => "btn btn-default" do
+      %i.glyphicon.glyphicon-arrow-left
+      Back

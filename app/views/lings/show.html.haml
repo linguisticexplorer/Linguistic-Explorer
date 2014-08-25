@@ -29,9 +29,9 @@
           %h3 Quick Analysis
         %form.form
           .row
-            .col-md-8
+            .col-md-12
               .form-group
-                %label{:for => "ling-search-field"} Add languages to compare with #{@ling.name}
+                %label{:for => "ling-search-field"} Add #{current_group.ling_name_for_depth(@ling.depth).pluralize} to compare with #{@ling.name}
                 %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .row
       .col-md-6

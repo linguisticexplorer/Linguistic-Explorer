@@ -1,40 +1,46 @@
 class GeoMapping
 
-  def initialize(ids)
-    @ids = ids
+  def initialize(group, params)
+    @group = group
+    @lings = params[:ling_ids]
+    @props = params[:prop_ids]
   end
 
-  def to_json
+  def find_values
 
     # get the latlong id
-    latlong_id = current_group.properties.where(:name => 'latlong').pluck(:id).first
+    latlong_id = @group.properties.where(:name => 'latlong')
+                 .pluck(:id).first
     
     # create a simple hash to send as json
-    get_coords(@ids, latlong_id).to_json
+    get_coords(@lings, @props, latlong_id).to_json.html_safe
   end
 
   private
 
-  def get_coords(ling_ids, prop_id)
+  def get_coords(ling_ids, prop_ids, latlong_id)
 
-    latlongs = current_group.
+    ling_ids = find_lings_for_props(prop_ids || []) if ling_ids.nil?
+
+    latlongs = @group.
     # query to get the ling properties for that group
       lings_properties.
     # filter by property and ling ids
-      where(:ling_id => ling_ids, :property_id => prop_id ).
+      where(:ling_id => ling_ids, :property_id => latlong_id ).
     # get only two columns
     # Note:
     # In Rails 3.2 pluck accepts one columns only, so it is not usable here
     # Since Rails 4.0 it will work with multiple columns as well 
-      select([:ling_id, :value])
+      select([:ling_id, :value]).to_a
     
     # Create now an hash to map in JSON => JS Object
     # E.g.
     # {
-    #   "ling_id" : ["lat", "long"],
+    #   "15" : ["lat", "long"],
     #   ...
     # }
-    {}.tap do |entry|
+
+    values = {}.tap do |entry|
       latlongs.each do |lp|
         lat  = ''
         long = ''
@@ -45,7 +51,21 @@ class GeoMapping
         entry["#{lp.ling_id}"] = [lat, long]
       end
     end
+    # this is the result returned
+    {
+      :type => :coords,
+      :values => values
+    }
   end
+
+  def find_lings_for_props(props_ids)
+
+    # find the lings with the properties
+    @group.lings_properties.
+      where(:property_id => props_ids).select([:ling_id)
+
+  end            
+
 
   # def get_legend
   #   {

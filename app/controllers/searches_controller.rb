@@ -124,15 +124,19 @@ class SearchesController < GroupDataController
   end
 
   def geomapping
-    search = perform_search
+    # an empty one is enough
+    search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+    end
     
     # authorize before doing the effort
 
     is_authorized? :search, search
     
-    @geoMapping = GeoMapping.new(params[:ling_ids]).to_json
+    @geoMapping = GeoMapping.new(current_group, params).find_values
 
-    render :json => @geoMapping.to_json
+    render :json => @geoMapping
   end
 
   protected

@@ -2,7 +2,9 @@
 	// Init the module here
   this.Terraling = this.Terraling || {};
 
-  var mapping = this.Terraling.Map = {};
+  this.Terraling.Visualization = this.Terraling.Visualization || {};
+
+  var mapping = this.Terraling.Visualization.Map = {};
 
   var maps = {};
   
@@ -11,7 +13,7 @@
     T.promises.map = {};
 
     // get the data as first step while doing other stuff
-    T.promises.map.data = getData(conf.name || '', id);
+    T.promises.map.data = getData(conf.name || '', id, conf.type);
     
     // create a Leaflet map in the specific id
     var map = new L.Map(id, {minZoom: 1});
@@ -28,21 +30,34 @@
       map.addLayer(googleMaps);
 
       // add the marker
-      // Creates a red marker with the coffee icon
-      var redMarker = L.AwesomeMarkers.icon({
-        prefix: 'fa',
-        icon: 'users',
-        markerColor: 'red'
-      });
-
-      L.marker(maps[id].value, {icon: redMarker}).addTo(map);
+      createMarkers(id, map);
 
     });
   }
 
-  function getData(ids, mapId){
+  function createMarkers(id, map){
+    $.each(maps[id].values, function (i, entry){
+      if(entry.value){
+        createMarker(entry.value, map);
+      }
+
+    });
+  }
+
+  function createMarker(value, map){
+    // Creates a red marker with the coffee icon
+    var redMarker = L.AwesomeMarkers.icon({
+      prefix: 'fa',
+      icon: 'language',
+      markerColor: 'red'
+    });
+
+    L.marker(value, {icon: redMarker}).addTo(map);
+  }
+
+  function getData(ids, mapId, type){
     
-    var request = getURL(ids);
+    var request = getURL(ids, type);
 
     return $[request.method](request.url, request.payload)
       .done(parseData(mapId))
@@ -55,10 +70,17 @@
     return function (json){
       
       if(json.exists){
-
-        maps[id] = json;
+        maps[id] = {};
         // overwrite the value field with an appropriate array
-        maps[id].value = maps[id].value.split(',');
+        maps[id].values = [{id: json.id, value: json.value.split(',')}];
+      }
+
+      if(json.type === 'coords'){
+        maps[id] = {};
+
+        maps[id].values = $.map(json.values, function (val, id){
+          return {id: id, value: val };
+        });
       }
     };
 
@@ -68,21 +90,29 @@
 
   }
 
-  function getURL(ids){
+  function getURL(ids, type){
     var url;
     var method = 'get';
     var payload = {};
 
-
+    // Regular search results
     if($.isArray(ids)){
       url = '/groups/'+T.currentGroup+'/maps';
-      payload.ids = ids;
+      payload.ling_ids = ids;
       method = 'post';
-    } else {
+    } else if(type === 'ling'){
+      // show page on a language
       url = '/groups/'+T.currentGroup+'/lings_properties/exists';
       payload.ling_name = ids;
       payload.prop_name = 'latlong';
+    } else if(type === 'property'){
+      // show page on a property
+      url = '/groups/'+T.currentGroup+'/maps';
+      payload.prop_ids = ids;
+      method = 'post';
     }
+
+    payload.authenticity_token = $('meta[name=csrf-token]').attr('content');
 
     return {url: url, payload: payload, method: method};
   }

@@ -13,7 +13,7 @@
     
     // local variable containing the state of the page
     var currentId,
-    currentDepth,
+        currentDepth,
         resourceTemplate,
         resourcesDict;
 
@@ -26,17 +26,11 @@
         // Setup the resource "cache"
         // we use it to prevent duplicates on the list
         resourcesDict = {};
-        // perhaps we should get it from a Handlebar template script
-        // var htmlTemplate = '<li data-id="{{id}}"><a class="remove-ling" href="#"><span class="glyphicon glyphicon-remove shift-down"></a> {{name}}</li>';
 
-        // resourceTemplate = Hogan.compile(htmlTemplate);
         var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
         resourceTemplate = HoganTemplates[tplPath];
 
-        // bind some buttons here
-        // bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');
-        // bindAnalysis('#compare-tree' , '&search[advanced_set][clustering]=hamming');
-        bindAnalysis('#compare-lings', 'compare');
+        // bind some buttons herebindAnalysis('#compare-lings', 'compare');
         bindAnalysis('#similarity-tree', 'clustering');
 
         // init the typeahead
@@ -131,17 +125,12 @@
     }
 
     function analysisURL(){
-        return '/groups/' + T.currentGroup + '/searches/preview';
-               // '/searches/preview?'+ staticParams() +
-               // '&search[lings][0][]=' + currentId +
-               // '&search[example_keywords][0]=' + params +
-               // buildLingsURL();
+      return '/groups/' + T.currentGroup + '/searches/preview';
     }
 
     function bindAnalysis(id, type){
       $(document).on('click', id, function (e) {
         if (! $(this).attr("disabled")) {
-          // window.open(searchQuery(url));
           // open the modal
           openResultsModal(doAnalysis(type));
         }
@@ -206,7 +195,10 @@
     }
 
     function loadMap(){
-      T.Map.init('ling-map', {name: $('#map').data('name')});
+      T.Visualization.Map.init('ling-map', {
+        name: $('#map').data('name'),
+        type: 'ling'
+      });
     }
 
     function openResultsModal(promise){
