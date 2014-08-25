@@ -1,0 +1,10 @@
+%div.alert.alert-warning
+  %p Sorry, the browser you are using doesn't support this feature.
+  %p Try a different one and see if that works.
+  %p
+    In case you think it's a website fault drop an email to 
+    %a{:href=>"mailto:support@terraling.com"}
+      us 
+      %i.fa.fa-envelope
+    
+

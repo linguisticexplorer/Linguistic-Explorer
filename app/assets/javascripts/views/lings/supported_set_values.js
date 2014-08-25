@@ -13,7 +13,7 @@
 
   function setupComplexPage(){
 
-    var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
+    var tplPath = 'waiting';
 
     var img = HoganTemplates[tplPath].render();
 

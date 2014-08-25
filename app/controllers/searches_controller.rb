@@ -48,7 +48,7 @@ class SearchesController < GroupDataController
   end
 
   def get_results
-    search = params[:id] ? current_group.searches.find(params[:id]) : perform_search
+    search = params[:id].present? ? current_group.searches.find(params[:id]) : perform_search
 
     is_authorized? :search, search
 

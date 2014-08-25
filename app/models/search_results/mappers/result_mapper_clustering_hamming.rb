@@ -41,7 +41,7 @@ module SearchResults
           @flatten_result << :legacy
         else
           plotter = Plotter::D3jsPlotter.new(matrix_to_cluster)
-          @flatten_result << radial_tree?(result_groups)
+          @flatten_result << :javascript
         end
         plotter.plot_it!
         @flatten_result << plotter.path_to_img
@@ -52,13 +52,13 @@ module SearchResults
       end
 
       def parents
-        # @parents ||= Ling.where{ (:id == my{parent_ids})}.index_by(&:id)
         @parents ||= Ling.where(:id => parent_ids).index_by(&:id)
       end
 
       private
 
       def legacy_browser?(data)
+        Rails.logger.debug data
         !data[:javascript]
       end
 

@@ -13,6 +13,7 @@
     
     // local variable containing the state of the page
     var currentId,
+    currentDepth,
         resourceTemplate,
         resourcesDict;
 
@@ -21,6 +22,7 @@
     function setupAnalysis(){
         // Set the id
         currentId = $('#details').data('id') || '';
+        currentDepth = + $('#details').data('depth') || 0;
         // Setup the resource "cache"
         // we use it to prevent duplicates on the list
         resourcesDict = {};
@@ -32,8 +34,10 @@
         resourceTemplate = HoganTemplates[tplPath];
 
         // bind some buttons here
-        bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');
-        bindAnalysis('#compare-tree' , '&search[advanced_set][clustering]=hamming');
+        // bindAnalysis('#compare-lings', '&search[ling_set][0]=compare');
+        // bindAnalysis('#compare-tree' , '&search[advanced_set][clustering]=hamming');
+        bindAnalysis('#compare-lings', 'compare');
+        bindAnalysis('#similarity-tree', 'clustering');
 
         // init the typeahead
         setupTypeahead();
@@ -55,6 +59,32 @@
       }
     }
 
+    function addLingsToParams(params){
+      // iterate on 
+      var ids = $.map( $('#selected-lings li'), function (entry, i) {
+          return $(entry).data('id');
+      });
+      // add the current id
+      ids.push(currentId);
+      
+      // add the ids to the relative depth
+      params.lings['' + currentDepth] = ids;
+    }
+
+    function addSearchTypeToParams(params, type){
+      var isClustering = 'clustering' === type;
+      if(isClustering){
+        params.advanced_set.clustering = 'hammering';
+      } else {
+        params.ling_set['' + currentDepth] = 'compare';
+      }
+    }
+
+    function doAnalysis(type){
+      var params = buildQueryParams(type);
+      return $.post(analysisURL(), params);
+    }
+
     function buildLingsURL(){
         //TODO: refactor this stuff here!
         return '&search[lings][0][]=' + ($.map( $('#selected-lings li'), function (val, i) {
@@ -62,28 +92,59 @@
         })).join('&search[lings][0][]=');
     }
 
+    function buildQueryParams(type){
+      params = staticParams();
+      // add the type here
+      addSearchTypeToParams(params.search, type);
+      // add lings here
+      addLingsToParams(params.search);
+      // return params
+      return params;
+    }
+
     // Just save static parameters in somewhere
     function staticParams(){
-        return "utf8=✓&search[include][ling_0]=1&search[include][property_0]=1&search[include][value_0]=1"+
-               "&search[include][example_0]=1&search[ling_keywords][0]=&search[property_keywords][1]="+
-               "&search[property_set][1]=any&search[lings_property_set][1]=any&search[example_fields][0]=description"+
-               "&search[example_keywords][0]=";
+      return {
+        authenticity_token: $('meta[name=csrf-token]').attr('content'),
+        search: {
+          // will use it for clustering
+          advanced_set : {},
+          // will use it for compare
+          ling_set: {'0': '', '1': ''},
+          // put the lings ids here
+          lings: {'0': [], '1': [] },
+          // static stuff used to prevent any filter on properties
+          property_set: {'0': 'any', '1': 'any'},
+          lings_property_set: {'0': 'any', '1': 'any'},
+          ling_keywords: {'0': null, '1': null},
+          property_keywords: {'0': null, '1': null},
+          example_fields: {'0': 'description', '1': 'description'},
+          example_keywords: {'0': null, '1': null},
+          // enable javascript
+          javascript: true
+        }
+      };
+        // return "utf8=✓&search[include][ling_0]=1&search[include][property_0]=1&search[include][value_0]=1"+
+        //        "&search[include][example_0]=1&search[ling_keywords][0]=&search[property_keywords][1]="+
+        //        "&search[property_set][1]=any&search[lings_property_set][1]=any&search[example_fields][0]=description"+
+        //        "&search[example_keywords][0]=";
     }
 
-    function searchQuery(params){
-        params = params || '';
-        return '/groups/' + T.currentGroup +
-               '/searches/preview?'+ staticParams() +
-               '&search[lings][0][]=' + currentId +
-               '&search[example_keywords][0]=' + params +
-               buildLingsURL();
+    function analysisURL(){
+        return '/groups/' + T.currentGroup + '/searches/preview';
+               // '/searches/preview?'+ staticParams() +
+               // '&search[lings][0][]=' + currentId +
+               // '&search[example_keywords][0]=' + params +
+               // buildLingsURL();
     }
 
-    function bindAnalysis(id, url){
+    function bindAnalysis(id, type){
       $(document).on('click', id, function (e) {
-          if (! $(this).attr("disabled")) {
-              window.open(searchQuery(url));
-          }
+        if (! $(this).attr("disabled")) {
+          // window.open(searchQuery(url));
+          // open the modal
+          openResultsModal(doAnalysis(type));
+        }
       });
     }
 
@@ -135,7 +196,7 @@
 
         resourcesDict[ling.name] = ''+ling.id;
 
-        $('#selected-lings').append(resourceTemplate(ling));
+        $('#selected-lings').append(resourceTemplate.render(ling));
 
         checkButtons(true);
       }
@@ -146,6 +207,26 @@
 
     function loadMap(){
       T.Map.init('ling-map', {name: $('#map').data('name')});
+    }
+
+    function openResultsModal(promise){
+      // clean the modal content
+      $('#analysis-results').empty();
+
+      // open the modal
+      $('#analysis-modal').modal('show');
+
+      promise.always(function (page){
+        
+        // get the promise results filtering part of the page
+        var html = $('#results-wrapper', page).html();
+
+        // paste the results in the modal
+        $('#analysis-results').html(html);
+
+        // init the page js
+        T.Searches.preview.embedInit();
+      });
     }
 
 })();

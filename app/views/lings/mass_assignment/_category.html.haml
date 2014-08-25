@@ -15,7 +15,7 @@
   #cat-prop.form-group
     %select.form-control#prop-select{:multiple => "multiple", :name => "prop_id"}
       - @properties.each do |prop|
-        %option{:id => "prop-#{prop.id}", :style => sureness_color(prop), :value => prop.id, :selected => (prop.id == @property.id) }= prop.name
+        %option{:id => "prop-#{prop.id}", :class => sureness_class(prop), :value => prop.id, :selected => (prop.id == @property.id) }= prop.name
   #select-col.form-group
     %a.btn.cat-btn.hidden Select
     - [["  ","default"], ["Unset","danger"], ["Uncertain","warning"]].each do |text, style|

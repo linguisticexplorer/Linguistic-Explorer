@@ -605,6 +605,29 @@ div#languages-container.hidden {
   margin: 10px 0 10px 0;
 }
 
+.sureness_cell {
+  fill: #fff;
+  stroke: #ccc;
+}
+
+.value-certain {
+  background-color: #fc8d59;
+  color: #fc8d59;
+  fill: #fc8d59;
+}
+
+.value-revisit {
+  background-color: #ffffbf;
+  color: #ffffbf;
+  fill: #ffffbf;
+}
+
+.value-not-set {
+  background-color: #91cf60;
+  color: #91cf60;
+  fill: #91cf60;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
 @import "font-awesome";

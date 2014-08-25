@@ -11,6 +11,8 @@
 
   searches.preview.init = getResults;
 
+  searches.preview.embedInit = getResultsToEmbed;
+
   var templateMapping = {
     'cross': 'cross_results',
     'compare': 'compare_results',
@@ -21,7 +23,8 @@
   };
 
   function getTemplatePath(type){
-    return T.controller.toLowerCase() + '/results/' + templateMapping[type];
+    // should find a better solution
+    return (embed ? embedController : T.controller.toLowerCase()) + '/results/' + templateMapping[type];
   }
 
   var loadingInterval,
@@ -30,6 +33,14 @@
 
   var currentPage;
   var paginationSetup;
+
+  var embed = false;
+  var embedController = 'searches';
+
+  function getResultsToEmbed(){
+    embed = true;
+    getResults();
+  }
 
   function getResults(){
 
@@ -203,12 +214,13 @@
 
     setTimeout(function(){
 
-      $('#pagination_table').html(htmlRows);
+      $('#paginated-results').html(htmlRows);
 
       if(isClustering){
 
         // draw philogram
-        drawPhilogram(json.rows[1]);
+        // drawPhilogram(json.rows[1]);
+        initPageForType(json.type);
 
       } else {
 
@@ -217,8 +229,10 @@
         bindPagination();
 
       }
-
-      enableNavbar(json.type);
+      
+      if(!embed){
+        enableNavbar(json.type);
+      }
       
     }, 700);
   }

@@ -44,7 +44,7 @@
       #compare-buttons.col-md-6.search-buttons
         %a#compare-lings.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
           =icon 'search', 'Compare Properties'
-        %a#compare-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+        %a#similarity-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
           = icon 'search', 'Similarity Tree'
   .col-md-6
     // Nav tabs
@@ -58,7 +58,7 @@
     // Tab panes
     .tab-content
       // use this div to store some ling information
-      .tab-pane.active#details{:data => {:id => @ling.id }}
+      .tab-pane.active#details{:data => {:id => @ling.id, :depth => @ling.depth }}
         .tabbed-pane
           %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
             - @ling.storable_keys.each do |key|
@@ -134,3 +134,16 @@
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       %i.glyphicon.glyphicon-arrow-left
       Back
+
+#analysis-modal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "resultsModal", :hidden => "true" }}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+        %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
+        %span#modal-head-content
+          %h3 Quick analysis results
+      .modal-body
+        #analysis-results
+      .modal-footer
+        %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close

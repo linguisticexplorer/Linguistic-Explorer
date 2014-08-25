@@ -3,6 +3,7 @@
 //= require bootstrap
 //= require twitter/typeahead
 //= require leaflet
+//= require d3
 //= require async
 //= require hogan.js
 //= require_tree ../templates

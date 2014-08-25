@@ -8,7 +8,7 @@ class SearchJSON
 
   def build_json
     {
-      :type    => @search.getType,
+      :type    => get_search_type(),
       :header  => build_results_header,
       :rows    => @search.results(false),
       :success => true
@@ -34,6 +34,11 @@ class SearchJSON
 
       end
     end
+  end
+
+  def get_search_type
+    type = @search.getType
+    /clustering/.match(type) ? "clustering" : type
   end
 
   def build_compare_headers(entry, rows)
