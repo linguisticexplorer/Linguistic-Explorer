@@ -19,8 +19,8 @@
           .row
             .col-md-12
               .form-group
-                %label{:for => "ling-search-field"} Add #{current_group.property_name_for_depth(@property.depth).pluralize} to compare with #{@property.name} values
-                %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+                %label{:for => "property-search-field"} Add #{current_group.property_name.pluralize} to compare with #{@property.name} values
+                %input#property-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .row
       .col-md-6
         %label.control-label

@@ -62,7 +62,7 @@ class GeoMapping
 
     # find the lings with the properties
     @group.lings_properties.
-      where(:property_id => props_ids).select([:ling_id)
+      where(:property_id => props_ids).select(:ling_id)
 
   end            
 

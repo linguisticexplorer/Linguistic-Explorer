@@ -12,14 +12,19 @@
     };
 
     var resourceId = 'property';
-    var resourceTemplate,
+    var currentId, currentName,
+        resourceTemplate,
         resourcesDict;
 
     function setupAnalysis(){
 
+      currentName = $('#details').data('name');
+      currentId = $('#details').data('id');
+
       // Setup the resource "cache"
       // we use it to prevent duplicates on the list
       resourcesDict = {};
+      resourcesDict[currentName] = currentId;
 
       var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
       resourceTemplate = HoganTemplates[tplPath];
@@ -48,15 +53,15 @@
       T.Search.quickTemplate(
         resourceId,
         {type: 'property', template: 'resource'},
-        {nameResolver: nameResolver, onSelection: onLingSelected}
+        {nameResolver: nameResolver, onSelection: onItemSelected}
       );
     }
 
     function nameResolver(){
-      return T.groups[T.currentGroup].property_name.split(' ').join(' - ');
+      return T.groups[T.currentGroup].property_name;
     }
 
-    function onLingSelected(evt, prop, name){
+    function onItemSelected(evt, prop, name){
 
       if(!resourcesDict[prop.name]){
 
