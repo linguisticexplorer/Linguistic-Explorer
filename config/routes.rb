@@ -22,7 +22,7 @@ LinguisticExplorer::Application.routes.draw do
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
 
   post "/groups/:group_id/maps" => "searches#geomapping"
-  get "/groups/:group_id/properties/sureness" => "properties#get_sureness"
+  get "/groups/:group_id/sureness" => "searches#sureness"
 
   resources :groups do
 

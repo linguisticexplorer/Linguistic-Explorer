@@ -95,21 +95,6 @@ class PropertiesController < GroupDataController
     redirect_to(group_properties_url(current_group))
   end
 
-  def get_sureness
-    @property = Property.new do |p|
-      p.group = current_group
-      p.creator = current_user
-    end
-    is_authorized? :read, @property
-
-    render :json => {
-      :success => true,
-      :values => current_group.lings_properties
-                    .where(:property_id => params[:id])
-                    .select([:ling_id, :sureness])
-    }.to_json
-  end
-
   private
 
   def get_categories

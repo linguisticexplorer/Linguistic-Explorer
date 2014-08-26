@@ -139,6 +139,9 @@ class SearchesController < GroupDataController
     render :json => @geoMapping
   end
 
+  def sureness
+  end
+
   protected
 
   def check_max_search_notice

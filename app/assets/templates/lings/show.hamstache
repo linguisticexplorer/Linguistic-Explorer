@@ -1,4 +1,4 @@
 %li{ :data => {:id => "{{id}}"} }
-  %a.remove-ling{:href => "#"}
+  %a.remove-item{:href => "#"}
     %span.glyphicon.glyphicon-remove.shift-down
   {{name}}

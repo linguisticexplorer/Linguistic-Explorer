@@ -11,54 +11,102 @@
         init: setupAnalysis
     };
 
+    var resourceId = 'property';
+    var resourceTemplate,
+        resourcesDict;
+
     function setupAnalysis(){
+
+      // Setup the resource "cache"
+      // we use it to prevent duplicates on the list
+      resourcesDict = {};
+
+      var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
+      resourceTemplate = HoganTemplates[tplPath];
+
+      // init the typeahead
+      setupTypeahead();
+
+      $(document)
+        .on('click', '.remove-items', removeProperties)
+        .on('click', '.remove-item' , removeProperty);
+
       // load Map
-      $("#mapButton").one('click', getSureness);
+      $("#mapButton").one('click', loadMap);
     }
 
-    function loadMap(stylingFn){
+    function loadMap(){
       var options = {
         name: $('#details').data('id'),
-        type: 'property',
-        colors: stylingFn
+        type: 'property'
       };
       T.Visualization.Map.init('property-map', options);
     }
 
-    function getSureness(){
-      var id = $('#details').data('id');
+    function setupTypeahead(){
 
-      var url = '/groups/'+T.currentGroup+'/properties/sureness?id='+id;
-
-      var sureness_values = {
-        'certain': 'green',
-        'revisit': 'orange',
-        'need_help': 'red'
-      };
-
-      $.get(url).always(function (json){
-        var dict;
-
-        if(json.success){
-          dict = {};
-          $.each(json.values, function(i, val){
-            dict[val[0]] = sureness_values[val[1]];
-          });
-        }
-        var stylingFn = surenessFn(dict);
-
-        loadMap(stylingFn);
-      });
+      T.Search.quickTemplate(
+        resourceId,
+        {type: 'property', template: 'resource'},
+        {nameResolver: nameResolver, onSelection: onLingSelected}
+      );
     }
 
-    function surenessFn(values){
-      return function (entry){
-        if(values){
-          return values[entry.id] || 'green';
-        } else {
-          return 'red';
-        }
-      };
+    function nameResolver(){
+      return T.groups[T.currentGroup].property_name.split(' ').join(' - ');
+    }
+
+    function onLingSelected(evt, prop, name){
+
+      if(!resourcesDict[prop.name]){
+
+        resourcesDict[prop.name] = ''+prop.id;
+
+        $('#selected-props').append(resourceTemplate.render(prop));
+
+        checkButtons(true);
+      }
+
+      $('#'+resourceId+'-search-field').typeahead('val', '');
+
+    }
+
+    function checkButtons(criteria){
+      var buttons = $('div#compare-buttons a');
+      if(criteria){
+        buttons.removeAttr('disabled');
+      } else {
+        buttons.attr('disabled', 'disabled');
+      }
+    }
+
+    // remove a language from the cache
+    function removeProperty(){
+      var item = $(this).parent();
+
+      var name = item.text().substring(1);
+
+      delete resourcesDict[name];
+
+      item.remove();
+
+      checkButtons($('ul#selected-items li').length);
+
+      evt.preventDefault();
+    }
+
+    function removeProperties() {
+      $('#selected-items li').each( function () {
+          var item = $(this);
+          item.remove();
+      });
+      // reset the cache
+      resourcesDict = {};
+
+      checkButtons(false);
+
+
+      evt.preventDefault();
     }
 
 })();

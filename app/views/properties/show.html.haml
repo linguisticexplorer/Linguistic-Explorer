@@ -19,21 +19,23 @@
           .row
             .col-md-12
               .form-group
-                %label{:for => "ling-search-field"} Add #{current_group.ling_name_for_depth(@property.depth).pluralize} to compare their #{@property.name} values
+                %label{:for => "ling-search-field"} Add #{current_group.property_name_for_depth(@property.depth).pluralize} to compare with #{@property.name} values
                 %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .row
       .col-md-6
         %label.control-label
           Selected Lings (
-          %a#remove-lings{:href => "#"} Clean
+          %a#remove-items{:href => "#"} Clean
           )
         .controls
-          %ul#selected-lings
+          %ul#selected-props
       #compare-buttons.col-md-6.search-buttons
-        %a#compare-lings.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
-          =icon 'search', 'Compare Properties'
-        %a#similarity-tree.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
-          = icon 'search', 'Similarity Tree'
+        %a#cross-prop.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          =icon 'search', 'Cross Properties'
+        %a#antecedent-impl.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          = icon 'search', 'Implication Antecedent'
+        %a#consequent-impl.btn.btn-default.btn-block{:disabled => "disabled", :href => "#Search"}
+          = icon 'search', 'Implication Consequent'
   .col-md-6
     // Nav tabs
     %ul.nav.nav-tabs.pull-right

@@ -30,15 +30,16 @@
         var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
         resourceTemplate = HoganTemplates[tplPath];
 
-        // bind some buttons herebindAnalysis('#compare-lings', 'compare');
+        // bind some buttons here
+        bindAnalysis('#compare-lings', 'compare');
         bindAnalysis('#similarity-tree', 'clustering');
 
         // init the typeahead
         setupTypeahead();
 
         $(document)
-          .on('click', '.remove-lings', removeLanguages)
-          .on('click', '.remove-ling' , removeLanguage);
+          .on('click', '.remove-items', removeLanguages)
+          .on('click', '.remove-item' , removeLanguage);
 
         // load Map
         $("#mapButton").one('click', loadMap);
@@ -176,7 +177,7 @@
     }
 
     function nameResolver(){
-      return T.groups[T.currentGroup].ling0_name.split(' ').join(' - ');
+      return T.groups[T.currentGroup]['ling'+currentDepth+'_name'].split(' ').join(' - ');
     }
 
     function onLingSelected(evt, ling, name){
