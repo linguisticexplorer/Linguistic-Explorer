@@ -264,7 +264,6 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rinruby (2.0.3)
     rolify (3.4.0)
     roodi (3.3.1)
       ruby_parser (~> 3.2, >= 3.2.2)
@@ -384,7 +383,6 @@ DEPENDENCIES
   rails (~> 3.2.17)
   rails_best_practices
   rake (= 10.1.0)
-  rinruby
   rolify
   rspec-rails (= 2.0)
   rspec_rails3_validation_expectations (= 0.0.2)!
