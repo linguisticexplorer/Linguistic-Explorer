@@ -193,7 +193,7 @@ if (!d3) { throw new Error("d3 wasn't included!"); }
         .domain([0, w])
         .range([0, w]);
     } else {
-      yscale = scaleBranchLengths(nodes, w);
+      yscale = scaleBranchLengths(nodes, w - 200);
     }
 
     if (!options.skipTicks) {
