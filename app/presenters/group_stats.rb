@@ -48,7 +48,7 @@ module GroupStats
   private
 
   def lings_with_property_quota(quota=90)
-    LingsProperty.in_group(self).group(:ling_id).having(["COUNT(property_id) >= ?", props_in_group * quota / 100]).count
+    self.lings_properties.group(:ling_id).having(["COUNT(property_id) >= ?", props_in_group * quota / 100]).count
   end
 
   def props_with_lings_quota(quota=90)
