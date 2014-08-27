@@ -27,8 +27,8 @@ module SearchResults
             row[ling_id] = props_row
           end
           row[:prop_ids] = prop_ids
-          row[:javascript] = result.javascript_enabled?
-          row[:radial] = result.is_radial?
+          # row[:javascript] = result.javascript_enabled?
+          # row[:radial] = result.is_radial?
         end
       end
 
@@ -36,13 +36,13 @@ module SearchResults
         matrix_to_cluster = map_ling_names result_groups
 
         @flatten_result ||= []
-        if legacy_browser? result_groups
-          plotter = Plotter::LegacyPlotter.new(matrix_to_cluster)
-          @flatten_result << :legacy
-        else
-          plotter = Plotter::D3jsPlotter.new(matrix_to_cluster)
-          @flatten_result << :javascript
-        end
+        # if legacy_browser? result_groups
+        #   plotter = Plotter::LegacyPlotter.new(matrix_to_cluster)
+        #   @flatten_result << :legacy
+        # else
+        plotter = Plotter::D3jsPlotter.new(matrix_to_cluster)
+        @flatten_result << :javascript
+        # end
         plotter.plot_it!
         @flatten_result << plotter.path_to_img
       end
@@ -58,12 +58,13 @@ module SearchResults
       private
 
       def legacy_browser?(data)
-        Rails.logger.debug data
-        !data[:javascript]
+        # Rails.logger.debug data
+        # !data[:javascript]
+        false
       end
 
       def radial_tree?(data)
-        data[:radial] ? :d3_radial_tree : :d3_phylogram
+        # data[:radial] ? :d3_radial_tree : :d3_phylogram
       end
 
       # This method will create a new Hash ad map for each id this ling name

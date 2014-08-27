@@ -93,9 +93,9 @@ gem "newrelic_rpm"
 # see https://sites.google.com/a/ddahl.org/rinruby-users/Home for
 # more documentation
 # Grouped because of Travis-CI
-group :production, :development do
-  gem 'rinruby'
-end
+# group :production, :development do
+#   gem 'rinruby'
+# end
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
