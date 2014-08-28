@@ -9,12 +9,13 @@ set :application  , "terraling"
 set :deploy_to    , "/var/www/apps/#{application}"
 set :deploy_via   , :remote_cache
 set :user         , "admin"
-set :use_sudo, true
+set :use_sudo     , true
 
 # source control
 set :scm          , :git
 set :repository   , "git://github.com/linguisticexplorer/Linguistic-Explorer.git"
 set :branch       , "master"
+set :copy_exclude , ['.git']
 
 
 # role :web, HTTP server (Apache)/etc
@@ -40,6 +41,12 @@ namespace :deploy do
   task :start do ; end
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
+    # Update the gems
+    run "/usr/bin/env bundle install"
+    # Update the DB in case (it should be needed, but just in case...)
+    # Note: Remember to backup before deploying...
+    run "/usr/bin/env bundle exec rake db:migrate"
+    # Restart
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
 end

@@ -94,7 +94,7 @@
       end
 
       def selected_ling_ids_to_compare(depth)
-        Rails.logger.debug "Query DEBUG: #{lings}"
+        # Rails.logger.debug "Query DEBUG: #{lings}"
         lings[depth.to_s] || []
       end
 
