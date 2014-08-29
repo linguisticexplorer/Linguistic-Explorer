@@ -1,0 +1,23 @@
+--- # stages for application "terraling"
+production:
+    variables:
+      :user           : "root"
+      :branch         : "master"
+      :rvm_ruby_string: "rvm_gemset_name"
+    roles:
+        web:
+         db:
+        app:
+          "app.domain.com":
+            - :primary: true
+testing:
+    variables:
+      :user           : "admin"
+      :branch         : "testing"
+      :rvm_ruby_string: "rvm_gemset_name"
+    roles:
+        web:
+         db:
+        app:
+          "test.domain.com":
+            - :primary: true

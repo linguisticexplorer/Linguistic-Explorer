@@ -79,6 +79,7 @@ end
 
 # # Deploy with Capistrano
 gem 'capistrano'
+gem 'capistrano-multiyaml'
 
 # # Comment this line if you are not using RVM
 # # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.

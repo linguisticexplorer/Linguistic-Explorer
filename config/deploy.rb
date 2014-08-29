@@ -4,24 +4,26 @@ $: << File.join(File.dirname(__FILE__), "..", "lib")
 # require profile scripts
 default_run_options[:pty]   = true
 ssh_options[:forward_agent] = true
+ssh_options[:auth_methods]  = [:public_key]
+ssh_options[:keys]          = ["~/.ssh/aws-free.pem"]
 
 set :application  , "terraling"
 set :deploy_to    , "/var/www/apps/#{application}"
 set :deploy_via   , :remote_cache
-set :user         , "admin"
+# set :user         , "admin"
 set :use_sudo     , true
 
 # source control
 set :scm          , :git
 set :repository   , "git://github.com/linguisticexplorer/Linguistic-Explorer.git"
-set :branch       , "master"
+# set :branch       , "master"
 set :copy_exclude , ['.git']
 
 
 # role :web, HTTP server (Apache)/etc
 # role :app, app server
 # role :db, master db server
-server "50.56.97.125:10003", :app, :web, :db, :primary => true
+# server "50.56.97.125:10003", :app, :web, :db, :primary => true
 
 begin
   # RVM Ruby Version Manager
