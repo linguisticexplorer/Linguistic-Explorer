@@ -20,6 +20,7 @@ tmp/*
 config/database.yml
 config/import.yml
 config/sswl_migration.yml
+config/deploy/*.rb
 yamls/*.yml
 
 # Test files

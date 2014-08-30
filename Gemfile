@@ -78,8 +78,10 @@ end
 # gem 'bb-ruby'
 
 # # Deploy with Capistrano
-gem 'capistrano'
-gem 'capistrano-multiyaml'
+gem 'capistrano', "2.15.4"
+# gem 'capistrano-multiyaml'
+gem "capistrano-ext"
+# gem 'net-ssh', "2.7.0"
 
 # # Comment this line if you are not using RVM
 # # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.
