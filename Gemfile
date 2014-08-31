@@ -12,6 +12,8 @@ gem "progressbar"
 
 # # Database
 gem 'mysql2', '~> 0.3.11'
+# # The server asks for this gem (shouldn't been already installed with mysql2?)
+gem "activerecord-mysql-adapter"
 # # Having problem with new migrations?
 # # * Disable slim_scrooge here
 # # * Deploy on server with "cap deploy:migrations"
