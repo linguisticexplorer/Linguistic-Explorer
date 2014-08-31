@@ -376,7 +376,7 @@ DEPENDENCIES
   leaflet-rails
   metric_fu
   modernizr-rails
-  mysql2 (~> 0.3.11)
+  mysql2
   newrelic_rpm
   nokogiri (>= 1.5.6)
   passenger

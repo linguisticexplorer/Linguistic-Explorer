@@ -11,7 +11,7 @@ gem "nokogiri", ">= 1.5.6"
 gem "progressbar"
 
 # # Database
-gem 'mysql2', '~> 0.3.11'
+gem 'mysql2'
 # # Having problem with new migrations?
 # # * Disable slim_scrooge here
 # # * Deploy on server with "cap deploy:migrations"
