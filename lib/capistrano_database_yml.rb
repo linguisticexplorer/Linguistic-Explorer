@@ -135,9 +135,10 @@ Capistrano::Configuration.instance.load do
         template = File.file?(location) ? File.read(location) : default_template
 
         config = ERB.new(template)
-        run "mkdir -p #{shared_path}/db" 
-        run "mkdir -p #{shared_path}/config" 
-        put config.result(binding), "#{shared_path}/config/database.yml"
+        run "#{try_sudo} mkdir -p #{shared_path}/db" 
+        run "#{try_sudo} mkdir -p #{shared_path}/config" 
+        run "#{try_sudo} echo \"#{config.result(binding)}\" >> #{shared_path}/config/database.yml"
+        # put config.result(binding), "#{shared_path}/config/database.yml"
       end
 
       desc <<-DESC
