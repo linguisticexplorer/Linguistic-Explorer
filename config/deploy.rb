@@ -15,7 +15,7 @@ default_run_options[:pty]   = true
 
 
 set :application  , "terraling"
-set :deploy_to    , "/var/www/apps/#{application}"
+# set :deploy_to    , "/var/www/apps/#{application}"
 set :deploy_via   , :remote_cache
 # set :user         , "admin"
 # set :use_sudo     , true
@@ -59,10 +59,10 @@ namespace :deploy do
   task :stop do ; end
   task :restart, :roles => :app, :except => { :no_release => true } do
     # Update the gems
-    run "/usr/bin/env bundle install"
+    # run "/usr/bin/env bundle install"
     # Update the DB in case (it should not be necessary, but just in case...)
     # Note: Remember to backup before deploying...
-    run "/usr/bin/env bundle exec rake db:migrate"
+    # run "/usr/bin/env bundle exec rake db:migrate"
     # Restart
     run "#{try_sudo} touch #{File.join(current_path,'tmp','restart.txt')}"
   end
