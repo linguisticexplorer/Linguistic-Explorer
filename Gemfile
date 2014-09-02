@@ -70,8 +70,9 @@ gem 'async-rails'
 group :assets do
   # No need for coffeescript here, JS it's enough
   gem "uglifier"
-  gem "hogan_assets"
 end
+
+gem "hogan_assets"
 
 # Forum gem
 # gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
@@ -107,15 +108,14 @@ group :test, :development do
 
   # Use Thin as web server
   gem "thin"
-  
+
   # Disable for the moment
   # gem "spork-rails"
-
 
   gem 'rspec-rails', "= 2.0"
   gem 'shoulda-matchers'
   gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
-  
+
   gem "cucumber", "~> 1.1.0"
 
   # Due to the new name resolution approach of the bundler gem it has the require option
@@ -124,24 +124,24 @@ group :test, :development do
   gem 'launchy'
   gem "database_cleaner", "~> 0.7.0"
   gem 'factory_girl_rails', "~> 1.1"
-  
+
   # # Query Tracer: useful to debug
   # # Do not activate unless you really need it!
   # # When active it fills all your memory!
   gem "active_record_query_trace"
-  
+
   # # Used to test with a real browser
   gem "Selenium"
   gem "selenium-client"
   # # In this case the browser is phantomjs
   gem 'poltergeist'
   gem 'phantomjs', :require => 'phantomjs/poltergeist'
-  
+
   # # Metrics, metrics, metrics...
   gem 'brakeman'
   gem 'ruby-prof'
   gem 'metric_fu'
   gem 'rails_best_practices'
   gem 'simplecov', '~> 0.7.1', :require => false
-  
+
 end
