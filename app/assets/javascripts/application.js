@@ -1,6 +1,6 @@
 //= require modernizr
 //= require jquery.min
-//= require alphabetical_paginate
+//= require alphabetical_paginate.js
 //= require bootstrap
 //= require twitter/typeahead
 //= require leaflet
