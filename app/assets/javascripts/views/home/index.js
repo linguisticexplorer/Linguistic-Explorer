@@ -45,8 +45,6 @@
       var dictionaries = [];
       $.each(T.groups, function (id, group){
 
-        
-
         var dictionary = T.Search.createDictionary(group.name, resourceType, templateType, createResolver(group), id);
         dictionaries.push(dictionary);
       });

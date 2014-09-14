@@ -87,7 +87,7 @@
 
       resourcesDict[ling.name] = ''+ling.id;
 
-      $('#selected-resources').append(resourceTemplate(ling));
+      $('#selected-resources').append(resourceTemplate.render(ling));
     }
 
     updateResourceField();

@@ -21,7 +21,7 @@
   .form-group
     = f.label :humanizer_answer, @user.humanizer_question, :class => "control-label"
     .controls
-      = f.text_field :humanizer_answer
+      = f.text_field{:autocomplete => "off"} :humanizer_answer
       = f.hidden_field :humanizer_question_id
   .form-group
     .controls
