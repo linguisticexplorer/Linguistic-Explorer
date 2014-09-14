@@ -6,11 +6,12 @@
     %h1
       = @group.name
       - if can_see? :edit, @group
-        = link_to edit_group_path(@group) do
-          %i.fa.fa-edit.fa-05x
-      - if @group.privacy == "private"
-        %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
-          = icon  'lock', '', :class => "pull-right"
+        %small.pull-right
+          = link_to edit_group_path(@group) do
+            %i.fa.fa-edit.fa-05x
+        - if @group.privacy == "private"
+          %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
+            = icon  'lock', '', :class => "pull-right"
   #intro
     .row{:style => "margin-bottom: 20px;"}
       .col-md-6

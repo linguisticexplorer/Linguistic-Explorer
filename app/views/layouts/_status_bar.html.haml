@@ -5,7 +5,7 @@
   %li#userInfo.pull-right
     // First Line: User info
     - if @group && (current_user.admin? || (current_user.member_of?(@group)))
-      = link_to current_user.email, [@group, @group.membership_for(current_user)]
+      = link_to current_user.name, [@group, @group.membership_for(current_user)]
       // Second Line: User/Member Role
       - if current_user.admin?
         .col-md-.nav-status
