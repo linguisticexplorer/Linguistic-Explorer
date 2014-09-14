@@ -44,7 +44,8 @@ gem "alphabetical_paginate"
 # # iconv for utf-8 to latin1 conversion
 gem 'iconv'
 # # Bootstrap gem
-gem 'bootstrap-sass'
+gem "autoprefixer-rails"
+gem 'bootstrap-sass', "~> 3.2.0"
 # # Some more icons
 gem 'font-awesome-sass', "~> 4.2.0"
 # # sass support: it should be out of the assets group!
