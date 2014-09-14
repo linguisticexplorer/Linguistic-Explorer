@@ -632,11 +632,51 @@ div#languages-container.hidden {
   fill: #91cf60;
 }
 
+.table tbody tr > td.success {
+  background-color: #dff0d8 !important;
+}
+
 // Import Bootstrap here
 @import "bootstrap";
+@import "font-awesome-sprockets";
 @import "font-awesome";
 
 // These guys here need some bootstrap variables
+
+.table tbody {
+
+  tr > td.success {
+    background-color: #dff0d8 !important;
+  }
+
+  tr > td.error {
+    background-color: #f2dede !important;
+  }
+
+  tr > td.warning {
+    background-color: #fcf8e3 !important;
+  }
+
+  tr > td.info {
+    background-color: #d9edf7 !important;
+  }
+
+  tr:hover > td.success {
+    background-color: #d0e9c6 !important;
+  }
+
+  tr:hover > td.error {
+    background-color: #ebcccc !important;
+  }
+
+  tr:hover > td.warning {
+    background-color: #faf2cc !important;
+  }
+
+  tr:hover > td.info {
+    background-color: #c4e3f3 !important;
+  }
+}
 
 i.less-than-half {
   color: $brand-danger;

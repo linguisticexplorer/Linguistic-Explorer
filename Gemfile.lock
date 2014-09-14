@@ -364,7 +364,7 @@ DEPENDENCIES
   database_cleaner (~> 0.7.0)
   devise
   factory_girl_rails (~> 1.1)
-  font-awesome-sass
+  font-awesome-sass (~> 4.2.0)
   haml-rails
   hogan_assets
   humanizer

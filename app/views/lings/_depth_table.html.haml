@@ -25,15 +25,16 @@
       - current_group.ling_storable_keys.each do |key|
         %td
           = ling.stored_value(key)
-      %td
-        - percentage = "#{ling.info}%"
-        - label = ling.info < 100 ? ling.info < 50 ? 'Just Started' : 'Almost Complete' : 'Complete'
-        - stage = ling.info < 100 ? ling.info < 50 ? 'less-than-half' : 'not-complete' : 'complete'
-        - icon_name  = ling.info < 100 ? 'spinner' : 'check' 
-        %p
-          %a{:href => "#", :rel => "tooltip", :title => percentage, :data => {:toggle => "tooltip" }}
-            = icon icon_name, '' , :class => "fa-15x #{stage}"
-            = label
+
+      - percentage = "#{ling.info}%"
+      - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage}"
+      - stage = ling.info < 100 ? ling.info < 50 ? 'error' : 'warning' : 'success'
+      - icon_name  = ling.info < 100 ? ling.info < 50 ? 'star-o' : 'star-half-o' : 'star'
+      %td{:class => "#{stage}"}
+        %p.strong
+          %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip" } }
+            / = ling.info < 100 ? percentage : ''
+            = icon icon_name, '' , :class => "fa-2x"
       - if can_see? :manage, ling
         %td
           = link_to edit_group_ling_path(current_group, ling), :class => 'btn btn-default', :title => "Edit" do

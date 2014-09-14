@@ -46,7 +46,7 @@ gem 'iconv'
 # # Bootstrap gem
 gem 'bootstrap-sass'
 # # Some more icons
-gem 'font-awesome-sass'
+gem 'font-awesome-sass', "~> 4.2.0"
 # # sass support: it should be out of the assets group!
 gem 'sass-rails', '>= 3.2'
 # # Use Twitter Typeahead
