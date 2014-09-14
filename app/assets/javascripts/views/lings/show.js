@@ -27,7 +27,7 @@
         // Setup the resource "cache"
         // we use it to prevent duplicates on the list
         resourcesDict = {};
-        resourceDict[currentName] = currentId;
+        resourcesDict[currentName] = currentId;
 
         var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
         resourceTemplate = HoganTemplates[tplPath];
