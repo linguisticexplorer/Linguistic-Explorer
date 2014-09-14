@@ -614,24 +614,6 @@ div#languages-container.hidden {
   stroke: #ccc;
 }
 
-.value-certain {
-  // background-color: #fc8d59;
-  color: #fc8d59;
-  fill: #fc8d59;
-}
-
-.value-revisit {
-  // background-color: #ffffbf;
-  color: #ffffbf;
-  fill: #ffffbf;
-}
-
-.value-not-set {
-  // background-color: #91cf60;
-  color: #91cf60;
-  fill: #91cf60;
-}
-
 .table tbody tr > td.success {
   background-color: #dff0d8 !important;
 }
@@ -688,6 +670,18 @@ i.not-complete {
 }
 
  i.complete {
+  color: $brand-success;
+}
+
+.value-not-set {
+  color: $brand-error;
+}
+
+.value-revisit {
+  color: $brand-warning;
+}
+
+.value-certain {
   color: $brand-success;
 }
 
