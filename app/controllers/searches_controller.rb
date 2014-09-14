@@ -21,7 +21,8 @@ class SearchesController < GroupDataController
 
   def preview
 
-    @dynamic_results = params[:search][:javascript] == "true"
+    @dynamic_results = true
+    # params[:search][:javascript] == "true"
 
     if @dynamic_results
 
