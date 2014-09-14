@@ -141,7 +141,7 @@
     }
 
     // remove a language from the cache
-    function removeLanguage(){
+    function removeLanguage(evt){
       var item = $(this).parent();
 
       var name = item.text().substring(1);
