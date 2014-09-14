@@ -93,7 +93,7 @@
       
       // return null if any of these doesn't pass
       if(!groups || !groups[T.currentGroup] ||
-         olderThanOneDay(groups.__ttl) ){
+         olderThanOneDay(groups.ttl) ){
         // refresh groups every day
         return null;
       }
@@ -105,7 +105,7 @@
       
       // return null if any of these doesn't pass
       if(!templates ||
-         olderThanOneDay(templates.__ttl) ){
+         olderThanOneDay(templates.ttl) ){
         // refresh templates every day
         return null;
       }
@@ -159,7 +159,7 @@
 
       var url = '/groups/list';
       // if localstorage is enabled, use it
-      request = getGroups('__'+url);
+      request = getGroups('Terraling:Groups:'+url);
       loader(url, 'groups', getGroups, function (data){
 
         Terraling.groups = {};
@@ -171,8 +171,8 @@
         // Quick and dirty clone
         var copy = JSON.parse(JSON.stringify(T.groups));
         // set  timestamp
-        copy.__ttl = (new Date()).getTime();
-        save("__"+url, copy);
+        copy.ttl = (new Date()).getTime();
+        save("Terraling:Groups:"+url, copy);
       });
     }
 
