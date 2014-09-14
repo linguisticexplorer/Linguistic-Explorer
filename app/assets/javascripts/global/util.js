@@ -146,7 +146,7 @@
             console.log(arguments);
           })
           .always(function(){
-            console.log(arguments);
+            // console.log(arguments);
           });
       } else {
         Terraling[namespace] = request;
