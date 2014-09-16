@@ -10,19 +10,23 @@
           %li= msg
   = f.hidden_field :depth
   .form-group
-    = label_tag :name, "Name", :class => "control-label"
-    .controls
-      = f.text_field :name
+    .col-sm-6
+      = label_tag :name, "Name", :class => "control-label"
+      .controls
+        = f.text_field :name, :class => "form-control"
   - if @parents && !@parents.empty?
     .form-group
-      = label_tag current_group.ling_name_for_depth(@depth), current_group.ling_name_for_depth(@depth), :class => "control-label"
-      .controls
-        = f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"'
+      .col-sm-6
+        = label_tag current_group.ling_name_for_depth(@depth), current_group.ling_name_for_depth(@depth), :class => "control-label"
+        .controls
+          = f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"', :class => "form-control"
   - @ling.storable_keys.each do |key|
     .form-group
-      = label_tag :stored_values, key.capitalize(), :class => "control-label"
-      .controls
-        = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10
+      .col-sm-6
+        = label_tag :stored_values, key.capitalize(), :class => "control-label"
+        .controls
+          = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10, :class => "form-control"
   .form-group
-    .controls
-      = f.submit("Submit", :class => "btn")
+    .col-sm-6
+      .controls
+        = f.submit("Submit", :class => "btn btn-success")

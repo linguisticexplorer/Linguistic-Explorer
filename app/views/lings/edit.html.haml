@@ -1,8 +1,3 @@
 - page_heading "Edit " + current_group.ling_name_for_depth(@depth)
-%h1
-  Editing #{current_group.ling_name_for_depth(@depth)}
+%h1 Editing #{current_group.ling_name_for_depth(@depth)}
 = render 'form'
-%br/
-= link_to [current_group, @ling], :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back

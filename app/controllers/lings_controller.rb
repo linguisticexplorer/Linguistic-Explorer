@@ -209,7 +209,7 @@ class LingsController < GroupDataController
   end
 
   def new
-    @depth = params[:depth].to_i
+    @depth = params[:depth].to_i || 0
     @parents = (@depth && @depth > 0 ? current_group.lings.at_depth(@depth - 1) : [])
     @ling = Ling.new do |l|
       l.depth = @depth
