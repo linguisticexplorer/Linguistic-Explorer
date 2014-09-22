@@ -48,7 +48,7 @@
   function createMatcher(type, group, resolver){
 
     function defaultResolver(entry){
-      return {name: entry[type].name.replace(/\\/g, ''), id: entry[type].id, type: type };
+      return {name: entry[type].name.replace(/\\/g, '').replace(/\_/, ' '), id: entry[type].id, type: type };
     }
 
     function dataTransform(list){
