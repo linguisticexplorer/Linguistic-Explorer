@@ -108,7 +108,7 @@
         $.post(form.attr("action"), form.serialize(), onSavedValue, 'json');
 
         function saveFeedback(success){
-          $('#value-saved-'+ (success ? 'success' : 'error')).fadeIn('fast');
+          $('#value-saved-'+ (success ? 'success' : 'error')).removeClass('hide');
         }
 
         function onSavedValue(data) {

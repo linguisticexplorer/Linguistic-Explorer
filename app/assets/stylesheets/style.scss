@@ -15,14 +15,14 @@ $link-color: #005580;
   &.description-table {
     width: 40em;
   }
-  td:first-child {
-    width: 10em;
-    font-weight: bold;
-    color: $highlight-color;
-    a {
-      color: $link-color;
-    }
-  }
+  // td:first-child {
+  //   width: 10em;
+  //   font-weight: bold;
+  //   color: $highlight-color;
+  //   a {
+  //     color: $link-color;
+  //   }
+  // }
 
   td.tiny-col {
     width:10%;
