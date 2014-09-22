@@ -60,11 +60,6 @@
               %td= link_to @property.category.name, [current_group, @property.category]
             %td Created by:
             %td= @property.creator ? @property.creator.name : "Unknown user"
-          - if @property.description != nil && @property.description != ""
-            .row
-              %h3 Description
-              .col-md-11.text-justify
-                = @property.description.html_safe
       .tab-pane#map
         .tabbed-pane
           #property-map
@@ -73,6 +68,12 @@
           #sureness-map
             %p TODO:
             %p Here will appear a "sureness" heatmap
+
+- if @property.description != nil && @property.description != ""
+  .row
+    %h3 Description
+    .col-md-11.text-justify
+      = @property.description.html_safe
 
 .row
   #pagination_table
