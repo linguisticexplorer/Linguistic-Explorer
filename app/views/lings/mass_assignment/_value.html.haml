@@ -25,6 +25,11 @@
         %button.btn.btn-default#sureness_certain{ :name => "value_sureness", :value => "certain", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}" } Certain
         %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
         %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need help
+  %div{:style => "height: 25px;" }
+    #value-saved-success.hide.alert.alert-success
+      Value saved!
+    #value-saved-error.hide.alert.alert-error
+      An error occurred while saving the value!
   #prop-example.form-group{:style => "margin-top: 15px;"}
     %h4 Examples
     #prop-active-example.content-box

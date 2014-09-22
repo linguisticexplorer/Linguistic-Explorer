@@ -1,4 +1,3 @@
-// Now load the module
 (function(){
 
     // Init the Lings module here

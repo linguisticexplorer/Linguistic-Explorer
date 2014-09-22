@@ -21,6 +21,8 @@ class SearchesController < GroupDataController
 
   def preview
 
+    raise Exceptions::StandardError if params.nil? || params[:search].nil? 
+
     @dynamic_results = true
     # params[:search][:javascript] == "true"
 

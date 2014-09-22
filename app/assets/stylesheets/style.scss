@@ -257,6 +257,21 @@ div.text-justify {
   text-align: justify;
 }
 
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 0px;
+  display: none;
+  opacity: 1;
+  text-align: center;
+  border: white 1px solid;
+  line-height: 30px;
+  background-color: #ffffff;
+  top: 0px;
+  left: 0px;
+}
+
 .save-container {
   position: relative;
     .save-overlay {
@@ -674,15 +689,18 @@ i.not-complete {
 }
 
 .value-not-set {
-  color: $brand-danger;
+  // color: $brand-danger;
+  color: red;
 }
 
 .value-revisit {
-  color: $brand-warning;
+  // color: $brand-warning;
+  color: orange;
 }
 
 .value-certain {
-  color: $brand-success;
+  // color: $brand-success;
+  // color: 
 }
 
 h4.group-header {

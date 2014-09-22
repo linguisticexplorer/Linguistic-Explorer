@@ -14,19 +14,31 @@
       = label_tag :name, "Name", :class => "control-label"
       .controls
         = f.text_field :name, :class => "form-control"
+    .col-sm-4
+      = label_tag :iso_code, "ISO Code", :class => "control-label"
+      .controls
+        = text_field :iso_code, "ISO Code", :placeholder => "Any ISO standard code here", :class => "form-control", :disabled => "disabled"
   - if @parents && !@parents.empty?
     .form-group
       .col-sm-6
         = label_tag current_group.ling_name_for_depth(@depth), current_group.ling_name_for_depth(@depth), :class => "control-label"
         .controls
           = f.collection_select :parent_id, @parents, :id, :name, :prompt => 'Select one or this for "None"', :class => "form-control"
-  - @ling.storable_keys.each do |key|
+  - @ling.storable_keys.each_with_index do |key, index|
     .form-group
       .col-sm-6
         = label_tag :stored_values, key.capitalize(), :class => "control-label"
         .controls
           = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10, :class => "form-control"
+      - if index < 1
+        .form-group
+          .col-sm-5
+            = hidden_field :latlong, "LatLong"
+            #ling-map
+            .overlay
+              %h1 Map
+              %h1 not implemented yet
   .form-group
-    .col-sm-6
+    .col-sm-6.col-sm-offset-6
       .controls
-        = f.submit("Submit", :class => "btn btn-success")
+        = f.submit("Submit", :class => "btn btn-success pull-right")

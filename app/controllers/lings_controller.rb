@@ -210,7 +210,7 @@ class LingsController < GroupDataController
 
   def new
     @depth = params[:depth].to_i || 0
-    @parents = (@depth && @depth > 0 ? current_group.lings.at_depth(@depth - 1) : [])
+    @parents = (@depth > 0 ? current_group.lings.at_depth(@depth - 1) : [])
     @ling = Ling.new do |l|
       l.depth = @depth
       l.creator = current_user
@@ -231,10 +231,13 @@ class LingsController < GroupDataController
 
 
   def create
+    # Depth is protected from mass assignment
+    depth = params[:ling].delete(:depth)
+
     @ling = Ling.new(params[:ling]) do |ling|
       ling.group    = current_group
       ling.creator  = current_user
-      ling.depth    = params[:ling][:depth].to_i
+      ling.depth    = depth.to_i
     end
     @depth = @ling.depth
 

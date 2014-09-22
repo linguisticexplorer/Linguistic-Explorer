@@ -107,7 +107,13 @@
 
         $.post(form.attr("action"), form.serialize(), onSavedValue, 'json');
 
+        function saveFeedback(success){
+          $('#value-saved-'+ (success ? 'success' : 'error')).fadeIn('fast');
+        }
+
         function onSavedValue(data) {
+
+          saveFeedback(data.success);
 
           if (data.success) {
             $("#prop-name").data("lp_id", data.id);
