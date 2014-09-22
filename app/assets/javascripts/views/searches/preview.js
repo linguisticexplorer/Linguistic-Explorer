@@ -70,7 +70,7 @@
       if(progress > 50){
         clearInterval(loadingInterval);
         // show an error
-        $('#results_loading_text').text('An error occurred');
+        $('#results_loading_text').text("The search it's taking longer than expected...");
       }
     }
 
@@ -425,7 +425,7 @@
       var img = "<img src='/images/loader.gif' class='loading'/>",
           once = false;
       // Manage the AJAX pagination and changing the URL
-       $(document).on("click", ".apple_pagination.js-pagination a", function (e) {
+       $(document).on("click", ".js-pagination a", function (e) {
 
           var offset = getOffset(e.target.id);
           var current = getCurrentPage();

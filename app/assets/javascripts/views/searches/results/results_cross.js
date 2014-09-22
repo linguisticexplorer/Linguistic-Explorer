@@ -14,7 +14,10 @@
   var modal;
   var resultsJson;
 
-  searches.preview.initCross   = function(json){
+  searches.preview.initCross = initCross;
+  searches.preview.initImplication = initCross;
+
+  function initCross(json){
 
     resultsJson = json;
 
