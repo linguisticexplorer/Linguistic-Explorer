@@ -13,50 +13,60 @@
           %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
             = icon  'lock', '', :class => "pull-right"
   #intro
-    .row{:style => "margin-bottom: 20px;"}
-      .col-md-6
-        - if @group.description.present?
-          %p.lead= @group.description
-        %form.form
-          .row
-            .col-md-12
-              .form-group
-                %label{:for => "resources-search-field"}
-                  Looking for a specific 
-                  =@group.ling_names.join(", ") 
-                  or perhaps a 
-                  =@group.property_name 
-                  ? 
-                %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    %form.form
+      .row
+        .col-md-6
+          .progress.progress-striped.progress-info{:style => "width: 80%; margin: 10px 20px 5px 30px;"}
+            .bar{:style => "width: 90%;"}
+              %p#nbrs{:style => "text-align: center;"}
+        .col-md-6
+          .form-group
+            %label{:for => "resources-search-field"}
+              Looking for a specific 
+              =@group.ling_names.join(", ") 
+              or perhaps a 
+              =@group.property_name 
+              ? 
+            %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+
     .row
       .col-md-12
-        %h3 Group details:
+        - if @group.description.present?
+          %h3 Description
+          %p.lead=@group.description
+    .row.text-center
+      .col-md-12
         .row
           - @group.depths.each do |depth|
             .col-md-4
-              %p
-                = @group.lings_in_group(depth)
-                = link_to @group.ling_name_for_depth(depth).pluralize, group_lings_depth_path(@group, depth)
+              .thumbnail
+                %a{:href=> group_lings_depth_path(@group, depth) }
+                  .caption
+                    %h1= @group.lings_in_group(depth)
+                    %h3= @group.ling_name_for_depth(depth).pluralize
           .col-md-4
-            %p
-              = @group.props_in_group
-              = link_to @group.property_name.pluralize, group_properties_path(@group)
+            .thumbnail
+              %a{:href=> group_properties_path(@group) }
+                .caption
+                  %h1= @group.props_in_group
+                  %h3= @group.property_name.pluralize
         .row
           .col-md-4
-            %p
-              = @group.members_in_group
-              = link_to 'Members', [@group, :memberships]
+            .thumbnail
+              %a{:href=> group_memberships_path(@group) }
+                .caption
+                  %h1= @group.members_in_group
+                  %h3 Members
           .col-md-4
-            %p
-              = @group.examples_in_group
-              Examples
+            .thumbnail
+              .caption
+                %h1= @group.examples_in_group
+                %h3 Examples
           .col-md-4
-            %p
-              = @group.ling_props_in_group
-              Values
-    .row
-      .col-md-12
-        %h3 Something here?
+            .thumbnail
+              .caption
+                %h1= @group.ling_props_in_group
+                %h3 Values
     / .row
     /   .col-md-12
     /     %table.show-table.description-table.table.table-bordered.table-hover.table-striped.full-width
