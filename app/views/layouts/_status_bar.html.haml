@@ -5,20 +5,21 @@
   %li#userInfo.pull-right
     // First Line: User info
     - if @group && (current_user.admin? || (current_user.member_of?(@group)))
-      = link_to current_user.name, [@group, @group.membership_for(current_user)]
-      // Second Line: User/Member Role
-      - if current_user.admin?
-        .col-md-.nav-status
-          = "Site Admin"
-      - elsif current_user.administrated_groups.include? @group
-        .col-md-.nav-status 
-          = icon 'group', 'Group Admin'
-      - elsif (current_user.member_of? (@group))
-        .col-md-.nav-status
-          - if (current_user.is_expert? @group)
-            = icon 'certificate', 'Expert'
-          - else
-            = icon 'user', 'Member'
+      %a{:href => group_memberships_path(@group, @group.membership_for(current_user))}
+        %p{:style=> "margin-bottom: 0"}= current_user.name
+        // Second Line: User/Member Role
+        - if current_user.admin?
+          .col-md-.nav-status
+            = "Site Admin"
+        - elsif current_user.administrated_groups.include? @group
+          .col-md-.nav-status 
+            = icon 'group', 'Group Admin'
+        - elsif (current_user.member_of? (@group))
+          .col-md-.nav-status
+            - if (current_user.is_expert? @group)
+              = icon 'certificate', 'Expert'
+            - else
+              = icon 'user', 'Member'
     - else
       = current_user.email
 - else

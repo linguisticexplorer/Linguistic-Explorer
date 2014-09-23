@@ -27,6 +27,9 @@
 
       // TOOLTIP CODE
       $("[rel='tooltip']").tooltip();
+      $(window).bind("popstate", function (evt) {
+        $("[rel='tooltip']").tooltip();
+      });
 
       // LOAD GROUPS JSON
       loadGroupsData();
