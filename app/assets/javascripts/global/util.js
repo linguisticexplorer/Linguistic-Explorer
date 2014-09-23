@@ -53,7 +53,7 @@
 
       if(!$('.js-pagination').length){
         // Manage the AJAX pagination and changing the URL
-         $(document).on("click", ".will-paginate .pagination a", function (e) {
+         $(document).on("click", ".pagination a", function (e) {
             // local history 
             previousURL = this.href;
 
