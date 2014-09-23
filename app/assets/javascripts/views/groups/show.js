@@ -30,8 +30,9 @@
       var dictionaries = [];
       $.each(['ling', 'property'], function (index, entityType){
         
-        var templateType = T.groups[T.currentGroup][entityType === 'ling' ? 'ling0_name' : 'property_name'];
-        var dictionary = T.Search.createDictionary(entityType, entityType, templateType);
+        var templateType = 'resources';
+        var name = T.groups[T.currentGroup][entityType === 'ling' ? 'ling0_name' : 'property_name'];
+        var dictionary = T.Search.createDictionary(name, entityType, templateType);
         dictionaries.push(dictionary);
       });
 

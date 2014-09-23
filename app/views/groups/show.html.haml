@@ -16,10 +16,6 @@
     %form.form
       .row
         .col-md-6
-          .progress.progress-striped.progress-info{:style => "width: 80%; margin: 10px 20px 5px 30px;"}
-            .bar{:style => "width: 90%;"}
-              %p#nbrs{:style => "text-align: center;"}
-        .col-md-6
           .form-group
             %label{:for => "resources-search-field"}
               Looking for a specific 
@@ -44,12 +40,20 @@
                   .caption
                     %h1= @group.lings_in_group(depth)
                     %h3= @group.ling_name_for_depth(depth).pluralize
+                    .form-group
+                      .progress.progress-striped
+                        .progress-bar.progress-bar-success{:style => "width: 90%;"}
+                          %p#nbrs{:style => "text-align: center;"} Completeness: NA %
           .col-md-4
             .thumbnail
               %a{:href=> group_properties_path(@group) }
                 .caption
                   %h1= @group.props_in_group
                   %h3= @group.property_name.pluralize
+                  .form-group
+                    .progress.progress-striped
+                      .progress-bar.progress-bar-success{:style => "width: 90%;"}
+                        %p#nbrs{:style => "text-align: center;"} Completeness: NA %
         .row
           .col-md-4
             .thumbnail

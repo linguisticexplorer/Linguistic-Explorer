@@ -1,0 +1,2 @@
+%div
+  %h4.group-header {{name}}

@@ -76,7 +76,7 @@
   function createDictionary(name, type, templateType, entityResolver, group){
     var matcher = createMatcher(type, group, entityResolver);
 
-    var template = createTemplate(templateType, group && name);
+    var template = createTemplate(templateType, name);
 
     return {
       name: name,
@@ -107,6 +107,9 @@
         // header: '<div><h4 class="group-header">Group: '+name+'</h4></div>',
         // suggestion: Handlebars.compile('<p><strong>{{name}}</strong></p>')
         header: HoganTemplates['typeahead/multi_search_header'].render({name: name})
+      },
+      'resources':{
+        header: HoganTemplates['typeahead/multi_resource_header'].render({name: name})
       }
     };
 
