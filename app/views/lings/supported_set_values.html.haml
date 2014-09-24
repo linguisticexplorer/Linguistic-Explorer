@@ -8,12 +8,12 @@
 
 #supported-entry-container
   .row
+    #property-selector.col-md-4.set-col
+      = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
     #property-description.col-md-4.set-col
       = render :partial => "lings/mass_assignment/property", :object => @property
     #property-setter.col-md-4.set-col
       = render :partial => "lings/mass_assignment/value", :object => @property
-    #property-selector.col-md-4.set-col
-      = render :partial => "lings/mass_assignment/category", :object => @categories, :inline => true
 %div{:style=> "height: 60px;"}
   = link_to [current_group, @ling], :class => "btn btn-default" do
     %i.glyphicon.glyphicon-arrow-left
