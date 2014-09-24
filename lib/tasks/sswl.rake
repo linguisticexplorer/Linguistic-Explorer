@@ -111,13 +111,13 @@ namespace :sswl do
 
   end
 
-  usage = "Usage: rake sswl:migrateToTerraling DUMP_CONFIG=/path/to/config.yml"
+  usage = "Usage: rake sswl:migrate DUMP_CONFIG=/path/to/config.yml"
 
   desc <<-DESC
     Dump and convert SSWL data to Terraling data
     #{usage}
   DESC
-  task :migrate_to_terraling => :environment do
+  task :migrate => :environment do
     raise "Must specify a config file.\n\n#{usage}" unless ENV['DUMP_CONFIG'].present?
 
     Rake::Task["sswl:dump"].invoke
