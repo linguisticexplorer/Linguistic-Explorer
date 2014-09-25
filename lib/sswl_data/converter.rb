@@ -415,17 +415,18 @@ module SswlData
       if !@sanitized[key]
         file = @config[key]
         strings = {
+            "\\E" => "E",
             "\"" => "\\\\'",
             "\\\\;" => "\.",
             "END" => "\n"
         }
         @sanitized[key] ||= true
+
+        text = File.read(file){|f| f.readline }
         strings.each do |bad, fixed|
-          text = File.read(file){|f| f.readline }
-          new_text = text.gsub(/#{bad}/, fixed)
-          File.open(file, "w") {|file| file.puts new_text}
+          text.gsub!(/#{bad}/, fixed)
         end
-        
+        File.open(file, "w") {|file| file.write(text) }
       end
     end
 
