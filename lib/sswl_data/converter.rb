@@ -316,15 +316,18 @@ module SswlData
     def self.convert_ling_prop_in(row, lings_property_ids, ling_ids, property_ids)
       lings_prop_id = "#{decode(row["language"])}:#{property_ids[row["property"]]["name"]}:#{row["value"]}"
 
-      # cache lings_property id
-      lings_property_ids[lings_prop_id] ||= {
-          "id" => "#{row["id"]}",
-          "value" => "#{row["value"]}",
-          "group_id" => "0",
-          "category_id" => "0",
-          "property_id" => "#{property_ids[row["property"]]["id"]}",
-          "ling_id" => "#{ling_ids[decode(row["language"])]["id"]}"
-      }
+      # Filter Not Yet Set values completely
+      if row["value"] != "Not Yet Set"
+        # cache lings_property id
+        lings_property_ids[lings_prop_id] ||= {
+            "id" => "#{row["id"]}",
+            "value" => "#{row["value"]}",
+            "group_id" => "0",
+            "category_id" => "0",
+            "property_id" => "#{property_ids[row["property"]]["id"]}",
+            "ling_id" => "#{ling_ids[decode(row["language"])]["id"]}"
+        }
+      end
     end
 
     def self.update_property_in(row, property_ids, max_id)
@@ -415,23 +418,24 @@ module SswlData
       if !@sanitized[key]
         file = @config[key]
         strings = {
-            "\\E" => "E",
+            "\E" => "E",
             "\"" => "\\\\'",
-            "\\\\;" => "\.",
+            "\\;" => "\.",
             "END" => "\n"
         }
         @sanitized[key] ||= true
 
         text = File.read(file){|f| f.readline }
         strings.each do |bad, fixed|
-          text.gsub!(/#{bad}/, fixed)
+          text = text.gsub(Regexp.new(Regexp.escape(bad)), fixed)
         end
-        File.open(file, "w") {|file| file.write(text) }
+        File.open(file, "w") {|f| f.write(text) }
       end
     end
 
     def self.decode(string)
-      string #.nil? ? string : Iconv.new('UTF-8','LATIN1').iconv(string.encode("cp1252").force_encoding("UTF-8"))
+      # string #.nil? ? string : Iconv.new('UTF-8','LATIN1').iconv(string.encode("cp1252").force_encoding("UTF-8"))
+      string.nil? ? string : string.gsub("\\E", "E")
     end
 
     def csv_for_each(key)
