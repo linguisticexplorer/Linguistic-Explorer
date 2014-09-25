@@ -6,7 +6,7 @@
   %span.glyphicon.glyphicon-arrow-left
   Back
 - if can_see? :manage, @property
-  = link_to edit_group_property_path(current_group, @property), :class => "btn btn-primary pull-right" do
+  = link_to edit_group_property_path(current_group, @property), :class => "btn btn-default pull-right" do
     = icon 'edit', "Edit"
 
 .row{:style => "margin: 15px;"}

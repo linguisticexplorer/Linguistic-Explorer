@@ -29,7 +29,7 @@
       %td= group.privacy.capitalize
       - if can_see? :update, @group
         %td
-          = link_to 'Edit', edit_group_path(group), :class => "btn btn-primary"
+          = link_to 'Edit', edit_group_path(group), :class => "btn btn-default"
       - if can_see? :destroy, @group
         %td
           = link_to 'Destroy', group, :class => "btn btn-danger", :confirm => 'Are you sure?', :method => :delete

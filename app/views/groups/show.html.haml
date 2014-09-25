@@ -42,8 +42,9 @@
                     %h3= @group.ling_name_for_depth(depth).pluralize
                     .form-group
                       .progress.progress-striped
-                        .progress-bar.progress-bar-success{:style => "width: 90%;"}
-                          %p#nbrs{:style => "text-align: center;"} Completeness: NA %
+                        - percentage = @group.lings_with_property_quota(depth)
+                        .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
+                          %p#nbrs{:style => "text-align: center;"} Completeness: #{percentage} %
           .col-md-4
             .thumbnail
               %a{:href=> group_properties_path(@group) }
@@ -52,8 +53,9 @@
                   %h3= @group.property_name.pluralize
                   .form-group
                     .progress.progress-striped
-                      .progress-bar.progress-bar-success{:style => "width: 90%;"}
-                        %p#nbrs{:style => "text-align: center;"} Completeness: NA %
+                      - percentage = @group.props_with_lings_quota
+                      .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
+                        %p#nbrs{:style => "text-align: center;"} Completeness: #{percentage} %
         .row
           .col-md-4
             .thumbnail
