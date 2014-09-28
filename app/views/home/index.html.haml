@@ -1,68 +1,71 @@
-- add_body_classes "map"
+/ - add_body_classes "map"
 - if Settings.in_preview
   = render :partial => "preview"
 - else
   - page_heading "Home"
   #inner
-    #title
-      %h1 Terraling
-      %h2.blue
-        Explore the World's Languages
-      %br/
-    .container
-      .row.home-lead{:style => "width:80%; margin:auto;"}
-        .col-md-12
-          #analysis
-            %h3 Start your exploration with a language:
-          %form.form
-            .row
+    .hero{:style=> "margin-top: -20px;"}
+      .landing{ :id => "#{["clouds", "words", "birds", "birds-bn", "ancient"].sample}"}
+        .container
+          .home-lead
+            #title{:style=>"margin-bottom: 30px;"}
+              %h1 
+                Terraling
+                %small.blue Explore the World's Languages
+            .row{:style => "width:80%; margin:auto;"}
               .col-md-12
-                .form-group
-                  %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-      .row{ :style => "margin-top: 50px;"}
-        #carousel.carousel.slide
-          %ol.carousel-indicators
-            %li.active{"data-slide-to" => "0", "data-target" => "#carousel"}
-            %li{ :data => { :target => "#carousel", "slide-to" => "1"} }
-            %li{ :data => { :target => "#carousel", "slide-to" => "2"} }
-            %li{ :data => { :target => "#carousel", "slide-to" => "3"} }
-          .carousel-inner
-            .item.active
-              = image_tag "home1.png", :style => "width: 646px; height: 307px;"
-              .carousel-caption
-                %h4 Discover
-                %p Explore one of the world's largests databases of languages
-            .item
-              = image_tag "home2.png", :style => "width: 646px; height: 307px;"
-              .carousel-caption
-                %h4 Understand
-                %p Browse through thousands of syntactic property values across an ever increasing number of languages
-            .item
-              = image_tag "home3.png", :style => "width: 646px; height: 307px;"
-              .carousel-caption
-                %h4 Analyze
-                %p Use powerful analytical tools to investigate the relationships between languages
-            .item
-              = image_tag "home4.png", :style => "width: 646px; height: 307px;"
-              .carousel-caption
-                %h4 Contribute
-                %p Terraling is free and open-ended, all the data is contributed by linguistic professionals
-          %a.left.carousel-control{"data-slide" => "prev", :href => "#carousel"} &lsaquo;
-          %a.right.carousel-control{"data-slide" => "next", :href => "#carousel"} &rsaquo;
-      .row
-        #intro
-          %p
-            Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
-            characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
-            Anyone can use the database to perform queries.
-          %p
-            Linguistic researchers can put up their own data using the open-ended framework we provide.
-            Visit the list of #{link_to "public groups", groups_path} to begin searching.
-            \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
-          %p
-            Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have
-            been Chris Collins, Hilda Koopman and Richard Kayne.
-            The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
-            Kozyra.
-            The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), Marco Liberati, Oleg Grishin and Lingliang Zhang.
-            The system architect is Dennis Shasha.
+                #analysis
+                  %h3 Start your exploration with a language:
+                %form.form
+                  .row
+                    .col-md-12
+                      .form-group
+                        %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+  .container
+    / .row{ :style => "margin-top: 50px;"}
+    /   #carousel.carousel.slide
+    /     %ol.carousel-indicators
+    /       %li.active{"data-slide-to" => "0", "data-target" => "#carousel"}
+    /       %li{ :data => { :target => "#carousel", "slide-to" => "1"} }
+    /       %li{ :data => { :target => "#carousel", "slide-to" => "2"} }
+    /       %li{ :data => { :target => "#carousel", "slide-to" => "3"} }
+    /     .carousel-inner
+    /       .item.active
+    /         = image_tag "home1.png", :style => "width: 646px; height: 307px;"
+    /         .carousel-caption
+    /           %h4 Discover
+    /           %p Explore one of the world's largests databases of languages
+    /       .item
+    /         = image_tag "home2.png", :style => "width: 646px; height: 307px;"
+    /         .carousel-caption
+    /           %h4 Understand
+    /           %p Browse through thousands of syntactic property values across an ever increasing number of languages
+    /       .item
+    /         = image_tag "home3.png", :style => "width: 646px; height: 307px;"
+    /         .carousel-caption
+    /           %h4 Analyze
+    /           %p Use powerful analytical tools to investigate the relationships between languages
+    /       .item
+    /         = image_tag "home4.png", :style => "width: 646px; height: 307px;"
+    /         .carousel-caption
+    /           %h4 Contribute
+    /           %p Terraling is free and open-ended, all the data is contributed by linguistic professionals
+    /     %a.left.carousel-control{"data-slide" => "prev", :href => "#carousel"} &lsaquo;
+    /     %a.right.carousel-control{"data-slide" => "next", :href => "#carousel"} &rsaquo;
+    .row{ :style => "margin-top: 150px;"}
+      #intro
+        %p
+          Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+          characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
+          Anyone can use the database to perform queries.
+        %p
+          Linguistic researchers can put up their own data using the open-ended framework we provide.
+          Visit the list of #{link_to "public groups", groups_path} to begin searching.
+          \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
+        %p
+          Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have
+          been Chris Collins, Hilda Koopman and Richard Kayne.
+          The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+          Kozyra.
+          The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), Marco Liberati, Oleg Grishin and Lingliang Zhang.
+          The system architect is Dennis Shasha.
