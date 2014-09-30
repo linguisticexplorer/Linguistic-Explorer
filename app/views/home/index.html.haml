@@ -5,14 +5,14 @@
   - page_heading "Home"
   #inner
     .hero{:style=> "margin-top: -20px;"}
-      .landing{ :id => "#{["clouds", "words", "birds", "birds-bn", "ancient"].sample}"}
+      .landing{ :id => daily_image }
         .container
           .home-lead
-            #title{:style=>"margin-bottom: 30px;"}
+            #title{:style=>"margin-bottom: 60px;"}
               %h1 
                 Terraling
                 %small.blue Explore the World's Languages
-            .row{:style => "width:80%; margin:auto;"}
+            .row{:style => "width:80%; margin:auto; margin-bottom: 60px;"}
               .col-md-12
                 #analysis
                   %h3 Start your exploration with a language:
@@ -52,20 +52,39 @@
     /           %p Terraling is free and open-ended, all the data is contributed by linguistic professionals
     /     %a.left.carousel-control{"data-slide" => "prev", :href => "#carousel"} &lsaquo;
     /     %a.right.carousel-control{"data-slide" => "next", :href => "#carousel"} &rsaquo;
-    .row{ :style => "margin-top: 150px;"}
-      #intro
-        %p
-          Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
-          characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
-          Anyone can use the database to perform queries.
-        %p
-          Linguistic researchers can put up their own data using the open-ended framework we provide.
-          Visit the list of #{link_to "public groups", groups_path} to begin searching.
-          \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
-        %p
-          Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have
-          been Chris Collins, Hilda Koopman and Richard Kayne.
-          The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
-          Kozyra.
-          The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), Marco Liberati, Oleg Grishin and Lingliang Zhang.
-          The system architect is Dennis Shasha.
+    .row{ :style => "margin-top: 300px;"}
+      #intro.text-center
+        %a.btn.btn-lg.btn-default About the project
+    .row
+      .col-md-4
+        .thumbnail
+          = icon "search", '', :class => "fa-8x icon-home"
+          .caption
+            Do advanced searches within your dataset to discover insight in your data, combine the results of different searches and download them!
+      .col-md-4
+        .thumbnail
+          = icon "slideshare", '', :class => "fa-8x icon-home"
+          .caption
+            Collaborate with expert on languages or properties
+      .col-md-4
+        .thumbnail
+          = icon "check-square-o", '', :class => "fa-8x icon-home"
+          .caption
+            Do advanced searches within your dataset to discover insight in your data
+
+
+      %p
+        Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+        characterize a language, as well as how these properties relate across languages. This system is designed to be free to the public and open-ended.
+        Anyone can use the database to perform queries.
+      %p
+        Linguistic researchers can put up their own data using the open-ended framework we provide.
+        Visit the list of #{link_to "public groups", groups_path} to begin searching.
+        \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
+      %p
+        Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have
+        been Chris Collins, Hilda Koopman and Richard Kayne.
+        The principal developers of the original site were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+        Kozyra.
+        The principal developers of this site have been Ross Kaffenberger, Alex Lobascio (Bosh), Marco Liberati, Oleg Grishin and Lingliang Zhang.
+        The system architect is Dennis Shasha.

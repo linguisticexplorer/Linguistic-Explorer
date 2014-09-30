@@ -28,6 +28,10 @@ module ApplicationHelper
     classes << additional_classes
     classes.flatten.uniq.join(" - ")
   end
+
+  def daily_image()
+    ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books"][Time.now.wday]
+  end
   
   def display_style_example(style_id)
     result = "<table class='show-table table table-bordered table-striped table-hover'>"

@@ -15,15 +15,14 @@ $link-color: #005580;
   &.description-table {
     width: 40em;
   }
-  // td:first-child {
-  //   width: 10em;
-  //   font-weight: bold;
-  //   color: $highlight-color;
-  //   a {
-  //     color: $link-color;
-  //   }
-  // }
-
+  &.highlight {
+    width: 10em;
+    font-weight: bold;
+    color: $highlight-color;
+    a {
+      color: $link-color;
+    }
+  }
   td.tiny-col {
     width:10%;
   }
@@ -329,43 +328,8 @@ form {
     box-sizing:border-box;
     -moz-box-sizing:border-box; /* Firefox */
   }
-  // .typeahead.dropdown-menu {
-  //   width: 300px;
-  // }
 }
 
-// input.autocomplete {
-//   height: auto;
-//   position: static;
-//   right: 0;
-// }
-
-// .search-query {
-//   box-sizing:border-box;
-//   -moz-box-sizing:border-box; /* Firefox */
-// }
-
-// input.autocomplete.big {
-//   height: 40px;
-//   position:relative;
-//   right: 30px;
-// }
-
-// div.tab-content input.autocomplete.big {
-//   right: 0px;
-//   display: block;
-//   width: 90%;
-//   margin: 0 auto;
-// }
-
-// #search_name {
-//   width:70%;
-//   @media screen and (max-width: 979px) and (min-width: 768px) {
-//     & {
-//       width: 40%;
-//     }
-//   }
-// }
 
 fieldset {
   width: 100%;
@@ -519,33 +483,6 @@ div#languages-container.hidden {
     color: #aaaaaa;
   }
 }
-// .apple_pagination a, .apple_pagination span {
-//   padding: 0.2em 0.3em;
-// }
-// .apple_pagination .disabled {
-//   color: #aaaaaa;
-// }
-// .apple_pagination .current {
-//   font-style: normal;
-//   font-weight: bold;
-//   color: #C30;
-//   background-color: #bebebe;
-//   display: inline-block;
-//   width: 1.4em;
-//   height: 1.4em;
-//   line-height: 1.5;
-//   -moz-border-radius: 2em;
-//   -webkit-border-radius: 2em;
-//   border-radius: 2em;
-//   text-shadow: rgba(255, 255, 255, 0.8) 1px 1px 1px;
-// }
-// .apple_pagination a {
-//   text-decoration: none;
-//   color: #C30;
-// }
-// .apple_pagination a:hover, .apple_pagination a:focus {
-//   text-decoration: underline;
-// }
 
 #mapping {
     font-family: "Times New Roman",Times,serif;
@@ -556,14 +493,6 @@ div#languages-container.hidden {
     border-bottom: 1px solid #C30;
     line-height:1.25em;
     text-align: center;
-}
-
-.fa-15x{
-  font-size: 1.5em;
-}
-
-.fa-05x{
-  font-size: 0.5em;
 }
 
 .user-nav {
@@ -600,9 +529,9 @@ div#languages-container.hidden {
 }
 
 #intro {
-  margin-top: 20px;
-  min-height: 500px;
-  *height: 500px;
+  // margin-top: 20px;
+  // min-height: 200px;
+  height: 200px;
 }
 
 #ling-map {
@@ -718,8 +647,8 @@ h4.group-header {
   position: absolute;
   left:0;
   width: 100%;
-  min-height: 500px;
-  background: url(https://farm3.staticflickr.com/2254/1568278214_acfad7322b_o.jpg) no-repeat center center fixed;
+  min-height: 700px;
+  background: url(/images/geomapping_header.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -735,17 +664,42 @@ h4.group-header {
 }
 
 .hero #clouds.landing  {
-  // background: url(https://farm3.staticflickr.com/2850/9972360303_1f4839b1c6_o.jpg) no-repeat center center fixed;
+  background-image: url(https://farm3.staticflickr.com/2850/9972360303_1f4839b1c6_o.jpg);
 }
 .hero #words.landing  {
-  // background: url(https://farm1.staticflickr.com/6/10895361_a831db15b2_o.jpg) no-repeat center center fixed;
+  background-image: url(https://farm1.staticflickr.com/6/10895361_a831db15b2_o.jpg);
 }
 .hero #birds.landing  {
-  // background: url(https://farm6.staticflickr.com/5259/5403564200_cbc796af70_o.jpg) no-repeat center center fixed;
+  background-image: url(https://farm6.staticflickr.com/5259/5403564200_cbc796af70_o.jpg);
 }
 .hero #birds-bn.landing  {
-  // background: url(https://farm8.staticflickr.com/7420/11409492903_27064303a0_o.jpg) no-repeat center center fixed;
+  background-image: url(https://farm8.staticflickr.com/7420/11409492903_27064303a0_o.jpg);
 }
 .hero #ancient.landing  {
-  // background: url(https://farm3.staticflickr.com/2254/1568278214_acfad7322b_o.jpg) no-repeat center center fixed;
+  background-image: url(https://farm3.staticflickr.com/2254/1568278214_acfad7322b_o.jpg);
+}
+.hero #sign.landing {
+  background-image: url(https://farm4.staticflickr.com/3213/3008977110_6d63971e5b_o.jpg);
+}
+.hero #books.landing {
+  background-image: url(https://farm8.staticflickr.com/7013/6486016175_a1b1120831_o.jpg);
+}
+
+.fa-15x{
+  font-size: 1.5em;
+}
+
+.fa-6x{
+  font-size: 6em;
+}
+.fa-8x{
+  font-size: 8em;
+}
+
+.fa-05x{
+  font-size: 0.5em;
+}
+
+.home-icon {
+  
 }
