@@ -648,7 +648,7 @@ h4.group-header {
   left:0;
   width: 100%;
   min-height: 700px;
-  background: url(/images/geomapping_header.png) no-repeat center center fixed;
+  background: url(/images/map_bg.gif) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -701,5 +701,59 @@ h4.group-header {
 }
 
 .home-icon {
-  
+
+}
+
+.gray {
+  color:#CCCCCC;
+}
+
+#user_nav {
+  color:#ccc;
+  font-size:90%;
+}
+#user_nav a {
+  color:white;
+  font-weight:bold;
+}
+#group_nav_bar a {
+  font-weight:normal;
+  color:#ccc;
+}
+#group_nav_bar a.group {
+  color:white;
+}
+
+#title h1 {
+  font-size: 5em;
+  font-family: Helvetica,Verdana,Arial,sans-serif;
+  color: #C30;
+  border-bottom: 1px solid #C30;
+  line-height:1.25em;
+}
+
+#title h2 {
+  font-size: 2.0em;
+  font-family: Helvetica,Verdana,Arial,sans-serif;
+  color: #0088cc;
+  margin: 15px 0 0 0;
+  padding: 0 0 15px 0;
+}
+
+/* footer */
+#footer { margin:30px auto; text-align:center; }
+
+body {
+  // font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
+  padding-top: 70px;
+  padding-bottom: 30px;
+}
+
+.caption {
+  margin: 30px 0 30px 0;
+}
+
+.about-img {
+  width: 96px;
+  height: 96px;
 }

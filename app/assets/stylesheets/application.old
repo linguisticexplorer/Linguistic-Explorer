@@ -1,6 +1,8 @@
 /*
+*= require framework
 *= require reset
+*= require default
 *= require style
 *= require leaflet
-*= require_tree ./lib/
+*= require_tree .
 */

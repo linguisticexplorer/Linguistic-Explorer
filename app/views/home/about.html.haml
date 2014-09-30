@@ -1,0 +1,28 @@
+- page_heading "About"
+.container
+  .row
+    .col-md-10.col-md-offset-1
+      #title.text-center
+        %h1 The Terraling project
+      .row
+        %p.lead
+          Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+          characterize a language, as well as how these properties relate across languages. This system is designed to be 
+          %strong free to the public and open-ended
+          \.
+          Anyone can use the database to perform queries.
+        %p.lead
+          Linguistic researchers can put up their own data using the open-ended framework we provide.
+          Visit the list of #{link_to "public groups", groups_path} to begin searching.
+          \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
+        %p.lead
+          Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have been Chris Collins, Hilda Koopman and Richard Kayne.
+          The principal developers of the original site (SSWL) were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+          Kozyra.
+          The principal developers of this site have been:
+        .row
+        - each_developer do |name, img, role|
+          .col-md-4.text-center
+            %img.img-circle.about-img{ :src => img} 
+            %p.lead= name
+            %p= role
