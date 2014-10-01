@@ -29,8 +29,21 @@ module ApplicationHelper
     classes.flatten.uniq.join(" - ")
   end
 
-  def daily_image()
+  def daily_image
     ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books"][Time.now.wday]
+  end
+
+  def daily_attribution
+    photos = [
+      {:url => "nofrills/10895361", :title => "language variety on cadbury&#x27;s choc by nofrills"},
+      {:url => "silveraquarius/9972360303", :title => "Language of the Ancients by JimmyMac210"},
+      {:url => "davidyuweb/4344917629", :title => "Language of The birds with Transamerica of San Francisco by David Yu"},
+      {:url => "multimaniaco/11409492903", :title => "The Language of Birds by Cesar Viteri Ramirez"},
+      {:url => "curiousexpeditions/1568278214", :title => "Closeup on the Linen Book/Mummy Wrappings of the Lost Etruscan Language by Curious Expeditions"},
+      {:url => "valeriebb/3008977110", :title => "Learn sign language at the playground by Valerie Everett"},
+      {:url => "hindrik/6486016175", :title => "focus on language by Hindrik Sijens"}
+    ]
+    return "<p><a href=\"https://www.flickr.com/photos/#{photos[Time.now.wday][:url]}\" >#{photos[Time.now.wday][:title]}, on Flickr</a> under CC License</p>".html_safe
   end
 
   def each_developer()
