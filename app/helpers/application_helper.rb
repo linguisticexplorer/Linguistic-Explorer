@@ -35,10 +35,11 @@ module ApplicationHelper
 
   def each_developer()
     names = ["Ross Kaffenberger", "Alex Lobascio (Bosh)", "Marco Liberati", "Oleg Grishin", "Lingliang Zhang", "Dennis Shasha"]
-    imgs = ["https://pbs.twimg.com/profile_images/3411671204/562c5a9408e4e740b9172f69539f5667_400x400.jpeg"]
+    # imgs = ["https://pbs.twimg.com/profile_images/3411671204/562c5a9408e4e740b9172f69539f5667_400x400.jpeg"]
+    imgs = ["developer.png","developer.png","developer.png","developer.png","developer.png","developer.png"]
     roles = ["", "", "", "", "", "System Architect"]
     names.each_with_index do |name, index|
-      yield name, imgs[index], roles[index] if block_given?
+      yield name, imgs[index], roles[index], '#' if block_given?
     end
   end
   
