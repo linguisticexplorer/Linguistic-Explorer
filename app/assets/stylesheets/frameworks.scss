@@ -1,0 +1,147 @@
+$navbar-color: #000000;
+$background-color: #036564;
+$ui-color: #033649; 
+$highlight-color: #0088cc;
+$link-color: #005580;
+
+.show-table {
+  td, th {
+    text-align: center;
+  }
+  &.ling-table {
+    width:100%;
+    margin-top: 15px;
+  }
+  &.description-table {
+    width: 40em;
+  }
+  &.highlight {
+    width: 10em;
+    font-weight: bold;
+    color: $highlight-color;
+    a {
+      color: $link-color;
+    }
+  }
+  td.tiny-col {
+    width:10%;
+  }
+
+  td.small-col {
+    width:25%;
+  }
+  td.medium-col {
+    width:30%;
+  }
+  td.align-left {
+    text-align:left;
+  }
+  td.text-left {
+    text-align:left;
+  }
+  td.text-justify {
+    text-align:justify;
+  }
+  td.middle {
+    vertical-align: middle;
+  }
+}
+
+#header {
+  // background: $navbar-color;
+  background: rgba(16, 16, 16, 0.85);
+  .navbar-brand {
+    color: white;
+  }
+  div {
+    // background: inherit;
+    border: none;
+    padding: 0px 0px;
+    li {
+      padding: 0px 0px;
+      color: white;
+      .nav-status {
+        color: $highlight-color;
+        text-align: center;
+        display: block;
+      }
+    }
+  }
+  .container-fluid {
+    padding: 5px 20px;
+    .navbar-search{
+      margin-top: 2px;
+      select{
+        padding: 4px 14px;
+        padding-bottom: 0px;
+        margin-top: 3px;
+        color: #ffffff;
+        background-color: #515151;
+        border-color: #111111;
+      }
+      input {
+        margin-top: -6px;
+        color: #ffffff;
+        background: #515151;
+        border-color: #111111;
+      }
+    }
+  }
+  .buttons {
+    margin-left: 10px;
+    a {
+      background: #515151;
+      border-color: #111111;
+      color: #ffffff;
+      height: 80%;
+      margin-top: 2px;
+      padding: 7px 15px;
+    }
+  }
+}
+
+#search-form {
+  .col-md-7 {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid;
+    border-color: $highlight-color;
+  }
+}
+
+.form-horizontal {
+  .text-adjust {
+		color: $highlight-color;
+		padding: 4px;
+	}
+}
+
+.blue {
+  color: darken($highlight-color, 10);
+}
+
+// Import Bootstrap here
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+
+
+i.less-than-half {
+  color: $brand-danger;
+}
+
+i.not-complete {
+  color: $brand-warning;
+}
+
+ i.complete {
+  color: $brand-success;
+}
+
+h4.group-header {
+  margin: 0 20px 5px 20px;
+  padding: 3px 0;
+  border-bottom: 1px solid #ccc;
+  color: $brand-danger;
+}
