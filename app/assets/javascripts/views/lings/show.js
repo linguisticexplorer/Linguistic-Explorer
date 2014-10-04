@@ -19,31 +19,32 @@
     var resourceId = 'ling';
 
     function setupAnalysis(){
-        // Set the id
-        currentId = $('#details').data('id') || '';
-        currentName = $('#details').data('name');
-        currentDepth = + $('#details').data('depth') || 0;
-        // Setup the resource "cache"
-        // we use it to prevent duplicates on the list
-        resourcesDict = {};
-        resourcesDict[currentName] = currentId;
+      // Set the id
+      currentId = $('#details').data('id') || '';
+      currentName = $('#details').data('name');
+      currentDepth = + $('#details').data('depth') || 0;
+      // Setup the resource "cache"
+      // we use it to prevent duplicates on the list
+      resourcesDict = {};
+      resourcesDict[currentName] = currentId;
 
-        var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
-        resourceTemplate = HoganTemplates[tplPath];
+      var tplPath = T.controller.toLowerCase() + '/' + T.action.toLowerCase();
+      resourceTemplate = HoganTemplates[tplPath];
 
-        // bind some buttons here
-        bindAnalysis('#compare-lings', 'compare');
-        bindAnalysis('#similarity-tree', 'clustering');
+      // bind some buttons here
+      bindAnalysis('#compare-lings', 'compare');
+      bindAnalysis('#similarity-tree', 'clustering');
 
-        // init the typeahead
-        setupTypeahead();
+      // init the typeahead
+      setupTypeahead();
 
-        $(document)
-          .on('click', '.remove-items', removeLanguages)
-          .on('click', '.remove-item' , removeLanguage);
+      $(document)
+        .on('click', '.remove-items', removeLanguages)
+        .on('click', '.remove-item' , removeLanguage);
 
-        // load Map
-        $("#mapButton").one('click', loadMap);
+      // load Map
+      $("#mapButton").one('click', loadMap);
+      $('#surenessButton').one('click', loadHeatMap);
     }
 
     function checkButtons(criteria){
@@ -120,10 +121,6 @@
           javascript: true
         }
       };
-        // return "utf8=✓&search[include][ling_0]=1&search[include][property_0]=1&search[include][value_0]=1"+
-        //        "&search[include][example_0]=1&search[ling_keywords][0]=&search[property_keywords][1]="+
-        //        "&search[property_set][1]=any&search[lings_property_set][1]=any&search[example_fields][0]=description"+
-        //        "&search[example_keywords][0]=";
     }
 
     function analysisURL(){
@@ -201,6 +198,34 @@
         name: $('#map').data('name'),
         type: 'ling'
       });
+    }
+
+    function loadHeatMap(){
+      $.when(getHeatMapData()).then(function (values){
+        
+        T.Visualization.Heatmap.init('#sureness-map', values, {
+          name: $('#sureness').data('id'),
+          type: 'ling'
+        });
+
+      });
+    }
+
+    function getHeatMapData(){
+      // get the data to use for the heatmap
+      return $.getJSON('/groups/'+T.currentGroup+'/lings_properties/sureness', {id: $('#sureness').data('id')}).
+        done(function (json){
+          var result;
+          if(exists){
+            result = json.data;
+          } else {
+            result = [];
+          }
+          return result;
+        }).
+        fail(function (){
+          return [];
+        });
     }
 
     function openResultsModal(promise){

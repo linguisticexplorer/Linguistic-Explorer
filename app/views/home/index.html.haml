@@ -76,5 +76,8 @@
     .row
       .col-md-10.col-md-offset-1
         .text-center
-          %h2 Do you want to know more?
-          %a.btn.btn-lg.btn-default{:href => "./about"} About the project
+          .row
+            %h2 Do you want to know more?
+          .row
+            %a.btn.btn-lg.btn-default{:href => "./about"}
+              =icon "info-circle", "About the project"

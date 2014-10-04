@@ -1,5 +1,5 @@
 - if @group && !@group.new_record?
-  %li#group_id.dropdown
+  %li#group_id.dropdown.black-dropdown
     = link_to @group, :class => "group dropdown-toggle", :id => "group-link" do
       = @group.name 
       %b.caret
@@ -8,15 +8,33 @@
         - if group != @group
           %li{:role => "presentation"}
             = link_to group.name, group
-  %li= link_to 'Advanced Search', [:new, @group, :search]
-  %li= link_to 'History', [@group, :searches] if user_signed_in?
-  %li= link_to @group.ling0_name.pluralize, group_lings_depth_path(@group, Depth::PARENT)
+  // Search section
+  - if user_signed_in?
+    %li.dropdown.black-dropdown
+      = link_to "Search", [:new, @group, :search]
+      %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
+        %li= link_to 'Advanced Search', [:new, @group, :search]
+        %li= link_to 'History', [@group, :searches]
+  - else
+    %li= link_to 'Search', [:new, @group, :search]
+  // Language section
   - if @group.has_depth?
-    %li= link_to @group.ling1_name.pluralize, group_lings_depth_path(@group, Depth::CHILD)
+    %li.dropdown.black-dropdown
+      = link_to group_lings_depth_path(@group, Depth::PARENT) do
+        =@group.ling0_name.pluralize
+        %b.caret
+      %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
+        %li= link_to @group.ling0_name.pluralize, group_lings_depth_path(@group, Depth::PARENT)
+        %li= link_to @group.ling1_name.pluralize, group_lings_depth_path(@group, Depth::CHILD)
+  - else
+    %li= link_to @group.ling0_name.pluralize, group_lings_depth_path(@group, Depth::PARENT)
+  // Property section
   %li= link_to @group.property_name.pluralize, [@group, :properties]
+  // Category section
   - if @group.categories.count > 1
     %li
       = link_to(@group.category_name, [@group, :categories])
+  // Members section
   %li= link_to "Members", [@group, :memberships]
 - elsif @groups
   = form_tag({:controller => "groups", :action => "index"}, :method => "get", :class => "navbar-search") do
