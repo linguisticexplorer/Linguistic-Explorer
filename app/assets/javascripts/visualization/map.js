@@ -30,29 +30,38 @@
       map.addLayer(googleMaps);
 
       // add the marker
-      createMarkers(id, map);
+      createMarkers(id, conf.criteria, map);
 
     });
   }
 
-  function createMarkers(id, map){
+  function createMarkers(id, criteria, map){
     $.each(maps[id].values, function (i, entry){
       if(entry.value){
-        createMarker(entry.value, map);
+        createMarker(entry.value, criteria, map);
       }
 
     });
   }
 
-  function createMarker(value, map){
+  function createMarker(value, criteria, map){
+    // start with a default style
+    var style = {
+      markerColor: 'white',
+      icon: 'info',
+      iconColor: 'red',
+      spin: false
+    };
+    // overwrite if a criteria is passed
+    if(criteria){
+      style = criteria(value);
+    }
+    // append the prefix
+    style.prefix = 'fa';
     // Creates a red marker with the coffee icon
-    var redMarker = L.AwesomeMarkers.icon({
-      prefix: 'fa',
-      icon: 'language',
-      markerColor: 'red'
-    });
+    var marker = L.AwesomeMarkers.icon(style);
 
-    L.marker(value, {icon: redMarker}).addTo(map);
+    L.marker(value, {icon: marker}).addTo(map);
   }
 
   function getData(ids, mapId, type){
