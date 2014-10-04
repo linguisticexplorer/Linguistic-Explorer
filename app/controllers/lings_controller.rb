@@ -125,7 +125,6 @@ class LingsController < GroupDataController
     end
 
 
-    # authorize! :manage, fresh if fresh
     is_authorized? :manage, fresh, true if fresh
 
     prop_id = params[:property_id]

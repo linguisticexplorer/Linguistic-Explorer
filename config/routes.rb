@@ -22,9 +22,9 @@ LinguisticExplorer::Application.routes.draw do
   get "/groups/:group_id/memberships/list" => "memberships#list"
 
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
+  get "/groups/:group_id/lings_properties/sureness" => "lings_properties#sureness"
 
   post "/groups/:group_id/maps" => "searches#geomapping"
-  get "/groups/:group_id/sureness" => "searches#sureness"
 
   resources :groups do
 
@@ -41,7 +41,7 @@ LinguisticExplorer::Application.routes.draw do
 
     resources :lings do
       member do
-        get 'set_values'
+        # get 'set_values'
         get 'supported_set_values'
         post 'supported_submit_values'
         # post 'supported_submit_values_multiple'

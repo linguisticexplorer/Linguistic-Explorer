@@ -36,4 +36,25 @@ class LingsPropertiesController < GroupDataController
       render :json => {error: "Missing ling_name or prop_name in params"}
     end
   end
+
+  def sureness
+    # an empty one is enough
+    search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+    end
+    
+    # authorize before doing the effort
+
+    is_authorized? :search, search
+
+    sureness_data = current_group.lings_properties.
+                      where(:ling_id => params[:id].to_i).
+                      to_a.map {|lp| [lp.id, lp.value, lp.sureness]}
+    if sureness_data
+      render :json => {:exists => true, :data => sureness_data.to_json}
+    else
+      render :json => {:exists => false}
+    end
+  end
 end

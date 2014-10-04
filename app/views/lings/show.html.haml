@@ -57,7 +57,7 @@
       %li.active
         %a{:href => '#details', :data => {:toggle => "tab"}} Overview
       %li
-        %a{:href => "#sureness", :data => {:toggle => "tab"}} Sureness Map
+        %a#surenessButton{:href => "#sureness", :data => {:toggle => "tab"}} Sureness Map
       %li
         %a#mapButton{:href => "#map", :data => {:toggle => "tab"}} View on Map
     // Tab panes
@@ -99,7 +99,7 @@
       .tab-pane#map{:data => {:name => @ling.name}}
         .tabbed-pane
           #ling-map
-      .tab-pane#sureness
+      .tab-pane#sureness{:data => {:id => @ling.id}}
         .tabbed-pane
           #sureness-map
             %p TODO:
