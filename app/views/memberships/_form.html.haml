@@ -20,9 +20,14 @@
     .col-sm-6
       = f.label :role, :class => "control-label"
       .controls
+        .btn-group{:data => {:toggle => "button"}}
+          - (Membership::ACCESS_LEVELS | Membership::ROLES).each do |role|
+            %label{:class => "btn btn-default #{@membership.role == role ? 'active' : ''}"}
+              %input{:type => "radio", :name => "role" }= role.capitalize
+
         //- Simplify the interface: levels and roles in a single field
         //- TODO: Remember to wrap and capitalize roles
-        = f.collection_select :role, Membership::ACCESS_LEVELS | Membership::ROLES, :to_s, :to_s, {}, :class =>'form-control'
+        // = f.collection_select :role, Membership::ACCESS_LEVELS | Membership::ROLES, :to_s, :to_s, {}, :class =>'form-control'
     #resources-list.col-sm-6{:style => 'display: none;'}
       = f.hidden_field 'resources', :value => ''
       %label.control-label
