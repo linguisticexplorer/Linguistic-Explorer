@@ -20,10 +20,10 @@
     .col-sm-6
       = f.label :role, :class => "control-label"
       .controls
-        .btn-group{:data => {:toggle => "button"}}
+        .btn-group{:data => {:toggle => "buttons"}}
           - (Membership::ACCESS_LEVELS | Membership::ROLES).each do |role|
             %label{:class => "btn btn-default #{@membership.role == role ? 'active' : ''}"}
-              %input{:type => "radio", :name => "role" }= role.capitalize
+              %input.membership_role{:type => "radio", :name => "membership[role]", :value => role}= role.capitalize
 
         //- Simplify the interface: levels and roles in a single field
         //- TODO: Remember to wrap and capitalize roles

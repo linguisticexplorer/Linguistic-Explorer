@@ -130,7 +130,7 @@ class MembershipsController < GroupDataController
       :role => role,
       :resources => Ling.find((params[:membership][:resources] || '').split(';'))
     }
-
+    
     [attributes, roles]
   end
 end

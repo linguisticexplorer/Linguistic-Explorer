@@ -23,7 +23,7 @@
     resourceTemplate = HoganTemplates[T.controller.toLowerCase() + '/edit'];
     mapResourcesRoles();
     
-    $('#membership_role').change(enableRolesPanel);
+    $('.membership_role').change(enableRolesPanel);
 
     $('body')
         .on('click', '#remove-resources', removeLanguages)
@@ -97,10 +97,10 @@
   }
 
   function enableRolesPanel(){
-
-    var isValidRole = $('#membership_role').val() === 'expert';
-    $('#'+resourceId + '-search , #'+resourceId + '-list ').toggle(isValidRole);
-
+    if(this !== window){
+      var isValidRole = $(this).val() === 'expert';
+      $('#'+resourceId + '-search , #'+resourceId + '-list ').toggle(isValidRole);
+    }
   }
 
   // make both point to the same JS object
