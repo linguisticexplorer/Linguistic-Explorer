@@ -18,6 +18,12 @@ module LingHelper
    classes[get_sureness_type(prop)]
   end
 
+  def check_all_lings(keys, lings)
+    lings.any? do |ling|
+      keys.any? {|key| ling.stored_value(key).present? }
+    end
+  end
+
   private
 
   def get_sureness_type(prop)

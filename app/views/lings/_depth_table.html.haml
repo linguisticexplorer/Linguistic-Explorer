@@ -1,14 +1,17 @@
 #pagination_top.apple_pagination
   = alphabetical_paginate paginate_params
+- storable_keys = current_group.ling_storable_keys
+- any_storable_values_available = check_all_lings(storable_keys, lings)
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
     %th.col-md-3 Name
     - if current_group.has_depth?
       %th
         = current_group.ling_name_for_depth(depth - 1)
-    - current_group.ling_storable_keys.each do |key|
-      %th
-        = key.humanize
+    - if any_storable_values_available
+      - storable_keys.each do |key|
+        %th
+          = key.humanize
     %th.col-md-2
       Completeness
       %a{:href => "#", :rel => "tooltip", :title => "Hover the icon for percentage details", :data => {:toggle => "tooltip", :animation => "true"} }
@@ -22,15 +25,16 @@
       - if current_group.has_depth?
         %td
           = (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent
-      - current_group.ling_storable_keys.each do |key|
-        %td
-          = ling.stored_value(key)
+      - if any_storable_values_available
+        - storable_keys.each do |key|
+          %td
+            = ling.stored_value(key)
 
       - percentage = "#{ling.info}%"
       - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage}"
       - stage = ling.info < 100 ? ling.info < 50 ? 'error' : 'warning' : 'success'
       - icon_name  = ling.info < 100 ? ling.info < 50 ? 'star-o' : 'star-half-o' : 'star'
-      %td{:class => "#{stage}"}
+      %td{:class => "#{stage} text-center"}
         %p.strong
           %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip" } }
             / = ling.info < 100 ? percentage : ''
