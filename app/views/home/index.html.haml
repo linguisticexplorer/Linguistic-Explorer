@@ -22,57 +22,30 @@
                       .form-group
                         %input#resources-search-field.form-control.input-lg{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
   .container
-    / .row{ :style => "margin-top: 50px;"}
-    /   #carousel.carousel.slide
-    /     %ol.carousel-indicators
-    /       %li.active{"data-slide-to" => "0", "data-target" => "#carousel"}
-    /       %li{ :data => { :target => "#carousel", "slide-to" => "1"} }
-    /       %li{ :data => { :target => "#carousel", "slide-to" => "2"} }
-    /       %li{ :data => { :target => "#carousel", "slide-to" => "3"} }
-    /     .carousel-inner
-    /       .item.active
-    /         = image_tag "home1.png", :style => "width: 646px; height: 307px;"
-    /         .carousel-caption
-    /           %h4 Discover
-    /           %p Explore one of the world's largests databases of languages
-    /       .item
-    /         = image_tag "home2.png", :style => "width: 646px; height: 307px;"
-    /         .carousel-caption
-    /           %h4 Understand
-    /           %p Browse through thousands of syntactic property values across an ever increasing number of languages
-    /       .item
-    /         = image_tag "home3.png", :style => "width: 646px; height: 307px;"
-    /         .carousel-caption
-    /           %h4 Analyze
-    /           %p Use powerful analytical tools to investigate the relationships between languages
-    /       .item
-    /         = image_tag "home4.png", :style => "width: 646px; height: 307px;"
-    /         .carousel-caption
-    /           %h4 Contribute
-    /           %p Terraling is free and open-ended, all the data is contributed by linguistic professionals
-    /     %a.left.carousel-control{"data-slide" => "prev", :href => "#carousel"} &lsaquo;
-    /     %a.right.carousel-control{"data-slide" => "next", :href => "#carousel"} &rsaquo;
-    .row.text-center{:style=> "min-height: 300px; margin-top: 280px;"}
+    .row{:style=> "min-height: 300px; margin-top: 280px;"}
       .col-md-10.col-md-offset-1
         .row
           .col-md-4
             %div
-              = icon "database", '', :class => "fa-8x"
+              .text-center
+                = icon "database", '', :class => "fa-8x"
               .caption
                 %p.lead
-                  Terraling is built to host your dataset and let your start discover new insight from your linguistic dataset!
+                  Terraling is built to host your own dataset and let you start discover new insight from your linguistic dataset!
           .col-md-4
             %div
-              = icon "slideshare", '', :class => "fa-8x"
+              .text-center
+                = icon "slideshare", '', :class => "fa-8x"
               .caption
                 %p.lead
                   Collaborate with experts to expand and study your dataset. Or simply partecipate to an existing group!
           .col-md-4
             %div
-              = icon "search", '', :class => "fa-8x"
+              .text-center
+                = icon "search", '', :class => "fa-8x"
               .caption
                 %p.lead
-                  Do advanced searches within your dataset to discover insight in your data, download the results or visualize it!
+                  Do advanced searches within your dataset to discover insight in your data, download or visualize the results!
     .row
       .col-md-10.col-md-offset-1
         .text-center
