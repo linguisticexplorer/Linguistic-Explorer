@@ -126,6 +126,7 @@
                 - elps.each do |elp|
                   - example = elp.example
                   = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
+                  %br
             - elsif can_see?(:manage, @ling)
               %td
                 = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :title => "Create a new Example" do
