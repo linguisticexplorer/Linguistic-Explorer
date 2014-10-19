@@ -17,6 +17,41 @@ class MembershipsController < GroupDataController
       format.js
     end
   end
+
+  def contributors
+    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true}
+
+    @contributors, @params = current_group.memberships.
+      includes(:member).with_role(:expert, :any).to_a.
+      alpha_paginate(params[:letter], pagination_options) do |membership|
+          # Handle nil (?!) values
+          user = membership.member
+          user.present? ? user.name : '*'
+        end
+    
+    @resources = @contributors.map  do |contributor|
+      ids = current_group.lings.find_roles(:expert, contributor).map { |role| role.resource_id }
+
+      current_group.lings.find(ids)
+    end
+
+    Rails.logger.debug "DEBUG #{@resources.inspect}"
+    # Now filter experts only
+    # @contributors = memberships.keep_if { |member| member.role != 'member' }
+    
+    # Sort by alphabetic order
+    # @contributors, @params = @contributors.
+    #     alpha_paginate(params[:letter], pagination_options) do |membership|
+    #       # Handle nil (?!) values
+    #       user = membership.member
+    #       user.present? ? user.name : '*'
+    #     end
+
+    respond_with(@contributors) do |format|
+      format.html
+      format.js
+    end
+  end
   
   def list
     render :json => current_group.memberships.includes(:member).to_json.html_safe
@@ -128,9 +163,9 @@ class MembershipsController < GroupDataController
 
     roles = {
       :role => role,
-      :resources => Ling.find((params[:membership][:resources] || '').split(';'))
+      :resources => current_group.lings.find((params[:membership][:resources] || '').split(';'))
     }
-    
+
     [attributes, roles]
   end
 end

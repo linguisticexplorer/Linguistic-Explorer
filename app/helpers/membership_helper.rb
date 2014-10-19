@@ -15,4 +15,8 @@ module MembershipHelper
     @resources.join("; ").html_safe
   end
 
+  def lings_name(resource_list=[])
+    resource_list.map { |ling| ling.name }.join(', ')
+  end
+
 end

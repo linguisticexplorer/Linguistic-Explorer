@@ -1,0 +1,15 @@
+- page_heading "Members"
+%h1 Contributors of #{current_group.name}
+%form.form
+  .row
+    .col-md-6
+      .form-group
+        %label{:for => "member-search-field"} Quick member search:
+        %input#member-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+    .col-md-6
+      .form-group
+        - if can_see? :manage, Membership.new{|m| m.group = current_group}
+          = link_to new_group_membership_path(current_group), :class => "btn btn-success pull-right", :title => "Create" do
+            = icon "plus", "New Contributor"
+#pagination_table
+  = render :partial => "contributors_partial"

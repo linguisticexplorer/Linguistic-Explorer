@@ -67,7 +67,9 @@ class Membership < ActiveRecord::Base
   end
 
   def is_expert?
-    has_role? :expert, :any
+    @check ||= has_role? :expert, :any
+    # cache for multiple queries
+    @check
   end
 
   def as_json(options={})

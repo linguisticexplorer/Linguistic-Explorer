@@ -1,0 +1,22 @@
+#pagination_top.apple_pagination
+  / render page links in the view:
+  = alphabetical_paginate @params
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %tr
+    %th.col-sm-8 Member
+    %th Level
+    %th Resources
+    - if can_see? :manage, @memberships
+      //%th.col-sm-2 Actions
+  - @contributors.each_with_index do |contributor, index|
+    %tr
+      %td= link_to contributor.member.name, [current_group, contributor]
+      %td= contributor.role.capitalize
+      %td
+        %a.expertises{:href=> "#", :data => { :content => lings_name(@resources[index]) }}
+          %span.badge.badge-info= @resources[index].size 
+          = current_group.ling_names.map(&:pluralize).join " - "
+
+#pagination_bottom.apple_pagination
+  / render page links in the view:
+  = alphabetical_paginate @params

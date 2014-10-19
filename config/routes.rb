@@ -4,6 +4,7 @@ LinguisticExplorer::Application.routes.draw do
 
   root        :to => 'home#index'
 
+  # TODO: rewrite this routes in a sensible way...
   get "/about"       => "home#about"
 
   # JSON Endpoints
@@ -20,6 +21,7 @@ LinguisticExplorer::Application.routes.draw do
   get "/groups/:group_id/properties/list" => "properties#list"
 
   get "/groups/:group_id/memberships/list" => "memberships#list"
+  get "/groups/:group_id/memberships/contributors" => "memberships#contributors", :as => "group_contributors"
 
   get "/groups/:group_id/lings_properties/exists" => "lings_properties#exists"
   get "/groups/:group_id/lings_properties/sureness" => "lings_properties#sureness"
