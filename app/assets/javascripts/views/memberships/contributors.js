@@ -16,7 +16,7 @@
   function setupPage(){
 
     $('.expertises').popover({
-      title: "List",
+      title: "Languages List:",
       trigger: "hover",
       animation: 500,
       placement: "top"

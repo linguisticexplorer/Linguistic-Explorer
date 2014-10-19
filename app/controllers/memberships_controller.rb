@@ -35,18 +35,6 @@ class MembershipsController < GroupDataController
       current_group.lings.find(ids)
     end
 
-    Rails.logger.debug "DEBUG #{@resources.inspect}"
-    # Now filter experts only
-    # @contributors = memberships.keep_if { |member| member.role != 'member' }
-    
-    # Sort by alphabetic order
-    # @contributors, @params = @contributors.
-    #     alpha_paginate(params[:letter], pagination_options) do |membership|
-    #       # Handle nil (?!) values
-    #       user = membership.member
-    #       user.present? ? user.name : '*'
-    #     end
-
     respond_with(@contributors) do |format|
       format.html
       format.js
