@@ -70,11 +70,18 @@
             %p TODO:
             %p Here will appear a "sureness" heatmap
 
-- if @property.description != nil && @property.description != ""
+- if @property.description.present? && @property.description != ""
   .row
-    %h3 Description
-    .col-md-11.text-justify
-      = @property.description.html_safe
+    #accordion.panel-group
+      .panel.panel-default
+        .panel-heading
+          %h4.panel-title
+            %a{:href => "#description", :data => {:toggle => "collapse", :parent => "#accordion"}}
+              Description
+              %span.small.pull-right (click to toggle)
+        #description.panel-collapse.collapse
+          .panel-body.text-justify
+            = @property.description.html_safe
 
 .row
   #pagination_table
