@@ -7,8 +7,8 @@
       = @group.name
       - if can_see? :edit, @group
         %small.pull-right
-          = link_to edit_group_path(@group) do
-            %i.fa.fa-edit.fa-05x
+          = link_to edit_group_path(@group), :class => "btn btn-default"  do
+            %i.fa.fa-edit.fa-2x
         - if @group.privacy == "private"
           %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
             = icon  'lock', '', :class => "pull-right"
@@ -36,26 +36,38 @@
           - @group.depths.each do |depth|
             .col-md-4
               .thumbnail
+                - if can_see? :manage, Ling.new{|l| l.group = current_group}
+                  = link_to new_group_ling_path(current_group, :depth => depth), :class => "btn btn-success pull-right", :title => "Add a new #{@group.ling_name_for_depth(depth)}" do
+                    = icon "plus"
                 %a{:href=> group_lings_depth_path(@group, depth) }
                   .caption
                     %h1= @group.lings_in_group(depth)
                     %h3= @group.ling_name_for_depth(depth).pluralize
-                    .form-group
-                      .progress.progress-striped
-                        - percentage = @group.lings_with_property_quota(depth)
-                        .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
-                          %p#nbrs{:style => "text-align: center;"} Completeness: #{percentage} %
+                    .form-horizontal{:style=> "padding-top: 35px;"}
+                      .form-group
+                        %label.col-md-4 Completeness:
+                        .col-md-8
+                          .progress.progress-striped
+                            - percentage = @group.lings_with_property_quota(depth)
+                            .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
+                              %p#nbrs{:style => "text-align: center;"} #{percentage} %
           .col-md-4
             .thumbnail
+              - if can_see? :manage, Property.new{|p| p.group = current_group}
+                = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :title => "Add a new #{@group.property_name}" do
+                  = icon "plus"
               %a{:href=> group_properties_path(@group) }
                 .caption
                   %h1= @group.props_in_group
                   %h3= @group.property_name.pluralize
-                  .form-group
-                    .progress.progress-striped
-                      - percentage = @group.props_with_lings_quota
-                      .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
-                        %p#nbrs{:style => "text-align: center;"} Completeness: #{percentage} %
+                  .form-horizontal{:style=> "padding-top: 35px;"}
+                    .form-group
+                      %label.col-md-4 Completeness:
+                      .col-md-8
+                        .progress.progress-striped
+                          - percentage = @group.props_with_lings_quota
+                          .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
+                            %p#nbrs{:style => "text-align: center;"} #{percentage} %
         .row
           .col-md-4
             .thumbnail
