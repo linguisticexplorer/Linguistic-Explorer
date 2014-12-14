@@ -117,8 +117,10 @@ module ApplicationHelper
   def can_see?(action, item)
     if current_user && (current_user.admin? || current_user.group_admin_of?(current_group))
       can? action, item
-    else
+    elsif user_signed_in?
       can?(action, item) && current_user.is_expert_of?(item.is_a?(Array) ? item.first : item)
+    else
+      can?(action, item)
     end
   end
 

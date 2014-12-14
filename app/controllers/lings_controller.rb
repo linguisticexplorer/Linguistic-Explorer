@@ -11,7 +11,11 @@ class LingsController < GroupDataController
 
     @all_lings = current_group.lings.at_depth(@depth)
 
+    # Rails.logger.debug "DEBUG #{params[:letter]}"
+    
     @lings, @params = @all_lings.alpha_paginate(params[:letter], pagination_options)
+
+    # Rails.logger.debug "DEBUG #{@lings.size}"
 
     return load_stats(@lings, params[:plain], 0)
   end
