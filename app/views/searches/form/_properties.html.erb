@@ -8,7 +8,8 @@
         <%= f.select :properties, @search.property_options(category), {},
           :name => search_field_name(:properties, category.id),
           :multiple => true,
-          :id => search_options_id(prop_label)
+          :id => search_options_id(prop_label),
+          :class => "input-block-level"
         %>
       </div>
     </div>
@@ -18,7 +19,8 @@
         <%= f.text_field :property_keywords,
           :id => search_text_id(keyword_label),
           :label => keyword_label,
-          :name => search_text_field_name(:property_keywords, category.id) %>
+          :name => search_text_field_name(:property_keywords, category.id),
+          :class => "input-block-level" %>
       </div>
     </div>
 

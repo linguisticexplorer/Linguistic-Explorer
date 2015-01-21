@@ -7,7 +7,8 @@
         <%= f.select :lings_props, @search.lings_prop_options(category), {},
           :name => search_field_name(:lings_props, category.id),
           :multiple => true,
-          :id => search_options_id(lings_prop_label) %>
+          :id => search_options_id(lings_prop_label),
+          :class => "input-block-level" %>
       </div>
     </div>
     <div class="control-group">

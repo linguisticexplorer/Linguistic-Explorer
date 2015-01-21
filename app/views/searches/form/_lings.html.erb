@@ -8,7 +8,8 @@
         <%= f.select :lings, @search.ling_options(depth), {},
           :name => search_field_name(:lings, depth),
           :multiple => true,
-          :id => search_options_id(ling_label)
+          :id => search_options_id(ling_label),
+          :class => "input-block-level"
         %>
       </div>
     </div>
@@ -17,7 +18,8 @@
       <div class="controls">
         <%= f.text_field :ling_keywords,
           :id => search_text_id(keyword_label),
-          :name => search_text_field_name(:ling_keywords, depth) %>
+          :name => search_text_field_name(:ling_keywords, depth),
+          :class => "input-block-level" %>
       </div>
     </div>
 

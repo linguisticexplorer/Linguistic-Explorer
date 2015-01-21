@@ -8,7 +8,8 @@
         <%= f.select :example_fields, @search.example_field_options, {},
           :name => search_text_field_name(:example_fields, depth),
           :label => "#{example_label} Attribute",
-          :label_class => 'hidden_label' %>
+          :label_class => 'hidden_label',
+          :class => "input-block-level" %>
       </div>
     </div>
     <div class="control-group">
@@ -16,7 +17,8 @@
       <div class="controls">
         <%= f.text_field :example_keywords,
           :id => search_text_id(keyword_label),
-          :name => search_text_field_name(:example_keywords, depth) %>
+          :name => search_text_field_name(:example_keywords, depth),
+          :class => "input-block-level" %>
       </div>
     </div>
   <% end %>
