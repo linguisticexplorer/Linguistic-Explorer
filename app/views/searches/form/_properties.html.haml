@@ -7,7 +7,7 @@
       .controls.col-md-6
         = f.select :properties, @search.property_options(category), {}, |
           :name => search_field_name(:properties, category.id),         |
-          :class => "form-control",                                     |
+          :class => "form-control input-control-block",                 |
           :multiple => true,                                            |
           :id => search_options_id(prop_label)                          |
     .form-group
@@ -17,6 +17,7 @@
           :id => search_text_id(keyword_label),                            |
           :label => keyword_label,                                         |
           :name => search_text_field_name(:property_keywords, category.id) |
+          :class => "input-control-block"
     .form-group
       = label_tag "props-select", "Selection", :class => "col-md-4 control-label"
       .controls.col-md-8.field{:name => "props-select"}

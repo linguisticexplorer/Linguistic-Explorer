@@ -6,7 +6,7 @@
       .controls.col-md-6
         = f.select :lings_props, @search.lings_prop_options(category), {}, |
           :name => search_field_name(:lings_props, category.id),           |
-          :class => "form-control",                                        |
+          :class => "form-control input-control-block",                    |
           :multiple => true,                                               |
           :id => search_options_id(lings_prop_label)                       |
     .form-group

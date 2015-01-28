@@ -7,7 +7,7 @@
       .controls.col-md-6
         = f.select :lings, @search.ling_options(depth), {}, |
           :name => search_field_name(:lings, depth),        |
-          :class => "form-control",                         |
+          :class => "form-control input-control-block",     |
           :multiple => true,                                |
           :id => search_options_id(ling_label)              |
     .form-group
@@ -16,6 +16,7 @@
         = f.text_field :ling_keywords,                           |
           :id => search_text_id(keyword_label),                  |
           :name => search_text_field_name(:ling_keywords, depth) |
+          :class => "input-control-block"
     .form-group
       = label_tag "lings-select", "Selection", :class => "col-md-4 control-label"
       .controls.col-md-8.field{:name => "lings-select"}

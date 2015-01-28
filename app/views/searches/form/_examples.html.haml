@@ -7,7 +7,7 @@
       .controls.col-md-6
         = f.select :example_fields, @search.example_field_options, {}, |
           :name => search_text_field_name(:example_fields, depth),     |
-          :class => "form-control",                                    |
+          :class => "form-control input-control-block",                |
           :label => "#{example_label} Attribute",                      |
           :label_class => 'hidden_label'                               |
     .form-group
@@ -16,3 +16,4 @@
         = f.text_field :example_keywords,                           |
           :id => search_text_id(keyword_label),                     |
           :name => search_text_field_name(:example_keywords, depth) |
+          :class => "input-control-block"
