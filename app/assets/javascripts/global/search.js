@@ -167,7 +167,7 @@
 
       // in theory this stuff should wait the dictionary promise...
       // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName);
+      $('#'+id +'-search-field').attr('placeholder', 'Looking for a specific '+resourceName + '?');
 
       bindSelection(selectionAction);
 

@@ -19,10 +19,11 @@
     var resourceId = 'ling';
 
     function setupAnalysis(){
+      var field = $('#details');
       // Set the id
-      currentId = $('#details').data('id') || '';
-      currentName = $('#details').data('name');
-      currentDepth = + $('#details').data('depth') || 0;
+      currentId = field.data('id') || '';
+      currentName = field.data('name');
+      currentDepth = + field.data('depth') || 0;
       // Setup the resource "cache"
       // we use it to prevent duplicates on the list
       resourcesDict = {};

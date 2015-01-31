@@ -24,7 +24,7 @@
     $.when(T.promises.groups).then(function(){
 
       // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName+' in '+T.groups[T.currentGroup].name);
+      $('#'+id +'-search-field').attr('placeholder', $('#searchLabel').data('label'));
       
       // multi-dictionary typeahead
       var dictionaries = [];
