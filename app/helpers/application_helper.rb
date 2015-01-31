@@ -29,11 +29,13 @@ module ApplicationHelper
     classes.flatten.uniq.join(" - ")
   end
 
-  def daily_image
-    ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books"][Time.now.wday]
+  def daily_image(id)
+    photos = ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books", "shakespeare", "words2"]
+    id = id < photos.size ? id : 0
+    photos[id]
   end
 
-  def daily_attribution
+  def daily_attribution(id)
     photos = [
       {:url => "nofrills/10895361", :title => "language variety on cadbury&#x27;s choc by nofrills"},
       {:url => "silveraquarius/9972360303", :title => "Language of the Ancients by JimmyMac210"},
@@ -41,9 +43,12 @@ module ApplicationHelper
       {:url => "multimaniaco/11409492903", :title => "The Language of Birds by Cesar Viteri Ramirez"},
       {:url => "curiousexpeditions/1568278214", :title => "Closeup on the Linen Book/Mummy Wrappings of the Lost Etruscan Language by Curious Expeditions"},
       {:url => "valeriebb/3008977110", :title => "Learn sign language at the playground by Valerie Everett"},
-      {:url => "hindrik/6486016175", :title => "focus on language by Hindrik Sijens"}
+      {:url => "hindrik/6486016175", :title => "focus on language by Hindrik Sijens"},
+      {:url => "disowned/1158260369", :title => "Shakespeare's words"},
+      {:url => "tuinkabouter/497701876", :title => "Words"}
     ]
-    return "<p><a href=\"https://www.flickr.com/photos/#{photos[Time.now.wday][:url]}\" >#{photos[Time.now.wday][:title]}, on Flickr</a> under CC License</p>".html_safe
+    id = id < photos.size ? id : 0
+    return "<p><a href=\"https://www.flickr.com/photos/#{photos[id][:url]}\" >#{photos[id][:title]}, on Flickr</a> under CC License</p>".html_safe
   end
 
   def each_developer()
