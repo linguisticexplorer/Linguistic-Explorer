@@ -4,19 +4,19 @@
   = content_tag :fieldset, :id => ling_label.underscorize do
     .form-group
       = label_tag search_options_id(ling_label), ling_label, :class => "col-md-4 control-label"
-      .controls.col-md-6
+      .controls.col-md-8
         = f.select :lings, @search.ling_options(depth), {}, |
           :name => search_field_name(:lings, depth),        |
-          :class => "form-control input-control-block",     |
+          :class => "form-control",     |
           :multiple => true,                                |
           :id => search_options_id(ling_label)              |
     .form-group
       = label_tag search_text_id(keyword_label), keyword_label, :class => "col-md-4 control-label"
       .controls.col-md-8
         = f.text_field :ling_keywords,                           |
+          :class => "form-control",                              |
           :id => search_text_id(keyword_label),                  |
-          :name => search_text_field_name(:ling_keywords, depth) |
-          :class => "input-control-block"
+          :name => search_text_field_name(:ling_keywords, depth)
     .form-group
       = label_tag "lings-select", "Selection", :class => "col-md-4 control-label"
       .controls.col-md-8.field{:name => "lings-select"}

@@ -4,16 +4,16 @@
   = content_tag :fieldset, :id => example_label.underscorize, :class => "table" do
     .form-group
       = f.label :example_fields, example_label + " Attribute", :class => "col-md-4 control-label hidden_label example_fields_label"
-      .controls.col-md-6
+      .controls.col-md-8
         = f.select :example_fields, @search.example_field_options, {}, |
           :name => search_text_field_name(:example_fields, depth),     |
-          :class => "form-control input-control-block",                |
+          :class => "form-control",                |
           :label => "#{example_label} Attribute",                      |
           :label_class => 'hidden_label'                               |
     .form-group
       = label_tag search_text_id(keyword_label), keyword_label, :class => "col-md-4 control-label"
-      .controls.col-md-6
+      .controls.col-md-8
         = f.text_field :example_keywords,                           |
+          :class => "form-control",                                 |
           :id => search_text_id(keyword_label),                     |
           :name => search_text_field_name(:example_keywords, depth) |
-          :class => "input-control-block"

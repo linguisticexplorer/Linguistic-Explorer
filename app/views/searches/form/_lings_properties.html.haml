@@ -3,10 +3,10 @@
   = content_tag :fieldset, :id => lings_prop_label.underscorize, :class => "table" do
     .form-group
       = label_tag search_options_id(lings_prop_label), lings_prop_label, :class => "col-md-4 control-label"
-      .controls.col-md-6
+      .controls.col-md-8
         = f.select :lings_props, @search.lings_prop_options(category), {}, |
           :name => search_field_name(:lings_props, category.id),           |
-          :class => "form-control input-control-block",                    |
+          :class => "form-control",                    |
           :multiple => true,                                               |
           :id => search_options_id(lings_prop_label)                       |
     .form-group
