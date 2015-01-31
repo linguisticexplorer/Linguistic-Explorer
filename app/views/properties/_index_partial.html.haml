@@ -8,8 +8,9 @@
       %th= current_group.category_name
     %th.col-md-2
       Completeness
-      %a{:href => "#", :rel => "tooltip", :title => "Hover the icon for percentage details", :data => {:toggle => "tooltip", :animation => "true"} }
-        = icon 'question-circle', '', :class => "pull-right"
+      .pull-right
+        %a{:href => "#", :rel => "tooltip", :title => "This is a measure of how many languages have a value set for the given property", :data => {:toggle => "tooltip", :animation => "true"} }
+          = icon 'question-circle', '', :class => "fa-15x"
     - if can_see? :manage, @properties
       %th.col-md-2 Actions
   - @properties.each do |property|
@@ -17,14 +18,12 @@
       %td= link_to property.name, [current_group, property]
       - if current_group.categories.size > 1
         %td= link_to property.category.name, group_category_path(current_group, property.category)
-      - percentage = "#{property.info}%"
-      - label = "#{property.info < 100 ? property.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage}"
-      - stage = property.info < 100 ? property.info < 50 ? 'error' : 'warning' : 'success'
-      - icon_name  = property.info < 100 ? property.info < 50 ? 'star-o' : 'star-half-o' : 'star'
-      %td{:class => "#{stage}"}
-        %p.strong
-          %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip" } }
-            = icon icon_name, ' ' , :class => "fa-2x"
+      - percentage = property.info
+      - label = "#{property.info < 100 ? property.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage} %"
+      %td{:class => "text-center"}
+        .strong
+          %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
+            =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
       - if can_see? :manage, property
         %td
           = link_to edit_group_property_path(current_group, property), :class => 'btn btn-default', :title => "Edit" do

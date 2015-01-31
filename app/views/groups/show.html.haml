@@ -17,12 +17,9 @@
       .row
         .col-md-6
           .form-group
-            %label{:for => "resources-search-field"}
-              Looking for a specific 
-              =@group.ling_names.join(", ") 
-              or perhaps a 
-              =@group.property_name 
-              ? 
+            %label{ :for => "resources-search-field", |
+            :id => "searchLabel", |
+              :data => {:label => "Looking for a specific #{@group.ling_names.join(", ")} or perhaps a #{@group.property_name}?" }}
             %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
 
     .row
@@ -34,54 +31,46 @@
       .col-md-12
         .row
           - @group.depths.each do |depth|
-            .col-md-4
-              .thumbnail
+            .col-md-3
+              .thumbnail.dashboard-box
                 - if can_see? :manage, Ling.new{|l| l.group = current_group}
                   = link_to new_group_ling_path(current_group, :depth => depth), :class => "btn btn-success pull-right", :title => "Add a new #{@group.ling_name_for_depth(depth)}" do
                     = icon "plus"
+                - percentage = @group.lings_with_property_quota(depth)
+                .pull-right 
+                  %a{:href => "#", :rel => "tooltip", :title => "Completeness: #{percentage} %", :data => {:toggle => "tooltip", :animation => "true", :placement => "right"} }
+                    = icon number_to_icon_name(percentage), '', :class => "fa-3x #{number_to_text_class(percentage)}"
                 %a{:href=> group_lings_depth_path(@group, depth) }
                   .caption
                     %h1= @group.lings_in_group(depth)
                     %h3= @group.ling_name_for_depth(depth).pluralize
-                    .form-horizontal{:style=> "padding-top: 35px;"}
-                      .form-group
-                        %label.col-md-4 Completeness:
-                        .col-md-8
-                          .progress.progress-striped
-                            - percentage = @group.lings_with_property_quota(depth)
-                            .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
-                              %p#nbrs{:style => "text-align: center;"} #{percentage} %
-          .col-md-4
-            .thumbnail
+          .col-md-3
+            .thumbnail.dashboard-box
               - if can_see? :manage, Property.new{|p| p.group = current_group}
                 = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :title => "Add a new #{@group.property_name}" do
                   = icon "plus"
+              - percentage = @group.props_with_lings_quota
+              .pull-right 
+                %a{:href => "#", :rel => "tooltip", :title => "Completeness: #{percentage} %", :data => {:toggle => "tooltip", :animation => "true", :placement => "right"} }
+                  = icon number_to_icon_name(percentage), '', :class => "fa-3x #{number_to_text_class(percentage)}"
               %a{:href=> group_properties_path(@group) }
                 .caption
                   %h1= @group.props_in_group
                   %h3= @group.property_name.pluralize
-                  .form-horizontal{:style=> "padding-top: 35px;"}
-                    .form-group
-                      %label.col-md-4 Completeness:
-                      .col-md-8
-                        .progress.progress-striped
-                          - percentage = @group.props_with_lings_quota
-                          .progress-bar.progress-bar-success{:style => "width: #{percentage}%;"}
-                            %p#nbrs{:style => "text-align: center;"} #{percentage} %
         .row
-          .col-md-4
-            .thumbnail
+          .col-md-3
+            .thumbnail.dashboard-box
               %a{:href=> group_memberships_path(@group) }
                 .caption
                   %h1= @group.members_in_group
                   %h3 Members
-          .col-md-4
-            .thumbnail
+          .col-md-3
+            .thumbnail.dashboard-box
               .caption
                 %h1= @group.examples_in_group
                 %h3 Examples
-          .col-md-4
-            .thumbnail
+          .col-md-3
+            .thumbnail.dashboard-box
               .caption
                 %h1= @group.ling_props_in_group
                 %h3 Values

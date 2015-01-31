@@ -128,4 +128,12 @@ module ApplicationHelper
     @group && (current_user.admin? || (current_user.member_of?(@group)))
   end
 
+  def number_to_text_class(number)
+    number < 5 ? "red" : number < 50 ? "yellow" : "green"
+  end
+
+  def number_to_icon_name(number)
+    number < 30 ? 'exclamation-triangle' : 'check-circle'
+  end
+
 end
