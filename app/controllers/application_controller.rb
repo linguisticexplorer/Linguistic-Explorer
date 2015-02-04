@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied, Exceptions::AccessDenied, :with => :show_error_message
   
   def current_group
-    Group.first # changed to default to first group
+    # Group.first # changed to default to first group
   end
 
   def collection_authorize!(action, collection, *args)

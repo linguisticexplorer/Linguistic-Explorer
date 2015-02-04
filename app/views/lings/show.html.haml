@@ -131,6 +131,8 @@
               %td
                 = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :title => "Create a new Example" do
                   = icon 'plus', ""
+            - else
+              %td
             %td= (value.creator ? value.creator.name : "")
     #pagination_bottom.apple_pagination.will-paginate
       / render page links in the view:
