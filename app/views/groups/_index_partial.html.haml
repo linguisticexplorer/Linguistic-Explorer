@@ -3,36 +3,44 @@
   = will_paginate @groups, renderer: BootstrapPagination::Rails
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
-    %th
-    %th Search
-    %th Ling0
-    %th Ling1
-    %th Properties
-    %th Categories
-    %th Display style
-    %th MaxDepth
-    %th Privacy
+    %th{:rowspan => 2} Name
+    //%th Search
+    %th{:colspan => 2} Languages
+    %th{:rowspan => 2} Properties
+    %th{:rowspan => 2} Categories
+    //%th Display style
+    //%th MaxDepth
+    %th{:rowspan => 2} Privacy
     - if can_see? :update, @groups
-      %th
-    - if can_see? :destroy, @groups
-      %th
+      %th{:rowspan => 2} Actions
+    //- if can_see? :destroy, @groups
+    //  %th
+  %tr
+    %th Parent
+    %th Children
   - @groups.each do |group|
     %tr
       %td= link_to group.name, group
-      %td= link_to 'Search', new_group_search_path(group)
+      //%td= link_to 'Search', new_group_search_path(group)
       %td= link_to group.ling0_name, group_lings_path(group)
       %td= link_to group.ling1_name, group_lings_path(group) if group.ling1_name != "not-present"
       %td= link_to group.property_name, group_properties_path(group)
       %td= link_to group.category_name, group_categories_path(group)
-      %td= group.display_style.capitalize
-      %td= group.depth_maximum
-      %td= group.privacy.capitalize
+      //%td= group.display_style.capitalize
+      //%td= group.depth_maximum
+      %td
+        - privacy_icon = group.privacy == 'public' ? 'eye' : 'eye-slash'
+        - class_icon = group.privacy == 'public' ? 'blue' : 'blue-light'
+        //= group.privacy.capitalize
+        %a{:href => "#", :rel => "tooltip", :title => group.privacy.capitalize, :data => {:toggle => "tooltip", :animation => "true"} }
+          = icon privacy_icon, '', :class => "fa-2x #{class_icon}"
       - if can_see? :update, @group
         %td
-          = link_to 'Edit', edit_group_path(group), :class => "btn btn-default"
-      - if can_see? :destroy, @group
-        %td
-          = link_to 'Destroy', group, :class => "btn btn-danger", :confirm => 'Are you sure?', :method => :delete
+          = link_to edit_group_path(group), :class => "btn btn-default", :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
+            = icon "edit"
+          - if can_see? :destroy, @group
+            = link_to group, :class => "btn btn-danger", :confirm => 'Are you sure?', :method => :delete, :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+              = icon "trash"
 %br/
 .apple_pagination
   / render page links in the view:

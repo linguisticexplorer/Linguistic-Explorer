@@ -1,6 +1,9 @@
 - page_heading "Groups"
-%h1 Listing groups
+%h1 
+  Datasets Available
+  - if can_see? :create, Group.new
+    %small.pull-right
+      = link_to new_group_path, :class => "btn btn-success",:rel => "tooltip", :title => "New Group", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"}  do
+        = icon "plus", "", :class => "fa-15x"
 #pagination_table
   = render :partial => "index_partial"
-- if can_see? :create, Group.new
-  = link_to 'New Group', new_group_path, :class => "btn btn-default"
