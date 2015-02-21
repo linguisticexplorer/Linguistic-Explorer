@@ -4,12 +4,6 @@ GIT
   specs:
     validation_reflection (1.0.0)
 
-GIT
-  remote: https://github.com/bosh/rspec_rails3_validation_expectations.git
-  revision: 1d1f656502177dd18c67f6eec5e244b89a9d0505
-  specs:
-    rspec_rails3_validation_expectations (0.0.2)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -271,18 +265,23 @@ GEM
     rolify (3.4.1)
     roodi (3.3.1)
       ruby_parser (~> 3.2, >= 3.2.2)
-    rspec (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-      rspec-mocks (= 2.0.0)
-    rspec-core (2.0.0)
-    rspec-expectations (2.0.0)
-      diff-lcs (>= 1.1.2)
-    rspec-mocks (2.0.0)
-      rspec-core (= 2.0.0)
-      rspec-expectations (= 2.0.0)
-    rspec-rails (2.0.0)
-      rspec (= 2.0.0)
+    rspec-core (3.2.0)
+      rspec-support (~> 3.2.0)
+    rspec-expectations (3.2.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-mocks (3.2.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.2.0)
+    rspec-rails (3.2.0)
+      actionpack (>= 3.0, <= 4.2)
+      activesupport (>= 3.0, <= 4.2)
+      railties (>= 3.0, <= 4.2)
+      rspec-core (~> 3.2.0)
+      rspec-expectations (~> 3.2.0)
+      rspec-mocks (~> 3.2.0)
+      rspec-support (~> 3.2.0)
+    rspec-support (3.2.1)
     ruby-prof (0.15.1)
     ruby-progressbar (1.5.1)
     ruby2ruby (2.1.2)
@@ -390,8 +389,7 @@ DEPENDENCIES
   rails_best_practices
   rake (= 10.1.0)
   rolify
-  rspec-rails (= 2.0)
-  rspec_rails3_validation_expectations (= 0.0.2)!
+  rspec-rails (~> 3.0)
   ruby-prof
   rvm-capistrano
   sass-rails (>= 3.2)
