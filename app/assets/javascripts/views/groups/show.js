@@ -7,10 +7,20 @@
   var groups = this.Terraling.Groups;
 
   groups.show = {
-    init: createMultiTypeahead
+    init: initPage
   };
 
   var resourceId = 'resources';
+
+  function initPage (){
+    $('[data-toggle="popover"]').popover({
+      trigger: "hover",
+      animation: 500,
+      placement: "top"
+    });
+
+    createMultiTypeahead();
+  }
 
   function createMultiTypeahead(){
 
