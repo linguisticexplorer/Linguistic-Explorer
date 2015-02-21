@@ -150,18 +150,38 @@ h4.group-header {
   color: $brand-success;
 }
 
+.green-bg {
+  background-color: lighten($brand-success, 30%)
+}
+
 .red {
   color: $brand-danger;
+}
+
+.red-bg {
+  background-color: lighten($brand-danger, 30%)
 }
 
 .yellow {
   color: $brand-warning;
 }
 
+.yellow-bg {
+  background-color: lighten($brand-warning, 30%)
+}
+
 .blue-light {
   color: $brand-info;
 }
 
+.blue-light-bg {
+  background-color: lighten($brand-info, 30%)
+}
+
 .blue {
   color: $brand-primary;
+}
+
+.blue-bg {
+  background-color: lighten($brand-primary, 30%)
 }

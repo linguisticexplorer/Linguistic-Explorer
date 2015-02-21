@@ -553,11 +553,12 @@ div#languages-container.hidden {
 }
 
 #title {
+  border-bottom: 1px solid #C30;
+  margin-bottom: 15px;
   h1 {
     font-size: 5em;
     font-family: Helvetica,Verdana,Arial,sans-serif;
     color: #C30;
-    border-bottom: 1px solid #C30;
     line-height:1.25em;
   }
   h2 {
@@ -609,4 +610,13 @@ body {
 
 .dashboard-box {
   height: 200px;
+}
+
+.dashboard-box .caption {
+  padding-top: 2px;
+
+  h1 {
+    font-size: 72px;
+    margin-top: 15px;
+  }
 }
