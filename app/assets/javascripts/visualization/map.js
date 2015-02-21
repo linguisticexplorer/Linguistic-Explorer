@@ -52,13 +52,14 @@
       iconColor: 'red',
       spin: false
     };
-    // overwrite if a criteria is passed
+    // overwrite style if a criteria is passed
     if(criteria){
       style = criteria(value);
     }
-    // append the prefix
+    // append the prefix: 
+    // later because the style can have been overrided by the criteria
     style.prefix = 'fa';
-    // Creates a red marker with the coffee icon
+    // Creates a red marker with the info icon
     var marker = L.AwesomeMarkers.icon(style);
 
     L.marker(value, {icon: marker}).addTo(map);

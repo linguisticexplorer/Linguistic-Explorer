@@ -15,8 +15,9 @@
     // now preprocess the data
     
     // sort the data by name
+    // localeCompare is a native String function to compare two strings
     data.sort(function (a, b){
-      return a.name > b.name;
+      return (a.name || '').localCompare( b.name || '');
     });
 
     // next: create the heatmap
@@ -112,7 +113,7 @@
   }
 
   function processJSON(rows){
-    rows = rows.result;    
+    rows = rows.result;
 
     mapLingColumns(rows);
     mapPropRows(rows);
@@ -144,7 +145,7 @@
     //attach a SVG element to the modal's body
     var svg = d3.select("#visualize-body")
        .append("svg")
-       .attr("width", (w * data[0].length) + 100) 
+       .attr("width", (w * data[0].length) + 100)
        .attr("height", (h * data.length + 100))
        .style('position','absolute')
        .style('top',0)
@@ -243,10 +244,10 @@
       var page = (Math.floor(i/25) + 1);
       var pageURL = replaceURLParameter('page', page);
       
-      var output = '<table class="table table-condensed">'
+      var output = '<table class="table table-condensed">';
       
       output += '<thead><tr><th>'+d[0].prop+'</th><th>&nbsp;</th></tr></thead>';
-      output += '<tbody>'
+      output += '<tbody>';
 
       for (var j = 0; j < d.length; j ++ ) {
         var value = d[j].value === ' ' ? '"---"' : d[j].value;
