@@ -10,8 +10,8 @@
     .col-md-6
       .form-group
         - if can_see? :manage, Property.new{|p| p.group = current_group}
-          = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :title => "Create" do
-            = icon "plus", "New #{current_group.property_name}"
+          = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right",:rel => "tooltip", :title => "New #{current_group.property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+            = icon "plus"
 #pagination_table
   = render :partial => 'properties/index_partial'
 

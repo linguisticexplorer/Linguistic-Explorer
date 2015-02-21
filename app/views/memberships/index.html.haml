@@ -4,12 +4,12 @@
   .row
     .col-md-6
       .form-group
-        %label{:for => "member-search-field"} Quick search:
+        %label{:for => "member-search-field"}
         %input#member-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .col-md-6
       .form-group
         - if can_see? :manage, Membership.new{|m| m.group = current_group}
-          = link_to new_group_membership_path(current_group), :class => "btn btn-success pull-right", :title => "Create" do
-            = icon "plus", "New Membership"
+          = link_to new_group_membership_path(current_group), :class => "btn btn-success pull-right",:rel => "tooltip", :title => "New Membership", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+            = icon "plus"
 #pagination_table
   = render :partial => "index_partial"

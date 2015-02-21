@@ -1,5 +1,5 @@
-- page_heading "Members"
-%h1 Contributors of #{current_group.name}
+- page_heading "Contributors"
+%h1 #{current_group.name} Contributors
 %form.form
   .row
     .col-md-6
@@ -9,7 +9,7 @@
     .col-md-6
       .form-group
         - if can_see? :manage, Membership.new{|m| m.group = current_group}
-          = link_to new_group_membership_path(current_group), :class => "btn btn-success pull-right", :title => "Create" do
-            = icon "plus", "New Contributor"
+          = link_to new_group_membership_path(current_group), :class => "btn btn-success pull-right",:rel => "tooltip", :title => "New Contributors", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+            = icon "plus"
 #pagination_table
   = render :partial => "contributors_partial"

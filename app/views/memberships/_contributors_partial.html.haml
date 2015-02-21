@@ -3,19 +3,28 @@
   = alphabetical_paginate @params
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
-    %th.col-sm-8 Member
+    %th.col-sm-6 Member
     %th Level
     %th Resources
     - if can_see? :manage, @memberships
-      //%th.col-sm-2 Actions
+      %th.col-sm-2 Actions
   - @contributors.each_with_index do |contributor, index|
     %tr
       %td= link_to contributor.member.name, [current_group, contributor]
-      %td= contributor.role.capitalize
       %td
-        %a.expertises{:href=> "#", :data => { :content => lings_name(@resources[index]) }}
-          %span.badge.badge-info= @resources[index].size 
-          = current_group.ling_names.map(&:pluralize).join " - "
+        = icon 'certificate', contributor.role.capitalize
+      %td
+        %a.expertises{:href=> "#", :data => { :content => lings_name(@resources[index]) }} 
+          #{current_group.ling_names.map(&:pluralize).join(' - ')}: 
+          %span.label.label-primary= @resources[index].size
+      - if can_see? :manage, contributor
+        %td
+          = link_to edit_group_membership_path(current_group, contributor), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
+            = icon 'edit'
+          - if can_see? :destroy, contributor
+            = link_to [current_group, contributor], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+              = icon 'trash-o'
+
 
 #pagination_bottom.apple_pagination
   / render page links in the view:

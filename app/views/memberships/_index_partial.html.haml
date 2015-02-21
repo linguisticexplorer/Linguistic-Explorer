@@ -14,10 +14,10 @@
       - if can_see? :manage, membership
         %td
           = link_to edit_group_membership_path(current_group, membership), :class => 'btn btn-default', :title => "Edit" do
-            = icon 'edit', '', :class => "fa-15x"
+            = icon 'edit'
           - if can_see? :destroy, membership
             = link_to [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :title => "Destroy" do
-              = icon 'trash-o', '', :class => "fa-15x"
+              = icon 'trash-o'
 %br/
 #pagination_bottom.apple_pagination
   / render page links in the view:
