@@ -39,6 +39,9 @@
     # examples within a transaction, remove the following line or assign false
     # instead of true.
     config.use_transactional_fixtures = true
+    
+    # This make rspec 3x works as in 2.x where it assumes that class types from locations
+    config.infer_spec_type_from_file_location!
 
     # include validates_existence helpers
     # config.include(ValidatesExistence::RspecMacros)
@@ -48,6 +51,9 @@
 
     # use all fixtures
     config.global_fixtures = :all
+    
+    # Make new deprecations become errors (Useful to backtrace them)
+    config.raise_errors_for_deprecations!
 
     config.before(:suite) do
       FactoryGirl.reload

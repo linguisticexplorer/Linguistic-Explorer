@@ -113,9 +113,9 @@ group :test, :development do
   # Disable for the moment
   # gem "spork-rails"
 
-  gem 'rspec-rails', "= 2.0"
+  gem 'rspec-rails', "~> 3.0"
   gem 'shoulda-matchers'
-  gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
+  # gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
   gem "cucumber", "~> 1.1.0"
 

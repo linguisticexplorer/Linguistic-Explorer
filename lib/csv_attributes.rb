@@ -1,5 +1,6 @@
 module CSVAttributes
   # Requires class to define class method csv_attributes
+  extend ActiveSupport::Concern
 
   module ClassMethods
     
@@ -12,7 +13,7 @@ module CSVAttributes
     end
   end
 
-  module InstanceMethods
+  # module InstanceMethods
     def importable_attributes
       self.class.importable_attributes
     end
@@ -20,10 +21,11 @@ module CSVAttributes
     def non_importable_attributes
       self.class.non_importable_attributes
     end
-  end
+  # end
 
   def self.included(receiver)
     receiver.extend         ClassMethods
-    receiver.send :include, InstanceMethods
+    # receiver.send :include, InstanceMethods
+    # receiver.send :include
   end
 end

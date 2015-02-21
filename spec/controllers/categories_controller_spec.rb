@@ -2,17 +2,18 @@ require 'spec_helper'
 
 describe CategoriesController do
   before do
+    allow_message_expectations_on_nil
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "index" do
     it "@categories should contain categories for the current group" do
       @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:categories).and_return @group.categories
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
 
       get :index, :group_id => @group.id
     end
@@ -22,12 +23,12 @@ describe CategoriesController do
     it "@category should be found by id through current_group" do
       @group = groups(:inclusive)
       @category = categories(:inclusive1)
-      @category.group.should == @group
-      Group.stub(:find).and_return(Group)
-      Group.should_receive(:categories).and_return @group.categories
+      expect(@category.group) == @group
+      allow(Group).to receive_message_chain(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
 
       get :show, :id => @category.id, :group_id => @group.id
-      assigns(:category).should == @category
+      expect(assigns(:category)) == @category
     end
   end
 
@@ -36,10 +37,10 @@ describe CategoriesController do
       @group = FactoryGirl.create(:group)
       @category = Category.new
 
-      @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
+      allow(@ability).to receive_message_chain(:can?).with(:create, @category).and_return(true)
 
-      Category.stub(:new).and_return(@category)
-      Group.stub(:find).and_return(@group)
+      allow(Category).to receive_message_chain(:new).and_return(@category)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :new, :group_id => @group.id
     end
 
@@ -56,20 +57,20 @@ describe CategoriesController do
       @category = categories(:inclusive0)
       @group = @category.group
 
-      @ability.should_receive(:can?).ordered.with(:update, @category).and_return(true)
+      allow(@ability).to receive_message_chain(:can?).with(:update, @category).and_return(true)
 
-      Category.stub(:find).and_return @category
-      Group.stub(:find).and_return Group
-      Group.stub(:categories).and_return @group.categories
+      allow(Category).to receive_message_chain(:find).and_return @category
+      allow(Group).to receive_message_chain(:find).and_return Group
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
       get :edit, :id => @category.id, :group_id => @group.id
     end
 
     it "loads the requested category through current group" do
       @category = categories(:inclusive0)
       @group = @category.group
-      Group.stub(:find).and_return Group
+      allow(Group).to receive_message_chain(:find).and_return Group
 
-      Group.should_receive(:categories).and_return @group.categories
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
 
       get :edit, :group_id => @group.id, :id => @category.id
     end
@@ -78,13 +79,13 @@ describe CategoriesController do
       it "the requested category's depth to @depth" do
         @category = categories(:inclusive1)
         get :edit, :id => @category.id, :group_id => groups(:inclusive).id
-        assigns(:depth).should == @category.depth
+        expect(assigns(:depth)) == @category.depth
       end
 
       it "the requested category to @category" do
         @category = categories(:inclusive0)
         get :edit, :id => @category.id, :group_id => groups(:inclusive).id
-        assigns(:category).should == @category
+        expect(assigns(:category)) == @category
       end
     end
   end
@@ -94,10 +95,10 @@ describe CategoriesController do
       @group = FactoryGirl.create(:group)
       @category = FactoryGirl.create(:category, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:create, @category).and_return(true)
+      allow(@ability).to receive_message_chain(:can?).with(:create, @category).and_return(true)
 
-      Category.stub(:new).and_return(@category)
-      Group.stub(:find).and_return(@group)
+      allow(Category).to receive_message_chain(:new).and_return(@category)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
     end
 
@@ -107,9 +108,9 @@ describe CategoriesController do
           post :create, :category => {'name' => 'FROMSPACE', :description => "lots of junk", :depth => '0'}, :group_id => groups(:inclusive).id
           assigns(:category).should_not be_new_record
           assigns(:category).should be_valid
-          assigns(:category).name.should == 'FROMSPACE'
-          assigns(:category).description.should == "lots of junk"
-          assigns(:category).depth.should == 0
+          expect(assigns(:category).name) == 'FROMSPACE'
+          expect(assigns(:category).description) == "lots of junk"
+          expect(assigns(:category).depth) == 0
         }.should change(Category, :count).by(1)
       end
 
@@ -123,7 +124,7 @@ describe CategoriesController do
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
-        assigns(:category).creator.should == user
+        expect(assigns(:category).creator) == user
       end
 
       it "should set the group to current group" do
@@ -131,8 +132,8 @@ describe CategoriesController do
 
         post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
 
-        assigns(:group).should == @group
-        assigns(:category).group.should == @group
+        expect(assigns(:group)) == @group
+        expect(assigns(:category).group) == @group
       end
     end
 
@@ -156,10 +157,10 @@ describe CategoriesController do
       @group = FactoryGirl.create(:group)
       @category = FactoryGirl.create(:category, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:update, @category).and_return(true)
+      allow(@ability).to receive_message_chain(:can?).with(:update, @category).and_return(true)
 
-      Category.stub(:find).and_return(@category)
-      Group.stub(:find).and_return(@group)
+      allow(Category).to receive_message_chain(:find).and_return(@category)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       put :update, :id => @category.id, :category => {'name' => 'ayb', :depth => "0"}, :group_id => @group.id
     end
 
@@ -167,33 +168,33 @@ describe CategoriesController do
       @category = categories(:inclusive0)
       @group = @category.group
       @cats = @group.categories
-      Group.stub(:find).and_return @group
-      @group.should_receive(:categories).and_return @cats
+      allow(Group).to receive_message_chain(:find).and_return @group
+      allow(@group).to receive_message_chain(:categories).and_return @cats
 
       put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
 
-      assigns(:category).should == @category
+      expect(assigns(:category)) == @category
     end
 
     it "assigns the requested category's depth to @depth" do
       @category = categories(:inclusive1)
       @group = groups(:inclusive)
-      @category.depth.should == 1
+      expect(@category.depth) == 1
 
       put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
 
-      assigns(:depth).should == 1
+      expect(assigns(:depth)) == 1
     end
 
     describe "with valid params" do
       it "calls update with the passed params on the requested category" do
         @category = categories(:inclusive0)
         @group = @category.group
-        @group.stub(:categories).and_return Category
-        Category.stub(:find).with(@category.id.to_s).and_return(@category)
-        Group.stub(:find).and_return @group
+        @group.to receive_message_chain(:categories).and_return Category
+        allow(Category).to receive_message_chain(:find).with(@category.id.to_s).and_return(@category)
+        allow(Group).to receive_message_chain(:find).and_return @group
 
-        @category.should_receive(:update_attributes).with({'name' => 'ayb'}).and_return(true)
+        @category.to receive_message_chain(:update_attributes).with({'name' => 'ayb'}).and_return(true)
 
         put :update, :id => @category.id, :category => {'name' => 'ayb'}, :group_id => @group.id
       end
@@ -210,7 +211,7 @@ describe CategoriesController do
       end
 
       it "assigns the category as @category" do
-        assigns(:category).should == categories(:inclusive0)
+        expect(assigns(:category)) == categories(:inclusive0)
       end
 
       it "re-renders the 'edit' template" do
@@ -229,9 +230,9 @@ describe CategoriesController do
       @group = groups(:inclusive)
       @category = categories(:inclusive0)
 
-      @ability.should_receive(:can?).ordered.with(:destroy, @category).and_return(true)
+      allow(@ability).to receive_message_chain(:can?).with(:destroy, @category).and_return(true)
 
-      Group.stub(:find).and_return(@group)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       do_destroy_on_category(@category)
     end
 
@@ -239,21 +240,21 @@ describe CategoriesController do
       @category = categories(:inclusive0)
       @group = @category.group
 
-      @group.should_receive(:categories).and_return Category.where(:group_id => @group.id)
+      allow(@group).to receive_message_chain(:categories).and_return Category.where(:group_id => @group.id)
 
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @category.id
     end
 
     it "calls destroy on the requested category" do
       @category = categories(:inclusive0)
       @group = @category.group
-      @group.stub(:categories).and_return Category
+      allow(@group).to receive_message_chain(:categories).and_return Category
 
-      @category.should_receive(:destroy).and_return(true)
+      allow(@category).to receive_message_chain(:destroy).and_return(true)
 
-      Category.stub(:find).and_return @category
-      Group.stub(:find).and_return @group
+      allow(Category).to receive_message_chain(:find).and_return @category
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_category(@category)
     end
 

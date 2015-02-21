@@ -6,7 +6,7 @@ describe Membership do
     it { should validate_presence_of :member }
     it { should validate_presence_of :level }
     it { should validate_uniqueness_of(:member_id).scoped_to(:group_id) }
-    it { should ensure_inclusion_of(:level).in_array(Membership::ACCESS_LEVELS) }
+    it { should validate_inclusion_of(:level).in_array(Membership::ACCESS_LEVELS) }
     it { should belong_to :member }
     it { should belong_to :group }
     # it_should_validate_presence_of :group, :member, :level
