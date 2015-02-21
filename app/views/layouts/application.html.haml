@@ -15,13 +15,7 @@
   %body{:class => body_classes, :data => {:controller => params[:controller].camelize, :action => params[:action], :group => ((@current_group || @group).present? ? (@current_group || @group).id : nil) }}
     = render :partial => 'layouts/header'
     #main.container
-      #messages
-        - unless alert.blank?
-          .alert.alert-danger
-            = alert
-        - unless notice.blank?
-          .alert.alert-success
-            = notice
+      = render :partial => 'layouts/messages'
       = yield
     #footer
       %p
@@ -29,6 +23,9 @@
         %br/
         10 Washington Place, New York, NY 10003 .
         = succeed "." do
-          %a{:href => "mailto:support@terraling.com"} support AT terraling.com
+          %a{:href => "mailto:support@terraling.com"}
+            %span support
+            %span @
+            %span terraling.com
         All Rights Reserved
     = yield :scripts
