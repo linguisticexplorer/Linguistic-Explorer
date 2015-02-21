@@ -1,0 +1,6 @@
+.input-prepend.input-append
+  %button.handle.btn
+    %i.fa.fa-icon-arrows-v
+  %input.col-md-2{ :value => "{{text}}" }
+  %button.delete-button.btn.btn-danger
+    %i.glyphicon-white.glyphicon-remove
