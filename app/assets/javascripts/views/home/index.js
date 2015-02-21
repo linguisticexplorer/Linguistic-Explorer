@@ -38,9 +38,10 @@
     }
 
     $.when(T.promises.groups).then(function(){
+      var placeholder = 'Type here for a '+resourceName+' in Terraling. (e.g. type "eng")';
 
       // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Type here for a '+resourceName+' in Terraling');
+      $('#'+id +'-search-field').attr('placeholder', placeholder);
 
       var dictionaries = [];
       $.each(T.groups, function (id, group){
