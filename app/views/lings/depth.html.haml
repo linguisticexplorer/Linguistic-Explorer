@@ -1,17 +1,15 @@
 - name = current_group.ling_name_for_depth(@depth)
 - page_heading name
-%h1
-  Listing #{name.pluralize}
-%form.form
-  .row
-    .col-md-6
-      .form-group
-        %label{:for => "ling-search-field"}
+.row
+  .col-md-6
+    %h1 Listing #{name.pluralize}
+  .col-md-6
+    .row{:style => "margin-top: 20px;"}
+      .col-md-10{:style => "margin-top: 10px;"}
         %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-    .col-md-6
-      .form-group
-        - if can_see? :manage, Ling.new{|l| l.group = current_group}
-          = link_to new_group_ling_path(current_group, :depth => @depth), :class => "btn btn-success pull-right", :title => "Create" do
-            = icon "plus", "New #{current_group.ling_name_for_depth(@depth)}"
+      - if can_see? :manage, Ling.new{|l| l.group = current_group}
+        .col-md
+          = link_to new_group_ling_path(current_group, :depth => @depth), :class => "btn btn-success btn-spaced", :rel => "tooltip", :title => "New #{current_group.ling_name_for_depth(@depth - 1)}", :data => {:toggle => "tooltip", :animation => "true" } do
+            = icon "plus"
 #pagination_table
   = render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth, :paginate_params => @params }

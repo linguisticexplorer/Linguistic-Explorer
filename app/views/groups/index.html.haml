@@ -4,6 +4,6 @@
   - if can_see? :create, Group.new
     %small.pull-right
       = link_to new_group_path, :class => "btn btn-success",:rel => "tooltip", :title => "New Group", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"}  do
-        = icon "plus", "", :class => "fa-15x"
+        = icon "plus"
 #pagination_table
   = render :partial => "index_partial"

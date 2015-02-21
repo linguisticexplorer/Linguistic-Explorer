@@ -1,21 +1,12 @@
-- page_heading @ling.grouped_name
-%h1
-  = @ling.grouped_name
-  = @ling.name
-  // show the creator on the right here
-  -if @ling.creator
-    %span.small.pull-right
-      Set by
-      = @ling.creator.name
+- page_heading "#{@ling.grouped_name} : #{@ling.name}"
 .row
   .col-md-12
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
-      %i.glyphicon.glyphicon-arrow-left
-      Back
+      = icon 'arrow-left'
     -if can_see?(:manage, @ling)
       .btn-group.pull-right
         %button.btn.btn-default.dropdown-toggle{:type => "button", :data => {:toggle => "dropdown"}}
-          = icon 'edit', "Edit"
+          = icon 'edit', "", :class => "fa-15x"
           %span.caret
         %ul.dropdown-menu{:role => "menu"}
           %li
@@ -24,6 +15,14 @@
           %li
             = link_to supported_set_values_group_ling_path(current_group, @ling) do
               = icon 'edit', "#{current_group.lings_property_name.pluralize}"
+%h1
+  = "#{@ling.grouped_name} :"
+  = @ling.name
+  // show the creator on the right here
+  -if @ling.creator
+    %span.small.pull-right
+      Set by
+      = @ling.creator.name
 
 .row{:style => "margin: 15px;"}
 
@@ -129,8 +128,8 @@
                   %br
             - elsif can_see?(:manage, @ling)
               %td
-                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :title => "Create a new Example" do
-                  = icon 'plus', ""
+                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.example_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                  = icon 'plus'
             - else
               %td
             %td= (value.creator ? value.creator.name : "")
