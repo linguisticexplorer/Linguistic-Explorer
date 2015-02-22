@@ -36,16 +36,16 @@
       .sortable({handle:'.handle', cancel: ''})
       .disableSelection()
       .on('DOMSubtreeModified change', function (event,ui){
-        var values = $('#order div input').map(getInputValues).join(', ');
+        var values = $('#order div input').map(getInputValues).get().join(', ');
         $('#group_example_fields').val( values || 'text');
     });
     
-    $(window)
+    $('body')
       .on('click', '.delete-button',function (e) {
         e.preventDefault();
 
         if(confirm('Are you sure you want delete the element?')) {
-          $(this).parent().remove();
+          $(this).parent().parent().remove();
         }
 
       })

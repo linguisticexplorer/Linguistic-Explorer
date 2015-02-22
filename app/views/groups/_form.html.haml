@@ -70,11 +70,11 @@
         = f.text_field :lings_property_name, :class => "form-control"
   .form-group
     %legend Examples
-    .col-md-4
+    .col-md-5
       = f.label :example_name, "Example name", :class => "control-label"
       .controls
         = f.text_field :example_name, :class => "form-control"
-    .col-md-4
+    .col-md-5.col-md-offset-1
       = f.label :examples_lings_property_name, "Example Lings Property name", :class => "control-label"
       .controls
         = f.text_field :examples_lings_property_name, :class => "form-control"
@@ -86,9 +86,9 @@
           = icon 'question-circle', '', :class => "fa-15x"
       #row-fix.controls
         .row
-          #order.col-md-4
+          #order.col-md-5
         .row
-          .col-md-4
+          .col-md-5
             = f.hidden_field :example_fields
             #add.input-group
               %input#append.form-control.col-md-2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}
