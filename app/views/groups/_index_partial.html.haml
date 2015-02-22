@@ -29,7 +29,7 @@
       //%td= group.display_style.capitalize
       //%td= group.depth_maximum
       %td
-        - privacy_icon = group.privacy == 'public' ? 'eye' : 'lock'
+        - privacy_icon = group.privacy == 'public' ? 'unlock-alt' : 'lock'
         - class_icon = group.privacy == 'public' ? 'blue' : 'blue-light'
         //= group.privacy.capitalize
         %a{:href => "#", :rel => "tooltip", :title => group.privacy.capitalize, :data => {:toggle => "tooltip", :animation => "true"} }

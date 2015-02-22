@@ -8,59 +8,93 @@
         - @group.errors.full_messages.each do |msg|
           %li= msg
   .form-group
-    = f.label :name, :class => "control-label"
-    .controls
-      = f.text_field :name
+    %legend Group
+    .col-md-4
+      = f.label :name, 'Name', :class => "control-label"
+      .controls
+        = f.text_field :name, :class => "form-control"
+    .col-md-4
+      = f.label :depth_maximum, "Depth", :class => "control-label"
+      .controls
+        .button-group{:data => {:toggle => "buttons"}}
+          - (0..Group::MAXIMUM_ASSIGNABLE_DEPTH).each do |depth|
+            -active = @group.depth_maximum == depth.to_i
+            -label = depth > 0 ? 'Double' : 'Single'
+            %label{:class => "btn btn-default #{active ? 'active' : ''}"}
+              %input.form-control{:type => "radio", :name => "depth_maximum", :id => depth, :autocomplete => "off", :checked => active, :value => depth }=label
+    .col-md-4
+      = f.label :privacy, "Privacy level", :class => "control-label"
+      .controls
+        .button-group{:data => {:toggle => "buttons"}}
+          - Group::PRIVACY.each do |privacy|
+            -active = @group.privacy == privacy
+            -privacy_icon = privacy == 'public' ? 'unlock-alt' : 'lock'
+            -icon_color = privacy == 'public' ? 'blue' : 'blue-light'
+            %label{:class => "btn btn-default #{active ? 'active' : ''}"}
+              %input.form-control{:type => "radio", :name => "privacy", :id => privacy, :autocomplete => "off", :checked => active, :value => privacy }
+                %a{:href => "#", :rel => "tooltip", :title => privacy.capitalize, :data => {:toggle => "tooltip", :animation => "true"}}
+                  =icon privacy_icon, '', :class => "fa-15x #{icon_color}"
+        / = f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s
+  /= f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i
   .form-group
-    = f.label :ling0_name, "Depth 0 Ling name", :class => "control-label"
-    .controls
-      = f.text_field :ling0_name
+    %legend Languages
+    .col-md-4
+      = f.label :ling0_name, "Depth 0 Ling name", :class => "control-label"
+      .controls
+        = f.text_field :ling0_name, :class => 'form-control'
+    .col-md-4
+      %div{:class => "#{@group.depth_maximum > 0 ? '' : 'hidden'}"}
+        = f.label :ling1_name, "Depth 1 Ling name", :class => "control-label"
+        .controls
+          = f.text_field :ling1_name, :class => "form-control"
+    .col-md-4
+      = f.label :ling_fields, :class => "control-label" do
+        Field names to skip on search for #{@group.ling0_name || Lings}
+        %a{:href => "#", :rel => "tooltip", :title => "'description' is pre-included by default", :data => {:toggle => "tooltip", :animation => "true"} }
+          = icon 'question-circle', '', :class => "fa-15x"
+      .controls
+        = f.text_field :ling_fields, :class => "form-control", :placeholder => "Use commas to divide multiple fields names"
   .form-group
-    = f.label :ling1_name, "Depth 1 Ling name", :class => "control-label"
-    .controls
-      = f.text_field :ling1_name
+    %legend Properties
+    .col-md-4
+      = f.label :category_name, "Category name", :class => "control-label"
+      .controls
+        = f.text_field :category_name, :class => "form-control"
+    .col-md-4
+      = f.label :property_name, "Property name", :class => "control-label"
+      .controls
+        = f.text_field :property_name, :class => "form-control"
+    .col-md-4
+      = f.label :lings_property_name, "Values name", :class => "control-label"
+      .controls
+        = f.text_field :lings_property_name, :class => "form-control"
   .form-group
-    = f.label :property_name, "Property name", :class => "control-label"
-    .controls
-      = f.text_field :property_name
+    %legend Examples
+    .col-md-4
+      = f.label :example_name, "Example name", :class => "control-label"
+      .controls
+        = f.text_field :example_name, :class => "form-control"
+    .col-md-4
+      = f.label :examples_lings_property_name, "Example Lings Property name", :class => "control-label"
+      .controls
+        = f.text_field :examples_lings_property_name, :class => "form-control"
   .form-group
-    = f.label :category_name, "Category name", :class => "control-label"
-    .controls
-      = f.text_field :category_name
-  .form-group
-    = f.label :lings_property_name, "Lings Property name", :class => "control-label"
-    .controls
-      = f.text_field :lings_property_name
-  .form-group
-    = f.label :example_name, "Example name", :class => "control-label"
-    .controls
-      = f.text_field :example_name
-  .form-group
-    = f.label :examples_lings_property_name, "Example Lings Property name", :class => "control-label"
-    .controls
-      = f.text_field :examples_lings_property_name
-  .form-group
-    = f.label :ling_fields, "Unsearchable field names available for Lings, split on commas ('description' is pre-included by default)", :class => "control-label"
-    .controls
-      = f.text_field :ling_fields
-  .form-group
-    = f.label :example_fields, "Data field names available for Examples, drag and drop to order ('text' is pre-included by default)", :class => "control-label"
-    #row-fix.controls
-      .row
-        #order.col-md-4
-      = f.hidden_field :example_fields
-      #add.input-append.col-md-4
-        %input#append.col-md-2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}/
-        %button#append-button.btn.btn-success{:type => "button"}
-          %i.glyphicon-plus.glyphicon-white
-  .form-group
-    = f.label :depth_maximum, "Depth Maximum", :class => "control-label"
-    .controls
-      = f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i
-  .form-group
-    = f.label :privacy, "Privacy level", :class => "control-label"
-    .controls
-      = f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s
+    .col-md-8
+      = f.label :example_fields, :class => "control-label" do
+        Data field names available for Examples, drag and drop to order
+        %a{:href => "#", :rel => "tooltip", :title => "'text' is pre-included by default", :data => {:toggle => "tooltip", :animation => "true"} }
+          = icon 'question-circle', '', :class => "fa-15x"
+      #row-fix.controls
+        .row
+          #order.col-md-4
+        .row
+          .col-md-4
+            = f.hidden_field :example_fields
+            #add.input-group
+              %input#append.form-control.col-md-2{:autocomplete => "off", :placeholder => "Type to add field", :type => "text"}
+              %span.input-group-btn
+                %button#append-button.btn.btn-success{:type => "button"}
+                  =icon "plus"
   .form-group
     = f.label :display_style, "Display Style", :class => "control-label"
     .controls
@@ -76,5 +110,6 @@
         Linguistic style, eg:
         \#{display_style_example(1)}
   .form-group
-    .controls
-      = f.submit :class => "btn"
+    .col-md-2
+      .controls
+        = f.submit('Submit', :class => "btn btn-success")

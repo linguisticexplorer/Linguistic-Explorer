@@ -1,6 +1,8 @@
-.input-prepend.input-append
-  %button.handle.btn
-    %i.fa.fa-icon-arrows-v
-  %input.col-md-2{ :value => "{{text}}" }
-  %button.delete-button.btn.btn-danger
-    %i.glyphicon-white.glyphicon-remove
+.input-group
+  %span.input-group-btn
+    %button.handle.btn.btn-default
+      %i.fa.fa-arrows-v
+  %input.form-control.col-md-2{ :type => "text", :value => "{{text}}" }
+  %span.input-group-btn
+    %button.delete-button.btn.btn-danger
+      %i.fa.fa-trash
