@@ -66,6 +66,8 @@ gem 'd3-rails'
 gem 'leaflet-rails'
 # async.js gem
 gem 'async-rails'
+# replacement for native alert and confirm dialogs
+gem 'bootbox-rails', '~>0.4'
 
 # Use it to precompile assets
 group :assets do

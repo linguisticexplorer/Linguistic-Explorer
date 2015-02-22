@@ -46,6 +46,7 @@ GEM
       execjs
     awesome_print (1.2.0)
     bcrypt (3.1.7)
+    bootbox-rails (0.4.0)
     bootstrap-sass (3.2.0.2)
       sass (~> 3.2)
     brakeman (2.6.2)
@@ -354,6 +355,7 @@ DEPENDENCIES
   alphabetical_paginate
   async-rails
   autoprefixer-rails
+  bootbox-rails (~> 0.4)
   bootstrap-sass (~> 3.2.0)
   brakeman
   cancan

@@ -20,8 +20,8 @@
           - (0..Group::MAXIMUM_ASSIGNABLE_DEPTH).each do |depth|
             -active = @group.depth_maximum == depth.to_i
             -label = depth > 0 ? 'Double' : 'Single'
-            %label{:class => "btn btn-default #{active ? 'active' : ''}"}
-              %input.form-control{:type => "radio", :name => "depth_maximum", :id => depth, :autocomplete => "off", :checked => active, :value => depth }=label
+            %label{:class => "btn btn-default #{active ? 'active' : ''}", :id => "depth_#{depth}"}
+              %input.form-control{:type => "radio", :name => "group[depth_maximum]", :autocomplete => "off", :checked => active, :value => depth }=label
     .col-md-4
       = f.label :privacy, "Privacy level", :class => "control-label"
       .controls
@@ -31,7 +31,7 @@
             -privacy_icon = privacy == 'public' ? 'unlock-alt' : 'lock'
             -icon_color = privacy == 'public' ? 'blue' : 'blue-light'
             %label{:class => "btn btn-default #{active ? 'active' : ''}"}
-              %input.form-control{:type => "radio", :name => "privacy", :id => privacy, :autocomplete => "off", :checked => active, :value => privacy }
+              %input.form-control{:type => "radio", :name => "group[privacy]", :id => privacy, :autocomplete => "off", :checked => active, :value => privacy }
                 %a{:href => "#", :rel => "tooltip", :title => privacy.capitalize, :data => {:toggle => "tooltip", :animation => "true"}}
                   =icon privacy_icon, '', :class => "fa-15x #{icon_color}"
         / = f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s
@@ -43,10 +43,9 @@
       .controls
         = f.text_field :ling0_name, :class => 'form-control'
     .col-md-4
-      %div{:class => "#{@group.depth_maximum > 0 ? '' : 'hidden'}"}
-        = f.label :ling1_name, "Depth 1 Ling name", :class => "control-label"
-        .controls
-          = f.text_field :ling1_name, :class => "form-control"
+      = f.label :ling1_name, "Depth 1 Ling name", :class => "control-label"
+      .controls
+        = f.text_field :ling1_name, :class => "form-control", :disabled => @group.depth_maximum < 1
     .col-md-4
       = f.label :ling_fields, :class => "control-label" do
         Field names to skip on search for #{@group.ling0_name || Lings}

@@ -11,25 +11,25 @@
   };
 
   function initPage(){
-    var examples = $('#group_example_fields').val().split(", ");
 
     function makeElement (text) {
       return HoganTemplates[T.controller.toLowerCase() + '/input'].render({text: text});
     }
 
+    function getInputValues(){
+      return $(this).val();
+    }
+    
+    var examples = $('#group_example_fields').val();
     var orderEl = $('#order');
     
     if (examples) {
+      examples = examples.split(", ");
       $.each(examples, function(i, val) {
         orderEl.append(makeElement(val));
       });
-    }
-    else {
+    } else {
       orderEl.append(makeElement('text'));
-    }
-
-    function getInputValues(){
-      return $(this).val();
     }
 
     orderEl
@@ -44,9 +44,13 @@
       .on('click', '.delete-button',function (e) {
         e.preventDefault();
 
-        if(confirm('Are you sure you want delete the element?')) {
-          $(this).parent().parent().remove();
-        }
+        var me = this;
+
+        bootbox.confirm('Are you sure you want delete the element?', function (willDelete){
+          if(willDelete){
+            $(me).parent().parent().remove();
+          }
+        });
 
       })
       .on('click', '#append-button', function (e) {
@@ -55,14 +59,19 @@
           $('#order').append(makeElement(text));
           $('#append').val('');
         }
-      });
-
-    $("#append").keydown(function(event){
-        if(event.keyCode == 13) {
-          event.preventDefault();
+      })
+      .on('keydown', '#append', function (e){
+        if(e.keyCode == 13) {
+          e.preventDefault();
           $('#append-button').trigger('click');
       }
-    });
+      })
+      .on('click', '[id^="depth_"]', function(){
+        // Previous state here
+        var hasDepth = !$('#depth_1.active').length;
+
+        $('#group_ling1_name').prop('disabled', !hasDepth).toggleClass('disabled', !hasDepth);
+      });
 
   }
 

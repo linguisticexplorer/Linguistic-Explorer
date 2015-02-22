@@ -4,6 +4,7 @@
 //= require jquery_ujs
 //= require alphabetical_paginate.js
 //= require bootstrap
+//= require bootbox
 //= require twitter/typeahead
 //= require leaflet
 //= require d3
