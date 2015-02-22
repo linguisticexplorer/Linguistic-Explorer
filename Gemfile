@@ -68,6 +68,8 @@ gem 'leaflet-rails'
 gem 'async-rails'
 # replacement for native alert and confirm dialogs
 gem 'bootbox-rails', '~>0.4'
+# Advances Editor for Property descriptions
+gem 'tinymce-rails', '4.0.19'
 
 # Use it to precompile assets
 group :assets do

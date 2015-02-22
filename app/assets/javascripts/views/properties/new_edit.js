@@ -8,16 +8,10 @@
   var properties = this.Terraling.Properties;
 
   properties['new'] = properties.edit = {
-    init: initTinyMCE
+    init: initPage
   };
 
-  function initTinyMCE(){
-    $.getScript('//tinymce.cachefly.net/4.0/tinymce.min.js').done( function () {
-      tinymce.init({
-        selector:'#desc',
-        plugins: 'table'
-      });
-    });
+  function initPage(){
   }
 
 })();

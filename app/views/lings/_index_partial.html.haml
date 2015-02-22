@@ -1,4 +1,5 @@
 - @lings_by_depth.each_with_index do |lings_with_params, depth|
   - lings_at_depth, params = lings_with_params
+  - params[:renderer] = BootstrapPagination::Rails
   = render :partial => "depth_table", :locals => {:lings => lings_at_depth, :depth => depth, :paginate_params => params }
   %br/

@@ -29,11 +29,14 @@
   - else
     %li= link_to @group.ling0_name.pluralize, group_lings_depth_path(@group, Depth::PARENT)
   // Property section
-  %li= link_to @group.property_name.pluralize, [@group, :properties]
-  // Category section
-  - if @group.categories.count > 1
-    %li
-      = link_to(@group.category_name, [@group, :categories])
+  %li.dropdown.black-dropdown
+    = link_to [@group, :properties] do
+      = @group.property_name.pluralize
+      %b.caret
+    %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
+      // Category section
+      %li
+        = link_to(@group.category_name.pluralize, [@group, :categories])
   // Members section
   %li.dropdown.black-dropdown
     = link_to group_contributors_path(@group) do

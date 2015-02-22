@@ -1,4 +1,4 @@
-#pagination_top.apple_pagination
+#pagination_top.apple_pagination.will-paginate
   = alphabetical_paginate paginate_params
 - storable_keys = current_group.ling_storable_keys
 - any_storable_values_available = check_all_lings(storable_keys, lings)
@@ -12,7 +12,7 @@
       - storable_keys.each do |key|
         %th
           = key.humanize
-    %th.col-md-1
+    %th.col-md-2
       Completeness
       .pull-right
         %a{:href => "#", :rel => "tooltip", :title => "This is a measure of how many properties have been set for the given language", :data => {:toggle => "tooltip", :animation => "true"} }
