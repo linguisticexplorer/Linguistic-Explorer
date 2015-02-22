@@ -14,7 +14,6 @@
       - if can_see? :destroy, category
         %td
           = link_to 'Destroy', [current_group, category], :confirm => 'Are you sure?', :method => :delete, :class => "btn btn-danger btn-small"
-%br/
 .apple_pagination
   / render page links in the view:
   = will_paginate @categories, renderer: BootstrapPagination::Rails

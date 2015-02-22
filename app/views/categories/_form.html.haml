@@ -8,17 +8,31 @@
         - @category.errors.full_messages.each do |msg|
           %li= msg
   .form-group
-    = label_tag :name, "Name", :class => "control-label"
-    .controls
-      = f.text_field :name
+    .col-md-6
+      = label_tag :name, "Name", :class => "control-label"
+      .controls
+        = f.text_field :name, :class => "form-control"
+    .col-md-6
+      = f.label :depth_maximum, "Depth", :class => "control-label"
+      .controls
+        .button-group{:data => {:toggle => "buttons"}}
+          - current_group.depths.to_a.each do |depth|
+            -active = @category.depth == depth.to_i
+            -label = depth > 0 ? 'Second' : 'First'
+            %label{:class => "btn btn-default #{active ? 'active' : ''}", :id => "depth_#{depth}"}
+              %input.form-control{:type => "radio", :name => "category[depth]", :autocomplete => "off", :checked => active, :value => depth }=label
+    /.col-md-6
+    /  = label_tag :depth, "Depth", :class => "control-label"
+    /  .controls
+    /    = f.collection_select :depth, current_group.depths.to_a, :to_s, :to_s, :class => "form-control"
   .form-group
-    = label_tag :description, "Description", :class => "control-label"
-    .controls
-      = f.text_area :description
+    .col-md-12
+      = label_tag :description, "Description", :class => "control-label"
+      .controls
+        = f.text_area :description, :rows => 10, :class => "form-control tinymce", :id => "desc"
+        = tinymce
   .form-group
-    = label_tag :depth, "Depth", :class => "control-label"
-    .controls
-      = f.collection_select :depth, current_group.depths.to_a, :to_s, :to_s
-  .form-group
-    .controls
-      = f.submit :class => "btn btn-success"
+    .col-md-6
+      .controls
+        = f.submit 'Submit', :class => "btn btn-success"
+        = link_to 'Cancel', [current_group, @category], :class => "btn btn-default"

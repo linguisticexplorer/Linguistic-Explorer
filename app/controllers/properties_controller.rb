@@ -6,7 +6,8 @@ class PropertiesController < GroupDataController
     # Added Eager Loading
     @properties = current_group.properties.includes(:category).paginate(:page => params[:page], :order =>"name")
     @properties.map { |prop| prop.get_infos } unless params[:plain]
-
+    
+    @hasCategories = current_group.categories.count > 0
     respond_with(@properties) do |format|
       format.html
       format.js

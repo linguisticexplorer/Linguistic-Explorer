@@ -22,7 +22,7 @@
       .controls
         = f.text_area :description, :rows => 20, :class => "form-control tinymce", :id => "desc"
         = tinymce
-        //= tinymce :description
   .form-group
     .controls
-      = f.submit :class => "btn btn-success"
+      = f.submit 'Submit', :class => "btn btn-success"
+      = link_to 'Cancel', [current_group, @property], :class => "btn btn-default"

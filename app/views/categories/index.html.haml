@@ -1,9 +1,12 @@
 - page_heading current_group.category_name.pluralize
-%h1
-  Listing #{current_group.category_name.pluralize}
-- if can_see? :create, Category.new{|c| c.group = current_group}
-  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn btn-success"
+.row
+  .col-md-6
+    %h1 Listing #{current_group.category_name.pluralize}
+  .col-md-6
+    .row{:style => "margin-top: 25px;"}
+      - if can_see? :manage, Property.new{|p| p.group = current_group}
+        .col-md
+          = link_to new_group_category_path(current_group), :class => "btn btn-success pull-right",:rel => "tooltip", :title => "New #{current_group.category_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+            = icon "plus"
 #pagination_table
   = render :partial => "index_partial"
-- if can_see? :create, Category.new{|c| c.group = current_group}
-  = link_to "New #{current_group.category_name}", new_group_category_path(current_group), :class => "btn btn-success"
