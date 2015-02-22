@@ -1,16 +1,3 @@
 - page_heading "Edit Group"
 %h1 Editing group
-= link_to groups_path, :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-\#{link_to 'Show', @group, :class => "btn"}
-%br/
-%br/
 = render 'form'
-%br/
-= link_to groups_path, :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-\#{link_to 'Show', @group, :class => "btn"}
