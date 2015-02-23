@@ -16,7 +16,7 @@
     .col-md-4
       = f.label :depth_maximum, "Depth", :class => "control-label"
       .controls
-        .button-group{:data => {:toggle => "buttons"}}
+        .button-group.btn-group{:data => {:toggle => "buttons"}}
           - (0..Group::MAXIMUM_ASSIGNABLE_DEPTH).each do |depth|
             -active = @group.depth_maximum == depth.to_i
             -label = depth > 0 ? 'Double' : 'Single'
@@ -25,7 +25,7 @@
     .col-md-4
       = f.label :privacy, "Privacy level", :class => "control-label"
       .controls
-        .button-group{:data => {:toggle => "buttons"}}
+        .button-group.btn-group{:data => {:toggle => "buttons"}}
           - Group::PRIVACY.each do |privacy|
             -active = @group.privacy == privacy
             -privacy_icon = privacy == 'public' ? 'unlock-alt' : 'lock'

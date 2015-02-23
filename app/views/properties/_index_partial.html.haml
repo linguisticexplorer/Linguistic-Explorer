@@ -27,10 +27,10 @@
               =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
         - if can_see? :manage, property
           %td
-            = link_to edit_group_property_path(current_group, property), :class => 'btn btn-default', :title => "Edit" do
+            = link_to edit_group_property_path(current_group, property), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
               = icon 'edit'
             - if can_see? :destroy, property
-              = link_to [current_group, property], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :title => "Destroy" do
+              = link_to [current_group, property], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
                 = icon 'trash-o'
 
   #pagination_bottom.apple_pagination.will-paginate
