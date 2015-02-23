@@ -12,15 +12,16 @@
           .col-md-10
             %label{ :for => "resources-search-field", :id => "searchLabel", :data => {:label => "Looking for a specific #{@group.ling_names.join(", ")} or perhaps a #{@group.property_name}?" }}
             %input#resources-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-          .col-6
+          .col-md
             %h1
               %small.pull-right
                 - if @group.privacy == "private"
                   %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
                     = icon  'lock', '', :class => "blue-light"
-            - if can_see? :edit, @group
-              = link_to edit_group_path(@group), :class => "btn btn-default", :rel => "tooltip", :title => "Edit Group", :data => {:toggle => "tooltip", :animation => "true"}  do
-                = icon 'edit'
+            .pull-right
+              - if can_see? :edit, @group
+                = link_to edit_group_path(@group), :class => "btn btn-default", :rel => "tooltip", :title => "Edit Group", :data => {:toggle => "tooltip", :animation => "true"}  do
+                  = icon 'edit'
   #intro
     .row
       .col-md-12

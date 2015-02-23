@@ -8,7 +8,7 @@
         - @group.errors.full_messages.each do |msg|
           %li= msg
   .form-group
-    %legend Group
+    %legend 
     .col-md-4
       = f.label :name, 'Name', :class => "control-label"
       .controls
@@ -37,7 +37,7 @@
         / = f.collection_select :privacy, Group::PRIVACY, :to_s, :to_s
   /= f.collection_select :depth_maximum, (0..Group::MAXIMUM_ASSIGNABLE_DEPTH), :to_i, :to_i
   .form-group
-    %legend Languages
+    %legend 
     .col-md-4
       = f.label :ling0_name, "Depth 0 Ling name", :class => "control-label"
       .controls
@@ -54,7 +54,7 @@
       .controls
         = f.text_field :ling_fields, :class => "form-control", :placeholder => "Use commas to divide multiple fields names"
   .form-group
-    %legend Properties
+    %legend 
     .col-md-4
       = f.label :category_name, "Category name", :class => "control-label"
       .controls
@@ -68,7 +68,7 @@
       .controls
         = f.text_field :lings_property_name, :class => "form-control"
   .form-group
-    %legend Examples
+    %legend 
     .col-md-5
       = f.label :example_name, "Example name", :class => "control-label"
       .controls
