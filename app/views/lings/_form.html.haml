@@ -29,7 +29,10 @@
       .col-md-6
         = label_tag :stored_values, key.capitalize(), :class => "control-label"
         .controls
-          = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10, :class => "form-control"
+          - is_desc = key=~/description/
+          = text_area :stored_values, key.capitalize(), :value => @ling.stored_value(key), :rows => 10, :class => "form-control tinymce", :id => "#{is_desc ? 'desc' : "#{key}_#{index}" }"
+          - if is_desc
+            = tinymce
       - if index < 1
         .form-group
           .col-md-5
@@ -39,7 +42,7 @@
               %h1 Map
               %h1 not implemented yet
   .form-group
-    .col-md-6.col-md-offset-6
+    .col-md-6
       .controls
-        = f.submit("Submit", :class => "btn btn-success pull-right")
+        = f.submit("Submit", :class => "btn btn-success")
         = link_to 'Cancel', [current_group, @ling], :class => "btn btn-default"
