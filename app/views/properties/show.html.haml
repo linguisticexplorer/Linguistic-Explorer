@@ -1,15 +1,15 @@
 - page_heading current_group.property_name
+.row
+  .col-md-12
+  = link_to group_properties_path(current_group), :class => "btn btn-default" do
+    = icon 'arrow-left'
+  - if can_see? :manage, @property
+    .pull-right
+      = link_to edit_group_property_path(current_group, @property), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{@property.name}", :data => {:toggle => "tooltip", :animation => "true"} do
+        = icon 'edit'
 %h1
-  = current_group.property_name
+  = "#{current_group.property_name} : "
   = @property.name
-= link_to group_properties_path(current_group), :class => "btn btn-default" do
-  %span.glyphicon.glyphicon-arrow-left
-  Back
-- if can_see? :manage, @property
-  .pull-right
-    = link_to edit_group_property_path(current_group, @property), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{@property.name}", :data => {:toggle => "tooltip", :animation => "true"} do
-      = icon 'edit'
-
 .row{:style => "margin: 15px;"}
 
   #analysis-container.col-md-6.border
@@ -104,8 +104,3 @@
     #pagination_bottom.apple_pagination
       / render page links in the view:
       = alphabetical_paginate @params
-.row
-  .col-md-12
-    = link_to group_properties_path(current_group), :class => "btn btn-default" do
-      %i.glyphicon.glyphicon-arrow-left
-      Back
