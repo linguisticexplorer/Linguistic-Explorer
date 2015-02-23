@@ -1,4 +1,12 @@
 - page_heading "Membership"
+.row
+  .col-md-12
+    = link_to [current_group, @membership], :class => "btn btn-default" do
+      = icon 'arrow-left'
+    - if can_see? :manage, @membership
+      .pull-right
+        = link_to edit_group_membership_path(current_group, @membership), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit #{@membership.member.name}", :data => {:toggle => "tooltip", :animation => "true"} do
+          = icon 'edit'
 %h1
   = @membership.member.name
   %small= describe_role
@@ -6,14 +14,6 @@
     %span.small.pull-right
       Set by
       = @membership.creator.name
-.row
-  .col-md-12
-    = link_to group_memberships_path(current_group), :class => "btn btn-default" do
-      %i.glyphicon.glyphicon-arrow-left
-      Back
-    - if can_see? :manage, @membership
-      = link_to edit_group_membership_path(current_group, @membership), :class => 'btn btn-default pull-right', :title => "Edit" do
-        = icon 'edit', 'Edit Membership'
 .row{:style => "margin-top: 25px;"}
   .col-md-6
     %table.table.table-hover

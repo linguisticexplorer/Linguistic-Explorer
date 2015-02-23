@@ -1,33 +1,37 @@
 - page_heading current_group.category_name
-%h1= current_group.category_name
-= link_to group_categories_path(current_group), :class => "btn btn-inverse" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-- if can_see? :edit, @category
-  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn btn-default"
-%br/
-%br/
-%table.show-table.description-table.table.table-bordered.table-striped.table-hover
-  %tr
-    %td
-      %b Name:
-    %td= @category.name
-  %tr
-    %td
-      %b Type:
-    %td= @category.group.ling_name_for_depth(@category.depth)
-  %tr
-    %td
-      %b Description:
-    %td= @category.description
-  %tr
-    %td
-      %b Created by:
-    %td= @category.creator ? @category.creator.name : "Unknown user"
-= link_to group_categories_path(current_group), :class => "btn btn-default" do
-  %i.glyphicon-white.glyphicon-arrow-left>
-  \&nbsp;Back
-\&nbsp;
-- if can_see? :edit, @category
-  = link_to 'Edit', edit_group_category_path(current_group, @category), :class => "btn btn-default"
+.row
+  .col-md-12
+    = link_to [current_group, @category], :class => "btn btn-default" do
+      = icon 'arrow-left'
+    -if can_see?(:manage, @category)
+      .pull-right
+        = link_to edit_group_category_path(current_group, @category), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{@category.name}", :data => {:toggle => "tooltip", :animation => "true"} do
+          = icon 'edit'
+%h1
+  = "#{current_group.category_name} :"
+  = @category.name
+  // show the creator on the right here
+  -if @category.creator
+    %span.small.pull-right
+      Set by
+      = @category.creator.name
+.row{:style => "margin-top: 25px;"}
+  .col-md-6
+    %legend Description
+.row
+  .col-md-6
+    %p= @category.description.html_safe
+  .col-md-6{:style => "margin-top: -20px;"}
+    %table.table.table-hover
+      %tr
+        %td
+          %b Type:
+        %td= @category.group.ling_name_for_depth(@category.depth)
+      %tr
+        %td
+          %b Properties:
+          %td= @properties
+      %tr
+        %td
+          %b Created by:
+        %td= @category.creator ? @category.creator.name : ""

@@ -12,10 +12,10 @@
       = label_tag :name, "Name", :class => "control-label"
       .controls
         = f.text_field :name, :class => "form-control"
-    .col-md-6
+    .col-md-4
       = f.label :depth_maximum, "Depth", :class => "control-label"
       .controls
-        .button-group{:data => {:toggle => "buttons"}}
+        .button-group.btn-group{:data => {:toggle => "buttons"}}
           - current_group.depths.to_a.each do |depth|
             -active = @category.depth == depth.to_i
             -label = depth > 0 ? 'Second' : 'First'

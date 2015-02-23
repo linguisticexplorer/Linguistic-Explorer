@@ -39,6 +39,8 @@
 - else
   %h3
     There are no #{current_group.category_name.pluralize} yet for this group
+  %h3
+    You need at least one #{current_group.category_name} to create new #{current_group.property_name.pluralize}
     - if can_see? :create, Category.new{|c| c.group = current_group}
       %span : maybe you want to create a 
       = link_to new_group_category_path(current_group), :class => "btn btn-success" do

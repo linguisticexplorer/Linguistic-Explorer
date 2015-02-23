@@ -16,6 +16,8 @@ class CategoriesController < GroupDataController
 
     is_authorized? :read, @category
 
+    @properties = current_group.properties.where(:category_id => @category.id).select(:id).count()
+
     respond_with(@category) do |format|
       format.html
       format.js
