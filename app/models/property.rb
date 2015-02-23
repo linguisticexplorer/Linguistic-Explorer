@@ -57,6 +57,7 @@ class Property < ActiveRecord::Base
 
   def lings_in_group
     @lings_total ||= Ling.in_group(group).count(:id)
+    @lings_total > 0 ? @lings_total : 1
   end
 
   def lings_in_prop
