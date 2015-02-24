@@ -41,9 +41,13 @@ class LingsController < GroupDataController
 
   def show
     @ling = current_group.lings.find(params[:id])
-    @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
 
     is_authorized? :read, @ling
+
+    @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
+
+    @values_count = @ling.lings_properties.count(:id)
+    load_infos(@ling)
 
     respond_with(@values) do |format|
       format.html

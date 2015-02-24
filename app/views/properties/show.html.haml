@@ -47,6 +47,8 @@
       %li.active
         %a{:href => '#details', :data => {:toggle => "tab"}} Overview
       %li
+        %a{:href => "#description", :data => {:toggle => "tab"}} Description
+      %li
         %a{:href => "#sureness", :data => {:toggle => "tab"}} Sureness Map
       %li
         %a#mapButton{:href => "#map", :data => {:toggle => "tab"}} View on Map
@@ -60,9 +62,25 @@
                 %b= current_group.category_name
                 \:
               %td= link_to @property.category.name, [current_group, @property.category]
-            %td
-              %b Values set:
-            %td= @all_values
+            %tr
+              %td
+                %b Values set:
+              %td= @values_count
+            %tr
+              %td
+                %b Completeness:
+              - percentage = @property.info
+              - label = "#{percentage} %"
+              %td{:class => "text-center"}
+                %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
+                  =icon number_to_icon_name(percentage), '', :class => "fa-15x #{number_to_text_class(percentage)}"
+      .tab-pane#description
+        .tabbed-pane
+          .text-justify
+            - if @property.description.present? && @property.description != ""
+              %p= @property.description.html_safe
+            - else
+              %h3 No description provided
       .tab-pane#map
         .tabbed-pane
           #property-map
@@ -72,18 +90,18 @@
             %p TODO:
             %p Here will appear a "sureness" heatmap
 
-- if @property.description.present? && @property.description != ""
-  .row
-    #accordion.panel-group
-      .panel.panel-default
-        .panel-heading
-          %h4.panel-title
-            %a{:href => "#description", :data => {:toggle => "collapse", :parent => "#accordion"}}
-              Description
-              %span.small.pull-right (click to toggle)
-        #description.panel-collapse.collapse
-          .panel-body.text-justify
-            = @property.description.html_safe
+/ # - if @property.description.present? && @property.description != ""
+/ #   .row
+/ #     #accordion.panel-group
+/ #       .panel.panel-default
+/ #         .panel-heading
+/ #           %h4.panel-title
+/ #             %a{:href => "#description", :data => {:toggle => "collapse", :parent => "#accordion"}}
+/ #               Description
+/ #               %span.small.pull-right (click to toggle)
+/ #         #description.panel-collapse.collapse
+/ #           .panel-body.text-justify
+/ #             = @property.description.html_safe
 
 .row
   #pagination_table

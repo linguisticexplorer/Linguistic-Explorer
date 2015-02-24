@@ -37,7 +37,9 @@ class PropertiesController < GroupDataController
     lings_ids = lings.all.map(&:id)
     @values = @property.lings_properties.includes(:ling).where(:ling_id => lings_ids)
     # Workout the total number of values set for this property
-    @all_values = @property.lings_properties.count(:id)
+    @values_count = @property.lings_properties.count(:id)
+
+    @property.get_infos
 
     respond_with(@values) do |format|
       format.html

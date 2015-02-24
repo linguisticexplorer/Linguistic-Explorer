@@ -4,7 +4,10 @@
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       = icon 'arrow-left'
     -if can_see?(:manage, @ling)
-      .btn-group.pull-right
+      .pull-right
+        -if @values.empty?
+          = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success", :rel => "tooltip", :title => "Add new #{current_group.lings_property_name.pluralize}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+            = icon 'plus'
         %button.btn.btn-default.dropdown-toggle{:type => "button", :data => {:toggle => "dropdown"}}
           = icon 'edit'
           %span.caret
@@ -56,6 +59,8 @@
       %li.active
         %a{:href => '#details', :data => {:toggle => "tab"}} Overview
       %li
+        %a{:href => "#description", :data => {:toggle => "tab"}} Description
+      %li
         %a#surenessButton{:href => "#sureness", :data => {:toggle => "tab"}} Sureness Map
       %li
         %a#mapButton{:href => "#map", :data => {:toggle => "tab"}} View on Map
@@ -66,7 +71,7 @@
         .tabbed-pane
           %table.show-table.table.table-bordered.table-hover.table-striped.ling-table
             - @ling.storable_keys.each do |key|
-              - if @ling.stored_value(key) != ""
+              - if key != "description" && @ling.stored_value(key) != ""
                 %tr
                   %td
                     %b
@@ -92,9 +97,16 @@
                     = link_to child.name, group_ling_path(current_group, child)
             %tr
               %td
-                %b Created by:
+                %b Values set:
+              %td= @values_count
+            %tr
               %td
-                = @ling.creator ? @ling.creator.name : "Unknown user"
+                %b Completeness:
+              - percentage = @ling.info
+              - label = "#{percentage} %"
+              %td{:class => "text-center"}
+                %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
+                  =icon number_to_icon_name(percentage), '', :class => "fa-15x #{number_to_text_class(percentage)}"
       .tab-pane#map{:data => {:name => @ling.name}}
         .tabbed-pane
           #ling-map
@@ -103,6 +115,14 @@
           #sureness-map
             %p TODO:
             %p Here will appear a "sureness" heatmap
+      .tab-pane#description
+        .tabbed-pane
+          .text-justify
+            - @ling.storable_keys.each do |key|
+              -if key =~ /description/ && @ling.stored_value(key) != ''
+                %p =@ling.stored_value(key).html_safe
+              - else
+                %h3 No description provided
 .row
   #pagination_table.col-md-12
     #pagination_top.apple_pagination.will-paginate
@@ -136,11 +156,6 @@
     #pagination_bottom.apple_pagination.will-paginate
       / render page links in the view:
       = will_paginate @values, renderer: BootstrapPagination::Rails
-.row
-  .col-md-12
-    = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
-      %i.glyphicon.glyphicon-arrow-left
-      Back
 
 #analysis-modal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "resultsModal", :hidden => "true" }}
   .modal-dialog.modal-lg
