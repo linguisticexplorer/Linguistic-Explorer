@@ -1,3 +1,22 @@
+// Define an animation function in SASS
+@mixin pulse ($n){
+  0%{transform: scaleX(1) scaleY(1);}
+  @for $i from 1 through 3 {
+    $m:1;
+    @if $i%2 != 0 {$m:$n;}
+    #{$i*20%}{transform: scaleX($m) scaleY($m);}
+  }
+  100%{transform: scaleX(1) scaleY(1);}
+}
+
+@keyframes pulse{
+  @include pulse(0.85);
+}
+
+// Make Font Awesome icons animated
+i[class*=fa]:hover{
+  animation: pulse 1600ms;
+}
 
 .italic {
   font-style: italic;
@@ -515,6 +534,10 @@ div#languages-container.hidden {
 
 .fa-15x{
   font-size: 1.5em;
+}
+
+.fa-big{
+  font-size: 16em;
 }
 
 .fa-6x{
