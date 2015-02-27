@@ -12,12 +12,13 @@
               = radio_button_tag "value", value, 
                 @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first
               = value
-          - if can_see? :manage, @ling
-            = label_tag "value[value_new]", :class => "radio" do
-              = radio_button_tag "value", "value_new"
+        - if can_see? :manage, @ling
+          .row
+            .col-md-12
               .input-group
-                %span.input-group-addon +
-                %input{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
+                %span.input-group-addon
+                  = radio_button_tag "value", "value_new"
+                %input.form-control{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
     %h4 To save this value think:
     #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px;"}
       %h5 How sure are you about the value set?

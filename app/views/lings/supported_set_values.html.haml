@@ -1,10 +1,9 @@
 - page_heading @ling.name + " Examples Supported Edit"
-%h1
-  Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
 %div{:style=> "height: 50px;"}
   = link_to [current_group, @ling], :class => "btn btn-default" do
-    %i.glyphicon.glyphicon-arrow-left
-    Back
+    %i.fa.fa-arrow-left
+%h1
+  Edit #{current_group.lings_property_name.pluralize} for #{@ling.name}
 
 #supported-entry-container
   .row
@@ -14,10 +13,6 @@
       = render :partial => "lings/mass_assignment/property", :object => @property
     #property-setter.col-md-4.set-col
       = render :partial => "lings/mass_assignment/value", :object => @property
-%div{:style=> "height: 60px;"}
-  = link_to [current_group, @ling], :class => "btn btn-default" do
-    %i.glyphicon.glyphicon-arrow-left
-    Back
 
 // Example modal
 #example-modal.modal.fade
