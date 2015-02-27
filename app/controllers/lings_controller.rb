@@ -142,6 +142,7 @@ class LingsController < GroupDataController
     if fresh
       fresh.value = prop_value
       fresh.sureness = params[:value_sureness] if params[:value_sureness]
+      fresh.creator = current_user
     else
       fresh = LingsProperty.new do |lp|
         lp.ling  = @ling
@@ -149,6 +150,7 @@ class LingsController < GroupDataController
         lp.property = property
         lp.value = prop_value
         lp.sureness = params[:value_sureness] if params[:value_sureness]
+        lp.creator = current_user
       end
     end
 

@@ -108,7 +108,7 @@
         $.post(form.attr("action"), form.serialize(), onSavedValue, 'json');
 
         function saveFeedback(success){
-          $('#value-saved-'+ (success ? 'success' : 'error')).removeClass('hide');
+          $('#value-saved-'+ (success ? 'success' : 'error')).parent().removeClass('hide');
         }
 
         function onSavedValue(data) {
@@ -263,7 +263,10 @@
     }
 
     function isValueSet(){
-      return $("#values input[name='value']:checked").length > 0;
+      var newRadio = $("#value_value_new:checked").length;
+      var newInput = newRadio && $("input[name='new_value']").val().length;
+      var radioValues = $("#values input[name='value']:checked").length - newRadio;
+      return !!(newInput || radioValues);
     }
 
     function toggleSureness(){
@@ -271,6 +274,9 @@
       var isChecked = isValueSet();
       // toggle the disabled state of sureness
       $('[id^=sureness_]').toggleClass("disabled", !isChecked);
+      $('#value-sureness-box')
+        .toggleClass('ready alert-success', isChecked)
+        .toggleClass('alert-info', !isChecked);
     }
 
     function toggleExampleWarning(){

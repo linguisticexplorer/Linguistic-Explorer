@@ -185,3 +185,11 @@ h4.group-header {
 .blue-bg {
   background-color: lighten($brand-primary, 30%)
 }
+
+#value-sureness-box.ready {
+  border: 2px solid;
+  -webkit-transition: all 1s easy-in-out;
+  -moz-transition: all 1s easy-in-out;
+  -o-transition: all 1s easy-in-out;
+  transition: all 1s easy-in-out;
+}

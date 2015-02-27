@@ -55,8 +55,12 @@ input.autocomplete {
   }
 }
 
-#value-sureness {
-  margin-bottom: 10px;
+#value-sureness-box {
+  padding-bottom: 30px;
+
+  #value-sureness {
+    margin-bottom: 10px;
+  }
 }
 
 #supported-entry-container {
@@ -647,4 +651,8 @@ body {
 
 .navbar-inverse .dropdown b {
   color: #777777;
+}
+
+.strong {
+  font-weight: bold;
 }

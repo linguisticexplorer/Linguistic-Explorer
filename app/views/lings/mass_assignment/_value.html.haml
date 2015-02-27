@@ -19,18 +19,23 @@
                 %span.input-group-addon
                   = radio_button_tag "value", "value_new"
                 %input.form-control{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
-    %h4 To save this value think:
-    #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px;"}
-      %h5 How sure are you about the value set?
-      .btn-group
-        %button.btn.btn-default#sureness_certain{ :name => "value_sureness", :value => "certain", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}" } Certain
-        %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
-        %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need help
-  %div{:style => "height: 45px;" }
-    #value-saved-success.hide.alert.alert-success
-      %p.lead Value saved!
-    #value-saved-error.hide.alert.alert-error
-      %p.lead An error occurred while saving the value!
+    #value-sureness-box.alert.alert-info
+      %h4 To save this value think:
+      %h4
+        %small How sure are you about the value set?
+      #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px; padding-bottom: 10px;"}
+        .btn-group.btn-group-justified
+          .btn-group
+            %button.btn.btn-default#sureness_certain{ :name => "value_sureness", :value => "certain", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "certain"}.any?}" } Certain
+          .btn-group
+            %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
+          .btn-group
+            %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{active if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need help
+      .pull-right{:style => "margin-top: -5px;"}
+        .green.hide.strong
+          = icon 'check', 'Saved', :id => "value-saved-success"
+        .red.hide.strong
+          = icon 'exclamation-circle', 'Error', :id => "value-saved-error"
   #prop-example.form-group{:style => "margin-top: 15px;"}
     %h4 Examples
     #prop-active-example.content-box
