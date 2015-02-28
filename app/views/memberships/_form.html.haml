@@ -45,8 +45,5 @@
   .form-group
     .col-sm-6
       .controls
-        = link_to group_memberships_path(current_group), :class => "btn btn-default" do
-          %span.glyphicon.glyphicon-arrow-left
-          Back
         = f.submit 'Submit', :class => "btn btn-success"
         = link_to 'Cancel', [current_group, @membership], :class => "btn btn-default"

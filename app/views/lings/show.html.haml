@@ -1,12 +1,12 @@
-- page_heading "#{@ling.grouped_name} : #{@ling.name}"
+- page_heading "#{@ling.grouped_name}: #{@ling.name}"
 .row
   .col-md-12
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       = icon 'arrow-left'
     -if can_see?(:manage, @ling)
       .pull-right
-        -if @values.empty?
-          = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success", :rel => "tooltip", :title => "Add new #{current_group.lings_property_name.pluralize}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
+        -if @values_count < 1
+          = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success", :rel => "tooltip", :title => "Add the first #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
             = icon 'plus'
         %button.btn.btn-default.dropdown-toggle{:type => "button", :data => {:toggle => "dropdown"}}
           = icon 'edit'
@@ -132,8 +132,9 @@
       %thead
         %th.col-md-2= current_group.property_name
         %th.col-md-2= current_group.lings_property_name
-        %th.col-md-6= current_group.example_name.pluralize
-        %th.col-md-2 Creator
+        %th.col-md= current_group.example_name.pluralize
+        - if can_see?(:manage, @ling)
+          %th.col-md-2 Actions
       %tbody
         - @values.each do |value|
           %tr
@@ -146,13 +147,17 @@
                   - example = elp.example
                   = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
                   %br
-            - elsif can_see?(:manage, @ling)
-              %td
-                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.example_name}", :data => {:toggle => "tooltip", :animation => "true" } do
-                  = icon 'plus'
             - else
               %td
-            %td= (value.creator ? value.creator.name : "")
+                - if can_see?(:manage, @ling)
+                  = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.example_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                    = icon 'plus'
+            %td
+              - if can_see?(:manage, @ling)
+                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "value-select"), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                  = icon 'edit'
+                = link_to [current_group, value], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+                  = icon 'trash-o'
     #pagination_bottom.apple_pagination.will-paginate
       / render page links in the view:
       = will_paginate @values, renderer: BootstrapPagination::Rails

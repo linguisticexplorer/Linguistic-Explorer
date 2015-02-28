@@ -52,11 +52,11 @@ class MembershipsController < GroupDataController
 
     resource_ids = @membership.roles.map(&:resource_id)
 
-    @lings = Ling.find(resource_ids)
+    @lings = current_group.lings.find(resource_ids)
 
     if @membership.is_expert?
       # Just Lings for the moment
-      @activities = Ling.where({:id => resource_ids}).order(:updated_at).first(25)
+      @activities = current_group.lings.where({:id => resource_ids}).order(:updated_at).first(25)
     end
 
     respond_with(@membership) do |format|

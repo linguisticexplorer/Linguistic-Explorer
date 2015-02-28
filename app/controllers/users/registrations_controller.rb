@@ -7,8 +7,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
     result = resource.save
 
-    # p "[DEBUG] #{resource.inspect} - #{result}"
-
     if result
       set_flash_message :notice, :signed_up
       sign_in_and_redirect(resource_name, resource)

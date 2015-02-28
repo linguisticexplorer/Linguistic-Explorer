@@ -1,3 +1,5 @@
 - page_heading "Add new member"
+= link_to group_memberships_path(current_group), :class => "btn btn-default" do
+  = icon "arrow-left"
 %h1 New Membership
 = render 'form'
