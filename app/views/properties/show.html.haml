@@ -6,8 +6,7 @@
   - if can_see? :manage, @property
     .pull-right
       -if @values_count < 1
-      // TODO: Show a list of potential lings to choose from
-        %a{:href=>"#", :class => "btn btn-success", :rel => "tooltip", :title => "Add the first #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"}}
+        %a{:href=>"#", :id => "addValue", :class => "btn btn-success", :rel => "tooltip", :title => "Add the first #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"}}
           = icon 'plus'
       = link_to edit_group_property_path(current_group, @property), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{@property.name}", :data => {:toggle => "tooltip", :animation => "true"} do
         = icon 'edit'
@@ -114,3 +113,16 @@
     #pagination_bottom.apple_pagination
       / render page links in the view:
       = alphabetical_paginate @params
+
+
+#lingsModal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "lingsModal", :hidden => "true" }}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+        %span
+          %h3 Type to start with a #{current_group.ling0_name}
+      .modal-body
+        %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
+      .modal-footer
+        %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close
