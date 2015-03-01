@@ -601,16 +601,25 @@ div#languages-container.hidden {
 #title {
   border-bottom: 1px solid #C30;
   margin-bottom: 15px;
+  font-family: Helvetica,Verdana,Arial,sans-serif;
+
+  .logo-font {
+    font-family: 'Pacifico', sans serif;
+  }
+
   h1 {
     font-size: 8em;
     line-height:1.25em;
+    color: #c30;
 
-    animation: color-light 30000ms infinite;
+    .logo-light {
+      color: '';
+      animation: color-light 30000ms infinite;
+    }
   }
+
   h2 {
     font-size: 2.0em;
-    font-family: Helvetica,Verdana,Arial,sans-serif;
-    color: #0088cc;
     margin: 25px 0 0 0;
     padding: 0 0 15px 0;
 
@@ -625,12 +634,12 @@ div#languages-container.hidden {
   animation: color-light 30000ms infinite;
 }
 
-.logo-font {
-  font-family: 'Pacifico', sans serif;
-}
-
 .brand-bigger {
   font-size: 1.5em;
+}
+
+.logo-font {
+  font-family: 'Pacifico', sans serif;
 }
 
 /* footer */
