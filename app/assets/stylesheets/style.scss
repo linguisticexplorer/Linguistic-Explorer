@@ -18,6 +18,24 @@ i[class*=fa]:hover{
   animation: pulse 1600ms;
 }
 
+@mixin color-anim ($lum){
+  0% { color: hsl(0, 100, $lum); }
+  @for $i from 1 through 5 {
+    $m: $i * 60;
+    #{$i * 8%}{color: hsl($m, 70, $lum); }
+    #{$i * 16%}{color: hsl($m, 100, $lum); }
+  }
+  100% { color: hsl(0, 100, $lum); }
+}
+
+@keyframes color-light{
+  @include color-anim(25);
+}
+
+@keyframes color-darker{
+  @include color-anim(75);
+}
+
 .italic {
   font-style: italic;
 }
@@ -584,19 +602,35 @@ div#languages-container.hidden {
   border-bottom: 1px solid #C30;
   margin-bottom: 15px;
   h1 {
-    font-size: 5em;
-    font-family: Helvetica,Verdana,Arial,sans-serif;
-    color: #C30;
+    font-size: 8em;
     line-height:1.25em;
+
+    animation: color-light 30000ms infinite;
   }
   h2 {
     font-size: 2.0em;
     font-family: Helvetica,Verdana,Arial,sans-serif;
     color: #0088cc;
-    margin: 15px 0 0 0;
+    margin: 25px 0 0 0;
     padding: 0 0 15px 0;
 
   }
+}
+
+.logo-darker {
+  animation: color-darker 30000ms infinite;
+}
+
+.logo-light {
+  animation: color-light 30000ms infinite;
+}
+
+.logo-font {
+  font-family: 'Pacifico', sans serif;
+}
+
+.brand-bigger {
+  font-size: 1.5em;
 }
 
 /* footer */

@@ -125,6 +125,10 @@ $link-color: #005580;
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
+// Import fonts from Google Fonts here
+// All the license stuff is easier with them
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Pacifico);
 
 
 i.less-than-half {
