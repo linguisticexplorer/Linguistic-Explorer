@@ -7,15 +7,34 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
 
-    pagination_options = {db_mode: true, db_field: "name", default_field: "a", numbers: false, :bootstrap3 => true}
+    pagination_options = {:db_mode => true, :db_field => "name", :default_field => "a", :numbers => false, :bootstrap3 => true}
 
     @all_lings = current_group.lings.at_depth(@depth)
 
     # Rails.logger.debug "DEBUG #{params[:letter]}"
+
+    lings_alpha = @all_lings.select('substr(name, 1, 1)').group('substr(name, 1, 1)').count(:id)
+    
+    # Don't do the trick if a letter is passed
+    available_letters = []
+
+    # Find out which is the first available letter
+    unless params[:letter]
+      available_letters = lings_alpha.collect { |l, n| n > 0 ? l.mb_chars.capitalize.to_s : nil }
+      if available_letters.any?
+        pagination_options[:default_field] = available_letters.first
+      else
+        pagination_options[:default_field] = 'all'
+      end
+    end
     
     @lings, @params = @all_lings.alpha_paginate(params[:letter], pagination_options)
 
-    # Rails.logger.debug "DEBUG #{@lings.size}"
+    # Replace params for better presentation
+    @params[:paginate_all] = false
+    @params[:availableLetters] = available_letters
+
+    # Rails.logger.debug "DEBUG #{lings_alpha.inspect}"
 
     return load_stats(@lings, params[:plain], 0)
   end
