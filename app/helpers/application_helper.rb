@@ -133,6 +133,30 @@ module ApplicationHelper
     @group && (current_user.admin? || (current_user.member_of?(@group)))
   end
 
+  def get_user_role(group)
+    role = ''
+    if group.present?
+      if current_user.group_admin_of? group
+        role = 'Group Admin'
+      elsif current_user.member_of? group
+        role = current_user.is_expert?(group) ? 'Expert' : 'Member'
+      end
+    end
+    return role
+  end
+
+  def get_user_role_wth_icon(group)
+    role = ''
+    if group.present?
+      if current_user.group_admin_of? group
+        role = icon 'group', 'Group Admin'
+      elsif current_user.member_of? group
+        role = current_user.is_expert?(group) ? icon('certificate', 'Expert') : icon('user', 'Member')
+      end
+    end
+    return role
+  end
+
   def number_to_text_class(number)
     number < 5 ? "red" : number < 50 ? "yellow" : "green"
   end

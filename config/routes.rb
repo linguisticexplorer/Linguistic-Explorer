@@ -28,6 +28,10 @@ LinguisticExplorer::Application.routes.draw do
 
   post "/groups/:group_id/maps" => "searches#geomapping"
 
+  namespace :groups do
+    get 'user'
+  end
+
   resources :groups do
 
     resources :searches do

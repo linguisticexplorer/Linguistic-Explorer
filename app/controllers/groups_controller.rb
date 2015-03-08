@@ -1,5 +1,7 @@
 class GroupsController < ApplicationController
 
+  respond_to :html, :js
+
   # To add paginate method in Array class
   # https://github.com/mislav/will_paginate/wiki/Backwards-incompatibility
   require 'will_paginate/array'
@@ -81,6 +83,10 @@ class GroupsController < ApplicationController
     @group.destroy
 
     redirect_to(groups_url)
+  end
+
+  def user
+    
   end
 
   private

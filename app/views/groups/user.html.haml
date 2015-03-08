@@ -1,0 +1,14 @@
+- page_heading "User: #{current_user.name}"
+%h1 User : #{current_user.name}
+.row{:style => "margin-top: 25px;"}
+  .col-md-12
+    %table.show-table.table.table-bordered.table-striped.table-hover
+      %tr
+        %th Group
+        %th Role
+        %th Activity
+      - current_user.memberships.each do |m|
+        %tr
+          %td=link_to m.group.name, m.group
+          %td=get_user_role_wth_icon m.group
+          %td

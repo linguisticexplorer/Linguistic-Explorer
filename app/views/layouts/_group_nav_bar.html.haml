@@ -47,7 +47,7 @@
 - elsif @groups
   %li.dropdown.black-dropdown
     = link_to groups_path, :style => "color: white" do
-      = icon 'files-o', 'Datasets'
+      = icon 'bars', 'Pick a Dataset'
       %b.caret
     %ul.dropdown-menu.medium-height{"aria-labelledby" => "dLabel", :role => "menu"}
       - @groups.each do |group|
