@@ -56,7 +56,7 @@ class MembershipsController < GroupDataController
 
     if @membership.is_expert?
       # Just Lings for the moment
-      @activities = current_group.lings.where({:id => resource_ids}).order(:updated_at).first(25)
+      @activities = current_group.lings.where({:id => resource_ids, :creator_id => @membership.id}).order(:updated_at).first(25)
     end
 
     respond_with(@membership) do |format|

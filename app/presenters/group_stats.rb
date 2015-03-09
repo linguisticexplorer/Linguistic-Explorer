@@ -15,11 +15,11 @@ module GroupStats
   end
 
   def examples_in_group
-    @ex_total ||= Example.where(:group_id => self.id).count(:id)
+    @ex_total ||= self.examples.count(:id)
   end
 
   def members_in_group
-    @mem_total ||= Membership.where(:group_id => self.id).count(:id)
+    @mem_total ||= self.memberships.count(:id)
   end
 
   def lings_with_property_quota(depth)
