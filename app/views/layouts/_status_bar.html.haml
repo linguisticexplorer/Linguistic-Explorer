@@ -2,7 +2,7 @@
   %li#userInfo.pull-right.dropdown.black-dropdown
     - if @group && !@group.new_record?
       // First Line: User info
-      =link_to group_memberships_path(@group, @group.membership_for(current_user)), :class => "compact" do
+      =link_to group_membership_path(@group, @group.membership_for(current_user)), :class => "compact" do
         %p{:style=> "margin-bottom: 0"}= current_user.name
         // - if user_is_member?
         - if current_user.admin?
