@@ -26,7 +26,7 @@ module SswlData
 
     ##puts "Loading lazy_cache"
     lazy_init_cache :user_ids, :ling_ids, :property_ids, :example_ids, :lings_property_ids,
-                    :examples_lings_property_ids, :stored_value_ids, :member_ids
+                    :examples_lings_property_ids, :stored_value_ids, :member_ids, :role_ids
 
     # accepts path to yaml file containing paths to csvs
     def initialize(config)
@@ -124,6 +124,37 @@ module SswlData
       write_csv :ling, ling_ids
 
       print "#{reset}converting lings...[OK]"
+      
+      # SSWL
+      #
+      # ==> Users.csv <==
+      # id, first_name, last_name, username, hashed_password, affiliation, user_type, email, website, role, language, salt
+      #
+      # Terraling
+      #
+      # ==> Roles.csv <==
+      # id,member_id,role,resource_id,resource_type
+      print "\nconverting roles..."
+      role_ids = {}
+      
+      # Need to transform the current id map
+      # to something useful here:
+      # ling name => id
+      ling_names = {}.tap do |entry|
+        ling_ids.each do |id,obj|
+          entry[obj['name']] = id;
+        end
+      end
+
+      csv_for_each :user do |row|
+
+        # cache member id
+        Converter.convert_roles_from(row, role_ids, user_ids, member_ids, ling_names)
+      end
+
+      write_csv :role, role_ids
+
+      print "#{reset}converting roles...[OK]"
 
       print "\nconverting categories..."
 
@@ -390,6 +421,30 @@ module SswlData
       }
     end
 
+    def self.convert_roles_from(row, role_ids, user_ids, member_ids, ling_names)
+      # see for how many languages he's the expert
+      roles = row["role"].split(',') if row['role'].present?
+      # roles.each do |role|
+      # Support for the moment only Linguistic Experts
+      lings = row["language"].present? ? row["language"].split(', ') : []
+      lings.each do |name|
+        id = row["id"]
+        if ling_names.has_key? name
+
+          id = Converter.getNewId(id, role_ids)
+          role_ids["#{id}"] = {
+            "id" => "#{id}",
+            "member_id" => row["id"].to_s,
+            "role" => "expert",
+            "resource_id" => ling_names[name].to_s,
+            "resource_type" => "Ling"
+          }
+        end
+      end
+      # end
+
+    end
+
     def self.convert_user_in(row, user_ids)
       # Generator of a random password
       char_array = [('a'..'z'), ('A'..'Z')].map { |i| i.to_a }.flatten;
@@ -410,7 +465,13 @@ module SswlData
       }
     end
 
+    def self.getNewId(base, hash)
+      # this ids are going to be thrown away, so just append some fuff
+      hash.has_key?(base) ? "#{base}1" : base
+    end
+
     private
+
 
     # Change from double-quotes in descriptions
     # writing single quote to sanitize csv for parser
@@ -522,16 +583,17 @@ module SswlData
     end
 
     def load_headers
-      { :user => ["name","id","email","access_level","password"],
-        :group => ["id", "name" ,"privacy", "depth_maximum", "ling0_name", "ling1_name", "property_name", "category_name", "lings_property_name", "example_name", "examples_lings_property_name", "example_fields" ],
-        :membership => [ "id", "member_id", "group_id", "level", "creator_id" ],
-        :ling => [ "id","name","parent_id","depth","group_id", "creator_id" ],
-        :category => [ "id","name","depth","group_id","description", "creator_id" ],
-        :property => [ "id","name","description","category_id","group_id", "creator_id" ],
+      { :category => [ "id","name","depth","group_id","description", "creator_id" ],
         :example => [ "id","ling_id","group_id","name", "creator_id" ],
-        :lings_property => [ "id","ling_id","property_id","value","group_id", "creator_id" ],
         :examples_lings_property => [ "id","example_id","lings_property_id","group_id", "creator_id" ],
-        :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ]
+        :group => ["id", "name" ,"privacy", "depth_maximum", "ling0_name", "ling1_name", "property_name", "category_name", "lings_property_name", "example_name", "examples_lings_property_name", "example_fields" ],
+        :ling => [ "id","name","parent_id","depth","group_id", "creator_id" ],
+        :lings_property => [ "id","ling_id","property_id","value","group_id", "creator_id" ],
+        :membership => [ "id", "member_id", "group_id", "level", "creator_id" ],
+        :property => [ "id","name","description","category_id","group_id", "creator_id" ],
+        :role => ["id", "member_id", "role", "resource_id", "resource_type"],
+        :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ],
+        :user => ["name","id","email","access_level","password"]
       }
     end
 
