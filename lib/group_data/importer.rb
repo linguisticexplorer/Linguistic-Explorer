@@ -30,6 +30,8 @@
 # ==> User.csv <==
 # id,name,email,access_level,password
 #
+# ==> Roles.csv <==
+# id, 
 
 require 'csv'
 require 'iconv'
@@ -70,16 +72,12 @@ module GroupData
     end
 
     def import!
-      # RubyProf.measure_mode = RubyProf::ALLOCATIONS
-      # RubyProf.start
       reset = "\r\e[0K"
 
       start = Time.now
       # processing users
       logger.info "processing #{csv_size(:user)} users"
-      #puts "processing users"
 
-      # print_to_console "processing users..."
       users_bar = ProgressBar.new("Users...", csv_size(:user))
 
       csv_for_each :user do |row|
@@ -97,13 +95,12 @@ module GroupData
         user_ids[row["id"]] = user.id
         users_bar.inc
       end
-      # print_to_console "#{reset}processing users...[OK]"
+
       users_bar.finish
 
       logger.info "processing #{csv_size(:group)} groups"
-      # print_to_console "\nprocessing groups..."
+
       groups_bar = ProgressBar.new("Groups...", csv_size(:group))
-      #puts "processing groups"
 
       # This function will change the header
       # due to a typo, if didn't exec
@@ -118,13 +115,11 @@ module GroupData
         groups[row["id"]] = group
         groups_bar.inc
       end
-      # print_to_console "#{reset}processing groups...[OK]"
+
       groups_bar.finish
 
       logger.info "processing #{csv_size(:membership)} memberships"
-      #puts "processing memberships"
 
-      # print_to_console "\nprocessing memberships..."
       members_bar = ProgressBar.new("Memberships...", csv_size(:membership))
 
       csv_for_each :membership do |row|
@@ -138,13 +133,10 @@ module GroupData
         members_bar.inc
 
       end
-      # print_to_console "#{reset}processing memberships...[OK]"
+
       members_bar.finish
 
       logger.info "processing #{csv_size(:ling)} lings"
-      #puts "processing lings"
-
-      # print_to_console "\nprocessing lings..."
 
       lings_bar = ProgressBar.new("Lings...", csv_size(:ling))
 
@@ -160,13 +152,11 @@ module GroupData
         ling_ids[row["id"]] = ling.id
         lings_bar.inc
       end
-      # print_to_console "#{reset}processing lings...[OK]"
+
       lings_bar.finish
 
       logger.info "processing #{csv_size(:ling)} parent/child ling associations"
-      #puts "parent/child ling associations"
 
-      # print_to_console "\nprocessing ling associations..."
       ling_associations_bar = ProgressBar.new("Ling Associations...", csv_size(:ling))
 
       csv_for_each :ling do |row|
@@ -177,13 +167,33 @@ module GroupData
         child.parent = parent
         child.save!
       end
-      # print_to_console "#{reset}processing ling associations...[OK]"
+
       ling_associations_bar.finish
 
-      logger.info "processing #{csv_size(:category)} categories"
-      #puts "processing categories"
+      logger.info "processing #{csv_size(:membership)} memberships"
 
-      # print_to_console "\nprocessing categories..."
+      roles_bar = ProgressBar.new("Roles...", csv_size(:role))
+
+      csv_for_each :role do |row|
+
+        # Look for the member
+        group     = groups[row["group_id"]]
+        member_id   = user_ids[row["member_id"]]
+        membership  = group.memberships.find_by_member_id(member_id)
+
+        # Look for the language
+        language = Ling.find(ling_ids[row["resource_id"]])
+
+        # Now add the role to the member for that language
+        membership.add_expertise_in(language)
+
+        roles_bar.inc
+      end
+
+      roles_bar.finish
+
+      logger.info "processing #{csv_size(:category)} categories"
+
       cats_bar = ProgressBar.new("Categories...", csv_size(:category))
 
       csv_for_each :category do |row|
@@ -198,13 +208,11 @@ module GroupData
         category_ids[row["id"]] = category.id
         cats_bar.inc
       end
-      # print_to_console "#{reset}processing categories...[OK]"
+
       cats_bar.finish
 
       logger.info "processing #{csv_size(:property)} properties"
-      #puts "processing properties"
 
-      # print_to_console "\nprocessing properties..."
       prop_bar = ProgressBar.new("Properties...", csv_size(:property))
 
       csv_for_each :property do |row|
@@ -223,22 +231,19 @@ module GroupData
         property_ids[row["id"]] = property.id
         prop_bar.inc
       end
-      # print_to_console "#{reset}processing properties...[OK]"
+
       prop_bar.finish
 
       logger.info "processing #{csv_size(:example)} examples"
-      #puts "processing examples"
 
-      # print_to_console "\nprocessing examples..."
       examples_bar = ProgressBar.new("Examples...", csv_size(:example))
 
       Example.transaction do
         csv_for_each :example do |row|
           next if row["id"].nil? || row["id"].empty?
           group    = groups[row["group_id"]]
-          # ling     = Ling.find(ling_ids[row["ling_id"]])
+
           example  = group.examples.find_or_initialize_by_name_and_ling_id(row["name"], ling_ids[row["ling_id"]]) do |e|
-            # e.ling = ling
             e.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
           end
           save_model_with_attributes example, row
@@ -249,154 +254,89 @@ module GroupData
         end
       end
 
-      # print_to_console "#{reset}processing examples...[OK]"
       examples_bar.finish
 
       total = csv_size(:lings_property)
       logger.info "processing #{total} lings_property"
 
-      # print_to_console "\nprocessing lings_property..."
-      # print_to_console " will take about #{total/6000} minutes for #{total} rows" unless total<100000
-
       lings_prop_bar = ProgressBar.new("Lings Property...", total)
 
-      # LingsProperty.skip_callback(:create)
+      LingsProperty.transaction do
+        csv_for_each :lings_property do |row|
+          next if row["id"].nil? || row["id"].empty?
+          group       = groups[row["group_id"]]
+          ling_id     = ling_ids[row["ling_id"]]
+          value       = row["value"]
+          property_id = property_ids[row["property_id"]]
 
-      # ActiveRecord::Base.uncached do
-
-        LingsProperty.transaction do
-          csv_for_each :lings_property do |row|
-            next if row["id"].nil? || row["id"].empty?
-            group       = groups[row["group_id"]]
-            ling_id     = ling_ids[row["ling_id"]]
-            value       = row["value"]
-            property_id = property_ids[row["property_id"]]
-            # conditions  = { :group_id => group.id, :value => value, :ling_id => ling_id, :property_id => property_id }
-
-            # lp = group.lings_properties.where(conditions).select(:id).first ||
-            #     group.lings_properties.create(conditions) do |lp|
-            #       lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            #     end
-            # lp = group.lings_properties.where(conditions).first_or_create(conditions) do |lp|
-            #   lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            # end
-            lp = group.lings_properties.find_or_initialize_by_group_id_and_value_and_ling_id_and_property_id(group.id, value, ling_id, property_id) do |lp|
-              lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            end
-
-            save_model_with_attributes lp, row
-
-            # cache lings_property id
-            lings_property_ids[row["id"]] = lp.id
-            lings_prop_bar.inc
+          lp = group.lings_properties.find_or_initialize_by_group_id_and_value_and_ling_id_and_property_id(group.id, value, ling_id, property_id) do |lp|
+            lp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
           end
-        end
 
-      # end
+          save_model_with_attributes lp, row
+
+          # cache lings_property id
+          lings_property_ids[row["id"]] = lp.id
+          lings_prop_bar.inc
+        end
+      end
 
       lings_prop_bar.finish
 
-      # Restore callbacks
-      # LingsProperty.set_callback(:create)
-
-      # print_to_console "#{reset}processing lings_property...[OK]"
-
       logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
-      # print_to_console "\nprocessing examples_lings_property..."
 
       example_lings_prop_bar = ProgressBar.new("Examples Lings Properties...", csv_size(:examples_lings_property))
 
-      # Speed up the creation
-      # ExamplesLingsProperty.skip_callback(:create)
+      ExamplesLingsProperty.transaction do
+        csv_for_each :examples_lings_property do |row|
+          next if row["id"].nil? || row["id"].empty?
+          group             = groups[row["group_id"]]
+          example_id        = example_ids[row["example_id"]]
+          lings_property_id = lings_property_ids[row["lings_property_id"]]
 
-      # ActiveRecord::Base.uncached do
-
-        ExamplesLingsProperty.transaction do
-          csv_for_each :examples_lings_property do |row|
-            next if row["id"].nil? || row["id"].empty?
-            group             = groups[row["group_id"]]
-            example_id        = example_ids[row["example_id"]]
-            lings_property_id = lings_property_ids[row["lings_property_id"]]
-            # conditions  = { :group_id => group.id, :example_id => example_id, :lings_property_id => lings_property_id }
-
-            # group.examples_lings_properties.where(conditions).select(:id).first ||
-            # group.examples_lings_properties.create(conditions) do |elp|
-            #   elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            # end
-            # group.examples_lings_properties.where(conditions).first_or_create(conditions) do |elp|
-            #   elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            # end
-            elp = group.examples_lings_properties.find_or_initialize_by_group_id_and_example_id_and_lings_property_id(group.id, example_id, lings_property_id) do |elp|
-              elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
-            end
-
-            save_model_with_attributes elp, row
-
-            example_lings_prop_bar.inc
+          elp = group.examples_lings_properties.find_or_initialize_by_group_id_and_example_id_and_lings_property_id(group.id, example_id, lings_property_id) do |elp|
+            elp.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
           end
 
+          save_model_with_attributes elp, row
+
+          example_lings_prop_bar.inc
         end
 
-      # end
+      end
 
       example_lings_prop_bar.finish
 
-      # Restore callbacks
-      # ExamplesLingsProperty.set_callback(:create)
-
-      # print_to_console "#{reset}processing examples_lings_property...[OK]"
-
       logger.info "processing #{csv_size(:stored_value)} stored value"
-      # print_to_console "\nprocessing stored_values..."
 
       stored_values_bar = ProgressBar.new("Stored Values...", csv_size(:stored_value))
 
-      # Speed up
-      # StoredValue.skip_callback(:create)
+      StoredValue.transaction do
+        csv_for_each :stored_value do |row|
+          next if row["id"].nil? || row["id"].empty?
 
-      # ActiveRecord::Base.uncached do
+          value = row["value"].gsub("#{row["key"]}:", '')
+          group         = groups[row["group_id"]]
+          storable_type = row['storable_type']
+          storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
+          # conditions = { :group_id => group.id, :storable_id => storable_id, :storable_type => storable_type,
+          #                :key => row["key"], :value => value }
 
-        StoredValue.transaction do
-          csv_for_each :stored_value do |row|
-            next if row["id"].nil? || row["id"].empty?
+          # group.stored_values.where(conditions).select(:id).first || group.stored_values.create(conditions)
+          # group.stored_values.where(conditions).first_or_create(conditions)
+          stored = group.stored_values.find_or_initialize_by_group_id_and_storable_id_and_storable_type_and_key_and_value(group.id, storable_id, storable_type, row["key"], value)
+          StoredValue.skip_callback(:create)
+          stored.save!(:validate => false)
+          StoredValue.set_callback(:create)
 
-            value = row["value"].gsub("#{row["key"]}:", '')
-            group         = groups[row["group_id"]]
-            storable_type = row['storable_type']
-            storable_id   = self.send("#{storable_type.downcase}_ids")[row["storable_id"]]
-            # conditions = { :group_id => group.id, :storable_id => storable_id, :storable_type => storable_type,
-            #                :key => row["key"], :value => value }
-
-            # group.stored_values.where(conditions).select(:id).first || group.stored_values.create(conditions)
-            # group.stored_values.where(conditions).first_or_create(conditions)
-            stored = group.stored_values.find_or_initialize_by_group_id_and_storable_id_and_storable_type_and_key_and_value(group.id, storable_id, storable_type, row["key"], value)
-            StoredValue.skip_callback(:create)
-            stored.save!(:validate => false)
-            StoredValue.set_callback(:create)
-
-            stored_values_bar.inc
-          end
+          stored_values_bar.inc
         end
-
-      # end
+      end
 
       stored_values_bar.finish
 
-      # Restore callbacks
-      # StoredValue.set_callback(:create)
-
-      # print_to_console "#{reset}processing stored_values...[OK]\n"
-
       elapsed = seconds_fraction_to_time(Time.now - start)
       print_to_console "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}\n"
-
-      # result = RubyProf.stop
-
-      # Print a flat profile to text
-      # File.open "#{Rails.root}/tmp/profile-graph.html", 'w' do |file|
-        # RubyProf::MultiPrinter.new(result).print(:path => "#{Rails.root}/tmp/", :profile => "allocations")
-      # end
-
     end
 
     private

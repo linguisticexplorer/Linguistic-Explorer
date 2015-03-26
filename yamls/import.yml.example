@@ -8,4 +8,5 @@ ling: /path/to/csv/Ling.csv
 lings_property: /path/to/csv/LingsProperty.csv
 membership: /path/to/csv/Membership.csv
 property: /path/to/csv/Property.csv
+role: /path/to/csv/Role.csv
 stored_value: /path/to/csv/StoredValue.csv

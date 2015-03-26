@@ -133,7 +133,7 @@ module SswlData
       # Terraling
       #
       # ==> Roles.csv <==
-      # id,member_id,role,resource_id,resource_type
+      # id,member_id,role,resource_id,resource_type,group_id
       print "\nconverting roles..."
       role_ids = {}
       
@@ -141,8 +141,8 @@ module SswlData
       # to something useful here:
       # ling name => id
       ling_names = {}.tap do |entry|
-        ling_ids.each do |id,obj|
-          entry[obj['name']] = id;
+        ling_ids.each do |id, obj|
+          entry[obj['name']] = obj["id"]
         end
       end
 
@@ -437,7 +437,8 @@ module SswlData
             "member_id" => row["id"].to_s,
             "role" => "expert",
             "resource_id" => ling_names[name].to_s,
-            "resource_type" => "Ling"
+            "resource_type" => "Ling",
+            "group_id" => "0"
           }
         end
       end
@@ -591,7 +592,7 @@ module SswlData
         :lings_property => [ "id","ling_id","property_id","value","group_id", "creator_id" ],
         :membership => [ "id", "member_id", "group_id", "level", "creator_id" ],
         :property => [ "id","name","description","category_id","group_id", "creator_id" ],
-        :role => ["id", "member_id", "role", "resource_id", "resource_type"],
+        :role => ["id", "member_id", "role", "resource_id", "resource_type", "group_id"],
         :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ],
         :user => ["name","id","email","access_level","password"]
       }
