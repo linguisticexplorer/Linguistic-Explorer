@@ -1,3 +1,12 @@
+// Import Bootstrap here
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";
+// Import fonts from Google Fonts here
+// All the license stuff is easier with them
+@import url(http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic);
+
 $navbar-color: #000000;
 $background-color: #036564;
 $ui-color: #033649; 
@@ -119,16 +128,6 @@ $link-color: #005580;
 .blue {
   color: darken($highlight-color, 10);
 }
-
-// Import Bootstrap here
-@import "bootstrap-sprockets";
-@import "bootstrap";
-@import "font-awesome-sprockets";
-@import "font-awesome";
-// Import fonts from Google Fonts here
-// All the license stuff is easier with them
-@import url(http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic);
-
 
 i.less-than-half {
   color: $brand-danger;
