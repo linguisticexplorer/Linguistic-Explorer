@@ -116,12 +116,12 @@ class Ling < ActiveRecord::Base
     # look for categories at that depth
     cats_at_depth = Category.in_group(group).at_depth(depth)
     # sum up all props in cats
-    @props_total ||= Property.in_group(group).where(:category_id => cats_at_depth).select(:id).count(:id)
+    @props_total ||= Property.in_group(group).where(:category_id => cats_at_depth).count(:id)
   end
 
   def props_in_ling
     # Rails.logger.debug "[DEBUG] Depth: #{depth} - #{props_in_group} & #{LingsProperty.in_group(group).where(:ling_id => self.id).count(:id)}"
-    @info ||= LingsProperty.in_group(group).where(:ling_id => self.id).select(:id).count(:id) * 100 / props_in_group
+    @info ||= LingsProperty.in_group(group).where(:ling_id => self.id).count(:id) * 100 / (props_in_group > 0 ? props_in_group : 1) 
     @info = 100 if @info > 100
   end
 
