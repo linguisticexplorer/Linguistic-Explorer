@@ -4,7 +4,7 @@
 - else
   - page_heading "Home"
   - imgId = Random.rand(11)
-  #inner
+  #bigImage
     .hero{:style=> "margin-top: -20px;"}
       .landing{ :id => daily_image(imgId) }
         %div{ :style => "position: absolute; bottom: 0; right: 0; background-color: rgba(255,255,255,0.8); padding: 5px;"}
@@ -12,8 +12,7 @@
         .container
           .home-lead
             #title.text-center{:style=>"margin-bottom: 30px;border-bottom: 0px;"}
-              %h1.logo-font.logo-light
-                Terraling
+              %h1.logo-font.logo-light Terraling
             .row{:style => "width:80%; margin:auto; margin-bottom: 60px;"}
               .col-md-12
                 %form.form
@@ -23,8 +22,6 @@
                         %input#resources-search-field.form-control.input-lg{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
   .container
     .row{:style=> "min-height: 300px; margin-top: 280px;"}
-      .col-md-12.text-center
-        %h1 Explore the World's Languages
       .col-md-10.col-md-offset-1
         .row
           .col-md-4
@@ -54,11 +51,34 @@
               .caption
                 %p.lead
                   Do advanced searches within your dataset to discover insight in your data, download or visualize the results!
-    .row
-      .col-md-10.col-md-offset-1
-        .text-center
-          .row
-            %h2 Do you want to know more?
-          .row
-            %a.btn.btn-lg.btn-default{:href => "./about"}
-              =icon "info-circle", "About the project"
+    #bigImage{:style => "min-height: 400px;"}
+      .hero{:style=> "margin-top: -20px;"}
+        .landing{:style=>"min-height: 200px;"}
+          .text-center{:style=> "margin-top: 120px;margin-bottom: 120px; padding: 20px;"}
+            %h1 Explore the World's Languages
+    .container
+      .row
+        %p.lead
+          Terraling is a collection of searchable linguistic databases that allows users to discover which properties (morphological, syntactic, and semantic)
+          characterize a language, as well as how these properties relate across languages. This system is designed to be 
+          %strong free to the public and open-ended
+          \.
+          Anyone can use the database to perform queries.
+        %p.lead
+          Linguistic researchers can put up their own data using the open-ended framework we provide.
+          Visit the list of #{link_to "public groups", groups_path} to begin searching.
+          \#{link_to 'Sign up for an account', new_user_registration_path} to get access more groups and search features.
+        %p.lead
+          Terraling is the next generation of the #{link_to "Linguistic Explorer", "http://linguisticexplorer.org/"} project. The linguistic leads have been Chris Collins, Hilda Koopman and Richard Kayne.
+          The principal developers of the original site (SSWL) were Sangeeta Vishwanath, Hiral Rajani, and Jillian
+          Kozyra.
+          The principal developers of this site have been:
+        .row
+        - each_developer do |name, img, role, link|
+          .col-md-4.text-center
+            %a{:href => link}
+              = image_tag img, :class => "img-circle about-img"
+              %p.lead
+                = name
+              - if role.present?
+                %p.small{:style => "margin-top: -20px;"} (#{role})

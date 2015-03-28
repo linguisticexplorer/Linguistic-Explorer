@@ -40,11 +40,6 @@ class GroupsController < ApplicationController
     is_authorized? :show, @group
   end
 
-  def info
-    @group = Group.find(params[:id]).loadInfos
-    is_authorized? :show, @group
-  end
-
   def new
     @group = Group.new
     is_authorized? :create, @group

@@ -23,22 +23,22 @@ i[class*=fa]:hover{
   animation: pulse 1600ms;
 }
 
-@mixin color-anim ($lum){
+@mixin color-anim ($h, $lum, $lumEnd){
   0% { color: hsl(0, 100, $lum); }
   @for $i from 1 through 5 {
-    $m: $i * 70;
+    $m: $i * 60;
     #{$i * 7%}{color: hsl($m, 70, $lum); }
     #{$i * 14%}{color: hsl($m, 100, $lum); }
   }
-  100% { color: hsl(0, 100, $lum); }
+  100% { color: hsl($h, 100, $lumEnd); }
 }
 
 @keyframes color-light{
-  @include color-anim(25);
+  @include color-anim(15, 25, 40);
 }
 
 @keyframes color-darker{
-  @include color-anim(75);
+  @include color-anim(15, 75, 40);
 }
 
 .italic {
@@ -507,7 +507,7 @@ div#languages-container.hidden {
 
 }
 
-#inner {
+#bigImage {
   min-height: 500px;
 }
 
@@ -516,7 +516,7 @@ div#languages-container.hidden {
   left:0;
   width: 100%;
   min-height: 700px;
-  background: url(/images/map_bg.gif) no-repeat center center fixed;
+  background: image-url("map_bg.gif") no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -620,7 +620,7 @@ div#languages-container.hidden {
 
     .logo-light {
       color: '';
-      animation: color-light 30000ms infinite;
+      animation: color-light 30000ms;
     }
   }
 
@@ -633,11 +633,15 @@ div#languages-container.hidden {
 }
 
 .logo-darker {
-  animation: color-darker 30000ms infinite;
+  animation: color-darker 30000ms;
 }
 
 .logo-light {
-  animation: color-light 30000ms infinite;
+  animation: color-light 30000ms;
+}
+
+.logo-light-white {
+
 }
 
 .brand-bigger {
