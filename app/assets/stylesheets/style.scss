@@ -1,6 +1,7 @@
 // Import fonts from Google Fonts here
 // All the license stuff is easier with them
-@import url(http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic.css);
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic);
+@import url(http://fonts.googleapis.com/css?family=Pacifico);
 
 // Define an animation function in SASS
 @mixin pulse ($n){
@@ -25,9 +26,9 @@ i[class*=fa]:hover{
 @mixin color-anim ($lum){
   0% { color: hsl(0, 100, $lum); }
   @for $i from 1 through 5 {
-    $m: $i * 60;
-    #{$i * 8%}{color: hsl($m, 70, $lum); }
-    #{$i * 16%}{color: hsl($m, 100, $lum); }
+    $m: $i * 70;
+    #{$i * 7%}{color: hsl($m, 70, $lum); }
+    #{$i * 14%}{color: hsl($m, 100, $lum); }
   }
   100% { color: hsl(0, 100, $lum); }
 }
@@ -609,6 +610,7 @@ div#languages-container.hidden {
 
   .logo-font {
     font-family: 'Pacifico', sans serif;
+    margin-bottom: 50px;
   }
 
   h1 {
