@@ -145,7 +145,7 @@ module ApplicationHelper
     return role
   end
 
-  def get_user_role_wth_icon(group)
+  def get_user_role_with_icon(group)
     role = ''
     if group.present?
       if current_user.group_admin_of? group
