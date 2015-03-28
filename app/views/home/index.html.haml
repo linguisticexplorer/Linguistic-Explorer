@@ -11,10 +11,9 @@
           = daily_attribution(imgId)
         .container
           .home-lead
-            #title.text-center{:style=>"margin-bottom: 30px;"}
+            #title.text-center{:style=>"margin-bottom: 30px;border-bottom: 0px;"}
               %h1.logo-font.logo-light
                 Terraling
-              %h2.blue Explore the World's Languages
             .row{:style => "width:80%; margin:auto; margin-bottom: 60px;"}
               .col-md-12
                 %form.form
@@ -24,6 +23,8 @@
                         %input#resources-search-field.form-control.input-lg{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
   .container
     .row{:style=> "min-height: 300px; margin-top: 280px;"}
+      .col-md-12.text-center
+        %h1 Explore the World's Languages
       .col-md-10.col-md-offset-1
         .row
           .col-md-4
