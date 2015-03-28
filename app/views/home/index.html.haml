@@ -74,11 +74,11 @@
           Kozyra.
           The principal developers of this site have been:
         .row
-        - each_developer do |name, img, role, link|
-          .col-md-4.text-center
-            %a{:href => link}
-              = image_tag img, :class => "img-circle about-img"
-              %p.lead
-                = name
-              - if role.present?
-                %p.small{:style => "margin-top: -20px;"} (#{role})
+          - each_developer do |name, img, role, link|
+            .col-md-4.text-center
+              %a.developer{:href => link}
+                .col-md-offset-4.img-circle.about-img.dev{:class => "#{img}_img" }
+                %p.lead
+                  = name
+                - if role.present?
+                  %p.small{:style => "margin-top: -20px;"} (#{role})

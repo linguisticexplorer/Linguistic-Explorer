@@ -709,3 +709,15 @@ body {
 .strong {
   font-weight: bold;
 }
+
+.cool_dev_img {
+  background-image: image_url('cool_dev.svg');
+}
+
+.dev_img {
+  background-image: image_url('dev.svg')
+}
+
+.hat_dev_img {
+  background-image: image_url('hat_dev.svg')
+}
