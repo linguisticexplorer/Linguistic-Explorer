@@ -7,7 +7,7 @@
     %title= page_title
     = stylesheet_link_tag 'application'
     // Cannot move this down: jQuery is required by some plugins in the middle of the page
-    = javascript_include_tag 'application'
+    = javascript_include_tag 'jquery.min'
     = csrf_meta_tag
     = yield :head
   %body{:class => body_classes, :data => {:controller => params[:controller].camelize, :action => params[:action], :group => ((@current_group || @group).present? ? (@current_group || @group).id : nil) }}
@@ -26,4 +26,5 @@
             =icon 'at'
             %span terraling.com
         All Rights Reserved
+    = javascript_include_tag 'application'
     = yield :scripts

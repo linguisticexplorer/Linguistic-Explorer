@@ -1,5 +1,4 @@
 //= require modernizr
-//= require jquery.min
 //= require jquery-ui
 //= require jquery_ujs
 //= require alphabetical_paginate.js
