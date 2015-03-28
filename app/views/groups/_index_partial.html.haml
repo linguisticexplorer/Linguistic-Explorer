@@ -30,7 +30,7 @@
       //%td= group.depth_maximum
       %td
         - privacy_icon = group.privacy == 'public' ? 'unlock-alt' : 'lock'
-        - class_icon = group.privacy == 'public' ? 'blue' : 'blue-light'
+        - class_icon = group.privacy == 'public' ? 'green' : 'blue-light'
         //= group.privacy.capitalize
         %a{:href => "#", :rel => "tooltip", :title => group.privacy.capitalize, :data => {:toggle => "tooltip", :animation => "true"} }
           = icon privacy_icon, '', :class => "fa-2x #{class_icon}"
