@@ -1,3 +1,7 @@
+// Import fonts from Google Fonts here
+// All the license stuff is easier with them
+@import url(http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic.css);
+
 // Define an animation function in SASS
 @mixin pulse ($n){
   0%{transform: scaleX(1) scaleY(1);}

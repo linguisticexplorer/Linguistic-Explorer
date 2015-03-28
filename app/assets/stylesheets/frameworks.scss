@@ -1,11 +1,5 @@
-// Import Bootstrap here
-@import "bootstrap-sprockets";
-@import "bootstrap";
-@import "font-awesome-sprockets";
-@import "font-awesome";
-// Import fonts from Google Fonts here
-// All the license stuff is easier with them
-@import url(http://fonts.googleapis.com/css?family=Pacifico|Open+Sans:400,700,300&subset=latin,latin-ext,greek,cyrillic);
+// Import Bootstrap and Font Awesome here
+@import "bootstrap-sprockets", "bootstrap", "font-awesome-sprockets", "font-awesome";
 
 $navbar-color: #000000;
 $background-color: #036564;
