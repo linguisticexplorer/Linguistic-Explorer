@@ -165,4 +165,9 @@ module ApplicationHelper
     number < 30 ? 'exclamation-triangle' : 'check-circle'
   end
 
+  def group_membership_path_if_any
+    membership = @group.membership_for(current_user)
+    membership.present? ? group_membership_path(@group, membership) : group_memberships_path(@group)
+  end
+
 end
