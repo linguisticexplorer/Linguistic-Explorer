@@ -39,3 +39,6 @@ coverage/*
 
 # Platform specific files
 *.DS_Store
+
+# Compile the assets on the production server
+public/assets
