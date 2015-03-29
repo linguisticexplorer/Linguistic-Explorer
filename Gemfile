@@ -40,7 +40,7 @@ gem 'will_paginate-bootstrap'
 # # for easy pagination
 gem 'will_paginate'
 # # experimental
-gem "alphabetical_paginate"
+gem "alphabetical_paginate", :git => "git://github.com/dej611/alphabetical_paginate.git", :branch => "db_paginate_filter"
 # # iconv for utf-8 to latin1 conversion
 gem 'iconv'
 # # Bootstrap gem
