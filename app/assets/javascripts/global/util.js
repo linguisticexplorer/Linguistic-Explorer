@@ -55,8 +55,8 @@
     function activatePagination(){
 
       if(!$('.js-pagination').length){
-        // Manage the AJAX pagination and changing the URL
-         $(document).on("click", ".pagination a", function (e) {
+        // Manage the AJAX pagination and changing the URL (Do not bind to alpha_pagination tables)
+         $(document).on("click", ".pagination:not(.alpha) a", function (e) {
             // local history 
             previousURL = this.href;
 

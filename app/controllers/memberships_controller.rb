@@ -3,7 +3,7 @@ class MembershipsController < GroupDataController
   respond_to :html, :js
 
   def index
-    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true}
+    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true, :js => false}
     @memberships, @params = current_group.memberships.
         includes(:member).to_a.
         alpha_paginate(params[:letter], pagination_options) do |membership|
@@ -19,7 +19,7 @@ class MembershipsController < GroupDataController
   end
 
   def contributors
-    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true}
+    pagination_options = {db_mode: true, db_field: "name", default_field: "a", :bootstrap3 => true, :js => false}
 
     @contributors, @params = current_group.memberships.
       includes(:member).with_role(:expert, :any).to_a.

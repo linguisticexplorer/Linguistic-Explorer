@@ -1,14 +1,13 @@
 GIT
-  remote: git://github.com/dej611/alphabetical_paginate.git
-  revision: 4f8a8db8982ff0c72b9433aeb7eebf50ef72155b
-  specs:
-    alphabetical_paginate (2.2.3)
-
-GIT
   remote: git://github.com/electronicbites/validation_reflection.git
   revision: 534b527c87465067a19982faaf53109f17034fb7
   specs:
     validation_reflection (1.0.0)
+
+PATH
+  remote: ../alphabetical_paginate
+  specs:
+    alphabetical_paginate (2.2.3)
 
 GEM
   remote: https://rubygems.org/

@@ -32,7 +32,7 @@ class PropertiesController < GroupDataController
     is_authorized? :read, @property
     
     # Filter the number of lings to show based on the pagination
-    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false, :bootstrap3 => true})
+    lings, @params = current_group.lings.at_depth(@depth).alpha_paginate(params[:letter], {db_mode: true, db_field: "name", default_field: "a", numbers: false, include_all: false, :bootstrap3 => true, :js => false})
     # Now get the values of the filtered lings
     lings_ids = lings.all.map(&:id)
     @values = @property.lings_properties.includes(:ling).where(:ling_id => lings_ids)

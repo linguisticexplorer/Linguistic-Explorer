@@ -7,7 +7,7 @@ class LingsController < GroupDataController
   def depth
     @depth = params[:depth].to_i
 
-    pagination_options = {:db_mode => true, :db_field => "name", :default_field => "a", :numbers => false, :bootstrap3 => true}
+    pagination_options = {:db_mode => true, :db_field => "name", :default_field => "a", :numbers => false, :bootstrap3 => true, :js => false}
 
     @all_lings = current_group.lings.at_depth(@depth)
     
@@ -27,7 +27,7 @@ class LingsController < GroupDataController
   end
 
   def index
-    pagination_options = {db_mode: true, db_field: "name", default_field: "a", numbers: false, :bootstrap3 => true}
+    pagination_options = {db_mode: true, db_field: "name", default_field: "a", numbers: false, :bootstrap3 => true, :js => false}
     @lings_by_depth = current_group.depths.collect do |depth|
       current_group.lings.at_depth(depth).
         alpha_paginate(params[:letter], pagination_options)
