@@ -28,8 +28,7 @@
 / Put here some JS code to enable click on Legend button
 - content_for :scripts do
   / Google Maps JS code
-  = javascript_include_tag "//maps.google.com/maps/api/js?v=3.13&amp;sensor=false&amp;libraries=geometry"
-  = javascript_include_tag "//google-maps-utility-library-v3.googlecode.com/svn/tags/markerclustererplus/2.0.14/src/markerclusterer_packed.js"
+
   / Gmaps4Rails specific code
   :javascript
     Gmaps.map.callback = function(){
