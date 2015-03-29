@@ -8,8 +8,9 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
+  searches.preview.default = {};
 
-  searches.preview.renderDefault = defaultMapping;
+  searches.preview.default.render = defaultMapping;
 
   function defaultMapping(columns, entry){
     var func_dict = {

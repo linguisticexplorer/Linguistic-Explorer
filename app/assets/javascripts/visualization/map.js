@@ -23,28 +23,31 @@
     // push the data
     $.when(T.promises.map.data).then(function(){
       
-      map.setView([0,0], 1);
-      
       // add the layer with the map
       var googleMaps = new L.Google();
       map.addLayer(googleMaps);
 
+      map.fitWorld().zoomIn();
+
       // add the marker
-      createMarkers(id, conf.criteria, map);
+      createMarkers(id, conf.markerStyler, map);
 
-    });
-  }
-
-  function createMarkers(id, criteria, map){
-    $.each(maps[id].values, function (i, entry){
-      if(entry.value){
-        createMarker(entry.value, criteria, map);
+      if($.isFunction(cb)){
+        cb();
       }
 
     });
   }
 
-  function createMarker(value, criteria, map){
+  function createMarkers(id, styler, map){
+    $.each(maps[id].values, function (i, entry){
+      if(entry.value){
+        createMarker(entry.value, styler, map);
+      }
+    });
+  }
+
+  function createMarker(value, styler, map){
     // start with a default style
     var style = {
       markerColor: 'white',
@@ -52,12 +55,12 @@
       iconColor: 'red',
       spin: false
     };
-    // overwrite style if a criteria is passed
-    if(criteria){
-      style = criteria(value);
+    // overwrite style if a styler is passed
+    if(styler){
+      style = styler(value);
     }
     // append the prefix: 
-    // later because the style can have been overrided by the criteria
+    // later because the style can have been overrided by the styler
     style.prefix = 'fa';
     // Creates a red marker with the info icon
     var marker = L.AwesomeMarkers.icon(style);

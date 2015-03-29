@@ -8,8 +8,9 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
+  searches.preview.clustering = {};
 
-  searches.preview.initClustering = renderClustering;
+  searches.preview.clustering.init = renderClustering;
 
   var resultsJson;
   var containerId = 'similarity_tree';

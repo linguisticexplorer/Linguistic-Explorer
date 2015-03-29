@@ -19,7 +19,15 @@
     'implication': 'cross_results',
     'default': 'regular_results',
     'clustering': 'clustering_results',
-    'pagination': 'pagination_bar'
+    'pagination': 'pagination_bar',
+    'map': 'map_results'
+  };
+
+  var templateCompiled = {
+    pagination: null,
+    table: null,
+    map: null,
+    visualization: null
   };
 
   function getTemplatePath(type){
@@ -92,13 +100,17 @@
     return '/groups/'+T.currentGroup+'/searches/get_results';
   }
 
-  function toggleNavbarButton(ids, isEnable){
+  function toggleNavbarButton(ids, isEnable, fn){
     // get li parents
     var elements     = $(ids);
     var parents = elements.parent();
 
     elements.attr('disabled', !isEnable);
     parents.toggleClass('disabled', !isEnable);
+    
+    if($.isFunction(fn)){
+      elements.one('click', fn);
+    }
   }
 
   function enableNavbar(type){
@@ -111,10 +123,10 @@
     var isClustering = (/clustering/).test(type),
         isDefault    = (/default/).test(type);
 
-    toggleNavbarButton('#saveit'    , isDefault    );
-    toggleNavbarButton('#vizit'     , !isDefault   );
-    toggleNavbarButton('#downloadit', isClustering );
-    toggleNavbarButton('#mapit'     , !isClustering);
+    toggleNavbarButton('#saveit'    , isDefault    , saveFn);
+    toggleNavbarButton('#vizit'     , !isDefault   , vizFn);
+    toggleNavbarButton('#downloadit', isClustering , downloadFn);
+    toggleNavbarButton('#mapit'     , !isClustering, mapFn);
     
     // show download button only for clustering
     // if(!(/clustering/).test(type)){
@@ -198,7 +210,7 @@
       
       // paginationTemplate = Handlebars.compile($('#pagination_bar').html());
       paginationTemplate = HoganTemplates[getTemplatePath('pagination')];
-
+     
     }
     
     if(bar){
@@ -213,13 +225,15 @@
     
 
     setTimeout(function(){
+      // cache it for later reuse
+      templateCompiled.table = htmlRows;
+      templateCompiled.pagination = htmlPagination;
 
       $('#paginated-results').html(htmlRows);
 
       if(isClustering){
 
         // draw philogram
-        // drawPhilogram(json.rows[1]);
         initPageForType(json.type);
 
       } else {
@@ -317,10 +331,8 @@
   }
 
   function initPageForType(type){
-    var fn_name = 'init'+type[0].toUpperCase()+type.substring(1);
-    
-    if(searches.preview[fn_name]){
-      searches.preview[fn_name](resultsJson);
+    if(searches.preview[type].init){
+      searches.preview[type].init(resultsJson);
     }
   }
 
@@ -400,12 +412,12 @@
   function columnMapping(type, columns, entry, index){
     switch (type){
       case 'default':
-        return searches.preview.renderDefault(columns, entry);
+        return searches.preview.default.render(columns, entry);
       case 'cross':
       case 'implication':
-        return searches.preview.renderCross(columns, entry, index);
+        return searches.preview.cross.render(columns, entry, index);
       case 'compare':
-        return searches.preview.renderCompare(columns, entry);
+        return searches.preview.compare.render(columns, entry);
       default:
         // Fail silently....
         return {};
@@ -425,7 +437,7 @@
       var img = "<img src='/images/loader.gif' class='loading'/>",
           once = false;
       // Manage the AJAX pagination and changing the URL
-       $(document).on("click", ".js-pagination a", function (e) {
+       $(document).one("click", ".js-pagination a", function (e) {
 
           var offset = getOffset(e.target.id);
           var current = getCurrentPage();
@@ -440,11 +452,12 @@
       
       $(window).bind("popstate", function (e) {
         // console.log(e.originalEvent.state);
-        // if (e.originalEvent.state) {
-        //   var offset = e.originalEvent.state;
-        //   $(".js-pagination").html(img);
-        //   makeNewPage(resultsJson, offset);
-        // }
+        if (e.originalEvent.state) {
+          var offset = e.originalEvent.state;
+          $(".js-pagination").html(img);
+          makeNewPage(resultsJson, offset);
+          e.preventDefault();
+        }
       });
 
       paginationSetup = true;
@@ -473,6 +486,53 @@
       return (current_page - 2);
     }
     
+  }
+
+  function vizFn(){}
+
+  function downloadFn(){}
+
+  function saveFn() {}
+
+  function mapFn(){
+    createMap(resultsJson);
+  }
+
+  function createMap(json){
+    // iterate throught the rows and find all the lings
+    var lingIds = getLings(json);
+
+    // change the page template with the map one
+    var mapTemplate = HoganTemplates[getTemplatePath('map')];
+    var htmlMap = mapTemplate.render();
+    $(".js-pagination").html('');
+    $('#paginated-results').html(htmlMap);
+
+    // now ask the server for all the coords for the given lings
+    var options = {
+      name: lingIds,
+      markerStyler: getStyler(json)
+    };
+    T.Visualization.Map.init('mapResults', options, function(){
+      // here the map is done, clean some stuff
+    });
+
+  }
+
+  function getStyler(json){
+    var fn = null;
+    if(searches.preview[json.type].getMapStyler){
+      fn = searches.preview[json.type].getMapStyler(json);
+    }
+    return fn;
+  }
+
+  function getLings(json){
+    var ids;
+    if(searches.preview[json.type].getMapLings){
+      ids = searches.preview[json.type].getMapLings(json);
+    }
+    return ids || [];
   }
 
 })();

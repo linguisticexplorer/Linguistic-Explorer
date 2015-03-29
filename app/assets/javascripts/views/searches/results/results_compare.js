@@ -8,8 +8,11 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
+  searches.preview.compare = {};
 
-  searches.preview.renderCompare = compareMapping;
+  searches.preview.compare.render       = compareMapping;
+  searches.preview.compare.getMapLings  = getLingIds;
+  searches.preview.compare.getMapStyler = getStyler;
 
   function compareMapping(columns, entry){
     var func_dict = {
@@ -72,6 +75,28 @@
     }
 
     return new_entry;
+  }
+
+  function getLingIds(json){
+    // iterate through the rows and get all the lings in it
+    return $.map(json.rows[0].lings, function (el){
+      return el.ling.id;
+    });
+  }
+
+  function getStyler(json){
+    // how may lings are in the results?
+    var colors = ['red', 'darkred', 'orange', 'green', 'darkgreen', 'black',
+                 'blue', 'purple', 'darkpurple', 'cadetblue', 'white'];
+    var counter=0;
+    function styler(){
+      return {
+        markerColor: colors[counter++],
+        iconColor: 'white',
+        icon: 'info'
+      };
+    }
+    return styler;
   }
 
 })();

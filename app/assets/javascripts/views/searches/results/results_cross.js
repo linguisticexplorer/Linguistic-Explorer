@@ -8,14 +8,15 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
+  searches.preview.cross = searches.preview.implication = {};
 
-  searches.preview.renderCross = crossMapping;
+  searches.preview.cross.render = crossMapping;
+  searches.preview.cross.init = initCross;
+  searches.preview.cross.getMapLings  = getLingIds;
+  searches.preview.cross.getMapStyler = getStyler;
 
   var modal;
   var resultsJson;
-
-  searches.preview.initCross = initCross;
-  searches.preview.initImplication = initCross;
 
   function initCross(json){
 
