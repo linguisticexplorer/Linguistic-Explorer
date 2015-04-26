@@ -11,6 +11,10 @@
   searches.preview.default = {};
 
   searches.preview.default.render = defaultMapping;
+  searches.preview.default.getMapLings  = getLingIds;
+  searches.preview.default.getMapStyler = getStyler;
+
+  var offspringCache = {};
 
   function defaultMapping(columns, entry){
     var func_dict = {
@@ -63,6 +67,55 @@
       }
     }
     return new_entry;
+  }
+
+  function getLingIds(json){
+    // iterate the parents and children
+    var ids = [];
+    
+    $.each(json.rows, function (index, row){
+      if(row.parent && row.parent.lings_property && !offspringCache[row.parent.lings_property.ling.id]){
+        ids.push(row.parent.lings_property.ling.id);
+        offspringCache[row.parent.lings_property.ling.id] = {name: row.parent.lings_property.ling.name, count: 1};
+      }
+      if(row.child && row.child.lings_property){
+        ids.push(row.child.lings_property.ling.id);
+        if(row.parent && row.parent.lings_property){
+          offspringCache[row.parent.lings_property.ling.id].count++;
+        }
+      }
+    });
+    return ids;
+  }
+
+  function getStyler(json){
+    // how may lings are in the results?
+    var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
+                  'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
+    var counter=0;
+    var popups = preparePopup(json);
+
+    function styler(entry){
+      return counter < 20 ? {
+        markerColor: colors[counter++],
+        iconColor: 'white',
+        icon: 'info',
+        text: popups[entry.id]
+      } : null;
+    }
+    return styler;
+  }
+
+  function preparePopup(json){
+    // get the template now
+    var template = HoganTemplates['searches/results/map_popup'];
+    
+    var popups = {};
+    for( var id in offspringCache){
+      var entry = offspringCache[id];
+      popups[id] = template.render({name: entry.name, row1: entry.count > 1 ? 'Has '+entry.count+' '+T.groups[T.currentGroup].ling1_name : ''});
+    }
+    return popups;
   }
 
 })();
