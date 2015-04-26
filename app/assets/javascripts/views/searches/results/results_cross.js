@@ -18,6 +18,8 @@
   var modal;
   var resultsJson;
 
+  var lingsCache;
+
   function initCross(json){
 
     resultsJson = json;
@@ -81,7 +83,7 @@
     };
 
     function getCrossLings(entry){
-      return {text: T.Util.isThere(entry, 'child', 'length') ?  entry['child'].length : '0', index: index};
+      return {text: T.Util.isThere(entry, 'child', 'length') ?  entry.child.length : '0', index: index};
     }
 
     function getProperty(level){
@@ -123,10 +125,44 @@
   }
 
   function getLingIds(json){
-    // iterate through the rows and get all the lings in it
-    return $.map(json.rows[0].parent, function (el){
-      return el.ling.id;
+    // for each row collect the languages involved
+    // use a dictionary to skip duplicates
+    var lings = {};
+    var ids   = [];
+
+    if(!lingsCache){
+
+      lingsCache = {};
+
+      // This double loop can go very bad with many rows
+      $.each(json.rows, function (index, row){
+        if(row.child && row.child.length){
+          $.each(row.child, function (i, child){
+            var ling = child.lings_property.ling;
+            if(!lings[ling.id]){
+              lings[ling.id] = 1;
+              ids.push(ling.id);
+            }
+            if(!lingsCache[ling.id]){
+              lingsCache[ling.id] = {name: ling.name, count: 1};
+            } else {
+              lingsCache[ling.id].count++;
+            }
+          });
+        }
+      });
+    } else {
+      for( var id in lingsCache){
+        ids.push(id);
+      }
+    }
+
+    // sort by number of ling occurencies (the most frequent are shown by default)
+    ids.sort(function (id1, id2){
+      return lingsCache[id2].count - lingsCache[id1].count;
     });
+
+    return ids;
   }
 
   function getStyler(json){
@@ -134,19 +170,30 @@
     var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
                   'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
     var counter=0;
-    function styler(value){
-      return {
+
+    var popups = preparePopup(json);
+
+    function styler(entry){
+      return counter < 20 ? {
         markerColor: colors[counter++],
         iconColor: 'white',
         icon: 'info',
-        text: value
-      };
+        text: popups[entry.id]
+      } : null;
     }
     return styler;
   }
 
-  function getFilter(value){
-
+  function preparePopup(json){
+    // get the template now
+    var template = HoganTemplates['searches/results/map_popup'];
+    
+    var popups = {};
+    for( var id in lingsCache){
+      var entry = lingsCache[id];
+      popups[id] = template.render({name: entry.name, row1: 'Found in '+entry.count+' rows'});
+    }
+    return popups;
   }
 
 })();

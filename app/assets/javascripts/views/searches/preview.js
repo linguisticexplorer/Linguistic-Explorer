@@ -524,8 +524,7 @@
     // now ask the server for all the coords for the given lings
     var options = {
       name: lingIds,
-      markerStyler: getStyler(json),
-      valueFilter : getFilter(json, lingIds)
+      markerStyler: getStyler(json)
     };
     T.Visualization.Map.init('mapResults', options, function(){
       // here the map is done, clean some stuff
@@ -547,14 +546,6 @@
       ids = searches.preview[json.type].getMapLings(json);
     }
     return ids || [];
-  }
-
-  function getFilter(json, lings){
-    var fn = null;
-    if(searches.preview[json.type].getMapFilter){
-      fn = searches.preview[json.type].getMapFilter(json, lings);
-    }
-    return fn;
   }
 
 })();

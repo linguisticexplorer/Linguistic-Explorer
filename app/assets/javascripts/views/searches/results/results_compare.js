@@ -13,7 +13,6 @@
   searches.preview.compare.render       = compareMapping;
   searches.preview.compare.getMapLings  = getLingIds;
   searches.preview.compare.getMapStyler = getStyler;
-  searches.preview.compare.getMapFilter = getFilter;
 
   function compareMapping(columns, entry){
     var func_dict = {
@@ -96,11 +95,6 @@
       };
     }
     return styler;
-  }
-  
-  // Compare lings are limited to 6, so no problem for the colors
-  function getFilter(json, lings){
-    return function (entry){ return entry; };
   }
 
   function preparePopup(json){

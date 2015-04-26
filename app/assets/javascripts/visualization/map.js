@@ -30,7 +30,9 @@
       map.fitWorld().zoomIn();
 
       // add the marker
-      createMarkers(id, conf, map);
+      createMarkers(id, conf.markerStyler, map);
+
+      createLegend(id, map);
 
       if($.isFunction(cb)){
         cb();
@@ -39,18 +41,38 @@
     });
   }
 
-  function createMarkers(id, options, map){
-    var styler = options.markerStyler;
-    var filter = options.valueFilter;
+  function createLegend(id, map){
+    var div;
+
+    function update(){
+      $(div).html('<h4>Note:</h4><p>'+maps[id].markersHidden.length+' languages are not currently shown</p>');
+    }
+
+    if(maps[id].markersHidden.length){
+      var legend = L.control();
+
+      legend.onAdd = function(map){
+        div = L.DomUtil.create('div', 'map-legend');
+        update();
+        return div;
+      };
+
+      legend.update = update;
+      legend.addTo(map);
+    }
+  }
+
+  function createMarkers(id, styler, map){
+    maps[id].markersHidden = [];
 
     $.each(maps[id].values, function (i, entry){
-      if(filter(entry)){
-        createMarker(entry, styler, map);
+      if(entry.value){
+        createMarker(entry, styler, map, id);
       }
     });
   }
 
-  function createMarker(entry, styler, map){
+  function createMarker(entry, styler, map, id){
     // start with a default style
     var style = {
       markerColor: 'white',
@@ -62,15 +84,21 @@
     if(styler){
       style = styler(entry);
     }
-    // append the prefix: 
-    // later because the style can have been overrided by the styler
-    style.prefix = 'fa';
-    // Creates a red marker with the info icon
-    var marker = L.AwesomeMarkers.icon(style);
-    // In the value property are stored the coords of the marker
-    marker = L.marker(entry.value, {icon: marker}).addTo(map);
-    if(style.text){
-      marker.bindPopup(style.text);
+    // style can be null if we run out of colours
+    if(style){
+      // append the prefix: 
+      // later because the style can have been overrided by the styler
+      style.prefix = 'fa';
+      // Creates a red marker with the info icon
+      var marker = L.AwesomeMarkers.icon(style);
+      // In the value property are stored the coords of the marker
+      marker = L.marker(entry.value, {icon: marker}).addTo(map);
+      if(style.text){
+        marker.bindPopup(style.text);
+      }
+    } else {
+      // show in some place that there are missing markers
+      maps[id].markersHidden.push(entry.id);
     }
   }
 
