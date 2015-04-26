@@ -13,6 +13,7 @@
   searches.preview.compare.render       = compareMapping;
   searches.preview.compare.getMapLings  = getLingIds;
   searches.preview.compare.getMapStyler = getStyler;
+  searches.preview.compare.getMapFilter = getFilter;
 
   function compareMapping(columns, entry){
     var func_dict = {
@@ -47,13 +48,7 @@
     if(isCommon(entry)){
 
       new_entry.common = true;
-      // With this code will going to render multiple columns with the same values
-      // new_entry['compare_property'] = func_dict['compare_property'](entry, 0);
-      // new_entry['common_values']    = [];
-      // // we need to iterate the other columns by the number of languages
-      // for( col = 0; col < entry.lings.length; col++){
-      //   new_entry['common_values'].push(func_dict['ling_value'](entry,0));
-      // }
+
       for( col in columns.commons){
         new_entry[col] = func_dict[col](entry, 0);
       }
@@ -73,7 +68,7 @@
         }
       }
     }
-
+    
     return new_entry;
   }
 
@@ -86,17 +81,53 @@
 
   function getStyler(json){
     // how may lings are in the results?
-    var colors = ['red', 'darkred', 'orange', 'green', 'darkgreen', 'black',
-                 'blue', 'purple', 'darkpurple', 'cadetblue', 'white'];
+    var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
+                  'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
     var counter=0;
-    function styler(){
+
+    var popups = preparePopup(json);
+
+    function styler(entry){
       return {
         markerColor: colors[counter++],
         iconColor: 'white',
-        icon: 'info'
+        icon: 'info',
+        text: popups[entry.id]
       };
     }
     return styler;
+  }
+  
+  // Compare lings are limited to 6, so no problem for the colors
+  function getFilter(json, lings){
+    return function (entry){ return entry; };
+  }
+
+  function preparePopup(json){
+
+    var commons = 0;
+    $.each(json.rows, function (i, row){
+      if(row.child.length === 1){
+        commons++;
+      }
+    });
+
+    var lingNames = {};
+    $.each(json.rows[0].lings, function (i, el){
+      if(!lingNames[el.ling.id]){
+        lingNames[el.ling.id] = {name: el.ling.name, row1: "Properties in common: "+commons, row2: "Properties not in common: "+(json.rows.length - commons)};
+      }
+    });
+
+    // get the template now
+    var template = HoganTemplates['searches/results/map_popup'];
+
+    for( var id in lingNames){
+      var entry = lingNames[id];
+      lingNames[id] = template.render(entry);
+    }
+
+    return lingNames;
   }
 
 })();

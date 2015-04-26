@@ -10,8 +10,8 @@
   searches.preview = searches.preview || {};
   searches.preview.cross = searches.preview.implication = {};
 
-  searches.preview.cross.render = crossMapping;
-  searches.preview.cross.init = initCross;
+  searches.preview.cross.render       = crossMapping;
+  searches.preview.cross.init         = initCross;
   searches.preview.cross.getMapLings  = getLingIds;
   searches.preview.cross.getMapStyler = getStyler;
 
@@ -62,7 +62,7 @@
       $('#cross_lings_modal').modal('show');
 
     }
-  };
+  }
 
   function prepareForRow(entry){
     return {name: entry.name, link: getLingURL(entry)};
@@ -120,6 +120,33 @@
     }
 
     return new_entry;
+  }
+
+  function getLingIds(json){
+    // iterate through the rows and get all the lings in it
+    return $.map(json.rows[0].parent, function (el){
+      return el.ling.id;
+    });
+  }
+
+  function getStyler(json){
+    // how may lings are in the results?
+    var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
+                  'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
+    var counter=0;
+    function styler(value){
+      return {
+        markerColor: colors[counter++],
+        iconColor: 'white',
+        icon: 'info',
+        text: value
+      };
+    }
+    return styler;
+  }
+
+  function getFilter(value){
+
   }
 
 })();

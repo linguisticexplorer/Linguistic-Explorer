@@ -109,7 +109,13 @@
     parents.toggleClass('disabled', !isEnable);
     
     if($.isFunction(fn)){
-      elements.one('click', fn);
+      elements.on('click', function(){
+        if(!parents.hasClass('active')){
+          $('#results-navbar-collapse ul > li').removeClass('active');
+          parents.toggleClass('active');
+          fn();
+        }
+      });
     }
   }
 
@@ -122,7 +128,8 @@
     // Map       => All but Clustering
     var isClustering = (/clustering/).test(type),
         isDefault    = (/default/).test(type);
-
+    
+    toggleNavbarButton('#table'     , true         , showTable);
     toggleNavbarButton('#saveit'    , isDefault    , saveFn);
     toggleNavbarButton('#vizit'     , !isDefault   , vizFn);
     toggleNavbarButton('#downloadit', isClustering , downloadFn);
@@ -437,7 +444,7 @@
       var img = "<img src='/images/loader.gif' class='loading'/>",
           once = false;
       // Manage the AJAX pagination and changing the URL
-       $(document).one("click", ".js-pagination a", function (e) {
+       $(document).on("click", ".js-pagination a", function (e) {
 
           var offset = getOffset(e.target.id);
           var current = getCurrentPage();
@@ -498,6 +505,12 @@
     createMap(resultsJson);
   }
 
+  function showTable(){
+    $(".js-pagination").html('');
+    $('#paginated-results').html('');
+    makeNewPage(resultsJson, 0, true);
+  }
+
   function createMap(json){
     // iterate throught the rows and find all the lings
     var lingIds = getLings(json);
@@ -511,7 +524,8 @@
     // now ask the server for all the coords for the given lings
     var options = {
       name: lingIds,
-      markerStyler: getStyler(json)
+      markerStyler: getStyler(json),
+      valueFilter : getFilter(json, lingIds)
     };
     T.Visualization.Map.init('mapResults', options, function(){
       // here the map is done, clean some stuff
@@ -533,6 +547,14 @@
       ids = searches.preview[json.type].getMapLings(json);
     }
     return ids || [];
+  }
+
+  function getFilter(json, lings){
+    var fn = null;
+    if(searches.preview[json.type].getMapFilter){
+      fn = searches.preview[json.type].getMapFilter(json, lings);
+    }
+    return fn;
   }
 
 })();

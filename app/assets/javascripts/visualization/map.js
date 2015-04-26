@@ -30,7 +30,7 @@
       map.fitWorld().zoomIn();
 
       // add the marker
-      createMarkers(id, conf.markerStyler, map);
+      createMarkers(id, conf, map);
 
       if($.isFunction(cb)){
         cb();
@@ -39,15 +39,18 @@
     });
   }
 
-  function createMarkers(id, styler, map){
+  function createMarkers(id, options, map){
+    var styler = options.markerStyler;
+    var filter = options.valueFilter;
+
     $.each(maps[id].values, function (i, entry){
-      if(entry.value){
-        createMarker(entry.value, styler, map);
+      if(filter(entry)){
+        createMarker(entry, styler, map);
       }
     });
   }
 
-  function createMarker(value, styler, map){
+  function createMarker(entry, styler, map){
     // start with a default style
     var style = {
       markerColor: 'white',
@@ -57,15 +60,18 @@
     };
     // overwrite style if a styler is passed
     if(styler){
-      style = styler(value);
+      style = styler(entry);
     }
     // append the prefix: 
     // later because the style can have been overrided by the styler
     style.prefix = 'fa';
     // Creates a red marker with the info icon
     var marker = L.AwesomeMarkers.icon(style);
-
-    L.marker(value, {icon: marker}).addTo(map);
+    // In the value property are stored the coords of the marker
+    marker = L.marker(entry.value, {icon: marker}).addTo(map);
+    if(style.text){
+      marker.bindPopup(style.text);
+    }
   }
 
   function getData(ids, mapId, type){
