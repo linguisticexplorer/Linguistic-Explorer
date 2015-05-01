@@ -27,6 +27,7 @@ module SearchResults
       def to_flatten_results
         @flatten_results ||= [].tap do |entry|
           pre_loading_data
+          # Rails.logger.debug "[DEBUG] #{result_groups.inspect}"
           result_groups.each do |parent_id, child_ids|
             parent = parents[parent_id.to_i]
             related_children = child_ids.map {|id| children[id.to_i]}

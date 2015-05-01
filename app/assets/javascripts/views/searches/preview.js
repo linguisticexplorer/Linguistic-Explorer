@@ -52,7 +52,17 @@
 
   function getResults(){
 
+
+    function tuneParamsForSearchType(){
+      var query = $('#search_results').data('query');
+      // if it's an advanced search just double the time to wait
+      if(query.advanced_set){
+        timeoutMillis *= 2;
+      }
+    }
+
     var timeoutMillis = 50000,
+        waitThreshold = 70,
         refreshRate   = 100;
 
     query = {
@@ -65,20 +75,22 @@
     .success(compileResults)
     .error(notifyError);
     
+    tuneParamsForSearchType();
+    
     var progress = 0,
-        step = 50 / (timeoutMillis / refreshRate);
+        step = waitThreshold / (timeoutMillis / refreshRate);
 
     function notifyError(err){
-      if(err){
-        progress = 100;
-      }
-
       setBar(progress);
 
-      if(progress > 50){
+      if(progress > waitThreshold || err){
         clearInterval(loadingInterval);
-        // show an error
-        $('#results_loading_text').text("The search it's taking longer than expected...");
+        if(err){
+          setBar(100, "An Error occurred on the server");
+        } else {
+          // show something
+          $('#results_loading_text').text( "The search it's taking longer than expected...");
+        }
       }
     }
 
@@ -134,20 +146,6 @@
     toggleNavbarButton('#vizit'     , !isDefault   , vizFn);
     toggleNavbarButton('#downloadit', isClustering , downloadFn);
     toggleNavbarButton('#mapit'     , !isClustering, mapFn);
-    
-    // show download button only for clustering
-    // if(!(/clustering/).test(type)){
-    //   $('#downloadit').attr('disabled', true);
-    // } else if(!(/default/).test(type)){
-    //   $('#saveit, #mapit, #vizit').toggleClass('disabled');
-    // }
-    
-    // // hide save button for non-regular searches
-    // if(!(/default/).test(type)){
-    //   $('#saveit').toggleClass('disabled');
-    // } else {
-    //   $('#vizit').toggleClass('disabled');
-    // }
 
     if(navbar.is(':hidden')){
       navbar.fadeIn('slow', function(){

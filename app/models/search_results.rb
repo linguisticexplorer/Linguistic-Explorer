@@ -18,7 +18,7 @@ module SearchResults
       #Rails.logger.debug "Step 4 => #{self.class} - Rendering"
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
-    #Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
+    # Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
     
     if pagination
       @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
@@ -29,7 +29,6 @@ module SearchResults
 
   def getType
     results if @result.nil?
-
     return self.result_groups["type"] || "default"
   end
 
@@ -72,8 +71,17 @@ module SearchResults
     (clustering?) || self.search_comparison
   end
 
+  def handle_old_serialization
+    if self.query.is_a? String
+      self.query = ActiveSupport::JSON.decode self.query
+    end
+  end
+
   def ensure_result_groups!
-    #Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
+    # Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
+    handle_old_serialization
+    self.result_groups = nil
+    # Rails.logger.debug "Step 2 Nil? #{self.result_groups.nil?} - Query? #{self.query.present?} - Parent? #{self.parent_ids.present?}"
     return true unless self.result_groups.nil?
     return true unless self.query.present? || self.parent_ids.present?
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)
@@ -83,7 +91,6 @@ module SearchResults
     ids = [self.parent_ids, self.child_ids].compact
     # Cache for saved searches
     return result_adapter(ids) if ids.any?
-    #Rails.logger.debug "Step 3 => #{self.class}"
     result_adapter(filter_lings_property_ids_from_query)
   end
 

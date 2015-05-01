@@ -12,9 +12,7 @@ class SearchJSON
       :header  => build_results_header,
       :rows    => @search.results(false),
       :success => true
-    }.
-    to_json.
-    html_safe
+    }.to_json.html_safe
   end
 
   private

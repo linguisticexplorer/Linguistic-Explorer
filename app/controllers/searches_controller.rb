@@ -55,9 +55,7 @@ class SearchesController < GroupDataController
 
     is_authorized? :search, search
 
-    json = SearchJSON.new(search).build_json
-
-    render :json => json
+    render :json => SearchJSON.new(search).build_json
   end
 
   def create
@@ -88,7 +86,7 @@ class SearchesController < GroupDataController
     
     is_authorized? :search, @search
 
-    @query = @search.query.to_json.html_safe
+    @query = @search.query
 
     respond_with(@search) do |format|
       format.html  { render :template => 'searches/preview' }

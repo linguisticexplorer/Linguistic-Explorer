@@ -10,6 +10,7 @@ module SearchResults
 
     def result_rows(parent_attr_names, child_attr_names = [])
       [].tap do |rows|
+        # Rails.logger.debug "[DEBUG] #{self.results.inspect}"
         self.results.each do |result|
           parent, child = result.parent, result.child
           next unless parent
