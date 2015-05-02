@@ -16,6 +16,8 @@ class SearchComparisonsController < GroupDataController
 
     if @search_comparison.save
       @search = @search_comparison.search
+
+      @dynamic_results = true
       
       @query = @search.query.to_json.html_safe
       

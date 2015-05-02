@@ -245,7 +245,7 @@
         $('#analysis-results').html(html);
 
         // init the page js
-        T.Searches.preview.embedInit();
+        T.Searches.preview.init(true, true);
       });
     }
 

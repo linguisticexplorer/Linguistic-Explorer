@@ -11,7 +11,11 @@
 
   searches.preview.init = getResults;
 
-  searches.preview.embedInit = getResultsToEmbed;
+
+  // cover the search comparisons as well
+  // The SearchComparison controller has a slightly different shape
+  this.Terraling.SearchComparisons = {};
+  this.Terraling.SearchComparisons.create = {init: getResultsForComparison};
 
   var templateMapping = {
     'cross': 'cross_results',
@@ -43,14 +47,17 @@
   var paginationSetup;
 
   var embed = false;
+  var navbarOn = true;
   var embedController = 'searches';
 
-  function getResultsToEmbed(){
-    embed = true;
-    getResults();
+  function getResultsForComparison(){
+    getResults(true);
   }
 
-  function getResults(){
+  function getResults(toEmbed, hideNavbar){
+
+    embed = !!toEmbed;
+    navbarOn = !hideNavbar;
 
 
     function tuneParamsForSearchType(){
@@ -74,7 +81,7 @@
     $.post(getResultsURL(), query)
     .success(compileResults)
     .error(notifyError);
-    
+
     tuneParamsForSearchType();
     
     var progress = 0,
@@ -249,7 +256,7 @@
 
       }
       
-      if(!embed){
+      if(navbarOn){
         enableNavbar(json.type);
       }
       
