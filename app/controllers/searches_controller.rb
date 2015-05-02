@@ -117,6 +117,22 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
+  def geomapping
+    # an empty one is enough
+    search = Search.new do |s|
+      s.creator = current_user
+      s.group   = current_group
+    end
+    
+    # authorize before doing the effort
+
+    is_authorized? :search, search
+    
+    @geoMapping = GeoMapping.new(current_group, params).find_values
+
+    render :json => @geoMapping
+  end
+
   protected
 
   def check_max_search_notice
