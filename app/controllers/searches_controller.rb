@@ -149,7 +149,7 @@ class SearchesController < GroupDataController
   end
 
   def rescue_from_search_error(exception)
-    flash[:notice] = exception.message
+    flash[:alert] = exception.message
     redirect_to :action => :new
   end
 
