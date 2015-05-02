@@ -2,6 +2,7 @@ class SearchesController < GroupDataController
 
   before_filter :check_max_search_notice, :only => [:new, :preview, :index]
   rescue_from Exceptions::ResultSearchError, :with => :rescue_from_result_error
+  rescue_from Exceptions::SearchError, :with => :rescue_from_search_error
 
   respond_to :html, :csv
 
@@ -21,7 +22,7 @@ class SearchesController < GroupDataController
 
   def preview
 
-    raise Exceptions::StandardError if params.nil? || params[:search].nil? 
+    raise Exceptions::SearchError if params.nil? || params[:search].nil? 
 
     @dynamic_results = true
     # params[:search][:javascript] == "true"
@@ -145,6 +146,11 @@ class SearchesController < GroupDataController
 
   def rescue_from_result_error(exception)
     render :json => {:success => false, :errors => exception.message } 
+  end
+
+  def rescue_from_search_error(exception)
+    flash[:notice] = exception.message
+    redirect_to :action => :new
   end
 
   def perform_search(offset=0)

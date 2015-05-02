@@ -1,5 +1,11 @@
 module Exceptions
 
+  class SearchError < StandardError
+    def message
+      "An error occurred during the search. If error persist please contact the Administrator"
+    end
+  end
+
   class ResultSearchError < StandardError
     def message
       "An error occurred during the search. If error persist please contact the Administrator"
