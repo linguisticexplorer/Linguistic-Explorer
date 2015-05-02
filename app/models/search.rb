@@ -24,7 +24,7 @@ class Search < ActiveRecord::Base
 
   attr_accessor :parent_ids, :child_ids, :offset
 
-  before_save :ensure_result_groups!
+  before_save :flush_result_groups!
 
   class << self
     def reached_max_limit?(creator, group)

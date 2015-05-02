@@ -77,13 +77,16 @@ module SearchResults
     end
   end
 
-  def ensure_result_groups!
-    # Rails.logger.debug "Step 2 => #{self.class} - Perform the search"
-    handle_old_serialization
+  def flush_result_groups!
     self.result_groups = nil
-    # Rails.logger.debug "Step 2 Nil? #{self.result_groups.nil?} - Query? #{self.query.present?} - Parent? #{self.parent_ids.present?}"
-    return true unless self.result_groups.nil?
-    return true unless self.query.present? || self.parent_ids.present?
+  end
+
+  def ensure_result_groups!
+
+    # Keep it here for legacy instaces saved
+    handle_old_serialization
+    flush_result_groups!
+    
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)
   end
 
