@@ -4,21 +4,23 @@
   Search History
 %table#searches.show-table.table.table-bordered.table-striped.table-hover
   - if @searches.any?
+    %tr
+      %th.col-md-4 Name
+      %th.col-md-2 Type
+      %th.col-md-2 Timestamp
+      %th.col-md-2 Actions
     - @searches.each do |search|
       %tr
         %td
           = link_to search.name, [current_group, search], :class => "pull-left"
         %td.col-md-1
           Regular
-        %td.col-md-3
-          Saved on Timestamp here
-        //  = link_to "Show results", [current_group, search], :class => "btn btn-primary btn-sm", :id => "results"
-        // %td
-        %td.col-md-2
-          = link_to group_search_path(current_group, search, :format => :csv), :class => "btn btn-success btn-sm" do
-            = icon 'download', '', :class => "fa-15x", :title => "Download CSV"
-          = link_to [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger btn-sm" do
-            = icon "trash-o", '', :class => "fa-15x", :title => "Delete"
+        %td.col-md-3=search.created_at.to_formatted_s(:long)
+        %td
+          = link_to group_search_path(current_group, search, :format => :csv), :class => "btn btn-default", :rel => "tooltip", :title => "Download", :data => {:toggle => "tooltip", :animation => "true"} do
+            = icon 'download'
+          = link_to [current_group, search], :confirm => "Are you sure?", :method => :delete, :class => "btn btn-danger", :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+            = icon "trash-o"
   - else
     %tr.center
       %td
