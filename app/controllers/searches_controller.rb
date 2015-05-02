@@ -117,34 +117,6 @@ class SearchesController < GroupDataController
     redirect_to [current_group, :searches], :notice => "You successfully deleted your search."
   end
 
-  # I'm not sure this guy should be here...
-  def lings_in_selected_row
-    @search = perform_search
-
-    @presenter_results = SearchCross.new(params[:cross_ids]).
-      filter_lings_row(@search).
-      paginate(:page => params[:page], :order => "name")
-
-    is_authorized? :search, @search
-  end
-  
-  # TODO: These end point shouldn't really stay here...
-  def geomapping
-    # an empty one is enough
-    search = Search.new do |s|
-      s.creator = current_user
-      s.group   = current_group
-    end
-    
-    # authorize before doing the effort
-
-    is_authorized? :search, search
-    
-    @geoMapping = GeoMapping.new(current_group, params).find_values
-
-    render :json => @geoMapping
-  end
-
   protected
 
   def check_max_search_notice
