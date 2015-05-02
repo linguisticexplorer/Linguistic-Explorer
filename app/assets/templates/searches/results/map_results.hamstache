@@ -1,1 +1,8 @@
-#mapResults
+%div{:class => "col-md-{{width}}"}
+  #mapResults
+{{#panel}}
+.col-md-2{:style=>"y-overflow: hidden; height: 600px;"}
+  .row
+    .col-md-12
+      %p Blah
+{{/panel}}

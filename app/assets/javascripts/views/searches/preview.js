@@ -128,11 +128,11 @@
     parents.toggleClass('disabled', !isEnable);
     
     if($.isFunction(fn)){
-      elements.on('click', function(){
+      elements.on('click', function (e){
         if(!parents.hasClass('active')){
           $('#results-navbar-collapse ul > li').removeClass('active');
           parents.toggleClass('active');
-          fn();
+          fn(e);
         }
       });
     }
@@ -500,13 +500,20 @@
     
   }
 
-  function vizFn(){}
+  function vizFn(e){
+    e.preventDefault();
+  }
 
-  function downloadFn(){}
+  function downloadFn(e){
+    e.preventDefault();
+  }
 
-  function saveFn() {}
+  function saveFn(e) {
+    e.preventDefault();
+  }
 
-  function mapFn(){
+  function mapFn(e){
+    e.preventDefault();
     createMap(resultsJson);
   }
 
@@ -519,10 +526,11 @@
   function createMap(json){
     // iterate throught the rows and find all the lings
     var lingIds = getLings(json);
+    var isRegular = getType(json.type) === 'default';
 
     // change the page template with the map one
     var mapTemplate = HoganTemplates[getTemplatePath('map')];
-    var htmlMap = mapTemplate.render();
+    var htmlMap = mapTemplate.render({width: isRegular ? 12 : 10, panel: !isRegular});
     $(".js-pagination").html('');
     $('#paginated-results').html(htmlMap);
 
