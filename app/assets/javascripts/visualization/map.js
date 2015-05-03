@@ -16,29 +16,41 @@
     T.promises.map.data = getData(conf.name || '', id, conf.type);
     
     // create a Leaflet map in the specific id
-    var map = new L.Map(id, {minZoom: 1});
+    var map = new L.Map(id, {minZoom: 1, zoomControl: false});
 
-    // read the configuration file for more stuff
+    // load the layer while waiting for the data
+    map.fitWorld().zoomIn();
+
+    // create the tile layer with correct attribution
+    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+    });
+    map.addLayer(layer);
 
     // push the data
     $.when(T.promises.map.data).then(function(){
       
-      // add the layer with the map
-      var googleMaps = new L.Google();
-      map.addLayer(googleMaps);
-
-      map.fitWorld().zoomIn();
+      map.addControl(createZoomControl());
 
       // add the marker
       createMarkers(id, conf.markerStyler, map);
 
       createLegend(id, map);
 
+      maps[id] = map;
+
       if($.isFunction(cb)){
         cb();
       }
 
     });
+  }
+
+  function destroy(id){
+    if(maps[id]){
+      maps[id].remove();
+      maps[id] = null;
+    }
   }
 
   function createLegend(id, map){
@@ -164,6 +176,74 @@
     return {url: url, payload: payload, method: method};
   }
 
+  function createZoomControl(){
+
+    var customZoom = L.Control.extend({
+      options: {
+        position: 'topleft'
+      },
+
+      onAdd: function (map) {
+        var zoomName = 'leaflet-control-zoom',
+            container = L.DomUtil.create('div', zoomName + ' leaflet-bar');
+
+        var zoomInButton  = createButton('+', 'Zoom In' , zoomName + '-in',  container, zoomIn(map));
+        var zoomFitbutton = createButton('<i class="fa fa-home"></>', 'Zoom to Fit', zoomName + '-fit', container, zoomToFit(map));
+        var zoomOutButton = createButton('-', 'Zoom Out', zoomName + '-out', container, zoomOut(map));
+
+        return container;
+      },
+
+      onRemove: function (map) {
+        
+      }
+    });
+
+    return new customZoom();
+
+    function createButton(html, title, className, container, fn) {
+      var link = L.DomUtil.create('a', className, container);
+      link.innerHTML = html;
+      link.href = '#';
+      link.title = title;
+
+      L.DomEvent
+          .on(link, 'mousedown dblclick', L.DomEvent.stopPropagation)
+          .on(link, 'click', L.DomEvent.stop)
+          .on(link, 'click', fn, this);
+
+      return link;
+    }
+
+    function zoomIn(map){
+      return function(){
+        map.zoomIn();
+      };
+    }
+
+    function zoomOut(map){
+      return function(){
+        map.zoomOut();
+      };
+    }
+
+    function zoomToFit(map){
+
+      function fitToPoints(){
+        var bounds = [];
+        map.eachLayer(function (layer){
+          // filter items with latlong properties
+          if(layer._latlng){
+            bounds.push(layer._latlng);
+          }
+        });
+        map.fitBounds(bounds);
+      }
+      return fitToPoints;
+    }
+  }
+
   mapping.init = createMap;
+  mapping.remove = destroy;
 
 })();
