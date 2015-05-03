@@ -19,7 +19,7 @@
 }
 
 // Make Font Awesome icons animated
-i[class*=fa]:hover{
+i[class*=fa].fa-stack-1x:hover{
   animation: pulse 1600ms;
 }
 
@@ -740,10 +740,14 @@ body {
 }
 
 img.loading {
-  width: 48px;
+  width: 32px;
 }
 
 .loading {
-  margin-top: 15px;
-  margin-bottom: 16px;
+  margin-top: 23px;
+  margin-bottom: 24px;
+}
+
+.leaflet-control-zoom-fit {
+  font-size: 18px;
 }

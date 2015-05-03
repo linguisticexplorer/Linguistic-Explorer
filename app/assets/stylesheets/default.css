@@ -217,11 +217,13 @@ fieldset select, fieldset input[type="text"] { width:250px;}
 img.loading {
     width: 24px;
     height: 24px;
+    margin-top: 41px;
+    margin-bottom: 42px;
 }
 
-.loading{
+/*.loading{
    color: #C30;
-}
+}*/
 
 
 .progress-bar p {
