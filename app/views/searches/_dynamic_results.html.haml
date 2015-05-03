@@ -4,10 +4,11 @@
   #search_results.padded_left.padded_right{:data => {:query => @query, :search_id => "#{@search.name ? @search.id : 'null'}" }}
     .apple_pagination.js-pagination
     #paginated-results
-      .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }
-        #results_loading_bar.progress-bar{ :aria => {:valuemin => "0", :valuemax=>"100"}, :style => "width: 0%;"}
       %p#results_loading_text.strong{ :style => 'text-align: center;'}
+        %img{:src=>'/images/loader.gif'}
         Your query is processing...
+      .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }
+        #results_loading_bar.progress-bar.progress-bar-info{ :aria => {:valuemin => "0", :valuemax=>"100"}, :style => "width: 0%;"}
       #error_message.alert.alert-danger.hide
         %div
           | Start a new search here:
