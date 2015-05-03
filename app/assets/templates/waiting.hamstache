@@ -1,2 +1,10 @@
 #waiting.text-center
-  %i.fa.fa-refresh.fa-spin.fa-5x{ :style => "color: #E53900" }
+  {{#big}}
+  %i.fa.fa-refresh.fa-spin.fa-5x{ :style => "color: {{color}}" }
+  {{/big}}
+  {{#medium}}
+  %i.fa.fa-refresh.fa-spin.fa-2x{ :style => "color: {{color}}" }
+  {{/medium}}
+  {{#small}}
+  %i.fa.fa-refresh.fa-spin.fa-15{ :style => "color: {{color}}" }
+  {{/small}}

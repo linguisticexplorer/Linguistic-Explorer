@@ -30,3 +30,31 @@
             .modal-footer
               / %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close
               = f.submit "Save", :id => "save-search", :class => "btn btn-success", :data => {:loading_text => "Savings..." }
+
+
+#download-modal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "downloadModal", :hidden => "true" }}
+  .modal-dialog.modal-lg
+    .modal-content
+      = content_tag :fieldset do
+        .modal-header
+          %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+          %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
+          %span#modal-head-content
+            %h3 Download search results
+          .modal-body
+            .container
+              .row
+                .col-md-12
+                  #error-explanation.col-8-md{:style => "display: none;"}
+                    %h2
+                      = pluralize(@search.errors.count, "error")
+                      An error occurred while downloading
+                    %ul#error-message
+                  #success-explanation.col-8-md.alert.alert-success{:style => "display: none;"}
+                    %p Your results are ready to be downloaded
+              .row
+                %p#processingProgress.strong
+                  %i.fa.fa-refresh.fa-spin.fa-2x{ :style => "color: #5bc0de" }
+                  %span &nbsp; Working on your results...
+          .modal-footer
+            %button.btn{:data => {:dismiss => "modal"}, :aria => { :hidden => "true" }} Close

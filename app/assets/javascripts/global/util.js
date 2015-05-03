@@ -37,6 +37,7 @@
       // some handy functions
       util.isThere = isThere;
       util.makeChunks = makeChunks;
+      util.isFileSaverSupported = canSave;
     };
 
     function makeChunks(list, size){
@@ -196,6 +197,21 @@
         copy.ttl = (new Date()).getTime();
         save("Terraling:Groups:"+url, copy);
       });
+    }
+
+    var canSaveVar;
+
+    function canSave(){
+      canSaveVar = canSaveVar || saveTest();
+      return canSaveVar;
+    }
+
+    function saveTest(){
+      var isFileSaverSupported;
+      try {
+        isFileSaverSupported = !!new Blob();
+      } catch (e) {}
+      return isFileSaverSupported;
     }
 
 })();

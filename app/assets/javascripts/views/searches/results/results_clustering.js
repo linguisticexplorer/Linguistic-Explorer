@@ -15,15 +15,17 @@
   var resultsJson;
   var containerId = 'similarity_tree';
   var phylogramBuilder;
+  var getTemplate;
 
   var cachedRender;
 
-  function renderClustering(json){
+  function renderClustering(json, templateFn){
     if(!cachedRender){
       phylogramBuilder = T.Visualization.Phylogram;
+      getTemplate = templateFn;
       
       // save it in case we want to swap between regular - radial
-      resultsJson = json.rows[1];
+      resultsJson = json;
 
       cachedRender = {
         makeRow   : $.noop,
@@ -38,13 +40,17 @@
   }
 
   function makeTable(){
-    return {header: [], rows: []};
+    return {header: ['clustering'], rows: []};
   }
 
-  function makeGraph(options){
-    options = $.extend(options, {width: $('#'+containerId).width(), radial: false});
+  function makeGraph(table){
+    var template = HoganTemplates[getTemplate(resultsJson.type)];
+    // render the element now
+    $('#paginated-results').html(template.render({}));
+    // now make the chart
+    options = $.extend({}, {width: $('#'+containerId).width(), height: 600, radial: false});
 
-    phylogramBuilder.init(containerId, resultsJson, options);
+    phylogramBuilder.init(containerId, resultsJson.rows[1], options);
 
     // add a button to swap to radial mode
   }

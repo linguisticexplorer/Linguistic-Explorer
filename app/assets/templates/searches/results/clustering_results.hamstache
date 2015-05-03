@@ -1,6 +1,3 @@
+{{^header}}
 #similarity_tree
-  #download_div.well{:style => "display: none; width: auto; text-align: center;"}
-    %h5 Save it:
-    %a#download.btn.btn-danger.disabled{:href=>"#", :disabled=>"true"}
-      Download
-  #drawingID
+{{/header}}

@@ -13,30 +13,32 @@
 
     // show a spinning wheel while loading
     showSpinningWheel(id);
+    
+    setTimeout(function(){
+      $('#waiting').fadeOut('slow').remove();
 
-    //TODO: Refactor this stuff
-    if(Modernizr.svg){
+      //TODO: Refactor this stuff
+      if(Modernizr.svg){
 
-      // parse the data
-      data = Newick.parse(data);
+        // parse the data
+        data = Newick.parse(data);
 
-      // process the data
-      buildNewickNodes(data);
+        // process the data
+        buildNewickNodes(data);
 
-      var constructor = options.radial ? 'buildRadial' : 'build';
+        var constructor = options.radial ? 'buildRadial' : 'build';
 
-      d3.phylogram[constructor](id, data, {
-          width:  options.width,
-          height: options.width
-      });
+        d3.phylogram[constructor](id, data, {
+            width:  options.width,
+            height: options.width
+        });
 
-    } else {
+      } else {
 
-      $(id).append(HoganTemplates['unsupported'].render());
+        $(id).append(HoganTemplates['unsupported'].render());
 
-    }
-
-    $('#waiting').fadeOut();
+      }
+    }, 700);
 
   }
 
@@ -51,12 +53,8 @@
   }
 
   function showSpinningWheel(id){
-    if($('#waiting').length){
-      $('#waiting').fadeIn();
-    } else {
-      var img = HoganTemplates['waiting'].render();
-      $(id).html(img);
-    }
+    var img = HoganTemplates['waiting'].render({big: true, color: '#5bd0de'});
+    $(id).html(img);
   }
 
 })();

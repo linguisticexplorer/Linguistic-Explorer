@@ -15,13 +15,16 @@
   var paginationSetup;
 
   var makeNewPage;
+  var getTemplate;
+
   var resultsJson;
 
   var renderer;
 
-  function initTable(data, pageMaker){
+  function initTable(data, pageMaker, templateFn){
     resultsJson = data;
     makeNewPage = pageMaker;
+    getTemplate = templateFn;
 
     return {
       createTable: createTable,
@@ -51,15 +54,12 @@
     offset = offset || 0;
 
     // create a renderer in case is not set yet
-    renderer = renderer || searches.preview[resultsJson.type].init(resultsJson);
+    renderer = renderer || searches.preview[resultsJson.type].init(resultsJson, getTemplate);
     // create the table with the header and basic scaffolding
     var table = renderer.makeTable();
     
     // headers have different format
     var header = getHeader(table);
-
-    // Get the right renderer for the given type
-    // var renderer = columnMapping(resultsJson.type);
     
     for(var i=offset * max_rows_per_page; i< rowsLimit && i< offsetLimit; i++){
       table.rows.push(renderer.makeRow(header, rows[i], i));
@@ -151,7 +151,7 @@
       // TODO: Make this check somehow to see if a .js.erb file exists
       // Alterntaively, create one for every view, but not recommended
       
-      var img = "<img src='/images/loader.gif' class='loading'/>",
+      var img = HoganTemplates['waiting'].render({medium: true, color: '#5bd0de'}),
           once = false;
       // Manage the AJAX pagination and changing the URL
        $(document).on("click", ".js-pagination a", function (e) {

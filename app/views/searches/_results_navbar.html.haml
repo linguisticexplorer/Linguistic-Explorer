@@ -11,21 +11,21 @@
       = link_to 'Views', '#', :class => "navbar-brand"
       %ul.nav.navbar-nav
         %li.active
-          = link_to '#', :id => 'table' do
-            = icon 'table', '', :class => "fa-15x", :title => "Table"
+          = link_to '#', { :id => 'table', :rel => "tooltip", :title => "Table View", :data => {:toggle => "tooltip", :animation => "true"} } do
+            = icon 'table', '', :class => "fa-15x"
         %li
-          = link_to '#', :id => 'mapit' do
-            = icon 'map-marker', '', :class => "fa-15x", :title => "Map"
+          = link_to '#', { :id => 'mapit', :rel => "tooltip", :title => "Map View", :data => {:toggle => "tooltip", :animation => "true"} } do
+            = icon 'map-marker', '', :class => "fa-15x"
         %li
-          = link_to '#', :id => 'vizit' do
-            = icon 'photo', '', :class => "fa-15x", :title => "Chart"
+          = link_to '#', { :id => 'vizit', :rel => "tooltip", :title => "Visualize it", :data => {:toggle => "tooltip", :animation => "true"} } do
+            = icon 'photo', '', :class => "fa-15x"
       %ul.nav.navbar-nav.pull-right
         %li
-          = link_to '#', :id => 'downloadit' do
-            = icon 'download', '', :class => "fa-15x", :title => "Download CSV"
+          = link_to '#', { :id => 'downloadit', :rel => "tooltip", :title => "Download Results", :data => {:toggle => "tooltip", :animation => "true"} } do
+            = icon 'download', '', :class => "fa-15x"
         %li
-          = link_to '#', :id => 'saveit' do
-            = icon 'tags', '', :class => "fa-15x", :title => "Save Search"
+          = link_to '#', { :id => 'saveit', :rel => "tooltip", :title => "Save Search", :data => {:toggle => "tooltip", :animation => "true"} } do
+            = icon 'tags', '', :class => "fa-15x"
       = link_to 'Actions', '#', :class => "navbar-brand pull-right"
 
 = render :partial => 'searches/save_search_form'

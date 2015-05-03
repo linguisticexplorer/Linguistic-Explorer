@@ -739,13 +739,9 @@ body {
     color: #777;
 }
 
-img.loading {
-  width: 32px;
-}
-
-.loading {
-  margin-top: 23px;
-  margin-bottom: 24px;
+.js-pagination #waiting {
+  margin-top: 25px;
+  margin-bottom: 26px;
 }
 
 .leaflet-control-zoom-fit {

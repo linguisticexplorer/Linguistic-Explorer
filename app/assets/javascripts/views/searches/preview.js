@@ -7,9 +7,9 @@
 
   var searches = this.Terraling.Searches;
   
-  searches.preview = searches.show = searches.preview || {};
+  var me = searches.preview = searches.show = searches.preview || {};
 
-  searches.preview.init = getResults;
+  me.init = getResults;
 
   // cover the search comparisons as well
   // The SearchComparison controller has a slightly different shape
@@ -42,7 +42,7 @@
       query,
       resultsJson;
 
-  var tableBuilder, mapper;
+  var tableBuilder, mapper, saver;
 
   var embed = false;
   var navbarOn = true;
@@ -57,6 +57,7 @@
     embed = !!toEmbed;
     navbarOn = !hideNavbar;
 
+    $('#waiting').html(HoganTemplates['waiting'].render({medium: true, color: '#5bc0de'}));
 
     function tuneParamsForSearchType(){
       var query = $('#search_results').data('query');
@@ -140,23 +141,26 @@
   function enableNavbar(type){
     var navbar = $('#results_navbar');
 
-    // Download  => Clustering
+    // Download  => Clustering || New Browsers
     // Save      => Default
     // Visualize => All but Default
     // Map       => All but Clustering
-    var isClustering = (/clustering/).test(type),
-        isDefault    = (/default/).test(type);
+    var isClustering = type === 'clustering',
+        isDefault    = type === 'default';
+
+    var canDownload = isClustering || T.Util.isFileSaverSupported();
     
-    toggleNavbarButton('#table'     , true         , showTable);
-    toggleNavbarButton('#saveit'    , isDefault    , saveFn);
-    toggleNavbarButton('#vizit'     , false   , vizFn); // Later it will be !isDefault
-    toggleNavbarButton('#downloadit', isClustering , downloadFn);
-    toggleNavbarButton('#mapit'     , !isClustering, mapFn);
+    toggleNavbarButton('#table'     , !isClustering , showTable);
+    toggleNavbarButton('#saveit'    , isDefault     , saver.showModal);
+    toggleNavbarButton('#vizit'     , isClustering  , vizFn); // Later it will be !isDefault
+    toggleNavbarButton('#downloadit', canDownload   , saver.download);
+    toggleNavbarButton('#mapit'     , !isClustering , mapFn);
 
     if(navbar.is(':hidden')){
-      navbar.fadeIn('slow', function(){
-        searches.preview.initSave(resultsJson);
-      });
+      if(isClustering){
+        $('#table, #vizit').parent().toggleClass('active');
+      }
+      navbar.fadeIn('slow');
     }
   }
 
@@ -190,22 +194,20 @@
 
   function initAssociatedControllers(){
     // Map Controller
-    mapper = searches.preview.map.init(resultsJson, getTemplatePath);
-    tableBuilder = searches.preview.table.init(resultsJson, makeNewPage);
+    mapper       = me.map.init(resultsJson, getTemplatePath);
+    tableBuilder = me.table.init(resultsJson, makeNewPage, getTemplatePath);
+    saver        = me.save.init(resultsJson);
   }
 
   function makeNewPage(json, offset, bar){
     // Data variables
     var table, template, htmlRows;
     // Pagination variables
-    var paginationData, paginationTemplate, htmlPagination;
+    var paginationData, htmlPagination;
 
     if(bar){
       setBar(50, 'Data received');
     }
-    // var template_id = 'default';
-
-    var isClustering = (/clustering/).test(json.type);
 
     for( var type in templateMapping){
       if( (new RegExp(type)).test(json.type) ){
@@ -221,57 +223,41 @@
     if(bar){
       setBar(80, 'Data processed');
     }
-    
-    paginationTemplate = HoganTemplates[getTemplatePath('pagination')];
-    
+
+    htmlRows = template.render(table || {});
+
+    if(paginationData.pages.length > 1){
+
+      var paginationTemplate = HoganTemplates[getTemplatePath('pagination')];
+      htmlPagination = paginationTemplate.render(paginationData);
+    } else {
+      htmlPagination = '';
+    }
+
     if(bar){
       setBar(100, 'Preparing the results');
     }
 
-    htmlRows = template.render(table || {});
-    htmlPagination = paginationTemplate.render(paginationData);
-    
-
     setTimeout(function(){
 
-      // if(isClustering){
+      // cache it for later reuse
+      templateCompiled.table = htmlRows;
+      templateCompiled.pagination = htmlPagination;
 
-      //   // draw philogram
-      //   initPageForType(json);
-
-      // } else {
-
-        // cache it for later reuse
-        templateCompiled.table = htmlRows;
-        templateCompiled.pagination = htmlPagination;
-
-        tableBuilder.render(templateCompiled, '#paginated-results', ".js-pagination");
-        // tableBuilder.bindPagination();
-
-      // }
+      tableBuilder.render(templateCompiled, '#paginated-results', ".js-pagination");
       
       if(navbarOn){
         enableNavbar(json.type);
       }
       
-    }, 700);
+    }, 500);
   }
 
   function setType(type){
     return (/implication/).test(type) ? 'implication' : type;
   }
 
-  function initPageForType(json){
-    return searches.preview[json.type].init(json);
-  }
-
   function vizFn(e){
-  }
-
-  function downloadFn(e){
-  }
-
-  function saveFn(e) {
   }
 
   function mapFn(e){
