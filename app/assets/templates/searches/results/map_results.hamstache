@@ -4,5 +4,10 @@
 .col-md-2{:style=>"y-overflow: hidden; height: 600px;"}
   .row
     .col-md-12
-      %p Blah
+      #panelContent
+        %p.strong
+          %img{:src=>'/images/loader.gif'}
+          Indexing data...
+        .progress.progress-striped{ :style => 'margin: 10px 20px 5px 30px;' }
+          #indexProgress.progress-bar.progress-bar-info{ :aria => {:valuemin => "0", :valuemax=>"100"}, :style => "width: 0%;"}
 {{/panel}}

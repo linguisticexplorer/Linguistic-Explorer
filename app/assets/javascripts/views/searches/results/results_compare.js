@@ -10,9 +10,51 @@
   searches.preview = searches.preview || {};
   searches.preview.compare = {};
 
-  searches.preview.compare.render       = compareMapping;
-  searches.preview.compare.getMapLings  = getLingIds;
-  searches.preview.compare.getMapStyler = getStyler;
+  searches.preview.compare.init = create;
+
+  var resultsJson;
+  var cachedRender;
+
+  function create(json){
+    if(!cachedRender){
+      resultsJson = json;
+
+      cachedRender = {
+        makeRow      : compareMapping,
+        makeTable    : compareHeaders,
+        finalize     : refineTable,
+        getLings     : getLingIds,
+        mapStyler    : getStyler,
+        lingIndex    : inverseIndexer
+      };
+    }
+    return cachedRender;
+  }
+
+  function compareHeaders(){
+    function mapLingName(el){
+      return el.ling.name;
+    }
+    var headers = resultsJson.header;
+    var lings = resultsJson.rows[0].lings;
+    return {header: headers, rows: [], lings: $.map(lings, mapLingName).join(', ') };
+  }
+
+  function getProperty(level){
+    return function (entry, i){
+      return T.Util.isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+    };
+  }
+
+  function getValue(level){
+    return function (entry, i){
+      return T.Util.isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
+    };
+  }
+
+  function isCommon(entry){
+    return entry.child.length === 1;
+  }
 
   function compareMapping(columns, entry){
     var func_dict = {
@@ -23,22 +65,6 @@
       // This is a diff-only key-value
       'ling_value'       : getValue('child')
     };
-
-    function getProperty(level){
-      return function (entry, i){
-        return T.Util.isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
-      };
-    }
-
-    function getValue(level){
-      return function (entry, i){
-        return T.Util.isThere(entry, level, i, 'lings_property') ? entry[level][i].lings_property.value : ' ';
-      };
-    }
-
-    function isCommon(entry){
-      return entry.child.length === 1;
-    }
 
     var col, ling,
         new_entry = {};
@@ -71,20 +97,35 @@
     return new_entry;
   }
 
-  function getLingIds(json){
+  function refineTable(table){
+  // redefine rows property:
+    var oldRows = table.rows;
+    table.rows = {commons: [], differents: []};
+    
+    $.each(oldRows, function (index, row){
+      // pick common rows and put them in a commons property
+      // pick diff rows and put them in a diff property  
+      table.rows[(row.common ? 'commons' : 'differents')].push(row);
+    });
+    table.commons    = !!table.rows.commons.length;
+    table.differents = !!table.rows.differents.length;
+    return table;
+  }
+
+  function getLingIds(){
     // iterate through the rows and get all the lings in it
-    return $.map(json.rows[0].lings, function (el){
+    return $.map(resultsJson.rows[0].lings, function (el){
       return el.ling.id;
     });
   }
 
-  function getStyler(json){
+  function getStyler(){
     // how may lings are in the results?
     var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
                   'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
     var counter=0;
 
-    var popups = preparePopup(json);
+    var popups = preparePopup(resultsJson);
 
     function styler(entry){
       return {
@@ -101,7 +142,7 @@
 
     var commons = 0;
     $.each(json.rows, function (i, row){
-      if(row.child.length === 1){
+      if(isCommon(row)){
         commons++;
       }
     });
@@ -122,6 +163,18 @@
     }
 
     return lingNames;
+  }
+
+  function inverseIndexer(slices, updater, callback){
+
+    var index = {};
+
+    function indexer(rows, next){
+      // give it a chance to draw
+      setTimeout(next, 25);
+    }
+
+    async.forEach(slices, indexer, callback);
   }
 
 })();

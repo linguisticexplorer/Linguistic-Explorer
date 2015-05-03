@@ -8,13 +8,67 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
-  searches.preview.default = {};
+  var me = searches.preview.default = {};
 
-  searches.preview.default.render = defaultMapping;
-  searches.preview.default.getMapLings  = getLingIds;
-  searches.preview.default.getMapStyler = getStyler;
+  me.init = create;
 
-  var offspringCache = {};
+  var offspringCache = {},
+      lingsCache;
+
+  var resultsJson;
+  var cachedRender;
+
+  function create(json){
+    if(!cachedRender){
+      resultsJson = json;
+
+      cachedRender =  {
+        makeRow   : defaultMapping,
+        makeTable : mapRegularHeader,
+        finalize  : $.noop,
+        getLings  : getLingIds,
+        mapStyler : getStyler,
+        lingIndex : $.noop
+      };
+    }
+    return cachedRender;
+  }
+
+  function mapRegularHeader(){
+    return {header: resultsJson.header, rows: []};
+  }
+
+  function getLing(level){
+    return function (entry){
+      return T.Util.isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
+    };
+  }
+
+  function getProperty(level){
+    return function (entry){
+      return T.Util.isThere(entry, level, 'lings_property', 'property') ? entry[level].lings_property.property.name : ' ';
+    };
+  }
+
+  function getValue(level){
+    return function (entry){
+      return T.Util.isThere(entry, level, 'lings_property') ? entry[level].lings_property.value : ' ';
+    };
+  }
+
+  function getExamples(level){
+    return function (entry){
+      var list = [];
+      if(T.Util.isThere(entry, level, 'lings_property', 'examples')){
+        var examples = entry[level].lings_property.examples;
+
+        for( var i=0; i < examples.length; i++){
+          list.push(examples[i].name);
+        }
+      }
+      return list.join(',') || ' ';
+    };
+  }
 
   function defaultMapping(columns, entry){
     var func_dict = {
@@ -28,38 +82,6 @@
       'example_1' : getExamples('child')
     };
 
-    function getLing(level){
-      return function (entry){
-        return T.Util.isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
-      };
-    }
-
-    function getProperty(level){
-      return function (entry){
-        return T.Util.isThere(entry, level, 'lings_property', 'property') ? entry[level].lings_property.property.name : ' ';
-      };
-    }
-
-    function getValue(level){
-      return function (entry){
-        return T.Util.isThere(entry, level, 'lings_property') ? entry[level].lings_property.value : ' ';
-      };
-    }
-
-    function getExamples(level){
-      return function (entry){
-        var list = [];
-        if(T.Util.isThere(entry, level, 'lings_property', 'examples')){
-          var examples = entry[level].lings_property.examples;
-
-          for( var i=0; i < examples.length; i++){
-            list.push(examples[i].name);
-          }
-        }
-        return list.join(',') || ' ';
-      };
-    }
-
     var new_entry = {};
     for( var c in columns ){
       if(columns.hasOwnProperty(c)){
@@ -69,31 +91,34 @@
     return new_entry;
   }
 
-  function getLingIds(json){
-    // iterate the parents and children
-    var ids = [];
-    
-    $.each(json.rows, function (index, row){
-      if(row.parent && row.parent.lings_property && !offspringCache[row.parent.lings_property.ling.id]){
-        ids.push(row.parent.lings_property.ling.id);
-        offspringCache[row.parent.lings_property.ling.id] = {name: row.parent.lings_property.ling.name, count: 1};
-      }
-      if(row.child && row.child.lings_property){
-        ids.push(row.child.lings_property.ling.id);
-        if(row.parent && row.parent.lings_property){
-          offspringCache[row.parent.lings_property.ling.id].count++;
+  function getLingIds(){
+    if(!lingsCache){
+      // iterate the parents and children
+      var ids = [];
+      
+      $.each(resultsJson.rows, function (index, row){
+        if(row.parent && row.parent.lings_property && !offspringCache[row.parent.lings_property.ling.id]){
+          ids.push(row.parent.lings_property.ling.id);
+          offspringCache[row.parent.lings_property.ling.id] = {name: row.parent.lings_property.ling.name, count: 1};
         }
-      }
-    });
-    return ids;
+        if(row.child && row.child.lings_property){
+          ids.push(row.child.lings_property.ling.id);
+          if(row.parent && row.parent.lings_property){
+            offspringCache[row.parent.lings_property.ling.id].count++;
+          }
+        }
+      });
+      lingsCache = ids;
+    }
+    return lingsCache;
   }
 
-  function getStyler(json){
+  function getStyler(){
     // how may lings are in the results?
     var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
                   'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
     var counter=0;
-    var popups = preparePopup(json);
+    var popups = preparePopup(resultsJson);
 
     function styler(entry){
       return counter < 20 ? {

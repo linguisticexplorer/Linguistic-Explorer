@@ -36,7 +36,26 @@
       
       // some handy functions
       util.isThere = isThere;
+      util.makeChunks = makeChunks;
     };
+
+    function makeChunks(list, size){
+      // take the list and make chunks of the given size
+      var steps = Math.floor(list.length / size) + 1;
+      
+      var chunks = [];
+      for( var i=0; i< steps; i++){
+        var offset = i * size;
+        // slice goes from begin to end-1
+        chunks.push(list.slice(offset, offset + size));
+      }
+      // Handle last bit
+      if(list[steps * size]){
+        chunks.push(list.slice(steps * size));
+      }
+
+      return chunks;
+    }
 
     function isThere(){
       if(arguments.length){

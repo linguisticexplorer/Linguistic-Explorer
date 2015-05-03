@@ -14,51 +14,77 @@
   };
 
   var getTemplatePath, getType;
+  var resultsJson;
+  var slicedJson;
 
-  function initMap(typeFn, templateFn){
+  function initMap(data, templateFn){
+    resultsJson = JSON.parse(JSON.stringify(data));
+
     getTemplatePath = templateFn;
-    getType = typeFn;
+
     return {
-      create: createMap
+      create: createMap,
+      destroy: destroy
     };
   }
 
-  function createMap(json){
+  function createMap(){
     // iterate throught the rows and find all the lings
-    var lingIds = getLings(json);
-    var isRegular = getType(json.type) === 'default';
+    var isRegular = resultsJson.type === 'default';
 
     // change the page template with the map one
     var mapTemplate = HoganTemplates[getTemplatePath('map')];
-    var htmlMap = mapTemplate.render({width: isRegular ? 12 : 10, panel: !isRegular});
+    // var htmlMap = mapTemplate.render({width: isRegular ? 12 : 10, panel: !isRegular});
+    var htmlMap = mapTemplate.render({width: 12, panel: false});
     $(".js-pagination").html('');
     $('#paginated-results').html(htmlMap);
 
     // now ask the server for all the coords for the given lings
     var options = {
-      name: lingIds,
-      markerStyler: getStyler(json)
+      name: getLings(),
+      markerStyler: getStyler()
     };
     T.Visualization.Map.init('mapResults', options, function(){
-      // here the map is done, clean some stuff
+      // here the map is done, do some more stuff
+      loadPanel(!isRegular);
     });
 
   }
 
-  function getStyler(json){
-    var fn = null;
-    if(searches.preview[json.type].getMapStyler){
-      fn = searches.preview[json.type].getMapStyler(json);
-    }
-    return fn;
+  function destroy(){
+    T.Visualization.Map.remove('mapResults');
   }
 
-  function getLings(json){
-    var ids;
-    if(searches.preview[json.type].getMapLings){
-      ids = searches.preview[json.type].getMapLings(json);
+  function getStyler(){
+    return searches.preview[resultsJson.type].init().mapStyler();
+    
+  }
+
+  function getLings(){
+    return searches.preview[resultsJson.type].init().getLings() || [];
+  }
+
+  function loadPanel(isActive){
+    if(isActive){
+      indexData(function(){
+        // index prepared here
+      });
     }
-    return ids || [];
+  }
+
+  function progressUpdater(progress){
+    var percent = Math.log(progress + 1) * 100;
+    $('#indexProgress').width(percent+'%');
+  }
+
+  function indexData(fn){
+
+    slicedJson = T.Util.makeChunks(resultsJson.rows, 200);
+
+    // now index the data based on the type
+    if(searches.preview[resultsJson.type].indexer){
+      searches.preview[resultsJson.type].indexer(slicedJson, progressUpdater, fn);
+    }
   }
 
 })();

@@ -16,19 +16,37 @@
   var containerId = 'similarity_tree';
   var phylogramBuilder;
 
+  var cachedRender;
+
   function renderClustering(json){
-    phylogramBuilder = T.Visualization.Phylogram;
+    if(!cachedRender){
+      phylogramBuilder = T.Visualization.Phylogram;
+      
+      // save it in case we want to swap between regular - radial
+      resultsJson = json.rows[1];
 
-    var width = $('#'+containerId).width();
-    
-    // save it in case we want to swap between regular - radial
-    resultsJson = json.rows[1];
+      cachedRender = {
+        makeRow   : $.noop,
+        makeTable : makeTable,
+        finalize  : makeGraph,
+        getLings  : $.noop,
+        mapStyler : $.noop,
+        lingIndex : $.noop
+      };
+    }
+    return cachedRender;
+  }
 
-    var options = {width: width, radial: false};
+  function makeTable(){
+    return {header: [], rows: []};
+  }
+
+  function makeGraph(options){
+    options = $.extend(options, {width: $('#'+containerId).width(), radial: false});
 
     phylogramBuilder.init(containerId, resultsJson, options);
 
-    // add a button to swap
+    // add a button to swap to radial mode
   }
 
 })();

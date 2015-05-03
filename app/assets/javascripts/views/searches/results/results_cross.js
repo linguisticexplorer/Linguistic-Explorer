@@ -8,22 +8,36 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
-  searches.preview.cross = searches.preview.implication = {};
+  var me  =searches.preview.cross = searches.preview.implication = {};
 
-  searches.preview.cross.render       = crossMapping;
-  searches.preview.cross.init         = initCross;
-  searches.preview.cross.getMapLings  = getLingIds;
-  searches.preview.cross.getMapStyler = getStyler;
+  me.init = initCross;
 
   var modal;
   var resultsJson;
 
   var lingsCache;
+  var cachedRender;
 
   function initCross(json){
+    if(!cachedRender){
 
-    resultsJson = json;
+      resultsJson = json;
 
+      bindLingsModal();
+
+      cachedRender = {
+        makeRow   : crossMapping,
+        makeTable : mapCrossHeaders,
+        finalize  : $.noop,
+        getLings  : getLingIds,
+        mapStyler : getStyler,
+        lingIndex : $.noop
+      };
+    }
+    return cachedRender;
+  }
+
+  function bindLingsModal(){
     // dynamically bind count links to show a modal with the lings
     $(document).on('click', '[id^="lings_cross_"]', showLingsModal);
 
@@ -64,6 +78,23 @@
       $('#cross_lings_modal').modal('show');
 
     }
+  }
+
+  function mapCrossHeaders(){
+    var headers = resultsJson.header;
+    var row = resultsJson.rows[0].parent;
+
+    var result = {headers: [], header: {count: headers.count }, rows: []};
+    for( var i =0; i<row.length; i++){
+      var header = {};
+      for( var h in headers){
+        if(headers.hasOwnProperty(h) && h !== 'count'){
+          header[h] = headers[h];
+        }
+      }
+      result.headers.push(header);
+    }
+    return result;
   }
 
   function prepareForRow(entry){
@@ -124,7 +155,7 @@
     return new_entry;
   }
 
-  function getLingIds(json){
+  function getLingIds(){
     // for each row collect the languages involved
     // use a dictionary to skip duplicates
     var lings = {};
@@ -135,7 +166,7 @@
       lingsCache = {};
 
       // This double loop can go very bad with many rows
-      $.each(json.rows, function (index, row){
+      $.each(resultsJson.rows, function (index, row){
         if(row.child && row.child.length){
           $.each(row.child, function (i, child){
             var ling = child.lings_property.ling;
@@ -165,13 +196,13 @@
     return ids;
   }
 
-  function getStyler(json){
+  function getStyler(){
     // how may lings are in the results?
     var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
                   'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
     var counter=0;
 
-    var popups = preparePopup(json);
+    var popups = preparePopup(resultsJson);
 
     function styler(entry){
       return counter < 20 ? {

@@ -127,6 +127,7 @@
     
     if($.isFunction(fn)){
       elements.on('click', function (e){
+        e.preventDefault();
         if(!parents.hasClass('active')){
           $('#results-navbar-collapse ul > li').removeClass('active');
           parents.toggleClass('active');
@@ -148,7 +149,7 @@
     
     toggleNavbarButton('#table'     , true         , showTable);
     toggleNavbarButton('#saveit'    , isDefault    , saveFn);
-    toggleNavbarButton('#vizit'     , !isDefault   , vizFn);
+    toggleNavbarButton('#vizit'     , false   , vizFn); // Later it will be !isDefault
     toggleNavbarButton('#downloadit', isClustering , downloadFn);
     toggleNavbarButton('#mapit'     , !isClustering, mapFn);
 
@@ -174,8 +175,12 @@
         show('slow');
 
     } else {
-      
+
+      // Save the type of the result (unify all the implication types)
+      resultsJson.type = setType(resultsJson.type);
+      // Setup all the associated controllers (Maps, Table, Viz, etc...)
       initAssociatedControllers();
+
       makeNewPage(resultsJson, 0, true);
       
     }
@@ -185,8 +190,8 @@
 
   function initAssociatedControllers(){
     // Map Controller
-    mapper = searches.preview.map.init(getType, getTemplatePath);
-    tableBuilder = searches.preview.table.init(getType, initPageForType);
+    mapper = searches.preview.map.init(resultsJson, getTemplatePath);
+    tableBuilder = searches.preview.table.init(resultsJson, makeNewPage);
   }
 
   function makeNewPage(json, offset, bar){
@@ -209,56 +214,41 @@
       }
     }
 
-    if(!isClustering){
+    table = tableBuilder.createTable(offset);
+    paginationData = tableBuilder.createPagination(offset);
 
-      table = tableBuilder.getData(json, offset);
-      paginationData = tableBuilder.createPagination(json, offset);
-
-    }
 
     if(bar){
       setBar(80, 'Data processed');
     }
     
-    // we need the template in case of clustering anyway...
-    // template = Handlebars.compile($(template_id).html());
-
-    if(!isClustering){
-      
-      paginationTemplate = HoganTemplates[getTemplatePath('pagination')];
-     
-    }
+    paginationTemplate = HoganTemplates[getTemplatePath('pagination')];
     
     if(bar){
       setBar(100, 'Preparing the results');
     }
 
     htmlRows = template.render(table || {});
-
-    if(!isClustering){
-      htmlPagination = paginationTemplate.render(paginationData);
-    }
+    htmlPagination = paginationTemplate.render(paginationData);
     
 
     setTimeout(function(){
-      // cache it for later reuse
-      templateCompiled.table = htmlRows;
-      templateCompiled.pagination = htmlPagination;
 
-      $('#paginated-results').html(htmlRows);
+      // if(isClustering){
 
-      if(isClustering){
+      //   // draw philogram
+      //   initPageForType(json);
 
-        // draw philogram
-        initPageForType(json);
+      // } else {
 
-      } else {
+        // cache it for later reuse
+        templateCompiled.table = htmlRows;
+        templateCompiled.pagination = htmlPagination;
 
-        $(".js-pagination").html(htmlPagination);
+        tableBuilder.render(templateCompiled, '#paginated-results', ".js-pagination");
+        // tableBuilder.bindPagination();
 
-        tableBuilder.bindPagination();
-
-      }
+      // }
       
       if(navbarOn){
         enableNavbar(json.type);
@@ -267,37 +257,37 @@
     }, 700);
   }
 
-  function getType(type){
+  function setType(type){
     return (/implication/).test(type) ? 'implication' : type;
   }
 
   function initPageForType(json){
-    if(searches.preview[json.type].init){
-      searches.preview[json.type].init(json);
-    }
+    return searches.preview[json.type].init(json);
   }
 
   function vizFn(e){
-    e.preventDefault();
   }
 
   function downloadFn(e){
-    e.preventDefault();
   }
 
   function saveFn(e) {
-    e.preventDefault();
   }
 
   function mapFn(e){
-    e.preventDefault();
-    mapper.create(resultsJson);
+    cleanPage();
+    mapper.create();
   }
 
-  function showTable(){
-    $(".js-pagination").html('');
-    $('#paginated-results').html('');
+  function showTable(e){
+    cleanPage();
     makeNewPage(resultsJson, 0, true);
+  }
+
+  function cleanPage(){
+    mapper.destroy();
+    $(".js-pagination").empty();
+    $('#paginated-results').empty().html('<p class="strong" style="text-align: center;">Loading...</p>');
   }
 
 })();
