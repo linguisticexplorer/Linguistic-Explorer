@@ -10,15 +10,18 @@
   searches.preview = searches.preview || {};
 
   searches.preview.save ={
-    init: init
+    init: init,
+    destroy: clearCache
   };
 
   var resultsJson;
-  var saver;
+  var saver, renderer;
 
-  function init(json){
+  function init(json, getTemplate){
     if(!saver){
       resultsJson = json;
+
+      renderer = searches.preview[resultsJson.type].init(resultsJson, getTemplate);
 
       // don't worry: in case it's forced the server will reject it anyway
       $('#save-form').on('submit', function (e){
@@ -41,6 +44,10 @@
       };
     }
     return saver;
+  }
+
+  function clearCache(){
+    saver = null;
   }
 
   function showModal(){
@@ -99,10 +106,46 @@
   }
 
   function newDownload(){
-    if(T.Util.isFileSaverSupported()){
-      // Show a modal where a progress bar will show the progress of the making of the data
-      var chunks = T.Util.makeChunks(JSON.parse(JSON.stringify(resultsJson)));
+    var header;
+
+    function processData(table, list, next){
+      list.forEach(function (row, index){
+        table.rows.push(renderer.makeRow(header, row, index));
+      });
+
+      setTimeout(function(){
+        return next(null, table);
+      }, 0);
     }
 
+    if(T.Util.isFileSaverSupported()){
+
+      var table = renderer.makeTable();
+
+      header = getHeader(table);
+
+      // Show a modal where a progress bar will show the progress of the making of the data
+      var chunks = T.Util.makeChunks(JSON.parse(JSON.stringify(resultsJson)).rows);
+
+      async.reduce(chunks, table, processData, function (err, result){
+        // compile the rows in a meaninful way
+        // make a Blob
+        // download it
+      });
+    }
+  }
+
+  function getHeader(table){
+    switch (resultsJson.type){
+      case 'compare':
+      case 'default':
+        return table.header;
+      case 'cross':
+      case 'implication':
+        return table;
+      default:
+        // Fail silently....
+        return {};
+    }
   }
 })();

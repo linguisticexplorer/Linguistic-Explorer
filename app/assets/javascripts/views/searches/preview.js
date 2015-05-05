@@ -195,8 +195,8 @@
   function initAssociatedControllers(){
     // Map Controller
     mapper       = me.map.init(resultsJson, getTemplatePath);
-    tableBuilder = me.table.init(resultsJson, makeNewPage, getTemplatePath);
-    saver        = me.save.init(resultsJson);
+    tableBuilder = me.table.init(resultsJson, getTemplatePath, makeNewPage);
+    saver        = me.save.init(resultsJson, getTemplatePath);
   }
 
   function makeNewPage(json, offset, bar){

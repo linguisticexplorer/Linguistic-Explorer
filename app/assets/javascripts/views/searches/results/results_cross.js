@@ -8,9 +8,10 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
-  var me  =searches.preview.cross = searches.preview.implication = {};
-
-  me.init = initCross;
+  var me  =searches.preview.cross = searches.preview.implication = {
+    init: initCross,
+    destroy: clearCache
+  };
 
   var modal;
   var resultsJson;
@@ -35,6 +36,10 @@
       };
     }
     return cachedRender;
+  }
+
+  function clearCache(){
+    cachedRender = null;
   }
 
   function bindLingsModal(){

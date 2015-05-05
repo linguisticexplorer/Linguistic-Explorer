@@ -10,7 +10,10 @@
   searches.preview = searches.preview || {};
   searches.preview.clustering = {};
 
-  searches.preview.clustering.init = renderClustering;
+  searches.preview.clustering = {
+    init: renderClustering,
+    destroy: clearCache
+  };
 
   var resultsJson;
   var containerId = 'similarity_tree';
@@ -37,6 +40,10 @@
       };
     }
     return cachedRender;
+  }
+
+  function clearCache(){
+    cachedRender = null;
   }
 
   function makeTable(){

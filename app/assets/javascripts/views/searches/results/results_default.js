@@ -8,9 +8,10 @@
   var searches = this.Terraling.Searches;
   
   searches.preview = searches.preview || {};
-  var me = searches.preview.default = {};
-
-  me.init = create;
+  var me = searches.preview.default = {
+    init: create,
+    destroy: clearCache
+  };
 
   var offspringCache = {},
       lingsCache;
@@ -32,6 +33,10 @@
       };
     }
     return cachedRender;
+  }
+
+  function clearCache(){
+    cachedRender = null;
   }
 
   function mapRegularHeader(){

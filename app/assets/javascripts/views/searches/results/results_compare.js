@@ -10,7 +10,10 @@
   searches.preview = searches.preview || {};
   searches.preview.compare = {};
 
-  searches.preview.compare.init = create;
+  searches.preview.compare = {
+    init: create,
+    destroy: clearCache
+  };
 
   var resultsJson;
   var cachedRender;
@@ -29,6 +32,10 @@
       };
     }
     return cachedRender;
+  }
+
+  function clearCache(){
+    cachedRender = null;
   }
 
   function compareHeaders(){

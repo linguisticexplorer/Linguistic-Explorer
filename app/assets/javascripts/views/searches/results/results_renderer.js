@@ -9,7 +9,7 @@
   
   searches.preview = searches.show = searches.preview || {};
 
-  searches.preview.table = {init: initTable};
+  searches.preview.table = {init: initTable, destroy: clearCache};
 
   var currentPage;
   var paginationSetup;
@@ -21,7 +21,7 @@
 
   var renderer;
 
-  function initTable(data, pageMaker, templateFn){
+  function initTable(data, templateFn, pageMaker){
     resultsJson = data;
     makeNewPage = pageMaker;
     getTemplate = templateFn;
@@ -31,6 +31,12 @@
       createPagination: createPagination,
       render: render
     };
+  }
+
+  function clearCache(){
+    searches.preview[resultsJson.type].destroy();
+    resultsJson = null;
+    renderer = null;
   }
 
   function render(data, tableId, paginationId){

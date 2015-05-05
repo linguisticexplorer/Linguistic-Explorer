@@ -18,6 +18,27 @@
 
     var resourceId = 'ling';
 
+    var queryTemplate = {
+      authenticity_token: $('meta[name=csrf-token]').attr('content'),
+      search: {
+        // will use it for clustering
+        advanced_set : {},
+        // will use it for compare
+        ling_set: {'0': '', '1': ''},
+        // put the lings ids here
+        lings: {'0': [], '1': [] },
+        // static stuff used to prevent any filter on properties
+        property_set: {'0': 'any', '1': 'any'},
+        lings_property_set: {'0': 'any', '1': 'any'},
+        ling_keywords: {'0': null, '1': null},
+        property_keywords: {'0': null, '1': null},
+        example_fields: {'0': 'description', '1': 'description'},
+        example_keywords: {'0': null, '1': null},
+        // enable javascript
+        javascript: true
+      }
+    };
+
     function setupAnalysis(){
       var field = $('#details');
       // Set the id
@@ -35,6 +56,9 @@
       // bind some buttons here
       bindAnalysis('#compare-lings', 'compare');
       bindAnalysis('#similarity-tree', 'clustering');
+      // Remember to destroy the renderer once the modal is hidden
+      $('#analysis-modal').on('hidden.bs.modal', T.Searches.preview.table.destroy);
+    
 
       // init the typeahead
       setupTypeahead();
@@ -45,7 +69,7 @@
 
       // load Map
       $("#mapButton").one('click', loadMap);
-      $('#surenessButton').one('click', loadHeatMap);
+      // $('#surenessButton').one('click', loadHeatMap);
     }
 
     function checkButtons(criteria){
@@ -72,7 +96,7 @@
     function addSearchTypeToParams(params, type){
       var isClustering = 'clustering' === type;
       if(isClustering){
-        params.advanced_set.clustering = 'hammering';
+        params.advanced_set.clustering = 'hamming';
       } else {
         params.ling_set['' + currentDepth] = 'compare';
       }
@@ -102,26 +126,7 @@
 
     // Just save static parameters in somewhere
     function staticParams(){
-      return {
-        authenticity_token: $('meta[name=csrf-token]').attr('content'),
-        search: {
-          // will use it for clustering
-          advanced_set : {},
-          // will use it for compare
-          ling_set: {'0': '', '1': ''},
-          // put the lings ids here
-          lings: {'0': [], '1': [] },
-          // static stuff used to prevent any filter on properties
-          property_set: {'0': 'any', '1': 'any'},
-          lings_property_set: {'0': 'any', '1': 'any'},
-          ling_keywords: {'0': null, '1': null},
-          property_keywords: {'0': null, '1': null},
-          example_fields: {'0': 'description', '1': 'description'},
-          example_keywords: {'0': null, '1': null},
-          // enable javascript
-          javascript: true
-        }
-      };
+      return JSON.parse(JSON.stringify(queryTemplate));
     }
 
     function analysisURL(){
@@ -247,6 +252,7 @@
         // init the page js
         T.Searches.preview.init(true, true);
       });
+
     }
 
 })();
