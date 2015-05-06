@@ -21,7 +21,7 @@
 
     function goToResourceURL(evt, resource, name){
       // get controller name here
-      window.location.href = '/groups/'+T.currentGroup+'/'+T.controller+'/'+resource.id;
+      window.location.href = '/groups/'+T.currentGroup+'/'+T.controller.toLowerCase()+'/'+resource.id;
     }
 
     T.Search.quickTemplate(
