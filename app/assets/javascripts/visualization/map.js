@@ -85,9 +85,9 @@
   function createMarker(entry, styler, map, id){
     // start with a default style
     var style = {
-      markerColor: 'white',
+      markerColor: 'blue',
       icon: 'info',
-      iconColor: 'red',
+      iconColor: 'white',
       spin: false
     };
     // overwrite style if a styler is passed
