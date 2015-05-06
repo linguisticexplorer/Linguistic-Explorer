@@ -9,143 +9,127 @@
   
   searches.preview = searches.preview || {};
   var me = searches.preview.default = {
-    init: create,
-    destroy: clearCache
+    init: create
   };
 
-  var offspringCache = {},
-      lingsCache;
-
-  var resultsJson;
-  var cachedRender;
-
   function create(json){
-    if(!cachedRender){
-      resultsJson = json;
+    var resultsJson = json;
+    var offspringCache = {},
+        lingsCache;
 
-      cachedRender =  {
-        makeRow   : defaultMapping,
-        makeTable : mapRegularHeader,
-        finalize  : $.noop,
-        getLings  : getLingIds,
-        mapStyler : getStyler,
-        lingIndex : $.noop
+    function mapRegularHeader(){
+      return {header: resultsJson.header, rows: []};
+    }
+
+    function getLing(level){
+      return function (entry){
+        return T.Util.isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
       };
     }
-    return cachedRender;
-  }
 
-  function clearCache(){
-    cachedRender = null;
-  }
-
-  function mapRegularHeader(){
-    return {header: resultsJson.header, rows: []};
-  }
-
-  function getLing(level){
-    return function (entry){
-      return T.Util.isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
-    };
-  }
-
-  function getProperty(level){
-    return function (entry){
-      return T.Util.isThere(entry, level, 'lings_property', 'property') ? entry[level].lings_property.property.name : ' ';
-    };
-  }
-
-  function getValue(level){
-    return function (entry){
-      return T.Util.isThere(entry, level, 'lings_property') ? entry[level].lings_property.value : ' ';
-    };
-  }
-
-  function getExamples(level){
-    return function (entry){
-      var list = [];
-      if(T.Util.isThere(entry, level, 'lings_property', 'examples')){
-        var examples = entry[level].lings_property.examples;
-
-        for( var i=0; i < examples.length; i++){
-          list.push(examples[i].name);
-        }
-      }
-      return list.join(',') || ' ';
-    };
-  }
-
-  function defaultMapping(columns, entry){
-    var func_dict = {
-      'ling_0'    : getLing('parent'),
-      'property_0': getProperty('parent'),
-      'value_0'   : getValue('parent'),
-      'example_0' : getExamples('parent'),
-      'ling_1'    : getLing('child'),
-      'property_1': getProperty('child'),
-      'value_1'   : getValue('child'),
-      'example_1' : getExamples('child')
-    };
-
-    var new_entry = {};
-    for( var c in columns ){
-      if(columns.hasOwnProperty(c)){
-        new_entry[c] = func_dict[c](entry);
-      }
+    function getProperty(level){
+      return function (entry){
+        return T.Util.isThere(entry, level, 'lings_property', 'property') ? entry[level].lings_property.property.name : ' ';
+      };
     }
-    return new_entry;
-  }
 
-  function getLingIds(){
-    if(!lingsCache){
-      // iterate the parents and children
-      var ids = [];
-      
-      $.each(resultsJson.rows, function (index, row){
-        if(row.parent && row.parent.lings_property && !offspringCache[row.parent.lings_property.ling.id]){
-          ids.push(row.parent.lings_property.ling.id);
-          offspringCache[row.parent.lings_property.ling.id] = {name: row.parent.lings_property.ling.name, count: 1};
-        }
-        if(row.child && row.child.lings_property){
-          ids.push(row.child.lings_property.ling.id);
-          if(row.parent && row.parent.lings_property){
-            offspringCache[row.parent.lings_property.ling.id].count++;
+    function getValue(level){
+      return function (entry){
+        return T.Util.isThere(entry, level, 'lings_property') ? entry[level].lings_property.value : ' ';
+      };
+    }
+
+    function getExamples(level){
+      return function (entry){
+        var list = [];
+        if(T.Util.isThere(entry, level, 'lings_property', 'examples')){
+          var examples = entry[level].lings_property.examples;
+
+          for( var i=0; i < examples.length; i++){
+            list.push(examples[i].name);
           }
         }
-      });
-      lingsCache = ids;
+        return list.join(',') || ' ';
+      };
     }
-    return lingsCache;
-  }
 
-  function getStyler(){
-    // how may lings are in the results?
-    var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
-                  'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
-    var counter=0;
-    var popups = preparePopup(resultsJson);
+    function defaultMapping(columns, entry){
+      var func_dict = {
+        'ling_0'    : getLing('parent'),
+        'property_0': getProperty('parent'),
+        'value_0'   : getValue('parent'),
+        'example_0' : getExamples('parent'),
+        'ling_1'    : getLing('child'),
+        'property_1': getProperty('child'),
+        'value_1'   : getValue('child'),
+        'example_1' : getExamples('child')
+      };
 
-    function styler(entry){
-      return counter < 20 ? {
-        markerColor: colors[counter++],
-        iconColor: 'white',
-        icon: 'info',
-        text: popups[entry.id]
-      } : null;
+      var new_entry = {};
+      for( var c in columns ){
+        if(columns.hasOwnProperty(c)){
+          new_entry[c] = func_dict[c](entry);
+        }
+      }
+      return new_entry;
     }
-    return styler;
-  }
 
-  function preparePopup(json){
-    // get the template now
-    var template = HoganTemplates['searches/results/map_popup'];
-    
-    var popups = {};
-    for( var id in offspringCache){
-      var entry = offspringCache[id];
-      popups[id] = template.render({name: entry.name, row1: entry.count > 1 ? 'Has '+entry.count+' '+T.groups[T.currentGroup].ling1_name : ''});
+    function getLingIds(){
+      if(!lingsCache){
+        // iterate the parents and children
+        var ids = [];
+        
+        $.each(resultsJson.rows, function (index, row){
+          if(row.parent && row.parent.lings_property && !offspringCache[row.parent.lings_property.ling.id]){
+            ids.push(row.parent.lings_property.ling.id);
+            offspringCache[row.parent.lings_property.ling.id] = {name: row.parent.lings_property.ling.name, count: 1};
+          }
+          if(row.child && row.child.lings_property){
+            ids.push(row.child.lings_property.ling.id);
+            if(row.parent && row.parent.lings_property){
+              offspringCache[row.parent.lings_property.ling.id].count++;
+            }
+          }
+        });
+        lingsCache = ids;
+      }
+      return lingsCache;
     }
-    return popups;
+
+    function getStyler(){
+      var popups = preparePopup(resultsJson);
+
+      function styler(entry){
+        return {
+          markerColor: 'blue',
+          iconColor: 'white',
+          icon: 'info',
+          text: popups[entry.id]
+        };
+      }
+      return styler;
+    }
+
+    function preparePopup(json){
+      // get the template now
+      var template = HoganTemplates['searches/results/map_popup'];
+      
+      var popups = {};
+      for( var id in offspringCache){
+        var entry = offspringCache[id];
+        popups[id] = template.render({name: entry.name, row1: entry.count > 1 ? 'Has '+entry.count+' '+T.groups[T.currentGroup].ling1_name : ''});
+      }
+      return popups;
+    }
+
+    return  {
+      makeRow   : defaultMapping,
+      makeTable : mapRegularHeader,
+      finalize  : $.noop,
+      getLings  : getLingIds,
+      mapStyler : getStyler,
+      lingIndex : $.noop
+    };
   }
 
 })();
