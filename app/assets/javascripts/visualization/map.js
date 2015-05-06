@@ -18,17 +18,15 @@
     // create a Leaflet map in the specific id
     var map = new L.Map(id, {minZoom: 1, zoomControl: false});
 
-    // load the layer while waiting for the data
-    map.fitWorld().zoomIn();
-
-    // create the tile layer with correct attribution
-    var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
-      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
-    });
-    map.addLayer(layer);
-
     // push the data
     $.when(T.promises.map.data).then(function(){
+
+      // create the tile layer with correct attribution
+      var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
+        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
+      });
+      layer.once('load', map.fitWorld().zoomIn);
+      map.addLayer(layer);
       
       map.addControl(createZoomControl());
 
@@ -237,7 +235,11 @@
             bounds.push(layer._latlng);
           }
         });
-        map.fitBounds(bounds);
+        if(bounds.length > 1){
+          map.fitBounds(bounds);
+        } else {
+          map.setZoomAround(bounds[0], 8);
+        }
       }
       return fitToPoints;
     }
