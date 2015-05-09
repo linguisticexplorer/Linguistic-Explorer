@@ -41,10 +41,12 @@
     $(".js-pagination").html('');
     $('#paginated-results').html(htmlMap);
 
+    var resultsRenderer = searches.preview[resultsJson.type].init(resultsJson);
+
     // now ask the server for all the coords for the given lings
     var options = {
-      name: getLings(),
-      markerStyler: getStyler()
+      name: resultsRenderer.getLings(),
+      markerStyler: resultsRenderer.mapStyler()
     };
     T.Visualization.Map.init('mapResults', options, function(){
       // here the map is done, do some more stuff
@@ -55,15 +57,6 @@
 
   function destroy(){
     T.Visualization.Map.remove('mapResults');
-  }
-
-  function getStyler(){
-    return searches.preview[resultsJson.type].init().mapStyler();
-    
-  }
-
-  function getLings(){
-    return searches.preview[resultsJson.type].init().getLings() || [];
   }
 
   function loadPanel(isActive){

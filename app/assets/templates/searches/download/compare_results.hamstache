@@ -1,2 +1,9 @@
-{{#commons}}Properties in Common {{lings}}{{#header.commons.compare_property}}{{header.commons.compare_property}},{{/header.commons.compare_property}}{{#header.commons.common_values}}{{header.commons.common_values}}{{/header.commons.common_values}}\n{{#rows.commons}}{{#compare_property}}{{compare_property}},{{/compare_property}}{{#common_values}}{{common_values}}{{/common_values}}\n{{/rows.commons}}{{/commons}}
-{{#differents}}\n{{#header.differents.compare_property}}{{header.differents.compare_property}},{{/header.differents.compare_property}}{{#header.differents.ling_value}}{{.}},{{/header.differents.ling_value}}\n{{#rows.differents}}{{#compare_property}}{{compare_property}},{{/compare_property}}{{#ling_value}}{{.}},{{/ling_value}}{{/rows.differents}}{{/differents}}
+{{#commons}}Properties in Common {{lings}},{{#header.commons.compare_property}}{{header.commons.compare_property}},{{/header.commons.compare_property}}{{#header.commons.common_values}}{{header.commons.common_values}}{{/header.commons.common_values}}
+{{#rows.commons}}
+{{#compare_property}}{{compare_property}},{{/compare_property}}{{#common_values}}{{common_values}}{{/common_values}}
+{{/rows.commons}}{{/commons}}
+{{#differents}}Properties not in Common,{{#header.differents.compare_property}}{{header.differents.compare_property}},{{/header.differents.compare_property}}{{#header.differents.ling_value}}{{.}},{{/header.differents.ling_value}}
+{{#rows.differents}}
+{{#compare_property}}{{compare_property}},{{/compare_property}}{{#ling_value}}{{.}},{{/ling_value}}
+{{/rows.differents}}
+{{/differents}}

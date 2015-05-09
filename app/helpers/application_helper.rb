@@ -129,6 +129,10 @@ module ApplicationHelper
     end
   end
 
+  def can_see_some?
+    get_user_role(current_group) === 'Expert'
+  end
+
   def user_has_any_role?
     @group && (current_user.admin? || (current_user.member_of?(@group)))
   end

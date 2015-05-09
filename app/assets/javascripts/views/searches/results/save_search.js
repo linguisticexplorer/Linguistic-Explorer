@@ -78,38 +78,35 @@
 
     function download(){
       $('#download-modal').modal('show');
-      if(resultsJson.type === 'clustering'){
-        // just open a new window with the image
-        downloadImage();
-      } else if(T.Util.isFileSaverSupported()){
-        newDownload();
-      }
+      newDownload();
     }
 
-    function downloadImage(){
-      if(T.Util.isFileSaverSupported()){
-        var chart = $('#similarity_tree').html();
-        var blob = new Blob([chart], {type: 'image/svg+xml'});
-        saveAs(blob, 'similarity_tree.svg');
+    function getImageBlob(){
+      var chart = $('#similarity_tree').html();
+      return new Blob([chart], {type: 'image/svg+xml'});
+    }
 
-        $('#processingProgress').text('Done');
-      }
+    function getTableBlob(){
+      var tableBuilder = searches.preview.table.init(resultsJson, templateFn);
+      // 10000 rows is the current hard limit
+      var result = tableBuilder.createTable(0, 10000);
+      // now add the commas (there's no easy way to do this in Mustache)
+
+      // compile the rows in a meaninful way
+      var csvString = getCSVTemplate(resultsJson.type).render(result);
+      return new Blob([csvString], {type: 'text/plain;charset=utf-8'});
     }
 
     function newDownload(){
 
       if(T.Util.isFileSaverSupported()){
 
-        var tableBuilder = searches.preview.table.init(resultsJson, templateFn);
-
-        var result = tableBuilder.createTable(0, 10000);
-
-        // compile the rows in a meaninful way
-        var csvString = getCSVTemplate(resultsJson.type).render(result);
-        // make a Blob
-        var blob = new Blob([csvString], {type: 'text/plain;charset=utf-8'});
+        var blob = resultsJson.type === 'clustering' ? getImageBlob() : getTableBlob();
         // download it
-        saveAs(blob, 'terraling-search-results.csv');
+        saveAs(blob, 'terraling-search-results-'+resultsJson.type+'.csv');
+        $('#processingProgress').text('Done');
+      } else {
+        $('#processingProgress').text('It is not possible to download the current results.');
       }
     }
 

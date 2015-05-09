@@ -14,18 +14,19 @@
 
     // get the data as first step while doing other stuff
     T.promises.map.data = getData(conf.name || '', id, conf.type);
-    
-    // create a Leaflet map in the specific id
-    var map = new L.Map(id, {minZoom: 1, zoomControl: false});
 
     // push the data
     $.when(T.promises.map.data).then(function(){
+      
+      // create a Leaflet map in the specific id
+      var map = new L.Map(id, {minZoom: 1, zoomControl: false, zoom: 2, center: [0,0]});
 
-      // create the tile layer with correct attribution
+        // create the tile layer with correct attribution
       var layer = L.tileLayer('http://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png',{
         attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, &copy; <a href="http://cartodb.com/attributions">CartoDB</a>'
       });
-      layer.once('load', map.fitWorld().zoomIn);
+      layer.once('load', fitWorld(map));
+
       map.addLayer(layer);
       
       map.addControl(createZoomControl());
@@ -42,6 +43,12 @@
       }
 
     });
+  }
+
+  function fitWorld(map){
+    return function(){
+      map.fitWorld();
+    };
   }
 
   function destroy(id){

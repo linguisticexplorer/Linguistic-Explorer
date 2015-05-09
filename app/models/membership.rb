@@ -63,7 +63,7 @@ class Membership < ActiveRecord::Base
 
   def role
     level === ADMIN ? 'group admin' : 
-      has_role?(:expert, :any) ? 'expert' : MEMBER
+      is_expert? ? 'expert' : MEMBER
   end
 
   def is_expert?

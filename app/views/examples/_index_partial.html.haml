@@ -16,7 +16,7 @@
     - else
       - current_group.example_storable_keys.each do |key|
         %th= key.humanize
-  - if can_see? :manage, @examples
+  - if can_see_some?
     %th Actions
   - @examples.each do |example|
     %tr
@@ -45,10 +45,12 @@
                   %td.small-col.align-left= example.stored_value(key)
                 - else
                   %td.align-left= example.stored_value(key)
-      - if can_see? :manage, example
+      - if can_see_some?
         %td
-          = link_to 'Edit', edit_group_example_path(current_group, example), :class => 'btn btn-default btn-sm'
-          = link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-sm', :confirm => 'Are you sure?', :method => :delete
+          - if can_see? :manage, example
+            = link_to 'Edit', edit_group_example_path(current_group, example), :class => 'btn btn-default btn-sm'
+            - if can_see? :destroy, example
+              = link_to 'Destroy', [current_group, example], :class => 'btn btn-danger btn-sm', :confirm => 'Are you sure?', :method => :delete
 #pagination_bottom.apple_pagination.will-paginate
   / render page links in the view:
   = will_paginate @examples, renderer: BootstrapPagination::Rails

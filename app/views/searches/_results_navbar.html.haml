@@ -21,8 +21,12 @@
             = icon 'photo', '', :class => "fa-15x"
       %ul.nav.navbar-nav.pull-right
         %li
-          = link_to '#', { :id => 'downloadit', :rel => "tooltip", :title => "Download Results", :data => {:toggle => "tooltip", :animation => "true"} } do
-            = icon 'download', '', :class => "fa-15x"
+          - if user_has_any_role?
+            = link_to '#', { :id => "downloadit", :rel => "tooltip", :title => "Download Results", :data => {:toggle => "tooltip", :animation => "true"} } do
+              = icon 'download', '', :class => "fa-15x"
+          - else
+            = link_to '#', { :id => "downloadit-disabled", :rel => "tooltip", :title => "Download Results", :data => {:toggle => "tooltip", :animation => "true"}, :disabled => "disabled", :class => "disabled" } do
+              = icon 'download', '', :class => "fa-15x"
         %li
           = link_to '#', { :id => 'saveit', :rel => "tooltip", :title => "Save Search", :data => {:toggle => "tooltip", :animation => "true"} } do
             = icon 'tags', '', :class => "fa-15x"
