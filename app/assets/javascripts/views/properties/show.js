@@ -51,9 +51,44 @@
     function loadMap(){
       var options = {
         name: currentId,
-        type: 'property'
+        type: 'property',
+        markerStyler: getStyler()
       };
+      // one color per property value
       T.Visualization.Map.init('property-map', options);
+    }
+
+    function getStyler(){
+      // how may lings are in the results?
+      var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
+                    'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
+      var counter=0;
+      var values = {};
+
+      function styler(entry){
+        var hash = typeof entry.value === 'string' ? entry.value : entry.value.join(',');
+        // for each entry associate a new color if it is the first occurencies
+        // or pick up the cached one
+        var color;
+        if(!values[hash]){
+          if(counter < 20){
+            color = values[hash] = colors[counter++];
+
+          }
+        }else if(values[hash]){
+          color = values[hash];
+        } else {
+          // just exit
+          return null;
+        }
+        return {
+          markerColor: color,
+          iconColor: 'white',
+          icon: 'info',
+          text: 'Value: '+hash
+        };
+      }
+      return styler;
     }
 
     function setupTypeahead(type, resolver, onSelection){
