@@ -59,36 +59,20 @@
     }
 
     function getStyler(){
-      // how may lings are in the results?
-      var colors = ['red', 'blue', 'green', 'purple', 'orange', 'darkred', 'lightred', 'beige', 'darkblue', 'darkgreen',
-                    'cadetblue', 'darkpurple', 'white', 'pink', 'lightblue', 'lightgreen', 'gray', 'black', 'lightgray'];
-      var counter=0;
-      var values = {};
 
       function styler(entry){
-        var hash = typeof entry.value === 'string' ? entry.value : entry.value.join(',');
-        // for each entry associate a new color if it is the first occurencies
-        // or pick up the cached one
-        var color;
-        if(!values[hash]){
-          if(counter < 20){
-            color = values[hash] = colors[counter++];
-
-          }
-        }else if(values[hash]){
-          color = values[hash];
-        } else {
-          // just exit
-          return null;
-        }
+        var color = 'blue';
+        // TODO:
+        // Just show a marker for the moment...
+        // Later will add later the popup data to the marker
         return {
           markerColor: color,
           iconColor: 'white',
-          icon: 'info',
-          text: 'Value: '+hash
+          icon: 'info'
         };
       }
-      return styler;
+
+      return null;
     }
 
     function setupTypeahead(type, resolver, onSelection){
