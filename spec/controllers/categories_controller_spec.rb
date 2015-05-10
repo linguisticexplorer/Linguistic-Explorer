@@ -23,12 +23,13 @@ describe CategoriesController do
     it "@category should be found by id through current_group" do
       @group = groups(:inclusive)
       @category = categories(:inclusive1)
-      expect(@category.group) == @group
+      expect(@category.group).to eq(@group)
       allow(Group).to receive_message_chain(:find).and_return(Group)
       allow(Group).to receive_message_chain(:categories).and_return @group.categories
+      allow(Group).to receive_message_chain(:properties).and_return @group.properties
 
       get :show, :id => @category.id, :group_id => @group.id
-      expect(assigns(:category)) == @category
+      expect(assigns(:category)).to eq(@category)
     end
   end
 
@@ -47,7 +48,7 @@ describe CategoriesController do
     describe "assigns" do
       it "a new category to @category" do
         get :new, :group_id => groups(:inclusive).id
-        assigns(:category).should be_new_record
+        expect(assigns(:category)).to be_new_record
       end
     end
   end
@@ -79,13 +80,13 @@ describe CategoriesController do
       it "the requested category's depth to @depth" do
         @category = categories(:inclusive1)
         get :edit, :id => @category.id, :group_id => groups(:inclusive).id
-        expect(assigns(:depth)) == @category.depth
+        expect(assigns(:depth)).to eq(@category.depth)
       end
 
       it "the requested category to @category" do
         @category = categories(:inclusive0)
         get :edit, :id => @category.id, :group_id => groups(:inclusive).id
-        expect(assigns(:category)) == @category
+        expect(assigns(:category)).to eq(@category)
       end
     end
   end
@@ -104,19 +105,19 @@ describe CategoriesController do
 
     describe "with valid params" do
       it "assigns a newly created category to @category" do
-        lambda {
+        expect {
           post :create, :category => {'name' => 'FROMSPACE', :description => "lots of junk", :depth => '0'}, :group_id => groups(:inclusive).id
-          assigns(:category).should_not be_new_record
-          assigns(:category).should be_valid
-          expect(assigns(:category).name) == 'FROMSPACE'
-          expect(assigns(:category).description) == "lots of junk"
-          expect(assigns(:category).depth) == 0
-        }.should change(Category, :count).by(1)
+          expect(assigns(:category)).not_to be_new_record
+          expect(assigns(:category)).to be_valid
+          expect(assigns(:category).name).to eq('FROMSPACE')
+          expect(assigns(:category).description).to eq("lots of junk")
+          expect(assigns(:category).depth).to eq(0)
+        }.to change(Category, :count).by(1)
       end
 
       it "redirects to the created category" do
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
-        response.should redirect_to(group_category_url(assigns(:group), assigns(:category)))
+        expect(response).to redirect_to(group_category_url(assigns(:group), assigns(:category)))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -124,7 +125,7 @@ describe CategoriesController do
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         post :create, :category => {'name' => 'FROMSPACE', :depth => 0}, :group_id => groups(:inclusive).id
-        expect(assigns(:category).creator) == user
+        expect(assigns(:category).creator).to eq(user)
       end
 
       it "should set the group to current group" do
@@ -132,22 +133,22 @@ describe CategoriesController do
 
         post :create, :group_id => @group.id, :category => {'name' => 'Javanese', 'depth' => '0'}
 
-        expect(assigns(:group)) == @group
-        expect(assigns(:category).group) == @group
+        expect(assigns(:group)).to eq(@group)
+        expect(assigns(:category).group).to eq(@group)
       end
     end
 
     describe "with invalid params" do
       it "does not save a new category" do
-        lambda {
+        expect {
           post :create, :category => {'name' => '', :depth => nil}, :group_id => groups(:inclusive).id
-          assigns(:category).should_not be_valid
-        }.should change(Category, :count).by(0)
+          expect(assigns(:category)).not_to eq(be_valid)
+        }.to change(Category, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
         post :create, :category => {}, :group_id => groups(:inclusive).id
-        response.should render_template("new")
+        expect(response).to render_template("new")
       end
     end
   end
@@ -173,35 +174,35 @@ describe CategoriesController do
 
       put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
 
-      expect(assigns(:category)) == @category
+      expect(assigns(:category)).to eq(@category)
     end
 
     it "assigns the requested category's depth to @depth" do
       @category = categories(:inclusive1)
       @group = groups(:inclusive)
-      expect(@category.depth) == 1
+      expect(@category.depth).to eq(1)
 
       put :update, :group_id => @group.id, :id => @category.id, :category => {'name' => 'eengleesh'}
 
-      expect(assigns(:depth)) == 1
+      expect(assigns(:depth)).to eq(1)
     end
 
     describe "with valid params" do
       it "calls update with the passed params on the requested category" do
         @category = categories(:inclusive0)
         @group = @category.group
-        @group.to receive_message_chain(:categories).and_return Category
+        expect(@group).to receive_message_chain(:categories).and_return Category
         allow(Category).to receive_message_chain(:find).with(@category.id.to_s).and_return(@category)
         allow(Group).to receive_message_chain(:find).and_return @group
 
-        @category.to receive_message_chain(:update_attributes).with({'name' => 'ayb'}).and_return(true)
+        expect(@category).to receive_message_chain(:update_attributes).with({'name' => 'ayb'}).and_return(true)
 
         put :update, :id => @category.id, :category => {'name' => 'ayb'}, :group_id => @group.id
       end
 
       it "redirects to the category" do
         put :update, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-        response.should redirect_to(group_category_url(assigns(:group), categories(:inclusive0)))
+        expect(response).to redirect_to(group_category_url(assigns(:group), categories(:inclusive0)))
       end
     end
 
@@ -211,11 +212,11 @@ describe CategoriesController do
       end
 
       it "assigns the category as @category" do
-        expect(assigns(:category)) == categories(:inclusive0)
+        expect(assigns(:category)).to eq(categories(:inclusive0))
       end
 
       it "re-renders the 'edit' template" do
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
 
@@ -260,7 +261,7 @@ describe CategoriesController do
 
     it "redirects to the categories list" do
       delete :destroy, :id => categories(:inclusive0), :group_id => groups(:inclusive).id
-      response.should redirect_to(group_categories_url(assigns(:group)))
+      expect(response).to redirect_to(group_categories_url(assigns(:group)))
     end
   end
 end
