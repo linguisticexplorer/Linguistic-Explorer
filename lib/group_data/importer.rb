@@ -31,7 +31,7 @@
 # id,name,email,access_level,password
 #
 # ==> Roles.csv <==
-# id, 
+# id, resource_id, member_id, group_id
 
 require 'csv'
 require 'iconv'
@@ -76,9 +76,9 @@ module GroupData
 
       start = Time.now
       # processing users
-      logger.info "processing #{csv_size(:user)} users"
-
-      users_bar = ProgressBar.new("Users...", csv_size(:user))
+      print_to_console "processing #{csv_size(:user)} users"
+      
+      users_bar = ProgressBar.new("Users...", csv_size(:user)) if @verbose
 
       csv_for_each :user do |row|
         next if row["id"].nil? || row["id"].empty?
@@ -93,14 +93,14 @@ module GroupData
 
         # cache user id
         user_ids[row["id"]] = user.id
-        users_bar.inc
+        users_bar.inc  if @verbose
       end
 
-      users_bar.finish
+      users_bar.finish  if @verbose
 
-      logger.info "processing #{csv_size(:group)} groups"
+      print_to_console "processing #{csv_size(:group)} groups"
 
-      groups_bar = ProgressBar.new("Groups...", csv_size(:group))
+      groups_bar = ProgressBar.new("Groups...", csv_size(:group))  if @verbose
 
       # This function will change the header
       # due to a typo, if didn't exec
@@ -113,14 +113,14 @@ module GroupData
 
         # cache group id
         groups[row["id"]] = group
-        groups_bar.inc
+        groups_bar.inc if @verbose
       end
 
-      groups_bar.finish
+      groups_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:membership)} memberships"
+      print_to_console "processing #{csv_size(:membership)} memberships"
 
-      members_bar = ProgressBar.new("Memberships...", csv_size(:membership))
+      members_bar = ProgressBar.new("Memberships...", csv_size(:membership)) if @verbose
 
       csv_for_each :membership do |row|
         next if row["id"].nil? || row["id"].empty?
@@ -130,15 +130,15 @@ module GroupData
           m.creator = User.find(user_ids[row["creator_id"]]) if row["creator_id"].present?
         end
         save_model_with_attributes(membership, row)
-        members_bar.inc
+        members_bar.inc if @verbose
 
       end
 
-      members_bar.finish
+      members_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:ling)} lings"
+      print_to_console "processing #{csv_size(:ling)} lings"
 
-      lings_bar = ProgressBar.new("Lings...", csv_size(:ling))
+      lings_bar = ProgressBar.new("Lings...", csv_size(:ling)) if @verbose
 
       csv_for_each :ling do |row|
         next if row["id"].nil? || row["id"].empty?
@@ -150,17 +150,17 @@ module GroupData
 
         # cache ling id
         ling_ids[row["id"]] = ling.id
-        lings_bar.inc
+        lings_bar.inc if @verbose
       end
 
-      lings_bar.finish
+      lings_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:ling)} parent/child ling associations"
+      print_to_console "processing #{csv_size(:ling)} parent/child ling associations"
 
-      ling_associations_bar = ProgressBar.new("Ling Associations...", csv_size(:ling))
+      ling_associations_bar = ProgressBar.new("Ling Associations...", csv_size(:ling)) if @verbose
 
       csv_for_each :ling do |row|
-        ling_associations_bar.inc
+        ling_associations_bar.inc if @verbose
         next if row["parent_id"].blank?
         child   = Ling.find(ling_ids[row["id"]])
         parent  = Ling.find(ling_ids[row["parent_id"]])
@@ -168,11 +168,11 @@ module GroupData
         child.save!
       end
 
-      ling_associations_bar.finish
+      ling_associations_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:membership)} memberships"
+      print_to_console "processing #{csv_size(:membership)} memberships"
 
-      roles_bar = ProgressBar.new("Roles...", csv_size(:role))
+      roles_bar = ProgressBar.new("Roles...", csv_size(:role)) if @verbose
 
       csv_for_each :role do |row|
 
@@ -187,14 +187,14 @@ module GroupData
         # Now add the role to the member for that language
         membership.add_expertise_in(language)
 
-        roles_bar.inc
+        roles_bar.inc if @verbose
       end
 
-      roles_bar.finish
+      roles_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:category)} categories"
+      print_to_console "processing #{csv_size(:category)} categories"
 
-      cats_bar = ProgressBar.new("Categories...", csv_size(:category))
+      cats_bar = ProgressBar.new("Categories...", csv_size(:category)) if @verbose
 
       csv_for_each :category do |row|
         next if row["id"].nil? || row["id"].empty?
@@ -206,14 +206,14 @@ module GroupData
 
         # cache category id
         category_ids[row["id"]] = category.id
-        cats_bar.inc
+        cats_bar.inc if @verbose
       end
 
-      cats_bar.finish
+      cats_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:property)} properties"
+      print_to_console "processing #{csv_size(:property)} properties"
 
-      prop_bar = ProgressBar.new("Properties...", csv_size(:property))
+      prop_bar = ProgressBar.new("Properties...", csv_size(:property)) if @verbose
 
       csv_for_each :property do |row|
         next if row["id"].nil? || row["id"].empty?
@@ -229,14 +229,14 @@ module GroupData
 
         # cache property id
         property_ids[row["id"]] = property.id
-        prop_bar.inc
+        prop_bar.inc if @verbose
       end
 
-      prop_bar.finish
+      prop_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:example)} examples"
+      print_to_console "processing #{csv_size(:example)} examples"
 
-      examples_bar = ProgressBar.new("Examples...", csv_size(:example))
+      examples_bar = ProgressBar.new("Examples...", csv_size(:example)) if @verbose
 
       Example.transaction do
         csv_for_each :example do |row|
@@ -250,16 +250,16 @@ module GroupData
 
           # cache example id
           example_ids[row["id"]] = example.id
-          examples_bar.inc
+          examples_bar.inc if @verbose
         end
       end
 
-      examples_bar.finish
+      examples_bar.finish if @verbose
 
       total = csv_size(:lings_property)
-      logger.info "processing #{total} lings_property"
+      print_to_console "processing #{total} lings_property"
 
-      lings_prop_bar = ProgressBar.new("Lings Property...", total)
+      lings_prop_bar = ProgressBar.new("Lings Property...", total) if @verbose
 
       LingsProperty.transaction do
         csv_for_each :lings_property do |row|
@@ -277,15 +277,15 @@ module GroupData
 
           # cache lings_property id
           lings_property_ids[row["id"]] = lp.id
-          lings_prop_bar.inc
+          lings_prop_bar.inc if @verbose
         end
       end
 
-      lings_prop_bar.finish
+      lings_prop_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:examples_lings_property)} examples_lings_property"
+      print_to_console "processing #{csv_size(:examples_lings_property)} examples_lings_property"
 
-      example_lings_prop_bar = ProgressBar.new("Examples Lings Properties...", csv_size(:examples_lings_property))
+      example_lings_prop_bar = ProgressBar.new("Examples Lings Properties...", csv_size(:examples_lings_property)) if @verbose
 
       ExamplesLingsProperty.transaction do
         csv_for_each :examples_lings_property do |row|
@@ -300,16 +300,16 @@ module GroupData
 
           save_model_with_attributes elp, row
 
-          example_lings_prop_bar.inc
+          example_lings_prop_bar.inc if @verbose
         end
 
       end
 
-      example_lings_prop_bar.finish
+      example_lings_prop_bar.finish if @verbose
 
-      logger.info "processing #{csv_size(:stored_value)} stored value"
+      print_to_console "processing #{csv_size(:stored_value)} stored value"
 
-      stored_values_bar = ProgressBar.new("Stored Values...", csv_size(:stored_value))
+      stored_values_bar = ProgressBar.new("Stored Values...", csv_size(:stored_value)) if @verbose
 
       StoredValue.transaction do
         csv_for_each :stored_value do |row|
@@ -329,11 +329,11 @@ module GroupData
           stored.save!(:validate => false)
           StoredValue.set_callback(:create)
 
-          stored_values_bar.inc
+          stored_values_bar.inc if @verbose
         end
       end
 
-      stored_values_bar.finish
+      stored_values_bar.finish if @verbose
 
       elapsed = seconds_fraction_to_time(Time.now - start)
       print_to_console "Time for import: #{elapsed[0]} : #{elapsed[1]} : #{elapsed[2]}\n"
@@ -342,7 +342,7 @@ module GroupData
     private
 
     def print_to_console(string)
-      print string if @verbose
+      logger.info string if @verbose
     end
 
     def seconds_fraction_to_time(time_difference)
@@ -392,14 +392,7 @@ module GroupData
     end
 
     def logger
-      @logger ||= begin
-        if Rails.env.production?
-          Logger.new(STDOUT)
-        else
-          Rails.logger
-        end
-      end
+      @logger ||= Rails.env.production? ? Logger.new(STDOUT) : Rails.logger
     end
   end
-
 end
