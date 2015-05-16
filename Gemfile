@@ -24,7 +24,7 @@ gem 'mysql2'
 # # for Users and authentication
 gem 'devise'
 gem 'humanizer'
-gem 'cancan'
+gem 'cancancan'
 gem 'rolify'
 
 # # Model validation
@@ -117,7 +117,9 @@ group :test, :development do
   # Disable for the moment
   # gem "spork-rails"
 
-  gem 'rspec-rails', "~> 3.0"
+  gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-collection_matchers', '~> 1.1'
+  gem 'rspec-activemodel-mocks', '~> 1.0'
   gem 'shoulda-matchers'
   # gem 'rspec_rails3_validation_expectations', '0.0.2', :git => 'https://github.com/bosh/rspec_rails3_validation_expectations.git'
 
