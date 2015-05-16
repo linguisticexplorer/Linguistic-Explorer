@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe HomeController do
   it "assigns accessible groups @groups if signed in" do

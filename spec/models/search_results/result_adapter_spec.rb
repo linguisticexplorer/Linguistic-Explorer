@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module SearchResults
 
@@ -14,7 +14,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should return the default type of the search" do
-        @result.type.should == :default
+        expect(@result.type).to eq :default
       end
     end
 
@@ -25,16 +25,16 @@ module SearchResults
         @result = ResultAdapter.new(@query, [[1], [1]])
       end
       it "should return columns ordered" do
-        @result.columns.should == [:ling_0, :value_1]
+        expect(@result.columns).to eq [:ling_0, :value_1]
       end
       it "should say depth 1 is interesting for implication" do
-        @result.depth_for_implication.should == [1]
+        expect(@result.depth_for_implication).to eq [1]
       end
       it "should say depth 0 is not interesting for implication" do
-        @result.depth_for_implication.should_not == [0]
+        expect(@result.depth_for_implication).not_to eq [0]
       end
       it "should say implication depth selected is not empty" do
-        @result.depth_for_implication.should_not == []
+        expect(@result.depth_for_implication).not_to eq []
       end
     end
 
@@ -45,13 +45,13 @@ module SearchResults
         @result = ResultAdapter.new(@query, [[1], [1]])
       end
       it "should have results" do
-        @result.any?.should be_truthy
+        expect(@result.any?).to be_truthy
       end
       it "should return parent result" do
-        @result.parent == [1]
+        expect(@result.parent).to eq [1]
       end
       it "should return child result" do
-        @result.child == [1]
+        expect(@result.child).to eq [1]
       end
     end
     describe "should contain no results" do
@@ -60,13 +60,13 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should have not results" do
-        @result.any?.should be_falsey
+        expect(@result.any?).to be_falsey
       end
       it "should return no parent result" do
-        @result.parent == []
+        expect(@result.parent).to eq []
       end
       it "should return no child result" do
-        @result.child == []
+        expect(@result.child).to eq []
       end
     end
 
@@ -76,7 +76,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should be a implication both result" do
-        @result.type.should == :implication_both
+        expect(@result.type).to eq :implication_both
       end
     end
 
@@ -86,7 +86,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should be a implication antecedent result" do
-        @result.type.should == :implication_ante
+        expect(@result.type).to eq :implication_ante
       end
     end
 
@@ -96,7 +96,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should be a implication consequent result" do
-        @result.type.should == :implication_cons
+        expect(@result.type).to eq :implication_cons
       end
     end
   end

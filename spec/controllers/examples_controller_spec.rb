@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ExamplesController do
   before do
@@ -51,7 +51,6 @@ describe ExamplesController do
 
   describe "new" do
     it "should authorize :create on @example" do
-      # let(:group) { FactoryGirl.create(:group) }
       @group = FactoryGirl.create(:group)
       @example = Example.new
 
@@ -105,12 +104,12 @@ describe ExamplesController do
 
       it "@lings should be a hash with two depth members" do
         get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-        lings = expect(assigns(:lings))
-        lings.to be_a Hash
-        lings[:depth_0].to include lings(:level0)
-        lings[:depth_1].to include lings(:level1)
-        lings[:depth_0].not_to include lings(:exclusive0)
-        lings[:depth_1].not_to include lings(:exclusive1)
+        lings = assigns(:lings)
+        expect(lings).to be_a Hash
+        expect(lings[:depth_0]).to include lings(:level0)
+        expect(lings[:depth_1]).to include lings(:level1)
+        expect(lings[:depth_0]).not_to include lings(:exclusive0)
+        expect(lings[:depth_1]).not_to include lings(:exclusive1)
       end
     end
   end
@@ -129,12 +128,12 @@ describe ExamplesController do
 
     describe "with valid params and valid stored_values" do
       it "assigns a newly created example to @example" do
-        expect {
+        expect do
           post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
           expect(assigns(:example)).to be_new_record
           expect(assigns(:example)).to be_valid
           expect(assigns(:example).name).to eq('Javanese')
-        }.to change(Example, :count).by(1)
+        end.to change(Example, :count).by(1)
       end
 
       it "creates and associates passed stored values" do

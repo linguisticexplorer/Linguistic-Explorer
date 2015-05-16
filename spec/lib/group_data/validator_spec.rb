@@ -12,7 +12,7 @@ module GroupData
     describe "validate! success" do
 
       before(:each) do
-        config = {}.tap do |paths|
+        @config = {}.tap do |paths|
           [:user,
            :category,
            :example,
@@ -22,19 +22,20 @@ module GroupData
            :lings_property,
            :membership,
            :property,
+           :role,
            :stored_value].each do |model|
             paths[model.to_s] = Rails.root.join("spec", "csv", "good","#{model.to_s.camelize}.csv").to_s
           end
         end
-        File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
+        # File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
 
-        @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
+        # @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
         @validator = Validator.load(@config, false)
         @validator.validate!
       end
 
       it "should load configuration from yaml" do
-        expect(@validator.config[:lings_property]).to == Rails.root.join("spec", "csv", "good","LingsProperty.csv").to_s
+        expect(@validator.config[:lings_property]).to eq Rails.root.join("spec", "csv", "good","LingsProperty.csv").to_s
       end
 
       it "should validate users" do
@@ -379,7 +380,7 @@ module GroupData
         Dir.glob(files).each do |file|
           CSV.foreach(file, :headers => true) do |row|
             row.each do |field|
-              expect(field).to =~ [field_name, "-1"] if field[0]==field_name
+              expect(field).to match [field_name, "-1"] if field[0]==field_name
             end
           end
         end

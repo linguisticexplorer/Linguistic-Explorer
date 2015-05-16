@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe PropertiesController do
   before do
@@ -169,7 +169,7 @@ describe PropertiesController do
 
       it "redirects to the created property" do
         do_valid_create
-        allow(response).to redirect_to(group_property_url(expect(assigns(:group)), expect(assigns(:property))))
+        expect(response).to redirect_to(group_property_url(expect(assigns(:group)), expect(assigns(:property))))
       end
 
       it "should set creator to be the currently logged in user" do

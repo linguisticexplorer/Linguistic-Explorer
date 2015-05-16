@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Membership do
   describe "one-liners" do
@@ -23,17 +23,13 @@ describe Membership do
     it "should allow a new user and group to associate" do
       group = FactoryGirl.create(:group)
       user = FactoryGirl.create(:user)
-      expect do
-        Membership.create(:member_id => user.id, :level => Membership::MEMBER) do |m|
+      expect(Membership.create(:member_id => user.id, :level => Membership::MEMBER) do |m|
           m.group = group
-        end
-      end.to have(0).errors
+        end).to have(0).errors
 
-      expect do
-        Membership.create(:member_id => user.id, :level => Membership::ADMIN ) do |m|
+      expect(Membership.create(:member_id => user.id, :level => Membership::ADMIN ) do |m|
           m.group = group
-        end
-      end.to have(1).errors_on(:member_id)
+        end).to have(1).errors_on(:member_id)
     end
   end
 
@@ -41,17 +37,13 @@ describe Membership do
     it "should return true only if level is 'admin'" do
       group = FactoryGirl.create(:group)
       user = FactoryGirl.create(:user)
-      expect do
-        Membership.create(:member => user, :level => Membership::ADMIN) do |m|
+      expect(Membership.create(:member => user, :level => Membership::ADMIN) do |m|
           m.group = group
-        end.group_admin?
-      end.to be_truthy
+        end.group_admin?).to be_truthy
       
-      expect do
-        Membership.create(:member => user, :level => Membership::MEMBER) do |m|
+      expect(Membership.create(:member => user, :level => Membership::MEMBER) do |m|
           m.group = group
-        end.group_admin?
-      end.not_to be_truthy
+        end.group_admin?).not_to be_truthy
     end
   end
 end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Category do
   describe "one-liners" do
@@ -59,7 +59,7 @@ describe Category do
     it "should return ids for given group and depth" do
       group = groups(:exclusive)
       depth = 0
-      expect(Category.ids_by_group_and_depth(group, depth)).to == [categories(:exclusive0).id]
+      expect(Category.ids_by_group_and_depth(group, depth)).to eq [categories(:exclusive0).id]
     end
 
     it "should return empty array if there are no matching categories" do

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe LingsProperty do
   describe "one-liners" do
@@ -33,13 +33,13 @@ describe LingsProperty do
 
     it "only with lings and property of the same depth" do
       group = groups(:inclusive)
-      LingsProperty.create(:ling_id => lings(:level0).id, :property_id => properties(:level1).id, :value => 'baz') do |lp|
+      expect(LingsProperty.create(:ling_id => lings(:level0).id, :property_id => properties(:level1).id, :value => 'baz') do |lp|
         lp.group = group
-      end.to have(1).errors
+      end).to have(1).errors
 
-      LingsProperty.create(:ling_id => lings(:level1).id, :property_id => properties(:level0).id, :value => 'bar') do |lp|
+      expect(LingsProperty.create(:ling_id => lings(:level1).id, :property_id => properties(:level0).id, :value => 'bar') do |lp|
         lp.group = group
-      end.to have(1).errors
+      end).to have(1).errors
     end
 
     it "only with lings and property of the same group as the group_id" do
@@ -49,17 +49,17 @@ describe LingsProperty do
       propEX = properties(:exclusive0)
       propINC = properties(:level0)
 
-      LingsProperty.create(:ling_id => ling.id, :property_id => propEX.id, :value => 'group mismatch') do |lp|
+      expect(LingsProperty.create(:ling_id => ling.id, :property_id => propEX.id, :value => 'group mismatch') do |lp|
         lp.group = group
-      end.to have(1).errors
+      end).to have(1).errors
 
-      LingsProperty.create(:ling_id => ling.id, :property_id => propEX.id, :value => 'group mismatch') do |lp|
+      expect(LingsProperty.create(:ling_id => ling.id, :property_id => propEX.id, :value => 'group mismatch') do |lp|
         lp.group = misgroup
-      end.to have(1).errors
+      end).to have(1).errors
 
-      LingsProperty.create(:ling_id => ling.id, :property_id => propINC.id, :value => 'group mismatch') do |lp|
+      expect(LingsProperty.create(:ling_id => ling.id, :property_id => propINC.id, :value => 'group mismatch') do |lp|
         lp.group = misgroup
-      end.to have(1).errors
+      end).to have(1).errors
     end
   end
 

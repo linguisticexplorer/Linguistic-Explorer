@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module SearchResults
   describe SelectAllPropertyStrategy do
@@ -12,9 +12,9 @@ module SearchResults
         ]
 
         strategy = SelectAllPropertyStrategy.new(double(SelectAllFilter))
-        strategy.collect_all_from_vals(vals, [1,2,3]).should be_empty
-        strategy.collect_all_from_vals(vals, [1,2]).should == [val_1, val_2]
-        strategy.collect_all_from_vals(vals, [2]).should == [val_1, val_2, val_3]
+        expect(strategy.collect_all_from_vals(vals, [1,2,3])).to be_empty
+        expect(strategy.collect_all_from_vals(vals, [1,2])).to eq [val_1, val_2]
+        expect(strategy.collect_all_from_vals(vals, [2])).to eq [val_1, val_2, val_3]
       end
     end
   end

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe User do
   before(:each) do
@@ -6,8 +6,6 @@ describe User do
   end
 
   describe "one-liners" do
-    # it_should_validate_presence_of :name, :email, :access_level
-    # it_should_have_many :memberships, :groups, :searches
     it { expect validate_presence_of :name }
     it { expect validate_presence_of :email }
     it { expect validate_presence_of :access_level }
@@ -47,7 +45,7 @@ describe User do
   describe "reached_max_search_limit?" do
     it "should return reached max limit for search by group" do
       group = double(Group)
-      expect(Search).to_receive(:reached_max_limit?).with(@user, group).and_return(true)
+      expect(Search).to receive(:reached_max_limit?).with(@user, group).and_return(true)
       expect(@user.reached_max_search_limit?(group)).to be_truthy
     end
     it "should return reached max limit for search by group" do

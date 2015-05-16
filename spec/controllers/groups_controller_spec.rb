@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe GroupsController do
   before do
@@ -194,7 +194,7 @@ describe GroupsController do
     describe "with valid params" do
       it "updates the requested group" do
         group = groups(:inclusive)
-        group.name.should_not eq('number1group')
+        expect(group.name).not_to eq('number1group')
         params = {'name' => 'number1group'}
 
         do_update_on_group_with_params(group, params)
@@ -241,9 +241,9 @@ describe GroupsController do
 
     it "calls destroy on the requested group" do
       group_id = groups(:inclusive).id
-      Group.find(group_id).should_not be_nil
+      expect(Group.find(group_id)).not_to be_nil
       delete :destroy, :id => group_id
-      Group.find_by_id(group_id).should be_nil
+      expect(Group.find_by_id(group_id)).to be_nil
     end
 
     it "redirects to the groups list" do

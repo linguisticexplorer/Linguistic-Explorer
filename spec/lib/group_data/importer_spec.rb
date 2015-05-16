@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 module GroupData
 
@@ -11,7 +11,7 @@ module GroupData
 
     describe "import!" do
       before(:each) do
-        config = {}.tap do |paths|
+        @config = {}.tap do |paths|
           [:user,
           :category,
           :example,
@@ -20,14 +20,13 @@ module GroupData
           :ling,
           :lings_property,
           :membership,
+          :role,
           :property,
           :stored_value].each do |model|
             paths[model.to_s] = Rails.root.join("spec", "csv", "good","#{model.to_s.camelize}.csv").to_s
           end
         end
-        File.open(Rails.root.join("spec", "csv", "good","import.yml"), "wb") { |f| f.write config.to_yaml }
 
-        @config   = YAML.load_file(Rails.root.join("spec", "csv", "good","import.yml"))
         @importer = Importer.import(@config, false)
         @current_group = Group.find_by_name(@group.name)
       end
@@ -126,7 +125,7 @@ module GroupData
         expect(@current_group.examples_lings_properties.size).to eq @examples_lings_properties.size
         @examples.each do |example|
           imported_example = @current_group.examples.find_by_name(example.name)
-          imported = @current_group.examples_lings_properties.detect { |elp| elp.example_id eq imported_example.id }
+          imported = @current_group.examples_lings_properties.detect { |elp| elp.example_id == imported_example.id }
           expect(imported).to be_present
           expect(imported.creator.name).to eq @admin.name
         end

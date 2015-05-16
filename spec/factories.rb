@@ -30,6 +30,10 @@ FactoryGirl.define do
   f.level "member"
   f.association :group, :factory => :group
   f.association :member, :factory => :user
+
+    factory :expert do
+      # after(:create) {|member| member.add_expertise_in(:ling)}
+    end
   end
 end
 
@@ -109,5 +113,10 @@ FactoryGirl.define do
   factory :post do |f|
     f.body "Blah blah blah"
     f.association :user, :factory => :user
+  end
+end
+
+FactoryGirl.define do
+  factory :role do
   end
 end

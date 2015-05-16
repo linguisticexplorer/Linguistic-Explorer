@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ExamplesLingsProperty do
   describe "one-liners" do
@@ -28,34 +28,26 @@ describe ExamplesLingsProperty do
       lings_propIN = lings_properties(:inclusive)
       lings_propEX = lings_properties(:exclusive)
 
-      expect do
-        ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
+      expect(ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
           elp.group = group
-        end
-      end.to have(2).errors
+        end).to have(2).errors
 
-      expect do
-        ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
+      expect(ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propEX.id) do |elp|
           elp.group = misgroup
-        end
-      end.to have(2).errors
+        end).to have(2).errors
 
-      expect do
-        ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propIN.id) do |elp|
+      expect(ExamplesLingsProperty.create(:example_id => example.id, :lings_property_id => lings_propIN.id) do |elp|
           elp.group = misgroup
-        end
-      end.to have(1).errors
+        end).to have(1).errors
     end
 
     it "only with an example whose ling is the same as the lings_property's ling" do
       group = groups(:inclusive)
       lp_for_one_ling = lings_properties(:inclusive)
       example_for_another_ling = Example.create(:group => group, :ling => FactoryGirl.create(:ling, :name => 'another', :group => group))
-      expect do
-        ExamplesLingsProperty.create(:example_id => example_for_another_ling.id, :lings_property_id => lp_for_one_ling.id) do |elp|
+      expect(ExamplesLingsProperty.create(:example_id => example_for_another_ling.id, :lings_property_id => lp_for_one_ling.id) do |elp|
           elp.group = groups(:inclusive)
-        end
-      end.to have(1).errors
+        end).to have(1).errors
     end
   end
 end

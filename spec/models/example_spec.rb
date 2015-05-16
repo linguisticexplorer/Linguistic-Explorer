@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Example do
   describe "one-liners" do
@@ -23,9 +23,9 @@ describe Example do
     it "unless the ling and group_id don't match" do
       ling = groups(:inclusive).lings.first
       group = groups(:exclusive)
-      Example.create(:ling_id => ling.id, :name => 'example-with-mismatched-object-refs') do |e|
+      expect(Example.create(:ling_id => ling.id, :name => 'example-with-mismatched-object-refs') do |e|
         e.group = group
-      end.to have(1).error_on(:ling)
+      end).to have(1).error_on(:ling)
     end
 
     it "without a ling" do

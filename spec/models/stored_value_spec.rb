@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe StoredValue do
   class StorableMock
@@ -7,14 +7,10 @@ describe StoredValue do
   end
 
   describe "one-liners" do
-    # it_should_validate_presence_of :key, :value, :storable
-    # it_should_belong_to :storable
-    it { should validate_presence_of :key }
-    it { should validate_presence_of :value }
-    it { should validate_presence_of :storable }
-    it { should belong_to :storable }
-    # Removed at the moment because the standard gem doesn't offer this method...
-    # should_validate_existence_of :storable
+    it { expect validate_presence_of :key }
+    it { expect validate_presence_of :value }
+    it { expect validate_presence_of :storable }
+    it { expect belong_to :storable }
   end
 
   it "should validate that its key is among the 'storable values' list for its storable" do
@@ -22,6 +18,6 @@ describe StoredValue do
     stored_value = StoredValue.new(:key => "not_a_key", :value => "quux")
     allow(stored_value).to receive_message_chain(:storable).and_return fake_storable
     stored_value.save
-    stored_value.errors_on(:key).should include "must be a storable key valid for StorableMock"
+    expect(stored_value.errors_on(:key)).to include "must be a storable key valid for StorableMock"
   end
 end

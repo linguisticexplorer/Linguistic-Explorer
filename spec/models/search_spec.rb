@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Search do
 
@@ -13,16 +13,14 @@ describe Search do
       end
     end
 
-    # it_should_validate_presence_of :group, :creator, :name
-
-    it { should validate_presence_of :group }
-    it { should validate_presence_of :creator }
-    it { should validate_presence_of :name }
+    it { expect validate_presence_of :group }
+    it { expect validate_presence_of :creator }
+    it { expect validate_presence_of :name }
 
     it "should validate user within max search limit" do
       allow(Search).to receive_message_chain(:reached_max_limit?).and_return(true)
       @search.valid?
-      @search.should have(1).error_on(:base)
+      expect(@search).to have(1).error_on(:base)
     end
   end
 
@@ -34,21 +32,12 @@ describe Search do
     end
 
     it "should serialize query params" do
-      @search.query = { "lings" => [1,2,3], "properties" => [4,5,6] }
+      @search.query = {"lings" => [1,2,3], "properties"=> [4,5,6] }
       @search.save
 
-      retrieved = Search.find(@search.id)
+      retrieved = Search.find @search.id
 
-      retrieved.query.should == { "lings" => [1,2,3], "properties" => [4,5,6] }
-    end
-
-    it "should serialize result_groups" do
-      @search.result_groups = { 1 => [2,3,4], 5 => [6] }
-      @search.save
-
-      retrieved = Search.find(@search.id)
-
-      retrieved.result_groups.should == { 1 => [2,3,4], 5 => [6] }
+      expect(retrieved.query).to eq({"lings"=> [1,2,3], "properties" => [4,5,6]})
     end
   end
 
@@ -61,9 +50,9 @@ describe Search do
     end
 
     it "should perform count conditions where user is user and group is group" do
-      Search.should_receive(:by).with(@user).and_return(Search)
-      Search.should_receive(:in_group).with(@group).and_return(Search)
-      Search.should_receive(:count)
+      expect(Search).to receive(:by).with(@user).and_return(Search)
+      expect(Search).to receive(:in_group).with(@group).and_return(Search)
+      expect(Search).to receive(:count)
       Search.reached_max_limit?(@user, @group)
     end
 
@@ -72,16 +61,16 @@ describe Search do
       allow(Search).to receive_message_chain(:in_group).and_return(Search)
 
       allow(Search).to receive_message_chain(:count).and_return(25)
-      Search.reached_max_limit?(@user, @group).should be_truthy
+      expect(Search.reached_max_limit?(@user, @group)).to be_truthy
       allow(Search).to receive_message_chain(:count).and_return(26)
-      Search.reached_max_limit?(@user, @group).should be_truthy
+      expect(Search.reached_max_limit?(@user, @group)).to be_truthy
     end
 
     it "should return true if count for searches by user and group has reached max limit" do
       allow(Search).to receive_message_chain(:by).and_return(Search)
       allow(Search).to receive_message_chain(:in_group).and_return(Search)
       allow(Search).to receive_message_chain(:count).and_return(24)
-      Search.reached_max_limit?(@user, @group).should be_falsey
+      expect(Search.reached_max_limit?(@user, @group)).to be_falsey
     end
   end
 
@@ -97,7 +86,7 @@ describe Search do
     end
     describe "anonymous_user" do
       it "should be false" do
-        @search.is_manageable_by?(@user).should be_falsey
+        expect(@search.is_manageable_by?(@user)).to be_falsey
       end
     end
 
@@ -110,17 +99,17 @@ describe Search do
       end
 
       it "should be false if user is not creator" do
-        @search.is_manageable_by?(FactoryGirl.create(:user)).should be_falsey
+        expect(@search.is_manageable_by?(FactoryGirl.create(:user))).to be_falsey
       end
 
       describe "user is creator" do
         it "should be true if user has group access" do
           allow(@ability).to receive_message_chain(:can?).and_return(true)
-          @search.is_manageable_by?(@creator).should be_truthy
+          expect(@search.is_manageable_by?(@creator)).to be_truthy
         end
         it "should be false if no group access" do
           allow(@ability).to receive_message_chain(:can?).and_return(false)
-          @search.is_manageable_by?(@creator).should be_falsey
+          expect(@search.is_manageable_by?(@creator)).to be_falsey
         end
 
       end
@@ -137,27 +126,27 @@ describe Search do
     end
 
     it "should be default search" do
-      create_default_search.default?.should be_truthy
+      expect(create_default_search.default?).to be_truthy
     end
 
     it "should be cross search" do
-      create_cross_search.cross?.should be_truthy
+      expect(create_cross_search.cross?).to be_truthy
     end
 
     it "should be compare search" do
-      create_compare_search.compare?.should be_truthy
+      expect(create_compare_search.compare?).to be_truthy
     end
 
     it "should not be default search" do
-      create_cross_search.default?.should be_falsey
+      expect(create_cross_search.default?).to be_falsey
     end
 
     it "should not be cross search" do
-      create_compare_search.cross?.should be_falsey
+      expect(create_compare_search.cross?).to be_falsey
     end
 
     it "should be a mapable search" do
-      create_compare_search.mappable?.should be_truthy
+      expect(create_compare_search.mappable?).to be_truthy
     end
   end
 

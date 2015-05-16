@@ -10,6 +10,7 @@
   # Requires all dependencies here
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
+  require 'rspec/collection_matchers'
   require 'database_cleaner'
   # Removed
   # require 'validates_existence/rspec_macros'

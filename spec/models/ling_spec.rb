@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe Ling do
   describe "one-liners" do
@@ -44,14 +44,13 @@ describe Ling do
     end
 
     it "should not allow ling to belong to a different group" do
-      ling = groups(:inclusive).lings.select{|l| l.depth eq 0}.first
+      ling = groups(:inclusive).lings.select{|l| l.depth == 0}.first
       group = groups(:exclusive)
-      expect do
+      expect(
         Ling.create(:name => "misgrouped", :parent_id => ling.id) do |l|
           l.group = group
           l.depth = 1
-        end
-      end.to have(1).errors_on(:parent)
+        end).to have(1).errors_on(:parent)
     end
 
     it "should not allow ling creation of a depth greater than the group maximum" do
@@ -61,41 +60,37 @@ describe Ling do
         ling.depth = 0
         ling.group = group
       end
-      expect do
+      expect(
         Ling.create(:name => "too-deep", :parent_id => parent.id) do |ling|
           ling.depth = 1
           ling.group = group
-        end
-      end.to have(1).errors_on(:depth)
+        end).to have(1).errors_on(:depth)
     end
   end
 
   describe "#grouped_name" do
     it "should use the appropriate depth type name from its parent group if it has a depth" do
       group = groups(:inclusive)
-      expect do
+      expect(
         Ling.create(:name => "foo") do |ling|
           ling.depth = 0
           ling.group = group
-        end.grouped_name
-      end.to eq group.ling0_name
+        end.grouped_name).to eq group.ling0_name
       
-      expect do
+      expect(
         Ling.create(:name => "bar") do |ling|
           ling.depth = 1
           ling.group = group
-        end.grouped_name
-      end.to eq group.ling1_name
+        end.grouped_name).to eq group.ling1_name
     end
 
     it "should use the depth 0 type name from its parent group if it is missing depth" do
       group = FactoryGirl.create(:group, :ling1_name => "", :depth_maximum => 0)
-      expect do
+      expect(
         Ling.create(:name => "baz") do |ling|
           ling.depth = nil
           ling.group = group
-        end.grouped_name
-      end.to eq group.ling0_name
+        end.grouped_name).to eq group.ling0_name
     end
   end
 
@@ -152,7 +147,7 @@ describe Ling do
 
       it "should return the value of in the associated StoredValue record if there is one" do
         ling = lings(:level0)
-        ling.storable_keys.not_to be_empty
+        expect(ling.storable_keys).not_to be_empty
 
         key = ling.group.ling_storable_keys.first
         expect(key).to be_present

@@ -1,4 +1,4 @@
-require 'spec_helper'
+require 'rails_helper'
 
 describe ExamplesLingsPropertiesController do
   before do
@@ -180,14 +180,14 @@ describe ExamplesLingsPropertiesController do
     end
 
     it "should authorize :destroy on the passed examples_lings_property" do
-      @ability.should_receive(:can?).ordered.with(:destroy, @elp).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:destroy, @elp).and_return(true)
       allow(Group).to receive_message_chain(:find).and_return(@group)
 
       do_destroy_on_examples_lings_property(@elp)
     end
 
     it "loads the examples_lings_property through current group" do
-      @group.should_receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group_id => @group.id)
+      expect(@group).to receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group_id => @group.id)
       allow(Group).to receive_message_chain(:find).and_return @group
 
       do_destroy_on_examples_lings_property(@elp)
@@ -196,7 +196,7 @@ describe ExamplesLingsPropertiesController do
     it "calls destroy on the requested examples_lings_property" do
       allow(@group).to receive_message_chain(:examples_lings_properties).and_return ExamplesLingsProperty
 
-      @elp.should_receive(:destroy).and_return(true)
+      expect(@elp).to receive(:destroy).and_return(true)
 
       allow(ExamplesLingsProperty).to receive_message_chain(:find).and_return @elp
       allow(Group).to receive_message_chain(:find).and_return @group

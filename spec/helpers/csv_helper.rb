@@ -54,7 +54,7 @@ module CSVHelper
 
   def csv_row_count_should_equal_count_of(*models)
     # Add one to account for header row
-    CSV.read("spec/csv/good/#{models.first.class.name}.csv").size.should == models.size + 1
+    expect(CSV.read("spec/csv/good/#{models.first.class.name}.csv").size).to eq models.size + 1
   end
 
   def generate_group_data_csvs!
