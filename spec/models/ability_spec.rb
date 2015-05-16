@@ -11,12 +11,12 @@ describe Ability do
         end
       end
 
-      it "should be able to manage every object in the forum" do
-        ability = Ability.new(FactoryGirl.create(:user, :access_level => "admin"))
-        [ ForumGroup, Forum, Topic, Post ].each do |klass|
-          expect(ability).to be_able_to(:manage, klass )
-        end
-      end
+      # it "should be able to manage every object in the forum" do
+      #   ability = Ability.new(FactoryGirl.create(:user, :access_level => "admin"))
+      #   [ ForumGroup, Forum, Topic, Post ].each do |klass|
+      #     expect(ability).to be_able_to(:manage, klass )
+      #   end
+      # end
     end
 
     describe "Visitors" do
@@ -39,7 +39,7 @@ describe Ability do
         @group = FactoryGirl.create(:group, :name => "privy", :privacy => Group::PRIVATE)
         [ :ling, :category ].each do |model|
           instance = FactoryGirl.create(model, :group => @group)
-          instance.group.private?.should be_truthy
+          expect(instance.group.private?).to be_truthy
           expect(@visitor).not_to be_able_to(:read, instance)
         end
       end
@@ -57,48 +57,48 @@ describe Ability do
         expect(@visitor).not_to be_able_to(:create, FactoryGirl.create(:search, :group => @group))
       end
 
-      describe "within Forum" do
-        before do
-          @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
-          @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
-        end
-        it "should not be able to see secret forum group" do
-          expect(@visitor).not_to be_able_to(:read, @forum_group_secret)
-        end
+      # describe "within Forum" do
+      #   before do
+      #     @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
+      #     @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
+      #   end
+      #   it "should not be able to see secret forum group" do
+      #     expect(@visitor).not_to be_able_to(:read, @forum_group_secret)
+      #   end
 
-        it "should be able to see public forum group" do
-          expect(@visitor).to be_able_to(:read, @forum_group_public)
-        end
+      #   it "should be able to see public forum group" do
+      #     expect(@visitor).to be_able_to(:read, @forum_group_public)
+      #   end
 
-        it "should not be able to see secret forum in a public group" do
-          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
-          expect(@visitor).not_to be_able_to(:read, forum)
-        end
+      #   it "should not be able to see secret forum in a public group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+      #     expect(@visitor).not_to be_able_to(:read, forum)
+      #   end
 
-        it "should not be able to see public forum in a secret group" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
-          expect(@visitor).not_to be_able_to(:read, forum)
-        end
+      #   it "should not be able to see public forum in a secret group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+      #     expect(@visitor).not_to be_able_to(:read, forum)
+      #   end
 
-        it "should not be able to see a topic in a secret forum" do
-          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
-          expect(@visitor).not_to be_able_to(:read, topic)
-        end
+      #   it "should not be able to see a topic in a secret forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
+      #     expect(@visitor).not_to be_able_to(:read, topic)
+      #   end
 
-        it "should not be able to see a topic in a secret forum group" do
-          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => true, :forum_group => @forum_group_secret)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
-          expect(@visitor).not_to be_able_to(:read, topic)
-        end
+      #   it "should not be able to see a topic in a secret forum group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => true, :forum_group => @forum_group_secret)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
+      #     expect(@visitor).not_to be_able_to(:read, topic)
+      #   end
 
-        it "should be able to see a topic in a public forum" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
-          expect(@visitor).to be_able_to(:read, topic)
-        end
+      #   it "should be able to see a topic in a public forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :forum => forum)
+      #     expect(@visitor).to be_able_to(:read, topic)
+      #   end
 
-      end
+      # end
     end
 
     describe "Logged in Users" do
@@ -115,72 +115,72 @@ describe Ability do
         expect(@logged).not_to be_able_to(:manage, FactoryGirl.create(:user, :name => "otherguy", :email => "other@example.com"))
       end
 
-      describe "within Forum" do
-        before do
-          @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
-          @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
-        end
+      # describe "within Forum" do
+      #   before do
+      #     @forum_group_secret = FactoryGirl.create(:forum_group, :title => "Secret Group", :state => false)
+      #     @forum_group_public = FactoryGirl.create(:forum_group, :title => "Public Group", :state => true)
+      #   end
 
-        it "should not be able to see secret forum group" do
-          expect(@logged).not_to be_able_to(:read, @forum_group_secret)
-        end
+      #   it "should not be able to see secret forum group" do
+      #     expect(@logged).not_to be_able_to(:read, @forum_group_secret)
+      #   end
 
-        it "should be able to see public forum group" do
-          expect(@logged).to be_able_to(:read, @forum_group_public)
-        end
+      #   it "should be able to see public forum group" do
+      #     expect(@logged).to be_able_to(:read, @forum_group_public)
+      #   end
 
-        it "should not be able to see secret forum in a public group" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => false, :forum_group => @forum_group_public)
-          expect(@logged).not_to be_able_to(:read, forum)
-        end
+      #   it "should not be able to see secret forum in a public group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => false, :forum_group => @forum_group_public)
+      #     expect(@logged).not_to be_able_to(:read, forum)
+      #   end
 
-        it "should not be able to see public forum in a secret group" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
-          expect(@logged).not_to be_able_to(:read, forum)
-        end
+      #   it "should not be able to see public forum in a secret group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+      #     expect(@logged).not_to be_able_to(:read, forum)
+      #   end
 
-        it "should not be able to see a topic in a secret forum" do
-          forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).not_to be_able_to(:read, topic)
-        end
+      #   it "should not be able to see a topic in a secret forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Secret Forum", :state => false, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).not_to be_able_to(:read, topic)
+      #   end
 
-        it "should not be able to see a topic in a secret forum group" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).not_to be_able_to(:read, topic)
-        end
+      #   it "should not be able to see a topic in a secret forum group" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_secret)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).not_to be_able_to(:read, topic)
+      #   end
 
-        it "should be able to see a topic in a public forum" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).to be_able_to(:read, topic)
-        end
+      #   it "should be able to see a topic in a public forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).to be_able_to(:read, topic)
+      #   end
 
-        it "should be able to reply to a post in a public forum" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).to be_able_to(:create, topic.posts.new)
-        end
+      #   it "should be able to reply to a post in a public forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).to be_able_to(:create, topic.posts.new)
+      #   end
 
-        it "should be able to update his own post in a public forum" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).to be_able_to(:update, topic.posts.first)
-        end
+      #   it "should be able to update his own post in a public forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).to be_able_to(:update, topic.posts.first)
+      #   end
 
-        it "should be able to destroy his own post in a public forum" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
-          expect(@logged).to be_able_to(:destroy, topic.posts.first)
-        end
+      #   it "should be able to destroy his own post in a public forum" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :user => @user, :forum => forum)
+      #     expect(@logged).to be_able_to(:destroy, topic.posts.first)
+      #   end
 
-        it "should not be able to update a post in a locked topic" do
-          forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
-          topic = FactoryGirl.create(:topic, :title => "Free topic", :locked => true, :user => @user, :forum => forum)
-          expect(@logged).not_to be_able_to(:update, topic.posts.first)
-        end
-      end
+      #   it "should not be able to update a post in a locked topic" do
+      #     forum = FactoryGirl.create(:forum, :title => "Public Forum", :state => true, :forum_group => @forum_group_public)
+      #     topic = FactoryGirl.create(:topic, :title => "Free topic", :locked => true, :user => @user, :forum => forum)
+      #     expect(@logged).not_to be_able_to(:update, topic.posts.first)
+      #   end
+      # end
     end
 
     describe "Group Admins" do
@@ -227,7 +227,7 @@ describe Ability do
           @user.reload
           @admin = Ability.new(@user)
           @other_group = FactoryGirl.create(:group, :name => "openness", :privacy => Group::PUBLIC)
-          @other_group.private?.should be_falsey
+          expect(@other_group.private?).to be_falsey
         end
 
         it "should be able to read the group" do
@@ -271,7 +271,7 @@ describe Ability do
           @user.reload
           @admin = Ability.new(@user)
           @other_group = FactoryGirl.create(:group, :name => "haters", :privacy => Group::PRIVATE)
-          @other_group.private?.should be_truthy
+          expect(@other_group.private?).to be_truthy
         end
 
         it "should not be able to search on the group" do
@@ -372,13 +372,13 @@ describe Ability do
 
       it "should be able to manage their own searches on public groups" do
         @group = groups(:inclusive)
-        @group.privacy.should == Group::PUBLIC
+        expect(@group.privacy).to eq Group::PUBLIC
         expect(@nonmember).to be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
       end
 
       it "should not be able to search on private groups" do
         @group = groups(:exclusive)
-        @group.privacy.should == Group::PRIVATE
+        expect(@group.privacy).to eq Group::PRIVATE
         expect(@nonmember).not_to be_able_to(:manage, FactoryGirl.create(:search, :group => @group, :creator => @user))
       end
 
@@ -407,9 +407,9 @@ describe Ability do
             examples_lings_properties(:exclusive),
             lings_properties( :exclusive )
           ].each do |data|
-            data.should be_present
-            data.group.should == groups(:exclusive)
-            data.group.private?.should be_truthy
+            expect(data).to be_present
+            expect(data.group).to eq groups(:exclusive)
+            expect(data.group.private?).to be_truthy
             expect(@nonmember.can?(action, data.group)).to be_falsey
             expect(@nonmember.can?(action, data)).to be_falsey
           end
