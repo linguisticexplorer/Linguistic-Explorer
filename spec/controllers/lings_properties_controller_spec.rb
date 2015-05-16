@@ -3,24 +3,24 @@ require 'spec_helper'
 describe LingsPropertiesController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "show" do
     describe "assigns" do
       it "@lings_property should match the passed id" do
         get :show, :id => lings_properties(:smelly), :group_id => groups(:inclusive).id
-        assigns(:lings_property).should == lings_properties(:smelly)
+        expect(assigns(:lings_property)).to eq lings_properties(:smelly)
       end
     end
 
     it "@lings_property should be found by id through current_group" do
       @lp = lings_properties(:level0)
       @group = @lp.group
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:lings_properties).and_return @group.lings_properties
+      expect(Group).to receive(:lings_properties).and_return @group.lings_properties
 
       get :show, :id => @lp.id, :group_id => @group.id
     end
@@ -37,26 +37,26 @@ describe LingsPropertiesController do
     end
 
     it "should authorize :destroy on the passed lings_property" do
-      @ability.should_receive(:can?).ordered.with(:destroy, @lp).and_return(true)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).ordered.with(:destroy, @lp).and_return(true)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
 
       do_destroy_on_lings_property(@lp)
     end
 
     it "loads the lings_property through current group" do
-      @group.should_receive(:lings_properties).and_return LingsProperty.where(:group_id => @group.id)
-      Group.stub(:find).and_return @group
+      expect(@group).to receive(:lings_properties).and_return LingsProperty.where(:group_id => @group.id)
+      allow(Group).to receive_message_chain(:find).and_return @group
 
       do_destroy_on_lings_property(@lp)
     end
 
     it "calls destroy on the requested lings_property" do
-      @group.stub(:lings_properties).and_return LingsProperty
+      allow(@group).to receive_message_chain(:lings_properties).and_return LingsProperty
 
-      @lp.should_receive(:destroy).and_return(true)
+      expect(@lp).to receive(:destroy).and_return(true)
 
-      LingsProperty.stub(:find).and_return @lp
-      Group.stub(:find).and_return @group
+      allow(LingsProperty).to receive_message_chain(:find).and_return @lp
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_lings_property(@lp)
     end
     
@@ -64,7 +64,7 @@ describe LingsPropertiesController do
     it "redirects to the group home page" do
       @group = groups(:inclusive)
       delete :destroy, :id => lings_properties(:inclusive), :group_id => @group.id
-      response.should redirect_to(@group)
+      expect(response).to redirect_to(@group)
     end
   end
 end

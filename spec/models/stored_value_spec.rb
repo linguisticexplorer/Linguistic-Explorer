@@ -20,7 +20,7 @@ describe StoredValue do
   it "should validate that its key is among the 'storable values' list for its storable" do
     fake_storable = StorableMock.new
     stored_value = StoredValue.new(:key => "not_a_key", :value => "quux")
-    stored_value.stub(:storable).and_return fake_storable
+    allow(stored_value).to receive_message_chain(:storable).and_return fake_storable
     stored_value.save
     stored_value.errors_on(:key).should include "must be a storable key valid for StorableMock"
   end

@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
     # Use Rolify if requested
     if expertizeNeeded
 
-      raise Exceptions::AccessDenied unless current_user.admin? || current_user.is_expert_of?(resource)
+      raise Exceptions::AccessDenied unless current_user && (current_user.admin? || current_user.is_expert_of?(resource))
 
     end
   end

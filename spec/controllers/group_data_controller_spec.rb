@@ -24,8 +24,8 @@ describe ExtendingController do
 
   it "should preload group on every action by default" do
     get :index, :group_id => groups(:inclusive).id
-    response.should be_success
-    assigns(:group).should == groups(:inclusive)
+    expect(response).to be_success
+    expect(assigns(:group)).to eq(groups(:inclusive))
   end
 
   after do

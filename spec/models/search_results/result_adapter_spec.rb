@@ -45,7 +45,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [[1], [1]])
       end
       it "should have results" do
-        @result.any?.should be_true
+        @result.any?.should be_truthy
       end
       it "should return parent result" do
         @result.parent == [1]
@@ -60,7 +60,7 @@ module SearchResults
         @result = ResultAdapter.new(@query, [])
       end
       it "should have not results" do
-        @result.any?.should be_false
+        @result.any?.should be_falsey
       end
       it "should return no parent result" do
         @result.parent == []

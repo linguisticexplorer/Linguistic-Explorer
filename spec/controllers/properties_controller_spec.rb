@@ -3,16 +3,16 @@ require 'spec_helper'
 describe PropertiesController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "index" do
     it "@properties should load through the current group" do
       @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:properties).and_return @group.properties
+      expect(Group).to receive(:properties).and_return @group.properties
 
       get :index, { :group_id => @group.id, :plain => true }
     end
@@ -21,8 +21,8 @@ describe PropertiesController do
       it "@properties should contain properties for the group" do
         get :index, { :group_id => groups(:inclusive).id, :plain => true }
 
-        assigns(:properties).should include properties(:level0)
-        assigns(:properties).should_not include properties(:exclusive0)
+        expect(assigns(:properties)).to include properties(:level0)
+        expect(assigns(:properties)).not_to include properties(:exclusive0)
       end
     end
   end
@@ -32,33 +32,33 @@ describe PropertiesController do
       it "@property should match the passed id" do
         @property = properties(:valid)
         get :show, :id => @property.id, :group_id => @property.group.id
-        assigns(:property).should == @property
+        expect(assigns(:property)).to eq @property
       end
 
       it "@values should contain all values associated with the property" do
         @ling = lings(:level0)
         @group = @ling.group
         @lp = lings_properties(:level0)
-        @lp.ling.should == @ling
+        expect(@lp.ling).to eq @ling
         @property = @lp.property
 
         get :show, { :id => @property.id, :group_id => @group.id, :letter => "l" }
 
-        assigns(:values).should include @lp
-        assigns(:values).size.should == @property.lings_properties.size
+        expect(assigns(:values)).to include @lp
+        expect(assigns(:values).size).to eq @property.lings_properties.size
       end
     end
 
     it "@property should be found by id through current_group" do
       @property = properties(:level0)
       @group = @property.group
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:properties).and_return @group.properties
-      Group.should_receive(:lings).and_return @group.lings
+      expect(Group).to receive(:properties).and_return @group.properties
+      expect(Group).to receive(:lings).and_return @group.lings
 
       get :show, :id => @property.id, :group_id => @group.id
-      assigns(:property).should == @property
+      expect(assigns(:property)).to eq @property
     end
   end
 
@@ -67,28 +67,28 @@ describe PropertiesController do
       @group = FactoryGirl.create(:group)
       @property = Property.new
 
-      @ability.should_receive(:can?).ordered.with(:create, @property).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @property).and_return(true)
 
-      Property.stub(:new).and_return(@property)
-      Group.stub(:find).and_return(@group)
+      allow(Property).to receive_message_chain(:new).and_return(@property)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :new, :group_id => @group.id
     end
 
     describe "assigns" do
       it "a new property to @property" do
         get :new, :group_id => groups(:inclusive).id
-        assigns(:property).should be_new_record
+        expect(assigns(:property)).to be_new_record
       end
 
       it "@categories should be a hash with two level members" do
         get :new, :group_id => groups(:inclusive).id
         cats = assigns(:categories)
 
-        cats.should be_a Hash
-        cats[:depth_0].should include categories(:inclusive0)
-        cats[:depth_1].should include categories(:inclusive1)
-        cats[:depth_0].should_not include categories(:exclusive0)
-        cats[:depth_1].should_not include categories(:exclusive1)
+        expect(cats).to be_a Hash
+        expect(cats[:depth_0]).to include categories(:inclusive0)
+        expect(cats[:depth_1]).to include categories(:inclusive1)
+        expect(cats[:depth_0]).not_to include categories(:exclusive0)
+        expect(cats[:depth_1]).not_to include categories(:exclusive1)
       end
     end
   end
@@ -98,22 +98,22 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
 
-      @ability.should_receive(:can?).ordered.with(:update, @property).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:update, @property).and_return(true)
 
-      Property.stub(:find).and_return @property
-      Group.stub(:find).and_return Group
-      Group.stub(:properties).and_return @group.properties
-      Group.stub(:categories).and_return @group.categories
+      allow(Property).to receive_message_chain(:find).and_return @property
+      allow(Group).to receive_message_chain(:find).and_return Group
+      allow(Group).to receive_message_chain(:properties).and_return @group.properties
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
       get :edit, :id => @property.id, :group_id => @group.id
     end
 
     it "loads the requested property through current group" do
       @property = properties(:level0)
       @group = @property.group
-      Group.stub(:find).and_return Group
-      Group.stub(:categories).and_return @group.categories
+      allow(Group).to receive_message_chain(:find).and_return Group
+      allow(Group).to receive_message_chain(:categories).and_return @group.categories
 
-      Group.should_receive(:properties).and_return @group.properties
+      expect(Group).to receive(:properties).and_return @group.properties
 
       get :edit, :id => @property.id, :group_id => @group.id
     end
@@ -122,18 +122,18 @@ describe PropertiesController do
       it "the requested property to @property" do
         @property = properties(:valid)
         get :edit, :id => @property.id, :group_id => @property.group.id
-        assigns(:property).should == @property
+        expect(assigns(:property)).to eq @property
       end
 
       it "@categories should be a hash with two level members" do
         get :edit, :id => properties(:valid), :group_id => groups(:inclusive).id
         cats = assigns(:categories)
 
-        cats.should be_a Hash
-        cats[:depth_0].should include categories(:inclusive0)
-        cats[:depth_1].should include categories(:inclusive1)
-        cats[:depth_0].should_not include categories(:exclusive0)
-        cats[:depth_1].should_not include categories(:exclusive1)
+        expect(cats).to be_a Hash
+        expect(cats[:depth_0]).to include categories(:inclusive0)
+        expect(cats[:depth_1]).to include categories(:inclusive1)
+        expect(cats[:depth_0]).not_to include categories(:exclusive0)
+        expect(cats[:depth_1]).not_to include categories(:exclusive1)
       end
     end
   end
@@ -144,10 +144,10 @@ describe PropertiesController do
       @group = @property.group
       @category = FactoryGirl.create(:category, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:create, @property).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @property).and_return(true)
 
-      Property.stub(:new).and_return(@property)
-      Group.stub(:find).and_return(@group)
+      allow(Property).to receive_message_chain(:new).and_return(@property)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       post :create, :group_id => @group.id, :property => {'name' => 'Javanese', 'category_id' => @category.id}
     end
 
@@ -157,19 +157,19 @@ describe PropertiesController do
       end
 
       it "assigns a newly created property to @property" do
-        lambda {
+        expect {
           do_valid_create
-          assigns(:property).should_not be_new_record
-          assigns(:property).should be_valid
-          assigns(:property).name.should == 'FROMSPACE'
-          assigns(:property).description.should == "lots of junk"
-          assigns(:property).category.should == categories(:inclusive0)
-        }.should change(Property, :count).by(1)
+          expect(assigns(:property)).not_to be_new_record
+          expect(assigns(:property)).to be_valid
+          expect(assigns(:property).name).to eq 'FROMSPACE'
+          expect(assigns(:property).description).to eq "lots of junk"
+          expect(assigns(:property).category).to eq categories(:inclusive0)
+        }.to change(Property, :count).by(1)
       end
 
       it "redirects to the created property" do
         do_valid_create
-        response.should redirect_to(group_property_url(assigns(:group), assigns(:property)))
+        allow(response).to redirect_to(group_property_url(expect(assigns(:group)), expect(assigns(:property))))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -177,7 +177,7 @@ describe PropertiesController do
         Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         sign_in user
         do_valid_create
-        assigns(:property).creator.should == user
+        expect(assigns(:property).creator).to eq user
       end
 
       it "should set the group to current group" do
@@ -186,8 +186,8 @@ describe PropertiesController do
 
         post :create, :property => {'name' => 'FROMSPACE', :description => "lots of junk", :category_id => @category.id}, :group_id => @group.id
 
-        assigns(:group).should == @group
-        assigns(:property).group.should == @group
+        expect(assigns(:group)).to eq @group
+        expect(assigns(:property).group).to eq @group
       end
     end
 
@@ -197,26 +197,26 @@ describe PropertiesController do
       end
 
       it "does not save a new property" do
-        lambda {
+        expect {
           do_invalid_create
-          assigns(:property).should_not be_valid
-        }.should change(Property, :count).by(0)
+          expect(assigns(:property)).not_to be_valid
+        }.to change(Property, :count).by(0)
       end
 
       it "@categories should be a hash with two level members" do
         do_invalid_create
         cats = assigns(:categories)
-        cats.should be_a Hash
-        cats[:depth_0].should include categories(:inclusive0)
-        cats[:depth_1].should include categories(:inclusive1)
-        cats[:depth_0].should_not include categories(:exclusive0)
-        cats[:depth_1].should_not include categories(:exclusive1)
+        expect(cats).to be_a Hash
+        expect(cats[:depth_0]).to include categories(:inclusive0)
+        expect(cats[:depth_1]).to include categories(:inclusive1)
+        expect(cats[:depth_0]).not_to include categories(:exclusive0)
+        expect(cats[:depth_1]).not_to include categories(:exclusive1)
       end
 
       it "re-renders the 'new' template" do
         do_invalid_create
-        response.should be_success
-        response.should render_template("new")
+        expect(response).to be_success
+        expect(response).to render_template("new")
       end
     end
   end
@@ -226,10 +226,10 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
 
-      @ability.should_receive(:can?).ordered.with(:update, @property).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:update, @property).and_return(true)
 
-      Property.stub(:find).and_return(@property)
-      Group.stub(:find).and_return(@group)
+      allow(Property).to receive_message_chain(:find).and_return(@property)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       put :update, :id => @property.id, :property => {'name' => 'ayb'}, :group_id => @group.id
     end
 
@@ -237,12 +237,12 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
       @props = @group.properties
-      Group.stub(:find).and_return @group
-      @group.should_receive(:properties).and_return @props
+      allow(Group).to receive_message_chain(:find).and_return @group
+      expect(@group).to receive(:properties).and_return @props
 
       put :update, :group_id => @group.id, :id => @property.id, :property => {'name' => 'eengleesh'}
 
-      assigns(:property).should == @property
+      expect(assigns(:property)).to eq @property
     end
 
     describe "with valid params" do
@@ -254,23 +254,23 @@ describe PropertiesController do
         @property = properties(:level0)
         new_name = "foobard"
         @group = @property.group
-        @group.stub(:properties).and_return Property
-        Property.stub(:find).and_return @property
-        Group.stub(:find).and_return @group
+        allow(@group).to receive_message_chain(:properties).and_return Property
+        allow(Property).to receive_message_chain(:find).and_return @property
+        allow(Group).to receive_message_chain(:find).and_return @group
 
-        @property.should_receive(:update_attributes).with({'name' => new_name}).and_return true
+        expect(@property).to receive(:update_attributes).with({'name' => new_name}).and_return true
 
         put :update, :id => @property.id, :property => {'name' => new_name}, :stored_values => {:text => "foo"}, :group_id => @group.id
       end
 
       it "assigns the requested property as @property" do
         do_valid_update_on_property(properties(:valid))
-        assigns(:property).should == properties(:valid)
+        expect(assigns(:property)).to eq properties(:valid)
       end
 
       it "redirects to the property" do
         do_valid_update_on_property(properties(:valid))
-        response.should redirect_to(group_property_url(assigns(:group), properties(:valid)))
+        expect(response).to redirect_to(group_property_url(expect(assigns(:group)), properties(:valid)))
       end
     end
 
@@ -281,23 +281,23 @@ describe PropertiesController do
 
       it "assigns the property as @property" do
         do_invalid_update
-        assigns(:property).should == properties(:valid)
+        expect(assigns(:property)).to eq properties(:valid)
       end
 
       it "@categories should be a hash with two level members" do
         do_invalid_update
         cats = assigns(:categories)
 
-        cats.should be_a Hash
-        cats[:depth_0].should include categories(:inclusive0)
-        cats[:depth_1].should include categories(:inclusive1)
-        cats[:depth_0].should_not include categories(:exclusive0)
-        cats[:depth_1].should_not include categories(:exclusive1)
+        expect(cats).to be_a Hash
+        expect(cats[:depth_0]).to include categories(:inclusive0)
+        expect(cats[:depth_1]).to include categories(:inclusive1)
+        expect(cats[:depth_0]).not_to include categories(:exclusive0)
+        expect(cats[:depth_1]).not_to include categories(:exclusive1)
       end
 
       it "re-renders the 'edit' template" do
         do_invalid_update
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
   end
@@ -311,9 +311,9 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
 
-      @ability.should_receive(:can?).ordered.with(:destroy, @property).and_return true
+      expect(@ability).to receive(:can?).ordered.with(:destroy, @property).and_return true
 
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_property(@property)
     end
 
@@ -321,28 +321,28 @@ describe PropertiesController do
       @property = properties(:level0)
       @group = @property.group
 
-      @group.should_receive(:properties).and_return Property.where(:group_id => @group.id)
+      expect(@group).to receive(:properties).and_return Property.where(:group_id => @group.id)
 
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @property.id
     end
 
     it "calls destroy on the requested property" do
       @property = properties(:level0)
       @group = @property.group
-      @group.stub(:properties).and_return Property
+      allow(@group).to receive_message_chain(:properties).and_return Property
 
-      @property.should_receive(:destroy).and_return(true)
+      expect(@property).to receive(:destroy).and_return(true)
 
-      Property.stub(:find).and_return @property
-      Group.stub(:find).and_return @group
+      allow(Property).to receive_message_chain(:find).and_return @property
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_property(@property)
     end
 
     it "redirects to the properties list" do
       @property = properties(:level0)
       delete :destroy, :id => @property.id, :group_id => @property.group.id
-      response.should redirect_to(group_properties_url(@property.group))
+      expect(response).to redirect_to(group_properties_url(@property.group))
     end
   end
 end

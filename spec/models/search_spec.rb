@@ -4,7 +4,7 @@ describe Search do
 
   describe "validations" do
     before(:each) do
-      Search.stub(:reached_max_limit?).and_return(false)
+      allow(Search).to receive_message_chain(:reached_max_limit?).and_return(false)
       @user  = User.new
       @group = Group.new
       @search = Search.new do |s|
@@ -20,7 +20,7 @@ describe Search do
     it { should validate_presence_of :name }
 
     it "should validate user within max search limit" do
-      Search.stub(:reached_max_limit?).and_return(true)
+      allow(Search).to receive_message_chain(:reached_max_limit?).and_return(true)
       @search.valid?
       @search.should have(1).error_on(:base)
     end
@@ -29,7 +29,7 @@ describe Search do
   describe "query" do
     before(:each) do
       builder = SearchResults::SearchFilterBuilder
-      builder.stub(:new).and_return(double(builder, :filtered_parent_and_child_ids => [[], []]))
+      allow(builder).to receive_message_chain(:new).and_return(double(builder, :filtered_parent_and_child_ids => [[], []]))
       @search = FactoryGirl.create(:search)
     end
 
@@ -54,8 +54,8 @@ describe Search do
 
   describe "reached_max_limit?" do
     before(:each) do
-      Search.stub(:scoped).and_return(Search)
-      Search.stub(:count).and_return(0)
+      allow(Search).to receive_message_chain(:scoped).and_return(Search)
+      allow(Search).to receive_message_chain(:count).and_return(0)
       @user = double(User)
       @group = double(Group)
     end
@@ -68,20 +68,20 @@ describe Search do
     end
 
     it "should return true if count for searches by user and group has reached max limit" do
-      Search.stub(:by).and_return(Search)
-      Search.stub(:in_group).and_return(Search)
+      allow(Search).to receive_message_chain(:by).and_return(Search)
+      allow(Search).to receive_message_chain(:in_group).and_return(Search)
 
-      Search.stub(:count).and_return(25)
-      Search.reached_max_limit?(@user, @group).should be_true
-      Search.stub(:count).and_return(26)
-      Search.reached_max_limit?(@user, @group).should be_true
+      allow(Search).to receive_message_chain(:count).and_return(25)
+      Search.reached_max_limit?(@user, @group).should be_truthy
+      allow(Search).to receive_message_chain(:count).and_return(26)
+      Search.reached_max_limit?(@user, @group).should be_truthy
     end
 
     it "should return true if count for searches by user and group has reached max limit" do
-      Search.stub(:by).and_return(Search)
-      Search.stub(:in_group).and_return(Search)
-      Search.stub(:count).and_return(24)
-      Search.reached_max_limit?(@user, @group).should be_false
+      allow(Search).to receive_message_chain(:by).and_return(Search)
+      allow(Search).to receive_message_chain(:in_group).and_return(Search)
+      allow(Search).to receive_message_chain(:count).and_return(24)
+      Search.reached_max_limit?(@user, @group).should be_falsey
     end
   end
 
@@ -97,7 +97,7 @@ describe Search do
     end
     describe "anonymous_user" do
       it "should be false" do
-        @search.is_manageable_by?(@user).should be_false
+        @search.is_manageable_by?(@user).should be_falsey
       end
     end
 
@@ -106,21 +106,21 @@ describe Search do
         @creator = User.last || FactoryGirl.create(:user, :email => "bob-searcher@example.com")
         @search.creator = @creator
         @ability = double(Ability, :can? => true)
-        Ability.stub(:new).and_return(@ability)
+        allow(Ability).to receive_message_chain(:new).and_return(@ability)
       end
 
       it "should be false if user is not creator" do
-        @search.is_manageable_by?(FactoryGirl.create(:user)).should be_false
+        @search.is_manageable_by?(FactoryGirl.create(:user)).should be_falsey
       end
 
       describe "user is creator" do
         it "should be true if user has group access" do
-          @ability.stub(:can?).and_return(true)
-          @search.is_manageable_by?(@creator).should be_true
+          allow(@ability).to receive_message_chain(:can?).and_return(true)
+          @search.is_manageable_by?(@creator).should be_truthy
         end
         it "should be false if no group access" do
-          @ability.stub(:can?).and_return(false)
-          @search.is_manageable_by?(@creator).should be_false
+          allow(@ability).to receive_message_chain(:can?).and_return(false)
+          @search.is_manageable_by?(@creator).should be_falsey
         end
 
       end
@@ -137,27 +137,27 @@ describe Search do
     end
 
     it "should be default search" do
-      create_default_search.default?.should be_true
+      create_default_search.default?.should be_truthy
     end
 
     it "should be cross search" do
-      create_cross_search.cross?.should be_true
+      create_cross_search.cross?.should be_truthy
     end
 
     it "should be compare search" do
-      create_compare_search.compare?.should be_true
+      create_compare_search.compare?.should be_truthy
     end
 
     it "should not be default search" do
-      create_cross_search.default?.should be_false
+      create_cross_search.default?.should be_falsey
     end
 
     it "should not be cross search" do
-      create_compare_search.cross?.should be_false
+      create_compare_search.cross?.should be_falsey
     end
 
     it "should be a mapable search" do
-      create_compare_search.mappable?.should be_true
+      create_compare_search.mappable?.should be_truthy
     end
   end
 

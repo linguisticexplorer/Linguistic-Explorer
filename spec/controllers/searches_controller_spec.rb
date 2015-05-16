@@ -3,17 +3,17 @@ require 'spec_helper'
 describe SearchesController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "#new" do
     it "should authorize :search on @search" do
       @group = groups(:inclusive)
       @search = Search.new
-      Search.stub(:new).and_return @search
+      allow(Search).to receive_message_chain(:new).and_return @search
 
-      @ability.should_receive(:can?).with(:search, @search).and_return true
+      expect(@ability).to receive(:can?).with(:search, @search).and_return true
 
       get :new, :group_id => @group.id
     end
@@ -23,9 +23,9 @@ describe SearchesController do
     it "should authorize :search on @search" do
       @group = groups(:inclusive)
       @search = Search.new
-      Search.stub(:new).and_return @search
+      allow(Search).to receive_message_chain(:new).and_return @search
 
-      @ability.should_receive(:can?).with(:search, @search).and_return true
+      expect(@ability).to receive(:can?).with(:search, @search).and_return true
 
       get :preview, :group_id => @group.id, :search => {}
     end
@@ -35,9 +35,9 @@ describe SearchesController do
     it "should authorize create on @search" do
       @group = groups(:inclusive)
       @search = Search.new
-      Search.stub(:new).and_return @search
+      allow(Search).to receive_message_chain(:new).and_return @search
 
-      @ability.should_receive(:can?).with(:create, @search).and_return true
+      expect(@ability).to receive(:can?).with(:create, @search).and_return true
 
       post :create, :group_id => @group.id, :search => {}
     end
@@ -48,21 +48,21 @@ describe SearchesController do
       @search = FactoryGirl.create(:search)
       @group = @search.group
       @searches = @group.searches
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
 
-      @group.should_receive(:searches).and_return @searches
+      expect(@group).to receive(:searches).and_return @searches
 
       get :show, :id => @search.id, :group_id => @group.id
 
-      assigns(:search).should == @search
+      expect(assigns(:search)).to eq @search
     end
 
     it "should authorize :search on search" do
       @group = groups(:inclusive)
       @search = FactoryGirl.create(:search, :group => @group)
-      Search.stub(:new).and_return @search
+      allow(Search).to receive_message_chain(:new).and_return @search
 
-      @ability.should_receive(:can?).with(:search, @search).and_return true
+      expect(@ability).to receive(:can?).with(:search, @search).and_return true
 
       get :show, :group_id => @group.id, :id => @search.id
     end
@@ -80,10 +80,10 @@ describe SearchesController do
         @group = groups(:inclusive)
         @sc = FactoryGirl.create(:search, :group => @group)
         @searches = @group.searches
-        Group.stub(:searches).and_return Search
-        Search.stub(:by).and_return @searches
+        allow(Group).to receive_message_chain(:searches).and_return Search
+        allow(Search).to receive_message_chain(:by).and_return @searches
 
-        @searches.each{ |s| @ability.should_receive(:can?).with(:update, s).and_return true }
+        @searches.each{ |s| expect(@ability).to receive(:can?).with(:update, s).and_return true }
 
         get :index, :group_id => @group.id
       end
@@ -92,14 +92,14 @@ describe SearchesController do
         @search = FactoryGirl.create(:search)
         @group = @search.group
         @searches = @group.searches
-        @searches.stub(:by).and_return @searches
-        Group.stub(:find).and_return @group
+        allow(@searches).to receive_message_chain(:by).and_return @searches
+        allow(Group).to receive_message_chain(:find).and_return @group
 
-        @group.should_receive(:searches).and_return @searches
+        expect(@group).to receive(:searches).and_return @searches
 
         get :index, :group_id => @group.id
 
-        assigns(:searches).should include @search
+        expect(assigns(:searches)).to include @search
       end
     end
   end
@@ -108,9 +108,9 @@ describe SearchesController do
     it "should authorize destroy on @search" do
       @group = groups(:inclusive)
       @search = FactoryGirl.create(:search, :group => @group)
-      Search.stub(:find).and_return @search
+      allow(Search).to receive_message_chain(:find).and_return @search
 
-      @ability.should_receive(:can?).with(:destroy, @search).and_return true
+      expect(@ability).to receive(:can?).with(:destroy, @search).and_return true
 
       delete :destroy, :group_id => @group.id, :id => @search.id
     end
@@ -119,9 +119,9 @@ describe SearchesController do
       @search = FactoryGirl.create(:search)
       @group = @search.group
 
-      @group.should_receive(:searches).and_return Search.where(:group_id => @group.id)
+      expect(@group).to receive(:searches).and_return Search.where(:group_id => @group.id)
 
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @search.id
     end
   end

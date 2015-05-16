@@ -3,26 +3,26 @@ require 'spec_helper'
 describe GroupsController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "index" do
     describe "without a group_id parameter" do
       it "@groups should contain accessible groups for signed in user" do
-        @controller.stub(:user_signed_in?).and_return(true)
+        allow(@controller).to receive_message_chain(:user_signed_in?).and_return(true)
         @group = FactoryGirl.create(:group)
-        Group.should_receive(:accessible_by).with(@ability).and_return( [@group] )
+        expect(Group).to receive(:accessible_by).with(@ability).and_return( [@group] )
         get :index
-        assigns(:groups).should include @group
+        expect(assigns(:groups)).to include @group
       end
 
       it "@groups should contain accessible groups" do
-        @controller.stub(:user_signed_in?).and_return(false)
+        allow(@controller).to receive_message_chain(:user_signed_in?).and_return(false)
         @group = FactoryGirl.create(:group)
-        Group.should_receive(:public).and_return( [@group] )
+        expect(Group).to receive(:public).and_return( [@group] )
         get :index
-        assigns(:groups).should include @group
+        expect(assigns(:groups)).to include @group
       end
     end
 
@@ -30,22 +30,22 @@ describe GroupsController do
       it "should authorize :show on group" do
         @ability = Ability.new(nil)
         @group = FactoryGirl.create(:group)
-        @ability.should_receive(:can?).with(:show, @group).and_return true
-        @controller.stub(:current_ability).and_return(@ability)
-        Group.stub(:find).and_return(@group)
+        expect(@ability).to receive(:can?).with(:show, @group).and_return true
+        allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
+        allow(Group).to receive_message_chain(:find).and_return(@group)
         get :index, :group_id => @group.id
       end
 
       it "should redirect to show for that group if valid" do
         get :index, :group_id => groups(:inclusive).id
-        response.should redirect_to(group_path(groups(:inclusive)))
-        assigns[:group].should == groups(:inclusive)
+        expect(response).to redirect_to(group_path(groups(:inclusive)))
+        expect(assigns[:group]).to eq(groups(:inclusive))
       end
 
       it "should render index as normal if invalid" do
         get :index, :group_id => "invalid-id"
-        response.should_not redirect_to(groups_path + "/invalid-id")
-        assigns[:group].should be_nil
+        expect(response).not_to redirect_to(groups_path + "/invalid-id")
+        expect(assigns[:group]).to be_nil
       end
     end
   end
@@ -54,16 +54,16 @@ describe GroupsController do
     it "should authorize :show on group" do
       @ability = Ability.new(nil)
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:show, @group).and_return true
-      @controller.stub(:current_ability).and_return(@ability)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).with(:show, @group).and_return true
+      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :show, :id => @group.id
     end
 
     describe "assigns" do
       it "@group should match the requested group id" do
         get :show, :id => groups(:inclusive).id
-        assigns(:group).should == groups(:inclusive)
+        expect(assigns(:group)).to eq(groups(:inclusive))
       end
     end
   end
@@ -72,16 +72,16 @@ describe GroupsController do
     it "should authorize :show on group" do
       @ability = Ability.new(nil)
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:show, @group).and_return true
-      @controller.stub(:current_ability).and_return(@ability)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).with(:show, @group).and_return true
+      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :info, :id => @group.id
     end
 
     describe "assigns" do
       it "@group should match the requested group id" do
         get :info, :id => groups(:inclusive).id
-        assigns(:group).should == groups(:inclusive)
+        expect(assigns(:group)).to eq(groups(:inclusive))
       end
     end
   end
@@ -94,16 +94,16 @@ describe GroupsController do
     it "should authorize :create on group" do
       @group = FactoryGirl.create(:group)
       @ability = Ability.new(nil)
-      Group.should_receive(:new).and_return(@group)
-      @ability.should_receive(:can?).with(:create, @group).and_return true
-      @controller.stub(:current_ability).and_return(@ability)
+      expect(Group).to receive(:new).and_return(@group)
+      expect(@ability).to receive(:can?).with(:create, @group).and_return true
+      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
       do_new
     end
 
     describe "assigns" do
       it "a new group to @group" do
         do_new
-        assigns(:group).should be_new_record
+        expect(assigns(:group)).to be_new_record
       end
     end
   end
@@ -112,16 +112,16 @@ describe GroupsController do
     it "should authorize :update on group" do
       @ability = Ability.new(nil)
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:update, @group).and_return true
-      @controller.stub(:current_ability).and_return(@ability)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).with(:update, @group).and_return true
+      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :edit, :id => @group.id
     end
 
     describe "assigns" do
       it "the requested group to @group" do
         get :edit, :id => groups(:inclusive).id
-        assigns(:group).should == groups(:inclusive)
+        expect(assigns(:group)).to eq(groups(:inclusive))
       end
     end
   end
@@ -134,9 +134,9 @@ describe GroupsController do
     it "should authorize :create on group" do
       @ability = Ability.new(nil)
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:create, @group).and_return true
-      @controller.stub(:current_ability).and_return(@ability)
-      Group.stub(:new).and_return(@group)
+      expect(@ability).to receive(:can?).with(:create, @group).and_return true
+      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
+      allow(Group).to receive_message_chain(:new).and_return(@group)
       group_params = {'name' => 'TheBestTheBestTheBest'}
       do_create_with_params(group_params)
     end
@@ -145,35 +145,35 @@ describe GroupsController do
       it "assigns a newly created group to @group" do
         group_params = {'name' => 'TheBestTheBestTheBest'}
         @group = FactoryGirl.create(:group)
-        Group.should_receive(:new).with(group_params).and_return(@group)
+        expect(Group).to receive(:new).with(group_params).and_return(@group)
         do_create_with_params(group_params)
       end
 
       it "redirects to the created group" do
         @group = groups(:inclusive)
         group_params = {:name => 'NewGroup'}
-        Group.should_receive(:new).and_return(@group)
+        expect(Group).to receive(:new).and_return(@group)
 
         do_create_with_params(group_params)
-        assigns[:group].should == @group
-        response.should redirect_to(group_url(assigns[:group]))
+        expect(assigns[:group]).to eq(@group)
+        expect(response).to redirect_to(group_url(assigns[:group]))
       end
     end
 
     describe "with invalid params" do
       it "does not save a new group" do
-        lambda {
+        expect {
           invalid_params = {'name' => ''}
           do_create_with_params(invalid_params)
-          assigns(:group).should_not be_valid
-        }.should change(Group, :count).by(0)
+          expect(assigns(:group)).not_to be_valid
+        }.expect change(Group, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
         invalid_params = {'name' => ''}
         do_create_with_params(invalid_params)
-        response.should be_success
-        response.should render_template("new")
+        expect(response).to be_success
+        expect(response).to render_template("new")
       end
     end
   end
@@ -186,33 +186,33 @@ describe GroupsController do
     it "should authorize :update on the passed group" do
       params = {'name' => 'lamegroup'}
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:update, @group).and_return(true)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).with(:update, @group).and_return(true)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       do_update_on_group_with_params(@group, params)
     end
 
     describe "with valid params" do
       it "updates the requested group" do
         group = groups(:inclusive)
-        group.name.should_not == 'number1group'
+        group.name.should_not eq('number1group')
         params = {'name' => 'number1group'}
 
         do_update_on_group_with_params(group, params)
 
         group.reload
-        group.name.should == 'number1group'
+        expect(group.name).to eq('number1group')
       end
 
       it "assigns the requested group as @group" do
         @group = groups(:inclusive)
         do_update_on_group_with_params(@group, {})
-        assigns(:group).should == @group
+        expect(assigns(:group)).to eq(@group)
       end
 
       it "redirects to the group" do
         @group = groups(:inclusive)
         do_update_on_group_with_params(@group, {})
-        response.should redirect_to(group_url(@group))
+        expect(response).to redirect_to(group_url(@group))
       end
     end
 
@@ -221,12 +221,12 @@ describe GroupsController do
         @group = groups(:inclusive)
         invalid_params = {'name' => ''}
         do_update_on_group_with_params(@group, invalid_params)
-        assigns(:group).should == @group
+        expect(assigns(:group)).to eq(@group)
       end
 
       it "re-renders the 'edit' template" do
         do_update_on_group_with_params(groups(:inclusive), {'name' => ''})
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
   end
@@ -234,8 +234,8 @@ describe GroupsController do
   describe "destroy" do
     it "should authorize :destroy on the passed group" do
       @group = FactoryGirl.create(:group)
-      @ability.should_receive(:can?).with(:destroy, @group).and_return(true)
-      Group.stub(:find).and_return(@group)
+      expect(@ability).to receive(:can?).with(:destroy, @group).and_return(true)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       delete :destroy, :id => @group.id
     end
 
@@ -248,7 +248,7 @@ describe GroupsController do
 
     it "redirects to the groups list" do
       delete :destroy, :id => groups(:inclusive).id
-      response.should redirect_to(groups_url)
+      expect(response).to redirect_to(groups_url)
     end
   end
 end

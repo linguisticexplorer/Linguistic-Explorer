@@ -3,16 +3,16 @@ require 'spec_helper'
 describe LingsController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "depth" do
     it "should find lings through the current group" do
       @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:lings).and_return @group.lings
+      expect(Group).to receive(:lings).and_return @group.lings
 
       get :depth, { :group_id => @group.id, :depth => 0, :plain => true }
     end
@@ -20,19 +20,19 @@ describe LingsController do
     it "@depth should be the passed depth value" do
       depth_test_no = 0
       get :depth, { :group_id => groups(:inclusive).id, :depth => depth_test_no, :plain => true }
-      assigns(:depth).should == depth_test_no
+      expect(assigns(:depth)).to eq depth_test_no
     end
 
     it "@lings should be an array of lings for the passed depth (0)" do
       get :depth, { :group_id => groups(:inclusive).id, :depth => 0, :plain => true, :letter => "all" }
-      assigns(:lings).should include lings(:level0)
-      assigns(:lings).should_not include lings(:level1)
+      expect(assigns(:lings)).to include lings(:level0)
+      expect(assigns(:lings)).not_to include lings(:level1)
     end
 
     it "@lings should be an array of lings for the passed depth (1)" do
       get :depth, { :group_id => groups(:inclusive).id, :depth => 1, :plain => true }
-      assigns(:lings).should_not include lings(:level0)
-      assigns(:lings).should include lings(:level1)
+      expect(assigns(:lings)).not_to include lings(:level0)
+      expect(assigns(:lings)).to include lings(:level1)
     end
   end
 
@@ -40,9 +40,9 @@ describe LingsController do
     describe "assigns" do
     it "should find lings through the current group" do
       @group = groups(:inclusive)
-      Group.stub(:find).and_return(Group)
-      Group.should_receive(:depths).and_return @group.depths
-      Group.should_receive(:lings).exactly(@group.depths.size).times.and_return @group.lings
+      allow(Group).to receive_message_chain(:find).and_return(Group)
+      expect(Group).to receive(:depths).and_return @group.depths
+      expect(Group).to receive(:lings).exactly(@group.depths.size).times.and_return @group.lings
 
       get :index, { :group_id => @group.id, :plain => true }
     end
@@ -51,14 +51,14 @@ describe LingsController do
         @group = groups(:inclusive)
         get :index, { :group_id => @group.id, :plain => true, :letter => "all" }
 
-        assigns(:lings_by_depth).size.should == @group.depths.count
-        assigns(:lings_by_depth)[0][0].should include lings(:level0)
-        assigns(:lings_by_depth)[1][0].should include lings(:level1)
+        expect(assigns(:lings_by_depth).size).to eq @group.depths.count
+        expect(assigns(:lings_by_depth)[0][0]).to include lings(:level0)
+        expect(assigns(:lings_by_depth)[1][0]).to include lings(:level1)
       end
 
       it "@lings_by_depth should be an array with current_group.depth_maximum + 1 member subarrays" do
         get :index, { :group_id => groups(:inclusive).id, :plain => true }
-        assigns(:lings_by_depth).size.should == groups(:inclusive).depth_maximum + 1
+        expect(assigns(:lings_by_depth).size).to eq groups(:inclusive).depth_maximum + 1
       end
     end
   end
@@ -67,26 +67,26 @@ describe LingsController do
     it "@ling should be found by id through current_group" do
       @group = groups(:inclusive)
       @ling = lings(:english)
-      @ling.group.should == @group
+      expect(@ling.group).to eq @group
 
-      Group.stub(:find).and_return(Group)
-      Group.should_receive(:lings).and_return @group.lings
+      allow(Group).to receive_message_chain(:find).and_return(Group)
+      expect(Group).to receive(:lings).and_return @group.lings
       get :show, :id => @ling.id, :group_id => @group.id
 
-      assigns(:ling).should == @ling
+      expect(assigns(:ling)).to eq @ling
     end
 
     it "@values should contain all values associated with the ling" do
       @property = properties(:level0)
       @group = @property.group
       @lp = lings_properties(:level0)
-      @lp.property.should == @property
+      expect(@lp.property).to eq @property
       @ling = @lp.ling
 
       get :show, :id => @ling.id, :group_id => @group.id
 
-      assigns(:values).should include @lp
-      assigns(:values).size.should == @ling.lings_properties.size
+      expect(assigns(:values)).to include @lp
+      expect(assigns(:values).size).to eq @ling.lings_properties.size
     end
   end
 
@@ -99,23 +99,23 @@ describe LingsController do
       @ling = Ling.new
       @group = FactoryGirl.create(:group)
 
-      @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @ling).and_return(true)
 
-      Ling.stub(:new).and_return(@ling)
-      Group.stub(:find).and_return(@group)
+      allow(Ling).to receive_message_chain(:new).and_return(@ling)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :new, :group_id => @group.id
     end
 
     describe "with a depth parameter > 0" do
       it "assigns a new ling to @ling, with depth the same as the param" do
         do_new_with_depth(1)
-        assigns(:ling).should be_new_record
-        assigns(:ling).depth.should == 1
+        expect(assigns(:ling)).to be_new_record
+        expect(assigns(:ling).depth).to eq 1
       end
 
       it "should assign @depth the value of the parameter" do
         do_new_with_depth(1)
-        assigns(:depth).should == 1
+        expect(assigns(:depth)).to eq 1
       end
 
       it "should assign lings from current group with @depth-1 depth to @parents" do
@@ -126,35 +126,35 @@ describe LingsController do
         get :new, :group_id => @group.id, :depth => 1
 
         @parents = assigns(:parents)
-        @parents.should_not be_empty
-        @parents.should include @ling
-        @parents.should_not include @wrong_depth_ling
+        expect(@parents).not_to be_empty
+        expect(@parents).to include @ling
+        expect(@parents).not_to include @wrong_depth_ling
       end
     end
 
     describe "with a depth parameter of 0" do
       it "assigns a new ling to @ling, with depth the same as the param" do
         do_new_with_depth(0)
-        assigns(:ling).should be_new_record
-        assigns(:ling).depth.should == 0
+        expect(assigns(:ling)).to be_new_record
+        expect(assigns(:ling).depth).to eq 0
       end
 
       it "should assign 0 to @depth" do
         do_new_with_depth(0)
-        assigns(:depth).should == 0
+        expect(assigns(:depth)).to eq 0
       end
     end
 
     describe "without a depth parameter" do
       it "assigns a new ling to @ling, with depth 0" do
         do_new_with_depth(nil)
-        assigns(:ling).should be_new_record
-        assigns(:ling).depth.should == 0
+        expect(assigns(:ling)).to be_new_record
+        expect(assigns(:ling).depth).to eq 0
       end
 
       it "should assign 0 to @depth" do
         do_new_with_depth(nil)
-        assigns(:depth).should == 0
+        expect(assigns(:depth)).to eq 0
       end
     end
   end
@@ -168,41 +168,41 @@ describe LingsController do
       it "loads the requested ling through current group" do
         @ling = lings(:english)
         @group = @ling.group
-        Group.stub(:find).and_return Group
-        Group.should_receive(:lings).twice.and_return @group.lings
+        allow(Group).to receive_message_chain(:find).and_return Group
+        expect(Group).to receive(:lings).twice.and_return @group.lings
 
         get :edit, :group_id => @group.id, :id => @ling.id
 
-        assigns(:ling).should == @ling
+        expect(assigns(:ling)).to eq @ling
       end
 
       it "the requested ling's depth to @depth" do
         @ling = lings(:level1)
         do_edit_on_ling(@ling)
-        assigns(:depth).should == @ling.depth
+        expect(assigns(:depth)).to eq @ling.depth
       end
 
       it "available @depth-1 depth lings for the current group to @parents" do
         @ling = lings(:level1)
-        @ling.depth.should == 1
+        expect(@ling.depth).to eq 1
         @group = @ling.group
-        @group.should_receive(:lings).twice.and_return Ling
+        expect(@group).to receive(:lings).twice.and_return Ling
 
-        Ling.should_receive(:at_depth).and_return Ling.where(:depth => 0)
-        Group.stub(:find).and_return @group
+        expect(Ling).to receive(:at_depth).and_return Ling.where(:depth => 0)
+        allow(Group).to receive_message_chain(:find).and_return @group
         get :edit, :group_id => @group.id, :id => @ling.id
 
         parent_depths = assigns(:parents).collect(&:depth).uniq
-        parent_depths.should == [ 0 ]
+        expect(parent_depths).to eq [ 0 ]
       end
 
       it "an empty array to @parents if depth is <= 0" do
         @ling = lings(:level0)
-        @ling.depth.should == 0
+        expect(@ling.depth).to eq 0
 
         do_edit_on_ling(@ling)
 
-        assigns(:parents).should == []
+        expect(assigns(:parents)).to eq []
       end
     end
 
@@ -210,10 +210,10 @@ describe LingsController do
       @group = FactoryGirl.create(:group)
       @ling = FactoryGirl.create(:ling, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:update, @ling).and_return(true)
 
-      Ling.stub(:new).and_return(@ling)
-      Group.stub(:find).and_return(@group)
+      allow(Ling).to receive_message_chain(:new).and_return(@ling)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :edit, :group_id => @group.id, :id => @ling.id
     end
   end
@@ -223,10 +223,10 @@ describe LingsController do
       @group = FactoryGirl.create(:group)
       @ling = FactoryGirl.create(:ling, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:create, @ling).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @ling).and_return(true)
 
-      Ling.stub(:new).and_return(@ling)
-      Group.stub(:find).and_return(@group)
+      allow(Ling).to receive_message_chain(:new).and_return(@ling)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       post :create, :group_id => @group.id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}
     end
 
@@ -236,24 +236,24 @@ describe LingsController do
       end
 
       it "assigns a newly created ling to @ling" do
-        lambda {
+        expect {
           do_valid_create
-          assigns(:ling).should_not be_new_record
-          assigns(:ling).should be_valid
-          assigns(:ling).name.should == 'Javanese'
-        }.should change(Ling, :count).by(1)
+          expect(assigns(:ling)).not_to be_new_record
+          expect(assigns(:ling)).to be_valid
+          expect(assigns(:ling).name).to eq 'Javanese'
+        }.to change(Ling, :count).by(1)
       end
 
       it "creates and associates passed stored values" do
-        lambda {
+        expect {
           do_valid_create
-          assigns(:ling).stored_value(:description).should == 'foo'
-        }.should change(StoredValue, :count).by(1)
+          expect(assigns(:ling).stored_value(:description)).to eq 'foo'
+        }.to change(StoredValue, :count).by(1)
       end
 
       it "redirects to the created ling" do
         do_valid_create
-        response.should redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
+        expect(response).to redirect_to(group_ling_url(assigns(:group), assigns(:ling)))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -263,7 +263,7 @@ describe LingsController do
 
         do_valid_create
 
-        assigns(:ling).creator.should == user
+        expect(assigns(:ling).creator).to eq user
       end
 
       it "should set the group on the new ling to current group" do
@@ -271,8 +271,8 @@ describe LingsController do
 
         post :create, :group_id => @group.id, :ling => {'name' => 'Javanese', 'depth' => '0', 'parent_id' => nil}, :stored_values => {:description => "foo"}
 
-        assigns(:group).should == @group
-        assigns(:ling).group.should == @group
+        expect(assigns(:group)).to eq @group
+        expect(assigns(:ling).group).to eq @group
       end
     end
 
@@ -282,33 +282,33 @@ describe LingsController do
       end
 
       it "does not create passed stored values" do
-        lambda { do_invalid_create }.should change(StoredValue, :count).by(0)
+        expect { do_invalid_create }.to change(StoredValue, :count).by(0)
       end
 
       it "does not save a new ling" do
-        lambda {
+        expect {
           do_invalid_create
-          assigns(:ling).should_not be_valid
-        }.should change(Ling, :count).by(0)
+          expect(assigns(:ling)).not_to be_valid
+        }.to change(Ling, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
         do_invalid_create
-        response.should be_success
-        response.should render_template("new")
+        expect(response).to be_success
+        expect(response).to render_template("new")
       end
 
       describe "assigns" do
         it "the attempted ling's depth to @depth" do
           do_invalid_create
-          assigns(:depth).should == 1
+          expect(assigns(:depth)).to eq 1
         end
 
         it "available @depth-1 depth lings to @parents" do
           do_invalid_create
           parent_depths = assigns(:parents).collect(&:depth)
-          parent_depths.uniq.size.should == 1
-          parent_depths.first.should == 0
+          expect(parent_depths.uniq.size).to eq 1
+          expect(parent_depths.first).to eq 0
         end
       end
     end
@@ -319,10 +319,10 @@ describe LingsController do
       @group = FactoryGirl.create(:group)
       @ling = FactoryGirl.create(:ling, :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:update, @ling).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:update, @ling).and_return(true)
 
-      Ling.stub(:find).and_return(@ling)
-      Group.stub(:find).and_return(@group)
+      allow(Ling).to receive_message_chain(:find).and_return(@ling)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
     end
 
@@ -330,22 +330,22 @@ describe LingsController do
       @ling = lings(:english)
       @group = @ling.group
       @lings = @group.lings
-      Group.stub(:find).and_return @group
-      @group.should_receive(:lings).and_return @lings
+      allow(Group).to receive_message_chain(:find).and_return @group
+      expect(@group).to receive(:lings).and_return @lings
 
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
 
-      assigns(:ling).should == @ling
+      expect(assigns(:ling)).to eq @ling
     end
 
     it "assigns the requested ling's depth to @depth" do
       @ling = lings(:level1)
       @group = groups(:inclusive)
-      @ling.depth.should == 1
+      expect(@ling.depth).to eq 1
 
       put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => 'eengleesh'}
 
-      assigns(:depth).should == 1
+      expect(assigns(:depth)).to eq 1
     end
 
     describe "with valid params" do
@@ -353,11 +353,11 @@ describe LingsController do
         @ling = lings(:english)
         @group = @ling.group
         new_name = 'eengleesh'
-        @ling.name.should_not == new_name
+        expect(@ling.name).not_to eq new_name
 
         put :update, :group_id => @group.id, :id => @ling.id, :ling => {'name' => new_name}
 
-        @ling.reload.name.should == new_name
+        expect(@ling.reload.name).to eq new_name
       end
 
       it "creates or updates passed stored values" do
@@ -367,16 +367,16 @@ describe LingsController do
 
         #test creation of a new value for key 'description'
         put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
-        ling.reload.stored_value(:description).should == first_value
+        expect(ling.reload.stored_value(:description)).to eq first_value
 
         #now do a bad update with 'description' set as the new value
         put :update, :id => ling.id, :ling => {'name' => "ee"}, :group_id => ling.group.id, :stored_values => {:description => second_value}
-        ling.reload.stored_value(:description).should == second_value
+        expect(ling.reload.stored_value(:description)).to eq second_value
       end
 
       it "redirects to the ling" do
         put :update, :group_id => groups(:inclusive).id, :id => lings(:english)
-        response.should redirect_to(group_ling_url(assigns(:group), lings(:english)))
+        expect(response).to redirect_to(group_ling_url(assigns(:group), lings(:english)))
       end
     end
 
@@ -392,21 +392,21 @@ describe LingsController do
 
         #test creation of a new value for key 'description'
         put :update, :id => ling.id, :ling => {'name' => 'ee'}, :group_id => ling.group.id, :stored_values => {:description => first_value}
-        ling.reload.stored_value(:description).should == first_value
+        expect(ling.reload.stored_value(:description)).to eq first_value
 
         #now do a bad update with 'description' set as the new value
         put :update, :id => ling.id, :ling => {'name' => ""}, :group_id => ling.group.id, :stored_values => {:description => second_value}
-        ling.reload.stored_value(:description).should == first_value
+        expect(ling.reload.stored_value(:description)).to eq first_value
       end
 
       it "assigns available @depth-1 depth lings to @parents" do
         do_invalid_update
-        assigns(:parents).map{|ling| ling.depth}.uniq.should == [0]
+        expect(assigns(:parents).map{|ling| ling.depth}.uniq).to eq [0]
       end
 
       it "re-renders the 'edit' template" do
         do_invalid_update
-        response.should render_template("edit")
+        expect(response).to render_template("edit")
       end
     end
   end
@@ -420,7 +420,7 @@ describe LingsController do
       @group = groups(:inclusive)
       @ling = FactoryGirl.create(:ling, :name => "thosewhoareabouttodie", :group => @group)
 
-      @ability.should_receive(:can?).ordered.with(:destroy, @ling).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:destroy, @ling).and_return(true)
 
       do_destroy_on_ling(@ling)
     end
@@ -429,32 +429,32 @@ describe LingsController do
       @ling = lings(:english)
       @group = @ling.group
 
-      @group.should_receive(:lings).and_return Ling.where(:group_id => @group.id)
+      expect(@group).to receive(:lings).and_return Ling.where(:group_id => @group.id)
 
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
       delete :destroy, :group_id => @group.id, :id => @ling.id
     end
 
     it "calls destroy on the requested ling" do
       @ling = lings(:english)
       @group = @ling.group
-      @group.stub(:lings).and_return Ling
+      allow(@group).to receive_message_chain(:lings).and_return Ling
 
-      @ling.should_receive(:destroy).and_return(true)
+      expect(@ling).to receive(:destroy).and_return(true)
 
-      Ling.stub(:find).and_return @ling
-      Group.stub(:find).and_return @group
+      allow(Ling).to receive_message_chain(:find).and_return @ling
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_ling(@ling)
     end
 
     it "assigns the deleted ling's depth to @depth" do
       do_destroy_on_ling(lings(:level1))
-      assigns(:depth).should == 1
+      expect(assigns(:depth)).to eq 1
     end
 
     it "redirects to the lings list for the appropriate depth" do
       do_destroy_on_ling(lings(:level1))
-      response.should redirect_to(group_lings_depth_url(assigns(:group), assigns(:depth)))
+      expect(response).to redirect_to(group_lings_depth_url(assigns(:group), assigns(:depth)))
     end
   end
 end

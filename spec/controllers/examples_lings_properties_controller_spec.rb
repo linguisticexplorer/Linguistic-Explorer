@@ -3,24 +3,24 @@ require 'spec_helper'
 describe ExamplesLingsPropertiesController do
   before do
     @ability = Ability.new(nil)
-    @ability.stub(:can?).and_return true
-    @controller.stub(:current_ability).and_return(@ability)
+    allow(@ability).to receive_message_chain(:can?).and_return true
+    allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
   end
 
   describe "show" do
     describe "assigns" do
       it "@examples_lings_property should match the passed id" do
         get :show, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
-        assigns(:examples_lings_property).should == examples_lings_properties(:inclusive)
+        expect(assigns(:examples_lings_property)).to eq(examples_lings_properties(:inclusive))
       end
     end
 
     it "@examples_lings_property should be found by id through current_group" do
       @elp = examples_lings_properties(:inclusive)
       @group = @elp.group
-      Group.stub(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:find).and_return(Group)
 
-      Group.should_receive(:examples_lings_properties).and_return @group.examples_lings_properties
+      expect(Group).to receive(:examples_lings_properties).and_return @group.examples_lings_properties
 
       get :show, :id => @elp.id, :group_id => @group.id
     end
@@ -31,35 +31,35 @@ describe ExamplesLingsPropertiesController do
       @group = FactoryGirl.create(:group)
       @elp = Example.new
 
-      @ability.should_receive(:can?).ordered.with(:create, @elp).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @elp).and_return(true)
 
-      ExamplesLingsProperty.stub(:new).and_return(@elp)
-      Group.stub(:find).and_return(@group)
+      allow(ExamplesLingsProperty).to receive_message_chain(:new).and_return(@elp)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       get :new, :group_id => @group.id
     end
 
     describe "assigns" do
       it "a new examples_lings_property to @examples_lings_property" do
         get :new, :group_id => groups(:inclusive).id
-        assigns(:examples_lings_property).should be_new_record
+        expect(assigns(:examples_lings_property)).to be_new_record
       end
 
       it "examples in current group to @examples" do
         @group = groups(:inclusive)
         get :new, :group_id => groups(:inclusive).id
-        assigns(:examples).should == @group.examples
+        expect(assigns(:examples)).to eq(@group.examples)
       end
 
       it "lings_properties in the current group to @lings_properties" do
         @group = groups(:inclusive)
         get :new, :group_id => groups(:inclusive).id
-        assigns(:lings_properties).should == @group.lings_properties.sort_by(&:description)
+        expect(assigns(:lings_properties)).to eq(@group.lings_properties.sort_by(&:description))
       end
 
       it "no ling_properties if a ling is passed" do
         @group = groups(:inclusive)
         get :new, :group_id => groups(:inclusive).id, :ling_id => lings(:level0).id
-        assigns(:lings_properties).should == false
+        expect(assigns(:lings_properties)).to eq(false)
       end
     end
   end
@@ -76,26 +76,26 @@ describe ExamplesLingsPropertiesController do
         elp.lings_property = @lp
       end
 
-      @ability.should_receive(:can?).ordered.with(:create, @elp).and_return(true)
+      expect(@ability).to receive(:can?).ordered.with(:create, @elp).and_return(true)
 
-      ExamplesLingsProperty.stub(:new).and_return(@elp)
-      Group.stub(:find).and_return(@group)
+      allow(ExamplesLingsProperty).to receive_message_chain(:new).and_return(@elp)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
       post :create, :examples_lings_property => {'example_id' => @example.id, 'lings_property_id' => @lp.id}, :group_id => @group.id
     end
 
     describe "with valid params" do
       it "assigns a newly created examples_lings_property to @examples_lings_property" do
-        lambda {
+        expect {
           example = examples(:inclusive)
           lings_property = lings_properties(:inclusive)
 
           post :create, :examples_lings_property => {'example_id' => example.id, 'lings_property_id' => lings_property.id.to_i}, :group_id => groups(:inclusive).id
 
-          assigns(:examples_lings_property).should_not be_new_record
-          assigns(:examples_lings_property).should be_valid
-          assigns(:examples_lings_property).example.should == example
-          assigns(:examples_lings_property).lings_property.should == lings_property
-        }.should change(ExamplesLingsProperty, :count).by(1)
+          expect(assigns(:examples_lings_property)).not_to be_new_record
+          expect(assigns(:examples_lings_property)).to be_valid
+          expect(assigns(:examples_lings_property).example).to eq(example)
+          expect(assigns(:examples_lings_property).lings_property).to eq(lings_property)
+        }.to change(ExamplesLingsProperty, :count).by(1)
       end
 
       it "redirects to the created examples_lings_property" do
@@ -104,7 +104,7 @@ describe ExamplesLingsPropertiesController do
 
         post :create, :examples_lings_property => {'example_id' => example.id, 'lings_property_id' => lings_property.id}, :group_id => groups(:inclusive).id
 
-        response.should redirect_to(group_examples_lings_property_url(assigns(:group), assigns(:examples_lings_property)))
+        expect(response).to redirect_to(group_examples_lings_property_url(assigns(:group), assigns(:examples_lings_property)))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -116,7 +116,7 @@ describe ExamplesLingsPropertiesController do
         sign_in user
         post :create, :examples_lings_property => {'example_id' => example.id, 'lings_property_id' => lings_property.id}, :group_id => groups(:inclusive).id
 
-        assigns(:examples_lings_property).creator.should == user
+        expect(assigns(:examples_lings_property).creator).to eq(user)
       end
 
       it "should set the group to current group" do
@@ -126,23 +126,23 @@ describe ExamplesLingsPropertiesController do
 
         post :create, :examples_lings_property => {'example_id' => @example.id, 'lings_property_id' => @lp.id}, :group_id => @group.id
 
-        assigns(:group).should == @group
-        assigns(:examples_lings_property).group.should == @group
+        expect(assigns(:group)).to eq(@group)
+        expect(assigns(:examples_lings_property).group).to eq(@group)
       end
     end
 
     describe "with invalid params" do
       it "does not save a new property" do
-        lambda {
+        expect {
           post :create, :examples_lings_property => {:example_id => nil}, :group_id => groups(:inclusive).id
-          assigns(:examples_lings_property).should_not be_valid
-        }.should change(ExamplesLingsProperty, :count).by(0)
+          expect(assigns(:examples_lings_property)).not_to be_valid
+        }.to change(ExamplesLingsProperty, :count).by(0)
       end
 
       it "re-renders the 'new' template" do
         post :create, :examples_lings_property => {:example_id => nil}, :group_id => groups(:inclusive).id
-        response.should be_success
-        response.should render_template("new")
+        expect(response).to be_success
+        expect(response).to render_template("new")
       end
 
       it "assigns examples from the group to @examples" do
@@ -152,8 +152,8 @@ describe ExamplesLingsPropertiesController do
 
         post :create, :examples_lings_property => {:example_id => nil}, :group_id => @group.id
 
-        assigns(:examples).should include @example
-        assigns(:examples).should_not include @other_example
+        expect(assigns(:examples)).to include @example
+        expect(assigns(:examples)).not_to include @other_example
       end
 
       it "lings_properties from the current group into @lings_properties" do
@@ -163,8 +163,8 @@ describe ExamplesLingsPropertiesController do
 
         post :create, :examples_lings_property => {:example_id => nil}, :group_id => @group.id
 
-        assigns(:lings_properties).should include @lings_property
-        assigns(:lings_properties).should_not include @other_lings_property
+        expect(assigns(:lings_properties)).to include @lings_property
+        expect(assigns(:lings_properties)).not_to include @other_lings_property
       end
     end
   end
@@ -181,32 +181,32 @@ describe ExamplesLingsPropertiesController do
 
     it "should authorize :destroy on the passed examples_lings_property" do
       @ability.should_receive(:can?).ordered.with(:destroy, @elp).and_return(true)
-      Group.stub(:find).and_return(@group)
+      allow(Group).to receive_message_chain(:find).and_return(@group)
 
       do_destroy_on_examples_lings_property(@elp)
     end
 
     it "loads the examples_lings_property through current group" do
       @group.should_receive(:examples_lings_properties).and_return ExamplesLingsProperty.where(:group_id => @group.id)
-      Group.stub(:find).and_return @group
+      allow(Group).to receive_message_chain(:find).and_return @group
 
       do_destroy_on_examples_lings_property(@elp)
     end
 
     it "calls destroy on the requested examples_lings_property" do
-      @group.stub(:examples_lings_properties).and_return ExamplesLingsProperty
+      allow(@group).to receive_message_chain(:examples_lings_properties).and_return ExamplesLingsProperty
 
       @elp.should_receive(:destroy).and_return(true)
 
-      ExamplesLingsProperty.stub(:find).and_return @elp
-      Group.stub(:find).and_return @group
+      allow(ExamplesLingsProperty).to receive_message_chain(:find).and_return @elp
+      allow(Group).to receive_message_chain(:find).and_return @group
       do_destroy_on_examples_lings_property(@elp)
     end
     
     ## TODO: Redirect to the ling page once done
     it "redirects to the examples_lings_properties list" do
       delete :destroy, :id => examples_lings_properties(:inclusive), :group_id => groups(:inclusive).id
-      response.should redirect_to(assigns(:group))
+      expect(response).to redirect_to(assigns(:group))
     end
   end
 end

@@ -9,29 +9,29 @@ describe HierarchicalClustering do
 
     describe "with zero distance using different formulas: " do
       it "should return 0" do
-        @clusterer.euclidean([0,0],[0,0]).should == 0
+        expect(@clusterer.euclidean([0,0],[0,0])).to eq 0
       end
 
       it "calculate zero distance with manhattan formula" do
-        @clusterer.manhattan([0,0],[0,0]).should == 0
+        expect(@clusterer.manhattan([0,0],[0,0])).to eq 0
       end
 
       it "calculate zero distance with max formula" do
-        @clusterer.max([0,0],[0,0]).should == 0
+        expect(@clusterer.max([0,0],[0,0])).to eq 0
       end
     end
 
     describe "calculate distance between two points: " do
       it "should return 2 by euclidean formula" do
-        @clusterer.euclidean([0,0],[0,2]).should == 2
+        expect(@clusterer.euclidean([0,0],[0,2])).to eq 2
       end
 
       it "should return 2 by manhattan formula" do
-        @clusterer.manhattan([0,0],[0,2]).should == 2
+        expect(@clusterer.manhattan([0,0],[0,2])).to eq 2
       end
 
       it "should return 2 by max formula" do
-        @clusterer.max([0,0],[0,2]).should == 2
+        expect(@clusterer.max([0,0],[0,2])).to eq 2
       end
     end
 
@@ -51,7 +51,7 @@ describe HierarchicalClustering do
 
     describe "with no points:" do
       it "compute cluster with euclidean and average linkage" do
-        @clusterer.cluster.to_s.should == "{}"
+        expect(@clusterer.cluster.to_s).to eq "{}"
       end
     end
 
@@ -64,43 +64,43 @@ describe HierarchicalClustering do
 
     describe "with one point and average linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max).to_s).to eq @expected_string
       end
     end
 
     describe "with one point and single linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :single).to_s).to eq @expected_string
       end
     end
 
     describe "with one point and complete linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :complete).to_s).to eq @expected_string
       end
     end
   end
@@ -113,42 +113,42 @@ describe HierarchicalClustering do
 
     describe "with two point and average linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster.to_s.should == @expected_string
+        expect(@clusterer.cluster.to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max).to_s).to eq @expected_string
       end
     end
     describe "with two point and single linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :single).to_s).to eq @expected_string
       end
     end
 
     describe "with two point and complete linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :complete).to_s).to eq @expected_string
       end
 
     end
@@ -162,43 +162,43 @@ describe HierarchicalClustering do
 
     describe "with more points with average linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max).to_s).to eq @expected_string
       end
     end
 
     describe "with more points with single linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :single).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :single).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :single).to_s).to eq @expected_string
       end
     end
 
     describe "with more points with complete linkage:" do
       it "compute cluster with euclidean distance" do
-        @clusterer.cluster(:euclidean, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:euclidean, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with manhattan distance" do
-        @clusterer.cluster(:manhattan, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:manhattan, :complete).to_s).to eq @expected_string
       end
 
       it "compute cluster with max distance" do
-        @clusterer.cluster(:max, :complete).to_s.should == @expected_string
+        expect(@clusterer.cluster(:max, :complete).to_s).to eq @expected_string
       end
     end
   end
@@ -211,15 +211,15 @@ describe HierarchicalClustering do
       @expected_string = "{ \"name\": \"one-two-three\", \"children\": [{ \"name\": \"one-two\", \"children\": [{\"name\": 'one' ,\"coords\": \"[0, 0, 0, 0, 0]\" }, {\"name\": 'two' ,\"coords\": \"[1, 1, 1, 1, 1]\" }], \"size\": 2 }, {\"name\": 'three' ,\"coords\": \"[0, 2, 2, 2, 2]\" }], \"size\": 3 }"
     end
     it "compute cluster with euclidean distance" do
-      @clusterer.cluster(:euclidean).to_s.should == @expected_string
+      expect(@clusterer.cluster(:euclidean).to_s).to eq @expected_string
     end
 
     it "compute cluster with manhattan distance" do
-      @clusterer.cluster(:manhattan).to_s.should == @expected_string
+      expect(@clusterer.cluster(:manhattan).to_s).to eq @expected_string
     end
 
     it "compute cluster with max distance" do
-      @clusterer.cluster(:max).to_s.should == @expected_string
+      expect(@clusterer.cluster(:max).to_s).to eq @expected_string
     end
   end
 
@@ -233,17 +233,17 @@ describe HierarchicalClustering do
       end
       it "compute cluster with euclidean distance" do
         expected_string = "((one:2.23606797749979, two:2.23606797749979):3.118033988749895, three:3.118033988749895):0.1;"
-        @clusterer.cluster(:euclidean).to_s.should == expected_string
+        expect(@clusterer.cluster(:euclidean).to_s).to eq expected_string
       end
 
       it "compute cluster with manhattan distance" do
         expected_string = "((one:5, two:5):6, three:6):0.1;"
-        @clusterer.cluster(:manhattan).to_s.should == expected_string
+        expect(@clusterer.cluster(:manhattan).to_s).to eq expected_string
       end
 
       it "compute cluster with max distance" do
         expected_string = "((one:1, two:1):1, three:1):0.1;"
-        @clusterer.cluster(:max).to_s.should == expected_string
+        expect(@clusterer.cluster(:max).to_s).to eq expected_string
       end
     end
 
@@ -253,17 +253,17 @@ describe HierarchicalClustering do
       end
       it "compute cluster with euclidean distance" do
         expected_string = "((one:1.4142135623730951, two:1.4142135623730951):1.7071067811865475, three:1.7071067811865475):0.1;"
-        @clusterer.cluster(:euclidean).to_s.should == expected_string
+        expect(@clusterer.cluster(:euclidean).to_s).to eq expected_string
       end
 
       it "compute cluster with manhattan distance" do
         expected_string = "((one:2, two:2):2, three:2):0.1;"
-        @clusterer.cluster(:manhattan).to_s.should == expected_string
+        expect(@clusterer.cluster(:manhattan).to_s).to eq expected_string
       end
 
       it "compute cluster with max distance" do
         expected_string = "((one:1, two:1):1, three:1):0.1;"
-        @clusterer.cluster(:max).to_s.should == expected_string
+        expect(@clusterer.cluster(:max).to_s).to eq expected_string
       end
     end
   end

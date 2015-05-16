@@ -8,7 +8,7 @@ describe SearchCross do
     end
 
     it "should return true is parents are same of ids" do
-      @presenter.are_same_ling_ids?(create_objects(3)).should be_true
+      expect(@presenter.are_same_ling_ids?(create_objects(3))).to be_truthy
     end
   end
 
@@ -18,11 +18,11 @@ describe SearchCross do
     end
 
     it "should return false if parents are more than ids" do
-      @presenter.are_same_ling_ids?(create_objects(4)).should be_false
+      expect(@presenter.are_same_ling_ids?(create_objects(4))).to be_falsey
     end
 
     it "should return false if parents are less than ids" do
-      @presenter.are_same_ling_ids?(create_objects(2)).should be_false
+      expect(@presenter.are_same_ling_ids?(create_objects(2))).to be_falsey
     end
   end
 
@@ -32,7 +32,7 @@ describe SearchCross do
     end
 
     it "should return false is parents are different from ids" do
-      @presenter.are_same_ling_ids?(create_objects(3)).should be_false
+      expect(@presenter.are_same_ling_ids?(create_objects(3))).to be_falsey
     end
 
   end

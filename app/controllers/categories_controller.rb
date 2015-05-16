@@ -4,7 +4,9 @@ class CategoriesController < GroupDataController
   
   def index
     @categories = current_group.categories.paginate(:page => params[:page], :order => "name")
-
+    
+    collection_authorize! :read, @categories
+    
     respond_with(@categories) do |format|
       format.html
       format.js

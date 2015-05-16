@@ -34,51 +34,51 @@ module GroupData
       end
 
       it "should load configuration from yaml" do
-        @validator.config[:lings_property].should == Rails.root.join("spec", "csv", "good","LingsProperty.csv").to_s
+        expect(@validator.config[:lings_property]).to == Rails.root.join("spec", "csv", "good","LingsProperty.csv").to_s
       end
 
       it "should validate users" do
-        @validator.check_users.should be_true
+        expect(@validator.check_users).to be_truthy
       end
 
       it "should validate groups" do
-        @validator.check_groups.should be_true
+        expect(@validator.check_groups).to be_truthy
       end
 
       it "should validate memberships" do
-        @validator.check_memberships.should be_true
+        expect(@validator.check_memberships).to be_truthy
       end
 
       it "should validate categories" do
-        @validator.check_categories.should be_true
+        expect(@validator.check_categories).to be_truthy
       end
 
       it "should validate lings" do
-        @validator.check_lings.should be_true
+        expect(@validator.check_lings).to be_truthy
       end
 
       it "should validate examples" do
-        @validator.check_examples.should be_true
+        expect(@validator.check_examples).to be_truthy
       end
 
       it "should validate lings properties" do
-        @validator.check_lings_properties.should be_true
+        expect(@validator.check_lings_properties).to be_truthy
       end
 
       it "should validate example lings properties" do
-        @validator.check_examples_lp.should be_true
+        expect(@validator.check_examples_lp).to be_truthy
       end
 
       it "should validate parent/child ling association" do
-        @validator.check_parents.should be_true
+        expect(@validator.check_parents).to be_truthy
       end
 
       it "should validate stored values" do
-        @validator.check_stored_values.should be_true
+        expect(@validator.check_stored_values).to be_truthy
       end
 
       it "should have happy ending" do
-        @validator.check_all.should be_true
+        expect(@validator.check_all).to be_truthy
       end
     end
 
@@ -111,71 +111,71 @@ module GroupData
       end
 
       it "should exit on users check" do
-        @validator.check_users.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on groups check" do
-        @validator.check_users.should be_true
-        @validator.check_groups.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_groups).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on memberships check" do
-        @validator.check_users.should be_true
-        @validator.check_memberships.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_memberships).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on category check" do
-        @validator.check_users.should be_true
-        @validator.check_categories.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_categories).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on ling check" do
-        @validator.check_users.should be_true
-        @validator.check_lings.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples check" do
-        @validator.check_users.should be_true
-        @validator.check_examples.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_examples_lp.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples_lp).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_lings_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on properties check" do
-        @validator.check_users.should be_true
-        @validator.check_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on stored values check" do
-        @validator.check_users.should be_true
-        @validator.check_stored_values.should be_false
-        @validator.check_all.should be_false
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_stored_values).to be_falsey
+        expect(@validator.check_all).to be_falsey
       end
     end
 
@@ -208,58 +208,58 @@ module GroupData
       end
 
       it "should exit on memberships check" do
-        @validator.check_users.should be_true
-        @validator.check_memberships.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_memberships).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on category check" do
-        @validator.check_users.should be_true
-        @validator.check_categories.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_categories).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on ling check" do
-        @validator.check_users.should be_true
-        @validator.check_lings.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples check" do
-        @validator.check_users.should be_true
-        @validator.check_examples.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_examples_lp.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples_lp).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_lings_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on properties check" do
-        @validator.check_users.should be_true
-        @validator.check_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on stored values check" do
-        @validator.check_users.should be_true
-        @validator.check_stored_values.should be_false
-        @validator.check_all.should be_false
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_stored_values).to be_falsey
+        expect(@validator.check_all).to be_falsey
       end
     end
 
@@ -292,52 +292,52 @@ module GroupData
       end
 
       it "should exit on memberships check" do
-        @validator.check_users.should be_true
-        @validator.check_memberships.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_memberships).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on category check" do
-        @validator.check_users.should be_true
-        @validator.check_categories.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_categories).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on ling check" do
-        @validator.check_users.should be_true
-        @validator.check_lings.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples check" do
-        @validator.check_users.should be_true
-        @validator.check_examples.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on examples lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_examples_lp.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_examples_lp).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on lings properties check" do
-        @validator.check_users.should be_true
-        @validator.check_lings_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_lings_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
       it "should exit on properties check" do
-        @validator.check_users.should be_true
-        @validator.check_properties.should be_false
-        @validator.check_all.should be_false
-        @validator.check_stored_values.should be_nil
+        expect(@validator.check_users).to be_truthy
+        expect(@validator.check_properties).to be_falsey
+        expect(@validator.check_all).to be_falsey
+        expect(@validator.check_stored_values).to be_nil
       end
 
     end
@@ -367,7 +367,7 @@ module GroupData
         files = File.join(Rails.root.join("spec", "csv", "bad", "no_id"), "*.csv")
         Dir.glob(files).each do |file|
           CSV.foreach(file, :headers => true) do |row|
-            row[0].should be_nil
+            expect(row[0]).to be_nil
           end
         end
       end
@@ -379,7 +379,7 @@ module GroupData
         Dir.glob(files).each do |file|
           CSV.foreach(file, :headers => true) do |row|
             row.each do |field|
-              field.should =~ [field_name, "-1"] if field[0]==field_name
+              expect(field).to =~ [field_name, "-1"] if field[0]==field_name
             end
           end
         end

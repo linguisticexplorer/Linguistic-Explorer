@@ -8,12 +8,12 @@ describe User do
   describe "one-liners" do
     # it_should_validate_presence_of :name, :email, :access_level
     # it_should_have_many :memberships, :groups, :searches
-    it { should validate_presence_of :name }
-    it { should validate_presence_of :email }
-    it { should validate_presence_of :access_level }
-    it { should have_many :memberships }
-    it { should have_many :groups }
-    it { should have_many :searches }
+    it { expect validate_presence_of :name }
+    it { expect validate_presence_of :email }
+    it { expect validate_presence_of :access_level }
+    it { expect have_many :memberships }
+    it { expect have_many :groups }
+    it { expect have_many :searches }
   end
 
   describe "createable with combinations" do
@@ -23,14 +23,14 @@ describe User do
       u.access_level = "user"
       u.bypass_humanizer = true
       u.save!
-      u.should_not be_new_record
+      expect(u).not_to be_new_record
     end
   end
 
   describe "#admin?" do
     it "should be truthy only if the user has access_level of admin" do
-      FactoryGirl.create(:user, :email => "one@example.com", :access_level => "admin").admin?.should be_true
-      FactoryGirl.create(:user, :email => "two@example.com", :access_level => "not").admin?.should_not be_true
+      expect(FactoryGirl.create(:user, :email => "one@example.com", :access_level => "admin").admin?).to be_truthy
+      expect(FactoryGirl.create(:user, :email => "two@example.com", :access_level => "not").admin?).not_to be_truthy
     end
   end
 
@@ -40,19 +40,19 @@ describe User do
       group = FactoryGirl.create(:group)
 
       Membership.create(:level => "admin", :group => group, :member => user)
-      user.administrated_groups.should include(group)
+      expect(user.administrated_groups).to include(group)
     end
   end
 
   describe "reached_max_search_limit?" do
     it "should return reached max limit for search by group" do
       group = double(Group)
-      Search.should_receive(:reached_max_limit?).with(@user, group).and_return(true)
-      @user.reached_max_search_limit?(group).should be_true
+      expect(Search).to_receive(:reached_max_limit?).with(@user, group).and_return(true)
+      expect(@user.reached_max_search_limit?(group)).to be_truthy
     end
     it "should return reached max limit for search by group" do
-      Search.stub(:reached_max_limit?).and_return(false)
-      @user.reached_max_search_limit?(double(Group)).should be_false
+      allow(Search).to receive_message_chain(:reached_max_limit?).and_return(false)
+      expect(@user.reached_max_search_limit?(double(Group))).to be_falsey
     end
   end
 
@@ -64,13 +64,13 @@ describe User do
       @user.groups << @group_2
     end
     it "should return false if group_id not in group_ids" do
-      @user.member_of?(FactoryGirl.create(:group)).should be_false
+      expect(@user.member_of?(FactoryGirl.create(:group))).to be_falsey
     end
     it "should return true if group_id in group_ids" do
-      @user.member_of?(@group_1).should be_true
+      expect(@user.member_of?(@group_1)).to be_truthy
     end
     it "should return false if not a group" do
-      @user.member_of?(double(Object, :id => @group_1.id)).should be_false
+      expect(@user.member_of?(double(Object, :id => @group_1.id))).to be_falsey
     end
   end
 end

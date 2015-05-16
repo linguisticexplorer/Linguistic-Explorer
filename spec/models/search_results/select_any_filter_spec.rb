@@ -13,8 +13,8 @@ module SearchResults
         :group_id         => 123
       })
 
-      LingsProperty.stub(:select_ids).and_return(LingsProperty)
-      LingsProperty.stub(:where).and_return([])
+      allow(LingsProperty).to receive_message_chain(:select_ids).and_return(LingsProperty)
+      allow(LingsProperty).to receive_message_chain(:where).and_return([])
 
       @filter = SelectAnyFilter.new(@query)
     end
@@ -30,7 +30,7 @@ module SearchResults
       end
 
       it "should not pass empty set of ling ids" do
-        @filter.query.stub(:depth_0_ling_ids).and_return([])
+        allow(@filter.query).to receive_message_chain(:depth_0_ling_ids).and_return([])
         LingsProperty.should_receive(:where).with({
           :group_id => 123,
           :property_id => [3]
@@ -40,7 +40,7 @@ module SearchResults
       end
 
       it "should not pass empty set of property ids" do
-        @filter.query.stub(:depth_0_prop_ids).and_return([])
+        allow(@filter.query).to receive_message_chain(:depth_0_prop_ids).and_return([])
         LingsProperty.should_receive(:where).with({
           :group_id => 123,
           :ling_id => [1]
@@ -61,7 +61,7 @@ module SearchResults
       end
 
       it "should not pass empty set of ling ids" do
-        @filter.query.stub(:depth_1_ling_ids).and_return([])
+        allow(@filter.query).to receive_message_chain(:depth_1_ling_ids).and_return([])
         LingsProperty.should_receive(:where).with({
           :group_id => 123,
           :property_id => [4]
@@ -71,7 +71,7 @@ module SearchResults
       end
 
       it "should not pass empty set of property ids" do
-        @filter.query.stub(:depth_1_prop_ids).and_return([])
+        allow(@filter.query).to receive_message_chain(:depth_1_prop_ids).and_return([])
         LingsProperty.should_receive(:where).with({
           :group_id => 123,
           :ling_id => [2]
@@ -81,7 +81,7 @@ module SearchResults
       end
 
       it "should not make query if query has no depth" do
-        @filter.query.stub(:has_depth?).and_return(false)
+        allow(@filter.query).to receive_message_chain(:has_depth?).and_return(false)
         LingsProperty.should_not_receive(:where)
 
         @filter.depth_1_vals

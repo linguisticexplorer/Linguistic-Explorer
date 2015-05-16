@@ -41,7 +41,7 @@ module SearchResults
         @query.included_columns.should == [:ling_0, :value_1]
       end
       it "should say depth 1 is interesting" do
-        @query.is_depth_1_interesting?.should be_true
+        @query.is_depth_1_interesting?.should be_truthy
       end
       it "should say depth 1 is interesting for implication" do
         @query.depth_of_implication.should == [1]
@@ -54,7 +54,7 @@ module SearchResults
         @query = QueryAdapter.new(@group, params)
       end
       it "should assert that is not a cross search" do
-        @query.is_cross_search?.should be_false
+        @query.is_cross_search?.should be_falsey
       end
     end
 
@@ -64,7 +64,7 @@ module SearchResults
         @query = QueryAdapter.new(@group, params)
       end
       it "should assert that is not a cross search" do
-        @query.is_compare_search?.should be_false
+        @query.is_compare_search?.should be_falsey
       end
     end
 
@@ -74,10 +74,10 @@ module SearchResults
         @query = QueryAdapter.new(@query, params)
       end
       it "should assert that is a implication both search" do
-        @query.is_both_implication_search?.should be_true
+        @query.is_both_implication_search?.should be_truthy
       end
       it "should assert that is a generic implication search" do
-        @query.is_implication_search?.should be_true
+        @query.is_implication_search?.should be_truthy
       end
     end
 
@@ -87,10 +87,10 @@ module SearchResults
         @query = QueryAdapter.new(@query, params)
       end
       it "should assert that is a implication antecedent search" do
-        @query.is_antecedent_implication_search?.should be_true
+        @query.is_antecedent_implication_search?.should be_truthy
       end
       it "should assert that is a generic implication search" do
-        @query.is_implication_search?.should be_true
+        @query.is_implication_search?.should be_truthy
       end
     end
 
@@ -100,10 +100,10 @@ module SearchResults
         @query = QueryAdapter.new(@query, params)
       end
       it "should assert that is a implication consequent search" do
-        @query.is_consequent_implication_search?.should be_true
+        @query.is_consequent_implication_search?.should be_truthy
       end
       it "should assert that is a generic implication search" do
-        @query.is_implication_search?.should be_true
+        @query.is_implication_search?.should be_truthy
       end
     end
 

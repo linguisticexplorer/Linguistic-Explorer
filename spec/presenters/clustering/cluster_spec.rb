@@ -10,15 +10,15 @@ module Accessors
       end
 
       it "should return the 'one-two' as name" do
-        @cluster.name.should == 'one-two'
+        expect(@cluster.name).to eq 'one-two'
       end
 
       it "should return (0,0) as coords of the left point" do
-        @cluster.left.coords.should == [0,0]
+        expect(@cluster.left.coords).to eq [0,0]
       end
 
       it "should return (1,1) as coords of the right point" do
-        @cluster.right.coords.should == [1,1]
+        expect(@cluster.right.coords).to eq [1,1]
       end
     end
 
@@ -30,7 +30,7 @@ module Accessors
       end
 
       it "should return the comma replaced by minus character" do
-        @cluster.name.should == 'Bajau- West Coast-two'
+        expect(@cluster.name).to eq 'Bajau- West Coast-two'
       end
     end
   end
