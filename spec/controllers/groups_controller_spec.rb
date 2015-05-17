@@ -68,24 +68,6 @@ describe GroupsController do
     end
   end
 
-  describe "info" do
-    it "should authorize :show on group" do
-      @ability = Ability.new(nil)
-      @group = FactoryGirl.create(:group)
-      expect(@ability).to receive(:can?).with(:show, @group).and_return true
-      allow(@controller).to receive_message_chain(:current_ability).and_return(@ability)
-      allow(Group).to receive_message_chain(:find).and_return(@group)
-      get :info, :id => @group.id
-    end
-
-    describe "assigns" do
-      it "@group should match the requested group id" do
-        get :info, :id => groups(:inclusive).id
-        expect(assigns(:group)).to eq(groups(:inclusive))
-      end
-    end
-  end
-
   describe "new" do
     def do_new
       get :new
@@ -166,7 +148,7 @@ describe GroupsController do
           invalid_params = {'name' => ''}
           do_create_with_params(invalid_params)
           expect(assigns(:group)).not_to be_valid
-        }.expect change(Group, :count).by(0)
+        }.to change(Group, :count).by(0)
       end
 
       it "re-renders the 'new' template" do

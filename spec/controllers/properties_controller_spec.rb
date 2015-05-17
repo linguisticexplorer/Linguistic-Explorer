@@ -11,6 +11,7 @@ describe PropertiesController do
     it "@properties should load through the current group" do
       @group = groups(:inclusive)
       allow(Group).to receive_message_chain(:find).and_return(Group)
+      allow(Group).to receive_message_chain(:categories).and_return(@group.categories)
 
       expect(Group).to receive(:properties).and_return @group.properties
 
@@ -169,7 +170,7 @@ describe PropertiesController do
 
       it "redirects to the created property" do
         do_valid_create
-        expect(response).to redirect_to(group_property_url(expect(assigns(:group)), expect(assigns(:property))))
+        expect(response).to redirect_to(group_property_url(assigns(:group), assigns(:property)))
       end
 
       it "should set creator to be the currently logged in user" do
@@ -270,7 +271,7 @@ describe PropertiesController do
 
       it "redirects to the property" do
         do_valid_update_on_property(properties(:valid))
-        expect(response).to redirect_to(group_property_url(expect(assigns(:group)), properties(:valid)))
+        expect(response).to redirect_to(group_property_url(assigns(:group), properties(:valid)))
       end
     end
 
