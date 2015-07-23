@@ -16,26 +16,26 @@ Feature: Permissions testing for site admins
       | Ling0      | Ling1      |
     And the group "Secret Club" has a maximum depth of 1
     When I go to the home page
-    When I follow "Sign In"
+    When I follow "Sign in"
     Then I should be on the login page
     When I fill in "Email" with "a@min.com"
     And  I fill in "Password" with "hunter2"
-    And  I press "Sign In"
+    And  I press "Sign in"
     Then I should be on the home page
-    And  I should see "a@min.com"
+    And  I should see "admin" within the top navbar
+    And  I should see "Site Admin" within the top navbar
     And  I should see "Signed in successfully"
-    And  I should see "Site Admin" within "#userInfo"
 
   Scenario: Admins should see all groups in the drop down
-    Then I should see "Syntactic Structures" within "#group_id"
-    And  I should see "Secret Club" within "#group_id"
+    Then I should see "Syntactic Structures" within the top navbar
+    And  I should see "Secret Club" within the top navbar
 
   Scenario: Admins should be able to view a public group and see its group admin panel
-    When I follow "Syntactic Structures" within "#group_id"
+    When I follow "Syntactic Structures" within the top navbar
     Then I should see "Syntactic Structures" within "#header"
 
   Scenario: Admins view pages for all group data in a public group
-    When I follow "Syntactic Structures" within "#group_id"
+    When I follow "Syntactic Structures" within the top navbar
     Then I should see "Syntactic Structures" within "#header"
     When I follow "Advanced Search"
     Then I should be on the search page for Syntactic Structures
@@ -50,10 +50,10 @@ Feature: Permissions testing for site admins
     Then I should be on the memberships page for Syntactic Structures
 
   Scenario: Admins should be able to view a private group and see its group admin bar
-    When I follow "Secret Club" within "#group_id"
+    When I follow "Secret Club" within the top navbar
 
   Scenario: Admins view pages for all group data in a private group
-    When I follow "Secret Club" within "#group_id"
+    When I follow "Secret Club" within the top navbar
     And  I follow "Search"
     Then I should be on the search page for Secret Club
     And  I follow "Ling0"
@@ -64,9 +64,4 @@ Feature: Permissions testing for site admins
     Then I should be on the properties page for Secret Club
     And  I follow "Members"
     Then I should be on the memberships page for Secret Club
-
-  # Scenario: Admins should be able to manage forum groups
-  #   Then I should see "Forums" within ".navbar-inner"
-  #   Then I follow "Forums"
-  #   And I should see "New Forum Group"
 

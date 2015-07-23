@@ -102,14 +102,20 @@ describe ExamplesController do
         expect(assigns(:example)).to eq(@example)
       end
 
-      it "@lings should be a hash with two depth members" do
+      it "should get related ling and property for an example by default" do
         get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id
-        lings = assigns(:lings)
-        expect(lings).to be_a Hash
-        expect(lings[:depth_0]).to include lings(:level0)
-        expect(lings[:depth_1]).to include lings(:level1)
-        expect(lings[:depth_0]).not_to include lings(:exclusive0)
-        expect(lings[:depth_1]).not_to include lings(:exclusive1)
+
+        expect(assigns(:ling)).to eq examples(:onceuponatime).ling
+        expect(assigns(:property)).to be_nil
+        expect(assigns(:lp)).to be_nil
+      end
+
+      it "should get passed ling, property and lp if ids are passed" do
+        get :edit, :id => examples(:onceuponatime), :group_id => groups(:inclusive).id, :ling_id => lings(:level0), :prop_id => properties(:level0), :lp_id => lings_properties(:level0)
+
+        expect(assigns(:ling)).to eq lings(:level0)
+        expect(assigns(:property)).to eq properties(:level0)
+        expect(assigns(:lp)).to eq lings_properties(:level0)
       end
     end
   end
@@ -128,12 +134,12 @@ describe ExamplesController do
 
     describe "with valid params and valid stored_values" do
       it "assigns a newly created example to @example" do
-        expect do
+        expect {
           post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
           expect(assigns(:example)).to be_new_record
           expect(assigns(:example)).to be_valid
           expect(assigns(:example).name).to eq('Javanese')
-        end.to change(Example, :count).by(1)
+        }.to change(Example, :count).by(1)
       end
 
       it "creates and associates passed stored values" do

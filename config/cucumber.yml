@@ -1,10 +1,12 @@
 <%
 rerun = File.file?('rerun.txt') ? IO.read('rerun.txt') : ""
 rerun_opts = rerun.to_s.strip.empty? ? "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} features" : "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} #{rerun}"
-std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} --strict --tags ~@wip"
+strict_opts = "--strict --tags ~@wip"
+std_opts = "--format #{ENV['CUCUMBER_FORMAT'] || 'progress'} #{strict_opts}"
 %>
 default: <%= std_opts %> features
 wip: --tags @wip:3 --wip features
 travis: <%= std_opts %> features --tags ~@devOnly
 rerun: <%= rerun_opts %> --format rerun --out rerun.txt --strict --tags ~@wip
+profiling: <%= strict_opts %> --format usage
 alt_default: <%= std_opts %> --require config/environment.rb --require features/support/*.rb --require features/step_definitions --strict

@@ -92,15 +92,13 @@ class User < ActiveRecord::Base
   private
 
   def get_ling_and_group(resource)
-    # resource.get_valid_resource
-    # # special rule for ExampleLingsProperty
-    # resource = resource.is_a?(ExamplesLingsProperty) ? resource.lingsproperty : resource
 
     # # get referenced Ling
     # ling = resource.is_a?(Ling) ? resource : 
     #        resource.try(:ling)
-
-    [resource.get_valid_resource, resource.is_a?(Group) ? resource : resource.group]
+    valid_type = [Ling, LingsProperty, ExamplesLingsProperty]
+    valid_resource = resource.is_a?(*valid_type) ? resource.get_valid_resource : false
+    [valid_resource, resource.is_a?(Group) ? resource : resource.group]
   end
 
   def has_no_expert(resource)

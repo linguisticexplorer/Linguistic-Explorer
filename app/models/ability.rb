@@ -16,7 +16,7 @@ class Ability
     else
       # New users should be able to sign up, logged in users should be able to manage themselves
       user.new_record? ? can(:create, User) : can(:manage, user)
-      # puts "DEBUG: #{user.inspect} - #{user.is_expert_for_groups}"
+      puts "DEBUG: #{user.is_expert_for_groups} - #{user.administrated_groups.map(&:id)}"
       # turn on reading for public groups and data
       can     :read,   Group,                   :privacy => Group::PUBLIC
       can     :read,   group_data, :group => {  :privacy => Group::PUBLIC }

@@ -5,18 +5,18 @@ Feature: Permissions testing for non-logged-in users
     And the public group "Syntactic Structures"
     And the private group "Secret Club"
     When I go to the home page
-    And I follow "Syntactic Structures" within "#group_id"
+    And I follow "Syntactic Structures" within the top navbar
 
   Scenario: Visitors should be able to choose a public group to enter
     Then I should be on the group Syntactic Structures
-    Then I should see "Syntactic Structures" within "#group_id"
+    Then I should see "Syntactic Structures" within the top navbar
 
   Scenario: The standard user should be able to view pages for all group data in a public group
-    Then I should see "Syntactic Structures" within "#group_id"
+    Then I should see "Syntactic Structures" within the top navbar
     And  I should not see "Group Admin Panel"
     When I follow "Syntactic Structures"
     Then I should be on the group Syntactic Structures
-    And  I follow "Advanced Search"
+    And  I follow "Search"
     Then I should be on the search page for Syntactic Structures
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
     Then I should be on the ling0s page for Syntactic Structures
@@ -48,9 +48,3 @@ Feature: Permissions testing for non-logged-in users
     Then I should be on the access denied page
     When I go to the memberships page for Secret Club
     Then I should be on the access denied page
-
-  # Scenario: Visitors should not able to create a new forum
-  #   When I should see "TerraLing"
-  #   Then I should see "Forums" within ".nav"
-  #   Then I follow "Forums"
-  #   And I should not see "New Forum Group"

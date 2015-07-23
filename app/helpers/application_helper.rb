@@ -132,12 +132,12 @@ module ApplicationHelper
   end
 
   def user_has_any_role?
-    @group && (current_user.admin? || (current_user.member_of?(@group)))
+    @group && (current_user && (current_user.admin? || (current_user.member_of?(@group))))
   end
 
   def get_user_role(group)
     role = ''
-    if group.present?
+    if current_user && group.present?
       if current_user.group_admin_of? group
         role = 'Group Admin'
       elsif current_user.member_of? group

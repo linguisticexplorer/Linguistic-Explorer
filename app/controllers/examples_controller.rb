@@ -37,7 +37,7 @@ class ExamplesController < GroupDataController
 
   def edit
     @example = current_group.examples.find(params[:id])
-    @ling = params[:ling_id] ? current_group.lings.find(params[:ling_id]) : @example.ling
+    @ling = params[:ling_id] ? current_group.lings.find(params[:ling_id]) : @example.ling 
     @property = current_group.properties.find(params[:prop_id]) if params[:prop_id]
     @lp = current_group.lings_properties.find(params[:lp_id]) if params[:lp_id]
 

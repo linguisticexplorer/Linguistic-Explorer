@@ -39,6 +39,14 @@ When /^(?:|I )return to "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
   end
 end
 
+When /^(?:|I )follow "([^\"]*)" within the top navbar$/ do |link| 
+  with_scope("#terraling-navbar-collapse") do
+    click_link(link, :match => :prefer_exact)
+    # To fix ambiguity with Capybara let's take just the first match
+    # first(:link, link).click
+  end
+end
+
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
   with_scope(selector) do
     click_link(link, :match => :prefer_exact)
@@ -156,6 +164,16 @@ end
 
 Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   with_scope(selector) do
+    if page.respond_to? :should
+      page.should have_content(text)
+    else
+      assert page.has_content?(text)
+    end
+  end
+end
+
+Then /^(?:|I )should see "([^\"]*)" within the top navbar$/ do |text|
+  with_scope("#terraling-navbar-collapse") do
     if page.respond_to? :should
       page.should have_content(text)
     else
@@ -289,10 +307,6 @@ end
 
 Then /^I wait "([^\"]*)"$/ do |num|
   sleep(num.to_i)
-end
-
-Then /^show me the page$/ do
-  save_and_open_page
 end
 
 When /^I access the new tab and should see "([^\"]*)"$/ do |regexp|
