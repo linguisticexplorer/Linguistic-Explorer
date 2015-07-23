@@ -83,4 +83,8 @@ class Membership < ActiveRecord::Base
     )
   end
 
+  def get_valid_resource
+    false
+  end
+
 end
