@@ -10,13 +10,13 @@ class Ability
 
     # ensure there is a user object in the not logged in case
     user ||= User.new
-
+    
     if user.admin?
       can :manage, :all
     else
       # New users should be able to sign up, logged in users should be able to manage themselves
       user.new_record? ? can(:create, User) : can(:manage, user)
-      puts "DEBUG: #{user.is_expert_for_groups} - #{user.administrated_groups.map(&:id)}"
+      
       # turn on reading for public groups and data
       can     :read,   Group,                   :privacy => Group::PUBLIC
       can     :read,   group_data, :group => {  :privacy => Group::PUBLIC }

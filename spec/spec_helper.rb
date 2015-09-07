@@ -54,7 +54,7 @@
     config.global_fixtures = :all
     
     # Make new deprecations become errors (Useful to backtrace them)
-    config.raise_errors_for_deprecations!
+    # config.raise_errors_for_deprecations!
 
     config.before(:suite) do
       FactoryGirl.reload

@@ -16,9 +16,9 @@ class User < ActiveRecord::Base
   
   #TODO: Remove this trick 
   # Until we migrate to rspec 2.6, use this trick...
-  if Rails.env.production?
-    require_human_on :create, :unless => :bypass_humanizer
-  end
+  # if Rails.env.production?
+  #   require_human_on :create, :unless => :bypass_humanizer
+  # end
 
   # Include default devise modules. Others available are:
   # :token_authenticatable, :confirmable, :lockable and :timeoutable
@@ -96,9 +96,10 @@ class User < ActiveRecord::Base
     # # get referenced Ling
     # ling = resource.is_a?(Ling) ? resource : 
     #        resource.try(:ling)
-    valid_type = [Ling, LingsProperty, ExamplesLingsProperty]
-    valid_resource = resource.is_a?(*valid_type) ? resource.get_valid_resource : false
-    [valid_resource, resource.is_a?(Group) ? resource : resource.group]
+    # valid_type = [Ling, LingsProperty, ExamplesLingsProperty]
+    # valid_resource = resource.is_a?(*valid_type) ? resource.get_valid_resource : false
+    # [valid_resource, resource.is_a?(Group) ? resource : resource.group]
+    [resource.get_valid_resource || false, resource.is_a?(Group) ? resource : resource.group]
   end
 
   def has_no_expert(resource)

@@ -121,6 +121,7 @@ describe ExamplesController do
   end
 
   describe "create" do
+
     it "should authorize :create on the example with params" do
       @group = FactoryGirl.create(:group)
       @example = FactoryGirl.create(:example, :group => @group)
@@ -134,15 +135,19 @@ describe ExamplesController do
 
     describe "with valid params and valid stored_values" do
       it "assigns a newly created example to @example" do
+        sign_in_as_admin
+
         expect {
           post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
-          expect(assigns(:example)).to be_new_record
+          expect(assigns(:example)).not_to be_new_record
           expect(assigns(:example)).to be_valid
           expect(assigns(:example).name).to eq('Javanese')
         }.to change(Example, :count).by(1)
       end
 
       it "creates and associates passed stored values" do
+        sign_in_as_admin
+
         expect {
           post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
           expect(assigns(:example).stored_value(:description)).to eq('foo')
@@ -150,27 +155,38 @@ describe ExamplesController do
       end
 
       it "redirects to the created example" do
+        sign_in_as_admin
+
         post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
         expect(response).to redirect_to(group_example_url(assigns(:group), assigns(:example)))
       end
 
       it "should set creator to be the currently logged in user" do
-        user = FactoryGirl.create(:user)
-        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
-        sign_in user
-
+        sign_in_as_admin
         post :create, :example => {'name' => 'Javanese'}, :group_id => groups(:inclusive).id
 
-        expect(assigns(:example).creator).to eq(user)
+        expect(assigns(:example).creator).to eq(@user)
       end
 
       it "should set the group to current group" do
         @group = groups(:inclusive)
+        sign_in_as_admin
 
         post :create, :group_id => @group.id, :example => {'name' => 'Javanese'}
 
         expect(assigns(:group)).to eq(@group)
         expect(assigns(:example).group).to eq(@group)
+      end
+
+      it "assigns a newly created example to @example as a group admin" do
+        sign_in_as_group_admin
+
+        expect {
+          post :create, :example => {'name' => 'Javanese'}, :stored_values => {:description => "foo"}, :group_id => groups(:inclusive).id
+          expect(assigns(:example)).not_to be_new_record
+          expect(assigns(:example)).to be_valid
+          expect(assigns(:example).name).to eq('Javanese')
+        }.to change(Example, :count).by(1)
       end
     end
   end
@@ -200,6 +216,9 @@ describe ExamplesController do
     end
 
     describe "with valid params" do
+
+      before { sign_in_as_group_admin }
+
       it "calls update with the passed params on the requested example" do
         @example = examples(:onceuponatime)
         new_name = "foobard"
@@ -215,6 +234,7 @@ describe ExamplesController do
 
       it "creates or updates passed stored values" do
         example = examples(:onceuponatime)
+
         #test creation of a new value of key 'description'
         put :update, :id => example.id, :example => {'name' => 'eengleesh'}, :group_id => example.group.id, :stored_values => {:description => "foo"}
         expect(example.reload.stored_value(:description)).to eq('foo')
@@ -239,6 +259,8 @@ describe ExamplesController do
     def do_destroy_on_example(example)
       delete :destroy, :group_id => example.group.id, :id => example.id
     end
+
+    before { sign_in_as_group_admin }
 
     it "should authorize :destroy on the passed example" do
       @example = examples(:onceuponatime)

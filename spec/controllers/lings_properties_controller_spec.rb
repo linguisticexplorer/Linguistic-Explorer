@@ -34,6 +34,7 @@ describe LingsPropertiesController do
     before do
       @lp = lings_properties(:inclusive)
       @group = @lp.group
+      sign_in_as_group_admin
     end
 
     it "should authorize :destroy on the passed lings_property" do

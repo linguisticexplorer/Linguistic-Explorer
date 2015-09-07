@@ -61,10 +61,12 @@ class ExamplesController < GroupDataController
       elp.example = @example
 
       is_authorized? :create, elp, true
+
+      elp.save
     end
 
     respond_to do |format|
-      if @example.save && (params[:lp_val] && elp.save || true)
+      if @example.save
         @example.name = "Example_" + @example.id.to_s if @example.name == ""
         @example.save!
         params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
@@ -73,10 +75,7 @@ class ExamplesController < GroupDataController
                       :notice => (current_group.example_name + ' was successfully created.'))}
         format.json {render json: {success: true}}
       else
-        @format.html do 
-          # @lings = get_lings
-          render :action => "new"
-        end
+        format.html { render :action => "new" }
         format.json {render json: {success: false}}
       end
     end

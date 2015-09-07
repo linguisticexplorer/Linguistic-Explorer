@@ -115,13 +115,13 @@ class MembershipsController < GroupDataController
 
     attributes, roles = get_attributes_and_roles
 
+
     if @membership.update_attributes attributes
       # Set the expertise in all the passed resources
       if roles[:role] && roles[:resources].any?
         @membership.set_expertise_in roles[:resources]
       end
-      redirect_to([current_group, @membership],
-                  :notice => 'Membership was successfully updated.')
+      redirect_to([current_group, @membership], :notice => 'Membership was successfully updated.')
     else
       render :action => "edit"
     end
@@ -139,20 +139,43 @@ class MembershipsController < GroupDataController
   private
 
   def get_attributes_and_roles
-    selected_role = params[:membership][:role]
+    attributes = {}
+    roles = {}
 
-    level = selected_role == 'admin' ? 'admin' : 'member';
-    role  = Membership::ROLES.include? selected_role && selected_role
-    
-    attributes = { 
-      :member_id => params[:membership][:member_id],
-      :level => level
-    }
+    if params[:membership]
+      m_params = params[:membership] || {}
+      selected_role = m_params[:role] || ''
 
-    roles = {
-      :role => role,
-      :resources => current_group.lings.find((params[:membership][:resources] || '').split(';'))
-    }
+      level = m_params[:level] || selected_role
+      role = selected_role
+
+      if(Membership::ROLES.include?(level))
+        level = Membership::ACCESS_LEVELS.MEMBER
+        role  = selected_role
+      end
+      
+      attributes[:level] = level
+      attributes[:member_id] = m_params[:member_id] if m_params[:member_id]
+
+
+      roles = {
+        :role => role,
+        :resources => current_group.lings.find((m_params[:resources] || '').split(';'))
+      }
+    else
+      # TODO: refactor this horrible code!
+      accessible = Membership.accessible_attributes
+      params.each do |key, value|
+        case key
+        when :role
+          roles[key] = value
+        when :resources
+          roles[key] = current_group.lings.find((value || '').split(';')) if key == :resources
+        else
+          attributes[key] = value if accessible.include? key
+        end
+      end
+    end
 
     [attributes, roles]
   end

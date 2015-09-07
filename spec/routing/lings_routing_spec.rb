@@ -17,7 +17,7 @@ describe LingsController do
     it "recognizes and generates groups/#group_id/lings/#id/set_values" do
       g_id = groups(:inclusive).id
       id = lings(:level0).id
-      assert_generates "/groups/#{g_id}/lings/#{id}/set_values", { :controller => "lings", :action => "set_values", :group_id => g_id, :id => id }
+      assert_generates "/groups/#{g_id}/lings/#{id}/supported_set_values", { :controller => "lings", :action => "supported_set_values", :group_id => g_id, :id => id }
     end
 
  end

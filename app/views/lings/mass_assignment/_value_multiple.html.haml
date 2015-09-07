@@ -7,7 +7,7 @@
     #value-select.fluid-row
       %h4 Select Value
       %div{:style => "max-height:200px;*height:150px;overflow-y:auto;"}
-        - @property.available_values.sort.reverse.each do |value|
+        - @property.available_values.map(&:capitalize).sort.reverse.each do |value|
           .row-fluid
             .col-md-1
               = radio_button_tag "values[#{@property.id}][#{value}]", value,                         |

@@ -7,7 +7,7 @@
       %h4 Select Value
       #values{:style => "max-height:200px; *height:150px; overflow-y: auto;"}
         %div{:style => "margin-left: 25px;"}
-          - @property.available_values.sort.reverse.each do |value|
+          - @property.available_values.map(&:capitalize).sort.reverse.each do |value|
             = label_tag "value[#{value}]", :class => "radio" do
               = radio_button_tag "value", value, 
                 @preexisting_values.select{|lp| lp.property == @property && lp.value == value}.first

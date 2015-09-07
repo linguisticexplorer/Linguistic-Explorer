@@ -135,7 +135,7 @@ group :test, :development do
   # # Query Tracer: useful to debug
   # # Do not activate unless you really need it!
   # # When active it fills all your memory!
-  gem "active_record_query_trace"
+  # gem "active_record_query_trace"
 
   # # Used to test with a real browser
   gem "Selenium"

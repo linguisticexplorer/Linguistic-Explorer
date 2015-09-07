@@ -46,6 +46,7 @@ describe MembershipsController do
       @membership = FactoryGirl.create(:membership, :group => @group)
 
       allow(Group).to receive_message_chain(:find).and_return(Group)
+      expect(Group).to receive(:lings).and_return @group.lings
       expect(Group).to receive(:memberships).and_return @group.memberships
 
       get :show, :id => @membership.id, :group_id => @group.id
@@ -79,6 +80,7 @@ describe MembershipsController do
   end
 
   describe "edit" do
+
     it "should authorize :update on @membership" do
       @group = groups(:inclusive)
       @membership = FactoryGirl.create(:membership, :group => @group)
@@ -123,6 +125,7 @@ describe MembershipsController do
   end
 
   describe "create" do
+
     it "should authorize :create on the membership" do
       @group = groups(:inclusive)
       @user = FactoryGirl.create(:user)
@@ -192,6 +195,7 @@ describe MembershipsController do
   end
 
   describe "update" do
+
     it "should authorize :update on the passed membership" do
       @group = FactoryGirl.create(:group)
       @membership = FactoryGirl.create(:membership, :group => @group)
@@ -224,14 +228,14 @@ describe MembershipsController do
         allow(Membership).to receive_message_chain(:find).with(@membership.id.to_s).and_return @membership
         allow(Group).to receive_message_chain(:find).and_return @group
         
-        expect(@membership).to receive(:update_attributes).with({'level' => ''}).and_return true
+        expect(@membership).to receive(:update_attributes).with({:level => ''}).and_return true
 
         put :update, :id => @membership.id, :membership => {'level' => ''}, :group_id => @group.id
       end
 
       it "assigns the requested membership as @membership" do
         membership = FactoryGirl.create(:membership, :group => groups(:inclusive))
-        put :update, :id => membership, :group_id => groups(:inclusive).id
+        put :update, :id => membership.id, :group_id => groups(:inclusive).id
         expect(assigns(:membership)).to eq membership
       end
 

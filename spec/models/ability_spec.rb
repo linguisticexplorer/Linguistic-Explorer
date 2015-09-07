@@ -337,7 +337,7 @@ describe Ability do
                 k.group = @group
                 k.creator = @user
               end
-              expect(@member).to be_able_to(:manage, instance)
+              expect(@member).not_to be_able_to(:manage, instance)
             end
           end
 

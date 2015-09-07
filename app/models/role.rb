@@ -3,5 +3,7 @@ class Role < ActiveRecord::Base
   belongs_to :resource, :polymorphic => true
   
   scopify
-  # attr_accessible :title, :body
+  
+  validates :name, :presence => true
+  validates_inclusion_of :name, :in => Membership::ROLES
 end

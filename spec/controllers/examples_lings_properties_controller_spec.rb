@@ -46,18 +46,24 @@ describe ExamplesLingsPropertiesController do
 
       it "examples in current group to @examples" do
         @group = groups(:inclusive)
+        sign_in_as_group_admin
+
         get :new, :group_id => groups(:inclusive).id
         expect(assigns(:examples)).to eq(@group.examples)
       end
 
       it "lings_properties in the current group to @lings_properties" do
         @group = groups(:inclusive)
+        sign_in_as_group_admin
+
         get :new, :group_id => groups(:inclusive).id
         expect(assigns(:lings_properties)).to eq(@group.lings_properties.sort_by(&:description))
       end
 
       it "no ling_properties if a ling is passed" do
         @group = groups(:inclusive)
+        sign_in_as_group_admin
+
         get :new, :group_id => groups(:inclusive).id, :ling_id => lings(:level0).id
         expect(assigns(:lings_properties)).to eq(false)
       end
@@ -65,6 +71,9 @@ describe ExamplesLingsPropertiesController do
   end
 
   describe "create" do
+
+    before { sign_in_as_group_admin }
+
     it "should authorize :create on the examples_lings_property with params" do
       @group = groups(:inclusive)
       @lp = lings_properties(:level0)
@@ -80,6 +89,7 @@ describe ExamplesLingsPropertiesController do
 
       allow(ExamplesLingsProperty).to receive_message_chain(:new).and_return(@elp)
       allow(Group).to receive_message_chain(:find).and_return(@group)
+
       post :create, :examples_lings_property => {'example_id' => @example.id, 'lings_property_id' => @lp.id}, :group_id => @group.id
     end
 
@@ -108,15 +118,12 @@ describe ExamplesLingsPropertiesController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = FactoryGirl.create(:user)
-        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
         example = examples(:inclusive)
         lings_property = lings_properties(:inclusive)
 
-        sign_in user
         post :create, :examples_lings_property => {'example_id' => example.id, 'lings_property_id' => lings_property.id}, :group_id => groups(:inclusive).id
 
-        expect(assigns(:examples_lings_property).creator).to eq(user)
+        expect(assigns(:examples_lings_property).creator).to eq(@user)
       end
 
       it "should set the group to current group" do
@@ -177,6 +184,7 @@ describe ExamplesLingsPropertiesController do
     before do
       @elp = examples_lings_properties(:inclusive)
       @group = @elp.group
+      sign_in_as_group_admin
     end
 
     it "should authorize :destroy on the passed examples_lings_property" do

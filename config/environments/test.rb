@@ -41,5 +41,5 @@ LinguisticExplorer::Application.configure do
   # Set to true to debug and reace query
   # restore it to true to run tests!
   # It's it insanely expensive in memory terms this guy!!!!
-  ActiveRecordQueryTrace.enabled = false
+  # ActiveRecordQueryTrace.enabled = false
 end

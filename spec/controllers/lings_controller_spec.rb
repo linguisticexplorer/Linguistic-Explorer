@@ -165,10 +165,17 @@ describe LingsController do
     end
 
     describe "assigns" do
+
+      before { sign_in_as_group_admin }
+
       it "loads the requested ling through current group" do
         @ling = lings(:english)
         @group = @ling.group
+        group_membership = @user.memberships.select { |m| m.group.id == @group.id }.first
+
+        allow(Membership).to receive_message_chain(:group_admin?).and_return true
         allow(Group).to receive_message_chain(:find).and_return Group
+        allow(Group).to receive_message_chain(:membership_for).and_return group_membership
         expect(Group).to receive(:lings).twice.and_return @group.lings
 
         get :edit, :group_id => @group.id, :id => @ling.id
@@ -219,6 +226,9 @@ describe LingsController do
   end
 
   describe "create" do
+
+    before { sign_in_as_group_admin }
+
     it "should authorize :create on the passed ling params" do
       @group = FactoryGirl.create(:group)
       @ling = FactoryGirl.create(:ling, :group => @group)
@@ -257,13 +267,9 @@ describe LingsController do
       end
 
       it "should set creator to be the currently logged in user" do
-        user = FactoryGirl.create(:user)
-        Membership.create(:member => user, :group => groups(:inclusive), :level => "admin")
-        sign_in user
-
         do_valid_create
 
-        expect(assigns(:ling).creator).to eq user
+        expect(assigns(:ling).creator).to eq @user
       end
 
       it "should set the group on the new ling to current group" do
@@ -315,6 +321,9 @@ describe LingsController do
   end
 
   describe "update" do
+
+    before { sign_in_as_group_admin }
+
     it "should authorize :update on the passed ling" do
       @group = FactoryGirl.create(:group)
       @ling = FactoryGirl.create(:ling, :group => @group)
@@ -415,6 +424,8 @@ describe LingsController do
     def do_destroy_on_ling(ling)
       delete :destroy, :group_id => ling.group.id, :id => ling.id
     end
+
+    before { sign_in_as_group_admin }
 
     it "should authorize :destroy on the passed ling" do
       @group = groups(:inclusive)
