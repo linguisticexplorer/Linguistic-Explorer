@@ -32,17 +32,18 @@ class Membership < ActiveRecord::Base
     ADMIN == level
   end
 
+  # Avoid global role for now
   def add_expertise_in(instance)
-    grant :expert, instance
+    grant :expert, instance if instance.present?
   end
 
   def remove_expertise_in(instance)
-    revoke :expert, instance
+    revoke :expert, instance if instance.present?
   end
 
   def set_expertise_in(instances)
     # check instances and sort them
-    current_resources = self.roles.sort
+    current_resources = self.roles.sort.map(&:resource)
     # sort incoming instances as well
     new_resources = instances.sort
     
@@ -67,9 +68,8 @@ class Membership < ActiveRecord::Base
   end
 
   def is_expert?
-    @check ||= has_role? :expert, :any
-    # cache for multiple queries
-    @check
+    # Due to a bug (issue #230) for unsaved models it need to check also for the roles array size...
+    self.has_role?(:expert, :any) && self.roles.count > 0
   end
 
   def as_json(options={})

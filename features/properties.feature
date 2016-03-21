@@ -1,1 +1,1 @@
-Feature Properties Page
+Feature: Properties Page
