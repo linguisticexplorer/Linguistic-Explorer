@@ -78,17 +78,27 @@ Copy seed data to the doc/data in Terraling:
 
   `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
   
-## Branches Status
+## Contributing
 
-### Master
+Terraling has currently 3 main branches:
+
+* master - this branch contains the latest major version
+* patch - this branch contains the latest minor version (usually the deployed one)
+* sprint - this branch contains the development code for the newer version
+
+### Master Status
 
 [![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=master)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
 [![Dependency Status](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer.png)](https://gemnasium.com/linguisticexplorer/Linguistic-Explorer)
 [![Code Climate](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer.png)](https://codeclimate.com/github/linguisticexplorer/Linguistic-Explorer)
 
-### Development
+### Patch Status
 
-[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=devel)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=patch)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
+
+### Sprint Status
+
+[![Build Status](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer.png?branch=sprint)](https://travis-ci.org/linguisticexplorer/Linguistic-Explorer)
 
 ## Test it
 
