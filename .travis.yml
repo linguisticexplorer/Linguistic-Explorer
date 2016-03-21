@@ -20,4 +20,5 @@ gemfile:
 branches:
   only:
     - master
-    - devel
+    - patch
+    - sprint
