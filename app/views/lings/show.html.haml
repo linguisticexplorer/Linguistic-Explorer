@@ -120,7 +120,7 @@
           .text-justify
             - @ling.storable_keys.each do |key|
               -if key =~ /description/ && @ling.stored_value(key) != ''
-                %p =@ling.stored_value(key).html_safe
+                %p= @ling.stored_value(key).html_safe
               - else
                 %h3 No description provided
 .row
