@@ -89,7 +89,7 @@ class Ling < ActiveRecord::Base
       curr.value = value_string
       curr.save
     else
-      StoredValue.create(:key => key, :value => value_string, :storable => self)
+      StoredValue.create(:key => key.downcase, :value => value_string, :storable => self)
     end
   end
 
