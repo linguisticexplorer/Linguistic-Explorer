@@ -57,11 +57,12 @@ class User < ActiveRecord::Base
   end
 
   def is_expert_of?(resource)
+    return true if admin?
     ling, group = get_ling_and_group resource
 
     # resource_ids_for_role :resource_expert, resource
     if ling && member_of?(group) && is_expert?(group)
-       
+
       # is thruthy if either is assigned to that resource or
       # the resource has nobody set as expert for the moment
       return group.membership_for(self).has_role?(:expert, ling) || has_no_expert(ling)
