@@ -20,73 +20,73 @@ module SearchResults
 
         @filter = SelectValuePairsFilter.new(@query)
       end
-      describe "depth_0_vals" do
-        it "should select lings property with depth 0 ling and prop ids" do
-          expect(LingsProperty).to receive(:where).with({
-            :property_value => 
-          }).and_return([:a, :b])
+      # describe "depth_0_vals" do
+      #   it "should select lings property with depth 0 ling and prop ids" do
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :property_value => 
+      #     }).and_return([:a, :b])
 
-          expect(@filter.depth_0_vals).to eq [:a, :b]
-        end
+      #     expect(@filter.depth_0_vals).to eq [:a, :b]
+      #   end
 
-        it "should not pass empty set of ling ids" do
-          allow(@filter.query).to receive_message_chain(:depth_0_ling_ids).and_return([])
-          expect(LingsProperty).to receive(:where).with({
-            :group_id => 123,
-            :property_id => [3]
-          })
+      #   it "should not pass empty set of ling ids" do
+      #     allow(@filter.query).to receive_message_chain(:depth_0_ling_ids).and_return([])
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :group_id => 123,
+      #       :property_id => [3]
+      #     })
 
-          @filter.depth_0_vals
-        end
+      #     @filter.depth_0_vals
+      #   end
 
-        it "should not pass empty set of property ids" do
-          allow(@filter.query).to receive_message_chain(:depth_0_prop_ids).and_return([])
-          expect(LingsProperty).to receive(:where).with({
-            :group_id => 123,
-            :ling_id => [1]
-          })
+      #   it "should not pass empty set of property ids" do
+      #     allow(@filter.query).to receive_message_chain(:depth_0_prop_ids).and_return([])
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :group_id => 123,
+      #       :ling_id => [1]
+      #     })
 
-          @filter.depth_0_vals
-        end
-      end
-      describe "depth_1_vals" do
-        it "should select lings property with depth 0 ling and prop ids" do
-          expect(LingsProperty).to receive(:where).with({
-            :group_id => 123,
-            :ling_id => [2],
-            :property_id => [4]
-          }).and_return([:a, :b])
+      #     @filter.depth_0_vals
+      #   end
+      # end
+      # describe "depth_1_vals" do
+      #   it "should select lings property with depth 0 ling and prop ids" do
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :group_id => 123,
+      #       :ling_id => [2],
+      #       :property_id => [4]
+      #     }).and_return([:a, :b])
 
-          expect(@filter.depth_1_vals).to eq [:a, :b]
-        end
+      #     expect(@filter.depth_1_vals).to eq [:a, :b]
+      #   end
 
-        it "should not pass empty set of ling ids" do
-          allow(@filter.query).to receive_message_chain(:depth_1_ling_ids).and_return([])
-          expect(LingsProperty).to receive(:where).with({
-            :group_id => 123,
-            :property_id => [4]
-          })
+      #   it "should not pass empty set of ling ids" do
+      #     allow(@filter.query).to receive_message_chain(:depth_1_ling_ids).and_return([])
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :group_id => 123,
+      #       :property_id => [4]
+      #     })
 
-          @filter.depth_1_vals
-        end
+      #     @filter.depth_1_vals
+      #   end
 
-        it "should not pass empty set of property ids" do
-          allow(@filter.query).to receive_message_chain(:depth_1_prop_ids).and_return([])
-          expect(LingsProperty).to receive(:where).with({
-            :group_id => 123,
-            :ling_id => [2]
-          })
+      #   it "should not pass empty set of property ids" do
+      #     allow(@filter.query).to receive_message_chain(:depth_1_prop_ids).and_return([])
+      #     expect(LingsProperty).to receive(:where).with({
+      #       :group_id => 123,
+      #       :ling_id => [2]
+      #     })
 
-          @filter.depth_1_vals
-        end
+      #     @filter.depth_1_vals
+      #   end
 
-        it "should not make query if query has no depth" do
-          allow(@filter.query).to receive_message_chain(:has_depth?).and_return(false)
-          expect(LingsProperty).not_to receive(:where)
+      #   it "should not make query if query has no depth" do
+      #     allow(@filter.query).to receive_message_chain(:has_depth?).and_return(false)
+      #     expect(LingsProperty).not_to receive(:where)
 
-          @filter.depth_1_vals
-        end
-      end
+      #     @filter.depth_1_vals
+      #   end
+      # end
     end
   end
 
