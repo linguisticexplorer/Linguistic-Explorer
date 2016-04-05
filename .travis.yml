@@ -1,5 +1,6 @@
 language: ruby
 before_install:
+  - gem install bundler
   - cp yamls/database.yml.travisCI config/database.yml
   - mysql -e 'create database le_test;'
   - mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
@@ -10,7 +11,7 @@ before_script:
   - phantomjs --version
 script:
   - RAILS_ENV=test bundle exec rspec spec
-  - RAILS_ENV=test bundle exec cucumber --profile travis
+  # - RAILS_ENV=test bundle exec cucumber --profile travis
 rvm:
   - 1.9.3
   - 2.0.0
