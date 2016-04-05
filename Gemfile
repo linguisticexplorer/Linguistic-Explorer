@@ -77,22 +77,26 @@ group :assets do
   gem "uglifier"
 end
 
+group :deploy do
+  # # Deploy with Capistrano
+  gem 'capistrano', "2.15.4"
+  # gem 'capistrano-multiyaml'
+  gem "capistrano-ext"
+  # # Comment this line if you are not using RVM
+  # # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.
+  # # See https://rvm.io/integration/capistrano/
+  gem 'rvm-capistrano' 
+end
+
 gem "hogan_assets"
 
 # Forum gem
 # gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 # gem 'bb-ruby'
 
-# # Deploy with Capistrano
-gem 'capistrano', "2.15.4"
-# gem 'capistrano-multiyaml'
-gem "capistrano-ext"
-# gem 'net-ssh', "2.7.0"
+gem 'net-ssh', "2.9.1"
+gem 'net-scp'
 
-# # Comment this line if you are not using RVM
-# # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.
-# # See https://rvm.io/integration/capistrano/
-gem 'rvm-capistrano'
 
 # # Debugger and webapp profiling
 gem "newrelic_rpm"

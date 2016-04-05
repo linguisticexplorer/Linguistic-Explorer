@@ -392,6 +392,8 @@ DEPENDENCIES
   metric_fu
   modernizr-rails
   mysql2
+  net-scp
+  net-ssh (= 2.9.1)
   newrelic_rpm
   nokogiri (>= 1.5.6)
   passenger
@@ -419,3 +421,6 @@ DEPENDENCIES
   validation_reflection (~> 1.0.0)!
   will_paginate
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.11.2
