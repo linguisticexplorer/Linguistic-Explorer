@@ -94,7 +94,8 @@ gem "hogan_assets"
 # gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 # gem 'bb-ruby'
 
-# gem 'net-ssh', "2.7.0"
+gem 'net-ssh', "2.9.1"
+gem 'net-scp'
 
 
 # # Debugger and webapp profiling
