@@ -70,17 +70,21 @@ group :assets do
   gem "uglifier"
 end
 
+group :deploy do
+
+  # # Deploy with Capistrano
+  gem 'capistrano'
+
+  # # Comment this line if you are not using RVM
+  # # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.
+  # # See https://rvm.io/integration/capistrano/
+  gem 'rvm-capistrano'
+end
+
 # Forum gem
 # gem 'forum_monster', :git => 'https://github.com/dej611/forum_monster.git'
 # gem 'bb-ruby'
 
-# # Deploy with Capistrano
-gem 'capistrano'
-
-# # Comment this line if you are not using RVM
-# # Starting with RVM 1.11.3 Capistrano integration was extracted to a separate gem.
-# # See https://rvm.io/integration/capistrano/
-gem 'rvm-capistrano'
 
 # # Debugger and webapp profiling
 gem "newrelic_rpm"
