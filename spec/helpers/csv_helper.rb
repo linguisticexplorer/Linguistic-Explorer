@@ -17,6 +17,19 @@ module CSVHelper
     models.map { |m| m.destroy }
   end
 
+  def generate_roles_csv_from_memberships()
+    CSV.open("spec/csv/good/Role.csv", "wb") do |csv|
+      # header row
+      cols = %w[ id resource_id member_id group_id ]
+      csv << cols
+
+      # data rows
+      @memberships.each do |model|
+        csv << [model.id, @lings.first.id, model.id, model.group_id ]
+      end
+    end
+  end
+
   def generate_bad_csv_from_good_ones!(dir)
     files = File.join(Rails.root.join("spec", "csv", "good"), "*.csv")
     Dir.glob(files).each do |file|
@@ -64,9 +77,11 @@ module CSVHelper
         models << FactoryGirl.create(:user, :name => "Bob #{al.capitalize}", :email => "bob#{al}@example.com",
                           :access_level => al, :password => "password_#{al}")
       end
+      models << FactoryGirl.create(:user, :name => "Bob the expert", :email => "bobexpert@example.com", :access_level => User::USER, :password => "password_expert")
     end
     @admin = @users.first
     @user = @users.last
+    @expert = @users[1]
 
     # Group
     @group = FactoryGirl.create(:group, :name => "SSWL", :privacy => Group::PRIVATE,
@@ -79,6 +94,7 @@ module CSVHelper
     @memberships = [].tap do |models|
       models << FactoryGirl.create(:membership, :group => @group, :member => @admin, :level => Membership::ADMIN, :creator => @admin)
       models << FactoryGirl.create(:membership, :group => @group, :member => @user, :level => Membership::MEMBER, :creator => @admin)
+      models << FactoryGirl.create(:membership, :group => @group, :member => @expert, :level => Membership::MEMBER, :creator => @admin)
     end
 
     # Parent Lings
@@ -148,9 +164,14 @@ module CSVHelper
     @group_data = [@users, [@group], @memberships, @examples, @lings, @categories,
                    @properties, @lings_properties, @examples_lings_properties, @stored_values]
 
+    
+    # Now generate the roles csv from the membership one first
+    generate_roles_csv_from_memberships( )
+
     @group_data.each do |models|
       generate_csv_and_destroy_records(*models)
     end
+
   end
 
   def generate_bad_csvs(files)

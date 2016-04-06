@@ -8,4 +8,5 @@ ling: /Users/<username>/dev/linguistic-explorer/spec/csv/Ling.csv
 lings_property: /Users/<username>/dev/linguistic-explorer/spec/csv/LingsProperty.csv
 membership: /Users/<username>/dev/linguistic-explorer/spec/csv/Membership.csv
 property: /Users/<username>/dev/linguistic-explorer/spec/csv/Property.csv
+role: /Users/<username>/dev/linguistic-explorer/spec/csv/Property.csv
 stored_value: /Users/<username>/dev/linguistic-explorer/spec/csv/StoredValue.csv

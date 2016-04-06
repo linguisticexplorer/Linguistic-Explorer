@@ -113,6 +113,6 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
-  factory :role do
+  factory :role do |f|
   end
 end
