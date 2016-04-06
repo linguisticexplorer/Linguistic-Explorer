@@ -31,6 +31,9 @@ module CSVHelper
   end
 
   def generate_bad_csv_from_good_ones!(dir)
+    # Clean first
+    clean_bad_group_data_csvs! dir
+
     files = File.join(Rails.root.join("spec", "csv", "good"), "*.csv")
     Dir.glob(files).each do |file|
       FileUtils.cp(file, Rails.root.join("spec", "csv", "bad", dir, file.gsub(/.*good\//, "")))
@@ -85,6 +88,9 @@ module CSVHelper
   end
 
   def generate_group_data_csvs!
+    # Clean first
+    clean_group_data_csvs!
+
     # Create users
     @users = [].tap do |models|
       User::ACCESS_LEVELS.each do |al|
