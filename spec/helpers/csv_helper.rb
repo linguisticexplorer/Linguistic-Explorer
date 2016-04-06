@@ -87,9 +87,14 @@ module CSVHelper
     end
   end
 
+  def ensure_good_folder!
+    FileUtils.mkdir_p Rails.root.join("spec", "csv", "good")
+  end
+
   def generate_group_data_csvs!
     # Clean first
     clean_group_data_csvs!
+    ensure_good_folder!
 
     # Create users
     @users = [].tap do |models|
