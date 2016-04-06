@@ -17,7 +17,7 @@ module CSVHelper
     models.map { |m| m.destroy }
   end
 
-  def generate_roles_csv_from_memberships()
+  def generate_roles_csv_from_memberships
     CSV.open("spec/csv/good/Role.csv", "wb") do |csv|
       # header row
       cols = %w[ id resource_id member_id group_id ]
@@ -68,6 +68,20 @@ module CSVHelper
   def csv_row_count_should_equal_count_of(*models)
     # Add one to account for header row
     expect(CSV.read("spec/csv/good/#{models.first.class.name}.csv").size).to eq models.size + 1
+  end
+
+  def clean_group_data_csvs!
+    files = File.join(Rails.root.join("spec", "csv", "good"), "*.csv")
+    Dir.glob(files).each do |file|
+      FileUtils.rm file
+    end
+  end
+
+  def clean_bad_group_data_csvs!(dir)
+    files = File.join(Rails.root.join("spec", "csv", "bad", dir), "*.csv")
+    Dir.glob(files).each do |file|
+      FileUtils.rm file
+    end
   end
 
   def generate_group_data_csvs!

@@ -9,6 +9,10 @@ module GroupData
       generate_group_data_csvs!
     end
 
+    after(:all) do
+      clean_group_data_csvs!
+    end
+
     describe "validate! success" do
 
       before(:each) do
@@ -109,6 +113,7 @@ module GroupData
 
       after(:all) do
         @count[:count] = 0
+        clean_bad_group_data_csvs! "no_id"
       end
 
       it "should exit on users check" do
@@ -206,6 +211,7 @@ module GroupData
 
       after(:all) do
         @count[:count] = 0
+        clean_bad_group_data_csvs! "bad_foreign_key"
       end
 
       it "should exit on memberships check" do
@@ -290,6 +296,7 @@ module GroupData
 
       after(:all) do
         @count[:count] = 0
+        clean_bad_group_data_csvs! "bad_creator_id"
       end
 
       it "should exit on memberships check" do

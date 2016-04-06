@@ -9,6 +9,10 @@ module GroupData
       generate_group_data_csvs!
     end
 
+    after(:all) do
+      clean_group_data_csvs!
+    end
+
     describe "import!" do
       before(:each) do
         @config = {}.tap do |paths|
