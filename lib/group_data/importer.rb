@@ -185,7 +185,11 @@ module GroupData
         language = Ling.find(ling_ids[row["resource_id"]])
 
         # Now add the role to the member for that language
-        membership.add_expertise_in(language)
+        membership.add_expertise_in(language) unless language.nil?
+        if language.nil?
+          puts row["resource_id"] 
+          puts ling_ids[row["resource_id"]]
+        end
 
         roles_bar.inc if @verbose
       end

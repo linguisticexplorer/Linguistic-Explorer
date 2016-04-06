@@ -25,7 +25,7 @@ module CSVHelper
 
       # data rows
       @memberships.each do |model|
-        csv << [model.id, @lings.first.id, model.id, model.group_id ]
+        csv << [model.id, @lings.first.id, model.member.id, model.group_id ]
       end
     end
   end
