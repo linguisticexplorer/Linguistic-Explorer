@@ -202,7 +202,7 @@ GEM
       daemon_controller (>= 1.2.0)
       rack
       rake (>= 0.8.1)
-    phantomjs (1.9.7.0)
+    phantomjs (2.1.1.0)
     poltergeist (1.5.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -389,3 +389,6 @@ DEPENDENCIES
   validation_reflection (~> 1.0.0)!
   will_paginate
   will_paginate-bootstrap
+
+BUNDLED WITH
+   1.11.2
