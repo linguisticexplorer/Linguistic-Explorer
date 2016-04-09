@@ -5,6 +5,7 @@ before_install:
   - mysql -e 'create database le_test;'
   - mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
 bundler_args: --without development production deploy
+cache: bundler
 before_script:
   - RAILS_ENV=test bundle exec rake db:migrate
   - RAILS_ENV=test bundle exec rake db:test:prepare
