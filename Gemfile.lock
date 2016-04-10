@@ -202,7 +202,7 @@ GEM
       daemon_controller (>= 1.2.0)
       rack
       rake (>= 0.8.1)
-    phantomjs (2.1.1.0)
+    phantomjs (1.9.8.0)
     poltergeist (1.5.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
@@ -366,7 +366,7 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri (>= 1.5.6)
   passenger
-  phantomjs
+  phantomjs (= 1.9.8)
   poltergeist
   progressbar
   rails (~> 3.2.17)

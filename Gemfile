@@ -133,7 +133,7 @@ group :test, :development do
   gem "selenium-client"
   # # In this case the browser is phantomjs
   gem 'poltergeist'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  gem 'phantomjs', "=1.9.8", :require => 'phantomjs/poltergeist'
   
   # # Metrics, metrics, metrics...
   gem 'brakeman'
