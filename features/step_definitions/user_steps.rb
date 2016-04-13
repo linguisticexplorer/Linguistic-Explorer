@@ -23,7 +23,7 @@ Given /^I am signed in as "(.*)"/ do |email|
   @user     = User.find_by_email(email) || create_user(:email => email, :password => password)
 
   visit path_to("the home page")
-  click_link "Sign In"
+  click_link "Login"
 
   fill_in "Email",    :with => email
   fill_in "Password", :with => password

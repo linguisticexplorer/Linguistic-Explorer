@@ -282,7 +282,8 @@
     function toggleExampleWarning(){
       var isChecked = isValueSet();
       $("#example-warning").toggleClass("hidden", isChecked);
-      $("#example-create").toggleClass("disabled enabled", !isChecked);
+      $("#example-create").toggleClass("disabled", !isChecked);
+      $("#example-create").toggleClass("enabled", isChecked);
     }
 
   }

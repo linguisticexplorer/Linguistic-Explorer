@@ -46,14 +46,14 @@ class Membership < ActiveRecord::Base
     current_resources = self.roles.sort.map(&:resource)
     # sort incoming instances as well
     new_resources = instances.sort
-    
+
     # remove roles not present in the new set
     current_resources.each do |resource|
       unless new_resources.include? resource
         remove_expertise_in resource
       end
     end
-    
+
     # add resources present only in the new set and not in the old one
     new_resources.each do |resource|
       unless current_resources.include? resource
@@ -63,7 +63,7 @@ class Membership < ActiveRecord::Base
   end
 
   def role
-    level === ADMIN ? 'group admin' : 
+    level === ADMIN ? 'group admin' :
       is_expert? ? 'expert' : MEMBER
   end
 
@@ -74,9 +74,9 @@ class Membership < ActiveRecord::Base
 
   def as_json(options={})
     super(
-      :only => [:id, :group_id, :level, :creator_id], 
-      :include => { 
-        :member => { 
+      :only => [:id, :group_id, :level, :creator_id],
+      :include => {
+        :member => {
           :only => [:id, :name, :email]
         }
       }
@@ -84,7 +84,7 @@ class Membership < ActiveRecord::Base
   end
 
   def get_valid_resource
-    false
+    self
   end
 
 end
