@@ -142,11 +142,12 @@ group :test, :development do
   # gem "active_record_query_trace"
 
   # # Used to test with a real browser
-  gem "Selenium"
+  gem "selenium"
+  gem "selenium-webdriver"
   gem "selenium-client"
   # # In this case the browser is phantomjs
-  gem 'poltergeist'
-  gem 'phantomjs', :require => 'phantomjs/poltergeist'
+  # gem 'poltergeist'
+  # gem 'phantomjs', :require => 'phantomjs/poltergeist'
 
   # # Metrics, metrics, metrics...
   gem 'brakeman'
