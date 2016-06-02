@@ -39,17 +39,35 @@ When /^(?:|I )return to "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
   end
 end
 
-When /^(?:|I )follow "([^\"]*)" within the top navbar$/ do |link| 
+When /^(?:|I )follow "([^\"]*)" within the top navbar$/ do |link|
   with_scope("#terraling-navbar-collapse") do
+    # hover over correct element
+    find("ul.nav:nth-child(1) > li:nth-child(1) > a:nth-child(1)").hover
     click_link(link, :match => :prefer_exact)
     # To fix ambiguity with Capybara let's take just the first match
     # first(:link, link).click
   end
 end
 
-When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector| 
+When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
+    # This step is too general and ambiguious, might have to break apart
+
+    if link.eql? "Syntactic Structures" && page.has_link?(:text => "Pick a Dataset")
+      find('a', :text =>"Pick a Dataset").hover
+    end
+    if link.eql? "Members"
+      link = "All Members"
+      find('a', :text =>"Contributors").hover
+    end
+    if link.eql? "public groups"
+      # Have to scroll using javascript due to banner
+      page.execute_script "document.querySelector('#main > div:nth-child(3) > div:nth-child(3) > div:nth-child(1) > p:nth-child(2) > a:nth-child(1)').scrollIntoView()"
+      page.execute_script "window.scrollBy(0,-100)"
+    end
+    find('a', :text =>"Search").hover if link.eql?( "Advanced Search" )|| link.eql?( "History")
     click_link(link, :match => :prefer_exact)
+
     # To fix ambiguity with Capybara let's take just the first match
     # first(:link, link).click
   end
@@ -86,7 +104,7 @@ Then /^(?:|I )should see "([^\"]*)" in the "([^\"]*)"$/ do |text, field|
 end
 
 # Then I add "Spanish" to the list
-When /^(?:|I )add "([^\"]*)"(?: within "([^\"]*)")? to the list$/ do |link, selector| 
+When /^(?:|I )add "([^\"]*)"(?: within "([^\"]*)")? to the list$/ do |link, selector|
   selector |= ".typeahead"
   with_scope(selector) do
     click_link(link, :match => :prefer_exact)
@@ -115,6 +133,8 @@ When /^(?:|I )fill in the following(?: within "([^\"]*)")?:$/ do |selector, fiel
 end
 
 When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |value, field, selector|
+  # Another UI change.. might have to change in tests
+  field = "Action" if field.eql? "Perform"
   with_scope(selector) do
     select(value, :from => field, :match => :prefer_exact)
     # find(:input, field).set(value)
@@ -174,6 +194,8 @@ end
 
 Then /^(?:|I )should see "([^\"]*)" within the top navbar$/ do |text|
   with_scope("#terraling-navbar-collapse") do
+    # Hover over correct element
+    find("ul.nav:nth-child(1) > li:nth-child(1) > a:nth-child(1)").hover
     if page.respond_to? :should
       page.should have_content(text)
     else
@@ -366,4 +388,8 @@ Then /^(?:|I )want at most "([^\"]*)" results per page$/ do |rows|
       DEFAULT_PER_PAGE = results
     end
   end
+end
+
+Then /^I hover over my user info$/ do
+  find_by_id("userInfo").hover
 end
