@@ -13,12 +13,13 @@
   require 'simplecov'
 
 	ENV["RAILS_ENV"] ||= "test"
-  
+
   # Import dependencies
 	require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
 	require 'cucumber/rails'
+	require 'selenium-webdriver'
 	# require "cucumber/rspec/doubles"
-	require "capybara/poltergeist"
+	# require "capybara/poltergeist"
 
 	# Lets you click links with onclick javascript handlers without using @culerity or @javascript
 	# require 'cucumber/rails/capybara_javascript_emulation'
@@ -27,16 +28,7 @@
 	# If you want to use XPath, you'll need to do:
 	# Capybara.default_selector = :xpath
 	Capybara.default_selector = :css
-
-      # Setup Poltergeist + PhantomJS and set it as default driver
-      Capybara.javascript_driver = :poltergeist
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, {
-          :phantomjs => Phantomjs.path,
-          :timeout => 60,
-          :inspector => true
-        })
-      end
+  Capybara.default_driver = :selenium
 
   # Capybara.default_wait_time = 15
 
