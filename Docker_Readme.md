@@ -59,3 +59,10 @@ Now we can run the tests on the container
 ```sh
 $ docker-compose run web bundle exec rake
 ```
+
+## Stop it
+
+To end the docker madness once and for all
+```sh
+$ docker-compose down
+```
