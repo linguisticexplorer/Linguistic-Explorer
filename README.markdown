@@ -96,6 +96,17 @@ To test yourself the app write in the console
   `$ rake`
   
 It should run both rspec and cucumber tests.
+
+**Note**
+If you are having issues when running the tests with the following line:
+```
+> [WARN] table 'Role' doesn't exist. Did you run the migration? Ignoring rolify config.
+```
+To fix this issue run the following:
+```
+$ rake db:test:prepare db:test:load
+```
+Then try to run the tests again.
   
 ## Contribute
 
