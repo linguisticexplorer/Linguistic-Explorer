@@ -11,7 +11,7 @@ gem "nokogiri", ">= 1.5.6"
 gem "progressbar"
 
 # # Database
-gem 'mysql2'
+gem 'mysql2', '~>0.3.17'
 # # Having problem with new migrations?
 # # * Disable slim_scrooge here
 # # * Deploy on server with "cap deploy:migrations"
@@ -25,7 +25,7 @@ gem 'mysql2'
 gem 'devise'
 gem 'humanizer'
 gem 'cancancan'
-gem 'rolify'
+gem 'rolify', '~>4.1.1'
 
 # # Model validation
 gem 'validation_reflection', "~> 1.0.0", :git => 'git://github.com/electronicbites/validation_reflection.git'

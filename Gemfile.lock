@@ -265,7 +265,7 @@ GEM
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rolify (3.4.1)
+    rolify (4.1.1)
     roodi (3.3.1)
       ruby_parser (~> 3.2, >= 3.2.2)
     rspec-activemodel-mocks (1.0.1)
@@ -396,7 +396,7 @@ DEPENDENCIES
   leaflet-rails
   metric_fu
   modernizr-rails
-  mysql2
+  mysql2 (~> 0.3.17)
   net-scp
   net-ssh (= 2.9.1)
   newrelic_rpm
@@ -406,7 +406,7 @@ DEPENDENCIES
   rails (~> 3.2.17)
   rails_best_practices
   rake (= 10.1.0)
-  rolify
+  rolify (~> 4.1.1)
   rspec-activemodel-mocks (~> 1.0)
   rspec-collection_matchers (~> 1.1)
   rspec-rails (~> 3.0)
@@ -428,4 +428,4 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 BUNDLED WITH
-   1.12.1
+   1.12.5
