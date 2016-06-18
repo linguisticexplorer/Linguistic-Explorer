@@ -52,13 +52,18 @@ module ApplicationHelper
     return "<p><a href=\"https://www.flickr.com/photos/#{photos[id][:url]}\" >#{photos[id][:title]}, on Flickr</a> under CC License</p>".html_safe
   end
 
-  def each_developer()
-    names = ["Ross Kaffenberger", "Alex Lobascio (Bosh)", "Marco Liberati", "Oleg Grishin", "Lingliang Zhang", "Dennis Shasha"]
-    # imgs = ["https://pbs.twimg.com/profile_images/3411671204/562c5a9408e4e740b9172f69539f5667_400x400.jpeg"]
-    imgs = ["cool_dev","cool_dev","cool_dev","dev","dev","hat_dev"]
-    roles = ["", "", "", "", "", "System Architect"]
-    names.each_with_index do |name, index|
-      yield name, imgs[index], roles[index], '#' if block_given?
+  def each_developer_row(columns = 1)
+    devs = [
+      {:name => "Dennis Shasha", :img => "hat_dev", :role => "System Architect", :link => "#"},
+      {:name => "Ross Kaffenberger", :img => "cool_dev", :role => "", :link => "#"},
+      {:name => "Alex Lobascio (Bosh)", :img => "cool_dev", :role => "", :link => "#"},
+      {:name => "Marco Liberati", :img => "cool_dev", :role => "", :link => "#"},
+      {:name => "Oleg Grishin", :img => "dev", :role => "", :link => "#"},
+      {:name => "Lingliang Zhang", :img => "dev", :role => "", :link => "#"},
+      {:name => "Hannan Butt", :img => "dev", :role => "", :link => "#"}
+    ]
+    devs.each_slice(columns) do |row|
+      yield row if block_given?
     end
   end
   

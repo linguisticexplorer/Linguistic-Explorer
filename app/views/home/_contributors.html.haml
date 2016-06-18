@@ -1,0 +1,7 @@
+.col-md-4.text-center
+  %a.developer{:href => link}
+    .col-md-offset-4.img-circle.about-img.dev{:class => "#{img}_img" }
+    %p.lead
+      = name
+    - if role.present?
+      %p.small{:style => "margin-top: -20px;"} (#{role})
