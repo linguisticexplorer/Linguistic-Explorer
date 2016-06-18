@@ -189,3 +189,9 @@ h4.group-header {
   -o-transition: all 1s easy-in-out;
   transition: all 1s easy-in-out;
 }
+
+#messages {
+  position: absolute;
+  z-index: 9999;
+  width: 80%;
+}
