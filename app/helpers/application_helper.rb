@@ -45,7 +45,8 @@ module ApplicationHelper
       {:url => "valeriebb/3008977110", :title => "Learn sign language at the playground by Valerie Everett"},
       {:url => "hindrik/6486016175", :title => "focus on language by Hindrik Sijens"},
       {:url => "disowned/1158260369", :title => "Shakespeare's words"},
-      {:url => "tuinkabouter/497701876", :title => "Words"}
+      {:url => "tuinkabouter/497701876", :title => "Words"},
+      {:url => "jurek_durczak/16235946053", :title => "Language"}
     ]
     id = id < photos.size ? id : 0
     return "<p><a href=\"https://www.flickr.com/photos/#{photos[id][:url]}\" >#{photos[id][:title]}, on Flickr</a> under CC License</p>".html_safe
