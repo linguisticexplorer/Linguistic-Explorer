@@ -30,7 +30,7 @@ module ApplicationHelper
   end
 
   def daily_image(id)
-    photos = ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books", "shakespeare", "words2"]
+    photos = ["clouds", "words", "birds", "birds-bn", "ancient", "sign", "books", "shakespeare", "words2", "languages"]
     id = id < photos.size ? id : 0
     photos[id]
   end
