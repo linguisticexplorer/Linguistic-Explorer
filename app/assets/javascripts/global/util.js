@@ -25,6 +25,9 @@
       // DROPDOWN CODE
       activateDropdowns();
 
+      // MESSAGE / NOTICE CODE
+      activateTimerForMessages();
+
       // TOOLTIP CODE
       $("[rel='tooltip']").tooltip();
       $(window).bind("popstate", function (evt) {
@@ -212,6 +215,19 @@
         isFileSaverSupported = !!new Blob();
       } catch (e) {}
       return isFileSaverSupported;
+    }
+
+    function activateTimerForMessages(){
+      var el = $('#messages .alert');
+      if(el.length){
+        setTimeout(fadeOut, 3000, el);
+      }
+    }
+
+    function fadeOut(elements){
+      if(elements){
+        elements.fadeOut('fast');
+      }
     }
 
 })();
