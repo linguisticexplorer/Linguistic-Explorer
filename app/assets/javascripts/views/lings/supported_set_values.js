@@ -27,12 +27,9 @@
             url = url.replace(/id=[0-9]+/, "id=" + id);
             url = url.replace(/commit=[^\&]+/, "commit=" + "Select");
             return url;
-        } else if (/\?.+/.test(location.href)) {
-            return location.href + "&prop_id=" + id + "&commit=Select";
-        } else if (/\?$/.test(location.href)) {
-            return location.href + "prop_id=" + id + "&commit=Select";
         } else {
-            return location.href + "?prop_id=" + id + "&commit=Select";
+          var divider = /\?.+/.test(location.href) ? '&' : /\?$/.test(location.href) ? '' : '?';
+          return location.href + divider + "prop_id=" + id + "&commit=Select";
         }
     };
 
@@ -179,6 +176,7 @@
           if (data.success) {
               exampleOverlay.addClass("alert-success").text("Save Successful");
               $("#prop-example").html(img);
+              // TODO rewrite this to avoid to reload the whole page for a fragment...
               $("#prop-example").load(location.href + " #prop-example");
           } else {
               exampleOverlay.addClass("alert-danger").text("Save Unsuccessful");
