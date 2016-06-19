@@ -18,34 +18,34 @@
   var payload = {};
 
   function destroySearches(){
-    $('#'+resourceId1+'-search-field').typeahead('destroy');
-    $('#'+resourceId2+'-search-field').typeahead('destroy');
+    // $('#'+resourceId1+'-search-field').typeahead('destroy');
+    // $('#'+resourceId2+'-search-field').typeahead('destroy');
     
   }
 
   function setupSearches(){
 
     // update the payload with the current values
-    // it's not yet a typeahead, so we cna use val() here
+    // it's not yet a typeahead, so we can use val() here
     payload.ling_name = $('#'+resourceId1 + '-search-field').val();
     payload.prop_name = $('#'+resourceId2 + '-search-field').val();
 
-    T.Search.quickTemplate(
-      resourceId1,
-      {name: 'Language', type: 'ling', template: 'resource'},
-      { onSelection: updatePayload('ling') }
-    );
+    // T.Search.quickTemplate(
+    //   resourceId1,
+    //   {name: 'Language', type: 'ling', template: 'resource'},
+    //   { onSelection: updatePayload('ling') }
+    // );
 
-    T.Search.quickTemplate(
-      resourceId2,
-      {name: 'Property', type: 'property', template: 'resource'},
-      { onSelection: updatePayload('prop') }
-    );
+    // T.Search.quickTemplate(
+    //   resourceId2,
+    //   {name: 'Property', type: 'property', template: 'resource'},
+    //   { onSelection: updatePayload('prop') }
+    // );
 
-    // Update the search fields
-    // Now it's a typeahead: don't use val() but its own function
-    $('#'+resourceId1+'-search-field').typeahead('val', payload.ling_name);
-    $('#'+resourceId2+'-search-field').typeahead('val', payload.prop_name);
+    // // Update the search fields
+    // // Now it's a typeahead: don't use val() but its own function
+    // $('#'+resourceId1+'-search-field').typeahead('val', payload.ling_name);
+    // $('#'+resourceId2+'-search-field').typeahead('val', payload.prop_name);
     
     // at this point it should update itself?
     checkLp();
@@ -56,6 +56,7 @@
     // parametric updater
     function closure (evt, resource, resLongName){
       payload[type + '_name'] = resource.name;
+      payload[type + '_id'] = resource.id;
       checkLp();
     }
 
