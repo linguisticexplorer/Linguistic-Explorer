@@ -220,13 +220,15 @@
     function activateTimerForMessages(){
       var el = $('#messages .alert');
       if(el.length){
-        setTimeout(fadeOut, 3000, el);
+        $('.show-header').addClass('messages');
+        setTimeout(fadeOut, 5000, el);
       }
     }
 
     function fadeOut(elements){
       if(elements){
         elements.fadeOut('fast');
+        $('.show-header').removeClass('messages');
       }
     }
 

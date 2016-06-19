@@ -1,5 +1,5 @@
 - page_heading "#{@ling.grouped_name}: #{@ling.name}"
-.row
+.row.show-header
   .col-md-12
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       = icon 'arrow-left'
