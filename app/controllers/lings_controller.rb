@@ -61,7 +61,8 @@ class LingsController < GroupDataController
     session[:category_id] = params[:category_id] if params[:category_id]
     @category = session[:category_id] ? Category.find(session[:category_id]) : @categories.first
     @properties = @category.properties.order('name')
-    @preexisting_values = @ling.lings_properties.includes(:property).select {|lp| @properties.map{|prop| prop.id }.include? lp.property_id}
+    prop_ids = @properties.map(&:id)
+    @preexisting_values = @ling.lings_properties.includes(:property).select {|lp| prop_ids.include? lp.property_id }
     @exists = true
 
     if params[:prop_id]
@@ -69,7 +70,7 @@ class LingsController < GroupDataController
       if params[:commit] == "Select"
         session[:prop_id] = params[:prop_id] if params[:prop_id]
       else
-        pos = @properties.map(&:id).index(session[:prop_id].to_i) + 1
+        pos = prop_ids.index(session[:prop_id].to_i) + 1
         search_space = @properties[pos, @properties.length] + @properties[0,pos]
         if params[:commit] == "Next"
             session[:prop_id] = search_space.first.id
@@ -100,21 +101,15 @@ class LingsController < GroupDataController
       @ling_properties.each {|lp| @examples += lp.examples if lp.examples.any?}
       @example =  params[:example_id] ? current_group.examples.find(params[:example_id]) : (@examples.length > 0 && @examples.first) || nil
     end
+
     @relations = @property.lings_properties
       .select('lings.`name`, lings_properties.`value`')
       .order('lings.`name`')
       .includes(:ling)
-      .limit(500)
       .to_a.map {|lp| [lp.ling.name, lp.value]}
 
-    # @relations = []
-    # #do this with one query
-    # @property.lings_properties.includes(:ling).find_each(:batch_size => 500) do |lp|
-    #   @relations << [lp.ling.name, lp.value]
-    # end
-    # @relations.sort{|x,y| x[0] <=> y[0]}
+    puts "#{@exists}, #{@ling_properties.map(&:examples).inspect}, #{@examples.inspect}"
 
-    # authorize! :update, @ling
   end
 
   def supported_submit_values
