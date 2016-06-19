@@ -369,63 +369,63 @@ PLATFORMS
 
 DEPENDENCIES
   alphabetical_paginate!
-  async-rails
-  autoprefixer-rails
+  async-rails (~> 0.9.0)
+  autoprefixer-rails (~> 3.0.1)
   bootbox-rails (~> 0.4)
   bootstrap-sass (~> 3.2.0)
-  brakeman
-  cancancan
-  capistrano (= 2.15.4)
-  capistrano-ext
-  capybara
+  brakeman (~> 2.6.2)
+  cancancan (~> 1.10.1)
+  capistrano (~> 2.15.4)
+  capistrano-ext (~> 1.2.1)
+  capybara (~> 2.7.1)
   cucumber (~> 1.1.0)
   cucumber-rails
-  d3-rails
+  d3-rails (~> 3.4.11)
   database_cleaner (~> 0.7.0)
-  devise
+  devise (~> 3.3.0)
   factory_girl_rails (~> 1.1)
   font-awesome-sass (~> 4.2.0)
-  haml-rails
-  hogan_assets
-  humanizer
-  iconv
-  jquery-rails
-  jquery-ui-rails
-  json
-  launchy
-  leaflet-rails
-  metric_fu
-  modernizr-rails
+  haml-rails (~> 0.4)
+  hogan_assets (~> 1.6.0)
+  humanizer (~> 2.6.0)
+  iconv (~> 1.0.4)
+  jquery-rails (~> 3.1.2)
+  jquery-ui-rails (~> 5.0.0)
+  json (~> 1.8.1)
+  launchy (~> 2.4.2)
+  leaflet-rails (~> 0.7.3)
+  metric_fu (~> 4.11.1)
+  modernizr-rails (~> 2.7.1)
   mysql2 (~> 0.3.17)
-  net-scp
-  net-ssh (= 2.9.1)
-  newrelic_rpm
+  net-scp (~> 1.2.1)
+  net-ssh (~> 2.9.1)
+  newrelic_rpm (~> 3.9.4)
   nokogiri (>= 1.5.6)
-  passenger
-  progressbar
+  passenger (~> 4.0.50)
+  progressbar (~> 0.21.0)
   rails (~> 3.2.17)
-  rails_best_practices
+  rails_best_practices (~> 1.15.4)
   rake (= 10.1.0)
   rolify (~> 4.1.1)
   rspec-activemodel-mocks (~> 1.0)
   rspec-collection_matchers (~> 1.1)
   rspec-rails (~> 3.0)
-  ruby-prof
-  rvm-capistrano
-  sass-rails (>= 3.2)
-  selenium
-  selenium-client
-  selenium-webdriver
-  shoulda-matchers
+  ruby-prof (~> 0.15.1)
+  rvm-capistrano (~> 1.5.4)
+  sass-rails (~> 3.2)
+  selenium (~> 0.2.11)
+  selenium-client (~> 1.2.18)
+  selenium-webdriver (~> 2.53.0)
+  shoulda-matchers (~> 2.7.0)
   simplecov (~> 0.7.1)
-  thin
-  tinymce-rails (= 4.0.19)
-  twitter-typeahead-rails
-  uglifier
+  thin (~> 1.6.2)
+  tinymce-rails (~> 4.0.19)
+  twitter-typeahead-rails (~> 0.10.5)
+  uglifier (~> 2.5.3)
   validates_existence (~> 0.8.0)
   validation_reflection (~> 1.0.0)!
-  will_paginate
-  will_paginate-bootstrap
+  will_paginate (~> 3.0.7)
+  will_paginate-bootstrap (~> 1.0.1)
 
 BUNDLED WITH
    1.12.5
