@@ -7,7 +7,7 @@ class ExamplesController < GroupDataController
 
     respond_with(@examples) do |format|
       format.html
-      format.js
+      format.json
     end
   end
 
@@ -18,7 +18,7 @@ class ExamplesController < GroupDataController
 
     respond_with(@example) do |format|
       format.html
-      format.js
+      format.json
     end
   end
 
@@ -31,6 +31,7 @@ class ExamplesController < GroupDataController
       e.group = current_group
       e.creator = current_user
     end
+
     is_authorized? :create, @example, true
 
   end
@@ -42,8 +43,6 @@ class ExamplesController < GroupDataController
     @lp = current_group.lings_properties.find(params[:lp_id]) if params[:lp_id]
 
     is_authorized? :update, @example, true
-
-    # @lings = get_lings
   end
 
   def create
@@ -53,29 +52,32 @@ class ExamplesController < GroupDataController
     end
 
     is_authorized? :create, @example, true
+    
+    @example.ling = current_group.lings.find(params[:ling_id])
 
-    if params[:lp_val]
-      elp = ExamplesLingsProperty.new()
-      elp.group = current_group
-      elp.lings_property = current_group.lings_properties.find(params[:lp_val])
-      elp.example = @example
+    success = @example.save
 
-      is_authorized? :create, elp, true
+    if success
+      @example.name = "Example_" + @example.id.to_s if @example.name == ""
+      @example.save!
+      params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
 
-      elp.save
+      if params[:lp_val]
+        elp = ExamplesLingsProperty.new()
+        elp.group = current_group
+        elp.lings_property = current_group.lings_properties.find(params[:lp_val])
+        elp.example = @example
+
+        is_authorized? :create, elp, true
+
+        success = elp.save
+      end
     end
 
     respond_to do |format|
-      if @example.save
-        @example.name = "Example_" + @example.id.to_s if @example.name == ""
-        @example.save!
-        params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-        
-        format.html {redirect_to([current_group, @example],
-                      :notice => (current_group.example_name + ' was successfully created.'))}
+      if success
         format.json {render json: {success: true}}
       else
-        format.html { render :action => "new" }
         format.json {render json: {success: false}}
       end
     end
@@ -88,14 +90,10 @@ class ExamplesController < GroupDataController
     respond_to do |format|
       if @example.update_attributes(params[:example])
         params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-        format.html{ redirect_to([current_group, @example],
-                  :notice => (current_group.example_name + ' was successfully updated.'))}
+        
         format.json {render json: {success: true}}
       else
-        @format.html do 
-          # @lings = get_lings
-          render :action => "edit"
-        end
+        format.html {render :action => "edit" }
         format.json {render json: {success: false}}
       end
     end
