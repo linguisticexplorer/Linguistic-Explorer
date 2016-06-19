@@ -108,8 +108,6 @@ class LingsController < GroupDataController
       .includes(:ling)
       .to_a.map {|lp| [lp.ling.name, lp.value]}
 
-    puts "#{@exists}, #{@ling_properties.map(&:examples).inspect}, #{@examples.inspect}"
-
   end
 
   def supported_submit_values
