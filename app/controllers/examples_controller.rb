@@ -75,6 +75,8 @@ class ExamplesController < GroupDataController
 
     respond_to do |format|
       if success
+        format.html {redirect_to([current_group, @example],
+          :notice => (current_group.example_name + ' was successfully created.'))}
         format.json {render json: {success: true}}
       else
         format.json {render json: {success: false}}
@@ -89,7 +91,8 @@ class ExamplesController < GroupDataController
     respond_to do |format|
       if @example.update_attributes(params[:example])
         params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-        
+        format.html {redirect_to([current_group, @example],
+          :notice => (current_group.example_name + ' was successfully updated.'))}
         format.json {render json: {success: true}}
       else
         format.html {render :action => "edit" }
