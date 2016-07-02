@@ -52,11 +52,10 @@ class ExamplesController < GroupDataController
     end
 
     is_authorized? :create, @example, true
-    
-    @example.ling = current_group.lings.find(params[:ling_id])
+
+    @example.ling = current_group.lings.find(params[:ling_id]) if params[:ling_id]
 
     success = @example.save
-
     if success
       @example.name = "Example_" + @example.id.to_s if @example.name == ""
       @example.save!
