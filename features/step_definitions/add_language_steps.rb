@@ -51,6 +51,12 @@ Then /^I save the language$/ do
 end
 
 Then /^I set a property value to "([^"]*)"$/ do |prop_val|
+  Capybara.ignore_hidden_elements = false
+  language_created_alert = find_by_id(:messages).find(".alert.alert-success")
+  begin
+    # Wait for the success box to go away
+  end while language_created_alert.visible?
+  Capybara.ignore_hidden_elements = true
   language_edit_dropdown.click
   click_link "Values"
   find(".radio").choose prop_val
@@ -66,6 +72,7 @@ Then /^I create an example for the given value with the name "([^"]*)", gloss "(
 end
 
 Then /^I set a new propery value to "([^"]*)"$/ do |arg1|
+  execute_script('window.scroll(0,-1000);') # scroll up
   find_by_id("value_value_new").set(true)
   fill_in "new_value", with: "#{arg1}\n"
   click_button "Certain"

@@ -52,11 +52,10 @@ class ExamplesController < GroupDataController
     end
 
     is_authorized? :create, @example, true
-    
-    @example.ling = current_group.lings.find(params[:ling_id])
+
+    @example.ling = current_group.lings.find(params[:ling_id]) if params[:ling_id]
 
     success = @example.save
-
     if success
       @example.name = "Example_" + @example.id.to_s if @example.name == ""
       @example.save!
@@ -76,6 +75,8 @@ class ExamplesController < GroupDataController
 
     respond_to do |format|
       if success
+        format.html {redirect_to([current_group, @example],
+          :notice => (current_group.example_name + ' was successfully created.'))}
         format.json {render json: {success: true}}
       else
         format.json {render json: {success: false}}
@@ -90,7 +91,8 @@ class ExamplesController < GroupDataController
     respond_to do |format|
       if @example.update_attributes(params[:example])
         params[:stored_values].each{ |k,v| @example.store_value!(k,v) } if params[:stored_values]
-        
+        format.html {redirect_to([current_group, @example],
+          :notice => (current_group.example_name + ' was successfully updated.'))}
         format.json {render json: {success: true}}
       else
         format.html {render :action => "edit" }
