@@ -314,7 +314,7 @@ GEM
     selenium (0.2.11)
       jar_wrapper
     selenium-client (1.2.18)
-    selenium-webdriver (2.53.0)
+    selenium-webdriver (2.53.4)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
       websocket (~> 1.0)
@@ -422,7 +422,7 @@ DEPENDENCIES
   sass-rails (~> 3.2)
   selenium (~> 0.2.11)
   selenium-client (~> 1.2.18)
-  selenium-webdriver (~> 2.53.0)
+  selenium-webdriver (~> 2.53.4)
   shoulda-matchers (~> 2.7.0)
   simplecov (~> 0.7.1)
   thin (~> 1.6.2)
