@@ -43,22 +43,26 @@ class SearchJSON
     entry[:commons] = Hash.new
     # common results
     commons  = results_in_common_compare_search(rows)
-    result_headers(value_for_header(commons)).each do |key_value|
-      entry[:commons][key_value[:key]] = key_value[:value].call( @search.group )
+    unless commons.empty?
+      result_headers(value_for_header(commons)).each do |key_value|
+        entry[:commons][key_value[:key]] = key_value[:value].call( @search.group )
+      end
     end
-    
+
     # diff results
     entry[:differents] = Hash.new
     differents = results_diff_compare_search(rows)
-    values_for_header = value_for_header(differents)
-    diff_headers = result_headers(values_for_header)
+    unless differents.empty?
+      values_for_header = value_for_header(differents)
+      diff_headers = result_headers(values_for_header)
 
-    # First column: this is the property column
-    entry[:differents][diff_headers[0][:key]] = diff_headers[0][:value].call( @search.group )
-    # Other columns: one column per language here
-    entry[:differents][diff_headers[1][:key]] = Array.new
-    values_for_header.each do |value|
-      entry[:differents][diff_headers[1][:key]] << diff_headers[1][:value].call(value)
+      # First column: this is the property column
+      entry[:differents][diff_headers[0][:key]] = diff_headers[0][:value].call( @search.group )
+      # Other columns: one column per language here
+      entry[:differents][diff_headers[1][:key]] = Array.new
+      values_for_header.each do |value|
+        entry[:differents][diff_headers[1][:key]] << diff_headers[1][:value].call(value)
+      end
     end
   end
 
