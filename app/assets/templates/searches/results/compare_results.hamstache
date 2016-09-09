@@ -1,7 +1,7 @@
 {{#commons}}
 #tableCommonHeader
   %h3.red_grad Properties in Common {{lings}}:
-%table.show-table.table.table-bordered.table-striped.table-hover
+%table#tableCommon.show-table.table.table-bordered.table-striped.table-hover
   %thead
     %tr
       {{#header.commons.compare_property}}
@@ -24,7 +24,7 @@
 {{#differents}}
 #tableNotCommonHeader
   %h3.red_grad Properties not in Common:
-%table.show-table.table.table-bordered.table-striped.table-hover
+%table#tableNotCommon.show-table.table.table-bordered.table-striped.table-hover
   %thead
     %tr
       {{#header.differents.compare_property}}
