@@ -55,7 +55,7 @@ module SearchResults
     end
 
     def keyword(depth)
-      @query[query_key][depth.to_s]
+      @query[query_key] && @query[query_key][depth.to_s]
     end
 
     def group
@@ -108,7 +108,7 @@ module SearchResults
     end
 
     def keyword(category_id)
-      @query[query_key][category_id.to_s]
+      @query[query_key] && @query[query_key][category_id.to_s]
     end
 
     def map_selected_vals_id(selected_vals)
@@ -142,7 +142,7 @@ module SearchResults
     end
 
     def keyword(depth)
-      @query[query_key][depth.to_s]
+      @query[query_key] && @query[query_key][depth.to_s]
     end
 
     def vals_at(depth)
