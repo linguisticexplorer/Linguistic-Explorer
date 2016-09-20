@@ -15,8 +15,8 @@ class Search < ActiveRecord::Base
   validates_presence_of :creator, :name
   validate :creator_not_over_search_limit
 
-  serialize :query
-  serialize :result_groups
+  serialize :query, JSON
+  serialize :result_groups, JSON
 
   json_accessor :query, :result_groups
 
