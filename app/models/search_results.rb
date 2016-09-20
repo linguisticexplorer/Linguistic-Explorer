@@ -82,10 +82,9 @@ module SearchResults
   end
 
   def ensure_result_groups!
-
     # Keep it here for legacy instaces saved
     handle_old_serialization
-    flush_result_groups!
+    #flush_result_groups!
     
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)
   end
