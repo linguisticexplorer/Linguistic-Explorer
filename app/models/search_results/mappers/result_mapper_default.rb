@@ -111,6 +111,8 @@ module SearchResults
 
         def columns_mapping
           {
+              :ling_0_id  => lambda { |v| v.id },
+              :ling_1_id  => lambda { |v| v.id },
               :ling_0     => lambda { |v| v.ling },
               :ling_1     => lambda { |v| v.ling },
               :property_0 => lambda { |v| v.property },
