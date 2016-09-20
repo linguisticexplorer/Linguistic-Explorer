@@ -135,14 +135,14 @@ Feature: Compare searches
     And I should not see "Lings" within "#search_results"
     And I should not see "Example" within "#search_results"
 
-  Scenario: Save compared search
-    When I select "union" from "Perform"
-    And I select "First search" from "of"
-    And I select "Second search" from "with"
-    And I press "Go"
-    Then I should see 3 search result rows
-    Then I should see "Save search results"
-    When I fill in "search_name" with "Third Search"
-    And I press "Save"
-    Then I should see "Syntactic Structures Search History"
-    And I should see "Third Search"
+  # Scenario: Save compared search
+  #   When I select "union" from "Perform"
+  #   And I select "First search" from "of"
+  #   And I select "Second search" from "with"
+  #   And I press "Go"
+  #   Then I should see 3 search result rows
+  #   Then I should see "Save search results"
+  #   When I fill in "search_name" with "Third Search"
+  #   And I press "Save"
+  #   Then I should see "Syntactic Structures Search History"
+  #   And I should see "Third Search"
