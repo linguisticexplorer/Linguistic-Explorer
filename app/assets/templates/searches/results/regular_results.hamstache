@@ -27,7 +27,7 @@
       {{/header.example_1}}
   %tbody
     {{#rows}}
-    %tr
+    %tr.search_result{"data-parent-value" => "{{ling_0_id}}", "data-child-value" => "{{ling_1_id}}"}
       {{#ling_0}}
       %td {{ling_0}}
       {{/ling_0}}

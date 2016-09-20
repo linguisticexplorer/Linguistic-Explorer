@@ -21,6 +21,12 @@
       return {header: resultsJson.header, rows: []};
     }
 
+    function getLingID(level){
+      return function (entry){
+        return T.Util.isThere(entry, level, 'lings_property', 'id') ? entry[level].lings_property.id : ' ';
+      };
+    }
+
     function getLing(level){
       return function (entry){
         return T.Util.isThere(entry, level, 'lings_property', 'ling') ? entry[level].lings_property.ling.name : ' ';
@@ -55,10 +61,12 @@
 
     function defaultMapping(columns, entry){
       var func_dict = {
+        'ling_0_id' : getLingID('parent'),
         'ling_0'    : getLing('parent'),
         'property_0': getProperty('parent'),
         'value_0'   : getValue('parent'),
         'example_0' : getExamples('parent'),
+        'ling_1_id' : getLingID('child'),
         'ling_1'    : getLing('child'),
         'property_1': getProperty('child'),
         'value_1'   : getValue('child'),

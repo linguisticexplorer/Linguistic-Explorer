@@ -40,6 +40,14 @@ class Search < ActiveRecord::Base
     false
   end
 
+  #include ling_0 and ling_1 ids to query
+  def include_ling_ids
+    unless self.query.nil?
+      self.query["include"]["ling_0_id"] = "1"
+      self.query["include"]["ling_1_id"] = "1"
+    end
+  end
+
   private
 
   def creator_not_over_search_limit
