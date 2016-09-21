@@ -66,6 +66,7 @@ When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
       page.execute_script "window.scrollBy(0,-100)"
     end
     find('a', :text =>"Search").hover if link.eql?( "Advanced Search" )|| link.eql?( "History")
+    find('li#userInfo').hover if link.eql? "Sign out"
     click_link(link, :match => :prefer_exact)
 
     # To fix ambiguity with Capybara let's take just the first match

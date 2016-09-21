@@ -33,13 +33,13 @@ Feature: Save searches
   Scenario: No link to search history if signed out
     Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
-    And I follow "Sign Out"
+    And I follow "Sign out"
     And I go to the Syntactic Structures search page
     Then I should not see "History"
 
   Scenario: No save search form if signed out
     When I go to the Syntactic Structures search page
-    And I follow "Sign Out"
+    And I follow "Sign out"
     And I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
