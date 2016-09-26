@@ -1,8 +1,7 @@
 Feature: Save searches
 
   Background:
-    Given I am signed in as "bob@example.com"
-    And the public group "Syntactic Structures"
+    Given the public group "Syntactic Structures"
     And the group "Syntactic Structures" with the following ling names:
     | ling0_name  | ling1_name  |
     | Speaker     | Sentence    |
@@ -18,6 +17,7 @@ Feature: Save searches
     | Property 2    | Speaker 2   | Western   | Demographic | 0     |
     | Property 3    | Sentence 1  | verb      | Linguistic  | 1     |
     | Property 4    | Sentence 2  | noun      | Linguistic  | 1     |
+    And I am signed in as a member of Syntactic Structures
 
   Scenario: View no saved searches
     When I go to my group searches page
@@ -51,9 +51,13 @@ Feature: Save searches
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
+    And I follow "Save Search"
     Then I should see "Save search results"
-    When I fill in "search_name" with "My First Search"
+    When I fill in "save-search-name" with "My First Search"
     And I press "Save"
+    Then I should see "Your seach has been successfully saved!"
+    When I go to the group Syntactic Structures
+    And I follow "History"
     Then I should see "Syntactic Structures Search History"
     And I should see "My First Search"
     And I should not see "My Second Search"
@@ -63,10 +67,10 @@ Feature: Save searches
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
+    And I follow "Save Search"
     Then I should see "Save search results"
-    When I fill in "search_name" with "My First Search"
+    When I fill in "save-search-name" with "My First Search"
     And I press "Save"
-    And I follow "Show results"
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property  | child value  |
     | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
@@ -84,19 +88,18 @@ Feature: Save searches
     And I check "Value" within "#show_child"
     And I select "Speaker 1" from "Speakers"
     And I press "Show results"
+    And I follow "Save Search"
     Then I should see "Save search results"
-    When I fill in "search_name" with "My First Search"
+    When I fill in "save-search-name" with "My First Search"
     And I press "Save"
-    And I follow "Download CSV"
-    Then the csv should contain the following rows
-    | col_1     | col_2               | col_3       | col_4           |
-    | Speaker   | Speaker Properties  | Sentence    | Sentence Values |
-    | Speaker 1 | Property 1          | Sentence 1  | verb            |
+    And I press "Close Modal"
+    And I follow "Download Results"
+    Then the csv "terraling-search-results-default.csv" exists
 
   Scenario: Delete saved query
     Given I have a saved group search "My First Search"
     When I go to the Syntactic Structures search page
-    When I follow "History" within "#header"
+    And I follow "History" within "#header"
     And I follow "Delete"
     Then I should see "successfully deleted"
     And I should see "Syntactic Structures Search History"
@@ -113,15 +116,19 @@ Feature: Save searches
   Scenario: Save search at limit
     Given I have 24 saved group searches
     When I go to the Syntactic Structures search page
-    When I press "Show results"
-    And I fill in "search_name" with "Search 25"
-    Then I press "Save"
-    And I should see "Search 25"
+    And I press "Show results"
+    And I follow "Save Search"
+    And I fill in "save-search-name" with "Search 25"
+    And I press "Save"
+    And I go to the group Syntactic Structures
+    And I follow "History"
+    Then I should see "Search 25"
 
   Scenario: Error on search
     When I go to the Syntactic Structures search page
-    When I press "Show results"
-    And I fill in "search_name" with ""
+    And I press "Show results"
+    And I follow "Save Search"
+    And I fill in "save-search-name" with ""
     Then I press "Save"
     And I should see "can't be blank"
 
@@ -130,15 +137,16 @@ Feature: Save searches
     And I select "Speaker 1" from "Speakers"
     And I select "Sentence 1" from "Sentences"
     And I press "Show results"
+    And I follow "Save Search"
     Then I should see "Save search results"
-    When I fill in "search_name" with "My First Search"
+    When I fill in "save-search-name" with "My First Search"
     And I press "Save"
     Then I go to the Syntactic Structures search page
-    And I select "Speaker 2" from "Speakers"
+    When I select "Speaker 2" from "Speakers"
     And I select "Sentence 2" from "Sentences"
     And I press "Show results"
-    Then I follow "History"
-    And I follow "Show results"
+    And I follow "History"
+    And I follow "My First Search"
     Then I should see the following grouped search results:
     | parent ling | parent property | parent value  | child ling  | child property  | child value  |
     | Speaker 1   | Property 1      | Eastern       | Sentence 1  | Property 3      | verb         |
@@ -164,9 +172,8 @@ Feature: Save searches
 
   Scenario: No save option for Universal Implication Search
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I select "Property 1" from "Demographic Properties"
     And I select "Property 2" from "Demographic Properties"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should not see "Save search results"
-
