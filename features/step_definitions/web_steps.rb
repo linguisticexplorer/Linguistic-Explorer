@@ -25,6 +25,7 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  button = 'close_modal' if button.eql? "Close Modal"
   with_scope(selector) do
     click_button(button, :match => :prefer_exact)
     # To fix ambiguity with Capybara 2 let's take just the first match
