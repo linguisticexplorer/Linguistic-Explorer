@@ -4,7 +4,7 @@
       .modal-content
         = content_tag :fieldset do
           .modal-header
-            %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+            %button#close_modal.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
             %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
             %span#modal-head-content
               %h3 Save search results
@@ -40,7 +40,7 @@
     .modal-content
       = content_tag :fieldset do
         .modal-header
-          %button.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
+          %button#close_modal.close{ :type => "button", :data => { :dismiss => "modal"}, :aria => { :hidden => "true" }} ×
           %button#minimize.close{ :type => "button", :aria => { :hidden => "true"}} -&nbsp;
           %span#modal-head-content
             %h3 Download search results
