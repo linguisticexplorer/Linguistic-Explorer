@@ -71,17 +71,21 @@
 
     function mapCrossHeaders(){
       var headers = resultsJson.header;
-      var row = resultsJson.rows[0].parent;
-
       var result = {headers: [], header: {count: headers.count }, rows: []};
-      for( var i =0; i<row.length; i++){
-        var header = {};
-        for( var h in headers){
-          if(headers.hasOwnProperty(h) && h !== 'count'){
-            header[h] = headers[h];
+
+      if (resultsJson.rows[0]) {
+        var row = resultsJson.rows[0].parent;
+        for( var i =0; i<row.length; i++){
+          var header = {};
+          for( var h in headers){
+            if(headers.hasOwnProperty(h) && h !== 'count'){
+              header[h] = headers[h];
+            }
           }
+          result.headers.push(header);
         }
-        result.headers.push(header);
+      } else {
+        result["headers"] = headers;
       }
       return result;
     }
