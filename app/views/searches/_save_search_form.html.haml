@@ -17,6 +17,8 @@
                       = pluralize(@search.errors.count, "error")
                       prohibited this search from being saved:
                     %ul#error-message
+                  #blank-error.col-8-md.alert.alert-danger{:style => "display: none;"}
+                    %p The Search name can't be blank
                   #success-explanation.col-8-md.alert.alert-success{:style => "display: none;"}
                     %p Your seach has been successfully saved!
               .form-group
