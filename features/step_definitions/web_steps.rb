@@ -68,10 +68,14 @@ When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
     end
     find('a', :text =>"Search").hover if link.eql?( "Advanced Search" )|| link.eql?( "History")
     find('li#userInfo').hover if link.eql? "Sign out"
+
     click_link(link, :match => :prefer_exact)
 
     # To fix ambiguity with Capybara let's take just the first match
     # first(:link, link).click
+
+    #accept 'are you sure?' pop up
+    accept_alert_popup if link.eql? "Delete"
   end
 end
 
