@@ -27,26 +27,30 @@
     function onSubmit(){
       // don't worry: in case it's forced the server will reject it anyway
       $('#save-form').on('submit', function (e){
-        var params = $(this).serialize();
-        
-        $('#save-search')
-          .button('loading')
-          .attr('disabled', true);
-
         // Prevent page change: use AJAX power!
         e.preventDefault();
+        if ($("input#save-search-name").val()) {
+          $("#blank-error").hide();
+          var params = $(this).serialize();
+          $('#save-search')
+            .button('loading')
+            .attr('disabled', true);
 
-        saveSearch(params);
-        
+          saveSearch(params);
+        } else {
+          $("#blank-error").show();
+        }
       });
     }
 
     function showModal(){
 
       var queryJsonString = $('#search_results').data('query');
+      var resultGroupsJsonString = $('#search_results').data('result-groups');
 
       // add search query
       $('[name="search[query_json]"]').val(JSON.stringify(queryJsonString));
+      $('[name="search[result_groups_json]"]').val(JSON.stringify(resultGroupsJsonString));
 
       // enable the save button in case it was disabled
       $('#save-search').attr('disabled', false);

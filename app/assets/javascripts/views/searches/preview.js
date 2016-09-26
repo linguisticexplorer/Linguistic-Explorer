@@ -238,6 +238,8 @@
       setBar(100, 'Preparing the results');
     }
 
+    setDataResultGroups(json);
+
     setTimeout(function(){
 
       // cache it for later reuse
@@ -251,6 +253,32 @@
       }
       
     }, 500);
+  }
+
+  function setDataResultGroups(json){
+    switch (json.type) {
+      case "default":
+        result_groups = DefaultSearchResultGroups(json);
+        break;
+      default:
+        result_groups = "{}";
+    }
+    $('#search_results').data('result-groups', result_groups);
+  }
+
+  function DefaultSearchResultGroups(json) {
+    var result_groups = {};
+    for( var i=0; i < json.rows.length; i++){
+      row = json.rows[i];
+      ling_parent_id = row.parent.lings_property.ling_id.toString();
+      ling_child_id = row.child.lings_property.ling_id.toString();
+      if (result_groups[ling_parent_id] == null) {
+        result_groups[ling_parent_id] = [ling_child_id];
+      } else {
+        result_groups[ling_parent_id].push(ling_child_id);
+      }
+    }
+    return result_groups;
   }
 
   function setType(type){
