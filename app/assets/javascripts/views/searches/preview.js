@@ -253,6 +253,39 @@
     }, 500);
   }
 
+  function setDataResultGroups(json){
+    switch (json.type) {
+      case "default":
+        result_groups = DefaultSearchResultGroups(json);
+        break;
+      default:
+        result_groups = "{}";
+    }
+    $('#search_results').data('result-groups', result_groups);
+  }
+
+  function DefaultSearchResultGroups(json) {
+    var result_groups = {};
+    for( var i=0; i < json.rows.length; i++){
+      var parent = json.rows[i].parent;
+      var child = json.rows[i].child;
+      var ling_parent_id = parent.lings_property.ling_id.toString();
+      if (child){
+        var ling_child_id = child.lings_property.ling_id.toString();
+        if (result_groups[ling_parent_id] == null) {
+          result_groups[ling_parent_id] = [ling_child_id];
+        } else {
+          result_groups[ling_parent_id].push(ling_child_id);
+        }
+      } else {
+        if (!result_groups[ling_parent_id]) {
+          result_groups[ling_parent_id] = [];
+        }
+      }
+    }
+    return result_groups;
+  }
+
   function setType(type){
     return (/implication/).test(type) ? 'implication' : type;
   }
