@@ -6,7 +6,7 @@
   this.Terraling.Searches = this.Terraling.Searches || {};
 
   var searches = this.Terraling.Searches;
-  
+
   var me = searches.preview = searches.show = searches.preview || {};
 
   me.init = getResults;
@@ -76,13 +76,13 @@
       search: $('#search_results').data('query'),
       id: $('#search_results').data('search-id')
     };
-  
+
     $.post(getResultsURL(), query)
     .success(compileResults)
     .error(notifyError);
 
     tuneParamsForSearchType();
-    
+
     var progress = 0,
         step = waitThreshold / (timeoutMillis / refreshRate);
 
@@ -125,7 +125,7 @@
 
     elements.attr('disabled', !isEnable);
     parents.toggleClass('disabled', !isEnable);
-    
+
     if($.isFunction(fn)){
       elements.on('click', function (e){
         e.preventDefault();
@@ -149,7 +149,7 @@
         isDefault    = type === 'default';
 
     var canDownload = isClustering || T.Util.isFileSaverSupported();
-    
+
     toggleNavbarButton('#table'     , !isClustering , showTable);
     toggleNavbarButton('#saveit'    , isDefault     , saver.showModal);
     toggleNavbarButton('#vizit'     , isClustering  , vizFn); // Later it will be !isDefault
@@ -186,10 +186,10 @@
       initAssociatedControllers();
 
       makeNewPage(resultsJson, 0, true);
-      
+
     }
 
-    
+
   }
 
   function initAssociatedControllers(){
@@ -216,8 +216,9 @@
       }
     }
 
-    table = tableBuilder.createTable(offset);
-    paginationData = tableBuilder.createPagination(offset);
+    var rows_per_page = json["rows_per_page"] || 25;
+    table = tableBuilder.createTable(offset, rows_per_page);
+    paginationData = tableBuilder.createPagination(offset, rows_per_page);
 
 
     if(bar){
@@ -245,11 +246,11 @@
       templateCompiled.pagination = htmlPagination;
 
       tableBuilder.render(templateCompiled, '#paginated-results', ".js-pagination");
-      
+
       if(navbarOn){
         enableNavbar(json.type);
       }
-      
+
     }, 500);
   }
 

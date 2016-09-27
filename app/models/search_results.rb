@@ -19,9 +19,9 @@ module SearchResults
       ResultMapperBuilder.new(self.result_groups).to_flatten_results
     end
     # Rails.logger.debug "Step 4 => #{self.class} - Results Inspect:#{@results.inspect}"
-    
+
     if pagination
-      @results.paginate(:page => @offset, :per_page => DEFAULT_PER_PAGE)
+      @results.paginate(:page => @offset, :per_page => ActiveRecord::Base.per_page)
     else
       @results
     end
@@ -85,8 +85,7 @@ module SearchResults
 
     # Keep it here for legacy instaces saved
     handle_old_serialization
-    flush_result_groups!
-    
+    #flush_result_groups!
     self.result_groups ||= build_result_groups(parent_and_child_lings_property_ids)
   end
 
