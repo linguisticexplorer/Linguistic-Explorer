@@ -53,9 +53,9 @@ Feature: Search with Implication Antecedent
 
   Scenario: Visitor searches Implication Antecedent with Languages Constraints on Demographics, showing Linguistics
     When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I select "Speaker 1" from "Lings"
-    And I choose "Antecedent" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -66,9 +66,9 @@ Feature: Search with Implication Antecedent
 
   Scenario: Visitor searches Implication Antecedent with Properties Constraints on Demographic
     When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
     And I uncheck "Linglet" within "#show_impl"
     And I select "Property 3" from "Demographic Properties"
-    And I choose "Antecedent" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -114,8 +114,8 @@ Feature: Search with Implication Antecedent
 
   Scenario: Visitor searches Implication Antecedent with all Properties and Lings: should be the same as Implication Both, showing Linguistics
     When I go to the Syntactic Structures search page
-    And I uncheck "Ling" within "#show_impl"
     And I choose "Antecedent" within "#advanced_set"
+    And I uncheck "Ling" within "#show_impl"
     And I press "Show results"
     And I should not see "Speaker 1"
     And I should not see "Sentence 1"
@@ -136,16 +136,16 @@ Feature: Search with Implication Antecedent
 
   Scenario: Visitor searches a combination by Implication Antecedent expecting no results
    When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
     And I select "Property 3" from "Demographic Properties"
     And I select "Property 8" from "Linguistic Properties"
-    And I choose "Antecedent" within "#advanced_set"
     And I press "Show results"
     Then I should see no search result rows
 
   Scenario: Visitor searches and uncheck both depths for Implication Antecedent expecting no results
    When I go to the Syntactic Structures search page
+    And I choose "Antecedent" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I uncheck "Linglet" within "#show_impl"
-    And I choose "Antecedent" within "#advanced_set"
     And I press "Show results"
     Then I should see no search result rows
