@@ -133,8 +133,8 @@
 
       // columns is an array here!
       var pair_columns = table.headers;
-
-      var new_entry = {pair: [], pair_id: null, count: func_dict.count(entry)};
+      var property_value = [];
+      var new_entry = {pair: [], pair_id: null, property_value: null, count: func_dict.count(entry)};
       for( var pc=0; pc< pair_columns.length; pc++ ){
         var pair_entry = {};
         var pairId = [];
@@ -146,7 +146,9 @@
         }
         new_entry.pair.push(pair_entry);
         new_entry.pair_id = pairId.join('-');
+        property_value.push(func_dict.cross_property_id(entry, pc)+":"+func_dict.cross_value(entry, pc));
       }
+      new_entry.property_value = property_value.join('_');
 
       return new_entry;
     }
