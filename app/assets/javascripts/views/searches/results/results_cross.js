@@ -96,10 +96,11 @@
 
     function crossMapping(table, entry, index){
       var func_dict = {
-        'count'         : getCrossLings,
-        'cross_property': getProperty('parent'),
-        'cross_value'   : getValue('parent'),
-        'row_id'        : getValueId('parent')
+        'count'            : getCrossLings,
+        'cross_property'   : getProperty('parent'),
+        'cross_property_id': getPropertyId('parent'),
+        'cross_value'      : getValue('parent'),
+        'row_id'           : getValueId('parent')
       };
 
       function getCrossLings(entry){
@@ -109,6 +110,12 @@
       function getProperty(level){
         return function (entry, i){
           return T.Util.isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+        };
+      }
+
+      function getPropertyId(level){
+        return function (entry, i){
+          return T.Util.isThere(entry, level, i, 'lings_property', 'property', 'id') ? entry[level][i].lings_property.property.id : ' ';
         };
       }
 
