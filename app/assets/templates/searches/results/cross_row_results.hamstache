@@ -2,7 +2,7 @@
 .row
   {{#.}}
   .col-md-3
-    %a{ :href => "{{link}}" } {{name}}
+    %a{ :href => "{{link}}", :class => "ling_in_the_row" } {{name}}
   {{/.}}
 {{/rows}}
 
