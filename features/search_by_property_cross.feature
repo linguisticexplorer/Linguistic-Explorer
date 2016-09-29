@@ -93,7 +93,6 @@ Feature: Search with Cross
     And I choose "Cross" within "#demographic_properties"
     And I select "Property 3" from "Linguistic Properties"
     And I select "Property 4" from "Linguistic Properties"
-    And I choose "Cross" within "#linguistic_properties"
     And I press "Show results"
     Then I should see the following Cross search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
