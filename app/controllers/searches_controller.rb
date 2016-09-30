@@ -44,10 +44,12 @@ class SearchesController < GroupDataController
 
     is_authorized? :search, @search
 
-    # perhaps a switch for non-javascript things here?
-    respond_with(@search) do |format|
-      format.html
-      format.js
+    is_valid_search?(params[:search]) do
+      # perhaps a switch for non-javascript things here?
+      respond_with(@search) do |format|
+        format.html
+        format.js
+      end
     end
   end
 
@@ -159,6 +161,16 @@ class SearchesController < GroupDataController
       s.group = current_group
       s.query = params[:search]
       s.offset = offset
+    end
+  end
+
+  def is_valid_search? params_search, &block
+    begin
+      SearchResults::QueryAdapter.new(current_group, params_search)
+      block.call
+    rescue Exception => exception
+      flash[:alert] = exception.message
+      redirect_to :back
     end
   end
 
