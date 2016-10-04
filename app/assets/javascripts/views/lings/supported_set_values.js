@@ -59,7 +59,9 @@
     // Category
       .on("change", "#prop-select", function(e) {
         e.preventDefault();
-        reload(newURL(e.target.value));
+        if ($("#prop-select :selected").length > 0) {
+          reload(newURL(e.target.value));
+        }
       })
     // Properties
       .on("click", "#property-selector .btn", function(e) {
