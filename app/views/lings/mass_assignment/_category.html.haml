@@ -19,6 +19,6 @@
   #select-col.form-group
     %a.btn.cat-btn.hidden Select
     - [["  ","default"], ["Unset","danger"], ["Uncertain","warning"]].each do |text, style|
-      %a{:class => "btn btn-block cat-btn btn-#{style}"}
+      %a{ :class => "btn btn-block cat-btn btn-#{style}", :href => "#"}
         Next #{text}
         = icon 'angle-double-right', '', :style => "margin-left: 10px;"
