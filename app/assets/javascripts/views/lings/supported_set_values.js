@@ -66,7 +66,7 @@
     // Properties
       .on("click", "#property-selector .btn", function(e) {
         e.preventDefault();
-        var val = e.target.value;
+        var val = $.trim(e.target.text);
         var url;
         if (/commit/.test(location.href)) {
             url = location.href.replace(/commit=[^&]+/, "commit=" + val);
