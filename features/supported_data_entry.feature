@@ -93,9 +93,9 @@ Feature: Data entry supported by surrounding language context
     And I should see "Need Help"
 
 #a step to find a button with a "name" needs to be written
-  Scenario: The page allows the user to submit their assignment
-    When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "Save" button
+  # Scenario: The page allows the user to submit their assignment
+  #   When I am on the Property Assignment with Context for "Afrikaans" Page
+  #   Then I should see "Save" button
 
   Scenario: The page displays existing examples for this property & ling
     When I am on the Property Assignment with Context for "Afrikaans" Page
