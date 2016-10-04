@@ -87,7 +87,7 @@ Feature: Data entry supported by surrounding language context
 #this feature is probably specific to the Terraling application
   Scenario: The page allows a user to say how certain they are
     When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "How sure are you?"
+    Then I should see "How sure are you about the value set?"
     And I should see "Certain"
     And I should see "Revisit"
     And I should see "Need Help"
