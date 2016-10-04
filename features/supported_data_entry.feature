@@ -42,8 +42,9 @@ Feature: Data entry supported by surrounding language context
   Scenario: Signed in members can get to the Property Assignment in Context Page
     Then I should see "Afrikaans"
     When I follow "Afrikaans"
-    Then I should see "Supported Edit Values"
-    When I follow "Supported Edit Values"
+    And I press "edit-dropdown-button" within "#edit-dropdown-menu"
+    Then I should see "Values" within "#edit-dropdown-menu"
+    When I follow "Values" within "#edit-dropdown-menu"
     Then I should be on the Property Assignment with Context for "Afrikaans" Page
 
 #when you arrive at the page it will be pointing to the current (in focus) property
