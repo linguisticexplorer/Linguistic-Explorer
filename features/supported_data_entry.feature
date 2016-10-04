@@ -122,11 +122,11 @@ Feature: Data entry supported by surrounding language context
     the next unset property, and the next uncertain property
     When I am on the Property Assignment with Context for "Spanish" Page
     Then I should see "Adjective Noun definition text"
-    When I press "Next" within "#select-col"
+    When I follow "Next" within "#select-col"
     Then I should see "Noun Adjective definition text"
-    When I press "Next Unset" within "#select-col"
+    When I follow "Next Unset" within "#select-col"
     Then I should see "Object Subject definition text"
-    When I press "Next Uncertain" within "#select-col"
+    When I follow "Next Uncertain" within "#select-col"
     Then I should see "Noun Adjective definition text"
 
   @wip
