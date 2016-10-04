@@ -110,10 +110,12 @@ Feature: Data entry supported by surrounding language context
 #User should be able to switch property
   Scenario: The page allows the user to switch to a different property
     When I am on the Property Assignment with Context for "Spanish" Page
-    When I select "Subject Object" from "prop-select"
-    And I press "Select" within "#select-col"
+    And I select "Subject Object" from "prop-select"
     Then I should see "Subject Object definition text"
     And I should not see "Adjective Noun definition text"
+    When I follow "Next" within "#select-col"
+    Then I should not see "Subject Object definition text"
+    And I should see "Adjective Noun definition text"
 
 #Testing the Next, Unset, and Uncertain buttons
   Scenario: The page allows the user to switch to the next property,
