@@ -113,6 +113,25 @@ Then /^I should see the following search results\:$/ do |table|
   end
 end
 
+Then /^I should see the following search results in table form:$/ do |table|
+  table_element = find(".show-table")
+  table_headers_result = table_element.find('thead').all('th')
+
+  table_headers_text = []
+  table_headers_result.each { |table_header| table_headers_text << table_header.text }
+
+  table_hashes = []
+
+  table_element.find('tbody').all('tr').each do |tr|
+    row_text_array = tr.all('td').collect {|td| td.text}
+    row_hash = Hash[table_headers_text.zip(row_text_array)]
+    table_hashes << row_hash
+  end
+
+  table_hashes.should eql table.hashes
+
+end
+
 
 Then /^I should see the following Implication search results:$/ do |table|
   step "I should see the following Cross search results:", table
