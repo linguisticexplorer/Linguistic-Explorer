@@ -170,7 +170,7 @@ module GroupData
 
       ling_associations_bar.finish if @verbose
 
-      print_to_console "processing #{csv_size(:membership)} memberships"
+      print_to_console "processing #{csv_size(:role)} roles"
 
       roles_bar = ProgressBar.new("Roles...", csv_size(:role)) if @verbose
 
