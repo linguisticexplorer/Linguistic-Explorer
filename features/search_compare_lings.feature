@@ -104,7 +104,6 @@ Feature: Search Lings for Compare Property
     And I select "Italian 1" from "Speakers"
     And I select "French 1" from "Speakers"
     And I choose "Compare" within "#languages"
-    And I choose "Compare" within "#speakers"
     And I press "Show results"
     Then I should see "Results"
     Then I should see 1 properties in common
