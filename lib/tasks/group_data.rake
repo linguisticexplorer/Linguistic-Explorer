@@ -10,6 +10,10 @@ namespace :group_data do
 
     config    = YAML.load_file(ENV['CONFIG'])
 
+    config.each do |key, value|
+      config[key] = File.dirname(ENV['CONFIG']) + '/' + value
+    end
+
     GroupData::Importer.import(config)
   end
 
@@ -23,6 +27,10 @@ namespace :group_data do
     raise "Must specify a config file.\n\n#{usage}" unless ENV['CONFIG'].present?
 
     config    = YAML.load_file(ENV['CONFIG'])
+
+    config.each do |key, value|
+      config[key] = File.dirname(ENV['CONFIG']) + '/' + value
+    end
 
     GroupData::Validator.load(config).validate!
   end
