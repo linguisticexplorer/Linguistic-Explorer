@@ -45,8 +45,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double Both within Demographic
     When I go to the Syntactic Structures search page
-    And I uncheck "Linglet" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Linglet" within "#show_impl"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -55,8 +55,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double Both within Linguistic
     When I go to the Syntactic Structures search page
-    And I uncheck "Ling" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Ling" within "#show_impl"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -65,8 +65,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double Both within Demographic with Languages Constraints
     When I go to the Syntactic Structures search page
-    And I uncheck "Linglet" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Linglet" within "#show_impl"
     And I select "Speaker 2" from "Lings"
     And I select "Speaker 3" from "Lings"
     And I press "Show results"
@@ -76,8 +76,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor scearches Implication Double both within Linguistic with Languages Constraints
     When I go to the Syntactic Structures search page
-    And I uncheck "Ling" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Ling" within "#show_impl"
     And I select "Speaker 2" from "Lings"
     And I select "Speaker 3" from "Lings"
     And I press "Show results"
@@ -87,8 +87,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double Both within Demographic with Properties Constraints
     When I go to the Syntactic Structures search page
-    And I uncheck "Linglet" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Linglet" within "#show_impl"
     And I select "Property 2" from "Demographic Properties"
     And I select "Property 4" from "Demographic Properties"
     And I press "Show results"
@@ -98,8 +98,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches Implication Double both within Linguistic with Properties Constraints
     When I go to the Syntactic Structures search page
-    And I uncheck "Ling" within "#show_impl"
     And I choose Implication "Double" within "#advanced_set"
+    And I uncheck "Ling" within "#show_impl"
     And I select "Property 5" from "Linguistic Properties"
     And I select "Property 6" from "Linguistic Properties"
     And I press "Show results"
@@ -109,8 +109,8 @@ Feature: Search with Double Both Implication
 
   Scenario: Visitor searches and uncheck both depths for Implication Double Both expecting no results
    When I go to the Syntactic Structures search page
+    And I choose Implication "Double" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I uncheck "Linglet" within "#show_impl"
-    And I choose Implication "Double" within "#advanced_set"
     And I press "Show results"
     Then I should see no search result rows
