@@ -18,9 +18,11 @@ class SearchComparisonsController < GroupDataController
       @search = @search_comparison.search
 
       @dynamic_results = true
-      
+
       @query = @search.query.to_json.html_safe
-      
+
+      @result_groups = @search.result_groups.to_json.html_safe
+
       render :template => 'searches/preview'
     else
       flash.now[:notice] = "Please select a comparison and two searches"

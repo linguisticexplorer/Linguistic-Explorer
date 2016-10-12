@@ -156,9 +156,10 @@ class SearchesController < GroupDataController
   def perform_search(offset=0)
     Search.new do |s|
       s.creator = current_user
-      s.group = current_group
-      s.query = params[:search]
-      s.offset = offset
+      s.group         = current_group
+      s.query         = params[:search]
+      s.result_groups = params[:result_groups]
+      s.offset        = offset
     end
   end
 
