@@ -51,6 +51,7 @@ end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
+    link = "saveit" if link.eql? "Save Search"
     # This step is too general and ambiguious, might have to break apart
 
     if link.eql? "Syntactic Structures" && page.has_link?(:text => "Pick a Dataset")

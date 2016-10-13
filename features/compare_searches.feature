@@ -141,8 +141,11 @@ Feature: Compare searches
     And I select "Second search" from "with"
     And I press "Go"
     Then I should see 3 search result rows
+    When I follow "Save Search"
     Then I should see "Save search results"
-    When I fill in "search_name" with "Third Search"
+    When I fill in "save-search-name" with "Third Search"
     And I press "Save"
+    When I go to the group Syntactic Structures
+    And I follow "History"
     Then I should see "Syntactic Structures Search History"
     And I should see "Third Search"
