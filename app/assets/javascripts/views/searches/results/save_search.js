@@ -50,6 +50,12 @@
       // add search query
       $('[name="search[query_json]"]').val(JSON.stringify(queryJsonString));
 
+      // if @result_group is present then copy it into result_groups_json input
+      if ($('[name="search[result_groups_json]"]').length) {
+        var resultGroupsJsonString = $('#search_results').data('result-groups');
+        $('[name="search[result_groups_json]"]').val(JSON.stringify(resultGroupsJsonString));
+      }
+
       // enable the save button in case it was disabled
       $('#save-search').attr('disabled', false);
       $('#save-modal').modal('show');
