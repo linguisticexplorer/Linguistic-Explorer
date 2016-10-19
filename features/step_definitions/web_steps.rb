@@ -25,6 +25,7 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  button = 'close_modal' if button.eql? "Close Modal"
   with_scope(selector) do
     click_button(button, :match => :prefer_exact)
     # To fix ambiguity with Capybara 2 let's take just the first match
@@ -52,8 +53,11 @@ end
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
     link = "saveit" if link.eql? "Save Search"
+    if link.eql? "Download Results"
+      clear_directory(download_dir)
+      link = "downloadit"
+    end
     # This step is too general and ambiguious, might have to break apart
-
     if link.eql? "Syntactic Structures" && page.has_link?(:text => "Pick a Dataset")
       find('a', :text =>"Pick a Dataset").hover
     end
@@ -67,10 +71,15 @@ When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
       page.execute_script "window.scrollBy(0,-100)"
     end
     find('a', :text =>"Search").hover if link.eql?( "Advanced Search" )|| link.eql?( "History")
+    find('li#userInfo').hover if link.eql? "Sign out"
+
     click_link(link, :match => :prefer_exact)
 
     # To fix ambiguity with Capybara let's take just the first match
     # first(:link, link).click
+
+    #accept 'are you sure?' pop up
+    accept_alert_popup if link.eql? "Delete"
   end
 end
 

@@ -224,6 +224,10 @@ Then /^the csv should contain the following rows$/ do |table|
   end
 end
 
+Then /^the csv "([^\"]*)" exists$/ do |filename|
+  expect_download_occurred(filename)
+end
+
 Then /^I should see (\d+) search result rows?$/ do |count|
   page.should have_css("tr.search_result", :count => count.to_i)
 end

@@ -82,12 +82,17 @@ module SearchColumns
 
   # This method will scale the number of columns based of Property choosen
   def scale_cross_columns
-    name, value, count = CROSS_COLUMNS
-    props = @search.results.first.parent
-    [].tap do |columns_to_show|
-      props.each {|p| columns_to_show << [name, value] }
-      columns_to_show << count
-    end.flatten
+    search_results = @search.results
+    if search_results.empty?
+      CROSS_COLUMNS
+    else
+      name, value, count = CROSS_COLUMNS
+      props = search_results.first.parent
+      [].tap do |columns_to_show|
+        props.each {|p| columns_to_show << [name, value] }
+        columns_to_show << count
+      end.flatten
+    end
   end
 
   def result_headers_compare(entry)
