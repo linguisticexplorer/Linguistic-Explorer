@@ -69,9 +69,9 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches Implication Both with all Demographic Properties
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I check "Ling" within "#show_impl"
     And I uncheck "Linglet" within "#show_impl"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -89,9 +89,9 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches Implication Both with all Linguistic Properties
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I check "Linglet" within "#show_impl"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -110,9 +110,9 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches Implication Both for Properties and Languages with Constraints
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I select "Speaker 2" from "Lings"
     And I select "Speaker 3" from "Lings"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -136,10 +136,10 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches Implication Both for Properties and Languages with Constraints, Demographic results
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I uncheck "Linglet" within "#show_impl"
     And I select "Speaker 2" from "Lings"
     And I select "Speaker 3" from "Lings"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see the following Implication search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |
@@ -156,10 +156,10 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches Implication Both for Properties and Languages with Constraints, Linguistic results
     When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I select "Speaker 2" from "Lings"
     And I select "Speaker 3" from "Lings"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     And I should not see "Property 2"
     Then I should see the following Implication search results:
@@ -176,16 +176,16 @@ Feature: Search with Implication Both
 
   Scenario: Visitor searches a combination by Implication Both expecting no results
    When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I select "Property 1" from "Demographic Properties"
     And I select "Property 8" from "Linguistic Properties"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see no search result rows
 
   Scenario: Visitor searches and uncheck both depths for Implication Both expecting no results
    When I go to the Syntactic Structures search page
+    And I choose "Both" within "#advanced_set"
     And I uncheck "Ling" within "#show_impl"
     And I uncheck "Linglet" within "#show_impl"
-    And I choose "Both" within "#advanced_set"
     And I press "Show results"
     Then I should see no search result rows
