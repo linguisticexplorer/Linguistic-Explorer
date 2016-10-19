@@ -68,15 +68,10 @@ YAML files are now stored in the `yamls` folder: have a look there to configure:
 * the SSWL import task (for SSWL administrators)
 
 #### Seed Data
+The seed data is included within the Terraling project, so you can quickly start a new example group by running the following:
 
-Download seed data from here:
+  `$ rake db:seed`
 
-  `$ git clone git://github.com/dej611/terraling_seed.git`
-
-Copy seed data to the doc/data in Terraling:
-
-  `$ cp -r <path_to_Terraling_seed>/terraling_seed/data <path_to_terraling>/db/seed`
-  
 ## Branches Status
 
 ### Master
