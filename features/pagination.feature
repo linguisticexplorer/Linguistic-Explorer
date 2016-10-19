@@ -31,7 +31,6 @@ Feature: Pagination
     When I follow the "Ling" with depth "0" model link for the group "Syntactic Structures"
     And I should see "Afrikaans"
     And I should see "A" within "#pagination_top"
-    And I should see "B" within "#pagination_top"
     And I should see "All" within "#pagination_top"
     And I follow "All" within "#pagination_top"
     And I should see "Italian"

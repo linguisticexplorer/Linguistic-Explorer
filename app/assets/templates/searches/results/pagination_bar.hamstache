@@ -1,4 +1,4 @@
-%ul.pagination
+%ul#pagination_top.pagination
   {{#prev.disabled}}
   %li.disabled#page-prev
     %span Prev
