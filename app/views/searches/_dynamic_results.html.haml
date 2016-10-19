@@ -1,7 +1,7 @@
 .row
   = render :partial => 'searches/results_navbar'
 #results-wrapper
-  #search_results.padded_left.padded_right{:data => {:query => @query, :search_id => "#{@search.name ? @search.id : 'null'}" }}
+  #search_results.padded_left.padded_right{:data => {:query => @query, :result_groups => @result_groups, :search_id => "#{@search.name ? @search.id : 'null'}" }}
     .apple_pagination.js-pagination
     #paginated-results
       %p#results_loading_text.strong{ :style => 'text-align: center;'}

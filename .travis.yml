@@ -1,25 +1,27 @@
 language: ruby
 before_install:
-  - gem install bundler
-  - cp yamls/database.yml.travisCI config/database.yml
-  - mysql -e 'create database le_test;'
-  - mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
-bundler_args: --without development production
+- gem install bundler
+- cp yamls/database.yml.travisCI config/database.yml
+- mysql -e 'create database le_test;'
+- mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
+bundler_args: "--without development production"
 before_script:
-  - RAILS_ENV=test bundle exec rake db:migrate
-  - RAILS_ENV=test bundle exec rake db:test:prepare
-  - phantomjs --version
+- RAILS_ENV=test bundle exec rake db:migrate
+- RAILS_ENV=test bundle exec rake db:test:prepare
+- phantomjs --version
 script:
-  - RAILS_ENV=test bundle exec rspec spec
-  # - RAILS_ENV=test bundle exec cucumber --profile travis
+- RAILS_ENV=test bundle exec rspec spec
 rvm:
-  - 1.9.3
-  - 2.0.0
-  - 2.1.1
+- 1.9.3
+- 2.0.0
+- 2.1.1
 gemfile:
-  - Gemfile
+- Gemfile
 branches:
   only:
-    - master
-    - patch
-    - sprint
+  - master
+  - patch
+  - sprint
+notifications:
+  slack:
+    secure: LrIflpuuK/c+BBCviGD06sTHv9GuNB99Y2jJLFMb8CSxoHBuu9a8zkb8S40CuX0TKb6sRT6+vscgvVtFcN0hCi1LQZKhH/I01qr6rCEofkE+XlCxH1nbevSWGjMejvxlmHoMF9YT7+xauRa3rlEMAogeXTpGdICTGp83wi1ko1Y=

@@ -71,17 +71,21 @@
 
     function mapCrossHeaders(){
       var headers = resultsJson.header;
-      var row = resultsJson.rows[0].parent;
-
       var result = {headers: [], header: {count: headers.count }, rows: []};
-      for( var i =0; i<row.length; i++){
-        var header = {};
-        for( var h in headers){
-          if(headers.hasOwnProperty(h) && h !== 'count'){
-            header[h] = headers[h];
+
+      if (resultsJson.rows[0]) {
+        var row = resultsJson.rows[0].parent;
+        for( var i =0; i<row.length; i++){
+          var header = {};
+          for( var h in headers){
+            if(headers.hasOwnProperty(h) && h !== 'count'){
+              header[h] = headers[h];
+            }
           }
+          result.headers.push(header);
         }
-        result.headers.push(header);
+      } else {
+        result["headers"] = headers;
       }
       return result;
     }
@@ -96,10 +100,11 @@
 
     function crossMapping(table, entry, index){
       var func_dict = {
-        'count'         : getCrossLings,
-        'cross_property': getProperty('parent'),
-        'cross_value'   : getValue('parent'),
-        'row_id'        : getValueId('parent')
+        'count'            : getCrossLings,
+        'cross_property'   : getProperty('parent'),
+        'cross_property_id': getPropertyId('parent'),
+        'cross_value'      : getValue('parent'),
+        'row_id'           : getValueId('parent')
       };
 
       function getCrossLings(entry){
@@ -109,6 +114,12 @@
       function getProperty(level){
         return function (entry, i){
           return T.Util.isThere(entry, level, i, 'lings_property', 'property') ? entry[level][i].lings_property.property.name : ' ';
+        };
+      }
+
+      function getPropertyId(level){
+        return function (entry, i){
+          return T.Util.isThere(entry, level, i, 'lings_property', 'property', 'id') ? entry[level][i].lings_property.property.id : ' ';
         };
       }
 
@@ -126,8 +137,8 @@
 
       // columns is an array here!
       var pair_columns = table.headers;
-
-      var new_entry = {pair: [], pair_id: null, count: func_dict.count(entry)};
+      var property_value = [];
+      var new_entry = {pair: [], pair_id: null, property_value: null, count: func_dict.count(entry)};
       for( var pc=0; pc< pair_columns.length; pc++ ){
         var pair_entry = {};
         var pairId = [];
@@ -139,7 +150,9 @@
         }
         new_entry.pair.push(pair_entry);
         new_entry.pair_id = pairId.join('-');
+        property_value.push(func_dict.cross_property_id(entry, pc)+":"+func_dict.cross_value(entry, pc));
       }
+      new_entry.property_value = property_value.join('_');
 
       return new_entry;
     }

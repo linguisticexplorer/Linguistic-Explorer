@@ -29,12 +29,10 @@ Feature: Show simple search columns
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
     Then I press "Show results"
-    Then I should see the following search results:
-    | Lings         | depth    |
-    | Speaker 1     | parent   |
-    | Sentence 1    | child    |
-    | Speaker 2     | parent   |
-    | Sentence 2    | child    |
+    Then I should see the following search results in table form:
+    | Speaker       | Speaker Examples  | Sentence    | Sentence Examples |
+    | Speaker 1     |                   | Sentence 1  |                   |
+    | Speaker 2     |                   | Sentence 2  |                   |
     And I should not see "Property" within "#search_results"
     And I should not see "Properties" within "#search_results"
     And I should not see "Value" within "#search_results"
@@ -48,10 +46,10 @@ Feature: Show simple search columns
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
     Then I press "Show results"
-    Then I should see the following search results:
-    | Lings         |
-    | Speaker 1     |
-    | Speaker 2     |
+    Then I should see the following search results in table form:
+    | Speaker       | Speaker Examples  | Sentence Examples |
+    | Speaker 1     |                   |                   |
+    | Speaker 2     |                   |                   |
     And I should not see "Sentence 1" within "#search_results"
     And I should not see "Sentence 2" within "#search_results"
     And I should not see "Property" within "#search_results"
@@ -66,12 +64,10 @@ Feature: Show simple search columns
     And I uncheck "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
     Then I press "Show results"
-    Then I should see the following search results:
-    | Lings         | Property     | depth    |
-    | Speaker 1     | Property 1   | parent   |
-    | Speaker 2     | Property 2   | parent   |
-    | Sentence 1    | Property 3  | child    |
-    | Sentence 2    | Property 4  | child    |
+    Then I should see the following search results in table form:
+    | Speaker       | Speaker Properties | Speaker Examples | Sentence   | Sentence Properties | Sentence Examples |
+    | Speaker 1     | Property 1         |                  | Sentence 1 | Property 3          |                   |
+    | Speaker 2     | Property 2         |                  | Sentence 2 | Property 4          |                   |
     And I should not see "Value" within "#search_results"
     And I should not see "PropVal" within "#search_results"
 
@@ -82,9 +78,7 @@ Feature: Show simple search columns
     And I check "Value" within "#show_parent"
     And I uncheck "Value" within "#show_child"
     Then I press "Show results"
-    Then I should see the following search results:
-    | Lings         | Property     | PropVal    | depth    |
-    | Speaker 1     | Property 1   | PropVal 1  | parent   |
-    | Speaker 2     | Property 2   | PropVal 2  | parent   |
-    | Sentence 1    | Property 3   | PropVal 3  | child   |
-    | Sentence 2    | Property 4   | PropVal 4  | child   |
+    Then I should see the following search results in table form:
+    | Speaker       | Speaker Values | Speaker Examples | Sentence   | Sentence Properties | Sentence Examples |
+    | Speaker 1     | PropVal 1      |                  | Sentence 1 | Property 3          |                   |
+    | Speaker 2     | PropVal 2      |                  | Sentence 2 | Property 4          |                   |
