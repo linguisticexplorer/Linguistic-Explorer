@@ -1,0 +1,7 @@
+id,name,depth,group_id,description,creator_id
+category_1_0,category_1_1,1,group_0,Seed Category,
+category_1_1,category_1_0,1,group_1,Seed Category,
+category_1_2,category_1_2,1,group_2,Seed Category,
+category_0_0,category_0_0,0,group_0,Seed Category,
+category_0_1,category_0_1,0,group_1,Seed Category,
+category_0_2,category_0_2,0,group_2,Seed Category,

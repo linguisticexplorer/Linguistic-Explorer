@@ -1,0 +1,4 @@
+id,name,privacy,depth_maximum,ling0_name,ling1_name,property_name,category_name,lings_property_name,example_name,examples_lings_property_name,example_fields
+group_0,group_0,public,1,Language,Linglet,Property,Category,Value,Example,Example Value,"gloss, words, translation, comment"
+group_1,group_1,private,1,Language, Linglet,Property,Category,Value,Example,Example Value,"gloss, words, translation, comment"
+group_2,group_2,private,1,Language, Linglet,Property,Category,Value,Example,Example Value,"gloss, words, translation, comment"
