@@ -379,25 +379,7 @@ Then /^(?:|I )see the Javascript console$/ do
 end
 
 Then /^(?:|I )want at most "([^\"]*)" results per page$/ do |rows|
-  results = rows.to_i
-
-  LinguisticExplorer::Application.configure do
-
-    if (ActiveRecord::Base.per_page != results)
-      # regular pagination value
-      if(results == 25)
-        ActiveRecord::Base.instance_eval do
-          def per_page; 25; end
-        end
-      elsif(results == 4)
-      # need to test pagination without overloading the db...
-        ActiveRecord::Base.instance_eval do
-          def per_page; 4; end
-        end
-      end
-      DEFAULT_PER_PAGE = results
-    end
-  end
+  rows_per_page(rows.to_i)
 end
 
 Then /^I hover over my user info$/ do
