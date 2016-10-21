@@ -110,6 +110,7 @@ Feature: Save searches
     Then I should see "reached the system limit for saved searches"
     And I should not see "Save search results"
 
+  @wip
   Scenario: Save search at limit
     Given I have 24 saved group searches
     When I go to the Syntactic Structures search page
@@ -125,6 +126,7 @@ Feature: Save searches
     Then I press "Save"
     And I should see "can't be blank"
 
+  @wip
   Scenario: Regenerate results of saved search query
     When I go to the Syntactic Structures search page
     And I select "Speaker 1" from "Speakers"

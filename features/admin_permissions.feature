@@ -34,6 +34,7 @@ Feature: Permissions testing for site admins
     When I follow "Syntactic Structures" within the top navbar
     Then I should see "Syntactic Structures" within "#header"
 
+  @wip
   Scenario: Admins view pages for all group data in a public group
     When I follow "Syntactic Structures" within the top navbar
     Then I should see "Syntactic Structures" within "#header"
@@ -52,6 +53,7 @@ Feature: Permissions testing for site admins
   Scenario: Admins should be able to view a private group and see its group admin bar
     When I follow "Secret Club" within the top navbar
 
+  @wip
   Scenario: Admins view pages for all group data in a private group
     When I follow "Secret Club" within the top navbar
     And  I follow "Search"
