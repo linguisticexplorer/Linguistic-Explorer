@@ -12,6 +12,7 @@ Feature: Signing in and out
     Then I should see "Sign in"
     Then I should not see "Sign Out"
 
+  @wip
   Scenario: The standard user signs in successfully from the home page
     When I follow "Sign in"
     Then I should be on the login page

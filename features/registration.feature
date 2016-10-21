@@ -1,5 +1,6 @@
 Feature: Registration
 
+  @wip
   Scenario: Vistor Registers
     Given I am a visitor
     When I go to the home page
