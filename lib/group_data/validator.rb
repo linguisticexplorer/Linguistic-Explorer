@@ -30,8 +30,10 @@
 # ==> User.csv <==
 # id,name,email,access_level,password
 #
+# ==> Roles.csv <==
+# id, resource_id, member_id, group_id
 
-require 'csv'
+require 'readers/CSVReader'
 require 'progressbar'
 
 module GroupData
@@ -39,7 +41,7 @@ module GroupData
 
     attr_reader :check_all, :check_users, :check_groups, :check_memberships,
                 :check_categories, :check_lings, :check_properties, :check_lings_properties,
-                :check_examples_lp, :check_stored_values, :check_examples, :check_parents
+                :check_examples_lp, :check_stored_values, :check_examples, :check_parents, :check_roles
 
     class << self
       def load(config, verbose=true)
@@ -76,133 +78,174 @@ module GroupData
 
       reset = "\r\e[0K"
 
-      @check_users = true
-      line = reset_line
-
-      add_check_all(validate_csv_header :user, @check_users)
-      user_bar = ProgressBar.new("Users...", csv_size(:user)) if @verbose
-      csv_for_each :user do |row|
-        user = true
-        row.each do |col, value|
-          user &= value.present?
-        end
-
-        print_error :err_missing, :user, line unless user
-
-        @check_users &= user
-        # cache user id
-        user_ids[row["id"]] = true
-        user_bar.inc if @verbose
-        line += 1
-        break unless user
-      end
-      user_bar.finish if @verbose
+      @check_users = validate_csv(:user)
       add_check_all(@check_users)
 
-      @check_groups = true
-
-      add_check_all(validate_csv_header :group, @check_groups)
-      line = reset_line
       # This function will change the header
       # due to a very common typo on csv
       fix_csv_elp_name
-      group_bar = ProgressBar.new("Groups...", csv_size(:group)) if @verbose
-      csv_for_each :group do |row|
-        group = true
-        row.each do |col, value|
-          group &= value.present?
-        end
-        print_error :err_missing, :group, line unless group
 
-        group &= row["privacy"].downcase == "public" || row["privacy"].downcase == "private"
-        print_error :err_validity, :group, line, "privacy", "Privacy", row["privacy"] unless group
-
-        group &= !row["privacy"].downcase!
-        print_error :err_lowercase, :group, line, "privacy",  "Privacy", row["privacy"] unless group
-
-        @check_groups &= group
-        # cache group id
-        groups[row["id"]] = true
-        group_bar.inc if @verbose
-        line += 1
-        break unless group
-      end
-      group_bar.finish if @verbose
-
+      @check_groups = validate_csv(:group)
       add_check_all(@check_groups)
 
-      @check_memberships = true
-      line = reset_line
-      add_check_all(validate_csv_header :membership, @check_memberships)
-      member_bar = ProgressBar.new("Memberships", csv_size(:membership)) if @verbose
-      csv_for_each :membership do |row|
-        membership = true
-        row.each do |col, value|
-          membership &= value.present? unless col=="creator_id"
-        end
-        print_error :err_missing, :membership, line unless membership
-
-        membership &= groups[row["group_id"]] if membership
-        print_error :err_foreign, :membership, line, "group_id" unless membership
-
-        if row["creator_id"].present?
-          membership &= user_ids[row["creator_id"]]
-          print_error :err_foreign, :membership, line, "creator_id" unless membership
-        end
-
-        membership &= row["level"].downcase == "admin" || row["level"].downcase == "member"
-        print_error :err_validity, :membership, line, "level", "Access Level", row["level"] unless membership
-
-        membership &= !row["level"].downcase!
-        print_error :err_lowercase, :membership, line, "level", "Access Level", row["level"] unless membership
-
-        @check_memberships &= membership
-        line += 1
-        member_bar.inc if @verbose
-
-        break unless membership
-      end
-      member_bar.finish if @verbose
+      @check_memberships = validate_csv(:membership)
       add_check_all(@check_memberships)
 
-      @check_lings = true
-      line = reset_line
-      add_check_all(validate_csv_header :ling, @check_lings)
-      ling_bar = ProgressBar.new("Lings", csv_size(:ling))  if @verbose
-      csv_for_each :ling do |row|
-        ling = true
-        row.each do |col, value|
-          ling &= value.present? unless col=="creator_id" || col=="parent_id"
-        end
-        print_error :err_missing, :ling, line unless ling
-
-        ling &= groups[row["group_id"]] if ling
-        print_error :err_foreign, :ling, line, "group_id" unless ling
-
-        if row["creator_id"].present?
-          ling &= user_ids[row["creator_id"]] if ling
-          print_error :err_foreign, :ling, line, "creator_id" unless ling
-        end
-
-        @check_lings &= ling
-        # cache ling id
-        ling_ids[row["id"]] = row["group_id"]
-
-        line += 1
-        ling_bar.inc  if @verbose
-        break unless ling
-      end
-      ling_bar.finish  if @verbose
+      @check_lings = validate_csv(:ling)
       add_check_all(@check_lings)
-      line = reset_line
-      @check_parents = true
-      ling_ass_bar = ProgressBar.new("Lings Associations", csv_size(:ling)) if @verbose
-      csv_for_each :ling do |row|
-        if row["parent_id"].blank?
-          ling_ass_bar.inc  if @verbose
-          next
-        end
 
+      @check_parents = validate_csv(:ling_associations)
+      add_check_all(@check_parents)
+
+      @check_categories = validate_csv(:category)
+      add_check_all(@check_categories)
+
+      @check_properties = validate_csv(:property)
+      add_check_all(@check_properties)
+
+      @check_examples = validate_csv(:example)
+      add_check_all(@check_examples)
+
+      @check_lings_properties = validate_csv(:lings_property)
+      add_check_all(@check_lings_properties)
+
+      @check_examples_lp = validate_csv(:examples_lings_property)
+      add_check_all(@check_examples_lp)
+
+      @check_stored_values = validate_csv(:stored_value)
+      add_check_all(@check_stored_values)
+
+      @check_roles = validate_csv(:role)
+      add_check_all(@check_roles)
+
+      @check_all
+    end
+
+    private
+
+    def validate_csv method_key
+      class_key = extract_class_from_method(method_key)
+      check = validate_csv_header(class_key, true)
+      if check
+        line = 1
+        #Inizialize a CSVReader to read the right csv
+        csv_reader = CSVReader.new(@config[class_key])
+        title = method_key.to_s.titleize.pluralize
+        total = csv_reader.size
+
+        progress_bar = ProgressBar.new(title, total) if @verbose
+
+        #choose which validate method to run
+        validate_method = validate_method_factory(method_key)
+
+        csv_reader.for_each do |row|
+          #run the right validate method
+          check = validate_method.call(row, line)
+          break unless check
+          line +=1
+          progress_bar.inc if @verbose
+        end
+        progress_bar.finish  if @verbose
+      end
+
+      return check
+    end
+
+    def extract_class_from_method method_key
+      method_key == :ling_associations ? :ling : method_key
+    end
+
+    def validate_method_factory key
+      #The name of validate method is <model>_validate_from_csv_row
+      validate_method = self.method("#{key.to_s}_validate_from_csv_row")
+      Proc.new { |row, line| validate_method.call(row, line) }
+    end
+
+    ################################
+    # Start list of validate methods
+    ################################
+
+    def user_validate_from_csv_row row, line
+      user = true
+      row.each do |col, value|
+        user &= value.present?
+      end
+
+      print_error :err_missing, :user, line unless user
+
+      # cache user id
+      user_ids[row["id"]] = true
+
+      return user
+    end
+
+    def group_validate_from_csv_row row, line
+      group = true
+      row.each do |col, value|
+        group &= value.present?
+      end
+      print_error :err_missing, :group, line unless group
+
+      group &= row["privacy"].downcase == "public" || row["privacy"].downcase == "private"
+      print_error :err_validity, :group, line, "privacy", "Privacy", row["privacy"] unless group
+
+      group &= !row["privacy"].downcase!
+      print_error :err_lowercase, :group, line, "privacy",  "Privacy", row["privacy"] unless group
+
+      # cache group id
+      groups[row["id"]] = true
+
+      return group
+    end
+
+    def membership_validate_from_csv_row row, line
+      membership = true
+      row.each do |col, value|
+        membership &= value.present? unless col=="creator_id"
+      end
+      print_error :err_missing, :membership, line unless membership
+
+      membership &= groups[row["group_id"]] if membership
+      print_error :err_foreign, :membership, line, "group_id" unless membership
+
+      if row["creator_id"].present?
+        membership &= user_ids[row["creator_id"]]
+        print_error :err_foreign, :membership, line, "creator_id" unless membership
+      end
+
+      membership &= row["level"].downcase == "admin" || row["level"].downcase == "member"
+      print_error :err_validity, :membership, line, "level", "Access Level", row["level"] unless membership
+
+      membership &= !row["level"].downcase!
+      print_error :err_lowercase, :membership, line, "level", "Access Level", row["level"] unless membership
+
+      return membership
+    end
+
+    def ling_validate_from_csv_row row, line
+      ling = true
+      row.each do |col, value|
+        ling &= value.present? unless col=="creator_id" || col=="parent_id"
+      end
+      print_error :err_missing, :ling, line unless ling
+
+      ling &= groups[row["group_id"]] if ling
+      print_error :err_foreign, :ling, line, "group_id" unless ling
+
+      if row["creator_id"].present?
+        ling &= user_ids[row["creator_id"]] if ling
+        print_error :err_foreign, :ling, line, "creator_id" unless ling
+      end
+
+      # cache ling id
+      ling_ids[row["id"]] = row["group_id"]
+
+      return ling
+    end
+
+    def ling_associations_validate_from_csv_row row, line
+      parent = true
+      if !row["parent_id"].blank?
         parent = ling_ids[row["parent_id"]].present?
         print_error :err_foreign, :ling, line, "parent_id" unless parent
 
@@ -210,226 +253,164 @@ module GroupData
         print_error :err_foreign, :ling, line, "group_id" unless parent
 
         print_to_console "\n=> Should be '#{ling_ids[row["parent_id"]]}' instead of '#{row["group_id"]}'" unless parent
-        @check_parents &= parent
-
-        line += 1
-        ling_ass_bar.inc  if @verbose
-        break unless parent
       end
-      ling_ass_bar.finish  if @verbose
-      add_check_all(@check_parents)
+      return parent
+    end
 
-      @check_categories = true
-      line = reset_line
-      add_check_all(validate_csv_header :category, @check_categories)
-      cat_bar = ProgressBar.new("Category", csv_size(:category)) if @verbose
-      csv_for_each :category do |row|
-        category = true
-        row.each do |col, value|
-          category &= value.present? unless col=="creator_id" || col=="description"
-        end
-        print_error :err_missing, :category, line unless category
-
-        category &= groups[row["group_id"]] if category
-        print_error :err_foreign, :category, line, "group_id" unless category
-
-        if row["creator_id"].present?
-          category &= user_ids[row["creator_id"]] if category
-          print_error :err_foreign, :category, line, "creator_id" unless category
-        end
-
-        @check_categories &= category
-
-        # cache category id
-        category_ids[row["id"]] = true
-
-        line += 1
-        cat_bar.inc  if @verbose
-        break unless category
+    def role_validate_from_csv_row row, line
+      role = true
+      row.each do |col, value|
+        role &= value.present?
       end
-      cat_bar.finish  if @verbose
-      add_check_all(@check_categories)
+      print_error :err_missing, :role, line unless role
+      print_error :err_missing, :role, line, "resource_id" unless row["resource_id"].present?
+      print_error :err_missing, :role, line, "member_id" unless row["member_id"].present?
+      print_error :err_missing, :role, line, "group_id" unless row["group_id"].present?
 
-      @check_properties = true
-      line = reset_line
-      add_check_all(validate_csv_header :property, @check_properties)
-      prop_bar = ProgressBar.new("Property", csv_size(:property)) if @verbose
-      csv_for_each :property do |row|
-        property = true
-        row.each do |col, value|
-          property &= value.present? unless col=="creator_id" || col=="description"
-        end
+      return role
+    end
 
-        print_error :err_missing, :property, line unless property
-
-        property &= groups[row["group_id"]] if property
-        print_error :err_foreign, :property, line, "group_id" unless property
-
-        property &= category_ids[row["category_id"]] if property
-        print_error :err_foreign, :property, line, "category_id" unless property
-
-        if row["creator_id"].present?
-          property &= user_ids[row["creator_id"]] if property
-          print_error :err_foreign, :property, line, "creator_id" unless property
-        end
-
-        @check_properties &= property
-        # cache property id
-        property_ids[row["id"]] = true
-
-        line += 1
-        prop_bar.inc  if @verbose
-        break unless property
+    def category_validate_from_csv_row row, line
+      category = true
+      row.each do |col, value|
+        category &= value.present? unless col=="creator_id" || col=="description"
       end
-      prop_bar.finish  if @verbose
-      add_check_all(@check_properties)
+      print_error :err_missing, :category, line unless category
 
-      @check_examples = true
-      line = reset_line
-      add_check_all(validate_csv_header :example, @check_examples)
-      ex_bar = ProgressBar.new("Examples", csv_size(:example)) if @verbose
-      csv_for_each :example do |row|
-        example = true
-        row.each do |col, value|
-          example &= value.present? unless col=="creator_id"
-        end
+      category &= groups[row["group_id"]] if category
+      print_error :err_foreign, :category, line, "group_id" unless category
 
-        print_error :err_missing, :example, line unless example
-
-        example &= groups[row["group_id"]] if example
-        print_error :err_foreign, :example, line, "group_id" unless example
-
-        example &= ling_ids[row["ling_id"]] if example
-        print_error :err_foreign, :example, line, "ling_id" unless example
-
-        if row["creator_id"].present?
-          example &= user_ids[row["creator_id"]] if example
-          print_error :err_foreign, :example, line, "creator_id" unless example
-        end
-
-        @check_examples &= example
-        # cache example id
-        example_ids[row["id"]] = true
-
-        line += 1
-        ex_bar.inc  if @verbose
-        break unless example
+      if row["creator_id"].present?
+        category &= user_ids[row["creator_id"]] if category
+        print_error :err_foreign, :category, line, "creator_id" unless category
       end
-      ex_bar.finish  if @verbose
-      add_check_all(@check_examples)
 
-      @check_lings_properties = true
-      line = reset_line
-      add_check_all(validate_csv_header :lings_property, @check_lings_properties)
-      lp_bar = ProgressBar.new("Lings Properties", csv_size(:lings_property)) if @verbose
-      csv_for_each :lings_property do |row|
-        lp = true
-        row.each do |col, value|
-          lp &= value.present? unless col=="creator_id"
-        end
+      # cache category id
+      category_ids[row["id"]] = true
 
-        print_error :err_missing, :lings_property, line unless lp
+      return category
+    end
 
-        lp &= groups[row["group_id"]] if lp
-        print_error :err_foreign, :lings_property, line, "group_id" unless lp
-
-        lp &= ling_ids[row["ling_id"]] if lp
-        print_error :err_foreign, :lings_property, line, "ling_id" unless lp
-
-        if row["creator_id"].present?
-          lp &= user_ids[row["creator_id"]] if lp
-          print_error :err_foreign, :lings_property, line, "creator_id" unless lp
-        end
-
-        @check_lings_properties &= lp
-        lp_bar.inc  if @verbose
-        # cache lings_property id
-        lings_property_ids[row["id"]] = true
-
-        break unless lp
+    def property_validate_from_csv_row row, line
+      property = true
+      row.each do |col, value|
+        property &= value.present? unless col=="creator_id" || col=="description"
       end
-      lp_bar.finish  if @verbose
-      add_check_all(@check_lings_properties)
 
-      @check_examples_lp = true
-      line = reset_line
-      add_check_all(validate_csv_header :examples_lings_property, @check_examples_lp)
-      elp_bar = ProgressBar.new("Examples Lings Properties", csv_size(:examples_lings_property)) if @verbose
-      csv_for_each :examples_lings_property do |row|
-        elp = true
-        row.each do |col, value|
-          elp &= value.present? unless col=="creator_id"
-        end
+      print_error :err_missing, :property, line unless property
 
-        print_error :err_missing, :examples_lings_property, line unless elp
+      property &= groups[row["group_id"]] if property
+      print_error :err_foreign, :property, line, "group_id" unless property
 
-        elp &= groups[row["group_id"]] if elp
-        print_error :err_foreign, :examples_lings_property, line, "group_id" unless elp
+      property &= category_ids[row["category_id"]] if property
+      print_error :err_foreign, :property, line, "category_id" unless property
 
-        elp &= lings_property_ids[row["lings_property_id"]] if elp
-        print_error :err_foreign, :examples_lings_property, line, "lings_property_id" unless elp
+      if row["creator_id"].present?
+        property &= user_ids[row["creator_id"]] if property
+        print_error :err_foreign, :property, line, "creator_id" unless property
+      end
 
-        elp &= example_ids[row["example_id"]] if elp
+      # cache property id
+      property_ids[row["id"]] = true
+
+      return property
+    end
+
+    def example_validate_from_csv_row row, line
+      example = true
+      row.each do |col, value|
+        example &= value.present? unless col=="creator_id"
+      end
+
+      print_error :err_missing, :example, line unless example
+
+      example &= groups[row["group_id"]] if example
+      print_error :err_foreign, :example, line, "group_id" unless example
+
+      example &= ling_ids[row["ling_id"]] if example
+      print_error :err_foreign, :example, line, "ling_id" unless example
+
+      if row["creator_id"].present?
+        example &= user_ids[row["creator_id"]] if example
+        print_error :err_foreign, :example, line, "creator_id" unless example
+      end
+
+      # cache example id
+      example_ids[row["id"]] = true
+
+      return example
+    end
+
+    def lings_property_validate_from_csv_row row, line
+      lp = true
+      row.each do |col, value|
+        lp &= value.present? unless col=="creator_id"
+      end
+
+      print_error :err_missing, :lings_property, line unless lp
+
+      lp &= groups[row["group_id"]] if lp
+      print_error :err_foreign, :lings_property, line, "group_id" unless lp
+
+      lp &= ling_ids[row["ling_id"]] if lp
+      print_error :err_foreign, :lings_property, line, "ling_id" unless lp
+
+      if row["creator_id"].present?
+        lp &= user_ids[row["creator_id"]] if lp
+        print_error :err_foreign, :lings_property, line, "creator_id" unless lp
+      end
+
+      # cache lings_property id
+      lings_property_ids[row["id"]] = true
+
+      return lp
+    end
+
+    def examples_lings_property_validate_from_csv_row row, line
+      elp = true
+      row.each do |col, value|
+        elp &= value.present? unless col=="creator_id"
+      end
+
+      print_error :err_missing, :examples_lings_property, line unless elp
+
+      elp &= groups[row["group_id"]] if elp
+      print_error :err_foreign, :examples_lings_property, line, "group_id" unless elp
+
+      elp &= lings_property_ids[row["lings_property_id"]] if elp
+      print_error :err_foreign, :examples_lings_property, line, "lings_property_id" unless elp
+
+      elp &= example_ids[row["example_id"]] if elp
+      print_error :err_foreign, :examples_lings_property, line, "example_id" unless elp
+
+      if row["creator_id"].present?
+        elp &= user_ids[row["creator_id"]] if elp
         print_error :err_foreign, :examples_lings_property, line, "example_id" unless elp
-
-        if row["creator_id"].present?
-          elp &= user_ids[row["creator_id"]] if elp
-          print_error :err_foreign, :examples_lings_property, line, "example_id" unless elp
-        end
-
-        @check_examples_lp &= elp
-        elp_bar.inc  if @verbose
-        line += 1
-        break unless elp
       end
-      elp_bar.finish  if @verbose
 
-      add_check_all(@check_examples_lp)
+      return elp
+    end
 
-      @check_stored_values = true
-      line = reset_line
-      add_check_all(validate_csv_header :stored_value, @check_stored_values)
-      sv_bar = ProgressBar.new("Stored Values", csv_size(:stored_value)) if @verbose
-      csv_for_each :stored_value do |row|
-        stored_value = true
-        row.each do |col, value|
-          stored_value &= value.present?
-        end
-
-        print_error :err_missing, :stored_value, line unless stored_value
-
-        stored_value &= groups[row["group_id"]] if stored_value
-        print_error :err_foreign, :stored_value, line, "group_id" unless stored_value
-
-        stored_value &= example_ids[row["storable_id"]] if stored_value
-        print_error :err_foreign, :stored_value, line, "storable_id" unless stored_value
-
-        @check_stored_values &= stored_value
-
-        line += 1
-        sv_bar.inc  if @verbose
-        break unless stored_value
+    def stored_value_validate_from_csv_row row, line
+      stored_value = true
+      row.each do |col, value|
+        stored_value &= value.present?
       end
-      sv_bar.finish  if @verbose
-      add_check_all(@check_stored_values)
-      @check_all
+
+      print_error :err_missing, :stored_value, line unless stored_value
+
+      stored_value &= groups[row["group_id"]] if stored_value
+      print_error :err_foreign, :stored_value, line, "group_id" unless stored_value
+
+      stored_value &= example_ids[row["storable_id"]] if stored_value
+      print_error :err_foreign, :stored_value, line, "storable_id" unless stored_value
+
+      return stored_value
     end
 
-    private
-
-    def reset_line()
-      return 1
-    end
-
-    def csv_for_each(key)
-      CSV.foreach(@config[key], :headers => true) do |row|
-        yield(row)
-      end
-    end
-
-    def csv_size(key)
-      (CSV.read(@config[key]).length) -1
-    end
+    ##############################
+    # End list of validate methods
+    ##############################
 
     def fix_csv_elp_name
       # Load the CSV file
@@ -491,7 +472,8 @@ module GroupData
         :example => [ "id","ling_id","group_id","creator_id","name" ],
         :lings_property => [ "id","ling_id","property_id","value","group_id","creator_id" ],
         :examples_lings_property => [ "id","example_id","lings_property_id","group_id","creator_id" ],
-        :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ]
+        :stored_value => [ "id","storable_id","storable_type","key","value","group_id" ],
+        :role => [ "id", "resource_id", "member_id", "group_id" ]
       }
     end
 
