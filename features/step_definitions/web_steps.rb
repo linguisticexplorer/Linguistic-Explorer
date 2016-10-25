@@ -146,6 +146,7 @@ When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |val
   # Another UI change.. might have to change in tests
   field = "Action" if field.eql? "Perform"
   with_scope(selector) do
+    unselect("Adjective Noun", :from => field, :match => :prefer_exact) if field == "prop-select"
     select(value, :from => field, :match => :prefer_exact)
     # find(:input, field).set(value)
     # find_field(field).select(value)

@@ -28,7 +28,7 @@ Feature: Analysis
     And I go to the group Syntactic Structures
     And I follow "Lings"
     And I follow "Afrikaans"
-    Then I should see "Ling Afrikaans"
+    Then I should see "Ling : Afrikaans"
   
   @wip
   @javascript

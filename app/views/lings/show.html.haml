@@ -4,11 +4,11 @@
     = link_to group_lings_depth_path(current_group, @ling.depth), :class => "btn btn-default" do
       = icon 'arrow-left'
     -if can_see?(:manage, @ling)
-      .pull-right
+      .pull-right#edit-dropdown-menu
         -if @values_count < 1
           = link_to supported_set_values_group_ling_path(current_group, @ling), :class => "btn btn-success", :rel => "tooltip", :title => "Add the first #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
             = icon 'plus'
-        %button.btn.btn-default.dropdown-toggle{:type => "button", :data => {:toggle => "dropdown"}}
+        %button#edit-dropdown-button.btn.btn-default.dropdown-toggle{:type => "button", :data => {:toggle => "dropdown"}}
           = icon 'edit'
           %span.caret
         %ul.dropdown-menu{:role => "menu"}
