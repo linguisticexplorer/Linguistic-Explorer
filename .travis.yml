@@ -14,7 +14,6 @@ bundler_args: "--without development production"
 before_script:
 - RAILS_ENV=test bundle exec rake db:migrate
 - RAILS_ENV=test bundle exec rake db:test:prepare
-- phantomjs --version
 script:
 - RAILS_ENV=test bundle exec rspec spec
 rvm:
@@ -33,7 +32,8 @@ deploy:
   skip_cleanup: true
   script: cap deploy travisci
   on:
-    branch: master
+    branch: sprint
+    rvm: 1.9.3
 notifications:
   slack:
     secure: LrIflpuuK/c+BBCviGD06sTHv9GuNB99Y2jJLFMb8CSxoHBuu9a8zkb8S40CuX0TKb6sRT6+vscgvVtFcN0hCi1LQZKhH/I01qr6rCEofkE+XlCxH1nbevSWGjMejvxlmHoMF9YT7+xauRa3rlEMAogeXTpGdICTGp83wi1ko1Y=
