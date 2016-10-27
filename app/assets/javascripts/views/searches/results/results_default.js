@@ -82,6 +82,8 @@
         'example_1' : getExamples('child')
       };
 
+      //This is the point that I include ling ids to column result.
+      //After that it possible to extract the lings ids for the feature tests
       includeLingIds(columns);
 
       var new_entry = {};

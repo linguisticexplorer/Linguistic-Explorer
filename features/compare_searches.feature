@@ -141,6 +141,7 @@ Feature: Compare searches
     And I select "Second search" from "with"
     And I press "Go"
     Then I should see 3 search result rows
+    #Save search link need to be clicked if you want to see the modal.
     When I follow "Save Search"
     Then I should see "Save search results"
     When I fill in "save-search-name" with "Third Search"
