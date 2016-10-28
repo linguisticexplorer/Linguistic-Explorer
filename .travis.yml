@@ -30,7 +30,7 @@ branches:
 deploy:
   provider: script
   skip_cleanup: true
-  script: cap deploy travisci
+  script: cap travisci deploy
   on:
     branch: sprint
     rvm: 1.9.3
