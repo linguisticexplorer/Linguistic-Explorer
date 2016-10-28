@@ -73,6 +73,7 @@
 
     query = {
       authenticity_token: $('meta[name=csrf-token]').attr('content'),
+      result_groups: $('#search_results').data('resultGroups'),
       search: $('#search_results').data('query'),
       id: $('#search_results').data('search-id')
     };

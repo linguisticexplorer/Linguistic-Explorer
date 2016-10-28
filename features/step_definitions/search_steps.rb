@@ -11,6 +11,8 @@ end
 Given /^the following results for the group search "([^\"]*)":$/ do |search_name, table|
   parent_ids, child_ids = [], []
 
+  result_groups = {}
+
   table.hashes.each do |row|
 
     parent_ling = find_or_create_ling({
@@ -35,28 +37,37 @@ Given /^the following results for the group search "([^\"]*)":$/ do |search_name
       :category => find_or_create_category(:name => 'Child category', :group => @group, :depth => Depth::CHILD)
     })
 
-    parent_ids  << find_or_create_lings_property({
+    parent_id = find_or_create_lings_property({
       :ling => parent_ling,
       :property => parent_property,
       :group => @group,
       :value => row['parent value']
     }).id
 
-    child_ids   << find_or_create_lings_property({
+    child_id = find_or_create_lings_property({
       :ling => child_ling,
       :property => child_property,
       :group => @group,
       :value => row['child value']
     }).id
+
+    if result_groups[parent_id].nil?
+      result_groups[parent_id] = [child_id]
+    else
+      result_groups[parent_id].push(child_id)
+    end
   end
 
-  FactoryGirl.create(:search,
-          :name => search_name,
-          :parent_ids => parent_ids,
-          :child_ids => child_ids,
-          :group => @group,
-          :creator => @user
+  query = {include: {ling_0: 1,property_0: 1,value_0: 1,ling_1: 1,property_1: 1,value_1: 1,depth_0: 1,depth_1: 1}}
+
+  search = FactoryGirl.create(:search,
+    :name => search_name,
+    :query => query,
+    :result_groups => result_groups,
+    :group => @group,
+    :creator => @user
   )
+
 end
 
 Given /^the group example fields "([^\"]*)"$/ do |text|

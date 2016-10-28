@@ -50,9 +50,9 @@ class Ability
         search.is_manageable_by?(user)
       end
 
-#       can :manage, SearchComparison do |sc|
-#         sc.searches.all? {|s| s.is_manageable_by?(user)}
-#       end
+      can :manage, SearchComparison do |sc|
+        sc.searches.all? {|s| s.is_manageable_by?(user)}
+      end
 
       # turn on forum capabilities
       can :read, ForumGroup, :state => true
