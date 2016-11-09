@@ -18,7 +18,7 @@
                 - if @group.privacy == "private"
                   %a{:href => "#", :rel => "tooltip", :title => "Private Group", :data => {:toggle => "tooltip", :animation => "true"} }
                     = icon  'lock', '', :class => "blue-light"
-            .pull-right
+            #group_settings.pull-right
               - if can_see? :edit, @group
                 = link_to edit_group_path(@group), :class => "btn btn-default", :rel => "tooltip", :title => "Edit Group", :data => {:toggle => "tooltip", :animation => "true"}  do
                   = icon 'edit'
@@ -38,8 +38,7 @@
             %div{ :class => "col-md-4 #{@group.depths.size > 1 ? '' : 'col-md-offset-2'}"}
               - percentage = @group.lings_with_property_quota(depth)
               %div{:class => "thumbnail dashboard-box #{number_to_text_class(percentage)}-bg" }
-                .pull-right 
-                    = link_to new_group_ling_path(current_group, :depth => depth), :class => "btn btn-success", :rel => "tooltip", :title => "New #{@group.ling_name_for_depth(depth)}", :data => {:toggle => "tooltip", :animation => "true"} do
+                #ling_settings.pull-right
                   - new_ling = Ling.new{|l| l.group = current_group}
                   - if can_see? :create, new_ling
                       = icon "plus"
@@ -50,7 +49,7 @@
           .col-md-4
             - percentage = @group.props_with_lings_quota
             %div{:class => "thumbnail dashboard-box #{number_to_text_class(percentage)}-bg" }
-              .pull-right 
+              #property_settings.pull-right
                 - if can_see? :create, Property.new{|p| p.group = current_group}
                   = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.property_name}", :data => {:toggle => "tooltip", :animation => "true" } do
                     = icon "plus"
@@ -60,7 +59,7 @@
         .row
           .col-md-4
             .thumbnail.dashboard-box
-              .pull-right 
+              #membership_settings.pull-right
                 - if can_see? :create, Membership.new{|p| p.group = current_group}
                   = link_to new_group_membership_path(current_group), :class => "btn btn-success", :rel => "tooltip", :title => "New Membership", :data => {:toggle => "tooltip", :animation => "true"} do
                     = icon "plus"
