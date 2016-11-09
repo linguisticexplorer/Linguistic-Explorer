@@ -123,8 +123,4 @@ class User < ActiveRecord::Base
     [resource.get_valid_resource || false, resource.is_a?(Group) ? resource : resource.group]
   end
 
-  def has_no_expert(resource)
-    resource.roles.empty?
-  end
-
 end
