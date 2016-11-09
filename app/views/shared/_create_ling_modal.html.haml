@@ -1,0 +1,10 @@
+#create_ling_modal.modal.fade{ :tabindex => "-1", :role=>"dialog", :aria => {:labelledby=>"crossModal", :hidden=>"true"}}
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        %button#close_modal.close{ :type=>"button", :data => { :dismiss=>"modal"}, :aria => {:hidden=>"true"}} ×
+        %button#minimize-cross_lings.close{ :type=>"button", :aria=>{:hidden=>"true"}} -&nbsp;
+        %span
+          %h4 Contact the admin to create this ling
+      .modal-footer
+        %button.btn{ :data => {:dismiss=>"modal"}, :aria=>{:hidden=>"true"}} Close
