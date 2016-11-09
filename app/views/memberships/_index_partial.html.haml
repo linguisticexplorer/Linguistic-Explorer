@@ -15,9 +15,8 @@
         %td{:id => table_actions_id(membership.member.name)}
           = link_to edit_group_membership_path(current_group, membership), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
             = icon 'edit'
-          - if can_see? :destroy, membership
-            = link_to [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
-              = icon 'trash-o'
+          = link_to [current_group, membership], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+            = icon 'trash-o'
 %br/
 #pagination_bottom.apple_pagination
   / render page links in the view:
