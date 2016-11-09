@@ -135,6 +135,20 @@ module ApplicationHelper
     end
   end
 
+  #different actions for an item
+  def can_see_any?(actions, item)
+    actions.any? do |action|
+      can_see?(action, item)
+    end
+  end
+
+  #different actions for different items
+  def can_see_header?(actions, items)
+    items.any? do |item|
+      can_see_any?(actions, item)
+    end
+  end
+
   def can_see_some?
     get_user_role(current_group) === 'Expert'
   end
