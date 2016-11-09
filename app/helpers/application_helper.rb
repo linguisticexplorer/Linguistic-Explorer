@@ -194,4 +194,11 @@ module ApplicationHelper
     membership.present? ? group_membership_path(@group, membership) : group_memberships_path(@group)
   end
 
+  # This method creates an id that is useful for some capybara tests
+  def table_actions_id(name, specific_action="")
+    name = name.downcase.tr(" ", "_")
+    specific_action = "_#{specific_action.downcase.tr(" ", "_")}" if specific_action.present?
+    "#{name}#{specific_action}_actions"
+  end
+
 end
