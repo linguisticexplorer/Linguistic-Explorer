@@ -5,7 +5,10 @@ class Ability
     group_member_data = [Example, LingsProperty, ExamplesLingsProperty]
     group_admin_data  = [Ling, Property, Category, Membership]
 
-    group_expert_data = [Ling, Example, LingsProperty, ExamplesLingsProperty]
+    # Doesn't need to have Example in this group.
+    # If the user can edit a ling, he can also add, edit and remove examples
+    group_expert_data = [LingsProperty, ExamplesLingsProperty, Ling]
+
     group_data = group_admin_data + group_member_data
 
     # ensure there is a user object in the not logged in case
@@ -29,8 +32,8 @@ class Ability
       # turn on group data reading for group members
       can     :read,   group_data,              :group_id => user.group_ids
       # Cannot scope to specific instances, but at least let experts only pass
-      can     :manage,  group_expert_data,       :group_id => user.is_expert_for_groups
-      can     :destroy, group_expert_data,       :group_id => user.is_expert_for_groups
+      # The expert can't delete or create ling but it can update the ling is expert for
+      can     :update, group_expert_data,       :group_id => user.is_expert_for_groups
 
       # turn on all searches advanced features
       can :search, Search,        :group => { :privacy => Group::PUBLIC }
