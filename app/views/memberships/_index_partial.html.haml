@@ -5,7 +5,7 @@
   %tr
     %th.col-sm-8 Member
     %th Level
-    - if can_see? :manage, @memberships
+    - if can_see_header? [:manage], @memberships
       %th.col-sm-2 Actions
   - @memberships.each do |membership|
     %tr

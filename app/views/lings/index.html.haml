@@ -8,7 +8,8 @@
       .col-md-10
         %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
       - @lings_by_depth.each_with_index do |lings_with_params, depth|
-        - if can_see? :manage, Ling.new{|l| l.group = current_group}
+        - new_ling = Ling.new{|l| l.group = current_group}
+        - if can_see? :create, new_ling
           .col-md
             = link_to new_group_ling_path(current_group, :depth => depth), :class => "btn btn-success pull-right btn-spaced", :rel => "tooltip", :title => "New #{current_group.ling_name_for_depth(depth - 1)}", :data => {:toggle => "tooltip", :animation => "true" } do
               = icon "plus"

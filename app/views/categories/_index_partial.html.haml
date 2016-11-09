@@ -5,7 +5,7 @@
   %tr
     %th Name
     %th Depth
-    - if can_see? :destroy, @categories
+    - if can_see_header? [:destroy], @categories
       %th.col-md-2 Actions
   - @categories.each do |category|
     %tr

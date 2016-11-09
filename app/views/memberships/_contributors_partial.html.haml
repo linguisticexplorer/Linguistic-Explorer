@@ -6,7 +6,7 @@
     %th.col-sm-6 Member
     %th Level
     %th Resources
-    - if can_see? :manage, @memberships
+    - if can_see_header? [:manage], @memberships
       %th.col-sm-2 Actions
   - @contributors.each_with_index do |contributor, index|
     %tr

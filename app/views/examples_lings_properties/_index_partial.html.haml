@@ -5,7 +5,7 @@
   %tr
     %th= current_group.example_name
     %th= current_group.lings_property_name
-    - if can_see? :destroy, @examples_lings_properties
+    - if can_see_header? [:destroy], @examples_lings_properties
       %th
   - @examples_lings_properties.each do |examples_lings_property|
     %tr

@@ -7,7 +7,8 @@
     .row{:style => "margin-top: 30px;"}
       .col-md-10
         %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-      - if can_see? :manage, Ling.new{|l| l.group = current_group}
+      - new_ling = Ling.new{|l| l.group = current_group}
+      - if can_see? :create, new_ling
         .col-md
           = link_to new_group_ling_path(current_group, :depth => @depth), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{current_group.ling_name_for_depth(@depth)}", :data => {:toggle => "tooltip", :animation => "true" } do
             = icon "plus"
