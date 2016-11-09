@@ -127,7 +127,9 @@ module ApplicationHelper
 
   def can_see?(action, item)
     if user_signed_in?
-      can?(action, item) && current_user.is_expert_of?(item.is_a?(Array) ? item.first : item)
+      # control if the user can see the item
+      # In rare cases, the user could see the item but it could not be able to use it.
+      current_user.is_expert_to_see?(action, item, can?(action, item))
     else
       can?(action, item)
     end
