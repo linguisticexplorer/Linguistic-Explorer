@@ -14,3 +14,5 @@
             = icon "plus"
 #pagination_table
   = render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth, :paginate_params => @params }
+= render :partial => "shared/create_ling_modal"
+= render :partial => "shared/delete_ling_modal"
