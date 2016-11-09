@@ -71,6 +71,25 @@ class User < ActiveRecord::Base
 
   end
 
+  # This method return true or false if the user can see or not the item.
+  # It useful in that part of html that you want to show at user something if the user can see it.
+  # It's almost the same thing with is_expert? method but for example:
+  # an expert user can see the button for deleting a ling, but he cannot perform the action.
+  # In this case is_expert_to_see? has to be true and is_expert? has to be false
+  def is_expert_to_see?(action, item, can_user_perform_the_action)
+    ling, group = get_ling_and_group item
+    if admin? || self.group_admin_of?(group)
+      can_user_perform_the_action
+    else
+      if ling && member_of?(group) && is_expert?(group)
+        # if the user is an expert member, he can see the create ling action icon also if he has not been assigned to that ling
+        group.membership_for(self).has_role?(:expert, ling) || action == :create
+      else
+        can_user_perform_the_action
+      end
+    end
+  end
+
   def is_expert?(group)
     group.membership_for(self).try(:is_expert?)
   end
