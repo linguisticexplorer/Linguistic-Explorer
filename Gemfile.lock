@@ -420,6 +420,7 @@ DEPENDENCIES
   passenger (~> 4.0.50)
   progressbar (~> 0.21.0)
   pry
+  pry-byebug
   pry-debugger
   rails (~> 3.2.17)
   rails_best_practices (~> 1.15.4)
