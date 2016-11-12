@@ -169,14 +169,14 @@ end
 
 When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   with_scope(selector) do
-    choose(field, :match => :prefer_exact)
+    choose_field(field, :match => :prefer_exact)
   end
 end
 
 When /^(?:|I )choose Implication "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   field = "search_group_impl_#{field.downcase}"
   with_scope(selector) do
-    choose(field, :match => :prefer_exact)
+    choose_field(field, :match => :prefer_exact)
   end
 end
 
