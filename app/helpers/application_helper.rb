@@ -60,7 +60,8 @@ module ApplicationHelper
       {:name => "Marco Liberati", :img => "cool_dev", :role => "", :link => "#"},
       {:name => "Oleg Grishin", :img => "dev", :role => "", :link => "#"},
       {:name => "Lingliang Zhang", :img => "dev", :role => "", :link => "#"},
-      {:name => "Hannan Butt", :img => "dev", :role => "", :link => "#"}
+      {:name => "Hannan Butt", :img => "dev", :role => "", :link => "#"},
+      {:name => "Andrea Olivieri", :img => "coolest_dev", :role => "", :link => "http://www.andrea-olivieri.com"}
     ]
     devs.each_slice(columns) do |row|
       yield row if block_given?
