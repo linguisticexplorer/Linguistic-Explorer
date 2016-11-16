@@ -3,15 +3,20 @@ def accept_alert_popup
   page.driver.browser.switch_to.alert.accept
 end
 
-def choose_field(field, options)
-  scroll_to(field)
-  choose(field, :match => :prefer_exact)
+def is_alert_popup_present?
+  begin
+    page.driver.browser.switch_to.alert.present?
+  rescue Selenium::WebDriver::Error::NoSuchAlertError
+    false
+  end
 end
 
-def scroll_to(element)
-  script = <<-JS
-    arguments[0].scrollIntoView(true);
-  JS
+def dismiss_alert_popup
+  page.driver.browser.switch_to.alert.dismiss
+end
 
-  Capybara.current_session.driver.browser.execute_script(script, element.native)
+def choose_field(selector, field)
+  with_scope(selector) do
+    choose(field, match: :prefer_exact)
+  end
 end
