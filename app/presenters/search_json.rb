@@ -11,7 +11,8 @@ class SearchJSON
       :type    => get_search_type(),
       :header  => build_results_header,
       :rows    => @search.results(false),
-      :success => true
+      :success => true,
+      :rows_per_page => ActiveRecord::Base.per_page
     }.to_json.html_safe
   end
 
@@ -25,7 +26,7 @@ class SearchJSON
       if /compare/.match @search.getType
 
         build_compare_headers entry, @search.results(false)
-        
+
       else
 
         build_headers entry

@@ -25,6 +25,7 @@ When /^(?:|I )go to (.+)$/ do |page_name|
 end
 
 When /^(?:|I )press "([^\"]*)"(?: within "([^\"]*)")?$/ do |button, selector|
+  button = 'close_modal' if button.eql? "Close Modal"
   with_scope(selector) do
     click_button(button, :match => :prefer_exact)
     # To fix ambiguity with Capybara 2 let's take just the first match
@@ -51,8 +52,12 @@ end
 
 When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
   with_scope(selector) do
+    link = "saveit" if link.eql? "Save Search"
+    if link.eql? "Download Results"
+      clear_directory(download_dir)
+      link = "downloadit"
+    end
     # This step is too general and ambiguious, might have to break apart
-
     if link.eql? "Syntactic Structures" && page.has_link?(:text => "Pick a Dataset")
       find('a', :text =>"Pick a Dataset").hover
     end
@@ -66,10 +71,15 @@ When /^(?:|I )follow "([^\"]*)"(?: within "([^\"]*)")?$/ do |link, selector|
       page.execute_script "window.scrollBy(0,-100)"
     end
     find('a', :text =>"Search").hover if link.eql?( "Advanced Search" )|| link.eql?( "History")
+    find('li#userInfo').hover if link.eql? "Sign out"
+
     click_link(link, :match => :prefer_exact)
 
     # To fix ambiguity with Capybara let's take just the first match
     # first(:link, link).click
+
+    #accept 'are you sure?' pop up
+    accept_alert_popup if link.eql? "Delete"
   end
 end
 
@@ -136,6 +146,7 @@ When /^(?:|I )select "([^\"]*)" from "([^\"]*)"(?: within "([^\"]*)")?$/ do |val
   # Another UI change.. might have to change in tests
   field = "Action" if field.eql? "Perform"
   with_scope(selector) do
+    unselect("Adjective Noun", :from => field, :match => :prefer_exact) if field == "prop-select"
     select(value, :from => field, :match => :prefer_exact)
     # find(:input, field).set(value)
     # find_field(field).select(value)
@@ -157,16 +168,12 @@ When /^(?:|I )uncheck "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
 end
 
 When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
-  with_scope(selector) do
-    choose(field, :match => :prefer_exact)
-  end
+  choose_field(selector, field)
 end
 
 When /^(?:|I )choose Implication "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   field = "search_group_impl_#{field.downcase}"
-  with_scope(selector) do
-    choose(field, :match => :prefer_exact)
-  end
+  choose_field(selector, field)
 end
 
 When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"(?: within "([^\"]*)")?$/ do |path, field, selector|
@@ -369,25 +376,7 @@ Then /^(?:|I )see the Javascript console$/ do
 end
 
 Then /^(?:|I )want at most "([^\"]*)" results per page$/ do |rows|
-  results = rows.to_i
-
-  LinguisticExplorer::Application.configure do
-
-    if (ActiveRecord::Base.per_page != results)
-      # regular pagination value
-      if(results == 25)
-        ActiveRecord::Base.instance_eval do
-          def per_page; 25; end
-        end
-      elsif(results == 4)
-      # need to test pagination without overloading the db...
-        ActiveRecord::Base.instance_eval do
-          def per_page; 4; end
-        end
-      end
-      DEFAULT_PER_PAGE = results
-    end
-  end
+  rows_per_page(rows.to_i)
 end
 
 Then /^I hover over my user info$/ do

@@ -1,10 +1,10 @@
 module SearchColumns
   PARENT_COLUMNS = [
-      :ling_0, :property_0, :value_0, :example_0
+      :ling_0_id, :ling_0, :property_0, :value_0, :example_0
   ]
 
   CHILD_COLUMNS = [
-      :ling_1, :property_1, :value_1, :example_1
+      :ling_1_id, :ling_1, :property_1, :value_1, :example_1
   ]
 
   CROSS_COLUMNS = [
@@ -22,10 +22,12 @@ module SearchColumns
   COLUMNS = PARENT_COLUMNS + CHILD_COLUMNS
 
   HEADERS = {
+      :ling_0_id        => lambda { |g| "#{g.ling0_name} ID" },
       :ling_0           => lambda { |g| g.ling0_name },
       :property_0       => lambda { |g| "#{g.ling0_name} #{g.property_name.pluralize.titleize}" },
       :value_0          => lambda { |g| "#{g.ling0_name} Values" },
       :example_0        => lambda { |g| "#{g.ling0_name} Examples" },
+      :ling_1_id        => lambda { |g| "#{g.ling1_name} ID" },
       :ling_1           => lambda { |g| g.ling1_name },
       :property_1       => lambda { |g| "#{g.ling1_name} #{g.property_name.pluralize.titleize}" },
       :value_1          => lambda { |g| "#{g.ling1_name} Values" },
@@ -80,12 +82,17 @@ module SearchColumns
 
   # This method will scale the number of columns based of Property choosen
   def scale_cross_columns
-    name, value, count = CROSS_COLUMNS
-    props = @search.results.first.parent
-    [].tap do |columns_to_show|
-      props.each {|p| columns_to_show << [name, value] }
-      columns_to_show << count
-    end.flatten
+    search_results = @search.results
+    if search_results.empty?
+      CROSS_COLUMNS
+    else
+      name, value, count = CROSS_COLUMNS
+      props = search_results.first.parent
+      [].tap do |columns_to_show|
+        props.each {|p| columns_to_show << [name, value] }
+        columns_to_show << count
+      end.flatten
+    end
   end
 
   def result_headers_compare(entry)

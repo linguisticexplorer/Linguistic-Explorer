@@ -51,7 +51,7 @@ Feature: Search with Cross
     And I should not see "verb"
     And I follow "1"
     And I should see "Ling"
-    Then I should see 1 ling rows
+    Then I should see 1 ling in the row
 
   Scenario: Visitor searches cross Linguistic Properties from two
     When I go to the Syntactic Structures search page
@@ -83,8 +83,8 @@ Feature: Search with Cross
     And I should not see "Sentence 2"
     And I should not see "Eastern"
     And I follow "1"
-    And I should see "Linglet"
-    Then I should see 1 ling rows
+    And I should see "Ling"
+    Then I should see 1 ling in the row
 
    Scenario: Visitor searches cross both Demographic and Linguistic Properties from two each
     When I go to the Syntactic Structures search page
@@ -93,7 +93,6 @@ Feature: Search with Cross
     And I choose "Cross" within "#demographic_properties"
     And I select "Property 3" from "Linguistic Properties"
     And I select "Property 4" from "Linguistic Properties"
-    And I choose "Cross" within "#linguistic_properties"
     And I press "Show results"
     Then I should see the following Cross search results:
     | Property Name 1 | Property Value 1 | Property Name 2 | Property Value 2 | Count |

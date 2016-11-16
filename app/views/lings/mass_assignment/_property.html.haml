@@ -1,10 +1,11 @@
 %div
-  %h2 Property
+  %h2 Property Name
 #property-container
   #prop-name{:data => {:prop_id => "#{@property.id || 0}", :ling_id => "#{@ling.id || 0}", :lp_id => "#{(@ling_properties && @ling_properties.any?) ? @ling_properties[0].id : 0}"}}
     %h3= property.name
   .row{:style => "margin-top: 15px;"}
     #prop-descrip.col-md-11{:style=> "min-height: 150px; max-height: 250px; *height: 150px; overflow-y: auto;"}
+      %h2 Property Description
       %p
         - if property.description
           = property.description.html_safe

@@ -59,6 +59,7 @@ class User < ActiveRecord::Base
   def is_expert_of?(resource)
     return true if admin?
     ling, group = get_ling_and_group resource
+    return true if self.group_admin_of?(group)
 
     # resource_ids_for_role :resource_expert, resource
     if ling && member_of?(group) && is_expert?(group)

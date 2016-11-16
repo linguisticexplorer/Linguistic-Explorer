@@ -42,8 +42,9 @@ Feature: Data entry supported by surrounding language context
   Scenario: Signed in members can get to the Property Assignment in Context Page
     Then I should see "Afrikaans"
     When I follow "Afrikaans"
-    Then I should see "Supported Edit Values"
-    When I follow "Supported Edit Values"
+    And I press "edit-dropdown-button" within "#edit-dropdown-menu"
+    Then I should see "Values" within "#edit-dropdown-menu"
+    When I follow "Values" within "#edit-dropdown-menu"
     Then I should be on the Property Assignment with Context for "Afrikaans" Page
 
 #when you arrive at the page it will be pointing to the current (in focus) property
@@ -86,15 +87,15 @@ Feature: Data entry supported by surrounding language context
 #this feature is probably specific to the Terraling application
   Scenario: The page allows a user to say how certain they are
     When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "How sure are you?"
+    Then I should see "How sure are you about the value set?"
     And I should see "Certain"
     And I should see "Revisit"
     And I should see "Need Help"
 
 #a step to find a button with a "name" needs to be written
-  Scenario: The page allows the user to submit their assignment
-    When I am on the Property Assignment with Context for "Afrikaans" Page
-    Then I should see "Save" button
+  # Scenario: The page allows the user to submit their assignment
+  #   When I am on the Property Assignment with Context for "Afrikaans" Page
+  #   Then I should see "Save" button
 
   Scenario: The page displays existing examples for this property & ling
     When I am on the Property Assignment with Context for "Afrikaans" Page
@@ -109,21 +110,23 @@ Feature: Data entry supported by surrounding language context
 #User should be able to switch property
   Scenario: The page allows the user to switch to a different property
     When I am on the Property Assignment with Context for "Spanish" Page
-    When I select "Subject Object" from "prop-select"
-    And I press "Select" within "#select-col"
+    And I select "Subject Object" from "prop-select"
     Then I should see "Subject Object definition text"
     And I should not see "Adjective Noun definition text"
+    When I follow "Next" within "#select-col"
+    Then I should not see "Subject Object definition text"
+    And I should see "Adjective Noun definition text"
 
 #Testing the Next, Unset, and Uncertain buttons
   Scenario: The page allows the user to switch to the next property,
     the next unset property, and the next uncertain property
     When I am on the Property Assignment with Context for "Spanish" Page
     Then I should see "Adjective Noun definition text"
-    When I press "Next" within "#select-col"
+    When I follow "Next" within "#select-col"
     Then I should see "Noun Adjective definition text"
-    When I press "Next Unset" within "#select-col"
+    When I follow "Next Unset" within "#select-col"
     Then I should see "Object Subject definition text"
-    When I press "Next Uncertain" within "#select-col"
+    When I follow "Next Uncertain" within "#select-col"
     Then I should see "Noun Adjective definition text"
 
   @wip

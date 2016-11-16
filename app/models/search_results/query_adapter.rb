@@ -145,7 +145,7 @@ module SearchResults
 
     def category_ids_by_all_grouping(grouping)
       # {"1"=>"all", "2"=>"any", "3"=>"cross"} --> [1]
-      category_all_pairs = self[grouping].group_by { |k,v| v }["all"] || []
+      category_all_pairs = self[grouping] && self[grouping].group_by { |k,v| v }["all"] || []
       category_all_pairs.map { |c| c.first }.map(&:to_i)
     end
 

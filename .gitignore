@@ -7,7 +7,6 @@
 doc/TODO
 history.
 *.html
-db/seed/*
 .sass-cache
 
 # Development temporary files
