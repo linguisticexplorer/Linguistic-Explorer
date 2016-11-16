@@ -168,16 +168,12 @@ When /^(?:|I )uncheck "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
 end
 
 When /^(?:|I )choose "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
-  with_scope(selector) do
-    choose_field(field, :match => :prefer_exact)
-  end
+  choose_field(selector, field)
 end
 
 When /^(?:|I )choose Implication "([^\"]*)"(?: within "([^\"]*)")?$/ do |field, selector|
   field = "search_group_impl_#{field.downcase}"
-  with_scope(selector) do
-    choose_field(field, :match => :prefer_exact)
-  end
+  choose_field(selector, field)
 end
 
 When /^(?:|I )attach the file "([^\"]*)" to "([^\"]*)"(?: within "([^\"]*)")?$/ do |path, field, selector|

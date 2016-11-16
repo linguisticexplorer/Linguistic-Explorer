@@ -59,7 +59,7 @@ Then /^I set a property value to "([^"]*)"$/ do |prop_val|
   Capybara.ignore_hidden_elements = true
   language_edit_dropdown.click
   click_link "Values"
-  find(".radio").choose prop_val
+  choose_field("#values", prop_val)
   click_button "Certain"
 end
 
