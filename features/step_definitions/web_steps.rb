@@ -199,6 +199,26 @@ Then /^(?:|I )should see "([^\"]*)"(?: within "([^\"]*)")?$/ do |text, selector|
   end
 end
 
+Then /^(?:|I )should see "([^\"]*)" icon(?: within "([^\"]*)")?$/ do |icon_name, selector|
+  with_scope(selector) do
+    if page.respond_to? :should
+      page.should have_icon(icon_name)
+    else
+      assert page_has_icon?(icon_name)
+    end
+  end
+end
+
+Then /^(?:|I )should not see "([^\"]*)" icon(?: within "([^\"]*)")?$/ do |icon_name, selector|
+  with_scope(selector) do
+    if page.respond_to? :should
+      page.should have_no_icon(icon_name)
+    else
+      assert page_has_no_icon?(icon_name)
+    end
+  end
+end
+
 Then /^(?:|I )should see "([^\"]*)" within the top navbar$/ do |text|
   with_scope("#terraling-navbar-collapse") do
     # Hover over correct element
