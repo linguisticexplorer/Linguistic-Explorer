@@ -14,3 +14,9 @@ end
 def dismiss_alert_popup
   page.driver.browser.switch_to.alert.dismiss
 end
+
+def choose_field(selector, field)
+  with_scope(selector) do
+    choose(field, match: :prefer_exact)
+  end
+end
