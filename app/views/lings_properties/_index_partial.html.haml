@@ -6,7 +6,7 @@
     %th Ling
     %th= current_group.property_name
     %th= current_group.lings_property_name
-    - if can_see? :destroy, @lings_properties
+    - if can_see_header? [:destroy], @lings_properties
       %th Actions
   - @lings_properties.each do |lings_property|
     %tr

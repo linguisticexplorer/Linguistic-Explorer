@@ -128,9 +128,25 @@ module ApplicationHelper
 
   def can_see?(action, item)
     if user_signed_in?
-      can?(action, item) && current_user.is_expert_of?(item.is_a?(Array) ? item.first : item)
+      # control if the user can see the item
+      # In rare cases, the user could see the item but it could not be able to use it.
+      current_user.is_expert_to_see?(action, item, can?(action, item))
     else
       can?(action, item)
+    end
+  end
+
+  #different actions for an item
+  def can_see_any?(actions, item)
+    actions.any? do |action|
+      can_see?(action, item)
+    end
+  end
+
+  #different actions for different items
+  def can_see_header?(actions, items)
+    items.any? do |item|
+      can_see_any?(actions, item)
     end
   end
 
@@ -177,6 +193,13 @@ module ApplicationHelper
   def group_membership_path_if_any
     membership = @group.membership_for(current_user)
     membership.present? ? group_membership_path(@group, membership) : group_memberships_path(@group)
+  end
+
+  # This method creates an id that is useful for some capybara tests
+  def table_actions_id(name, specific_action="")
+    name = name.downcase.tr(" ", "_")
+    specific_action = "_#{specific_action.downcase.tr(" ", "_")}" if specific_action.present?
+    "#{name}#{specific_action}_actions"
   end
 
 end

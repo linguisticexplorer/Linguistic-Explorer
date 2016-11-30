@@ -2,11 +2,11 @@
 .row
   .col-md-6
     %h1 Listing #{current_group.property_name.pluralize}
-  .col-md-6
+  #property_settings.col-md-6
     .row{:style => "margin-top: 25px;"}
       .col-md-10
         %input#property-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
-      - if can_see? :manage, Property.new{|p| p.group = current_group}
+      - if can_see? :create, Property.new{|p| p.group = current_group}
         .col-md
           = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right",:rel => "tooltip", :title => "New #{current_group.property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "left"} do
             = icon "plus"

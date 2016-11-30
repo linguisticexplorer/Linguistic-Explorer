@@ -64,11 +64,30 @@ class User < ActiveRecord::Base
     # resource_ids_for_role :resource_expert, resource
     if ling && member_of?(group) && is_expert?(group)
 
-      # is thruthy if either is assigned to that resource or
-      # the resource has nobody set as expert for the moment
-      return group.membership_for(self).has_role?(:expert, ling) || has_no_expert(ling)
+      # is thruthy if is assigned to that resource
+      # It is no more necessary to see if there are not experts for that ling
+      return group.membership_for(self).has_role?(:expert, ling)
     end
 
+  end
+
+  # This method return true or false if the user can see or not the item.
+  # It useful in that part of html that you want to show at user something if the user can see it.
+  # It's almost the same thing with is_expert? method but for example:
+  # an expert user can see the button for deleting a ling, but he cannot perform the action.
+  # In this case is_expert_to_see? has to be true and is_expert? has to be false
+  def is_expert_to_see?(action, item, can_user_perform_the_action)
+    ling, group = get_ling_and_group item
+    if admin? || self.group_admin_of?(group)
+      can_user_perform_the_action
+    else
+      if ling && member_of?(group) && is_expert?(group)
+        # if the user is an expert member, he can see the create ling action icon also if he has not been assigned to that ling
+        group.membership_for(self).has_role?(:expert, ling) || action == :create
+      else
+        can_user_perform_the_action
+      end
+    end
   end
 
   def is_expert?(group)
@@ -102,10 +121,6 @@ class User < ActiveRecord::Base
     # valid_resource = resource.is_a?(*valid_type) ? resource.get_valid_resource : false
     # [valid_resource, resource.is_a?(Group) ? resource : resource.group]
     [resource.get_valid_resource || false, resource.is_a?(Group) ? resource : resource.group]
-  end
-
-  def has_no_expert(resource)
-    resource.roles.empty?
   end
 
 end

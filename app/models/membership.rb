@@ -83,8 +83,10 @@ class Membership < ActiveRecord::Base
     )
   end
 
+  # This method is used to extract the ling and discover if the user is expert of that ling.
+  # Expert can't manage the membership and return the membership is a error
   def get_valid_resource
-    self
+    false
   end
 
 end

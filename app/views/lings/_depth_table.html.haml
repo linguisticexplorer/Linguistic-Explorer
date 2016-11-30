@@ -17,7 +17,7 @@
       .pull-right
         %a{:href => "#", :rel => "tooltip", :title => "This is a measure of how many properties have been set for the given language", :data => {:toggle => "tooltip", :animation => "true"} }
           = icon 'question-circle', '', :class => "fa-15x"
-    - if can_see_some?
+    - if can_see_header? [:update, :destroy], lings
       %th.col-md-2 Actions
   - lings.each do |ling|
     %tr
@@ -37,13 +37,13 @@
         .strong
           %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
             =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
-      - if can_see_some?
-        %td
-          -if can_see? :manage, ling
+      - if can_see_header? [:update, :destroy], lings
+        %td{:id => table_actions_id(ling.name)}
+          - if can_see? :update, ling
             = link_to edit_group_ling_path(current_group, ling), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
               = icon 'edit'
-            - if can_see? :destroy, ling
-              = link_to [current_group, ling], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
-                = icon 'trash-o'
+          - if can_see? :destroy, ling
+            = link_to_delete_ling ling, :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+              = icon 'trash-o'
 #pagination_bottom.apple_pagination
   = alphabetical_paginate paginate_params
