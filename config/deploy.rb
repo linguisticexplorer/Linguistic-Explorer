@@ -1,4 +1,4 @@
-set :stages       , %w(testing production)
+set :stages       , %w(testing production travisci)
 set :default_stage, "production"
 
 require "capistrano/ext/multistage"
