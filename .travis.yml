@@ -32,10 +32,11 @@ before_deploy:
 - eval "$(ssh-agent -s)"
 - chmod 600 /tmp/deploy_rsa
 - ssh-add /tmp/deploy_rsa
+- rvm use 1.9.3 --install --binary --fuzzy
 deploy:
   provider: script
   skip_cleanup: true
-  script: bundle install --without development production && bundle exec cap travisci deploy
+  script: ruby -v && bundle install --without development production test && bundle exec cap travisci deploy
   on:
     branch: sprint
     rvm: 1.9.3
