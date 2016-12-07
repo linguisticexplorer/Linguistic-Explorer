@@ -156,6 +156,7 @@ group :test, :development do
   gem 'rails_best_practices', "~>1.15.4"
   gem 'simplecov', '~> 0.7.1', :require => false
 
+  gem 'knapsack', '~> 1.13.1'
 end
 
 group :development do
