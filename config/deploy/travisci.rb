@@ -1,9 +1,8 @@
 # SSH Settings
 set :user     , "deploy"
 set :use_sudo , true
-
 ssh_options_hash = { :forward_agent => true }
-ssh_options_hash[:keys] = ["tmp/deploy_rsa"] if File.exist?("tmp/deploy_rsa")
+ssh_options_hash[:keys] = ["/tmp/deploy_rsa"] if File.exist?("/tmp/deploy_rsa")
 set :ssh_options, ssh_options_hash
 
 server "ec2-54-68-27-245.us-west-2.compute.amazonaws.com", :app, :web, :db, :primary => true
