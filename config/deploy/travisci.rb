@@ -15,3 +15,5 @@ set :branch,    "sprint"
 set :rvm_ruby_string, "2.1.2"
 
 set :deploy_to    , "/home/deploy/apps/#{application}"
+
+before 'deploy:update',  'deploy:check'
