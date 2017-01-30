@@ -149,15 +149,17 @@ module SearchResults
         attr_reader :lings, :prop
 
         def initialize(parent, child=nil, lings)
-          child_arr = []
-          if child
+          if child.nil? || (child.respond_to?(:empty?) && child.empty?) || (child.respond_to?(:size) && child.size == 1)
+            super parent, child
+          else
+            child_arr = []
             lings.each do |ling|
-              temp_child = child.find {|c| c.ling.name == ling.name }
+              temp_child = child.find {|c| !c.nil? && c.ling.name == ling.name }
               child_arr << temp_child
             end
+            child_arr = child if child_arr.empty?
+            super parent, child_arr
           end
-          child_arr = nil if child_arr.empty?
-          super parent, child_arr
           @lings = lings
           @prop  = parent.first.property.attributes
         end
