@@ -9,6 +9,14 @@ module SearchResults
 
         ling_ids = result.chosen_lings.sort
 
+        # If a property doesn't exist for a ling, create a nil LingsProperty
+        # as padding so we don't get false commons
+        vals_by_prop_ids.keys.each do |key|
+          (ling_ids - vals_by_prop_ids[key].collect{|d| "#{d.ling_id}" }).each do |ling_id|
+            vals_by_prop_ids[key] << LingsProperty.new(ling_id: ling_id.to_i)
+          end
+        end
+
         {}.tap do |groups|
           vals_by_prop_ids.each do |prop_id, props|
             # Ordered property values by lings grouped by LingsProperty:
