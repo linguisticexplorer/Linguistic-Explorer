@@ -56,7 +56,8 @@
   }
 
   function goToResourceURL(evt, resource, name){
-    window.location.href = '/groups/'+T.currentGroup+'/'+resource.type+'/'+resource.id;
+    var type = resource.type || 'lings';
+    window.location.href = '/groups/'+T.currentGroup+'/'+type+'/'+resource.id;
   }
 	
 	
