@@ -16,6 +16,8 @@
 
   function create(json){
     var resultsJson = json;
+    // Temporarily hardcode this, read from config file later
+    var ignoreProperties = ['latlong','ISO 639-3 Code'];
 
     function compareHeaders(){
       function mapLingName(el){
@@ -91,7 +93,8 @@
       $.each(oldRows, function (index, row){
         // pick common rows and put them in a commons property
         // pick diff rows and put them in a diff property  
-        table.rows[(row.common ? 'commons' : 'differents')].push(row);
+        if($.inArray( row.compare_property, ignoreProperties ) < 0  )
+          table.rows[(row.common ? 'commons' : 'differents')].push(row);
       });
       table.commons    = !!table.rows.commons.length;
       table.differents = !!table.rows.differents.length;
