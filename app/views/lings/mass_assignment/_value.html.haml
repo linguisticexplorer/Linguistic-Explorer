@@ -20,9 +20,7 @@
                   = radio_button_tag "value", "value_new"
                 %input#new_value.form-control{:type => "text", :name => "new_value", :placeholder => "or Add a New One"}
     #value-sureness-box.alert.alert-info
-      %h4 To save this value think:
-      %h4
-        %small How sure are you about the value set?
+      %h4 Please indicate sureness to save:
       #value-sureness.form-group{:name => "value_sureness", :style => "margin-top: 25px; padding-bottom: 10px;"}
         .btn-group.btn-group-justified
           .btn-group
@@ -31,7 +29,9 @@
             %button.btn.btn-default#sureness_revisit{ :name => "value_sureness", :value => "revisit", :class => "#{'active' if @ling_properties && @ling_properties.select {|lp| lp.sureness == "revisit"}.any?}" } Revisit
           .btn-group
             %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{'active' if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need Help
-      .pull-right{:style => "margin-top: -5px;"}
+      .pull-left{:style => "margin-top: -5px; font-size: 20px;"}
+        .red
+          = icon 'exclamation-circle', 'Not yet saved', :id => "value-not-saved"
         .green.hide.strong
           = icon 'check', 'Saved', :id => "value-saved-success"
         .red.hide.strong

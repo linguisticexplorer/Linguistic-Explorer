@@ -95,25 +95,18 @@
             %p Here will appear a "sureness" heatmap
 
 .row
-  #pagination_table
-    %h3= current_group.lings_property_name.pluralize
-    #pagination_top.apple_pagination
-      / render page links in the view:
-      = alphabetical_paginate @params
-    %table.show-table.table.table-bordered.table-striped.table-hover
-      %thead
-        %th= current_group.ling_name_for_depth(@property.depth)
-        %th= current_group.lings_property_name
-        %th Creator
-      %tbody
-        - @values.each do |value|
-          %tr
-            %td= link_to value.ling.name, [current_group, value.ling]
-            %td= link_to value.value, [current_group, value]
-            %td= (value.creator ? value.creator.name : "")
-    #pagination_bottom.apple_pagination
-      / render page links in the view:
-      = alphabetical_paginate @params
+  %h3= current_group.lings_property_name.pluralize
+  %table.show-table.table.table-bordered.table-striped.table-hover
+    %thead
+      %th= current_group.ling_name_for_depth(@property.depth)
+      %th.col-md-1= current_group.lings_property_name
+      %th Creator
+    %tbody
+      - @values.each do |value|
+        %tr
+          %td= link_to(value.ling.name, [current_group, value.ling],{:class => 'pull-left'})
+          %td= link_to(value.value, [current_group, value],{:class => 'pull-left'})
+          %td= (value.creator ? value.creator.name : "")
 
 
 #lingsModal.modal.fade{ :tabindex => "-1", :role => "dialog", :aria => { :labelledby => "lingsModal", :hidden => "true" }}

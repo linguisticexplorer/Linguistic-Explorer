@@ -5,6 +5,11 @@
 %table.show-table.table.table-bordered.table-striped.table-hover
   %tr
     %th.col-md-3 Name
+    %th.col-md-2
+      Completeness
+      .pull-right
+        %a{:href => "#", :rel => "tooltip", :title => "This is a measure of how many properties have been set for the given language", :data => {:toggle => "tooltip", :animation => "true"} }
+          = icon 'question-circle', '', :class => "fa-15x"
     - if current_group.has_depth?
       %th
         = current_group.ling_name_for_depth(depth - 1)
@@ -12,17 +17,18 @@
       - storable_keys.each do |key|
         %th
           = key.humanize
-    %th.col-md-2
-      Completeness
-      .pull-right
-        %a{:href => "#", :rel => "tooltip", :title => "This is a measure of how many properties have been set for the given language", :data => {:toggle => "tooltip", :animation => "true"} }
-          = icon 'question-circle', '', :class => "fa-15x"
     - if can_see_header? [:update, :destroy], lings
       %th.col-md-2 Actions
   - lings.each do |ling|
     %tr
       %td
-        = link_to ling.name, [current_group, ling]
+        = link_to( ling.name, [current_group, ling], {:class => 'pull-left'})
+      - percentage = ling.info
+      - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage} %"
+      %td{:class => "text-center"}
+        .strong
+          %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
+            =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
       - if current_group.has_depth?
         %td
           = (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent
@@ -30,13 +36,6 @@
         - storable_keys.each do |key|
           %td
             = ling.stored_value(key)
-
-      - percentage = ling.info
-      - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage} %"
-      %td{:class => "text-center"}
-        .strong
-          %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
-            =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
       - if can_see_header? [:update, :destroy], lings
         %td{:id => table_actions_id(ling.name)}
           - if can_see? :update, ling
