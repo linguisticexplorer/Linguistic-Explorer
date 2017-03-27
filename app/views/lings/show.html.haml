@@ -130,16 +130,17 @@
       = will_paginate @values, renderer: BootstrapPagination::Rails
     %table.show-table.table.table-bordered.table-striped.table-hover
       %thead
-        %th.col-md-2= current_group.property_name
-        %th.col-md-2= current_group.lings_property_name
+        %th.col-md-1= current_group.property_name
+        %th.col-md-1= current_group.lings_property_name
         %th.col-md= current_group.example_name.pluralize
         - if can_see? :update, @ling
           %th.col-md-2 Actions
       %tbody
-        - @values.each do |value|
+        - @ordered_values.each do |value|
+          - next if value.property.name.eql?('latlong') || value.property.name.downcase.start_with?('iso')
           %tr
-            %td= link_to value.property.name, [current_group, value.property]
-            %td= value.value
+            %td.align-left= link_to value.property.name, [current_group, value.property]
+            %td.align-left= value.value
             - elps = current_group.examples_lings_properties.find_all_by_lings_property_id(value.id)
             -if elps.any?
               %td.align-left
