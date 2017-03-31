@@ -19,6 +19,7 @@
           = key.humanize
     - if can_see_header? [:update, :destroy], lings
       %th.col-md-2 Actions
+  - can_see_header = can_see_header?([:update, :destroy], lings)
   - lings.each do |ling|
     %tr
       %td
@@ -36,7 +37,7 @@
         - storable_keys.each do |key|
           %td
             = ling.stored_value(key)
-      - if can_see_header? [:update, :destroy], lings
+      - if can_see_header
         %td{:id => table_actions_id(ling.name)}
           - if can_see? :update, ling
             = link_to edit_group_ling_path(current_group, ling), :class => 'btn btn-default', :rel => "tooltip", :title => "Edit", :data => {:toggle => "tooltip", :animation => "true"} do
