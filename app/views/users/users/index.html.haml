@@ -1,0 +1,16 @@
+%h1 Users
+%table.show-table.table.table-bordered.table-striped.table-hover
+  %thead
+    %tr
+      %th.col-md-1= "First Name"
+      %th.col-md-1= "Last Name"
+      %th.col-md-1= "E-mail"
+      %th.col-md-1= "User Type"
+  %tbody
+    - @user_array.each do |o|
+      %tr
+        %td
+          = link_to o.name, o
+        %td= o.name
+        %td= o.email
+        %td= o.access_level

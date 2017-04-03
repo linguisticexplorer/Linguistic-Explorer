@@ -1,0 +1,88 @@
+%h1 Profile view: #{@user.name.capitalize}
+#form-container
+  =form_for(@user, url: {action: "update"}, html: {class: "form-horizontal"}) do
+    %fieldset
+      .tab-content
+        / Tabs of snippets go here
+        #input.tab-pane.active
+          .component
+            / Text input
+            .form-group
+              %label.strong.col-md-4.control-label{for: "name"} Name
+              .col-md-4
+                %input#name.form-control.input-md{name: "name", placeholder: "#{@user.name}", style: "cursor: auto;", type: "text"}
+                .component
+            / Text input
+            .form-group
+              %label.strong.col-md-4.control-label{for: "email"} Email
+              .col-md-4
+                %input#email.form-control.input-md{name: "email", placeholder: "#{@user.email}", style: "cursor: auto;", type: "text"}
+          .component
+            / Button Drop Down
+            .form-group
+              %label.strong.col-md-4.control-label{for: "access_level"} Access Level
+              .col-md-4
+                = select("access_level", "level", options_for_select(["#{@user.access_level}","Admin"]), {},{ :class => 'form-control col-md-12'})
+          .component
+            / Button Drop Down
+            .form-group
+              %label.strong.col-md-7.control-label{for: "submit"}
+              .col-md-1
+                %button.col-md-12.btn.btn-default{type: "submit"} Submit
+%h1 Remove Roles
+
+#form-container
+  =form_for(@user, url: {action: "update"}, html: {class: "form-horizontal"}) do
+    %fieldset
+      .tab-content
+        / Tabs of snippets go here
+        #input.tab-pane.active
+        - @memberships.each do |membership|
+          .component
+            / Text input
+            .form-group
+              %label.strong.col-md-6.control-label{for: "name"}= membership[:role].capitalize + ' on ' + membership[:group_name].capitalize
+              .col-md-2.checkbox
+                %input#blankCheckbox{:type => "checkbox", :name => "remove[]", :value => membership[:id]}/
+        - @roles.each do |role|
+          .component
+            / Text input
+            .form-group
+              %label.strong.col-md-6.control-label{for: "name"}= role[:role].capitalize + ' on ' + role[:ling_name].capitalize
+              .col-md-2.checkbox
+                %input#blankCheckbox{:type => "checkbox", :name => "remove_role[]", :value => role[:id]}/
+        .component
+          / Button Drop Down
+          .form-group
+            %label.strong.col-md-7.control-label{for: "submit"}
+            .col-md-1
+              %button.btn.btn-default{type: "submit"}Remove
+
+
+%h1 Add Roles
+
+#form-container
+  =form_for(@user, url: {action: "update"}, html: {class: "form-horizontal"}) do
+    %fieldset
+      .tab-content
+        #input.tab-pane.active
+          .component
+            .form-group
+              / Button Drop Down
+              %label.strong.col-md-4.control-label{for: "access_level"} Access Level
+              .col-md-2
+                = select("membership", "level", options_for_select(@membership_levels), {},{ :class => 'form-control col-md-12'})
+              .col-md-2
+                = select("resource", "id", options_for_select(@group_names), {},{ :class => 'form-control col-md-12'})
+            .form-group
+              %label.strong.col-md-4.control-label{for: "expert_level"} Expert Level
+              .col-md-2
+                = select("expert", "level", options_for_select(@role_levels), {},{ :class => 'form-control col-md-12'})
+              .col-md-2
+                = select("ling", "id", options_for_select(@role_resources), {},{ :class => 'form-control col-md-12'})
+        .component
+          / Button Drop Down
+          .form-group
+            %label.strong.col-md-7.control-label{for: "submit"}
+            .col-md-1
+              %button.btn.btn-default{type: "submit"}Add
