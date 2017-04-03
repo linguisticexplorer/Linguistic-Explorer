@@ -4,11 +4,19 @@ LinguisticExplorer::Application.routes.draw do
 
   root        :to => 'home#index'
 
+  devise_scope :user do
+    get     "users" => 'users/users#index'
+    get     "users/:id" => 'users/users#show', :as => :user
+    get     "users/:id/edit" => 'users/users#edit'
+    put     "users/:id" => 'users/users#update'
+    delete  "users/:id" => 'users/users#destroy'
+  end
+
   # JSON Endpoints
   get "/groups/list" => "groups#list", :as => "groups_list"
   # get "lings/list"   => "lings#all_list", :as => "lings_list"
   # get "properties/list" => "properties#all_list", :as => "properties_list"
-  
+
   get "/groups/:group_id/lings/depth/:depth" => "lings#depth", :as => "group_lings_depth"
   get "/groups/:group_id/lings/depth/:depth/list" => "lings#by_depth"
   get "/groups/:group_id/lings/:id/list" => "lings#by_depth"
