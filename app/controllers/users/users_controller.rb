@@ -14,14 +14,18 @@ class Users::UsersController  < ApplicationController
     @user = User.find(params[:id])
 
     if params[:resource]
-      member = Membership.where( member_id: @user.id, group_id: params[:resource][:id]).first || Membership.new(member_id: @user.id)
+      if params[:resource][:id].blank?
+        member = Membership.where(member_id: @user.id).first || Membership.new(member_id: @user.id)
+      else
+        member = Membership.where( member_id: @user.id, group_id: params[:resource][:id]).first || Membership.new(member_id: @user.id)
+      end
       if !params[:ling][:id].blank?
-         member.add_expertise_in Ling.find_by_id(params[:ling][:id])
+        member.add_expertise_in Ling.find_by_id(params[:ling][:id])
       else
         member.group_id = params[:resource][:id] unless params[:resource][:id].blank?
         member.level = params[:membership][:level] unless params[:resource][:id].blank?
       end
-      member.save
+      member.save!
     end
 
     if params[:remove]
