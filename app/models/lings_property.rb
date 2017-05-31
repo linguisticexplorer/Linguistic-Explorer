@@ -97,7 +97,7 @@ class LingsProperty < ActiveRecord::Base
   # This method is used to extract the ling and discover if the user is expert of that ling.
   # The expert can't delete ling properties of a group
   def get_valid_resource
-    false
+    ling
   end
 
   private

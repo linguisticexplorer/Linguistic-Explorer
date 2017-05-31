@@ -83,6 +83,6 @@ class Users::UsersController  < ApplicationController
   end
 
   def require_admin
-    render :unauthorized unless current_user.admin?
+    render :unauthorized unless current_user && current_user.admin?
   end
 end
