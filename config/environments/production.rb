@@ -49,9 +49,19 @@ LinguisticExplorer::Application.configure do
   # config.action_mailer.raise_delivery_errors = false
 
   # needed for Devise and Postfix
-  config.action_mailer.default_url_options = {
-      :host => 'linguisticexplorer.terraling.com',
-      :enable_starttls_auto => false
+  #config.action_mailer.default_url_options = {
+  #    :host => 'linguisticexplorer.terraling.com',
+  #    :enable_starttls_auto => false
+  #}
+  config.action_mailer.default_url_options = { :host => 'test.terraling.com' }
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.gmail.com',
+    port:                 587,
+    domain:               'terraling.com',
+    user_name:            '',
+    password:             '',
+    authentication:       :plain,
+    enable_starttls_auto: true
   }
 
   # Enable threaded mode
