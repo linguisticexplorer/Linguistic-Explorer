@@ -165,3 +165,5 @@ group :development do
   gem 'awesome_print', require:'ap'
   gem 'meta_request'
 end
+
+gem 'redcarpet'
