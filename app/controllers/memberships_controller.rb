@@ -150,10 +150,10 @@ class MembershipsController < GroupDataController
       role = selected_role
 
       if(Membership::ROLES.include?(level))
-        level = Membership::ACCESS_LEVELS.MEMBER
+        level = 'member'
         role  = selected_role
       end
-      
+
       attributes[:level] = level
       attributes[:member_id] = m_params[:member_id] if m_params[:member_id]
 
