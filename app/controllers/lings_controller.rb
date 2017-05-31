@@ -124,7 +124,7 @@ class LingsController < GroupDataController
     end
 
 
-    is_authorized? :manage, fresh, true if fresh
+    is_authorized?(:update, fresh, true) if fresh
 
     prop_id = params[:property_id]
     prop_value = params[:value] == "value_new" ? params[:new_value] : params[:value]
@@ -145,7 +145,7 @@ class LingsController < GroupDataController
       end
     end
 
-    is_authorized? :manage, fresh, true
+    is_authorized? :update, fresh, true
 
     respond_to do |format|
       if fresh.save!
