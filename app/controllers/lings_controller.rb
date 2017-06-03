@@ -41,7 +41,7 @@ class LingsController < GroupDataController
     is_authorized? :read, @ling
 
     @values = @ling.lings_properties.order(:property_id).paginate(:page => params[:page])
-    @ordered_values = @ling.lings_properties.sort_by {|v| v.property.name }.paginate(:page => params[:page])
+    @ordered_values = @ling.lings_properties.sort_by {|v| (v.property.nil?) ? "" :  v.property.name }.paginate(:page => params[:page])
 
     @values_count = @ling.lings_properties.count(:id)
     load_infos(@ling)
