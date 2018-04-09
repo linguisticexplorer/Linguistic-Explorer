@@ -156,13 +156,23 @@ class SearchesController < GroupDataController
   end
 
   def perform_search(offset=0)
+    result_groups = {}
+    if not params[:result_groups].nil?
+      params[:result_groups].each do |key, value|
+        if value.blank?
+          result_groups[key] = []
+        else
+          result_groups[key] = value
+        end
+      end
+    end
     Search.new do |s|
       s.creator = current_user
       s.group         = current_group
       s.query         = params[:search]
       #the only way to calculate a compare search is passing the result group param,
       #without it compare search will calculate a wrong result.
-      s.result_groups = params[:result_groups]
+      s.result_groups = result_groups
       s.offset        = offset
     end
   end

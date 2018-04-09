@@ -96,7 +96,7 @@
           setBar(100, "An Error occurred on the server");
         } else {
           // show something
-          $('#results_loading_text').text( "The search it's taking longer than expected...");
+          $('#results_loading_text').text( "The search is taking longer than expected...");
         }
       }
     }
