@@ -155,14 +155,34 @@ class SearchesController < GroupDataController
     redirect_to :action => :new
   end
 
+  def convert_result_groups(params)
+    # If result_groups hash is not nil, converts any empty string values into
+    # empty lists. This is to work around a bug in how Rails munges JSON.
+    if not params[:result_groups].nil?
+      result_groups = {}
+      params[:result_groups].each do |key, value|
+        if value.blank?
+          result_groups[key] = []
+        else
+          result_groups[key] = value
+        end
+      end
+    else
+      result_groups = nil
+    end
+    return result_groups
+  end
+
   def perform_search(offset=0)
+    result_groups = convert_result_groups params
+
     Search.new do |s|
       s.creator = current_user
       s.group         = current_group
       s.query         = params[:search]
       #the only way to calculate a compare search is passing the result group param,
       #without it compare search will calculate a wrong result.
-      s.result_groups = params[:result_groups]
+      s.result_groups = result_groups
       s.offset        = offset
     end
   end

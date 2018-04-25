@@ -5,6 +5,7 @@ module SearchResults
     def result_rows=(result_rows)
       self.result_groups = result_rows.group_by { |row| row.parent_id }
       self.result_groups.values.map! { |row| row.map! { |r| r.child_id }.compact! }
+      self.result_groups.each { |key, value| self.result_groups[key] = value.empty? ? nil : value }
       @search_comparison = true
     end
 
