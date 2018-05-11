@@ -223,28 +223,31 @@
 
       var colors_by_row = {};
 
-      //modified section
+      // associates a color with each id based on row
+      // if no color yet associated w/ a row, assign one
+      // works up to 20 colors.  Then we run out (TODO: fix) 
+      function getColorById(id){
+        if(!colors_by_row[rows_by_ling[id]]){
+          if(counter < 20){
+            colors_by_row[rows_by_ling[id]] = colors[counter++];
+          }
+        }
+        return colors_by_row[rows_by_ling[id]];
+      }
+
       function styler(entry) {
-        if(colors_by_row[rows_by_ling[entry.id]]) {
-          return {
-            markerColor: colors[colors_by_row[rows_by_ling[entry.id]]],
-            iconColor: 'white',
-            icon: 'info',
-            text: popups[entry.id]
-          }
-        } else if (++counter < 20) { //color for this row hasn't been assigned yet
-          colors_by_row[rows_by_ling[entry.id]] = counter;
-          return {
-            markerColor: colors[counter],
-            iconColor: 'white',
-            icon: 'info',
-            text: popups[entry.id]
-          }
-        } else { //there are no colors left for this row to use.  oh no.
-          return null;
-        } 
-    }
-    //end modified section
+        var entry_color = getColorById(entry.id);
+        if (entry_color == null) {
+          return null
+        }
+        return {
+          markerColor: entry_color,
+          iconColor: 'white',
+          icon: 'info',
+          text: popups[entry.id]
+        };
+      } 
+ 
     return styler;
   }
 
