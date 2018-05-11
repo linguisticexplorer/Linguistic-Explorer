@@ -31,15 +31,12 @@
     //associated with that row.  This allows us to color
     //lings based on their row in getStyler().
     var rows_by_ling = {}
-    if (resultsJson) {
-      var json_rows = resultsJson.rows;
-      for (var i = 0; i < json_rows.length; i++) {
-	var row_child = json_rows[i].child;
-        for (var j = 0; j < row_child.length; j++) {
-          rows_by_ling[row_child[j].lings_property.ling_id] = i;
-        }
-      }
-    }
+    resultsJson.rows.forEach( function(row, i){
+      row.child.forEach( function(child){
+        rows_by_ling[child.lings_property.ling_id] = i;
+      });
+    });    
+
 
     function bindLingsModal(){
       // dynamically bind count links to show a modal with the lings
