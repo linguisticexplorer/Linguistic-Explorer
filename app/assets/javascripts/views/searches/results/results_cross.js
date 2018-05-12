@@ -26,6 +26,18 @@
       setupModal = true;
     }
 
+    //hash-like object to get the lings colored correctly.
+    //hashes the rows of the cross search by ling-ids
+    //associated with that row.  This allows us to color
+    //lings based on their row in getStyler().
+    var rows_by_ling = {}
+    resultsJson.rows.forEach( function(row, i){
+      row.child.forEach( function(child){
+        rows_by_ling[child.lings_property.ling_id] = i;
+      });
+    });    
+
+
     function bindLingsModal(){
       // dynamically bind count links to show a modal with the lings
       $(document).on('click', '[id^="lings_cross_"]', showLingsModal);
@@ -206,16 +218,35 @@
 
       var popups = preparePopup(resultsJson);
 
-      function styler(entry){
-        return counter < 20 ? {
-          markerColor: colors[counter++],
+      var colors_by_row = {};
+
+      // associates a color with each id based on row
+      // if no color yet associated w/ a row, assign one
+      // works up to 20 colors.  Then we run out (TODO: fix) 
+      function getColorById(id){
+        if(!colors_by_row[rows_by_ling[id]]){
+          if(counter < 20){
+            colors_by_row[rows_by_ling[id]] = colors[counter++];
+          }
+        }
+        return colors_by_row[rows_by_ling[id]];
+      }
+
+      function styler(entry) {
+        var entry_color = getColorById(entry.id);
+        if (entry_color == null) {
+          return null
+        }
+        return {
+          markerColor: entry_color,
           iconColor: 'white',
           icon: 'info',
           text: popups[entry.id]
-        } : null;
-      }
-      return styler;
-    }
+        };
+      } 
+ 
+    return styler;
+  }
 
     function preparePopup(json){
       // get the template now
