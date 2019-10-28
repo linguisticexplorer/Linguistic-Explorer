@@ -110,6 +110,39 @@ class LingsController < GroupDataController
       .includes(:ling)
       .to_a.map {|lp| [lp.ling.name, lp.value]}
 
+require 'redcarpet'
+    options = {
+      filter_html:     true,
+      hard_wrap:       true,
+      link_attributes: {
+        rel: 'nofollow',
+        target: "_blank"
+      },
+      space_after_headers: true,
+      fenced_code_blocks: true
+    }
+
+    extensions = {
+      autolink:           true,
+      superscript:        true,
+      disable_indented_code_blocks: true,
+      tables: true
+    }
+
+    renderer = Redcarpet::Render::HTML.new(options)
+    markdown = Redcarpet::Markdown.new(renderer, extensions)
+
+
+
+
+
+    if @property.description.present? && @property.description != ""
+      @output = markdown.render(@property.description)
+      @output = @output.gsub("<em>","<em style='font-style: italic;'>").gsub(/<br>\s*<br>/,'<br>').gsub("<ol>","<ol style=\"list-style-type: decimal; padding-left: 40px;\">")
+      @output = @output.gsub("<table>","<table style='border-spacing: 10px; border-collapse: separate;'>").gsub("<thead>",'<thead style="font-weight: bold;">').html_safe
+    end
+
+
   end
 
   def supported_submit_values
