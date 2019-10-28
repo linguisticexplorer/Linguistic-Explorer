@@ -158,9 +158,8 @@
     }
 
     function removeLanguages() {
-      $('#selected-lings li').each( function () {
-          var item = $(this);
-          item.remove();
+      document.querySelectorAll("#selected-lings li").forEach(function(ling) {
+          ling.remove();
       });
       // reset the cache
       resourcesDict = {};
@@ -168,7 +167,7 @@
       checkButtons(false);
 
 
-      evt.preventDefault();
+      // evt.preventDefault();
     }
 
     function setupTypeahead(){
