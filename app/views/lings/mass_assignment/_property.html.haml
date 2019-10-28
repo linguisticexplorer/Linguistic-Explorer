@@ -3,23 +3,23 @@
 #property-container
   #prop-name{:data => {:prop_id => "#{@property.id || 0}", :ling_id => "#{@ling.id || 0}", :lp_id => "#{(@ling_properties && @ling_properties.any?) ? @ling_properties[0].id : 0}"}}
     %h3= property.name
-  .row{:style => "margin-top: 15px;"}
-    #prop-descrip.col-md-11{:style=> "min-height: 150px; max-height: 250px; *height: 150px; overflow-y: auto;"}
-      %h2 Property Description
+  .row{:style => "margin-top: 15px;height: 400px;"}
+    #prop-descrip.col-md-11{:style=> "min-height: 400px; max-height: 400px; *height: 250px; overflow-y: auto;"}
+      -#%h2 Property Description
       %p
-        - if property.description
-          = property.description.html_safe
+        - if @output
+          = @output.html_safe
         - else
           no property description available
-  .row{:style => "margin-top: 5px;"}
-    .col-md-11
-      %a#prop-modal.btn.btn-default.btn-sm.pull-right{:href => "#"}
-        = icon 'expand', 'Show all'
+  -#.row{:style => "margin-top: 5px;"}
+  -#  .col-md-11
+  -#    %a#prop-modal.btn.btn-default.btn-sm.pull-right{:href => "#"}
+  -#      = icon 'expand', 'Show all'
   #prop-relations.row
     .col-md-11
       %h4
         Value in other #{current_group.ling_name_for_depth(@depth).pluralize.downcase}
-      .content-box
+      .content-box{:style => "height: 100px;"}
         - @relations.each do |lp|
           %b>= lp[0]
           \: #{lp[1]}
