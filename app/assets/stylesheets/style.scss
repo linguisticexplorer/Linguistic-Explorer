@@ -319,6 +319,14 @@ div#languages-container.hidden {
   }
 }
 
+.nav-tabs {
+  border: none;
+}
+
+.nav-tabs li a:hover {
+  border-color: #00000000;
+}
+
 #analysis {
   padding-bottom:14px;
 }
@@ -453,9 +461,17 @@ div#languages-container.hidden {
   margin: 10px 0 10px 0;
 }
 
+.modal-body .row {
+  padding: 3% 5%;
+}
+
 // .table tbody tr > td.success {
 //   background-color: #dff0d8 !important;
 // }
+
+td {
+  vertical-align: middle !important;
+}
 
 
 // These guys here need some bootstrap variables
