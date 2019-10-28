@@ -47,6 +47,13 @@ class Users::UsersController  < ApplicationController
     render :show
   end
 
+
+  def destroy
+    User.delete(params[:id]) unless params[:id].eql? current_user.id
+    @user_array = User.all.to_a
+    render :index
+  end
+
   private
 
   def get_data
