@@ -5,11 +5,12 @@
     .form-group
       = label_tag search_options_id(ling_label), ling_label, :class => "col-md-4 control-label"
       .controls.col-md-8
-        = f.select :lings, @search.ling_options(depth), {}, |
+        = f.select :lings, options_for_select( @search.ling_options(depth), @selected[depth]), {}, |
           :name => search_field_name(:lings, depth),        |
           :class => "form-control",     |
           :multiple => true,                                |
-          :id => search_options_id(ling_label)              |
+          :id => search_options_id(ling_label),             |
+          :readonly => @disabled                            |
     .form-group
       = label_tag search_text_id(keyword_label), keyword_label, :class => "col-md-4 control-label"
       .controls.col-md-8

@@ -14,6 +14,15 @@ class SearchesController < GroupDataController
 
     is_authorized? :search, @search
 
+    @selected = {}
+    
+    if params["search"].present?
+      @disabled = true
+      params["search"]["lings"].each do |key,values|
+        @selected[key.to_i] = values.map{ |v| v.to_i }  
+      end
+    end
+
     respond_with(@search) do |format|
       format.html
       format.js
@@ -43,6 +52,8 @@ class SearchesController < GroupDataController
     end
 
     is_authorized? :search, @search
+
+    @search_lings = { "search" => { "lings" => params["search"]["lings"] } }
 
     is_valid_search?(params[:search]) do
       # perhaps a switch for non-javascript things here?
@@ -90,6 +101,8 @@ class SearchesController < GroupDataController
     is_authorized? :search, @search
 
     @query = @search.query
+    @search_lings = { "search" => { "lings" => @query["lings"] } }
+
 
     respond_with(@search) do |format|
       format.html  { render :template => 'searches/preview' }
