@@ -12,7 +12,7 @@
           = icon 'question-circle', '', :class => "fa-15x"
     - if current_group.has_depth?
       %th
-        = current_group.ling_name_for_depth(depth - 1)
+        = current_group.ling_name_for_depth(depth - 1) + "(s)"
     - if any_storable_values_available
       - storable_keys.each do |key|
         %th

@@ -10,7 +10,7 @@
       - new_ling = Ling.new{|l| l.group = current_group}
       - if can_see? :create, new_ling
         .col-md
-          = link_to_new_group_ling new_ling, @depth, :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{current_group.ling_name_for_depth(@depth)}", :data => {:toggle => "tooltip", :animation => "true" } do
+          = link_to_new_group_ling new_ling, @depth, :class => "btn btn-success", :rel => "tooltip", :title => "New #{current_group.ling_name_for_depth(@depth).downcase}", :data => {:toggle => "tooltip", :animation => "true" } do
             = icon "plus"
 #pagination_table
   = render :partial => "depth_table", :locals => {:lings => @lings, :depth => @depth, :paginate_params => @params }

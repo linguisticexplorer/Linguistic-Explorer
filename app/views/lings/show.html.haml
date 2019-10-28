@@ -19,7 +19,7 @@
             = link_to supported_set_values_group_ling_path(current_group, @ling) do
               = icon 'edit', "#{current_group.lings_property_name.pluralize}"
 %h1
-  = "#{@ling.grouped_name} :"
+  = "#{@ling.grouped_name}:"
   = @ling.name
   // show the creator on the right here
   -if @ling.creator
@@ -38,13 +38,13 @@
           .row
             .col-md-12
               .form-group
-                %label{:for => "ling-search-field"} Add #{current_group.ling_name_for_depth(@ling.depth).pluralize} to compare with #{@ling.name}
+                %label{:for => "ling-search-field"} Add #{current_group.ling_name_for_depth(@ling.depth).pluralize.downcase} to compare with #{@ling.name}
                 %input#ling-search-field.form-control{:autocomplete => "off", :placeholder => "Loading...", :type => "text"}
     .row
       .col-md-6
         %label.control-label
-          Selected Lings (
-          %a#remove-items{:href => "#"} Clean
+          Selected lings (
+          %a.remove-items{:href => "#"}> Remove all
           )
         .controls
           %ul#selected-lings
@@ -82,19 +82,18 @@
               %tr
                 %td
                   %b
-                    = current_group.ling0_name
-                    \:
+                    = current_group.ling0_name + ":"
                 %td
                   = link_to @ling.parent.name, group_ling_path(current_group, @ling.parent)
             - elsif @ling.depth == 0 && !@ling.children.empty?
               %tr
                 %td
                   %b
-                    = current_group.ling1_name.pluralize
-                    \:
+                    = current_group.ling1_name.pluralize + ":"
                 %td
-                  - @ling.children.each do |child|
-                    = link_to child.name, group_ling_path(current_group, child)
+                  - @ling.children.each_with_index do |child, i|
+                    - suffix = i < @ling.children.size - 1 ? ", " : ""
+                    = (link_to child.name, group_ling_path(current_group, child)) + suffix
             %tr
               %td
                 %b Values set:

@@ -11,7 +11,9 @@
   // Search section
   - if user_signed_in?
     %li.dropdown.black-dropdown
-      = link_to "Search", [:new, @group, :search]
+      = link_to [:new, @group, :search] do
+        Search
+        %b.caret
       %ul.dropdown-menu{"aria-labelledby" => "dLabel", :role => "menu"}
         %li= link_to 'Advanced Search', [:new, @group, :search]
         %li= link_to 'History', [@group, :searches]
