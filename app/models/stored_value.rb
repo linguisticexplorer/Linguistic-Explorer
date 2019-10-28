@@ -11,7 +11,6 @@ class StoredValue < ActiveRecord::Base
   # validates_presence_of :key, :value, :storable
   # validates_existence_of :storable
   validates :key, :presence => true
-  validates :value, :presence => true
   validates :storable, :presence => true, :existence => true
   validate :key_is_allowed_for_storable
 
