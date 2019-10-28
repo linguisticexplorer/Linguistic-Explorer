@@ -66,6 +66,8 @@ class LingsController < GroupDataController
     prop_ids = @properties.map(&:id)
     @preexisting_values = @ling.lings_properties.includes(:property).select {|lp| prop_ids.include? lp.property_id }
     @exists = true
+    
+    @creators = User.all.map { |user| [ user.name.capitalize ,user.id ] }
 
     if params[:prop_id]
       session[:prop_id] ||= params[:prop_id] if params[:prop_id]

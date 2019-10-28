@@ -15,11 +15,17 @@ class ApplicationController < ActionController::Base
   end
 
   def is_authorized?(action, resource, expertizeNeeded=false)
+
     # Use Cancan
     authorize! action, resource
     # Use Rolify if requested
+
+
     if expertizeNeeded
-      raise Exceptions::AccessDenied unless current_user && (current_user.admin? || current_user.group_admin_of?(current_group) || current_user.is_expert_of?(resource))
+      unless current_user && (current_user.admin? || current_user.group_admin_of?(current_group) || current_user.is_expert_of?(resource))
+
+        raise Exceptions::AccessDenied
+      end
     end
   end
 

@@ -62,7 +62,7 @@
             .thumbnail.dashboard-box
               #membership_settings.pull-right
                 - if can_see? :create, Membership.new{|p| p.group = current_group}
-                  = link_to new_group_membership_path(current_group), :class => "btn btn-success", :rel => "tooltip", :title => "New Membership", :data => {:toggle => "tooltip", :animation => "true"} do
+                  = link_to new_group_membership_path(current_group), :class => "btn btn-success", :rel => "tooltip", :title => "New Membership", :data => {:toggle => "tooltip", :animation => "true", :placement => "right"} do
                     = icon "plus"
               %a.caption{:href=> group_memberships_path(@group) }
                 %h1= @group.members_in_group

@@ -54,8 +54,10 @@ class Users::UsersController  < ApplicationController
     @memberships = []
     memberships.each do |membership|
       hash = {}
+      next if membership.id.nil? or membership.role.nil? or membership.group_id.nil?
       hash[:id] = membership.id
-      hash[:group_name] = Group.find_by_id(membership.group_id).name
+      hash[:group_name] = ""
+      hash[:group_name] = Group.find_by_id(membership.group_id).name if Group.find_by_id(membership.group_id)
       hash[:role] = membership.role
       @memberships << hash
     end
@@ -74,9 +76,10 @@ class Users::UsersController  < ApplicationController
 
     group_id_member = []
     memberships.each do |membership|
+      next if membership.group_id.nil?
       group_id_member << Group.find_by_id(membership.group_id)
     end
-
+    group_id_member = group_id_member.compact
 
     @role_resources = [['','']] + (group_id_member.collect { |group| group.lings.collect {|d| {d.name => d.id}} }.flatten.collect{|s| s.to_a.flatten})
 
