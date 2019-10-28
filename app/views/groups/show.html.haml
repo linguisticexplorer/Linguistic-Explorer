@@ -22,9 +22,6 @@
               - if can_see? :edit, @group
                 = link_to edit_group_path(@group), :class => "btn btn-default", :rel => "tooltip", :title => "Edit Group", :data => {:toggle => "tooltip", :animation => "true"}  do
                   = icon 'edit'
-              - if can_see? :destroy, @group
-                = link_to [current_group], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
-                  = icon 'trash-o'
   #intro
     .row
       .col-md-12
