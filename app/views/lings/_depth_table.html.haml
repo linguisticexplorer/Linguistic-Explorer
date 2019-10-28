@@ -23,20 +23,29 @@
   - lings.each do |ling|
     %tr
       %td
-        = link_to( ling.name, [current_group, ling], {:class => 'pull-left'})
+        = link_to( ling.name, [current_group, ling])
       - percentage = ling.info
-      - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage} %"
+      - label = "#{ling.info < 100 ? ling.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}"
       %td{:class => "text-center"}
         .strong
           %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
-            =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
+            %strong{:class => "#{number_to_text_class(percentage)}"} #{percentage}%
       - if current_group.has_depth?
-        %td
-          = (link_to ling.parent.name, group_ling_path(current_group, ling.parent)) if ling.parent
+        - if ling.parent
+          %td
+            = (link_to ling.parent.name, group_ling_path(current_group, ling.parent))
+        - elsif ling.children.size > 0
+          %td
+            - ling.children.each_with_index do |child, index|
+              - suffix = index < ling.children.size - 1 ? ", " : ""
+              = (link_to child.name, group_ling_path(current_group, child)) + suffix
+        - else
+          %td
+            = "No " + current_group.ling_name_for_depth(depth - 1).pluralize.downcase + " to display"
       - if any_storable_values_available
         - storable_keys.each do |key|
           %td
-            = ling.stored_value(key)
+            = ling.stored_value(key).html_safe
       - if can_see_header
         %td{:id => table_actions_id(ling.name)}
           - if can_see? :update, ling

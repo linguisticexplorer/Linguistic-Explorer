@@ -20,11 +20,11 @@
         - if current_group.categories.size > 1
           %td= link_to property.category.name, group_category_path(current_group, property.category)
         - percentage = property.info
-        - label = "#{property.info < 100 ? property.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}: #{percentage} %"
+        - label = "#{property.info < 100 ? property.info < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}"
         %td{:class => "text-center"}
           .strong
             %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
-              =icon number_to_icon_name(percentage), '', :class => "fa-2x #{number_to_text_class(percentage)}"
+              %strong{:class => "#{number_to_text_class(percentage)}"} #{percentage}%
         - if can_see_any? [:update,:destroy], property
           %td{:id => table_actions_id(property.name)}
             - if can_see? :update, property
