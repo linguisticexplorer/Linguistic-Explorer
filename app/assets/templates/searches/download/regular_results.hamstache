@@ -1,4 +1,4 @@
 {{#header.ling_0}}{{header.ling_0}}{{/header.ling_0}}{{#header.property_0}},{{header.property_0}}{{/header.property_0}}{{#header.value_0}},{{header.value_0}}{{/header.value_0}}{{#header.example_0}},{{header.example_0}}{{/header.example_0}}{{#header.ling_1}},{{header.ling_1}}{{/header.ling_1}}{{#header.property_1}},{{header.property_1}}{{/header.property_1}}{{#header.value_1}},{{header.value_1}}{{/header.value_1}}{{#header.example_1}},{{header.example_1}}{{/header.example_1}}
 {{#rows}}
-{{#ling_0}}{{ling_0}}{{/ling_0}}{{#property_0}},{{property_0}}{{/property_0}}{{#value_0}},{{value_0}}{{/value_0}}{{#example_0}},{{example_0}}{{/example_0}}{{#ling_1}},{{ling_1}}{{/ling_1}}{{#property_1}},{{property_1}}{{/property_1}}{{#value_1}},{{value_1}}{{/value_1}}{{#example_1}},{{example_1}}{{/example_1}}
+{{#ling_0}}{{ling_0}}{{/ling_0}}{{#property_0}},{{property_0}}{{/property_0}}{{#value_0}},{{value_0}}{{/value_0}}{{#example_0}},{{#list}}{{name}} {{/list}}{{/example_0}}{{#ling_1}},{{ling_1}}{{/ling_1}}{{#property_1}},{{property_1}}{{/property_1}}{{#value_1}},{{value_1}}{{/value_1}}{{#example_1}},{{#list}}{{name}} {{/list}}{{/example_1}}
 {{/rows}}
