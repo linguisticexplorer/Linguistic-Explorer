@@ -31,7 +31,7 @@ class Property < ActiveRecord::Base
   end
 
   def available_values
-    lings_properties.map {|lp| lp.value.downcase }.uniq
+    lings_properties.map {|lp| lp.value.downcase.strip }.uniq
   end
 
   def group_association_match
