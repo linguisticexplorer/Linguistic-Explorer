@@ -33,9 +33,10 @@ class Example < ActiveRecord::Base
 
   def store_value!(key_symbol_or_string, value_string)
     key = key_symbol_or_string.to_s
+    value_string = " " if value_string.blank?
     if curr = stored_values.with_key(key).first
       curr.value = value_string
-      curr.save
+      res = curr.save
     else
       StoredValue.create(:key => key, :value => value_string, :storable => self)
     end

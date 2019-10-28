@@ -7,7 +7,7 @@ class Ability
 
     # Doesn't need to have Example in this group.
     # If the user can edit a ling, he can also add, edit and remove examples
-    group_expert_data = [LingsProperty, ExamplesLingsProperty, Ling]
+    group_expert_data = [Example, LingsProperty, ExamplesLingsProperty, Ling]
 
     group_data = group_admin_data + group_member_data
 
@@ -34,7 +34,8 @@ class Ability
       # Cannot scope to specific instances, but at least let experts only pass
       # The expert can't delete or create ling but it can update the ling is expert for
       can     :update, group_expert_data,       :group_id => user.is_expert_for_groups
-
+      can     :create, Example,                 :group_id => user.is_expert_for_groups
+      can     :create, ExamplesLingsProperty,       :group_id => user.is_expert_for_groups
       # turn on all searches advanced features
       can :search, Search,        :group => { :privacy => Group::PUBLIC }
       
