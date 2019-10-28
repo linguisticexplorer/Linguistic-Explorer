@@ -1,0 +1,9 @@
+%h1 Group Activity
+%ul{ :style => "list-style: circle"}
+  - @list.each do |item|
+    - if item[:type].eql?(:example)
+      %li= "#{item[:user].name} updated #{link_to('Example', group_example_path(@group,item[:value].id))} at #{item[:value].updated_at.to_formatted_s(:long_ordinal)} ".html_safe
+    - if item[:type].eql?(:property)
+      %li= "#{item[:user].name} updated #{link_to('Property', group_property_path(@group,item[:value].id))} at #{item[:value].updated_at.to_formatted_s(:long_ordinal)} ".html_safe
+    - if item[:type].eql?(:ling)
+      %li= "#{item[:user].name} updated #{link_to('Ling', group_ling_path(@group,item[:value].id))} at #{item[:value].updated_at.to_formatted_s(:long_ordinal)} ".html_safe

@@ -88,6 +88,49 @@ class GroupsController < ApplicationController
     end
   end
 
+
+  def activity
+    @group = Group.find(params[:id])
+    is_authorized? :manage, @group
+    @list = []
+
+        Example.where("updated_at between date_sub(now(),INTERVAL 2 WEEK) and now() AND group_id = #{params[:id]}").each do |example|
+      next if example.creator_id.nil?
+      user = User.find_by_id(example.creator_id)
+      next if user.nil?
+      item = {}
+      item[:user] = user
+      item[:value] = example
+      item[:type] = :example
+      @list << item
+    end
+    
+    Property.where("updated_at between date_sub(now(),INTERVAL 2 WEEK) and now() AND group_id = #{params[:id]}").each do |property|
+    
+      next if property.creator_id.nil?
+      user = User.find_by_id(property.creator_id)
+    
+      next if user.nil?
+    
+      item = {}
+      item[:user] = user
+      item[:value] = property
+      item[:type] = :property
+      @list << item
+    end
+     Ling.where("updated_at between date_sub(now(),INTERVAL 2 WEEK) and now() AND group_id = #{params[:id]}").each do |ling|
+      next if ling.creator_id.nil?
+      user = User.find_by_id(ling.creator_id)
+      next if user.nil?
+      item = {}
+      item[:user] = user
+      item[:value] = ling
+      item[:type] = :ling
+      @list << item
+    end
+    @list =  @list.sort_by {|item| item[:value].updated_at }
+    @group
+  end
   private
 
   def current_group

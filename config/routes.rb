@@ -12,6 +12,8 @@ LinguisticExplorer::Application.routes.draw do
     delete  "users/:id" => 'users/users#destroy'
   end
 
+  get "/groups/activity/:id" => "groups#activity", :as => "groups_activity"
+
   # JSON Endpoints
   get "/groups/list" => "groups#list", :as => "groups_list"
   # get "lings/list"   => "lings#all_list", :as => "lings_list"
@@ -33,11 +35,17 @@ LinguisticExplorer::Application.routes.draw do
 
   post "/groups/:group_id/maps" => "searches#geomapping"
 
+  post "/groups/:group_id/searches/new" => "searches#new"
+
   namespace :groups do
     get 'user'
   end
 
   resources :groups do
+
+    member do
+      get 'activity'
+    end
 
     resources :searches do
       collection do
