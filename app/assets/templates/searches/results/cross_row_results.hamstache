@@ -1,7 +1,7 @@
 {{#rows}}
-.row
+%tr{:id => "cross_modal_table_row"}
   {{#.}}
-  .col-md-3
+  %td
     %a{ :href => "{{link}}", :class => "ling_in_the_row" } {{name}}
   {{/.}}
 {{/rows}}

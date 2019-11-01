@@ -7,7 +7,7 @@
         %span
           %h4 {{name}} in the row
       .modal-body
-        .row
-          .col-md-12#lings_cross
+        .row.table-responsive
+          %table.table.table-hover.table-condensed#lings_cross
       .modal-footer
         %button.btn{ :data => {:dismiss=>"modal"}, :aria=>{:hidden=>"true"}} Close

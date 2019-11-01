@@ -20,23 +20,11 @@
     var lingsCache;
 
     resultsJson = json;
-    
+
     if(!setupModal){
       bindLingsModal();
       setupModal = true;
     }
-
-    //hash-like object to get the lings colored correctly.
-    //hashes the rows of the cross search by ling-ids
-    //associated with that row.  This allows us to color
-    //lings based on their row in getStyler().
-    var rows_by_ling = {}
-    resultsJson.rows.forEach( function(row, i){
-      row.child.forEach( function(child){
-        rows_by_ling[child.lings_property.ling_id] = i;
-      });
-    });    
-
 
     function bindLingsModal(){
       // dynamically bind count links to show a modal with the lings
@@ -44,24 +32,44 @@
 
       function showLingsModal(){
 
-        // load the modal
-        if(!modal){
-          modal = HoganTemplates[T.controller.toLowerCase() + '/results/cross_modal'];
-          $('body').append(modal.render({name: T.groups[T.currentGroup].ling0_name }));
-        }
-
         var index = + this.id.replace('lings_cross_', '');
-        
+
         // find the right entry
         var entry = resultsJson.rows[index].child || [];
 
         var lings = $.map(entry, function (el){
-          return el.lings_property.ling;
+            return el.lings_property.ling;
         });
 
+        // add s if more than one result
+        var suffix = lings.length == 1 ? "" : "s";
+
+        // load the modal
+        if(!modal){
+          modal = HoganTemplates[T.controller.toLowerCase() + '/results/cross_modal'];
+          $('body').append(modal.render({name: T.groups[T.currentGroup].ling0_name + suffix}));
+        }
+
         var table = [];
-        var lingsPerRow = 4;
+        var lingsPerRow = 1;
         var row = [];
+
+        // set the number of columns responsively
+        if (lings.length % 5 == 0) {
+          lingsPerRow = 5;
+        } else if (lings.length % 4 == 0) {
+          lingsPerRow = 4;
+        } else if (lings.length % 3 == 0) {
+          lingsPerRow = 3;
+        } else if (lings.length % 2 == 0) {
+          lingsPerRow = 2;
+        }
+        
+        // worst case, just accept the hanging row
+        if (lings.length > 25 && lingsPerRow == 1) {
+          lingsPerRow = 4;
+        }
+
         for( var i=0; i<lings.length; i++){
 
           if(i && i%lingsPerRow === 0){
