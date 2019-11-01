@@ -160,7 +160,6 @@ end
 
 group :development do
   gem 'pry'
-  gem 'pry-debugger', :platform => [:ruby_19, :ruby_21]
   gem 'pry-byebug', :platform => :ruby_20
   gem 'awesome_print', require:'ap'
   gem 'meta_request'
