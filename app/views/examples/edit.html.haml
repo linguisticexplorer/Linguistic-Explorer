@@ -1,6 +1,6 @@
 - page_heading "Edit " + current_group.example_name
 %h1
-  Editing #{current_group.example_name}
+  Editing the #{current_group.example_name}
 = render 'form'
 - back_url = @example.ling ? [current_group, @example.ling] : group_examples_path(current_group)
 = link_to back_url, :class => "btn btn-default" do

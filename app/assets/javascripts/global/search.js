@@ -90,9 +90,9 @@
     // ensure type string
     type = type || '';
     var emptyTemplate = [
-      '<div class="empty-message">unable to find any '+
-      type[0].toUpperCase() + type.substring(1)+
-      ' that match the current query</div>'
+      '<div class="empty-message">unable to find a '+
+      type[0].toLowerCase() + type.substring(1)+
+      ' that matches the current query</div>'
     ];
     var templates = {
       'expert': {
@@ -167,7 +167,7 @@
 
       // in theory this stuff should wait the dictionary promise...
       // change placeholder
-      $('#'+id +'-search-field').attr('placeholder', 'Looking for a specific '+resourceName + '?');
+      $('#'+id +'-search-field').attr('placeholder', 'Looking for a specific ' + resourceName.toLowerCase() + '?');
 
       bindSelection(selectionAction);
 

@@ -31,7 +31,7 @@
             %button.btn.btn-default#sureness_need_help{ :name => "value_sureness", :value => "need_help", :class => "#{'active' if @ling_properties && @ling_properties.select {|lp| lp.sureness == "need_help"}.any?}" } Need Help
       .pull-left{:style => "margin-top: -5px; font-size: 20px;"}
         .red
-          = icon 'exclamation-circle', 'Changes not yet saved', :id => "value-not-saved"
+          = icon 'exclamation-circle', 'Changes not yet saved!', :id => "value-not-saved"
         .green.hide.strong
           = icon 'check', 'Saved', :id => "value-saved-success"
         .red.hide.strong
