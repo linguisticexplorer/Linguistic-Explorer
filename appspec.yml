@@ -1,0 +1,16 @@
+version: 0.0
+os: linux
+files:
+        - source: /
+          destination: ~/terraling/Linguistic-Explorer
+permissions:
+        - object: ~/terraling/Linguistic-Explorer
+          owner: ec2-user
+          group: ec2-user
+hooks:
+        AfterInstall:
+                - location: script/AfterInstall.sh
+                  runas: ec2-user
+        ApplicationStart:
+                - location: script/ApplicationStart.sh
+                  runas: ec2-user
