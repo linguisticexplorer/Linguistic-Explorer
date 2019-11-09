@@ -2,6 +2,13 @@
 %h1
   = @search.name || @search.group.name
   Search Results
+- if @search_lings["search"] and @search_lings["search"]["lings"]
+  %b
+    = form_tag "new", :method => :post do
+      - @search_lings["search"]["lings"].each do |k,v|
+        - v.each do |r|
+          = hidden_field_tag "search[lings][#{k}][]", r
+      = submit_tag "Repeat search with same keywords"
 
 // Use the new JSON version
 - if @dynamic_results || @search.name
