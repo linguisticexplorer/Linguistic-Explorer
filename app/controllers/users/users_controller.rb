@@ -3,6 +3,11 @@ class Users::UsersController  < ApplicationController
 
   def index
     @user_array = User.all.to_a
+
+    respond_to do |format|
+      format.html
+      format.csv { send_data User.select("id,name,email,access_level").order(:id).to_csv }
+    end
   end
 
   def show
