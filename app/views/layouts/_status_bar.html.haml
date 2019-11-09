@@ -32,6 +32,13 @@
           Groups
           %span.label.label-success.pull-right=current_user.memberships.size
       %li
+        = link_to users_path do
+          Users
+      - if @group && !@group.new_record?
+        %li
+          = link_to groups_activity_path(@group) do
+            Recent Activity
+      %li
         = link_to destroy_user_session_path do
           Sign out
           = icon 'sign-out', '', :class=> "pull-right fa-15x"
