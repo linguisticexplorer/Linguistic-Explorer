@@ -6,6 +6,7 @@
       %th.col-md-1= "Last Name"
       %th.col-md-1= "E-mail"
       %th.col-md-1= "User Type"
+      %th.col-md-1= "Remove"
   %tbody
     - @user_array.each do |o|
       %tr
@@ -14,3 +15,7 @@
         %td= o.name
         %td= o.email
         %td= o.access_level
+        %td
+          = link_to o, :class => 'btn btn-danger', :rel => "tooltip", :title => "Destroy", :data => { :confirm => "Are you sure you want to remove #{o.name}?"}, :method => :delete do
+            = icon 'trash-o'
+
