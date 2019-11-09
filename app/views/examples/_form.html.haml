@@ -28,6 +28,11 @@
                   = text_field :stored_values, key, :value => @example.stored_value(key)
       .form-group
         .col-md-6
+          - if @creators
+            = f.label :creator, :class => "control-label"
+            .controls
+              = f.select :creator_id, options_for_select(@creators, (@example ? @example.creator_id : current_user.id)), { :include_blank => false }, :class => "form-control"
+        .col-md-3
           .controls
             = f.submit :class => "btn btn-success", :id => "save-example"
     .col-md-4

@@ -16,7 +16,7 @@
       = link_to group_examples_path(current_group), :class => "btn btn-default" do
         %i.glyphicon.glyphicon-arrow-left
         Back
-    - if can_see? :update, @ling
+    - if can_see? :update, @example.ling
       = link_to edit_group_example_path(current_group, @example), :class => "btn btn-default pull-right" do
         = icon 'edit', "Edit #{current_group.example_name}"
 .row{:style => "margin-top: 25px;"}

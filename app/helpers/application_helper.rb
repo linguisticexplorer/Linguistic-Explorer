@@ -115,12 +115,16 @@ module ApplicationHelper
     example.group.example_storable_keys.each do |key|
       case display_mode
       when "linguistic"
-        if key != "description" and key != "comment"
+        if key != "description" and !example.stored_value(key).empty?
+	  result += "<br />" + key.humanize + ": " if key.downcase.eql?("comment")
           result += example.stored_value(key) + "<br />" if !example.stored_value(key).empty?
         end
       # when in default table mode
       else
-        result += key.humanize + ": " + example.stored_value(key) + "<br />"
+        unless example.stored_value(key).empty?
+	  result += "<br />" + key.humanize + ": " if key.downcase.eql?("comment")
+          result +=  example.stored_value(key) + "<br />"
+        end
       end
     end
     return result.html_safe

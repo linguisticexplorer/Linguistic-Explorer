@@ -56,6 +56,9 @@
               %option No examples available
         .form-group
           %a#exampe-select-btn.btn.btn-default Select
+        .form-group
+          .green.strong
+            = icon 'check', 'Example Created', :id => "exampled-saved-success"
     %div{:style => "margin: 10px 0 0 0; min-height: 15px; *height: 15px;"}
       %span#example-warning.blue.italic{:class => "#{'hidden' unless @exists}"} You must set a value before creating examples 
     #prop-example-creator{:style => "margin-top: 10px;"}
