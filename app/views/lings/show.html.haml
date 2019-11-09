@@ -102,10 +102,10 @@
               %td
                 %b Completeness:
               - percentage = @ling.info
-              - label = "#{percentage} %"
+              - label = "#{percentage < 100 ? percentage < 50 ? 'Less than half' : 'Almost Complete' : 'Complete'}"
               %td{:class => "text-center"}
                 %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
-                  =icon number_to_icon_name(percentage), '', :class => "fa-15x #{number_to_text_class(percentage)}"
+                  %strong{:class => "#{number_to_text_class(percentage)}"} #{percentage}%
       .tab-pane#map{:data => {:name => @ling.name}}
         .tabbed-pane
           #ling-map
@@ -138,25 +138,28 @@
         - @ordered_values.each do |value|
           - next if value.property.name.eql?('latlong') || value.property.name.downcase.start_with?('iso')
           %tr
-            %td.align-left= link_to value.property.name, [current_group, value.property]
-            %td.align-left= value.value
+            %td.align-center= link_to value.property.name, [current_group, value.property]
+            %td.align-center= value.value
             - elps = current_group.examples_lings_properties.find_all_by_lings_property_id(value.id)
             -if elps.any?
               %td.align-left
-                - elps.each do |elp|
+                - elps.each_with_index do |elp, i|
                   - example = elp.example
                   = link_to(display_example(example.id, current_group.display_style), [current_group, example]) if elp
-                  %br
+                  - if i < elps.size - 1
+                    %br
+                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "Add another #{@group.example_name.downcase}", :data => {:toggle => "tooltip", :animation => "true" } do
+                  = icon 'plus'
             - else
               %td{:id => table_actions_id(value.property.name, "example")}
                 - if can_see? :update, @ling
-                  = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.example_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                  = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "prop-example"), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.example_name.downcase}", :data => {:toggle => "tooltip", :animation => "true" } do
                     = icon 'plus'
             - if can_see? :update, @ling
               %td{:id => table_actions_id(value.property.name)}
-                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "value-select"), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{current_group.lings_property_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                = link_to supported_set_values_group_ling_path(current_group, @ling, :prop_id => value.property.id, :commit => "Select", :anchor => "value-select"), :class => "btn btn-default", :rel => "tooltip", :title => "Edit #{current_group.lings_property_name.downcase}", :data => {:toggle => "tooltip", :animation => "true" } do
                   = icon 'edit'
-                = link_to [current_group, value], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete", :data => {:toggle => "tooltip", :animation => "true"} do
+                = link_to [current_group, value], :confirm => 'Are you sure?', :method => :delete, :class => 'btn btn-danger', :rel => "tooltip", :title => "Delete #{current_group.lings_property_name.downcase}", :data => {:toggle => "tooltip", :animation => "true"} do
                   = icon 'trash-o'
     #pagination_bottom.apple_pagination.will-paginate
       / render page links in the view:

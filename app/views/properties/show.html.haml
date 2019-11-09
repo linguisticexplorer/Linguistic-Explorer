@@ -76,12 +76,12 @@
               - label = "#{percentage} %"
               %td{:class => "text-center"}
                 %a{:href => "#", :rel => "tooltip", :title => label, :data => {:toggle => "tooltip", :placement => "left" } }
-                  =icon number_to_icon_name(percentage), '', :class => "fa-15x #{number_to_text_class(percentage)}"
+                  %strong{:class => "#{number_to_text_class(percentage)}"} #{percentage}%
       .tab-pane#description
         .tabbed-pane
           .text-justify
-            - if @property.description.present? && @property.description != ""
-              %p= @property.description.html_safe
+            - if @output
+              %p= @output
             - else
               %h3 No description provided
       .tab-pane#map
@@ -103,8 +103,8 @@
     %tbody
       - @values.each do |value|
         %tr
-          %td= link_to(value.ling.name, [current_group, value.ling],{:class => 'pull-left'})
-          %td= link_to(value.value, [current_group, value],{:class => 'pull-left'})
+          %td= link_to(value.ling.name, [current_group, value.ling])
+          %td= link_to(value.value, [current_group, value])
           %td= (value.creator ? value.creator.name : "")
 
 

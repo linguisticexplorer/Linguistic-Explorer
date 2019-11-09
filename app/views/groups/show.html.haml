@@ -36,25 +36,27 @@
         .row
           - @group.depths.each do |depth|
             %div{ :class => "col-md-4 #{@group.depths.size > 1 ? '' : 'col-md-offset-2'}"}
-              - percentage = @group.lings_with_property_quota(depth)
+              - percentage = 100 * @group.lings_with_property_quota(depth) / @group.props_in_group
+              - percentage = percentage > 100 ? 100 : percentage
+              - # Something wrong with properties, same property counts twice here
+              - # Percentage should never be higher than 100, but it is
               %div{:class => "thumbnail dashboard-box #{number_to_text_class(percentage)}-bg" }
                 #ling_settings.pull-right
                   - new_ling = Ling.new{|l| l.group = current_group}
                   - if can_see? :create, new_ling
-                    = link_to_new_group_ling new_ling, depth, :class => "btn btn-success", :rel => "tooltip", :title => "New #{@group.ling_name_for_depth(depth)}", :data => {:toggle => "tooltip", :animation => "true"} do
+                    = link_to_new_group_ling new_ling, depth, :class => "btn btn-success", :rel => "tooltip", :title => "New #{@group.ling_name_for_depth(depth)}", :data => {:toggle => "tooltip", :animation => "true", :placement => "right"} do
                       = icon "plus"
-                %a{:href=> group_lings_depth_path(@group, depth), :title => "Info", :data => {:toggle => "popover", :content => "Completeness: #{percentage} %"} }
-                  .caption
-                    %h1= @group.lings_in_group(depth)
-                    %h3= @group.ling_name_for_depth(depth).pluralize
+                %a.caption{:href=> group_lings_depth_path(@group, depth), :title => "Stats", :data => {:toggle => "popover", :content => "Completeness: #{percentage}%"} }
+                  %h1= @group.lings_in_group(depth)
+                  %h3= @group.ling_name_for_depth(depth).pluralize
           .col-md-4
-            - percentage = @group.props_with_lings_quota
+            - percentage = 100 * @group.props_with_lings_quota / @group.props_in_group
             %div{:class => "thumbnail dashboard-box #{number_to_text_class(percentage)}-bg" }
               #property_settings.pull-right
                 - if can_see? :create, Property.new{|p| p.group = current_group}
-                  = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.property_name}", :data => {:toggle => "tooltip", :animation => "true" } do
+                  = link_to new_group_property_path(current_group), :class => "btn btn-success pull-right", :rel => "tooltip", :title => "New #{@group.property_name}", :data => {:toggle => "tooltip", :animation => "true", :placement => "right"} do
                     = icon "plus"
-              %a.caption{:href=> group_properties_path(@group), :title => "Info", :data => {:toggle => "popover", :content => "Completeness: #{percentage} %" } }
+              %a.caption{:href=> group_properties_path(@group), :title => "Stats", :data => {:toggle => "popover", :content => "Completeness: #{percentage}%" } }
                 %h1= @group.props_in_group
                 %h3= @group.property_name.pluralize
         .row
