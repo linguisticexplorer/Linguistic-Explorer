@@ -127,6 +127,11 @@
     #pagination_top.apple_pagination.will-paginate
       / render page links in the view:
       = will_paginate @values, renderer: BootstrapPagination::Rails
+      #export_json.pull-right
+        = link_to(group_ling_path(current_group, @ling, :format => :json), {:class => "btn btn-default", :title => "Download", :style => 'height: 35px; margin-top: 20px;'}) do
+          #export_json_download{ :style => "padding: 4px 12px;" }
+            = icon 'download'
+            %span{ :style => "color: #000;" } Export as JSON
     %table.show-table.table.table-bordered.table-striped.table-hover
       %thead
         %th.col-md-1= current_group.property_name

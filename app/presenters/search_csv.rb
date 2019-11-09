@@ -34,8 +34,8 @@ class SearchCSV
       :property_1 => lambda { |v| v.property.name },
       :value_0    => lambda { |v| v.value  },
       :value_1    => lambda { |v| v.value  },
-      :example_0  => lambda { |v| v.examples.map(&:name).join(", ") },
-      :example_1  => lambda { |v| v.examples.map(&:name).join(", ") }
+      :example_0  => lambda { |v| v.examples.map(&:name).join("; ") },
+      :example_1  => lambda { |v| v.examples.map(&:name).join("- ") }
     }
   end
 
