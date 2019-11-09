@@ -226,35 +226,16 @@
 
       var popups = preparePopup(resultsJson);
 
-      var colors_by_row = {};
-
-      // associates a color with each id based on row
-      // if no color yet associated w/ a row, assign one
-      // works up to 20 colors.  Then we run out (TODO: fix) 
-      function getColorById(id){
-        if(!colors_by_row[rows_by_ling[id]]){
-          if(counter < 20){
-            colors_by_row[rows_by_ling[id]] = colors[counter++];
-          }
-        }
-        return colors_by_row[rows_by_ling[id]];
-      }
-
-      function styler(entry) {
-        var entry_color = getColorById(entry.id);
-        if (entry_color == null) {
-          return null
-        }
-        return {
-          markerColor: entry_color,
+      function styler(entry){
+        return counter < 20 ? {
+          markerColor: colors[counter++],
           iconColor: 'white',
           icon: 'info',
           text: popups[entry.id]
-        };
-      } 
- 
-    return styler;
-  }
+        } : null;
+      }
+      return styler;
+    }
 
     function preparePopup(json){
       // get the template now
