@@ -6,3 +6,4 @@ require 'rake'
 include Rake::DSL
 
 LinguisticExplorer::Application.load_tasks
+Knapsack.load_tasks if defined?(Knapsack)
