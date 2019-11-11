@@ -5,17 +5,15 @@ addons:
 before_install:
 - gem install bundler
 - cp yamls/database.yml.travisCI config/database.yml
-- mysql -e 'create database le_test;'
 - mysql -e 'SET GLOBAL innodb_flush_log_at_trx_commit=2'
 - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1600x1200x8"
 bundler_args: "--without development production"
 before_script:
 - export DISPLAY=:99.0
-- RAILS_ENV=test bundle exec rake db:migrate
-- RAILS_ENV=test bundle exec rake db:test:prepare
+- RAILS_ENV=test bundle exec rake parallel:setup[4]
 script:
-- RAILS_ENV=test bundle exec rspec spec
-- RAILS_ENV=test bundle exec cucumber --profile travis
+- RAILS_ENV=test bundle exec rake parallel:spec[4]
+- RAILS_ENV=test bundle exec rake parallel:features[4,,'--profile travis']
 rvm:
 - 1.9.3
 - 2.0.0
@@ -35,7 +33,7 @@ before_deploy:
 deploy:
   provider: script
   skip_cleanup: true
-  script: rvm use 1.9.3 --install --binary --fuzzy && bundle install --without development production test && bundle exec cap travisci deploy
+  script: gem install capistrano -v 2.15.4 && gem install capistrano-ext -v 1.2.1 && gem install rvm-capistrano -v 1.5.4 && bundle exec cap travisci deploy
   on:
     branch: sprint
     rvm: 1.9.3

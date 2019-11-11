@@ -155,7 +155,7 @@ group :test, :development do
   gem 'metric_fu', "~>4.11.1"
   gem 'rails_best_practices', "~>1.15.4"
   gem 'simplecov', '~> 0.7.1', :require => false
-
+  gem 'parallel_tests', '~> 2.9.0'
 end
 
 group :development do
